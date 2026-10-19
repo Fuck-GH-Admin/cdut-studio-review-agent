@@ -239,3 +239,37 @@ A1 unfinished: actual session manager and Orchestrator admission/stop; persist A
 - A 下一批可独立推进：从 Main 的实际 Pi runtime 读取不可伪造的 dispatch/turn身份、分析 Provider Abort/timeout 后可信 outcome，编写 A-owned 映射与负例；真实 SDK 注册及 `pi-case-review-service.ts`、`review-ipc.ts`、共享 DTO、正式 ACK 接线须由 C 授权且在 I/C 同 SHA 联合验证。I1 继续锁定旧已绿 A `d8fd3e0...`，不可因 A 新提交自动换源。
 
 **下一精确验收**：在 self-hosted runner 恢复后对最终 #143 HEAD 依次跑 typecheck、check:boundaries、Main/Preload/Renderer build、`bun test --isolate` 全量与 `review-v3-main-sdk-turn-bridge.test.ts` 专项；补齐动作前后 Owner epoch、abort/rotation/cold journal、实际 SDK 回执源和跨 PID 崩溃/满盘证据。若 CI 仍无 runner，保留 `CI_UNASSIGNED`，不将本批标记 PASS。
+
+## A4-R06｜物理 SDK 派发身份与遗留账本保守恢复（已提交，精确 SHA Gate O 待验证）
+
+2026-10-19 持续开发会话以 #143 上批工程 `563256eee69d2555898678cb04d9c5900df20ece` 为输入，读 #145 最新 C 决议和真实 SDK 路径，确认 **A 可修改独立桥接与执行 ledger，但不得实现 C2 正式 Run consumer / ACK、Main IPC、Preload、shared DTO**。#147 I1 继续使用已批准旧 A 锁源，不自动浮动到 R06。
+
+### 工程变更
+
+1. **SDK callback ↔ 已持久 dispatchId 强绑定**：
+   - `review-v3-main-sdk-turn-bridge.ts` 的 `V3AMainSDKTurnPort.nextTurn({run,dispatchId,mode,signal})` 现必须接收由 `V3ASDKDispatchFence.claim()` 在 SDK side effect **前持久生成**的同一个 `dispatchId`。
+   - SDK Host `completed-turn` 或 `interrupted` 的结构化结果 **必须 echo 同一 dispatchId**；跨 SDK 派发串回来的结果（即使 run 与 receiptId 看似有效）保持 `in-flight`、不扣 24-turn budget、不生成技术 proposal/terminal、不再次调用 Provider；必须显式恢复后才能继续。
+   - 这只是 Main callback 的**身份配对约束**，不是信任 Pi 模型文本。只有实际由 Main 连接的 Pi SDK 物理 turn 来源、可核实的 receipt ID 才能提供该 Host port；任何把 Renderer、assistant UUID、`SDKMessage type=result/subtype=success`、`agent_end` 或随机 UUID 冒充原生 Provider turn receipt 的桥接均必须拒止。
+   - 对应源码提交 `fad8af7b5c25ec28e4a1fa24eddd02363ba9b1f4`，测试提交 `705f6ebba9591e02f0236f297d8d1ca7481b3f25`。更新原 A3-SDK 合成 callback fixture，新增 `A4-R06-01`（外来 dispatch 的 completed-turn 拒止）、`A4-R06-02`（外来 dispatch 的 interrupted 不可伪造技术终态）。
+
+2. **旧账本不可信历史封堵**：
+   - `V3ASDKDispatchFence.decode()` 检测一个 `late-denied` 历史后竟仍有较新 `settled` / `in-flight` 记录时，直接 `RECOVERY_REQUIRED`，防止 R05 修复前重派遗留记录被当作当前安全 Run；不自动删除历史/升级真值（`29232aca8874580ada2f04326bcfb0750ca4146f` + `A4-R06-03`）。
+   - 冷打开 SDK dispatch journal 时，对不同物理 `dispatchId` 的 `settled` 记录检查 `receiptId` 唯一性。修复旧版账本即便手工重放已结清记录仍有重复 receipt、进而偷漏 24-turn 数的风险。发现冲突拒绝整个 affected ledger，明确阻断，不重写或自动抵账（`3fcadeac061d4582edb72250f192b45ec5bfebfc` + `A4-R06-04`）。
+
+### 真实 Pi SDK 调研事实（仍阻断真实适配）
+
+- `pi-review-agent-client.ts` 使用 Pi `query(PiAgentQueryOptions)` 返回 `AsyncIterable<SDKMessage>`，其中 `SDKResultMessage` 的 `type:'result'`、`subtype:'success'` 是**整次查询结果**，不是独立物理 Provider turn receipt。assistant `uuid` 是消息身份，不是物理派发身份。
+- `adapters/pi-agent-adapter.ts` 的 `onHarnessLifecycle` 为被动事件观察：`model_call_completed` / `retry_*` 等没有稳定 SDK request/turn receipt 或冻结 Run 绑定；`toolProfile:'review'` 已禁用原生 retry，但旧 `pi-review-agent-client.ts` 的带图失败→文本 fallback/requery、tool completed fallback 仍存在，需要确定实际物理调用次数。
+- 因以上事实，本轮**没有**制造所谓“native SDK receipt provider”，也未调用真实 Provider。新 `dispatchId` 是 A 技术 ledger 的 Main 意图 ID，不能独立证明 SDK 确实只发起一次调用；正式端口注册与 receipt provenance 必须单独验收。本轮能力是 fail-closed **防跨派发串用**和历史恢复，不是声称 `Pi SDK integration DONE`。
+
+### 新增与旧测试不变性
+
+- `A4-R06-01..04` 是新增四个源级测试，均已提交但未验收。
+- 保留之前 `A3-SDK-01..16`、`A4-DISPATCH-01..07`、9/9 Host Check、24-turn、暂停轮换、after-await revoke、真实 Linux 双 PID/SIGKILL 测试；新 `dispatchId` 要求同步调整 *合成* SDK port 以显式 echo Main 输入 ID。不篡改 C0/共享 DTO。
+- 严禁将测试里自动 echo `dispatchId` 的**合成 fixture**描述为真实 SDK 本机回执，任何 Gate E 都必须走真实 Main→SDK→Provider 再核对发包/取消/中断/物理 receipt。
+
+### 执行与质量门禁
+
+- #143 最新 SHA 必须现场从 PR 重新读取；本轮代码不因旧 A 4023 pass、C 已绿 DTO 或 I1 的 17 个 synthetic 合同断言而自动签收。
+- `Gate O=CI_QUEUED/NOT_ATTESTED`（GitHub self-hosted Linux/X64 jobs 无运行结论）；`E=NOT_RUN`，`L=BLOCKED_NO_AUTH`，`P=NOT_RUN`。目标是**最终 SHA** `bun install --frozen-lockfile`、`bun run typecheck`、boundaries、skin contract、三端 build、`bun test --isolate --timeout 30000` 全量和 A4 专项、D2/Baseline。离线单趟验收仍使用同目录 `A4-R05-EXACT-SHA-OFFLINE-GATE-O-20261019.md`，应同时覆盖 A4-R06 用例。
+- 下一批集中任务为：① 在本机 SDK runtime 明确原生可验证的 turn/request/event ID 和唯一 Main callback，区分 query result 与物理 turn；② 把 A4 意图栅栏覆盖旧带图失败重试/多 turn 及 Provider/worker 取消，避免重复物理调用；③ 在经 C 授权的独立技术只读端口中联合 A/I 验证，不越权提交 C-owned Main 入口；④ C2 完成后仍需 C 独立核验 proposal/正式 durable ACK。
