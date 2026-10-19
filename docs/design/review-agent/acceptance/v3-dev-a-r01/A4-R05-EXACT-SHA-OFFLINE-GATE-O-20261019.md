@@ -57,6 +57,7 @@ if grep -q '^install exit=[1-9]' "$LOG_ROOT/results.txt"; then
 else
   run_gate a4-r05-targeted bun test --isolate --timeout 30000 \
     apps/electron/src/main/lib/review/review-v3-main-sdk-turn-bridge.test.ts \
+    apps/electron/src/main/lib/review/review-v3-sdk-physical-turn-port.test.ts \
     apps/electron/src/main/lib/review/review-v3-execution-turn-budget.test.ts \
     apps/electron/src/main/lib/review/review-v3-execution-proposal-producer.test.ts \
     apps/electron/src/main/lib/review/review-pi-owner-adapter.test.ts \
@@ -109,6 +110,14 @@ fi
 - 针对 P0/P1，`Gate O = PASS_SCOPED` 仅在 **同一最终 SHA** 对应全套命令通过时可写；无 runner 为 `CI_UNASSIGNED`，本机通过则单独写 `LOCAL_GATE_O_PASS`，不伪称 GitHub PR CI success。
 - `Gate E=NOT_RUN` 直到真正 Electron/Preload/Main/真实 SDK Provider/隐藏会话/Graph/Batch/双 PID 应用链路验收；`Gate L=BLOCKED_NO_AUTH`；`Gate P=NOT_RUN`。
 - 输出压缩包必须脱敏：Provider API key、用户材料、原件路径、Main session token、用户身份/校方回执不得泄露。证据写 #143 A 工程记录；四线进度仅改 #145 文档 `STATUS:A` 段。
+
+### A4-R07 native single-physical-request witness (newly committed, not yet verified)
+
+- Targeted test file `review-v3-sdk-physical-turn-port.test.ts` (R07-01..11) plus integrated bridge tests R07-12/13 in `review-v3-main-sdk-turn-bridge.test.ts`.
+- Validate true **in-process native provider-request** start/finish callback, exactly one request, stable nonempty independently observed native receipt and Main-persisted dispatchId. Missing hook / SDK query result.success / message-only and harness-only outputs are **PROVENANCE_UNAVAILABLE** and must NOT write turn or technical terminal.
+- Verify native retry, image-fallback secondary provider call, duplicate/mismatched request identity, fabricated dispatchId-as-receipt, native Provider failure, after-cancel and callback after engine has returned all fail closed. In integrated bridge tests, unresolved SDK dispatch remains durable; no C ReviewRun ACK.
+- **Caveat**: This is a capability-seam plus injected fake native hook, not evidence that Pi 0.86.1 actually exposes a suitable native physical receipt API. Gate E remains NOT_RUN until real SDK instrumentation/Provider trace proves physical requests correspond to callbacks; do not synthesize native IDs from assistant UUID or count `agent_end` as physical turn.
+- On target machine additionally inspect the installed `@earendil-works/pi-coding-agent@0.86.1` and patched event API and save precise `sdk-native-hook-availability` finding. If no safe hook exists, report `BLOCKED_NATIVE_RECEIPT_API` while retaining testable A-only port; never claim a real SDK integration passed.
 
 ## 6. R06 回执来源审计补充
 
