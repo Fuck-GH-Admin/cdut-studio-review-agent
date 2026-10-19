@@ -53,6 +53,8 @@ export interface I1TechnicalPreview {
   readonly planFingerprint: string
   readonly coverage: A3TechnicalSnapshot
   readonly sourceValidityBlockers: readonly string[]
+  /** Unattributed/cross-Subject material cannot prove a Check target. */
+  readonly subjectSourceBlockers: readonly string[]
   readonly technicalPreviewEligible: boolean
   readonly route?: B3RouteState
 }
@@ -79,6 +81,7 @@ export function inspectI1TechnicalPreview(input: I1TechnicalPreviewInput): I1Tec
   if (descriptor.publicationAllowed !== false) {
     throw new Error('I1_CANDIDATE_MUST_REMAIN_UNPUBLISHED')
   }
+  const materialByVersion = new Map(candidates.map(c => [c.documentVersionId, c]))
   const sourceVersions = descriptor.sourceLedger.map(s => s.documentVersionId)
   if (!sourceVersions.length || sourceVersions.some(version => !versions.has(version))) {
     throw new Error('I1_PLAN_SOURCE_NOT_STAGED')
@@ -98,6 +101,12 @@ export function inspectI1TechnicalPreview(input: I1TechnicalPreviewInput): I1Tec
     diagnostics.recordHostOutcome(observation)
   }
   const coverage = diagnostics.snapshot()
+  const subjectSourceBlockers = descriptor.canonicalPlan.bindings.flatMap(binding =>
+    binding.sourceVersionIds.filter(versionId => {
+      const material = materialByVersion.get(versionId)
+      return !material || material.subjectId === null ||
+        material.subjectId !== binding.subjectId || material.role === 'unassigned'
+    }).map(versionId => `subject-source:${binding.checkKey}:${binding.targetKey}:${versionId}`))
   const blockers = input.currentCaseSnapshot
     ? currentSourceValidityBlockers(input.currentCaseSnapshot)
     : []
@@ -116,7 +125,8 @@ export function inspectI1TechnicalPreview(input: I1TechnicalPreviewInput): I1Tec
     planFingerprint: descriptor.canonicalPlan.fingerprint,
     coverage,
     sourceValidityBlockers: blockers,
-    technicalPreviewEligible: blockers.length === 0 &&
+    subjectSourceBlockers,
+    technicalPreviewEligible: blockers.length === 0 && subjectSourceBlockers.length === 0 &&
       coverage.state === 'technically-complete',
     ...(route ? { route } : {}),
   }
