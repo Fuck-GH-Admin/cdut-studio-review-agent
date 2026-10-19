@@ -1,4 +1,5 @@
 import {describe, expect, it} from 'bun:test'
+import {createHash} from 'node:crypto'
 import {
   REVIEW_C0_SCHEMA_VERSION,
   type CanonicalPlan, type Principal, type RunEvidenceIdentity,
@@ -264,6 +265,24 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     await expect(freshBridge.next(h.call,'direct')).rejects.toThrow('explicit recovery')
     expect(h.calls()).toBe(1)
     expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
+  })
+  it('A4-R06-03: historical late-denied then settled never upgrades to clean Run',()=>{
+    const h=fixture()
+    const key=JSON.stringify([h.run.runId,h.run.attemptId,h.run.ownerGeneration])
+    const runHash=createHash('sha256').update(JSON.stringify(h.run)).digest('hex')
+    const payload={
+      version:'v3-dev-a-sdk-dispatch/1',
+      runs:{[key]:{runHash,records:[
+        {id:'old-denied',grantId:h.grant.grantId,state:'late-denied'},
+        {id:'legacy-redrive',grantId:h.grant.grantId,
+          state:'settled',receiptId:'sdk-after-denial'},
+      ]}},
+    }
+    const seal=createHash('sha256').update(JSON.stringify(payload)).digest('hex')
+    h.dispatchStore.raw=JSON.stringify({payload,sha256:seal})
+    expect(()=>new V3ASDKDispatchFence(h.dispatchStore,h.owners))
+      .toThrow('SDK dispatch ledger invalid/duplicated')
+    expect(h.calls()).toBe(0)
   })
   it('A4-DISPATCH-06: SDK duplicate across distinct dispatches is not a retry',async()=>{
     const h=fixture()
