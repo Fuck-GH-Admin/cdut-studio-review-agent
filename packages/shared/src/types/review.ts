@@ -444,7 +444,7 @@ export interface ReviewCase {
    * the real active/archived documents remain authoritative when reconciling. */
   d4MaterialTransitions?: Array<{
     previousDocumentId: string; newDocumentId: string; kind: 'replace' | 'retry'
-    status: 'pending' | 'archived' | 'archive-failed'; originLabel: string
+    status: 'pending' | 'archived' | 'archive-failed' | 'abandoned'; originLabel: string
   }>
   /** 已从当前审核材料中移除的文件；保留记录用于 V2 来源追溯。 */
   archivedDocuments?: SourceDocument[]
@@ -570,6 +570,7 @@ export const REVIEW_IPC_CHANNELS = {
   ASSESS_D4_CASE_BATCH: 'review:assess-d4-case-batch',
   APPLY_D4_CASE_BATCH: 'review:apply-d4-case-batch',
   SAVE_D4_REVIEWER_FORM: 'review:save-d4-reviewer-form',
+  RESOLVE_D4_MATERIAL_TRANSITION: 'review:resolve-d4-material-transition',
   RETRY_D4_DOCUMENT: 'review:retry-d4-document',
   STAGE_D4_DROPPED_BYTES: 'review:stage-d4-dropped-bytes',
   DISCARD_D4_INTAKE: 'review:discard-d4-intake',

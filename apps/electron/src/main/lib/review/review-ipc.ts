@@ -108,6 +108,15 @@ export function registerReviewIpc(): void {
     if (mode !== undefined && mode !== 'files' && mode !== 'folder') throw new Error('D4_INTAKE_PICKER_MODE_INVALID')
     return stageD4Intake(event.sender.id, parent, mode ?? 'files')
   })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RESOLVE_D4_MATERIAL_TRANSITION, async (event, raw: unknown) => {
+    const { BrowserWindow } = require('electron') as typeof import('electron')
+    const owner = BrowserWindow.fromWebContents(event.sender)
+    if (!owner || event.senderFrame !== owner.webContents.mainFrame)
+      throw new Error('D4_RESOLVE_SENDER_INVALID')
+    const { resolveD4MaterialTransition } = require('./review-d4-material-resolution')
+      as typeof import('./review-d4-material-resolution')
+    return resolveD4MaterialTransition(raw as Parameters<typeof resolveD4MaterialTransition>[0])
+  })
   ipcMain.handle(REVIEW_IPC_CHANNELS.SAVE_D4_REVIEWER_FORM, async (event, raw: unknown) => {
     const { BrowserWindow } = require('electron') as typeof import('electron')
     const owner = BrowserWindow.fromWebContents(event.sender)
