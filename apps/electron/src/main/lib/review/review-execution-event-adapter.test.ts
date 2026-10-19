@@ -1,10 +1,13 @@
+import { mkdtempSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { describe, expect, it } from 'bun:test'
 import {
   REVIEW_C0_SCHEMA_VERSION, type Principal, type CanonicalPlan,
   type RunEvidenceIdentity, type SourceIdentity,
 } from '@profer/shared'
 import {
-  V3ReviewOwnerAdapter, type OwnerPersistence,
+  V3ReviewOwnerAdapter, createFileOwnerPersistence, type OwnerPersistence,
 } from './review-pi-owner-adapter'
 import { V3ExecutionEventAdapter } from './review-execution-event-adapter'
 
@@ -78,6 +81,51 @@ describe('V3 A2 scoped execution proposals', () => {
     expect(loaded.pending().map(x => x.deliveryId)).toEqual([b.deliveryId])
     expect(loaded.acknowledge(b.deliveryId, b.event)).toBe(true)
     expect(loaded.pending()).toEqual([])
+  })
+
+  it('A-RUN-02: duplicate Host receipt is idempotent; cross-kind collision rejected', () => {
+    const h = start()
+    const a = h.adapter.proposeRead(h.call, 'actual-block-receipt')
+    const duplicated = h.adapter.proposeRead(h.call, 'actual-block-receipt')
+    expect(duplicated).toEqual(a)
+    expect(h.adapter.pending()).toHaveLength(1)
+    expect(h.adapter.acknowledge(a.deliveryId, a.event)).toBe(true)
+    expect(h.adapter.proposeRead(h.call, 'actual-block-receipt')).toEqual(a)
+    expect(h.adapter.pending()).toHaveLength(0)
+    expect(() => h.adapter.proposeCheck(
+      { ...h.call, tool: 'review_submit_result' }, 'actual-block-receipt')).toThrow()
+    expect(h.adapter.proposeRead(h.call, 'new-source-receipt').event.sequence).toBe(2)
+  })
+
+  it('A-RUN-02: stale process outbox read and ACK reject external append', () => {
+    const h = start()
+    const stale = new V3ExecutionEventAdapter(h.eventStore, h.owners)
+    const delivery = h.adapter.proposeRead(h.call, 'first')
+    expect(() => stale.pending()).toThrow()
+    expect(() => stale.acknowledge(delivery.deliveryId, delivery.event)).toThrow()
+    expect(new V3ExecutionEventAdapter(h.eventStore, h.owners).pending())
+      .toHaveLength(1)
+  })
+
+  it('A-FAIL-02: separate file-backed outbox writers cannot lose another PID event', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'review-v3-a-events-'))
+    try {
+      const h = start()
+      const store = createFileOwnerPersistence(join(dir, 'events.json'))
+      const writer = new V3ExecutionEventAdapter(store, h.owners)
+      const stale = new V3ExecutionEventAdapter(store, h.owners)
+      const first = writer.proposeRead(h.call, 'disk-read-1')
+      expect(first.event.sequence).toBe(1)
+      expect(() => stale.proposeRead(h.call, 'disk-read-2')).toThrow()
+      const reloaded = new V3ExecutionEventAdapter(store, h.owners)
+      expect(reloaded.pending().map(x => x.deliveryId)).toEqual([first.deliveryId])
+      expect(reloaded.proposeRead(h.call, 'disk-read-2').event.sequence).toBe(2)
+      expect(() => writer.pending()).toThrow()
+      const latest = new V3ExecutionEventAdapter(store, h.owners)
+      expect(latest.pending()).toHaveLength(2)
+    } finally {
+      rmSync(dir, { recursive: true, force: true })
+    }
   })
 
   it('A-OWN-03: revoke during Host await prevents read receipt event', async () => {
