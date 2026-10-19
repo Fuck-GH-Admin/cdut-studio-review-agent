@@ -59,6 +59,8 @@ interface SealedLedger { payload: OwnerDisk; sha256: string }
 export interface OwnerPersistence {
   read(): string | null
   write(serialized: string): void
+  /** Optional for synthetic stores; production file store enforces cross-PID CAS. */
+  compareAndWrite?(expected: string | null, serialized: string): void
 }
 
 /** Main-only injection. Do not use a Renderer actor DTO to implement this hook. */
@@ -134,34 +136,62 @@ function encode(data: OwnerDisk): string {
   return JSON.stringify({ payload: data, sha256: digest(JSON.stringify(data)) })
 }
 
-/** Atomic file replace + file and parent-directory sync; errors propagate. */
+/**
+ * Atomic replace + inter-process optimistic CAS. A crashed process leaving a
+ * lock must be reconciled explicitly; never break a possibly live lock by age
+ * or by an untrusted PID hint. No lock acquire is an authorization ACK.
+ */
 export function createFileOwnerPersistence(filePath: string): OwnerPersistence {
-  return {
-    read: () => existsSync(filePath) ? readFileSync(filePath, 'utf8') : null,
-    write: serialized => {
-      mkdirSync(dirname(filePath), { recursive: true })
-      const temp = join(dirname(filePath), '.' + randomUUID() + '.tmp')
-      let handle: number | undefined
-      try {
-        handle = openSync(temp, 'wx', 0o600)
-        const data = Buffer.from(serialized, 'utf8')
-        let offset = 0
-        while (offset < data.length) {
-          const n = writeSync(handle, data, offset, data.length - offset)
-          if (n <= 0) fail('Owner journal short write')
-          offset += n
-        }
-        fsyncSync(handle)
-        closeSync(handle)
-        handle = undefined
-        renameSync(temp, filePath)
-        const directory = openSync(dirname(filePath), 'r')
-        try { fsyncSync(directory) } finally { closeSync(directory) }
-      } finally {
-        if (handle !== undefined) closeSync(handle)
-        if (existsSync(temp)) unlinkSync(temp)
+  const parent = dirname(filePath)
+  const lockPath = filePath + '.write-lock'
+  const read = (): string | null =>
+    existsSync(filePath) ? readFileSync(filePath, 'utf8') : null
+  const atomicReplace = (serialized: string): void => {
+    const temp = join(parent, '.' + randomUUID() + '.tmp')
+    let handle: number | undefined
+    try {
+      handle = openSync(temp, 'wx', 0o600)
+      const data = Buffer.from(serialized, 'utf8')
+      let offset = 0
+      while (offset < data.length) {
+        const n = writeSync(handle, data, offset, data.length - offset)
+        if (n <= 0) fail('Owner journal short write')
+        offset += n
       }
-    },
+      fsyncSync(handle)
+      closeSync(handle)
+      handle = undefined
+      renameSync(temp, filePath)
+      const directory = openSync(parent, 'r')
+      try { fsyncSync(directory) } finally { closeSync(directory) }
+    } finally {
+      if (handle !== undefined) closeSync(handle)
+      if (existsSync(temp)) unlinkSync(temp)
+    }
+  }
+  const lockedWrite = (serialized: string, expected?: string | null): void => {
+    mkdirSync(parent, { recursive: true })
+    let lock: number
+    try {
+      lock = openSync(lockPath, 'wx', 0o600)
+    } catch {
+      fail('Owner journal inter-process lock unavailable; recovery required')
+    }
+    try {
+      if (expected !== undefined && read() !== expected) {
+        fail('Stale Owner journal snapshot; refusing cross-PID overwrite')
+      }
+      atomicReplace(serialized)
+    } finally {
+      closeSync(lock)
+      // A failed unlock must be visible, not reported as a clean commit.
+      unlinkSync(lockPath)
+    }
+  }
+  return {
+    read,
+    write: serialized => lockedWrite(serialized),
+    compareAndWrite: (expected, serialized) => lockedWrite(serialized, expected),
   }
 }
 
@@ -173,6 +203,7 @@ export class V3ReviewOwnerAdapter {
   readonly processEpoch = randomUUID()
   private readonly localDenied = new Set<string>()
   private readonly journal: OwnerDisk
+  private revision: string | null
   private readonly authority: V3MainAuthority
   private readonly persistence: OwnerPersistence
 
@@ -184,16 +215,31 @@ export class V3ReviewOwnerAdapter {
     }
     this.persistence = persistence
     this.authority = authority
-    this.journal = decode(persistence.read())
+    this.revision = persistence.read()
+    this.journal = decode(this.revision)
     // No old lease may become live merely because Main restarted.
     for (const [id, old] of Object.entries(this.journal.owners)) {
       if (old.state === 'active') this.localDenied.add(id)
     }
   }
 
+  private assertFresh(): void {
+    if (this.persistence.read() !== this.revision) {
+      fail('Owner journal changed outside this process; re-open and reconcile')
+    }
+  }
+
   private persist(next: OwnerDisk): void {
-    // Do not mutate the working ledger before confirmed persistence.
-    this.persistence.write(encode(next))
+    // Never update a stale state snapshot; process-local write success is not
+    // a substitute for a CAS when multiple Main processes are possible.
+    this.assertFresh()
+    const serialized = encode(next)
+    if (this.persistence.compareAndWrite) {
+      this.persistence.compareAndWrite(this.revision, serialized)
+    } else {
+      this.persistence.write(serialized)
+    }
+    this.revision = serialized
     this.journal.owners = next.owners
     this.journal.generationBySession = next.generationBySession
     this.journal.tombstones = next.tombstones
@@ -201,6 +247,7 @@ export class V3ReviewOwnerAdapter {
 
   /** No ACK until grant is durably journalled. */
   grant(request: V3OwnerGrantRequest): V3OwnerLease {
+    this.assertFresh()
     assertC0RunEvidenceIdentity(request.run)
     assertC0CanonicalPlan(request.plan)
     if (request.run.schemaVersion !== REVIEW_C0_SCHEMA_VERSION ||
@@ -255,13 +302,16 @@ export class V3ReviewOwnerAdapter {
   }
 
   get(sessionId: string): V3OwnerLease | null {
+    this.assertFresh()
     const lease = this.journal.owners[sessionId]
-    return lease ? structuredClone(lease.processEpoch !== this.processEpoch && lease.state === 'active'
+    return lease ? structuredClone((this.localDenied.has(sessionId) ||
+      lease.processEpoch !== this.processEpoch) && lease.state === 'active'
       ? { ...lease, state: 'recovery-required' as const } : lease) : null
   }
 
   /** Explicitly separate ordinary session operations from review owners. */
   assertOrdinarySession(sessionId: string): void {
+    this.assertFresh()
     if (this.journal.tombstones.includes(sessionId) ||
         own(this.journal.owners, sessionId) || this.localDenied.has(sessionId)) {
       throw new C0ContractError('CASE_SCOPE_FORBIDDEN', 'Review-owned session is private')
@@ -270,6 +320,7 @@ export class V3ReviewOwnerAdapter {
 
   assertAuthorized(sessionId: string, grantId: string, senderKey: string,
     principal: Principal, tool: V3ReviewTool, source?: SourceIdentity): V3OwnerLease {
+    this.assertFresh()
     const lease = this.journal.owners[sessionId]
     if (!lease || this.localDenied.has(sessionId) || lease.state !== 'active' ||
         lease.processEpoch !== this.processEpoch ||
@@ -294,10 +345,13 @@ export class V3ReviewOwnerAdapter {
         throw new C0ContractError('SOURCE_STALE', 'Source is not in Main frozen allowlist')
       }
     }
+    this.assertFresh()
     return structuredClone(lease)
   }
 
   private settle(sessionId: string, state: Exclude<V3OwnerState, 'active'>): void {
+    this.localDenied.add(sessionId) // deny even if another PID changed the file
+    this.assertFresh()
     const old = this.journal.owners[sessionId]
     if (!old) throw new C0ContractError('CASE_SCOPE_FORBIDDEN', 'Unknown Owner session')
     this.localDenied.add(sessionId) // deny before potentially failing disk I/O
@@ -319,6 +373,7 @@ export class V3ReviewOwnerAdapter {
    * session state or continuing a paused attempt.
    */
   quarantineInterrupted(): string[] {
+    this.assertFresh()
     const ids = Object.entries(this.journal.owners)
       .filter(([id, lease]) => lease.state === 'active' &&
         (lease.processEpoch !== this.processEpoch || this.localDenied.has(id)))
