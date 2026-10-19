@@ -337,9 +337,12 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     let transportCalls=0
     let listener:((event:{type:string;message?:unknown;willRetry?:boolean})=>void)|undefined
     const original:StreamFn=async (_model,_context,options)=>{
-      await options!.fetch!('https://trusted.provider.example/v1/chat/completions',{
+      const response=await options!.fetch!('https://trusted.provider.example/v1/chat/completions',{
         method:'POST',
       })
+      // Consume the very SSE response body accepted by the HTTP witness.
+      // Native turn_end alone cannot certify a truncated/empty transport.
+      await response.text()
       listener?.({
         type:'turn_end',message:{role:'assistant',stopReason:'stop'},
       })
@@ -371,8 +374,11 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
         trustedOrigin:'https://trusted.provider.example',
         transportFetch:async()=>{
           transportCalls++
-          return new Response('',{
-            status:200,headers:{'x-request-id':'native-http-request-r10-16'},
+          return new Response('data: {"id":"r10-16"}\n\ndata: [DONE]\n\n',{
+            status:200,headers:{
+              'x-request-id':'native-http-request-r10-16',
+              'content-type':'text/event-stream',
+            },
           })
         },
       }),
