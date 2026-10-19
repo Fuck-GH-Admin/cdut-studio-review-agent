@@ -235,7 +235,7 @@ export function auditB4FrozenUnknownCoverage(
         for (const source of check.sources) {
           if (source.sourceApplicability === 'unknown') {
             if (!source.documentVersionId || !source.locator)
-              fail('UNKNOWN_WITHOUT_PROVENANCE')
+              throw new Error('B4_R24_UNKNOWN_WITHOUT_PROVENANCE')
             sourceGaps.push({
               domain, templateId: template.templateId, checkId: check.checkId,
               sourceId: source.sourceId, documentVersionId: source.documentVersionId,
