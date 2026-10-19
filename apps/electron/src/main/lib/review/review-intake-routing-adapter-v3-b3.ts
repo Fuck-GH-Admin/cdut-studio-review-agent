@@ -29,7 +29,7 @@ export interface B3RoutingInput {
   suggestions: B3RouteSuggestion[]
 }
 export interface B3RouteState {
-  status: 'awaiting-evidence' | 'countdown' | 'needs-user-confirmation' | 'manually-selected' | 'default-selected'
+  status: 'awaiting-evidence' | 'unmatched' | 'countdown' | 'needs-user-confirmation' | 'manually-selected' | 'default-selected'
   remainingMs: number
   chosen?: { templateId: string; templateVersion: string }
   reason: string
@@ -66,20 +66,37 @@ export function planB3ConservativeRouting(input: B3RoutingInput): B3RouteState {
   const owners = new Set(input.materialCandidates.map(m=>m.ownerId+'::'+m.ownerGeneration))
   const scopes = new Set(input.materialCandidates.map(m=>m.caseCandidateId))
   if (owners.size!==1 || scopes.size!==1 || input.materialCandidates.some(m=>
-    m.role==='unassigned' || m.subjectId === null || !SHA.test(m.rawSha256))) return {
+    m.status!=='accepted' || m.role==='unassigned' || !m.subjectId?.trim() || !SHA.test(m.rawSha256))) return {
     status:'needs-user-confirmation',remainingMs,
     reason:'File role, subject or owner scope ambiguous',
   }
   if (input.suggestions.length===0) return {
-    status:'awaiting-evidence',remainingMs,reason:'No evidenced business suggestion',
+    status:'unmatched',remainingMs:0,
+    reason:'No evidenced template match; user must confirm a business category or author a held candidate',
+  }
+  // Even if every file has a technically valid role, more than one applicant
+  // or more than one Subject is a business decision, never an auto route.
+  const applications=input.materialCandidates.filter(m=>m.role==='application')
+  if (applications.length!==1 ||
+      new Set(input.materialCandidates.map(m=>m.subjectId)).size!==1) return {
+    status:'needs-user-confirmation',remainingMs,
+    reason:'Multiple application owners, Subjects or no application require manual business confirmation',
   }
   const unique = new Set(input.suggestions.map(s=>s.templateId+'@'+s.templateVersion))
-  const evidenceValid = (suggestion:B3RouteSuggestion):boolean =>
-    suggestion.evidence.length>0 && suggestion.caseCandidateId===input.materialCandidates[0]!.caseCandidateId &&
-    suggestion.evidence.every(e=>{
+  const evidenceValid = (suggestion:B3RouteSuggestion):boolean => {
+    // Every staged source must be accounted for, not just a convenient first
+    // attachment. A missing/extra/duplicate physical source is not a match.
+    if (!Array.isArray(suggestion.evidence) ||
+        suggestion.evidence.length!==materials.size ||
+        suggestion.caseCandidateId!==input.materialCandidates[0]!.caseCandidateId) return false
+    const covered=new Set<string>()
+    return suggestion.evidence.every(e=>{
+      if (!e || covered.has(e.materialCandidateId)) return false
+      covered.add(e.materialCandidateId)
       const material=materials.get(e.materialCandidateId)
       return Boolean(material && e.rawSha256===material.rawSha256 && e.reason?.trim())
     })
+  }
   if (unique.size!==1 || input.suggestions.length!==1 ||
       input.suggestions.some(s=> !confident(s.confidence) ||
         s.availability !== 'authorized-for-technical-selection' || !evidenceValid(s))) return {
@@ -153,9 +170,16 @@ export class ReviewB3OwnerBoundRouteSession {
       ]
       if(keys.some(key=>actual[key]!==item[key]))
         throw new Error('B3_ROUTING_STAGED_IDENTITY_MISMATCH')
+      // The canonical B2 record is not enough if byte custody was corrupted:
+      // read current physical bytes again, not a UI SHA display field.
+      const bytes=this.staging.read(ctx,item.candidateId)
+      if(bytes.length!==actual.byteLength ||
+         createHash('sha256').update(bytes).digest('hex')!==actual.rawSha256)
+        throw new Error('B3_ROUTING_ORIGINAL_BYTES_MISMATCH')
       return actual
     })
     const catalogKeys=new Set<string>()
+    const allowedCatalog=new Set<string>()
     for(const option of input.manualCatalog) {
       if(!option || !option.templateId?.trim() || !option.templateVersion?.trim() ||
          !option.name?.trim() ||
@@ -164,11 +188,23 @@ export class ReviewB3OwnerBoundRouteSession {
       const id=JSON.stringify([option.templateId,option.templateVersion])
       if(catalogKeys.has(id)) throw new Error('B3_ROUTING_CATALOG_DUPLICATE')
       catalogKeys.add(id)
+      if(option.availability==='authorized-for-technical-selection')allowedCatalog.add(id)
     }
+    // Classifier-reported availability is NEVER a grant. Only the embedding
+    // Main-supplied current catalog can admit a proposed automatic template.
+    const checkedSuggestions=input.suggestions.map(suggestion=>{
+      const key=JSON.stringify([suggestion?.templateId,suggestion?.templateVersion])
+      return {
+        ...suggestion,
+        availability:allowedCatalog.has(key)&&
+          suggestion?.availability==='authorized-for-technical-selection'
+          ? 'authorized-for-technical-selection' as const : 'candidate-held' as const,
+      }
+    })
     const fingerprint=createHash('sha256').update(JSON.stringify([
       checked.map(({candidateId,documentVersionId,rawSha256,role,subjectId,ownerGeneration})=>
         [candidateId,documentVersionId,rawSha256,role,subjectId,ownerGeneration]),
-      input.suggestions,
+      checkedSuggestions,
       input.manualCatalog.map(({templateId,templateVersion,availability})=>
         [templateId,templateVersion,availability]),
     ])).digest('hex')
@@ -192,7 +228,7 @@ export class ReviewB3OwnerBoundRouteSession {
       }
     }
     const result=planB3ConservativeRouting({
-      ...input, materialCandidates:checked,
+      ...input, materialCandidates:checked, suggestions:checkedSuggestions,
       startedAtMs:this.startedAtMs,nowMs:time,
       userInterrupted:this.interrupted,
     })
