@@ -19,10 +19,15 @@ import {
 class Store implements OwnerPersistence {
   raw:string|null=null
   fail=false
+  failAfterCommit=false
   read(){return this.raw}
   write(data:string){
     if(this.fail)throw Object.assign(new Error('ENOSPC'),{code:'ENOSPC'})
     this.raw=data
+    if(this.failAfterCommit){
+      this.failAfterCommit=false
+      throw Object.assign(new Error('EIO after SDK dispatch commit'),{code:'EIO'})
+    }
   }
 }
 function fixture(){
@@ -187,6 +192,27 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     expect(h.calls()).toBe(0)
     expect(h.dispatch.unresolved(h.run)).toBe(false)
     expect(h.producer.replayCandidates()).toEqual([])
+  })
+  it('A4-DISPATCH-04: uncertain postcommit intent denies SDK after cold ledger reopen',async()=>{
+    const h=fixture()
+    h.dispatchStore.failAfterCommit=true
+    await expect(h.bridge.next(h.call,'direct')).rejects.toThrow('EIO after SDK dispatch commit')
+    expect(h.calls()).toBe(0)
+    expect(()=>h.dispatch.unresolved(h.run)).toThrow()
+    const recovered=new V3ASDKDispatchFence(h.dispatchStore,h.owners)
+    expect(recovered.unresolved(h.run)).toBe(true)
+    const fresh=new V3ASDKTurnBridge(h.owners,h.turns,h.producer,h.sdk,recovered)
+    await expect(fresh.next(h.call,'direct')).rejects.toThrow('Unresolved SDK Provider dispatch')
+    expect(h.calls()).toBe(0)
+    expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
+  })
+  it('A4-DISPATCH-05: tampered persisted SDK intent journal fails cold recovery',async()=>{
+    const h=fixture()
+    h.setNext(async()=>{throw Error('Provider did not confirm')})
+    await expect(h.bridge.next(h.call,'direct')).rejects.toThrow()
+    h.dispatchStore.raw=(h.dispatchStore.raw??'')+'damaged'
+    expect(()=>new V3ASDKDispatchFence(h.dispatchStore,h.owners)).toThrow()
+    expect(()=>h.dispatch.unresolved(h.run)).toThrow()
   })
   it('A4-DISPATCH-02: await-time grant rotation quarantines returned old SDK intent',async()=>{
     const h=fixture()
