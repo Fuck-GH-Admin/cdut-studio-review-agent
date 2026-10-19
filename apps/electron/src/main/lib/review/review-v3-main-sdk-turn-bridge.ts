@@ -34,8 +34,11 @@ export type V3ATurnInterruption = Extract<
   ATechnicalStatus, 'cancelled' | 'timed-out' | 'failed'
 >
 export type V3ATurnHostOutcome =
-  | { kind: 'completed-turn'; receiptId: string; run: RunEvidenceIdentity }
-  | { kind: 'interrupted'; status: V3ATurnInterruption; run: RunEvidenceIdentity }
+  | { kind: 'completed-turn'; receiptId: string; run: RunEvidenceIdentity;
+      /** Main intent identity, echoed by the direct trusted runtime callback. */
+      dispatchId: string }
+  | { kind: 'interrupted'; status: V3ATurnInterruption; run: RunEvidenceIdentity;
+      dispatchId: string }
 
 /**
  * Only the Main-injected SDK Host is allowed to issue a completed-turn receipt.
@@ -45,6 +48,8 @@ export type V3ATurnHostOutcome =
 export interface V3AMainSDKTurnPort {
   nextTurn(request: {
     readonly run: RunEvidenceIdentity
+    /** Persisted before SDK invocation; not supplied by Pi model or Renderer. */
+    readonly dispatchId: string
     readonly mode: V3ASDKMode
     /** Main lifecycle cancellation; a signal never self-attests a terminal. */
     readonly signal?: AbortSignal
@@ -157,7 +162,7 @@ export class V3ASDKTurnBridge {
       // after crash, thrown error or disk fault blocks redispatch of same Run.
       const intent=this.dispatch.claim(call)
       const received=await this.sdk.nextTurn({
-        run:structuredClone(frozen),mode,signal,
+        run:structuredClone(frozen),dispatchId:intent.dispatchId,mode,signal,
       })
       if (signal?.aborted) {
         this.dispatch.lateDenied(frozen,intent.dispatchId)
@@ -172,7 +177,13 @@ export class V3ASDKTurnBridge {
         this.dispatch.lateDenied(frozen,intent.dispatchId)
         throw error
       }
-      if (!received || canonical(received.run) !== canonical(frozen) ||
+      if (!received || received.dispatchId !== intent.dispatchId) {
+        // The Provider may have executed even when its result was attached
+        // to a different Main dispatch. Leave the intent unresolved.
+        throw new C0ContractError('RUN_IDENTITY_MISMATCH',
+          'SDK callback does not match persisted Main dispatch identity')
+      }
+      if (canonical(received.run) !== canonical(frozen) ||
           canonical(current) !== canonical(frozen)) {
         throw new C0ContractError('RUN_IDENTITY_MISMATCH',
           'SDK Host receipt bound to a different immutable Run')
