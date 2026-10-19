@@ -42,6 +42,22 @@ export interface B2ParsedMaterial {
   /** This is a candidate-only verified parser receipt, not a Pi ReadReceipt. */
   inputFingerprint: string
 }
+/**
+ * Candidate-only read-extent evidence. The parser registry can prove a
+ * single block, not the entire document or the school's source policy.
+ */
+export interface B2CandidateReadExtent {
+  schemaVersion:'review-v3-b2-candidate-read-extent/1'
+  candidateOnly:true
+  fullDocumentProven:false
+  authorizationGranted:false
+  readScope:'single-parser-block'|'file-metadata'
+  parseStatus:Exclude<B2ParseStatus,'failed'>
+  blockPrecision:B2Precision
+  blockKind:string
+  textSha256:string|null
+  source:SourceIdentity
+}
 interface Stored {
   key: string
   ownerId: string
@@ -251,6 +267,38 @@ export class ReviewB2SourceVersionAdapter {
       return structuredClone(parsed)
     } finally {
       await rm(directory, { recursive: true, force: true })
+    }
+  }
+  /**
+   * Only the parser's own registered source and a verified geometric/text
+   * precision may be used for a single-block read proposal. Approximate OCR
+   * fallback, embedded image, and file-only proofs are metadata ONLY; callers
+   * cannot silently treat them as fully read text.
+   */
+  candidateReadExtent(
+    ctx:B2MainContext,candidateId:string,parseRevision:string,blockId:string,
+    scope:'single-parser-block'|'file-metadata',
+  ):B2CandidateReadExtent {
+    this.staging.assertStillGranted(ctx)
+    if(scope!=='single-parser-block' && scope!=='file-metadata')
+      throw new Error('B2_SOURCE_READ_SCOPE_INVALID')
+    const source=this.sourceForBlock(ctx,candidateId,parseRevision,blockId)
+    const stored=this.parsed.get(this.identityKey(ctx,candidateId))
+    const block=stored?.parsed.blocks.find(x=>x.blockId===blockId)
+    if(!stored || !block || stored.parsed.status==='failed')
+      throw new Error('B2_SOURCE_STALE')
+    const isExact=block.precision==='pdf-rect'||block.precision==='sheet-cell'||
+      block.precision==='paragraph'||block.precision==='document-block'
+    if(scope==='single-parser-block' &&
+       (!isExact||block.kind==='image'||!block.text.trim()))
+      throw new Error('B2_SOURCE_READ_EXTENT_NOT_PROVEN')
+    return {
+      schemaVersion:'review-v3-b2-candidate-read-extent/1',
+      candidateOnly:true,fullDocumentProven:false,authorizationGranted:false,
+      readScope:scope,parseStatus:stored.parsed.status,
+      blockPrecision:block.precision,blockKind:block.kind,
+      textSha256:scope==='single-parser-block'?sha256(block.text):null,
+      source,
     }
   }
   /** Only a block issued by this parser's registry can mint an exact C0 SourceIdentity. */
