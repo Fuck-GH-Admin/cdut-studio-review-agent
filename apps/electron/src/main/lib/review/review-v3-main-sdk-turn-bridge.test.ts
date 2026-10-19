@@ -354,11 +354,14 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
         return ()=>{listener=undefined}
       },
       async prompt(){
+        listener?.({type:'turn_start'})
         await session.agent.streamFunction(
           {api:'openai-completions',provider:'openai',id:'pinned'} as never,
           {messages:[]} as never,
           {transport:'sse'},
         )
+        listener?.({type:'agent_end',willRetry:false})
+        listener?.({type:'agent_settled'})
       },
     }
     const port=new V3APhysicalSDKTurnPort(new V3APiHttpSingleRequestEngine({
