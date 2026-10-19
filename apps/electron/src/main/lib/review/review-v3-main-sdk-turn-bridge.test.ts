@@ -439,6 +439,59 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     expect(()=>new V3ASDKDispatchFence(h.dispatchStore,h.owners))
       .toThrow('SDK dispatch ledger invalid/duplicated')
   })
+  it('A4-R09-06: native receipt reused by a different Run after a settled call fails closed',async()=>{
+    const h=fixture()
+    h.setNext(async run=>({kind:'completed-turn',receiptId:'shared-native-receipt',run}))
+    expect((await h.bridge.next(h.call,'direct')).kind).toBe('recorded')
+    const nextRun={...h.run,runId:'sequential-run',attemptId:'second-attempt'}
+    const grant=h.owners.grant({
+      principal:h.principal,run:nextRun,plan:h.grant.planSnapshot!,
+      sources:[...h.grant.sourceIdentities],sessionId:'sequential-session',
+      senderKey:'second-window',expiresAt:Date.now()+120_000,
+      permittedTools:['review_submit_result'],
+    })
+    const another=new V3ASDKTurnBridge(
+      h.owners,h.turns,h.producer,h.sdk,h.dispatch,
+    )
+    await expect(another.next({
+      ...h.call,sessionId:grant.sessionId,grantId:grant.grantId,
+      senderKey:grant.senderKey,
+    },'direct')).rejects.toThrow('REQUEST_ID_COLLISION')
+    expect(h.dispatch.unresolved(nextRun)).toBe(true)
+    expect(h.turns.snapshot(grant).usedTurns).toBe(0)
+    expect(h.turns.snapshot(h.grant).usedTurns).toBe(1)
+    expect(h.calls()).toBe(2)
+  })
+  it('A4-R09-07: cold journal rejects duplicate receipt across two different Run chains',()=>{
+    const h=fixture()
+    h.setNext(async run=>({kind:'completed-turn',receiptId:'seed',run}))
+    // Seed one valid settled record without making an actual Provider claim.
+    const first=h.dispatch.claim(h.call)
+    h.dispatch.settle(h.call,first.dispatchId,'reused-across-runs')
+    const laterRun={...h.run,runId:'historical-run-B',attemptId:'historical-attempt-B'}
+    const key=JSON.stringify([laterRun.runId,laterRun.attemptId,laterRun.ownerGeneration])
+    const envelope=JSON.parse(h.dispatchStore.raw!) as {
+      payload:{runs:Record<string,unknown>}
+      sha256:string
+    }
+    envelope.payload.runs[key]={
+      runHash:createHash('sha256').update(JSON.stringify(laterRun)).digest('hex'),
+      records:[{
+        id:'historical-physical-other',
+        grantId:'historical-grant-B',
+        caseId:laterRun.caseId,
+        sessionId:'historical-session-B',
+        state:'settled',
+        receiptId:'reused-across-runs',
+      }],
+    }
+    envelope.sha256=createHash('sha256')
+      .update(JSON.stringify(envelope.payload)).digest('hex')
+    h.dispatchStore.raw=JSON.stringify(envelope)
+    expect(()=>new V3ASDKDispatchFence(h.dispatchStore,h.owners))
+      .toThrow('SDK dispatch ledger reuses one receipt across physical calls')
+    expect(h.calls()).toBe(0)
+  })
   it('A4-R08-01: abort returns promptly but holds Owner SDK lock until hung Provider settles',async()=>{
     const h=fixture()
     const controller=new AbortController()
