@@ -1,0 +1,179 @@
+/**
+ * R10 tests the ACTUAL Pi AgentSession/Agent.streamFunction interface shape
+ * with an in-memory HTTP transport. No external Provider, no real Gate E.
+ */
+import {describe,expect,it} from 'bun:test'
+import type {AgentSession} from '@earendil-works/pi-coding-agent'
+import type {StreamFn} from '@earendil-works/pi-agent-core'
+import {V3APiHttpSingleRequestEngine} from './review-v3-pi-http-provider-engine'
+import {V3APhysicalSDKTurnPort} from './review-v3-sdk-physical-turn-port'
+import type {V3APhysicalTurnInput} from './review-v3-sdk-physical-turn-port'
+import {REVIEW_C0_SCHEMA_VERSION,type RunEvidenceIdentity} from '@profer/shared'
+
+const run:RunEvidenceIdentity={
+  schemaVersion:REVIEW_C0_SCHEMA_VERSION,caseId:'caseA',runId:'run1',
+  caseRevision:1,planFingerprint:'plan1',templateVersion:'v1',
+  inputManifestHash:'f'.repeat(64),sourceVersionIds:['dv1'],
+  checkKeys:['check1'],attemptId:'attempt1',ownerGeneration:1,
+}
+const input:V3APhysicalTurnInput={
+  run,mode:'direct',dispatchId:'main-durable-dispatch-1',
+}
+const model={api:'openai-completions',provider:'openai',id:'test'}
+type NativeTurnEvent={type:'turn_end';message:{
+  role:'assistant';stopReason:'stop'|'error'|'toolUse'
+}} | {type:'agent_end'}
+type SessionShim={
+  agent:{state:{isStreaming:boolean};streamFunction:StreamFn}
+  subscribe:(listener:(e:NativeTurnEvent)=>void)=>()=>void
+  prompt:(prompt:string)=>Promise<void>
+}
+
+function makeHarness(options?:{
+  nativeReceipt?:string|null
+  httpStatus?:number
+  origin?:string
+  actualFetchOrigin?:string
+  sends?:number
+  modelApi?:string
+  stopReason?:'stop'|'error'|'toolUse'
+  noTurn?:boolean
+  failAfterFetch?:boolean
+  startAborted?:boolean
+}){
+  let physicalCalls=0
+  let streamCalls=0
+  let restored=false
+  let unsubscriberCalled=false
+  const aborter=new AbortController()
+  if(options?.startAborted)aborter.abort()
+  let listener:((e:NativeTurnEvent)=>void)|undefined
+  const original:StreamFn=async (_model,_context,streamOptions)=>{
+    streamCalls++
+    for(let i=0;i<(options?.sends??1);i++){
+      await streamOptions!.fetch!(
+        (options?.actualFetchOrigin??'https://approved.example')+'/v1/chat/completions',
+        {method:'POST'},
+      )
+    }
+    if(options?.failAfterFetch)throw Error('provider streaming connection lost')
+    if(!options?.noTurn)listener?.({
+      type:'turn_end',message:{role:'assistant',stopReason:options?.stopReason??'stop'},
+    })
+    return {} as Awaited<ReturnType<StreamFn>>
+  }
+  const session:SessionShim={
+    agent:{state:{isStreaming:false},streamFunction:original},
+    subscribe(cb){listener=cb;return ()=>{unsubscriberCalled=true;listener=undefined}},
+    async prompt(prompt){
+      expect(prompt).toBe('main-only frozen prompt')
+      await session.agent.streamFunction(
+        {...model,api:options?.modelApi??model.api} as never,
+        {messages:[]} as never,
+        {transport:'sse',
+          fetch:async (_url,_init)=>{
+            physicalCalls++
+            const headers=new Headers()
+            if(options?.nativeReceipt!==null){
+              headers.set('x-request-id',options?.nativeReceipt??'provider-request-1')
+            }
+            return new Response('',{status:options?.httpStatus??200,headers})
+          },
+        },
+      )
+    },
+  }
+  const factory={create:async ()=>{
+    const inner:Pick<AgentSession,'agent'|'prompt'|'subscribe'>=
+      session as unknown as Pick<AgentSession,'agent'|'prompt'|'subscribe'>
+    return {
+      session:inner,prompt:'main-only frozen prompt',
+      trustedOrigin:options?.origin??'https://approved.example',
+    }
+  }}
+  const engine=new V3APiHttpSingleRequestEngine(factory)
+  const host=new V3APhysicalSDKTurnPort(engine)
+  return {host,aborter,session,original,counts:()=>({
+    physicalCalls,streamCalls,restored,unsubscriberCalled,
+  }),
+    markRestored:()=>{restored=session.agent.streamFunction===original},
+  }
+}
+
+describe('A4-R10 pinned Pi 0.86.1 HTTP transport witness seam - in-memory Provider, not Gate E',()=>{
+  it('R10-01: one HTTPS request ID plus successful Pi turn yields trusted transport receipt',async()=>{
+    const h=makeHarness()
+    expect(await h.host.nextTurn(input)).toEqual({
+      kind:'completed-turn',run,dispatchId:input.dispatchId,
+      receiptId:'provider-request-1',
+    })
+    h.markRestored()
+    expect(h.counts()).toEqual({
+      physicalCalls:1,streamCalls:1,restored:true,unsubscriberCalled:true,
+    })
+  })
+  it('R10-02: two HTTP fetch attempts fail closed despite a successful Pi turn',async()=>{
+    const h=makeHarness({sends:2})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('request count/provenance')
+    h.markRestored()
+    expect(h.counts().physicalCalls).toBe(1)
+    expect(h.counts().restored).toBe(true)
+  })
+  it('R10-03: HTTP response without an upstream x-request-id cannot attest SDK turn',async()=>{
+    const h=makeHarness({nativeReceipt:null})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('request count/provenance')
+  })
+  it('R10-04: Pi assistant turn_end without any successful transport is not completion',async()=>{
+    const h=makeHarness({httpStatus:503})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('provenance unavailable')
+  })
+  it('R10-05: Pi result stopReason error cannot issue completed-turn receipt',async()=>{
+    const h=makeHarness({stopReason:'error'})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('provenance unavailable')
+  })
+  it('R10-06: unsupported Anthropic provider API cannot use HTTP OpenAI witness',async()=>{
+    const h=makeHarness({modelApi:'anthropic-messages'})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('request count/provenance')
+    expect(h.counts().physicalCalls).toBe(0)
+  })
+  it('R10-07: a different HTTPS origin than Main-pinned provider cannot be contacted',async()=>{
+    const h=makeHarness({actualFetchOrigin:'https://foreign.example'})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('request count/provenance')
+    expect(h.counts().physicalCalls).toBe(0)
+  })
+  it('R10-08: non-HTTPS trusted origin is rejected before SDK prompt',async()=>{
+    const h=makeHarness({origin:'http://approved.example'})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('Only exact trusted HTTPS')
+    expect(h.counts().streamCalls).toBe(0)
+  })
+  it('R10-09: stream disconnect after HTTP headers is not trusted completion',async()=>{
+    const h=makeHarness({failAfterFetch:true})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('provider streaming connection lost')
+    h.markRestored()
+    expect(h.counts().restored).toBe(true)
+  })
+  it('R10-10: missing Pi native turn_end after HTTP response cannot count turn',async()=>{
+    const h=makeHarness({noTurn:true})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('provenance unavailable')
+  })
+  it('R10-11: Main abort before session creation cannot invoke SDK',async()=>{
+    const h=makeHarness({startAborted:true})
+    await expect(h.host.nextTurn({...input,signal:h.aborter.signal})).rejects.toThrow(
+      'Main cancelled before native SDK call',
+    )
+    expect(h.counts().streamCalls).toBe(0)
+  })
+  it('R10-12: multiple SDK turn_end messages fail closed',async()=>{
+    const h=makeHarness()
+    const original=h.session.prompt
+    h.session.prompt=async prompt=>{
+      await original(prompt)
+      // Can't access the private listener: issue a second call through the
+      // wrapped streamFunction, which is a second physical model turn.
+      await h.session.agent.streamFunction(
+        {...model} as never,{messages:[]} as never,{} as never,
+      )
+    }
+    await expect(h.host.nextTurn(input)).rejects.toThrow('request count/provenance')
+  })
+})
