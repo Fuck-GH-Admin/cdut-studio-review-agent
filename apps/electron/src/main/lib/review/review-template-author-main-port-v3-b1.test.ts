@@ -51,7 +51,7 @@ describe('B-FLOW-01 Main-authorized author operation seam',()=>{
     const frozen=await service.freezeCandidate(ctx,source.templateId,saved.revision)
     expect(frozen.fingerprint).toMatch(/^[a-f0-9]{64}$/)
     expect(frozen.candidateStatus).toBe('candidate-held')
-    expect(()=>service.freezeCandidate(ctx,source.templateId,0)).toThrow()
+    await expect(service.freezeCandidate(ctx,source.templateId,0)).rejects.toThrow('B1_MAIN_REVISION_STALE')
   })
   test('unauthorized owner or revoked session cannot save, preview, freeze',async()=>{
     const service=new ReviewB1AuthorMainPort((actor)=>actor.sessionId==='trusted-main-session' &&
