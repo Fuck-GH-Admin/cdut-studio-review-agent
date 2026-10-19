@@ -53,7 +53,7 @@ export function buildB1CandidateRemovalImpact(
   if(oldBindings.size!==previous.descriptor.bindingDetails.length)deny('OLD_BINDING_DUPLICATE')
   const removed:B1CandidateRemovedBinding[]=diff.requiresAck.map(key=>{
     const b=oldBindings.get(key)
-    if(!b)deny('OLD_BINDING_NOT_FOUND')
+    if(!b)throw new Error('B1_CANDIDATE_IMPACT_OLD_BINDING_NOT_FOUND')
     return {
       bindingKey:key,checkKey:b.checkKey,targetKey:b.targetKey,
       objectKey:b.objectKey,subjectId:b.subjectId,
