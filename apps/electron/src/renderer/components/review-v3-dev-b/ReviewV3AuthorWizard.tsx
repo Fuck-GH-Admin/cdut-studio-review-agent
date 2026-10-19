@@ -4,6 +4,10 @@
  * only edits author source; it cannot install a Case, publish policy or grant roles.
  */
 import { useState, type ReactNode } from 'react'
+import {
+  exportB1AuthorCandidate, parseB1TrialInput, prepareB1TechnicalTrial,
+  type B1TrialValues,
+} from './review-v3-author-trial'
 import type {
   B1AuthorDocument, B1Field, B1Obligation, B1Source, B1Target,
   ImmutablePlanDescriptorB1,
@@ -44,12 +48,41 @@ export function ReviewV3AuthorWizard({
   const [draft, setDraft] = useState<B1AuthorDocument>(() => structuredClone(initialDraft ?? emptyB1AuthorDocument()))
   const [revision, setRevision] = useState(initialRevision)
   const [preview, setPreview] = useState<ImmutablePlanDescriptorB1 | null>(null)
+  const [trial, setTrial] = useState<B1TrialValues>({})
   const [busy, setBusy] = useState(false)
   const [notice, setNotice] = useState('')
   const [error, setError] = useState('')
   const change = (update: (doc: B1AuthorDocument) => void): void => {
     setDraft((current) => { const next = structuredClone(current); update(next); return next })
     setPreview(null); setNotice(''); setError('')
+  }
+  const sampleValue = (targetKey: string, fieldKey: string): string => {
+    const value=trial[targetKey]?.[fieldKey]
+    return value === null || value === undefined ? '' : String(value)
+  }
+  const setSampleValue = (targetKey: string, field: B1Field, raw: string): void => {
+    try {
+      const value=parseB1TrialInput(field,raw)
+      setTrial(current => ({
+        ...current, [targetKey]: {...current[targetKey], [field.key]:value},
+      }))
+      setPreview(null);setNotice('');setError('')
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : String(reason))
+    }
+  }
+  const exportCandidate = (): void => {
+    try {
+      const payload=exportB1AuthorCandidate(draft)
+      const data=new Blob([payload],{type:'application/json;charset=utf-8'})
+      const href=URL.createObjectURL(data)
+      const anchor=document.createElement('a')
+      anchor.href=href
+      anchor.download=(draft.templateId || 'unpublished-business').replace(/[^A-Za-z0-9._-]/g,'_')+'.candidate.json'
+      anchor.click()
+      URL.revokeObjectURL(href)
+      setNotice('候选作者配置已导出：仅记录声明，不包含试跑样例，也不代表政策发布')
+    } catch (reason) {setError(reason instanceof Error ? reason.message : String(reason))}
   }
   const updateField = (index: number, key: keyof B1Field, value: unknown): void =>
     change((doc) => { (doc.fields[index] as unknown as Record<string, unknown>)[key] = value })
@@ -68,7 +101,7 @@ export function ReviewV3AuthorWizard({
         setRevision(saved.revision)
         setNotice(`草稿已保存为第 ${saved.revision} 次修订（未正式发布）`)
       } else if (mode === 'preview') {
-        const result = await onPreview(copy)
+        const result = await onPreview(prepareB1TechnicalTrial(copy,trial))
         setPreview(result)
         setNotice('技术规则预览已生成；不代表学校制度审核通过')
       } else {
@@ -178,6 +211,23 @@ export function ReviewV3AuthorWizard({
         {(['targetKey','objectKey','subjectId','scenario'] as const).map((key)=><label key={key} className="text-xs">{key}
           <input className={inputClass} value={target[key]} onChange={(e)=>updateTarget(i,key,e.target.value)}/>
         </label>)}
+        <div className="space-y-2 sm:col-span-2">
+          <p className="text-xs text-muted-foreground">试跑样例值，仅用于技术预览，不写入作者草稿或正式案卷；留空保持 unknown。</p>
+          {draft.fields.map(field => <label key={field.key} className="block text-xs">{field.label}（{field.key}）
+            {field.type === 'evidence' ? <p className="text-xs text-muted-foreground">证明附件需经 B2 真正原件/SourceIdentity 校验，不能以样例值代替。</p>
+            : field.type === 'boolean' ? <select className={inputClass} value={sampleValue(target.targetKey,field.key)}
+              onChange={e=>setSampleValue(target.targetKey,field,e.target.value)}>
+              <option value="">未知 / 尚无证据</option><option value="true">是</option><option value="false">否</option>
+            </select> : field.type === 'enum' ? <select className={inputClass} value={sampleValue(target.targetKey,field.key)}
+              onChange={e=>setSampleValue(target.targetKey,field,e.target.value)}>
+              <option value="">未知 / 尚未声明</option>
+              {(field.enumValues??[]).map(v=><option key={v} value={v}>{v}</option>)}
+            </select> : <input className={inputClass}
+              type={field.type === 'number' ? 'number' : field.type === 'date' ? 'date' : 'text'}
+              value={sampleValue(target.targetKey,field.key)}
+              onChange={e=>setSampleValue(target.targetKey,field,e.target.value)}/>}
+          </label>)}
+        </div>
         <button type="button" className={buttonClass} onClick={()=>change((d)=>{d.targets.splice(i,1)})}>删除对象</button>
       </div>)}
       <button type="button" className={buttonClass} onClick={()=>change((d)=>{
@@ -282,10 +332,12 @@ export function ReviewV3AuthorWizard({
       <button type="button" disabled={busy} className={buttonClass} onClick={()=>void perform('save')}>保存修订</button>
       <button type="button" disabled={busy} className={buttonClass} onClick={()=>void perform('preview')}>技术预览 / 试跑规则</button>
       <button type="button" disabled={busy} className={buttonClass} onClick={()=>void perform('freeze')}>冻结候选（非正式发布）</button>
+      <button type="button" disabled={busy} className={buttonClass} onClick={exportCandidate}>导出候选配置</button>
     </div>
     {error && <p role="alert" className="text-sm text-red-500">未执行：{error}</p>}
     {notice && <p role="status" className="text-sm">{notice}</p>}
     {preview && <Section title="候选编译与三值适用性预览">
+      <p className="text-xs">仅为样例试跑：结果随试跑字段改变，不是学校政策或正式材料符合性判断。</p>
       <p className="text-xs">fingerprint: {preview.canonicalPlan.fingerprint}</p>
       <p className="text-xs">Check × target 绑定：{preview.canonicalPlan.bindings.length} 条；unknown：
         {preview.canonicalPlan.bindings.filter(b=>b.applicability==='unknown').length} 条</p>
