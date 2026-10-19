@@ -345,8 +345,10 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
       })
       return {} as Awaited<ReturnType<StreamFn>>
     }
+    let disposed=false
     const session={
       agent:{state:{isStreaming:false},streamFunction:original},
+      dispose(){disposed=true},
       subscribe(cb:(event:{type:string;message?:unknown})=>void){
         listener=cb
         return ()=>{listener=undefined}
@@ -361,7 +363,7 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     }
     const port=new V3APhysicalSDKTurnPort(new V3APiHttpSingleRequestEngine({
       create:async()=>({
-        session:session as unknown as Pick<AgentSession,'agent'|'prompt'|'subscribe'>,
+        session:session as unknown as Pick<AgentSession,'agent'|'prompt'|'subscribe'|'dispose'>,
         prompt:'frozen-trusted-main-review-request',
         trustedOrigin:'https://trusted.provider.example',
         transportFetch:async()=>{
@@ -376,6 +378,7 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     const result=await bridge.next(h.call,'hidden')
     expect(result.kind).toBe('recorded')
     expect(transportCalls).toBe(1)
+    expect(disposed).toBe(true)
     expect(h.turns.snapshot(h.grant).usedTurns).toBe(1)
     expect(h.dispatch.unresolved(h.run)).toBe(false)
     expect(h.producer.replayCandidates()).toEqual([])
