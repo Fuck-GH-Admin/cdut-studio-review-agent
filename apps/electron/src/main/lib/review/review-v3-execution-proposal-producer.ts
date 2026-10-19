@@ -181,6 +181,14 @@ export class V3AProposalProducer {
     assertC0RunEvidenceIdentity(lease.runEvidence)
     return { run: lease.runEvidence, plan: lease.planSnapshot }
   }
+  private assertAttemptOpen(lease:V3OwnerLease):void {
+    this.fresh()
+    const {run}=this.pinned(lease)
+    if(this.disk.attempts[keyOf(run)]?.terminal) {
+      throw new C0ContractError('RUN_IDENTITY_MISMATCH',
+        'Terminal proposal already sealed; further Host side effects forbidden')
+    }
+  }
   private completionFromDurableHostEvents(lease: V3OwnerLease): boolean {
     const {run,plan} = this.pinned(lease)
     const chain = this.disk.attempts[keyOf(run)]
@@ -288,6 +296,12 @@ export class V3AProposalProducer {
           } else {
             throw new C0ContractError('CONTRACT_INVALID', 'Missing Host-attested event details')
           }
+          // A terminal seals the attempt. Even an identical earlier Host
+          // receipt cannot justify another read/check after completion.
+          if(current.terminal && kind!=='terminal') {
+            throw new C0ContractError('RUN_IDENTITY_MISMATCH',
+              'Terminal proposal already sealed')
+          }
           const previous = current.records.find(e => e.hostReceiptId === receiptId)
           if (previous) {
             const {eventId: _oldId, sequence: _seq, ...oldBody} = previous
@@ -332,6 +346,7 @@ export class V3AProposalProducer {
     if (this.turnBudget?.exhausted(initialLease)) {
       throw new C0ContractError('RUN_IDENTITY_MISMATCH','Pi turn budget exhausted')
     }
+    this.assertAttemptOpen(initialLease)
     const result = await this.host.read(structuredClone(call.source))
     this.owners.assertAuthorized(call.sessionId, call.grantId,call.senderKey,
       call.principal,call.tool,call.source)
@@ -358,6 +373,7 @@ export class V3AProposalProducer {
     if (this.turnBudget?.exhausted(lease)) {
       throw new C0ContractError('RUN_IDENTITY_MISMATCH','Pi turn budget exhausted')
     }
+    this.assertAttemptOpen(lease)
     const {run,plan} = this.pinned(lease)
     const binding = plan.bindings.find(b =>
       b.checkKey === requested.checkKey && b.targetKey === requested.targetKey &&
