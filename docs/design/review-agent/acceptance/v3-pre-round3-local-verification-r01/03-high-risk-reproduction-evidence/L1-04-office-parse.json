@@ -1,0 +1,49 @@
+{
+  "testId": "L1-04",
+  "repoSha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+  "fixtureKind": "synthetic-only",
+  "docx": {
+    "parseStatus": "parsed",
+    "blocks": [
+      {
+        "kind": "heading",
+        "text": "合成 DOCX 标题"
+      },
+      {
+        "kind": "paragraph",
+        "text": "DOCX 独有正文：条件 2026。"
+      },
+      {
+        "kind": "table-cell",
+        "text": "条款甲",
+        "table": {
+          "row": 0,
+          "column": 0
+        }
+      },
+      {
+        "kind": "table-cell",
+        "text": "有效期 2026",
+        "table": {
+          "row": 0,
+          "column": 1
+        }
+      }
+    ]
+  },
+  "xlsx": {
+    "parseStatus": "parsed",
+    "blocks": [
+      {
+        "kind": "table-cell",
+        "text": "XLSX 独有单元格",
+        "table": {
+          "row": 3,
+          "column": 2,
+          "sheet": "合成申报"
+        }
+      }
+    ]
+  },
+  "status": "PASS_SCOPED"
+}

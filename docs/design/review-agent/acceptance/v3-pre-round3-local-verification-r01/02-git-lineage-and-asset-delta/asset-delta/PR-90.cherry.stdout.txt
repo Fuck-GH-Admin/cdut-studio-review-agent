@@ -1,0 +1,18 @@
++ 2c5eb27726e945e45859b6ed7217e2798a4d818a feat(d4-g07): materialize seven frozen C business mothers and D1 modular workspaces
++ b3d2438f43006cc6e3b5f5ff0a47bee523b461c0 test(d4-g07): real seven-template D1/D3/D2/Pi synthetic scope probes
++ 0b9825561547244da91c8a7427e66b5165dbb4b5 ci(d4-g07): run frozen seven-template engineering acceptance and persist runtime artifacts
++ f4cece6bc066b825db5ba583831c47df74f9f4bd test(d4-g07): freeze D3/D2/Pi actual technical evidence
++ bb48cc078c24a3707654bdedc15b0be28df9d52b feat(d4-g07): materialize full non-R source sections for T01-T03
++ c287e31670b6e7c043f9461fd31c1e6c635dd7e6 test(d4-g07): freeze D3/D2/Pi actual technical evidence
++ 14c5b713acc31ff781957323da8c4b551b5d685a feat(d4-g07-t04): trace complete non-numbered settlement responsibilities
++ e77bb9a9162924ad8dcad150b7bb68e4f675b737 test(d4-g07): freeze D3/D2/Pi actual technical evidence
++ cbda99aaea31c6cea4ab38c0ae4cf448fcee217a feat(d4-g07-t05): preserve full non-numbered payroll review responsibilities
++ 70be37e27c00141f4cb659878a44bc9def31d523 feat(d4-g07-t06): preserve full non-numbered meetings and training responsibilities
++ bef39fc81583b38e4e75a46800ed4a80d417acf2 test(d4-g07): freeze D3/D2/Pi actual technical evidence
++ bd039a3755e0aadd9bc58b75948837886ce8ae95 feat(d4-g07-t07): preserve full non-numbered debt and offset review responsibilities
++ 29d2842c0b500eadb2b68666c2e48b5a11cff7b2 test(d4-g07): freeze D3/D2/Pi actual technical evidence
++ a4614f665e98c74385f38b46430409f7be533e61 test(d4-g07): verify persisted D1 revisions and diff for each business template
++ 5127e0459714d8f6c3f4be7bc98770095bbe591c test(d4-g07): freeze D3/D2/Pi actual technical evidence
++ 2d6063a230953e2c4348d5e450164f2238e2b00b docs(d4-g07): freeze seven truthful PARTIAL manifests, CI provenance and integration gap ledger
++ 337638c18a360cb13c88d84b8ea0951c77d46370 test(d4-g07): freeze D3/D2/Pi actual technical evidence
++ 891f4a2d5945b4c53422e83b27213691e15594ca docs(d4-g07): synchronize source index with tested complete section modules

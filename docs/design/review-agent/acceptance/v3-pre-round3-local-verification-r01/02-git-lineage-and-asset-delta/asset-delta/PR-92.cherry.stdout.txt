@@ -1,0 +1,10 @@
++ 7757067e8a7a24f4a8bc2b3d6b1d25bee134e3cc feat(d4-g06): materialize nine full-source modular authoring workspaces and traced scopes
++ 4570f5aec6150dae0b83daf5eb1e25ad7795acdf test(d4-g06): replay nine authored templates through D1 D3 D2 and real Pi, with scoped negative checks
++ 4d3e1cea864f2ea1f15d856091a3fe5dc2e06f00 ci(d4-g06): validate nine module workspaces and capture actual D2/Pi artifacts
++ 37e0a7cd6f62297e4f269fb50ad5c1587824e16e ci(d4-g06): use a valid path filter on push workflow
++ 0f24d0a0d429db99a54c0b9c78d9e7a70b9b47df test(d4-g06): store actual nine-template D2/Pi runtime snapshots
++ 23c4e6326d00b8e36bd12ca7990e07996631d25f ci(d4-g06): attach successfully verified actual runtime JSON and per-template statuses to PR head
++ dfddd0b0e682c423e7ad2b7f04ac5cc53362c164 docs(d4-g06): mark T01-T03 scoped synthetic executions while retaining business PARTIAL
++ e0aa1e7261a0bc54eeb3b6756e711809b8695f98 docs(d4-g06): mark T04-T06 scoped synthetic executions while retaining business PARTIAL
++ c1849a1a6edc388bfddf84e86fa98b92add0ce6a docs(d4-g06): mark T07-T09 scoped synthetic executions while retaining business PARTIAL
++ 1b19a03c7ec70a687280bf0f9ff497ef8be0158e docs(d4-g06): freeze domain integration handoff and categorized residual issues

@@ -1,0 +1,25 @@
+< b68443b2 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 3b368722 docs(d4): record real unified CI success, initial false green, limits, and exact evidence
+< 3e351ab5 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< c8e87418 ci(d4): fail closed on bun test and verify through tee using pipefail
+< 1c082f5a test(d4): case-scoped rules need no target; enforce paired subject/object when scoped
+< 1b372132 fix(d4): preserve legitimate case-scoped Check mappings without objectKey
+< 620f091d test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 9b3e5bfe docs(d4): reproducible Bun worktree, held-template import, D2 smoke and failure handoff
+< be563807 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 10cd12ce ci(d4): frozen Bun full regression and fifty held-draft imports
+< 1242daee test(d4): regression for 50-source catalog, candidate import and cross-domain scope
+< 2c620194 fix(d4): use static Node fs import for Bun ESM runner
+< 70635dd0 feat(d4): expose explicit 50-candidate import and D1/D3/D2 verification CLI
+< d19b8a24 feat(d4): add fixed-source 50-template machine-readable catalog
+< e03539cb feat(d4): integrate all eight domain candidate assets at fixed heads
+> 9349cfe6 test(G04): record measured D2 plans and Pi synthetic receipts [skip ci]
+> 0c12aba7 docs(G04): reconcile eight template manifests with actual D1/D3/D2/Pi and synthetic evidence CI; mark authoring gaps PARTIAL
+> 2fb38598 test(G04): record measured D2 plans and Pi synthetic receipts [skip ci]
+> 69dced1f test(G04): fix typed evidence fact, verify D1 immutable revisions and semantic edit diffs
+> a5eedbac fix(G04): use explicit stable R01 Check ID substring for real evidence tests
+> 5d7f8f8a test(G04): verify actual material registration and per-subject reviewer EvidenceLink for all 8 templates
+> ea0d764d test(G04): record measured D2 plans and Pi synthetic receipts [skip ci]
+> 52ea06d8 test(G04): eight-template COMMON D1/D3/D2/Pi integration and evidence CI
+> c8e3df27 feat(G04): eight full-source modular workspaces, per-check bindings, synthetic selections and trace ledgers
+> de455745 docs(G04): seed D4 source-locked modular build directory

@@ -1,0 +1,136 @@
+{
+  "testId": "L1-05",
+  "repoSha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+  "fixtureKind": "synthetic-only",
+  "inputMatchesCompiledPlan": true,
+  "targets": [
+    {
+      "objectKey": "item-a",
+      "subjectId": "synthetic-item-a",
+      "scenario": "x",
+      "conditions": [
+        {
+          "id": "m",
+          "applicability": "applicable",
+          "sourceId": "synthetic-source",
+          "sourceVersionId": "synthetic-source-v1",
+          "decidedBy": "reviewer"
+        },
+        {
+          "id": "n",
+          "applicability": "not-applicable",
+          "sourceId": "synthetic-source",
+          "sourceVersionId": "synthetic-source-v1",
+          "decidedBy": "reviewer"
+        }
+      ]
+    },
+    {
+      "objectKey": "item-b",
+      "subjectId": "synthetic-item-b",
+      "scenario": "y",
+      "conditions": [
+        {
+          "id": "m",
+          "applicability": "unknown",
+          "sourceId": "synthetic-source",
+          "sourceVersionId": "synthetic-source-v1",
+          "decidedBy": "undetermined"
+        },
+        {
+          "id": "n",
+          "applicability": "applicable",
+          "sourceId": "synthetic-source",
+          "sourceVersionId": "synthetic-source-v1",
+          "decidedBy": "reviewer"
+        }
+      ]
+    }
+  ],
+  "mapping": [
+    {
+      "checkId": "module/part-x/structure#item-a",
+      "ruleId": "d2-60cff2b8ef1333443add",
+      "objectKey": "item-a",
+      "subjectId": "synthetic-item-a",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g03-resource-slot",
+        "supportsFacts": [
+          "d2:object:g03-resource-slot:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/part-m/structure#item-a",
+      "ruleId": "d2-bda92ce6e390f7df608f",
+      "objectKey": "item-a",
+      "subjectId": "synthetic-item-a",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g03-resource-slot",
+        "supportsFacts": [
+          "d2:object:g03-resource-slot:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/part-n/structure#item-a",
+      "ruleId": "d2-d3eef09e346fc55c2af3",
+      "objectKey": "item-a",
+      "subjectId": "synthetic-item-a",
+      "applicability": "not-applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g03-resource-slot",
+        "supportsFacts": [
+          "d2:object:g03-resource-slot:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/part-y/structure#item-b",
+      "ruleId": "d2-98a45e6257d575d804bf",
+      "objectKey": "item-b",
+      "subjectId": "synthetic-item-b",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g03-resource-slot",
+        "supportsFacts": [
+          "d2:object:g03-resource-slot:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/part-m/structure#item-b",
+      "ruleId": "d2-5a5c1658e3ff2ebaf2de",
+      "objectKey": "item-b",
+      "subjectId": "synthetic-item-b",
+      "applicability": "unknown",
+      "evidenceCoverage": {
+        "fieldKey": "g03-resource-slot",
+        "supportsFacts": [
+          "d2:object:g03-resource-slot:scope"
+        ]
+      }
+    },
+    {
+      "checkId": "module/part-n/structure#item-b",
+      "ruleId": "d2-b1fe8ee53cc832443dbf",
+      "objectKey": "item-b",
+      "subjectId": "synthetic-item-b",
+      "applicability": "applicable",
+      "evidenceCoverage": {
+        "fieldKey": "g03-resource-slot",
+        "supportsFacts": [
+          "d2:object:g03-resource-slot:scope"
+        ]
+      }
+    }
+  ],
+  "unknownConditions": 1,
+  "promptContainsFullTargetContract": true,
+  "promptContainsEveryCheckId": true,
+  "plannedChecks": 6,
+  "pendingChecks": 6,
+  "status": "PASS_SCOPED_FULL_TARGET_CONTRACT"
+}

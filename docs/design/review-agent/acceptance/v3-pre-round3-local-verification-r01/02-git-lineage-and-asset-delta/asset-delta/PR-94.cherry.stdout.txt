@@ -1,0 +1,5 @@
++ 45615fd16037c0e8e04bde235e6d1f76224c7bdc feat(d4-g08): convert both full business sources to modular D1 workspaces
++ 8d946f95cb412f25f900bef712f319792f218894 test(d4-g08): execute two full authoring workspaces through D1 D3 D2 and Pi
++ a9868c6aa04d276db561198443ead10b97e9e7bc fix(d4-g08): type test-only synthetic aggregate consistently with COMMON fixtures
++ fd42de23b4814a4c4e8fd30527f816e14550988f test(d4-g08): execute T03 query followup and withdrawal through real Pi technical runs
++ fa3f561284e2395d0527790d725acb7587f6e7d8 docs(d4-g08): lock measured D1 D3 D2 Pi evidence and per-template manifests

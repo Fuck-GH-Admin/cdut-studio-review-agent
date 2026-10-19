@@ -1,0 +1,10 @@
++ 343e61c1a1cf6879c6fc32c451742a01137903b1 feat(review-g02): author three complete MD-derived D1/D3 generic-object candidates and coverage ledgers
++ f1515b074ea798798fbbbc3ee68eff6ff887eed2 test(review-g02): exercise D1/D3/D2 generic-object plans and isolated synthetic Pi for all three templates
++ cc22700ca9baaf4dd71ce463136a15d1271ec9e3 ci(review-g02): validate authored JSON, D1/D3/D2 and Pi with frozen COMMON baseline
++ eb1ca0fc501af2aff8125c2e51fe5f1f498ade35 fix(review-g02): submit case-scoped semantic checks with complete fixed subject set
++ 290f2b9ef5ef70d53c0d06964a217e729b211db1 fix(review-g02): preserve T03 full section 14 policy provenance and applicability
++ 181d925508a2c98cab1ebbf457913d567540590f docs(review-g02): explain three runnable D1/D3/D2 candidates and strict authority limits
++ bf869d2eb3692318daf7b8e4fe9e19047b8ff8bf docs(review-g02): record source, policy, external, human and test gaps without Gold exposure
++ 9fa91e9cb310934b7116ce39861400a561b511a0 artifact(review-g02): commit actual T01 compiled D2 schema3 runtime Plan from green CI
++ 8ca98ed5ecf322fefa1db5b0217d6393a0464349 artifact(review-g02): pin T02/T03 compiled plans and all three verified synthetic Pi receipts
++ 5edb9bdfad77dd850e82fdcf162a382a203946e5 docs(review-g02): lock 13/13 green D1-D3-D2-Pi evidence, actual Plan fingerprints and honest partial statuses

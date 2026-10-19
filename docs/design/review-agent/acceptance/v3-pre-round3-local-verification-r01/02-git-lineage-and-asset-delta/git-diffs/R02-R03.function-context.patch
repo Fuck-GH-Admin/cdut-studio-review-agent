@@ -1,0 +1,1317 @@
+diff --git a/apps/electron/src/main/lib/review/batch-automation-service.ts b/apps/electron/src/main/lib/review/batch-automation-service.ts
+index 8938afb1..4779a746 100644
+--- a/apps/electron/src/main/lib/review/batch-automation-service.ts
++++ b/apps/electron/src/main/lib/review/batch-automation-service.ts
+@@ -11,7 +11,6 @@ import { readAggregate } from './case-store-v2'
+ import { readBatchStateV2, saveBatchStateV2, finalizeBatch, assertBatchBusinessReadyForFinalization } from './batch-store'
+ import { checkAutoBatchAction, type AutoAction } from './batch-automation-gates'
+ import { getRunV2, readArtifact } from './run-store-v2'
+-import { validateBoundBatchRun } from './batch-run-provenance'
+ import { getTemplate } from './template-store'
+ import { decideWorkspaceCaseV2, isWorkspaceRunStaleV2 } from './workspace-business-service-v2'
+ 
+@@ -30,115 +29,112 @@ function appendReceipt(batchId: string, receipt: BatchAutomationReceipt, expecte
+ export async function runBatchAutomation(batchId: string): Promise<BatchAutomationReport> {
+   if (activeAutomation.has(batchId)) throw new Error('当前批次自动化处理正在进行')
+   activeAutomation.add(batchId)
+   try {
+     const state = readBatchStateV2(batchId)
+     if (!state) throw new Error('批次不存在')
+     if (state.status !== 'queued') throw new Error('只有已完成运行队列的批次可以自动处理')
+     const configured = state.automation
+     if (!configured || configured.mode === 'assist') throw new Error('此批次尚未启用自动化策略')
+     const revision = configured.revision
+     const results: BatchAutomationReceipt[] = []
+     for (const entry of state.cases) {
+       if (entry.status !== 'done') continue
+       const current = readBatchStateV2(batchId)
+       if (!current || current.status !== 'queued' || current.automation?.revision !== revision
+         || current.automation.mode === 'assist') break
++      // Stale snapshots must not allow a previous Run to approve a requeued case.
++      const liveEntry = current.cases.find((candidate) => candidate.caseId === entry.caseId)
++      if (liveEntry?.status !== 'done' || !entry.runId || liveEntry.runId !== entry.runId) continue
+       const aggregate = readAggregate(entry.caseId)
+-      const currentEntry = current.cases.find((item) => item.caseId === entry.caseId)
+-      const run = currentEntry && validateBoundBatchRun(current.batch, currentEntry,
+-        currentEntry.runId ? getRunV2(entry.caseId, currentEntry.runId) : undefined)
+-      if (!aggregate || !run || aggregate.caseV2.stage === 'decided'
++      // A same-case, same-template Run produced by a different batch is NOT this batch's evidence.
++      const run = entry.runId ? getRunV2(entry.caseId, entry.runId) : undefined
++      if (!aggregate || !run || run.caseId !== entry.caseId
++        || run.templateId !== current.batch.templateId || run.templateVersion !== current.batch.templateVersion
++        || run.inputManifest?.templateVersion !== current.batch.templateVersion
++        || aggregate.caseV2.stage === 'decided'
+         || aggregate.caseV2.stage === 'archived' || aggregate.caseV2.stage === 'awaiting-supplement') continue
+       const route = triageBatchCase({
+         caseId: entry.caseId, entryStatus: entry.status, caseStage: aggregate.caseV2.stage,
+         run, batch: current.batch,
+       }).route
+       const action: AutoAction | null = route === 'auto-pass-candidate' && configured.mode === 'auto-approve' ? 'pass'
+         : route === 'auto-return-candidate' ? 'return' : null
+       if (!action) continue
+       const requestId = `batch-auto-${stableId([batchId, entry.caseId, run.id, action, revision])}`
+       const actor: Actor = {
+         actorId: `batch-auto:${encodeURIComponent(batchId)}:${revision}`,
+         actorSource: 'system', role: 'reviewer',
+       }
+       let receipt: BatchAutomationReceipt
+       try {
+         const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
+         if (!template || isWorkspaceRunStaleV2(aggregate, run.id)) throw new Error('当前案卷输入或补件回复已经变化，请重新审核')
+         const artifact = readArtifact<{ observations?: Array<Record<string, unknown>> }>(entry.caseId, run.id, 'node-auto-check-extract')
+         const gate = checkAutoBatchAction(current, aggregate, run, template, action, artifact?.observations ?? [])
+         if (!gate.allowed) {
+           receipt = { caseId: entry.caseId, runId: run.id, action, status: 'blocked', message: gate.reason,
+             at: new Date().toISOString(), requestId, policyRevision: revision }
+         } else {
+           const changed = await decideWorkspaceCaseV2(entry.caseId, {
+             requestId, actor, expectedRevision: aggregate.caseV2.revision,
+             payload: {
+               result: action, reason: gate.reason, basedOnRunId: run.id, inputHash: run.inputManifest.hash,
+               ...(action === 'return' ? { requiredElements: gate.requiredElements, supplementReason: gate.reason } : {}),
+             },
+           })
+           if (changed.ok) {
+             receipt = { caseId: entry.caseId, runId: run.id, action, status: 'applied',
+               message: `业务事务已记录：${changed.receipt.requestId}`, at: new Date().toISOString(),
+               requestId, policyRevision: revision }
+           } else {
+             receipt = { caseId: entry.caseId, runId: run.id, action,
+               status: ['VERSION_CONFLICT','STALE_INPUT'].includes(changed.code) ? 'conflict' : 'blocked',
+               message: changed.message, at: new Date().toISOString(), requestId, policyRevision: revision }
+           }
+         }
+       } catch (e) {
+         receipt = { caseId: entry.caseId, runId: run.id, action, status: 'failed',
+           message: e instanceof Error ? e.message : String(e), at: new Date().toISOString(),
+           requestId, policyRevision: revision }
+       }
+       appendReceipt(batchId, receipt, revision)
+       results.push(receipt)
+     }
+     return {
+       batchId, policyRevision: revision, results,
+       applied: results.filter((r) => r.status === 'applied').length,
+       blocked: results.filter((r) => r.status === 'blocked').length,
+       failed: results.filter((r) => r.status === 'failed').length,
+       conflicts: results.filter((r) => r.status === 'conflict').length,
+     }
+   } finally {
+     activeAutomation.delete(batchId)
+   }
+ }
+ 
+ /** Finalize only when EVERY case has an auditable final business decision. */
+ export function finalizeCompletedBatch(batchId: string) {
+   const state = readBatchStateV2(batchId)
+   if (!state || state.status !== 'queued' || !state.automation || state.automation.mode === 'assist')
+     throw new Error('批次状态不允许自动定稿')
+   // The core finalizer has the authoritative shared gate; cannot be bypassed
+   // through a raw 'finalize' IPC action or a different service caller.
+   assertBatchBusinessReadyForFinalization(state)
+   const { resolveFinalDecisionProjection } = require('./stage-workflow') as typeof import('./stage-workflow')
+   const decisions = state.cases.map(({ caseId }) => {
+     const aggregate = readAggregate(caseId)
+     if (!aggregate || !['decided', 'archived'].includes(aggregate.caseV2.stage)
+       || aggregate.supplements.some((sup) => ['open', 'responded', 'insufficient'].includes(sup.status)))
+       throw new Error(`案卷未完成正式审批或仍待补件: ${caseId}`)
+     const projection = resolveFinalDecisionProjection(aggregate.decisions)
+     const final = projection.decision
+     if (!projection.isFinal || !final) throw new Error(`案卷缺少可追溯的正式决定: ${caseId}`)
+-    const entry = state.cases.find((item) => item.caseId === caseId)
+-    if (!entry?.runId || !entry.runInputHash || final.basedOnRunId !== entry.runId) {
+-      throw new Error(`定稿必须绑定该批次已执行的 Run 与决定: ${caseId}`)
+-    }
+-    const run = validateBoundBatchRun(state.batch, entry, getRunV2(caseId, entry.runId))
+-    if (!run || isWorkspaceRunStaleV2(aggregate, run.id)) {
+-      throw new Error(`该批次 Run 证据已失效，不能定稿: ${caseId}`)
+-    }
+-    return { caseId, decisionId: final.id, result: final.result, runId: entry.runId,
+-      runInputHash: entry.runInputHash, basedOnRevision: final.basedOnRevision, actor: final.actor }
++    return { caseId, decisionId: final.id, result: final.result, runId: final.basedOnRunId,
++      basedOnRevision: final.basedOnRevision, actor: final.actor }
+   })
+   return finalizeBatch(batchId, {
+     kind: 'audited-automation-batch', round: state.round, templateId: state.batch.templateId,
+     templateVersion: state.batch.templateVersion, policyVersions: state.batch.policyVersionLock,
+     automation: state.automation, decisions,
+   })
+ }
+diff --git a/apps/electron/src/main/lib/review/batch-store.ts b/apps/electron/src/main/lib/review/batch-store.ts
+index 12f0efee..afab66eb 100644
+--- a/apps/electron/src/main/lib/review/batch-store.ts
++++ b/apps/electron/src/main/lib/review/batch-store.ts
+@@ -122,168 +122,144 @@ export function configureBatchAutomation(batchId: string, mode: BatchAutomationM
+ /** Close the supplement loop without rewriting history or retrying decided cases. */
+ export function requeueCaseAfterSupplement(caseId: string): string[] {
+   const queued: string[] = []
+   const { readAggregate } = require('./case-store-v2') as typeof import('./case-store-v2')
+   const aggregate = readAggregate(caseId)
+   if (!aggregate || aggregate.caseV2.stage !== 'reviewing'
+     || aggregate.supplements.some((request) => ['open', 'responded', 'insufficient'].includes(request.status))) return queued
+   // 没有补件所属批次的不可伪造绑定时，不能向同案所有旧/并行批次广播重新入队。
+   // 唯一归属才自动恢复；多批归属必须由后续人工选择明确目标批次。
+   const associated = listBatchStatesV2().filter((state) =>
+     state.batch.templateId === aggregate.caseV2.templateId
+     && state.batch.templateVersion === aggregate.caseV2.templateVersion
+     && state.cases.some((entry) => entry.caseId === caseId))
+   if (associated.length > 1) {
+     console.warn(`[批次] 案卷 ${caseId} 存在多个批次归属，补件回流已拒止自动入队，需人工明确批次`)
+     return queued
+   }
+   for (const state of associated) {
+     if (state.status === 'finalized' || state.status === 'running' || activeBatchRuns.has(state.batch.id)) continue
+     const entry = state.cases.find((candidate) => candidate.caseId === caseId)
+     if (!entry || entry.status === 'queued' || entry.status === 'running') continue
+     state.cases = state.cases.map((candidate) => candidate.caseId === caseId
+-      ? { caseId: candidate.caseId, status: 'queued' } : candidate)
++      ? { ...candidate, status: 'queued', error: undefined, runId: undefined } : candidate)
+     saveBatchStateV2(state)
+     queued.push(state.batch.id)
+   }
+   return queued
+ }
+ 
+ 
+ /**
+  * Explicitly target one batch when an aggregate belongs to multiple batches.
+  * Callers must bind local reviewer identity at Main; this service is not
+  * independently a school credential verifier or a renderer authorization.
+  * Persist a per-case revision cursor so a replay cannot change a later done.
+  */
+ export function selectSupplementRequeueBatch(
+   caseId: string,
+   batchId: string,
+   selection: { actor: import('@profer/shared').Actor; expectedRevision: number; supplementId: string },
+ ): { queued: boolean; batch: BatchStateV2 } {
+   assertSafeReviewStorageId(caseId, 'caseId')
+   assertSafeBatchId(batchId)
+   if (selection.actor.actorSource !== 'local' || !['reviewer', 'teacher'].includes(selection.actor.role)) {
+     throw new Error('补件批次选择必须由本机已绑定的人工审核角色执行')
+   }
+   const { readAggregate } = require('./case-store-v2') as typeof import('./case-store-v2')
+   const aggregate = readAggregate(caseId)
+   if (!aggregate || aggregate.caseV2.revision !== selection.expectedRevision) {
+     throw new Error('案卷版本已变化，必须重新确认补件回流目标')
+   }
+   if (aggregate.caseV2.stage !== 'reviewing'
+     || aggregate.supplements.some((request) => ['open', 'responded', 'insufficient'].includes(request.status))) {
+     throw new Error('案卷仍待补件或不在重审状态，禁止回流批次')
+   }
+   const resolved = aggregate.supplements.find((item) => item.id === selection.supplementId && item.status === 'satisfied')
+   if (!resolved?.originStageId) throw new Error('补件没有已满足的原审核阶段，不能指定批次回流')
+   const task = aggregate.tasks.find((item) => item.status === 'open' && item.stageId === resolved.originStageId)
+   if (!task || task.assigneeRole !== selection.actor.role
+     || (task.assigneeActorId && task.assigneeActorId !== selection.actor.actorId)) {
+     throw new Error('当前审核人未持有该补件来源阶段的重审任务')
+   }
+   const state = readBatchStateV2(batchId)
+   if (!state || state.batch.templateId !== aggregate.caseV2.templateId
+     || state.batch.templateVersion !== aggregate.caseV2.templateVersion
+     || !state.batch.caseIds.includes(caseId)) throw new Error('目标批次不属于此案卷的冻结模板版本')
+   if (state.status === 'finalized' || state.status === 'running' || activeBatchRuns.has(batchId)) {
+     throw new Error('运行中或已定稿批次不可补件回流')
+   }
+   const entry = state.cases.find((item) => item.caseId === caseId)
+   if (!entry) throw new Error('案卷没有对应批次队列项')
+   type Cursor = { caseRevision: number; supplementId: string; actorId: string; at: string }
+   const scoped = state as BatchStateV2 & { supplementRequeueCursors?: Record<string, Cursor> }
+   const previous = scoped.supplementRequeueCursors?.[caseId]
+   if (previous?.caseRevision === selection.expectedRevision) {
+     if (previous.supplementId !== selection.supplementId) throw new Error('同案卷修订已有不同补件回流记录')
+     return { queued: false, batch: state }
+   }
+   if (previous?.supplementId === selection.supplementId) {
+     // Revision can advance for unrelated commands after the first requeue.
+     // A replay of the same satisfied supplement cannot revive a later done.
+     return { queued: false, batch: state }
+   }
+   if (entry.status === 'queued') return { queued: false, batch: state }
+   if (entry.status === 'running') throw new Error('该案卷仍在执行，禁止补件回流')
+   scoped.cases = state.cases.map((item) => item.caseId === caseId
+-    ? { caseId: item.caseId, status: 'queued' } : item)
++    ? { ...item, status: 'queued', error: undefined, runId: undefined } : item)
+   scoped.supplementRequeueCursors = {
+     ...scoped.supplementRequeueCursors,
+     [caseId]: { caseRevision: selection.expectedRevision, supplementId: selection.supplementId,
+       actorId: selection.actor.actorId, at: new Date().toISOString() },
+   }
+   saveBatchStateV2(scoped)
+   return { queued: true, batch: scoped }
+ }
+ 
+ /** 入队/暂停/重试（单案失败不阻塞全批，06 §7.1） */
+-export function updateCaseStatus(batchId: string, caseId: string, status: BatchStateV2['cases'][number]['status'], error?: string): BatchStateV2 {
++export function updateCaseStatus(batchId: string, caseId: string, status: BatchStateV2['cases'][number]['status'], error?: string, runId?: string): BatchStateV2 {
+   assertSafeReviewStorageId(caseId, 'caseId')
+   const state = readBatchStateV2(batchId)
+   if (!state) throw new Error(`批次不存在: ${batchId}`)
+   if (state.status === 'finalized') throw new Error('批次已定稿，变更需重开新轮次')
+-  state.cases = state.cases.map((entry) => entry.caseId !== caseId ? entry
+-    : status === 'queued' ? { caseId: entry.caseId, status, error } : { ...entry, status, error })
+-  saveBatchStateV2(state)
+-  return state
+-}
+-
+-/** Record the actual Run this batch executed; write case outcome and provenance together. */
+-export function recordBatchCaseRunOutcome(
+-  batchId: string, caseId: string, outcome: { status: string; runId?: string; inputHash?: string },
+-): BatchStateV2 {
+-  assertSafeReviewStorageId(caseId, 'caseId')
+-  const state = readBatchStateV2(batchId)
+-  if (!state || state.status !== 'running' || !activeBatchRuns.has(batchId)) throw new Error('批次不在活动运行中')
+-  const entry = state.cases.find((item) => item.caseId === caseId)
+-  if (!entry || entry.status !== 'running') throw new Error('案卷不属于当前活动队列')
+-  const validBinding = typeof outcome.runId === 'string' && !!outcome.runId
+-    && typeof outcome.inputHash === 'string' && /^[0-9a-f]{64}$/.test(outcome.inputHash)
+-  const status: BatchStateV2['cases'][number]['status'] = outcome.status === 'completed' && validBinding ? 'done' : 'failed'
+-  state.cases = state.cases.map((item) => item.caseId !== caseId ? item : {
+-    caseId, status,
+-    ...(validBinding ? { runId: outcome.runId, runInputHash: outcome.inputHash } : {}),
+-    ...(status === 'failed' ? { error: outcome.status === 'completed'
+-      ? 'Run 没有完整来源绑定，不能按批次完成' : `运行结束状态: ${outcome.status}` } : {}),
+-  })
++  state.cases = state.cases.map((entry) => (entry.caseId === caseId ? { ...entry, status, error,
++    // New attempts invalidate previous bindings. Only a returned real Run may bind an entry.
++    runId: (status === 'done' || status === 'failed') ? runId : undefined } : entry))
+   saveBatchStateV2(state)
+   return state
+ }
+ 
+ /**
+  * All finalization callers must use this same business-state gate. 'done'
+  * means review run completed, not a formal approval. Check live aggregates,
+  * including unresolved supplement/appeal and superseded final decisions.
+  */
+ export function assertBatchBusinessReadyForFinalization(state: BatchStateV2): void {
+   const { readAggregate } = require('./case-store-v2') as typeof import('./case-store-v2')
+   const { resolveFinalDecisionProjection } = require('./stage-workflow') as typeof import('./stage-workflow')
+   if (!state.cases.length || state.cases.some((entry) => entry.status !== 'done')) throw new Error('案卷未完成，不能定稿')
+   for (const entry of state.cases) {
+     const aggregate = readAggregate(entry.caseId)
+     if (!aggregate) throw new Error(`案卷未完成正式审批（没有正式业务终态），不能定稿: ${entry.caseId}`)
+     if (aggregate.supplements.some((item) => ['open', 'responded', 'insufficient'].includes(item.status))) {
+       throw new Error(`案卷仍待补件，不能定稿: ${entry.caseId}`)
+     }
+     if (!['decided', 'archived'].includes(aggregate.caseV2.stage)) {
+       throw new Error(`案卷未完成正式审批（没有正式业务终态），不能定稿: ${entry.caseId}`)
+     }
+     if (aggregate.caseV2.templateId !== state.batch.templateId || aggregate.caseV2.templateVersion !== state.batch.templateVersion) {
+       throw new Error(`案卷模板版本与批次锁不匹配: ${entry.caseId}`)
+     }
+     if (aggregate.appeals.some((item) => ['submitted', 'in-review'].includes(item.status))) {
+       throw new Error(`案卷仍有待处理申诉，不能定稿: ${entry.caseId}`)
+     }
+     if (aggregate.tasks.some((item) => item.status === 'open')) {
+       throw new Error(`案卷仍有未完成审核任务，不能定稿: ${entry.caseId}`)
+     }
+     const projected = resolveFinalDecisionProjection(aggregate.decisions)
+     if (!projected.isFinal || !projected.decision) {
+       throw new Error(`案卷缺少有效且可追溯的最终业务决定: ${entry.caseId}`)
+     }
+-    if (entry.runId && projected.decision.basedOnRunId !== entry.runId) {
+-      throw new Error(`正式业务决定引用的 Run 不属于该批次执行记录: ${entry.caseId}`)
+-    }
+   }
+ }
+ 
+ /** 定稿：冻结快照 → 原子提交 manifest（R08：定稿后变更只能重开） */
+@@ -551,35 +527,36 @@ export function recoverInterruptedBatch(batchId: string): BatchStateV2 {
+ /**
+  * Only failed or explicitly paused cases can be requeued. Successful cases
+  * remain untouched; caller must explicitly choose each retry target.
+  */
+ export function retryBatchCases(batchId: string, caseIds: string[]): BatchStateV2 {
+   if (Array.isArray(caseIds)) for (const caseId of caseIds) assertSafeReviewStorageId(caseId, 'caseId')
+   const state = readBatchStateV2(batchId)
+   if (!state) throw new Error(`批次不存在: ${batchId}`)
+   if (state.status === 'finalized') throw new Error('已定稿批次不能重试')
+   if (state.status === 'running' || activeBatchRuns.has(batchId)) throw new Error('批次执行中不能修改重试队列')
+   if (!Array.isArray(caseIds) || caseIds.length === 0 || caseIds.some((id) => !id)) throw new Error('请选择需要重试的案卷')
+   const requested = new Set(caseIds)
+   if (requested.size !== caseIds.length) throw new Error('重试案卷不能重复')
+   for (const caseId of requested) {
+     const entry = state.cases.find((item) => item.caseId === caseId)
+     if (!entry) throw new Error(`案卷不属于此批次: ${caseId}`)
+     if (entry.status === 'failed' || entry.status === 'paused') continue
+     if (entry.status === 'done') {
++      // Unbound legacy 'done' is not proof of success; a new explicit retry is safe.
++      if (!entry.runId) continue
+       const { getRunV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
+-      const { validateBoundBatchRun } = require('./batch-run-provenance') as typeof import('./batch-run-provenance')
+       const { readAggregate } = require('./case-store-v2') as typeof import('./case-store-v2')
+       const aggregate = readAggregate(caseId)
+-      const run = validateBoundBatchRun(state.batch, entry,
+-        entry.runId ? getRunV2(caseId, entry.runId) : undefined)
++      const run = getRunV2(caseId, entry.runId)
++      if (!run) continue
+       const route = triageBatchCase({
+         caseId, entryStatus: 'done', caseStage: aggregate?.caseV2.stage, run, batch: state.batch,
+       }).route
+       if (route === 'technical-exception') continue
+     }
+     throw new Error(`案卷当前状态不可重试: ${caseId} (${entry.status})`)
+   }
+-  state.cases = state.cases.map((entry) => requested.has(entry.caseId) ? { caseId: entry.caseId, status: 'queued' } : entry)
++  state.cases = state.cases.map((entry) => requested.has(entry.caseId) ? { ...entry, status: 'queued', error: undefined, runId: undefined } : entry)
+   saveBatchStateV2(state)
+   return state
+ }
+@@ -587,42 +564,43 @@ export function retryBatchCases(batchId: string, caseIds: string[]): BatchStateV
+ 
+ export interface BatchQueueOptions {
+   /** 运行参数注入（测试可传假执行器）；产品层复用 Pi 审核 Agent */
+-  runCase?: (caseId: string) => Promise<{ status: string; runId?: string; inputHash?: string }>
++  runCase?: (caseId: string) => Promise<{ status: string; runId?: string }>
+ }
+ 
+ /**
+  * 批次队列执行：按案卷状态逐个 queued→running→done/failed。
+  * - 单案失败记录 error 并继续（06 §7.1 坏案不拖全批）
+  * - 定稿批次拒绝执行（重开新轮次后才能跑）
+  * - 中断可重入：已 done 的跳过，failed/queued 重试
+  */
+ export async function runBatchQueue(batchId: string, options: BatchQueueOptions = {}): Promise<BatchStateV2> {
+   const state = readBatchStateV2(batchId)
+   if (!state) throw new Error(`批次不存在: ${batchId}`)
+   if (state.status === 'finalized') throw new Error('批次已定稿，需重开新轮次才能执行')
+   if (state.status === 'running' || activeBatchRuns.has(batchId)) throw new Error('批次正在执行，不能重复启动')
+   if (!options.runCase) throw new Error('runBatchQueue 需要注入 runCase（产品层由 buildReviewExecutors 提供，避免隐式默认执行器）')
+   const queued = state.cases.filter((entry) => entry.status === 'queued')
+   if (queued.length === 0) throw new Error('没有待执行的案卷；失败项请先选择重试')
+   const runCase = options.runCase
+   activeBatchRuns.add(batchId)
+   try {
+     state.status = 'running'
+     saveBatchStateV2(state)
+     for (const entry of queued) {
+       updateCaseStatus(batchId, entry.caseId, 'running')
+       try {
+         const outcome = await runCase(entry.caseId)
+-        recordBatchCaseRunOutcome(batchId, entry.caseId, outcome)
++        if (outcome.status === 'completed') updateCaseStatus(batchId, entry.caseId, 'done', undefined, outcome.runId)
++        else updateCaseStatus(batchId, entry.caseId, 'failed', `运行结束状态: ${outcome.status}`, outcome.runId)
+       } catch (error) {
+         updateCaseStatus(batchId, entry.caseId, 'failed', error instanceof Error ? error.message : String(error))
+       }
+     }
+     const final = readBatchStateV2(batchId)!
+     final.status = 'queued' // 等待后续业务决定；执行完不是正式通过
+     saveBatchStateV2(final)
+     return final
+   } finally {
+     activeBatchRuns.delete(batchId)
+   }
+ }
+diff --git a/apps/electron/src/main/lib/review/review-ipc.ts b/apps/electron/src/main/lib/review/review-ipc.ts
+index adb4bd01..593774d0 100644
+--- a/apps/electron/src/main/lib/review/review-ipc.ts
++++ b/apps/electron/src/main/lib/review/review-ipc.ts
+@@ -76,906 +76,906 @@ function requireString(value: unknown, name: string): string {
+ /**
+  * 注册内容审核专区全部 IPC 处理器。
+  *
+  * 由 registerIpcHandlers() 在应用启动时调用一次（幂等由外层守卫保证）。
+  */
+ export function registerReviewIpc(): void {
+   // 启动恢复：上次进程遗留的 queued/running 运行标 interrupted（08 设计 §5）
+   try {
+     const { markStaleRunsInterrupted } = require('./run-store-v2') as typeof import('./run-store-v2')
+     const recovered = markStaleRunsInterrupted()
+     if (recovered > 0) console.log(`[审核V2] 启动恢复：${recovered} 个中断运行已标记（可续跑）`)
+   } catch (error) {
+     console.warn('[审核V2] 启动恢复检查失败:', error)
+   }
+   // ===== 案卷管理 =====
+ 
+   /** 载入演示案卷（首次复制进配置目录，之后读存储） */
+   ipcMain.handle(REVIEW_IPC_CHANNELS.LOAD_DEMO_CASE, async (): Promise<ReviewCase> => {
+     const reviewCase = loadDemoCase()
+     await ensureWorkspaceAggregateV2(reviewCase.id)
+     return reviewCase
+   })
+ 
+   /** 列出已存储案卷（摘要） */
+   ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_CASES, () => {
+     return listCases()
+   })
+ 
+   ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_RUNS, (_event, caseId: string): ReviewRun[] => {
+     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+     return listRuns(caseId)
+   })
+ 
+   /** 读取单个案卷 */
+   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_CASE, (_event, caseId: string): ReviewCase | undefined => {
+     return getCase(caseId)
+   })
+ 
+   /** 创建空案卷 */
+   ipcMain.handle(
+     REVIEW_IPC_CHANNELS.CREATE_CASE,
+     async (
+       _event,
+       input: {
+         title: string
+         type: ReviewCaseType
+         applicant: string
+         academicYear: string
+         domainPackId?: string
+         reviewTemplate?: { templateId: string; version: number }
+       },
+     ): Promise<ReviewCase> => {
+       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
+       if (!CASE_TYPES.has(input.type)) throw new Error(`参数 type 非法：${String(input.type)}`)
+       // 领域包 ID 只做存在性判断：未知 ID 回落缺省包由 resolveDomainPack 负责，不因拼错而拒绝建卷
+       if (input.domainPackId !== undefined && typeof input.domainPackId !== 'string') {
+         throw new Error('参数 domainPackId 类型非法')
+       }
+       if (input.reviewTemplate !== undefined) {
+         const { templateId, version } = input.reviewTemplate
+         if (typeof templateId !== 'string' || !templateId || !Number.isInteger(version) || version < 1) {
+           throw new Error('参数 reviewTemplate 非法')
+         }
+         const { getTemplate } = require('./template-store') as typeof import('./template-store')
+         const template = getTemplate(templateId, version)
+         if (!template || template.status !== 'published') throw new Error('只能使用已发布的审核模板创建项目')
+       }
+       const reviewCase = createEmptyCase({
+         title: requireString(input.title, 'title'),
+         type: input.type,
+         applicant: requireString(input.applicant, 'applicant'),
+         academicYear: requireString(input.academicYear, 'academicYear'),
+         ...(input.domainPackId ? { domainPackId: input.domainPackId } : {}),
+         ...(input.reviewTemplate ? { reviewTemplate: input.reviewTemplate } : {}),
+       })
+       await ensureWorkspaceAggregateV2(reviewCase.id)
+       return reviewCase
+     },
+   )
+ 
+   /** 更新案卷设置（领域包 / 标题 / 类型 / 待审主体文档） */
+   ipcMain.handle(
+     REVIEW_IPC_CHANNELS.UPDATE_CASE_SETTINGS,
+     async (_event, input: UpdateCaseSettingsRequest): Promise<ReviewCase> => {
+       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
+       const caseId = requireString(input.caseId, 'caseId')
+       const reviewCase = getCase(caseId)
+       if (!reviewCase) throw new Error(`案卷不存在: ${caseId}`)
+       if (input.type !== undefined && !CASE_TYPES.has(input.type)) {
+         throw new Error(`参数 type 非法：${String(input.type)}`)
+       }
+       if (input.domainPackId !== undefined && typeof input.domainPackId !== 'string') {
+         throw new Error('参数 domainPackId 类型非法')
+       }
+       if (input.title !== undefined && typeof input.title !== 'string') {
+         throw new Error('参数 title 类型非法')
+       }
+       let reviewTemplate: ReviewCase['reviewTemplate'] | null | undefined
+       if (input.reviewTemplate !== undefined) {
+         if (input.reviewTemplate === null) {
+           reviewTemplate = null
+         } else {
+           const selected = input.reviewTemplate
+           if (!selected || typeof selected !== 'object'
+             || typeof selected.templateId !== 'string'
+             || !Number.isInteger(selected.version) || selected.version < 1) {
+             throw new Error('审核模板参数非法')
+           }
+           const { getTemplate, isSafeTemplateId } = require('./template-store') as typeof import('./template-store')
+           if (!isSafeTemplateId(selected.templateId)) throw new Error('审核模板参数非法')
+           const template = getTemplate(selected.templateId, selected.version)
+           if (!template || template.status !== 'published') {
+             throw new Error('只能载入已发布的审核模板版本')
+           }
+           reviewTemplate = { templateId: selected.templateId, version: selected.version }
+         }
+       }
+       let manualRules: ReviewCase['manualRules'] | undefined
+       if (input.manualRules !== undefined) {
+         if (!Array.isArray(input.manualRules) || input.manualRules.length > 100) {
+           throw new Error('手写规则必须是 100 条以内的列表')
+         }
+         const seenRuleIds = new Set<string>()
+         manualRules = input.manualRules.map((rule, index) => {
+           if (!rule || typeof rule !== 'object'
+             || typeof rule.id !== 'string' || !/^[a-zA-Z0-9_-]{1,100}$/.test(rule.id)
+             || seenRuleIds.has(rule.id)
+             || typeof rule.title !== 'string' || rule.title.trim().length === 0 || rule.title.length > 160
+             || typeof rule.requirement !== 'string' || rule.requirement.trim().length === 0 || rule.requirement.length > 8000) {
+             throw new Error(`第 ${index + 1} 条手写规则无效`)
+           }
+           seenRuleIds.add(rule.id)
+           return { id: rule.id, title: rule.title.trim(), requirement: rule.requirement.trim() }
+         })
+       }
+       // 待审主体文档：逐个校验是否属于本卷，防止悬空 ID 让三栏联动指向不存在的文档
+       let subjectDocumentIds: string[] | undefined
+       if (input.subjectDocumentIds !== undefined) {
+         if (!Array.isArray(input.subjectDocumentIds) || input.subjectDocumentIds.some((id) => typeof id !== 'string')) {
+           throw new Error('参数 subjectDocumentIds 类型非法')
+         }
+         const known = new Set(reviewCase.documents.map((doc) => doc.id))
+         subjectDocumentIds = input.subjectDocumentIds.filter((id) => known.has(id))
+         if (subjectDocumentIds.length !== input.subjectDocumentIds.length) {
+           throw new Error('待审主体文档包含不属于本案卷的文档 ID')
+         }
+       }
+       // M0/H05：设置变更走逐案串行写队列（读最新 → 定向 patch → revision+1），
+       // 避免校验期间的其他写回（导入/大纲/识别）被整案快照覆盖
+       const updated = await updateCase(
+         caseId,
+         (fresh) => {
+           const domainPackChanged = input.domainPackId !== undefined
+             && (fresh.domainPackId ?? 'comprehensive-assessment') !== input.domainPackId
+           const subjectDocumentsChanged = subjectDocumentIds !== undefined
+             && JSON.stringify(fresh.subjectDocumentIds ?? []) !== JSON.stringify(subjectDocumentIds)
+           return {
+             ...invalidateDerivedReviewInputs(fresh, { domainPackChanged, subjectDocumentsChanged }),
+             ...(input.title !== undefined ? { title: input.title.trim() || fresh.title } : {}),
+             ...(input.type !== undefined ? { type: input.type } : {}),
+             ...(input.domainPackId !== undefined ? { domainPackId: input.domainPackId } : {}),
+             ...(subjectDocumentIds !== undefined ? { subjectDocumentIds } : {}),
+             ...(reviewTemplate !== undefined ? { reviewTemplate: reviewTemplate ?? undefined } : {}),
+             ...(manualRules !== undefined ? { manualRules } : {}),
+           }
+         },
+         { reason: `更新案卷审核设置${input.domainPackId ? `（领域包 ${input.domainPackId}）` : ''}` },
+       )
+       await syncWorkspaceProjectionV2(caseId)
+       return updated
+     },
+   )
+ 
+   ipcMain.handle(REVIEW_IPC_CHANNELS.UPDATE_RULE_OUTLINE, async (_event, input: UpdateRuleOutlineRequest): Promise<ReviewCase> => {
+     if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
+     const caseId = requireString(input.caseId, 'caseId')
+     const rulePackId = requireString(input.rulePackId, 'rulePackId')
+     const ruleId = requireString(input.ruleId, 'ruleId')
+     if (typeof input.title !== 'string' || !input.title.trim() || input.title.length > 160) throw new Error('规则名称不能为空且不能超过 160 字')
+     if (typeof input.summary !== 'string' || input.summary.length > 8000) throw new Error('规则摘要不能超过 8000 字')
+     const updated = await updateCase(caseId, (fresh) => {
+       const pack = fresh.rulePacks.find((item) => item.id === rulePackId)
+       if (!pack || !pack.outline.some((item) => item.id === ruleId)) throw new Error('规则摘要不存在或已被移除，请刷新后重试')
+       return {
+         ...fresh,
+         rulePacks: fresh.rulePacks.map((item) => item.id === rulePackId
+           ? { ...item, outline: item.outline.map((rule) => rule.id === ruleId ? { ...rule, title: input.title.trim(), summary: input.summary.trim() } : rule) }
+           : item),
+       }
+     }, { reason: `手动调整规则摘要 ${ruleId}` })
+     await syncWorkspaceProjectionV2(caseId)
+     return updated
+   })
+ 
+   ipcMain.handle(REVIEW_IPC_CHANNELS.UPDATE_REVIEW_ITEM, async (_event, input: UpdateReviewItemRequest): Promise<ReviewCase> => {
+     if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
+     const caseId = requireString(input.caseId, 'caseId')
+     const itemId = requireString(input.itemId, 'itemId')
+     if (typeof input.title !== 'string' || !input.title.trim() || input.title.length > 160) throw new Error('申报事项名称不能为空且不能超过 160 字')
+     if (typeof input.category !== 'string' || !input.category.trim() || input.category.length > 80) throw new Error('申报事项类别不能为空且不能超过 80 字')
+     if (typeof input.declaredScore !== 'number' || !Number.isFinite(input.declaredScore) || input.declaredScore < 0 || input.declaredScore > 1000000) throw new Error('申报分值必须是 0 至 1000000 之间的数字')
+     for (const [field, value, maxLength] of [
+       ['level', input.level, 100],
+       ['activityDate', input.activityDate, 80],
+       ['organizer', input.organizer, 200],
+     ] as const) {
+       if (value !== undefined && (typeof value !== 'string' || value.length > maxLength)) throw new Error(`申报事项${field}字段无效`)
+     }
+     const updated = await updateCase(caseId, (fresh) => {
+       if (!fresh.items.some((item) => item.id === itemId)) throw new Error('申报事项已不存在，请刷新后重试')
+       return {
+         ...fresh,
+         items: fresh.items.map((item) => item.id === itemId ? {
+           ...item,
+           title: input.title.trim(),
+           category: input.category.trim(),
+           declaredScore: input.declaredScore,
+           ...(input.level?.trim() ? { level: input.level.trim() } : { level: undefined }),
+           ...(input.activityDate?.trim() ? { activityDate: input.activityDate.trim() } : { activityDate: undefined }),
+           ...(input.organizer?.trim() ? { organizer: input.organizer.trim() } : { organizer: undefined }),
+           status: 'confirmed',
+           identifiedBy: 'manual',
+         } : item),
+       }
+     }, { reason: `人工修正申报事项 ${itemId}` })
+     await syncWorkspaceProjectionV2(caseId)
+     return updated
+   })
+ 
+   ipcMain.handle(REVIEW_IPC_CHANNELS.CONFIRM_RULE_PACK, async (_event, input: { caseId: string; rulePackId: string }): Promise<ReviewCase> => {
+     const caseId = requireString(input?.caseId, 'caseId')
+     const rulePackId = requireString(input?.rulePackId, 'rulePackId')
+     const { confirmRulePackInCase } = require('./case-import') as typeof import('./case-import')
+     return confirmRulePackInCase(caseId, rulePackId)
+   })
+ 
+   /** 导入文件到案卷（系统选择框 → 解析为 SourceDocument 并写回案卷） */
+   ipcMain.handle(
+     REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT,
+     (_event, input: { caseId: string; role: SourceDocument['role']; requestId?: string }): Promise<ImportDocumentsResult> => {
+       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
+       if (!SOURCE_ROLES.has(input.role)) throw new Error(`参数 role 非法：${String(input.role)}`)
+       const { BrowserWindow } = require('electron') as typeof import('electron')
+       const sender = _event.sender
+       return importDocumentsIntoCase({
+         caseId: requireString(input.caseId, 'caseId'),
+         role: input.role,
+         parentWindow: BrowserWindow.fromWebContents(_event.sender) ?? undefined,
+         requestId: typeof input.requestId === 'string' ? input.requestId : undefined,
+         onProgress: (progress) => {
+           if (!sender.isDestroyed()) sender.send(REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT_PROGRESS, progress)
+         },
+       })
+     },
+   )
+ 
+   /** 开发版 UI 自动化/模型验收入口；正式构建仍只允许由系统文件选择框授权路径。 */
+   ipcMain.handle(
+     REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT_FROM_PATH,
+     async (_event, input: { caseId: string; sourcePath: string; role: SourceDocument['role']; requestId?: string }): Promise<SourceDocument> => {
+       if (app.isPackaged) throw new Error('路径直导仅在开发版可用')
+       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
+       if (!SOURCE_ROLES.has(input.role)) throw new Error(`参数 role 非法：${String(input.role)}`)
+       const sourcePath = requireString(input.sourcePath, 'sourcePath')
+       const sender = _event.sender
+       return importDocumentFromPath({
+         caseId: requireString(input.caseId, 'caseId'),
+         sourcePath,
+         role: input.role,
+         requestId: typeof input.requestId === 'string' ? input.requestId : undefined,
+         onProgress: (progress) => {
+           if (!sender.isDestroyed()) sender.send(REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT_PROGRESS, progress)
+         },
+       })
+     },
+   )
+ 
+   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_IMAGE_PREVIEW_PATH, (_event, input: { caseId: string; documentId: string; blockId: string }): string | null => {
+     if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
+     const caseId = requireString(input.caseId, 'caseId')
+     const documentId = requireString(input.documentId, 'documentId')
+     const blockId = requireString(input.blockId, 'blockId')
+     const reviewCase = getCase(caseId)
+     const document = reviewCase?.documents.find((item) => item.id === documentId)
+     const block = document?.blocks.find((item) => item.id === blockId)
+     if (!reviewCase || !document || !block || block.kind !== 'image') return null
+ 
+     const { existsSync, realpathSync, statSync } = require('node:fs') as typeof import('node:fs')
+     const { isAbsolute, join, relative, resolve, sep } = require('node:path') as typeof import('node:path')
+     const caseRoot = resolve(getReviewCasesDir(), caseId)
+     const assetPath = block.imageAssetPath ?? join('source-docs', `${document.id}-${document.fileName}`)
+     const candidate = isAbsolute(assetPath) ? resolve(assetPath) : resolve(caseRoot, assetPath)
+     try {
+       if (!existsSync(candidate)) return null
+       const rootReal = realpathSync(caseRoot)
+       const assetReal = realpathSync(candidate)
+       const insidePath = relative(rootReal, assetReal)
+       if (!insidePath || insidePath === '..' || insidePath.startsWith(`..${sep}`) || isAbsolute(insidePath)) return null
+       const info = statSync(assetReal)
+       if (!info.isFile() || info.size > 50 * 1024 * 1024) return null
+       return assetReal
+     } catch {
+       return null
+     }
+   })
+ 
+   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_WORKSPACE_DOCUMENT_PREVIEW_PATH, (_event, input: { caseId: string; documentVersionId: string }): string | null => {
+     if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
+     const caseId = requireString(input.caseId, 'caseId')
+     const documentVersionId = requireString(input.documentVersionId, 'documentVersionId')
+     if (!/^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/.test(caseId)) throw new Error('参数 caseId 非法')
+     const { readAggregate } = require('./case-store-v2') as typeof import('./case-store-v2')
+     const aggregate = readAggregate(caseId)
+     const caseRoot = require('node:path').resolve(getReviewCasesDir(), caseId) as string
+     return resolveCaseDocumentPreviewPath(caseRoot, aggregate, documentVersionId)
+   })
+ 
+   /** 从当前审核输入中移除一份或某一角色的全部材料；保留案卷内原件。 */
+   ipcMain.handle(
+     REVIEW_IPC_CHANNELS.REMOVE_DOCUMENTS,
+     (_event, input: { caseId: string; role: SourceDocument['role']; documentIds?: string[] }): Promise<ReviewCase> => {
+       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
+       if (!SOURCE_ROLES.has(input.role)) throw new Error(`参数 role 非法：${String(input.role)}`)
+       if (input.documentIds !== undefined && (!Array.isArray(input.documentIds) || input.documentIds.some((id) => typeof id !== 'string'))) {
+         throw new Error('参数 documentIds 类型非法')
+       }
+       return removeDocumentsFromCase({
+         caseId: requireString(input.caseId, 'caseId'),
+         role: input.role,
+         ...(input.documentIds !== undefined ? { documentIds: input.documentIds.map((id) => requireString(id, 'documentId')) } : {}),
+       })
+     },
+   )
+ 
+   /** 更新同一材料栏的呈现与审核顺序。 */
+   ipcMain.handle(
+     REVIEW_IPC_CHANNELS.REORDER_DOCUMENTS,
+     (_event, input: { caseId: string; role: SourceDocument['role']; documentIds: string[] }): Promise<ReviewCase> => {
+       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
+       if (!SOURCE_ROLES.has(input.role)) throw new Error(`参数 role 非法：${String(input.role)}`)
+       if (!Array.isArray(input.documentIds) || input.documentIds.some((id) => typeof id !== 'string')) {
+         throw new Error('参数 documentIds 类型非法')
+       }
+       return reorderDocumentsInCase({
+         caseId: requireString(input.caseId, 'caseId'),
+         role: input.role,
+         documentIds: input.documentIds.map((id) => requireString(id, 'documentId')),
+       })
+     },
+   )
+ 
+   /** 查询最近一次运行及输入有效性（M0/H09：恢复 + 过期标记） */
+   ipcMain.handle(REVIEW_IPC_CHANNELS.LATEST_RUN, (_event, caseId: string) => {
+     if (typeof caseId !== 'string' || caseId.length === 0) throw new Error('参数 caseId 非法')
+     // 惰性引入避免与 run-service 的模块初始化顺序耦合（与 GET_RUN 同款做法）
+     const { getLatestRunStatus } = require('./run-service') as typeof import('./run-service')
+     return getLatestRunStatus(caseId)
+   })
+ 
+   // ===== V2 通道（M5：全部薄委托，服务层见 review-v2 系列文件） =====
+   ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_TEMPLATES_V2, () => {
+     const { listTemplates } = require('./template-store') as typeof import('./template-store')
+     return listTemplates()
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_TEMPLATE_VERSIONS_V2, () => {
+     const { listTemplateVersions } = require('./template-store') as typeof import('./template-store')
+     return listTemplateVersions()
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_ARCHIVED_TEMPLATES_V2, () => {
+     const { listArchivedTemplates } = require('./template-store') as typeof import('./template-store')
+     return listArchivedTemplates()
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.REORDER_TEMPLATES_V2, (_e, templateIds: string[]) => {
+     if (!Array.isArray(templateIds) || templateIds.some((id) => typeof id !== 'string')) throw new Error('模板顺序参数非法')
+     const { reorderTemplates } = require('./template-store') as typeof import('./template-store')
+     return reorderTemplates(templateIds)
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.REMOVE_TEMPLATE_V2, (_e, templateId: string) => {
+     if (typeof templateId !== 'string' || !templateId) throw new Error('参数 templateId 非法')
+     const { removeTemplateFromLibrary } = require('./template-store') as typeof import('./template-store')
+     removeTemplateFromLibrary(templateId)
+     return true
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.RESTORE_TEMPLATE_V2, (_e, templateId: string) => {
+     if (typeof templateId !== 'string' || !templateId) throw new Error('参数 templateId 非法')
+     const { restoreTemplateToLibrary } = require('./template-store') as typeof import('./template-store')
+     return restoreTemplateToLibrary(templateId)
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_TEMPLATE_V2, (_e, templateId: string, version?: number) => {
+     if (typeof templateId !== 'string' || !templateId) throw new Error('参数 templateId 非法')
+     const { getTemplate } = require('./template-store') as typeof import('./template-store')
+     return getTemplate(templateId, version)
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.PUBLISH_TEMPLATE_V2, (_e, templateId: string, version: number) => {
+     if (typeof templateId !== 'string' || !templateId || !Number.isFinite(version)) throw new Error('参数非法')
+     const { publishTemplate } = require('./template-store') as typeof import('./template-store')
+     return publishTemplate(templateId, version)
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_RUNS_V2, (_e, caseId: string) => {
+     assertSafeReviewStorageId(caseId, 'caseId')
+     const { listRunsV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
+     const { reconcilePiReviewRunsWithReadReceipts } = require('./pi-case-review-service') as typeof import('./pi-case-review-service')
+     return reconcilePiReviewRunsWithReadReceipts(caseId, listRunsV2(caseId))
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_RUN_V2, (_e, input: { caseId: string; runId: string }) => {
+     assertSafeReviewStorageId(input?.caseId, 'caseId')
+     assertSafeReviewStorageId(input?.runId, 'runId')
+     const { getRunV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
+     return getRunV2(input.caseId, input.runId)
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.CANCEL_RUN_V2, (_e, runId: string) => {
+     if (typeof runId !== 'string' || !runId) throw new Error('参数 runId 非法')
+     const { cancelRunV2 } = require('./run-service-v2') as typeof import('./run-service-v2')
+     cancelRunV2(runId)
+     return true
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.MIGRATE_CASE_V2, async (_e, caseId: string) => {
+     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+     const { getCase } = require('./case-store') as typeof import('./case-store')
+     const { migrateCaseToV2 } = require('./migration') as typeof import('./migration')
+     const v1 = getCase(caseId)
+     if (!v1) throw new Error(`案卷不存在: ${caseId}`)
+     const result = migrateCaseToV2(v1)
+     if (result.caseV2) await ensureWorkspaceAggregateV2(caseId)
+     return result
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.BOOT_CHECK_V2, () => {
+     const { runBootCheckV2 } = require('./boot-check') as typeof import('./boot-check')
+     return runBootCheckV2()
+   })
+ 
+   // ===== N1d：V2 应用命令（薄委托 application-service / fixture） =====
+   ipcMain.handle(REVIEW_IPC_CHANNELS.SEED_FIXTURE_V2, () => {
+     const { seedComprehensiveFixture, publishComprehensiveFixture } = require('./fixtures/comprehensive-fixture') as typeof import('./fixtures/comprehensive-fixture')
+     const { getTemplate, saveDraft, publishTemplate } = require('./template-store') as typeof import('./template-store')
+     seedComprehensiveFixture({ getTemplate, saveDraft })
+     publishComprehensiveFixture({ getTemplate, saveDraft, publish: publishTemplate })
+     return true
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.CREATE_CASE_V2, (_e, input: { caseId: string; templateId: string; version: number; payload: unknown; actor: import('@profer/shared').Actor }) => {
+     if (!input?.templateId) throw new Error('参数非法')
+     assertSafeReviewStorageId(input?.caseId, 'caseId')
+     const { createCaseFromTemplate } = require('./application-service') as typeof import('./application-service')
+     return createCaseFromTemplate(input.templateId, input.version, input.payload as never, input.actor, input.caseId)
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_AGGREGATE_V2, (_e, caseId: string) => {
+     assertSafeReviewStorageId(caseId, 'caseId')
+     const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
+     return getCaseV2Aggregate(caseId)
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.UPDATE_FIELDS_V2, (_e, input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) => {
+     const { updateFields } = require('./application-service') as typeof import('./application-service')
+     const command = input.command as unknown as { requestId: string; actor: import('@profer/shared').Actor; expectedRevision: number; payload: unknown }
+     return updateFields(input.caseId, command as unknown as Parameters<typeof updateFields>[1])
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.EXPORT_REPORT_V2, (_e, caseId: string) => {
+     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+     // 薄委托共享导出服务（08 设计：IPC 与 Agent 工具同服务函数）
+     const { exportCaseReport } = require('./report-export-v2-service') as typeof import('./report-export-v2-service')
+     return exportCaseReport(caseId)
+   })
+   // ===== C1：审核操作可信指派（显式指派是 Agent 写权限唯一来源） =====
+   ipcMain.handle(REVIEW_IPC_CHANNELS.ASSIGNMENT_CREATE_V2, (_e, input: { sessionId: string; turnId: string; caseId?: string; templateId?: string; templateVersion?: number; actions: string[]; workRole?: 'reviewer' | 'student' }) => {
+     if (!input || typeof input !== 'object' || !input.sessionId || !input.turnId) throw new Error('指派必须绑定会话与用户轮次')
+     const { assertOrdinaryAgentSession } = require('../agent-session-manager') as typeof import('../agent-session-manager')
+     assertOrdinaryAgentSession(input.sessionId)
+     const { createAssignment } = require('./review-agent-assignment') as typeof import('./review-agent-assignment')
+     return createAssignment({ sessionId: input.sessionId, turnId: input.turnId, caseId: input.caseId, templateId: input.templateId, templateVersion: input.templateVersion, actions: input.actions as never, workRole: input.workRole })
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.ASSIGNMENT_REVOKE_V2, (_e, assignmentId: string) => {
+     if (typeof assignmentId !== 'string' || !assignmentId) throw new Error('参数 assignmentId 非法')
+     const { revokeAssignment, listAssignments } = require('./review-agent-assignment') as typeof import('./review-agent-assignment')
+     const { assertOrdinaryAgentSession } = require('../agent-session-manager') as typeof import('../agent-session-manager')
+     const assignment = listAssignments().find((item) => item.id === assignmentId)
+     if (assignment) assertOrdinaryAgentSession(assignment.sessionId)
+     return revokeAssignment(assignmentId)
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.ASSIGNMENT_LIST_V2, (_e, sessionId?: string) => {
+     const { listAssignments } = require('./review-agent-assignment') as typeof import('./review-agent-assignment')
+     const { isReviewOwnedOrDeletedAgentSessionId } = require('../agent-session-manager') as typeof import('../agent-session-manager')
+     return listAssignments(sessionId).filter((item) => !isReviewOwnedOrDeletedAgentSessionId(item.sessionId))
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.CASE_TIMELINE_V2, (_e, input: { caseId: string; filterOperator?: 'human' | 'agent' | 'mock' | 'school' | 'system' | 'unknown' }) => {
+     if (!input || typeof input !== 'object' || typeof input.caseId !== 'string' || !input.caseId) throw new Error('参数 caseId 非法')
+     const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
+     const { buildCaseTimeline } = require('./case-timeline') as typeof import('./case-timeline')
+     const { listRunsV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
+     const { reconcilePiReviewRunsWithReadReceipts } = require('./pi-case-review-service') as typeof import('./pi-case-review-service')
+     const aggregate = getCaseV2Aggregate(input.caseId)
+     if (!aggregate) throw new Error(`案卷聚合不存在: ${input.caseId}`)
+     const runs = reconcilePiReviewRunsWithReadReceipts(input.caseId, listRunsV2(input.caseId))
+     return buildCaseTimeline(aggregate, runs, input.filterOperator)
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_RUN_OBSERVATIONS_V2, (_e, caseId: string) => {
+     assertSafeReviewStorageId(caseId, 'caseId')
+     const { listRunsV2, readArtifact } = require('./run-store-v2') as typeof import('./run-store-v2')
+     const runs = listRunsV2(caseId).filter((run) => run.status === 'completed' || run.status === 'partially-completed')
+     if (runs.length === 0) return []
+     // 取最近完成运行的 extract 产物观察（真实模型抽取结果，含 sourceRefs 与 confirmed 标记）
+     const runId = runs[0]!.id
+     const artifact = readArtifact<{ observations?: Array<{ subjectId: string; fieldKey: string; value: unknown; sourceRefs?: Array<{ documentVersionId: string; quote?: string }>; extractedBy?: string; confirmed?: boolean; confidence?: number }> }>(caseId, runId, 'node-auto-check-extract')
+     return (artifact?.observations ?? []) as Array<Record<string, unknown>>
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_WORKSPACE_RUN_VALIDITY_V2, (_e, input: { caseId: string; runId: string }) => {
+     if (!input?.caseId || !input?.runId) throw new Error('参数非法')
+     const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
+     const { isWorkspaceRunStaleV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
+     const aggregate = getCaseV2Aggregate(input.caseId)
+     return !aggregate || isWorkspaceRunStaleV2(aggregate, input.runId)
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.CORRECT_OBSERVATION_V2, (_e, input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) => {
+     const { correctObservation } = require('./application-service') as typeof import('./application-service')
+     const command = input.command as unknown as { requestId: string; actor: import('@profer/shared').Actor; expectedRevision: number; payload: unknown }
+     return correctObservation(input.caseId, command as unknown as Parameters<typeof correctObservation>[1])
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.SET_EVIDENCE_LINK_V2, (_e, input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) => {
+     const { setEvidenceLink } = require('./application-service') as typeof import('./application-service')
+     const command = input.command as unknown as { requestId: string; actor: import('@profer/shared').Actor; expectedRevision: number; payload: unknown }
+     return setEvidenceLink(input.caseId, command as unknown as Parameters<typeof setEvidenceLink>[1])
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.RECORD_WORKSPACE_DISPOSITION_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+     const { recordWorkspaceDispositionV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
+     return recordWorkspaceDispositionV2(input.caseId, bindLocalReviewerCommand(input.command) as unknown as Parameters<typeof recordWorkspaceDispositionV2>[1])
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.OPEN_WORKSPACE_SUPPLEMENT_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+     const { openWorkspaceSupplementV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
+     return openWorkspaceSupplementV2(input.caseId, bindLocalReviewerCommand(input.command) as unknown as Parameters<typeof openWorkspaceSupplementV2>[1])
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.ACKNOWLEDGE_WORKSPACE_MATERIAL_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+     const { acknowledgeWorkspaceMaterialV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
+     return acknowledgeWorkspaceMaterialV2(input.caseId, bindLocalReviewerCommand(input.command) as unknown as Parameters<typeof acknowledgeWorkspaceMaterialV2>[1])
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.DECIDE_WORKSPACE_CASE_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+     const { decideWorkspaceCaseV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
+     return decideWorkspaceCaseV2(input.caseId, bindLocalReviewerCommand(input.command) as unknown as Parameters<typeof decideWorkspaceCaseV2>[1])
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.RECORD_WORKSPACE_SUBJECT_ADJUDICATION_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+     const { recordWorkspaceSubjectAdjudicationV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
+     return recordWorkspaceSubjectAdjudicationV2(input.caseId, bindLocalReviewerCommand(input.command) as unknown as Parameters<typeof recordWorkspaceSubjectAdjudicationV2>[1])
+   })
+ 
+   // ===== N3b：业务闭环命令（薄委托 stage-workflow） =====
+   ipcMain.handle(REVIEW_IPC_CHANNELS.RECORD_STAGE_DECISION_V2, (_e, input: { caseId: string; command: Record<string, unknown>; templateId: string; version: number }) => {
+     const { recordStageDecision } = require('./stage-workflow') as typeof import('./stage-workflow')
+     const { getTemplate } = require('./template-store') as typeof import('./template-store')
+     const template = getTemplate(input.templateId, input.version)
+     if (!template) throw new Error(`模板不存在: ${input.templateId}@${input.version}`)
+     return recordStageDecision(input.caseId, bindLocalReviewerCommand(input.command) as unknown as Parameters<typeof recordStageDecision>[1], template)
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.RESOLVE_SUPPLEMENT_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+     const { resolveSupplementV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
+     return resolveSupplementV2(input.caseId, bindLocalReviewerCommand(input.command) as unknown as Parameters<typeof resolveSupplementV2>[1])
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.RESPOND_SUPPLEMENT_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+     const { respondSupplementV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
+     return respondSupplementV2(input.caseId, input.command as unknown as Parameters<typeof respondSupplementV2>[1])
+   })
+   // ===== G02：V2 批次复用 Pi 审核 Agent 与同一审核工具链 =====
+   ipcMain.handle(REVIEW_IPC_CHANNELS.RUN_BATCH_V2, async (_e, batchId: string) => {
+     if (typeof batchId !== 'string' || !batchId) throw new Error('参数 batchId 非法')
+     const { runBatchQueue } = require('./batch-store') as typeof import('./batch-store')
+     const { assembleAndRunReview } = require('./run-async-service') as typeof import('./run-async-service')
+     const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
+     const { readBatchStateV2: readBatchStateForDispatch } = require('./batch-store') as typeof import('./batch-store')
+     const { assertBatchCaseTemplateLock, assertBatchRunTemplateLock, classifyBatchRunCompletion } = require('./batch-template-lock') as typeof import('./batch-template-lock')
+     const completed = await runBatchQueue(batchId, {
+       runCase: async (caseId: string) => {
+         const batch = readBatchStateForDispatch(batchId)
+         if (!batch) throw new Error('批次在执行期间丢失，拒绝继续')
+         // Fail closed before paid Provider invocation if V1/V2 projected case or
+         // published template version drifted since the batch was created.
+         assertBatchCaseTemplateLock(batch.batch, caseId, getCaseV2Aggregate(caseId))
+         const run = await assembleAndRunReview(caseId)
+         assertBatchRunTemplateLock(batch.batch, caseId, run)
+-        return { status: classifyBatchRunCompletion(run), runId: run.id, inputHash: run.inputManifest.hash }
++        return { status: classifyBatchRunCompletion(run), runId: run.id }
+       },
+     })
+     if (completed.automation && completed.automation.mode !== 'assist') {
+       const { runBatchAutomation } = require('./batch-automation-service') as typeof import('./batch-automation-service')
+       await runBatchAutomation(batchId)
+     }
+     const { readBatchStateV2 } = require('./batch-store') as typeof import('./batch-store')
+     return readBatchStateV2(batchId)
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.RUN_REVIEW_V2, async (_e, caseId: string) => {
+     assertSafeReviewStorageId(caseId, 'caseId')
+     // 薄委托共享运行服务（08 设计：IPC 与 Agent 工具同服务函数；人工发起 local-user）
+     const { assembleAndRunReview } = require('./run-async-service') as typeof import('./run-async-service')
+     return assembleAndRunReview(caseId)
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.PREPARE_PI_REVIEW_V2, (_event, input: { caseId: string; sessionId: string; turnId: string; resumeRunId?: string; inheritReadReceipts?: boolean }) => {
+     if (!input || typeof input.caseId !== 'string' || typeof input.sessionId !== 'string' || typeof input.turnId !== 'string'
+       || (input.resumeRunId !== undefined && typeof input.resumeRunId !== 'string')
+       || (input.inheritReadReceipts !== undefined && typeof input.inheritReadReceipts !== 'boolean')) {
+       throw new Error('审核案卷、Pi 会话和用户消息标识均为必填')
+     }
+     const { getAgentSessionMeta, assertOrdinaryAgentSession } = require('../agent-session-manager') as typeof import('../agent-session-manager')
+     assertOrdinaryAgentSession(input.sessionId)
+     const session = getAgentSessionMeta(input.sessionId)
+     if (!session) throw new Error('项目 Pi 会话不存在')
+     if (session.agentRuntime && session.agentRuntime !== 'pi') throw new Error('审核工作台只能使用项目 Pi Agent')
+     const presetId = session.presetReference?.presetId ?? session.presetId
+     if (presetId !== 'review-operator') throw new Error('审核会话必须使用审核操作员预设')
+     const { preparePiReviewRunV2 } = require('./pi-case-review-service') as typeof import('./pi-case-review-service')
+     return preparePiReviewRunV2(input)
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_PI_REVIEW_SESSION_V2, (_event, caseId: string) => {
+     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+     const { getPiReviewSessionForCase } = require('./pi-case-review-service') as typeof import('./pi-case-review-service')
+     const { isReviewOwnedOrDeletedAgentSessionId } = require('../agent-session-manager') as typeof import('../agent-session-manager')
+     const sessionId = getPiReviewSessionForCase(caseId)
+     return sessionId && !isReviewOwnedOrDeletedAgentSessionId(sessionId) ? sessionId : null
+   })
+   // 后台启动/停止只接受当前主窗口，内部归属与指派均由 Main 建立。
+   ipcMain.handle(REVIEW_IPC_CHANNELS.START_BACKGROUND_PI_REVIEW_V2, (event, input: import('@profer/shared').ReviewBackgroundPiStartRequest) => {
+     assertMainWindowSender(event, getMainWindow)
+     const { startBackgroundPiReview } = require('./review-pi-run-bridge') as typeof import('./review-pi-run-bridge')
+     return startBackgroundPiReview(input, event.sender)
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.STOP_BACKGROUND_PI_REVIEW_V2, (event, input: { caseId: string; runId: string }) => {
+     assertMainWindowSender(event, getMainWindow)
+     const { stopBackgroundPiReview } = require('./review-pi-run-bridge') as typeof import('./review-pi-run-bridge')
+     return stopBackgroundPiReview(input)
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_BACKGROUND_PI_REVIEW_STATE_V2, (_event, caseId: string) => {
+     assertSafeReviewStorageId(caseId, 'caseId')
+     const { getBackgroundPiReviewState } = require('./review-background-state') as typeof import('./review-background-state')
+     return getBackgroundPiReviewState(caseId)
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.ABORT_PI_REVIEW_V2, (_event, input: { caseId: string; sessionId: string; assignmentId: string; runId: string }) => {
+     if (!input?.caseId || !input.sessionId || !input.assignmentId || !input.runId) throw new Error('审核取消参数不完整')
+     const { assertOrdinaryAgentSession } = require('../agent-session-manager') as typeof import('../agent-session-manager')
+     assertOrdinaryAgentSession(input.sessionId)
+     const { getPiReviewBindingForSession, finishPiReviewRunV2 } = require('./pi-case-review-service') as typeof import('./pi-case-review-service')
+     const binding = getPiReviewBindingForSession(input.sessionId)
+     if (!binding || binding.caseId !== input.caseId || binding.runId !== input.runId || binding.assignmentId !== input.assignmentId) return false
+     const { revokeAssignment } = require('./review-agent-assignment') as typeof import('./review-agent-assignment')
+     finishPiReviewRunV2(binding, { status: 'failed', error: 'Pi 审核启动失败，授权已撤销' })
+     revokeAssignment(binding.assignmentId)
+     return true
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.CAST_RATING_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+     const { castRating } = require('./rating-service') as typeof import('./rating-service')
+     return castRating(input.caseId, bindLocalReviewerCommand(input.command) as unknown as Parameters<typeof castRating>[1])
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.RESOLVE_APPEAL_V2, (_e, input: { caseId: string; command: Record<string, unknown> }) => {
+     const { resolveAppealV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
+     return resolveAppealV2(input.caseId, bindLocalReviewerCommand(input.command) as unknown as Parameters<typeof resolveAppealV2>[1])
+   })
+ 
+   // ===== N4b：模板向导（无代码创建：政策先行 → 模板草稿 → 发布走 PUBLISH_TEMPLATE_V2） =====
+   ipcMain.handle(REVIEW_IPC_CHANNELS.CREATE_POLICY_V2, (_e, input: { policyId: string; title: string; content: string; enteredBy: string }) => {
+     if (!input?.policyId || !input?.content) throw new Error('参数非法')
+     const { canonicalContentHash, compileOwnerRules, publishPolicy, savePolicyDraft } = require('./policy-store') as typeof import('./policy-store')
+     const record = {
+       policyId: input.policyId, version: 1, title: input.title, contentHash: canonicalContentHash(input.content), content: input.content,
+       compiledRules: compileOwnerRules(input.content, input.policyId, 1),
+       origin: { kind: 'owner-statement' as const, text: '向导录入', enteredBy: String(input.enteredBy ?? 'local-user'), enteredAt: new Date().toISOString() },
+       status: 'draft' as const,
+       confirmations: [{ actorId: String(input.enteredBy ?? 'local-user'), role: 'template-owner' as const, at: new Date().toISOString(), note: '向导录入确认' }],
+     }
+     savePolicyDraft(record)
+     publishPolicy(input.policyId, 1)
+     return { policyId: input.policyId, version: 1, contentHash: record.contentHash }
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.SAVE_TEMPLATE_DRAFT_V2, (_e, template: import('@profer/shared').TemplateVersion) => {
+     if (!template?.templateId) throw new Error('参数非法')
+     const { saveDraft } = require('./template-store') as typeof import('./template-store')
+     return saveDraft(template)
+   })
+ 
+   // ===== N5b：批次管理（薄委托 batch-store） =====
+   ipcMain.handle(REVIEW_IPC_CHANNELS.CREATE_BATCH_V2, (_e, input: { batch: import('@profer/shared').ReviewBatch }) => {
+     const { createBatchV2 } = require('./batch-store') as typeof import('./batch-store')
+     return createBatchV2(input.batch)
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_BATCH_V2, (_e, batchId: string) => {
+     const { readBatchStateV2 } = require('./batch-store') as typeof import('./batch-store')
+     return readBatchStateV2(batchId)
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_BATCHES_V2, () => {
+     const { listBatchStatesV2 } = require('./batch-store') as typeof import('./batch-store')
+     return listBatchStatesV2()
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.BATCH_ACTION_V2, (_e, input: { action: 'finalize' | 'reopen' | 'retry' | 'recover' | 'configure-automation' | 'finalize-completed' | 'requeue-supplement'; batchId: string; newBatchId?: string; reason?: string; snapshot?: Record<string, unknown>; caseIds?: string[]; mode?: import('@profer/shared').BatchAutomationMode; confirmed?: boolean; caseId?: string; supplementId?: string; expectedRevision?: number; actor?: import('@profer/shared').Actor }) => {
+     if (!input || typeof input.batchId !== 'string' || !input.batchId) throw new Error('无效批次操作')
+     const { reopenBatch, retryBatchCases, recoverInterruptedBatch } = require('./batch-store') as typeof import('./batch-store')
+     // Legacy free-form renderer snapshots are NOT authoritative decisions.
+     // Use the central verified finalization service instead.
+     if (input.action === 'finalize') throw new Error('原始快照定稿入口已禁用，请使用核验并定稿')
+     if (input.action === 'reopen') return reopenBatch(input.batchId, input.newBatchId ?? `${input.batchId}-r${Date.now().toString(36)}`, input.reason ?? '人工重开')
+     if (input.action === 'retry') return retryBatchCases(input.batchId, input.caseIds ?? [])
+     if (input.action === 'requeue-supplement') {
+       if (input.confirmed !== true) throw new Error('补件批次重新入队必须由审核人明确确认')
+       if (typeof input.caseId !== 'string' || typeof input.supplementId !== 'string'
+         || !Number.isSafeInteger(input.expectedRevision) || (input.expectedRevision ?? -1) < 0) {
+         throw new Error('补件批次选择必须指定案卷、补件 ID 和最新修订号')
+       }
+       // The renderer cannot grant itself school/teacher authority; Main binds
+       // the reviewed local identity before delegating to the durable batch store.
+       const reviewer = bindLocalReviewerCommand({ actor: input.actor }).actor as import('@profer/shared').Actor
+       const { selectSupplementRequeueBatch } = require('./batch-store') as typeof import('./batch-store')
+       return selectSupplementRequeueBatch(input.caseId, input.batchId, {
+         actor: reviewer, supplementId: input.supplementId, expectedRevision: input.expectedRevision!,
+       }).batch
+     }
+     if (input.action === 'recover') return recoverInterruptedBatch(input.batchId)
+     if (input.action === 'configure-automation') {
+       const { configureBatchAutomation } = require('./batch-store') as typeof import('./batch-store')
+       if (!input.mode) throw new Error('需要指定批次自动化策略')
+       return configureBatchAutomation(input.batchId, input.mode, input.confirmed === true)
+     }
+     if (input.action === 'finalize-completed') {
+       const { finalizeCompletedBatch } = require('./batch-automation-service') as typeof import('./batch-automation-service')
+       return finalizeCompletedBatch(input.batchId)
+     }
+     throw new Error('未知批次操作')
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.BATCH_AUTO_PROCESS_V2, (_e, batchId: string) => {
+     if (typeof batchId !== 'string' || !batchId) throw new Error('参数 batchId 非法')
+     const { runBatchAutomation } = require('./batch-automation-service') as typeof import('./batch-automation-service')
+     return runBatchAutomation(batchId)
+   })
+   // Local-human batch group operation. The backend recomputes the preview and
+   // reruns each case's existing transaction guards; the renderer supplies no actor.
+   ipcMain.handle(REVIEW_IPC_CHANNELS.BATCH_GROUP_PREVIEW_V2, (_e, input: import('@profer/shared').BatchGroupActionRequest) => {
+     const { previewBatchGroupAction } = require('./batch-group-action-service') as typeof import('./batch-group-action-service')
+     return previewBatchGroupAction(input)
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.BATCH_GROUP_APPLY_V2, (_e, input: import('@profer/shared').BatchGroupApplyRequest) => {
+     const { applyBatchGroupAction } = require('./batch-group-action-service') as typeof import('./batch-group-action-service')
+     return applyBatchGroupAction(input)
+   })
+ 
+   ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_CASES_V2, () => {
+     const { listAggregatesV2 } = require('./case-store-v2') as typeof import('./case-store-v2')
+     return listAggregatesV2()
+   })
+ 
+   // ===== G01：材料登记与提交 =====
+   ipcMain.handle(REVIEW_IPC_CHANNELS.PICK_REGISTER_MATERIAL_V2, async (_e, input: { caseId: string; role: 'application' | 'evidence' | 'rule' | 'attachment'; materialSlotId?: string }) => {
+     if (!input?.caseId) throw new Error('参数 caseId 非法')
+         const { BrowserWindow, dialog } = require('electron') as typeof import('electron')
+     const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
+     const aggregate = getCaseV2Aggregate(input.caseId)
+     if (!aggregate) throw new Error(`案卷不存在: ${input.caseId}`)
+     // 逐文件读取聚合 revision 串行登记（事务天然串行；对话框一次性返回多选）
+     const actor = { actorId: 'local-user', actorSource: 'local' as const, role: 'reviewer' as const }
+     const { registerMaterial } = require('./material-service') as typeof import('./material-service')
+     const options = { properties: ['openFile', 'multiSelections'] as Array<'openFile' | 'multiSelections'> }
+     const win = BrowserWindow.getFocusedWindow() ?? undefined
+     const result = win ? await dialog.showOpenDialog(win, options) : await dialog.showOpenDialog(options)
+     if (result.canceled) return []
+     const versionIds: string[] = []
+     for (const sourcePath of result.filePaths) {
+       const fresh = getCaseV2Aggregate(input.caseId)!
+       const outcome = (await registerMaterial(input.caseId, {
+         requestId: `reg-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+         actor,
+         expectedRevision: fresh.caseV2.revision,
+         payload: { sourcePath, role: input.role, materialSlotId: input.materialSlotId },
+       })) as { ok: boolean; message?: string }
+       if (!outcome.ok) throw new Error(outcome.message ?? '登记失败')
+       const updated = getCaseV2Aggregate(input.caseId)!
+       versionIds.push(updated.caseV2.documents[updated.caseV2.documents.length - 1]!.versionId)
+     }
+     return versionIds
+   })
+   // 拖拽登记：渲染层经 webUtils.getPathForFile 拿到本地路径后逐个登记（同一事务链）
+   ipcMain.handle(REVIEW_IPC_CHANNELS.REGISTER_MATERIAL_PATH_V2, async (_e, input: { caseId: string; sourcePath: string; role: 'application' | 'evidence' | 'rule' | 'attachment'; materialSlotId?: string; fileName?: string; replacesVersionIds?: string[] }) => {
+     if (!input || typeof input.sourcePath !== 'string' || !input.sourcePath) throw new Error('参数 sourcePath 非法')
+     if (input.fileName !== undefined) {
+       const { basename } = require('node:path') as typeof import('node:path')
+       if (typeof input.fileName !== 'string' || !input.fileName || basename(input.fileName) !== input.fileName) throw new Error('参数 fileName 非法')
+     }
+     if (input.replacesVersionIds !== undefined && (!Array.isArray(input.replacesVersionIds) || input.replacesVersionIds.some((value) => typeof value !== 'string'))) throw new Error('参数 replacesVersionIds 非法')
+     const { registerMaterial } = require('./material-service') as typeof import('./material-service')
+     const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
+     const fresh = getCaseV2Aggregate(input.caseId)
+     if (!fresh) throw new Error(`案卷不存在: ${input.caseId}`)
+     const actor = { actorId: 'local-user', actorSource: 'local' as const, role: 'reviewer' as const }
+     const outcome = await registerMaterial(input.caseId, {
+       requestId: `reg-drop-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+       actor,
+       expectedRevision: fresh.caseV2.revision,
+       payload: {
+         sourcePath: input.sourcePath,
+         role: input.role,
+         materialSlotId: input.materialSlotId,
+         ...(input.fileName ? { fileName: input.fileName } : {}),
+         ...(input.replacesVersionIds ? { replacesVersionIds: input.replacesVersionIds } : {}),
+       },
+     })
+     if (!outcome.ok) throw new Error(outcome.message ?? '登记失败')
+     return outcome.entity?.versionId ?? outcome.aggregate.caseV2.documents.at(-1)?.versionId
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.SUBMIT_CASE_V2, (_e, caseId: string) => {
+     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
+     const { submitCaseV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
+     return submitCaseV2(caseId)
+   })
+ 
+   /** 删除案卷 */
+   ipcMain.handle(REVIEW_IPC_CHANNELS.DELETE_CASE, (_event, caseId: string): void => {
+     deleteCase(caseId)
+   })
+ 
+   // ===== AI 生成（左/中栏）=====
+ 
+   /** 生成规则大纲（左栏；无出口时降级返回 fixture 大纲） */
+   ipcMain.handle(
+     REVIEW_IPC_CHANNELS.GENERATE_RULE_OUTLINE,
+     async (_event, request: GenerateRuleOutlineRequest): Promise<RuleOutlineItem[]> => {
+       const outline = await generateRuleOutline(request)
+       await syncWorkspaceProjectionV2(request.caseId)
+       return outline
+     },
+   )
+ 
+   /** 识别可审核条目（中栏；无出口时降级返回已有条目） */
+   ipcMain.handle(REVIEW_IPC_CHANNELS.EXTRACT_ITEMS, async (_event, caseId: string): Promise<ReviewItem[]> => {
+     const items = await extractItems(caseId)
+     await syncWorkspaceProjectionV2(caseId)
+     return items
+   })
+ 
+   // ===== 审核运行（右栏）=====
+ 
+   /**
+    * 执行审核运行。
+    *
+    * 引擎选择：网关可用 → 'ai'（内部失败仍会降级 mock）；
+    * 网关不可用 → 直接走确定性模拟引擎（决策 D6，保证离线可演示）。
+    */
+   ipcMain.handle(REVIEW_IPC_CHANNELS.RUN_REVIEW, (_event, caseId: string): Promise<ReviewRun> => {
+     const engine = getReviewModelGatewayStatus().available ? 'ai' : 'mock-engine'
+     return startReviewRun(caseId, engine)
+   })
+ 
+   /** 查询单次运行状态 */
+   ipcMain.handle(
+     REVIEW_IPC_CHANNELS.GET_RUN,
+     (_event, input: { caseId: string; runId: string }): ReviewRun | undefined => {
+       return startReviewRunLookup(input)
+     },
+   )
+ 
+   // ===== 审核助手 =====
+ 
+   /** 助手对话（无出口时降级静态解答 degraded:true） */
+   ipcMain.handle(
+     REVIEW_IPC_CHANNELS.ASSISTANT_CHAT,
+     (_event, request: AssistantChatRequest): Promise<{ content: string; references: string[]; degraded: boolean }> => {
+       if (!request || typeof request !== 'object') throw new Error('参数 request 缺失或类型非法')
+       if (!Array.isArray(request.history)) throw new Error('参数 history 必须是消息数组')
+       // 只允许 user/assistant 角色（阻断渲染层伪造 system 消息的提示词注入面）
+       const history = request.history.filter(
+         (message) => !!message && (message.role === 'user' || message.role === 'assistant'),
+       )
+       return reviewAssistantChat({ ...request, history })
+     },
+   )
+ 
+   // ===== 报告与网关自检 =====
+ 
+   /** 导出预审报告（JSON + Markdown） */
+   ipcMain.handle(REVIEW_IPC_CHANNELS.EXPORT_REPORT, (_event, caseId: string): Promise<ExportReportResult> => {
+     return exportReport(caseId)
+   })
+ 
+   /** 查询当前可用模型出口（白名单自检） */
+   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_MODEL_GATEWAY_STATUS, (): ReviewModelGatewayStatus => {
+     return getReviewModelGatewayStatus()
+   })
+ 
+   /** 审核模块使用自己的 Agent 模型选择；密钥仍由全局渠道配置管理。 */
+   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_MODULE_SETTINGS_V2, (): ReviewModuleSettingsV2 => {
+     const { getReviewModuleSettings } = require('./module-settings-store') as typeof import('./module-settings-store')
+     return getReviewModuleSettings()
+   })
+   ipcMain.handle(REVIEW_IPC_CHANNELS.SAVE_MODULE_SETTINGS_V2, (_event, input: ReviewModuleSettingsV2): ReviewModuleSettingsV2 => {
+     if (!input || typeof input !== 'object' || !('agentModelSelection' in input)) throw new Error('审核设置参数非法')
+     const selection = input.agentModelSelection
+     if (selection !== null) {
+       if (!selection || typeof selection !== 'object'
+         || typeof selection.channelId !== 'string' || !selection.channelId
+         || typeof selection.modelId !== 'string' || !selection.modelId) {
+         throw new Error('审核模型选择参数非法')
+       }
+       const { listChannels } = require('../channel-manager') as typeof import('../channel-manager')
+       const channel = listChannels().find((candidate) => candidate.id === selection.channelId)
+       if (!channel || channel.enabled !== true || !(REVIEW_MODEL_PROVIDERS as readonly string[]).includes(channel.provider)) {
+         throw new Error('审核渠道不可用，请选择已启用的 OpenAI 兼容或本地模型渠道')
+       }
+       if (!channel.models?.some((model) => model.id === selection.modelId && model.enabled !== false)) {
+         throw new Error('审核模型不可用，请选择该渠道中已启用的模型')
+       }
+     }
+     const { saveReviewModuleSettings } = require('./module-settings-store') as typeof import('./module-settings-store')
+     return saveReviewModuleSettings({ agentModelSelection: selection })
+   })
+ 
+   console.log('[审核专区] IPC 处理器注册完成')
+ }
+ 
+ /** GET_RUN 的实现（独立函数，避免 handler 内联依赖） */

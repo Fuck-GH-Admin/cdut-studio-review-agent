@@ -1,0 +1,74 @@
+{
+  "testId": "L1-01",
+  "snapshot": "D4",
+  "repoSha": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+  "fixtureKind": "synthetic-only",
+  "revision": {
+    "before": 5,
+    "after": 6
+  },
+  "aggregateSha256": {
+    "before": "b0b87717617e471adcff1d275d0cbb7bad0a6275b23b15a5b98f4694e983268d",
+    "after": "a49732f12b17f28b7a1815b1cc3381823874bc17046d3b408d82a9de6a7b63c9"
+  },
+  "frozenPlanBaseline": {
+    "fingerprint": "fbb6f4b28920f7f58dc8b371292bcbef96650470c617e6b842c308e88ae27981",
+    "subjectIds": [
+      "frozen-subject-read",
+      "frozen-subject-copy"
+    ],
+    "ruleIds": [
+      "frozen-check-1",
+      "frozen-check-2"
+    ]
+  },
+  "planAtReplacement": {
+    "fingerprint": "fbb6f4b28920f7f58dc8b371292bcbef96650470c617e6b842c308e88ae27981",
+    "subjectIds": [
+      "frozen-subject-read",
+      "frozen-subject-copy"
+    ],
+    "ruleIds": [
+      "frozen-check-1",
+      "frozen-check-2"
+    ]
+  },
+  "planAfterArchive": {
+    "fingerprint": "fbb6f4b28920f7f58dc8b371292bcbef96650470c617e6b842c308e88ae27981",
+    "subjectIds": [
+      "frozen-subject-read",
+      "frozen-subject-copy"
+    ],
+    "ruleIds": [
+      "frozen-check-1",
+      "frozen-check-2"
+    ]
+  },
+  "observationAfterArchive": {
+    "value": {
+      "kind": "number",
+      "value": 4
+    },
+    "confirmed": false,
+    "sourceVersionIds": [
+      "doc-ev-001-v1"
+    ]
+  },
+  "evidenceLinkAfterArchive": {
+    "status": "rejected",
+    "documentVersionId": "doc-ev-001-v1"
+  },
+  "receiptCount": 7,
+  "coverage": {
+    "pendingChecks": 4,
+    "allClearVerdictAllowed": false,
+    "blockerCount": 2
+  },
+  "formalDecisionProbe": {
+    "ok": true,
+    "decisionId": "dec-1792393756924-r8h2",
+    "runId": "v3-postarchive-business-run",
+    "finalScores": []
+  },
+  "status": "PASS_SCOPED"
+}

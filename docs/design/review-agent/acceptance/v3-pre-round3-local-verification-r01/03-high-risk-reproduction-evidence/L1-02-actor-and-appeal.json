@@ -1,0 +1,84 @@
+{
+  "testId": "L1-02",
+  "repoSha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+  "fixtureKind": "synthetic-only",
+  "ipcHarness": "registerReviewIpc Main-handler harness (no live Electron renderer)",
+  "operationResults": {
+    "update": {
+      "ok": true
+    },
+    "correction": {
+      "ok": true
+    },
+    "evidenceLink": {
+      "ok": true
+    }
+  },
+  "persistedSpoofActorWrites": [
+    {
+      "requestId": "create-v3-actor-ipc-case",
+      "type": "CreateCaseFromTemplate",
+      "revision": 0,
+      "actor": {
+        "actorId": "synthetic-spoof-school",
+        "actorSource": "school",
+        "role": "teacher"
+      }
+    },
+    {
+      "requestId": "v3-spoof-update",
+      "type": "UpdateFields",
+      "revision": 1,
+      "actor": {
+        "actorId": "synthetic-spoof-school",
+        "actorSource": "school",
+        "role": "teacher"
+      }
+    },
+    {
+      "requestId": "v3-spoof-correction",
+      "type": "CorrectObservation",
+      "revision": 2,
+      "actor": {
+        "actorId": "synthetic-spoof-school",
+        "actorSource": "school",
+        "role": "teacher"
+      }
+    },
+    {
+      "requestId": "v3-spoof-evidence-link",
+      "type": "SetEvidenceLink",
+      "revision": 3,
+      "actor": {
+        "actorId": "synthetic-spoof-school",
+        "actorSource": "school",
+        "role": "teacher"
+      }
+    }
+  ],
+  "finalRevision": 3,
+  "spoofStatus": "REPRODUCED_FAIL",
+  "appeal": {
+    "testId": "L1-02-APPEAL",
+    "repoSha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+    "fixtureKind": "synthetic-only",
+    "actor": "Main bindLocalReviewerCommand local reviewer",
+    "serviceRequirement": "teacher",
+    "result": {
+      "ok": false,
+      "code": "INVALID_TRANSITION",
+      "message": "申诉更正必须由经过授权的复核教师完成"
+    },
+    "before": {
+      "revision": 1,
+      "receiptCount": 1,
+      "appealStatus": "in-review"
+    },
+    "after": {
+      "revision": 1,
+      "receiptCount": 1,
+      "appealStatus": "in-review"
+    },
+    "status": "REPRODUCED_DENY / BLOCKED_AUTH_DESIGN"
+  }
+}

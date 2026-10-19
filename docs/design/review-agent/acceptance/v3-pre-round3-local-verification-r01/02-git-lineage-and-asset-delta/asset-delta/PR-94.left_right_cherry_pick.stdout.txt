@@ -1,0 +1,20 @@
+< b68443b2 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 3b368722 docs(d4): record real unified CI success, initial false green, limits, and exact evidence
+< 3e351ab5 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< c8e87418 ci(d4): fail closed on bun test and verify through tee using pipefail
+< 1c082f5a test(d4): case-scoped rules need no target; enforce paired subject/object when scoped
+< 1b372132 fix(d4): preserve legitimate case-scoped Check mappings without objectKey
+< 620f091d test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 9b3e5bfe docs(d4): reproducible Bun worktree, held-template import, D2 smoke and failure handoff
+< be563807 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 10cd12ce ci(d4): frozen Bun full regression and fifty held-draft imports
+< 1242daee test(d4): regression for 50-source catalog, candidate import and cross-domain scope
+< 2c620194 fix(d4): use static Node fs import for Bun ESM runner
+< 70635dd0 feat(d4): expose explicit 50-candidate import and D1/D3/D2 verification CLI
+< d19b8a24 feat(d4): add fixed-source 50-template machine-readable catalog
+< e03539cb feat(d4): integrate all eight domain candidate assets at fixed heads
+> fa3f5612 docs(d4-g08): lock measured D1 D3 D2 Pi evidence and per-template manifests
+> fd42de23 test(d4-g08): execute T03 query followup and withdrawal through real Pi technical runs
+> a9868c6a fix(d4-g08): type test-only synthetic aggregate consistently with COMMON fixtures
+> 8d946f95 test(d4-g08): execute two full authoring workspaces through D1 D3 D2 and Pi
+> 45615fd1 feat(d4-g08): convert both full business sources to modular D1 workspaces

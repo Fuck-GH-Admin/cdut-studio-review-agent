@@ -1,0 +1,68 @@
+{
+  "testId": "L1-03",
+  "repoSha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+  "fixtureKind": "synthetic-only",
+  "invocation": "Main BATCH_ACTION_V2 finalize-completed",
+  "status": "finalized",
+  "entries": [
+    {
+      "caseId": "v3-batch-run-mismatch",
+      "status": "done",
+      "entryRunId": "run-entry-bound"
+    },
+    {
+      "caseId": "v3-batch-run-missing",
+      "status": "done",
+      "entryRunId": null
+    }
+  ],
+  "decisions": [
+    {
+      "caseId": "v3-batch-run-mismatch",
+      "decisionId": "decision-v3-batch-run-mismatch",
+      "result": "pass",
+      "runId": "run-final-reference",
+      "basedOnRevision": 0,
+      "actor": {
+        "actorId": "synthetic-reviewer",
+        "actorSource": "local",
+        "role": "reviewer"
+      }
+    },
+    {
+      "caseId": "v3-batch-run-missing",
+      "decisionId": "decision-v3-batch-run-missing",
+      "result": "pass",
+      "runId": "run-final-no-entry-binding",
+      "basedOnRevision": 0,
+      "actor": {
+        "actorId": "synthetic-reviewer",
+        "actorSource": "local",
+        "role": "reviewer"
+      }
+    }
+  ],
+  "bindings": [
+    {
+      "caseId": "v3-batch-run-mismatch",
+      "decisionRunId": "run-final-reference",
+      "entryRunId": "run-entry-bound",
+      "matches": false
+    },
+    {
+      "caseId": "v3-batch-run-missing",
+      "decisionRunId": "run-final-no-entry-binding",
+      "entryRunId": null,
+      "matches": false
+    }
+  ],
+  "snapshotHash": "576312ea277c70abbcd01f63556857da2e25e388e656c3b3d89511a0c61e7c96",
+  "bottomBinding": {
+    "batchStatus": "finalized",
+    "caseId": "v3-batch-low-level-mismatch",
+    "entryRunId": "run-bottom-entry",
+    "decisionRunId": "run-bottom-decision",
+    "matches": false
+  },
+  "statusResult": "REPRODUCED_FAIL"
+}

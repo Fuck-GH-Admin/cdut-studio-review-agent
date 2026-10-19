@@ -1,0 +1,45 @@
+< b68443b2 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 3b368722 docs(d4): record real unified CI success, initial false green, limits, and exact evidence
+< 3e351ab5 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< c8e87418 ci(d4): fail closed on bun test and verify through tee using pipefail
+< 1c082f5a test(d4): case-scoped rules need no target; enforce paired subject/object when scoped
+< 1b372132 fix(d4): preserve legitimate case-scoped Check mappings without objectKey
+< 620f091d test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 9b3e5bfe docs(d4): reproducible Bun worktree, held-template import, D2 smoke and failure handoff
+< be563807 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 10cd12ce ci(d4): frozen Bun full regression and fifty held-draft imports
+< 1242daee test(d4): regression for 50-source catalog, candidate import and cross-domain scope
+< 2c620194 fix(d4): use static Node fs import for Bun ESM runner
+< 70635dd0 feat(d4): expose explicit 50-candidate import and D1/D3/D2 verification CLI
+< d19b8a24 feat(d4): add fixed-source 50-template machine-readable catalog
+< e03539cb feat(d4): integrate all eight domain candidate assets at fixed heads
+> c2f49f93 docs(G03): separate preserved material duties from unsupported school-stage gate mappings
+> c2c76622 test(G03): ensure no unverified case-stage or material gate is invented
+> 9af9a53a fix(G03 D4): remove unsupported stage assumptions G03-T10,G03-T11
+> 3e5c7983 fix(G03 D4): remove unsupported stage assumptions G03-T08,G03-T09
+> b47f7a1f fix(G03 D4): remove unsupported stage assumptions G03-T06,G03-T07
+> 16dddeaf fix(G03 D4): regenerate safe authoring source gates G03-T03,G03-T12
+> 4c09a91b fix(G03 D4): regenerate safe authoring source gates G03-T01,G03-T02
+> 74c7d346 fix(G03 D4): do not invent stage/material gates from ordinal R IDs
+> a33a42d1 test(G03 D4): archive verified D2 Plans and Pi receipts [skip ci]
+> abed040e test(G03): require executable C front matter and common R rule envelope for all ten
+> 59f2ceba fix(G03 D4): source-preserving D1 module regeneration G03-T10,G03-T11
+> d4140315 fix(G03 D4): source-preserving D1 module regeneration G03-T08,G03-T09
+> 9edf6315 fix(G03 D4): source-preserving D1 module regeneration G03-T06,G03-T07
+> 60e70e29 fix(G03 D4): preserve complete front matter and rule envelopes G03-T03,G03-T12
+> 015542f4 fix(G03 D4): preserve complete front matter and rule envelopes G03-T01,G03-T02
+> 98195270 fix(G03): recognize boldface Markdown rule IDs in shared rule envelope
+> b1877ba4 fix(G03 D4): preserve C source front matter and shared R envelope in active modules
+> 46324e59 test(G03 D4): archive verified D2 Plans and Pi receipts [skip ci]
+> d0ce47ce test(G03 T06): retain draft stage gate and isolate evidence on ungated R02
+> 3ee246e1 ci(G03): produce verifiable plans, Pi receipts and conditional archive
+> a1c13ae3 docs(G03): explain real modular assets, reproducibility and authority bounds
+> e98ba39a build(G03): add immutable SHA-checked local source regenerator
+> 35f86806 test(G03 D4): ten full-source D1/D3/D2 and synthetic Pi integration cases
+> ffaaddf1 feat(G03 D4): generate modular workspaces G03-T10 G03-T11
+> 28d99489 feat(G03 D4): generate modular workspaces G03-T08 G03-T09
+> 4f5e9086 feat(G03 D4): generate modular authoring workspaces G03-T06 G03-T07
+> b2962a4f feat(G03 D4): generate modular authoring workspaces G03-T03 G03-T12
+> ac33f622 feat(G03 D4): generate modular authoring workspaces G03-T01 G03-T02
+> 0f43db73 feat(G03 D4): implement deterministic full-Markdown D1/D2 generator
+> b568c246 feat(G03 D4): pin ten business sources and module/condition catalog

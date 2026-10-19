@@ -1,0 +1,113 @@
+> db028487 docs(p06): document R03 batch run attribution safety, offline regression and deferred LIVE gates
+> db71fea3 fix(p06): block stale automation case and Run bindings at transaction time
+> b57c5c8e test(p06): cover durable batch Run binding and protect legacy unbound retry
+> de22b96b feat(p06): display only batch-bound run evidence and reject legacy unbound case runs
+> ef301099 feat(p06): bind each batch entry to its own persisted Run and isolate automatic/group actions
+> 85fdc103 fix(p06): recognize max-turn SDK subtype even when provider error text omits turn detail
+> fdc50fb7 docs(p06): add batch-panel Run provenance and remaining same-template cross-batch limitation
+> 6253fa69 fix(p06): prevent unrelated latest Run from appearing as selected batch evidence
+> 176cd73e test(p06): correct TS strict cast for partial synthetic failed Run fixture
+> 7a3c5b90 docs(p06): record second L02-01 R02 reliability engineering batch and deferred LIVE gates
+> a13cf8f2 fix(p06): enforce Run case identity and input-manifest template, reject execution-failed batch done
+> 937f0079 fix(p06): forbid partial Pi tool acceptance from being misreported as successful on SDK failure
+> 4499df42 test(p06): cover local insufficient→resubmission→satisfied and single-batch requeue lifecycle
+> 560c8f50 fix(p06): classify Pi max-turn exhaustion as technical and guide bounded evidence-first submission
+> e400068b fix(p06): avoid duplicate batch state reader declaration in Main IPC
+> 268a2912 docs(p06): record R02 product implementation, unresolved evidence attribution and batch acceptance gates
+> 356a9eb1 feat(p06): surface max-turn technical failure without treating missing checks as noncompliance
+> b603c604 fix(p06): deny mismatched case/Run frozen template before or after paid batch execution
+> d6d6afc1 fix(p06): align explicit batch requeue UI with Main-bound local reviewer actor
+> ec9c0e72 feat(p06): add explicit one-batch supplement requeue UI with fresh Main validation
+> bc228f64 docs(p06): make unified local agent handoff paths fully resolvable
+> 3e076b5e docs(p06): add 29-row unexecuted machine checklist and concrete local handoff references
+> 6af70e21 docs(p06): prepare one combined E05/E06 local acceptance campaign with independent verdicts and evidence contracts
+> d170d4a6 test(p06-e06): stop costly live QA immediately after first failed witness
+> bc2c9367 test(p06-e06): bind SDK and preview evidence to unique per-run marker
+> 056e24d2 docs(p06-e06): formalize isolated live acceptance and verify actual source SHA before CDP
+> 698aff46 test(p06-e06): harden isolated Pi live QA evidence and add fail-closed matrix contract
+> 4f8a68e2 docs(p06-l02-01): record E02/E03 follow-up patches, CI first failure and E05 matrix
+> ac20088c test(p06): seed a nonempty successful check for valid final-pass idempotency fixture
+> c372d4bc test(p06-l02-01): fix duplicate test local in supplement replay assertion
+> a879fd94 fix(p06-l02-01): share final readiness gate and persist supplement requeue replay protection
+> 4c274b1a fix(p06-l02-01): bind new formal stage finals to real current V2 runs
+> 737ae9e3 feat(p06): bind selected supplement batch requeue to local reviewer Main IPC
+> 24777e50 feat(p06-l02-01): provide audited single-target supplement batch requeue primitive
+> a70b07db docs(p06-l02-01): archive E02-E04 offline fixes, scoped gaps and immutable first failures
+> 2ca0f37a test(p06-e02): require verified system handoff before real reviewer partial approval
+> 9a9e54c2 fix(p06-e02): allow only verified system auto-check handoff, never machine final decision
+> 4ae2ec96 fix(p06-e03): fail closed when a supplement spans multiple historical batches
+> 874b07d5 test(p06-e03): ambiguous old batch must not be silently requeued
+> 18f741a6 fix(p06-e02): prevent generic machine identities from stage, appeal and supplement authorization
+> 95347245 test(p06-e02): prove stage decision cannot use generic agent global toggle
+> 23083086 fix(p06-e03): fail closed on same-millisecond supplement response and run
+> 54540e8d fix(p06-e03): reject forged document versions in supplement response
+> fb463363 test(p06-e03): reproduce fabricated supplement versions and equal-time stale run
+> 4291a349 fix(p06-e02): preserve readiness-first denial while enforcing final authorization
+> 8e290cf1 fix(p06-e02): forbid direct agent and unauthorized role decisions, honor open tasks
+> 0a2a318e test(p06-e02): reproduce direct decision authorization bypasses
+> 095a00f6 docs(p06): provide executable E02-E04 next-agent task and copyable handoff prompt
+> f9919686 docs(p06): complete next-session handoff with two RED causes, fixed E01 CI, and E02-E04 ownership
+> 17f1f74b docs(p06): freeze overall P06 progress, verified E01 CI, and staged offline-to-live roadmap
+> 3b3e52c0 docs(p06): preserve both red rounds and clarify submitCommand mutate return contract
+> 18b92073 test(p06-l02-01): distinguish newly applied supplement result entity from replay receipt
+> 72dad6b0 fix(p06-l02-01): return applied supplement entity from transaction mutate so new vs replay is distinguishable
+> 9d09cb6a docs(p06): close U1 acceptance campaign as scoped partial and begin L02-01 offline engineering
+> c576fe7a fix(p06-l02-01): do not requeue batch on idempotent supplement resolution replay
+> f36bff88 test(p06-l02-01): reproduce duplicate supplement resolution side-effect after batch progressed
+> 3baf1fc2 docs(p06-u1): add authenticated review UI gate evidence
+> 6f3af267 docs(p06-u1): record unified local acceptance R01
+> 9601bd21 docs(p06-u1): route former IO-only local task into single unified acceptance run
+> 3f3d1f79 docs(p06-u1): consolidate remaining local acceptance into one gated campaign and evidence bundle
+> afe3fd41 test(p06-u1): assert ENOSPC errno from kernel fixture and actual revocation write failure
+> 8caa5c59 docs(p06-u1): formal safe isolated full-volume Electron restart and IO recovery local acceptance
+> 52837b24 docs(p06-u1): source-bound Linux ENOSPC controlled gate and non-equivalence to real disk recovery
+> f163f470 test(p06-u1): exercise true Linux ENOSPC on run recovery and assignment revocation without disk mounts
+> 74298ace docs: record P06 U1 Pi provider local acceptance R01
+> cf8c5f36 test(p06-u1): match actual Pi ToolDefinition execute signature and typed error channel
+> 5c4108b8 docs(p06-u1): executable real Electron SDK/provider safety gate and conditional A-B-C local acceptance
+> c3bfbdab docs(p06-u1): freeze Pi review five-tool controlled contract and evidence tiers
+> de0e9b87 test(p06-u1): wire actual V2 assignment into Main Orchestrator review-only Pi admission and revocation
+> 3c9d1b63 test(qa): record Office #71 local Electron acceptance
+> 6c8ee997 docs(office71): formal local Electron real-file acceptance matrix and upstream gate
+> f387c2eb docs(office71): record source identity fix, upstream 403 and realistic release gates
+> 06a4f7bf test(office71): real materialization identity regression for same-name Office and backward cache
+> bfde1bd6 fix(office71): prioritize exact source paths over ambiguous basename matches
+> 352392c8 fix(office71): isolate Office file IDs/artifacts and reject ambiguous names
+> 64c01e57 test(review): add P02 local Electron recheck evidence
+> 6b96dbda docs(p02): define focused real Electron deletion/race recheck and immutable evidence gates
+> 42ef3664 docs(p02): record real first failure, exact fix contract and remote/local acceptance boundaries
+> 1fd48dc1 test(p02): negative late lookup, revocation preview cleanup and valid revisioned ordinary fallback
+> 8ccee7e1 test(p02): verify durable ordinary delete emits one revisioned Main projection, never internal owners
+> 7706991d fix(p02): revalidate early preview lookup against fresh Main metadata before UI hydration
+> ea776bb8 fix(p02): revoke deleted session ID and clear stale session/preview state atomically
+> 17e04f10 fix(p02): notify all windows after ordinary and workspace cascade deletes
+> f18787de fix(p02): publish ordinary session deletion only after persistent delete succeeds
+> 44c7dc9f audit(p06-u1): 本机实机证据、P02 迟到 lookup 首败与 Office #71 阻断
+> 1c6deadf ci(p06-u1): cancel superseded candidate validations after new commits
+> b21b3ce5 test(p06-u1): use actual built-in default preset ID for drift scenario
+> 73cb485b docs(p06-u1): provide standalone local agent execution prompt
+> 4b241846 ci(p06-u1): preserve failure exits and keep evidence outside source tree
+> feff1c40 docs(p06-u1): executable local Electron/Pi/Office/Owner/IO acceptance task and evidence contract
+> c7dd49e7 docs(p06-u1): separate remote controlled work from real local Electron/provider evidence
+> 72c646fb ci(p06-u1): independently run remote safety controls and archive Office #71 known failure
+> 0ab823be test(p06-u1): verify owner binding and preset drift fail closed at orchestrator
+> b8e70769 fix(p06-u1): deny ordinary Pi fallback for review-owned session without active binding
+> 0524604c docs(p06): close R02 archived and controlled evidence with exact CI, keep LIVE blocked
+> 6081abde docs(p06): record R02 first-failure distinctions and per-case provenance limits
+> e6fd9a11 ci(p06): run new independent archival and scoped Bun regression with immutable logs
+> 9c99ce0d test(p06): independently reconstruct nine archived cases and separate command exit causes
+> 66dc3f09 docs(p06): freeze L02-00 cross-session handoff and independent rerun contract
+> 5bfa339e docs(p06-l02-00): publish code-proven failure attribution and bounded CI evidence
+> 18b78c85 test(p06-l02-00): archive A/B/C provenance audit against frozen source
+> efba1e49 docs(p06-l02-00): begin evidence-only A/B/C failure attribution preflight
+> 2d9e93f3 docs(p06): formal U0 pass per exact candidate, U1 fail-then-fix and blocked live handoff
+> 75d49fe5 ci(p06): run U1 controlled SourceRef/Office repro only after U0 passes
+> bb697401 test(p06-u1): add source-derived Office v2 real index collision replay for deferred #71
+> ef6a4838 test(p06-u1): replay PR72 Office-v2 / strict SourceRef contract on fixed candidate
+> 4bcf8575 fix(review): reject inactive versions in evidence references and post-vision checks
+> 4474291c test(p06-u1): first-failure guard for retired material source references
+> 069e4cef docs(p06): establish U1 differential safety cases and evidence classifications without pre-signing
+> b67f46a0 docs(p06): record U0 candidate, historical first failure and non-release gate
+> d89ba72a ci(p06): run U0 clean worktree gate against PR head on self-hosted runner
+> 5d382749 test(p06): add strict candidate-bound U0 evidence gate
+> faa06777 fix(cli): track Bun bin entrypoint as executable for frozen installs
