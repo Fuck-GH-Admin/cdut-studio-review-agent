@@ -8,7 +8,9 @@
  *
  * This does not own C ReviewRun/ACK or create a Provider receipt.
  */
-import {C0ContractError, type RunEvidenceIdentity} from '@profer/shared'
+import {
+  assertC0RunEvidenceIdentity, C0ContractError, type RunEvidenceIdentity,
+} from '@profer/shared'
 import type {
   V3AMainSDKTurnPort, V3ASDKMode, V3ATurnInterruption, V3ATurnHostOutcome,
 } from './review-v3-main-sdk-turn-bridge'
@@ -64,6 +66,10 @@ export class V3APhysicalSDKTurnPort implements V3AMainSDKTurnPort {
   }
 
   async nextTurn(input: V3APhysicalTurnInput): Promise<V3ATurnHostOutcome> {
+    assertC0RunEvidenceIdentity(input.run)
+    if (!['direct','hidden','graph','batch'].includes(input.mode)) {
+      throw new C0ContractError('CASE_SCOPE_FORBIDDEN','Unsupported SDK Host execution mode')
+    }
     if (!validId(input.dispatchId)) {
       throw new C0ContractError('CONTRACT_INVALID',
         'Main persistent dispatch identity required')
