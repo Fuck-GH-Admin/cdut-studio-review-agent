@@ -136,13 +136,13 @@ export function readB20CurrentCandidateBundle(
   const scope = verifiedScope(authority.currentScope())
   sources.staging.assertStillGranted(scope)
   const author = readB1AuthorRevision(expected.templateId)
-  if (!author) refuse('CURRENT_AUTHOR_MISSING')
+  if (author === undefined) throw new Error('B_R20_CURRENT_AUTHOR_MISSING')
   if (author.templateId !== expected.templateId || author.document.templateId !== expected.templateId ||
       author.revision !== expected.revision || author.digest !== expected.revisionDigest) {
     throw new Error('B_R20_AUTHOR_REVISION_CONFLICT')
   }
   const frozen = readB1FrozenCandidate(expected.templateId, expected.frozenFingerprint)
-  if (!frozen) refuse('FROZEN_CANDIDATE_MISSING')
+  if (frozen === undefined) throw new Error('B_R20_FROZEN_CANDIDATE_MISSING')
   if (frozen.templateId !== expected.templateId || frozen.revision !== author.revision ||
       frozen.status !== 'candidate-held' ||
       frozen.descriptor.canonicalPlan.fingerprint !== expected.frozenFingerprint ||
@@ -154,7 +154,7 @@ export function readB20CurrentCandidateBundle(
   // C's source selector registry is itself a REQUIRED, independently approved
   // dependency. Raw IPC body selections must never be passed into this facade.
   const selected = authority.currentSelections(scope, expected)
-  if (!Array.isArray(selected)) refuse('SOURCE_REGISTRY_NOT_INSTALLED')
+  if (!Array.isArray(selected)) throw new Error('B_R20_SOURCE_REGISTRY_NOT_INSTALLED')
   const selections = structuredClone(selected) as B19SourceSelection[]
   const archiveIds = new Set<string>()
   for (const choice of selections) {
@@ -163,7 +163,9 @@ export function readB20CurrentCandidateBundle(
   const nativeScopes: B19TrustedArchiveScope[] = []
   for (const archiveId of archiveIds) {
     const physicalArchiveKey = authority.nativeArchiveKey(scope, archiveId)
-    if (!validText(physicalArchiveKey)) refuse('NATIVE_PICKER_PROVENANCE_NOT_INSTALLED')
+    if (typeof physicalArchiveKey !== 'string' || !physicalArchiveKey.trim()) {
+      throw new Error('B_R20_NATIVE_PICKER_PROVENANCE_NOT_INSTALLED')
+    }
     nativeScopes.push({archiveId,physicalArchiveKey})
   }
   const provenance = buildB19CandidateSourceBindings(
