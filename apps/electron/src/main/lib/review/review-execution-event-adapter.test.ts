@@ -1,4 +1,4 @@
-import { mkdtempSync, rmSync } from 'node:fs'
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it } from 'bun:test'
@@ -17,7 +17,7 @@ class MemoryStore implements OwnerPersistence {
   read() { return this.value }
   write(value: string) { this.value = value }
 }
-function start() {
+function start(ownerFileStore?: OwnerPersistence) {
   const ownerStore = new MemoryStore()
   const eventStore = new MemoryStore()
   const principal: Principal = {
@@ -51,7 +51,7 @@ function start() {
     authorizeExecution: () => { if (!current) throw new Error('Main denied') },
     isCurrent: () => current,
   }
-  const owners = new V3ReviewOwnerAdapter(ownerStore, authority)
+  const owners = new V3ReviewOwnerAdapter(ownerFileStore ?? ownerStore, authority)
   const lease = owners.grant({
     principal, run, plan, sources: [source], sessionId: 'owned-session-1',
     senderKey: 'main-contents-11', expiresAt: Date.now() + 30_000,
@@ -105,6 +105,22 @@ describe('V3 A2 scoped execution proposals', () => {
     expect(() => stale.acknowledge(delivery.deliveryId, delivery.event)).toThrow()
     expect(new V3ExecutionEventAdapter(h.eventStore, h.owners).pending())
       .toHaveLength(1)
+  })
+
+  it('A-OWN-03: cross-PID Owner revoke-lock bars a late event even when grant is still locally active', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'review-v3-a-owner-event-lock-'))
+    try {
+      const file = join(dir, 'owner.json')
+      const h = start(createFileOwnerPersistence(file))
+      // Represents another PID currently holding the Owner lock for revoke.
+      writeFileSync(file + '.write-lock', 'other-writer', { flag: 'wx' })
+      expect(() => h.adapter.proposeRead(h.call, 'must-not-persist')).toThrow()
+      expect(h.adapter.pending()).toHaveLength(0)
+      rmSync(file + '.write-lock')
+      expect(h.adapter.proposeRead(h.call, 'authorized-after-lock').event.sequence).toBe(1)
+    } finally {
+      rmSync(dir, { recursive: true, force: true })
+    }
   })
 
   it('A-FAIL-02: separate file-backed outbox writers cannot lose another PID event', () => {
