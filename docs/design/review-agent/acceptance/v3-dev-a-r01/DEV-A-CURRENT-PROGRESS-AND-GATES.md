@@ -50,7 +50,7 @@
 
 **新增真实源文件**：`apps/electron/src/main/lib/review/review-v3-sdk-physical-turn-port.ts`（首次提交 `ba0fa298d40d8cfcfe2cc221190ac4d4fc1f8fcd`）。只接受由 Main 实际注入 SDK native in-process Provider request 生命周期的 `requestStarted(nativeRequestId)` + `requestFinished(nativeRequestId,nativeReceiptId,status)`。全程只允许一次请求；缺 native request/receipt、重复/迟到或身份错配、native retry/带图失败二次 query、取消、SDK throw 都 fail closed。没有回执就不给 A3 `recordCompletedTurn()` 技术计数，不给 A2 正式候选终态，更无 C durable ACK。
 
-**测试源码**：`review-v3-sdk-physical-turn-port.test.ts` R07-01..11（首次提交 `ee00c3789da1ffeac2aa373854a38c12e806afe6`），以及 `review-v3-main-sdk-turn-bridge.test.ts` R07-12/13（提交 `36764075e0ce05ced185a90a56b26864a4b19524`）联合持久 dispatch fence + 24-turn budget，明确测试二次 Provider 调用被见证钩子拒止时，持久 intent 继续 `unresolved` 而非当成 SDK 完成。全部为**合成 native hook 测试文件已提交，并非已运行/通过**。
+**测试源码**：`review-v3-sdk-physical-turn-port.test.ts` R07-01..11、R07-14（首次提交 `ee00c3789da1ffeac2aa373854a38c12e806afe6`），以及 `review-v3-main-sdk-turn-bridge.test.ts` R07-12/13（提交 `36764075e0ce05ced185a90a56b26864a4b19524`）联合持久 dispatch fence + 24-turn budget，明确测试二次 Provider 调用被见证钩子拒止时，持久 intent 继续 `unresolved` 而非当成 SDK 完成。全部为**合成 native hook 测试文件已提交，并非已运行/通过**。
 
 **真实 SDK 接线阻断**：已经查阅 `pi-review-agent-client.ts`、`pi-agent-adapter.ts`、`pi-harness-lifecycle.ts`、Pi SDK 0.86.1 patch 的现有事件：`SDKMessage.result.success` 是整次 query 终态；`agent_end` 是 agent loop 终态；`assistant.uuid` 是消息身份。**这些均不足以独立证明某一次物理 Provider 请求及其稳定 receiptId。** 目前未从已读源码中找到可对接 `V3ANativeProviderWitness` 的、具有稳定 native request+receipt 的精确回调；实际 API 是否存在需在安装环境的 SDK/Provider 层进一步核查。在此之前 `NATIVE_PROVIDER_HOOK=UNVERIFIED / REAL_PROVIDER_WIRING=BLOCKED`，不得拿 adapter/假回执宣称 R07 实机 DONE。
 
