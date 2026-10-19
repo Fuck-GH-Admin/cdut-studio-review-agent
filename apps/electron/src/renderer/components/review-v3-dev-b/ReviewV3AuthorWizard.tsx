@@ -3,11 +3,14 @@
  * Dev-C must provide Main-authorized save/preview/freeze callbacks. This renderer
  * only edits author source; it cannot install a Case, publish policy or grant roles.
  */
-import { useState, type ReactNode } from 'react'
+import { useRef, useState, type ReactNode } from 'react'
 import {
   exportB1AuthorCandidate, parseB1TrialInput, prepareB1TechnicalTrial,
   type B1TrialValues,
 } from './review-v3-author-trial'
+import {
+  deleteB1AuthorIdentity, renameB1AuthorIdentity, renameB1TrialKey,
+} from './review-v3-author-edit'
 import type {
   B1AuthorDocument, B1Field, B1Obligation, B1Source, B1Target,
   ImmutablePlanDescriptorB1,
@@ -47,14 +50,43 @@ export function ReviewV3AuthorWizard({
 }: B1AuthorWizardProps): ReactNode {
   const [draft, setDraft] = useState<B1AuthorDocument>(() => structuredClone(initialDraft ?? emptyB1AuthorDocument()))
   const [revision, setRevision] = useState(initialRevision)
+  const [savedSnapshot, setSavedSnapshot] = useState<B1AuthorDocument|null>(()=>
+    initialRevision>0 && initialDraft ? structuredClone(initialDraft) : null)
+  const editEpoch = useRef(0)
+  const isDirty = !savedSnapshot || JSON.stringify(savedSnapshot)!==JSON.stringify(draft)
   const [preview, setPreview] = useState<ImmutablePlanDescriptorB1 | null>(null)
   const [trial, setTrial] = useState<B1TrialValues>({})
   const [busy, setBusy] = useState(false)
   const [notice, setNotice] = useState('')
   const [error, setError] = useState('')
   const change = (update: (doc: B1AuthorDocument) => void): void => {
+    editEpoch.current += 1
     setDraft((current) => { const next = structuredClone(current); update(next); return next })
     setPreview(null); setNotice(''); setError('')
+  }
+  const editIdentity = (
+    type:'source'|'field'|'target',action:'rename'|'delete',from:string,to?:string,
+  ):void => {
+    try {
+      const next=action==='rename'
+        ? renameB1AuthorIdentity(draft,type,from,to??'')
+        : deleteB1AuthorIdentity(draft,type,from)
+      if(type==='field' || type==='target') {
+        if(action==='rename') setTrial(current=>renameB1TrialKey(current,type,from,to??''))
+        else if(type==='target') setTrial(current=>{
+          const clone=structuredClone(current);delete clone[from];return clone
+        })
+        else setTrial(current=>{
+          const clone=structuredClone(current)
+          for(const values of Object.values(clone)) delete values[from]
+          return clone
+        })
+      }
+      editEpoch.current += 1
+      setDraft(next);setPreview(null);setNotice('');setError('')
+    } catch(reason) {
+      setError(reason instanceof Error ? reason.message : String(reason))
+    }
   }
   const sampleValue = (targetKey: string, fieldKey: string): string => {
     const value=trial[targetKey]?.[fieldKey]
@@ -63,6 +95,7 @@ export function ReviewV3AuthorWizard({
   const setSampleValue = (targetKey: string, field: B1Field, raw: string): void => {
     try {
       const value=parseB1TrialInput(field,raw)
+      editEpoch.current += 1
       setTrial(current => ({
         ...current, [targetKey]: {...current[targetKey], [field.key]:value},
       }))
@@ -114,19 +147,29 @@ export function ReviewV3AuthorWizard({
   }
   const perform = async (mode: 'save' | 'preview' | 'freeze'): Promise<void> => {
     setBusy(true); setError(''); setNotice('')
+    const epoch=editEpoch.current
     try {
       const copy = structuredClone(draft)
       if (mode === 'save') {
         const saved = await onSaveDraft(copy, revision)
         setRevision(saved.revision)
-        setNotice(`草稿已保存为第 ${saved.revision} 次修订（未正式发布）`)
+        setSavedSnapshot(copy)
+        setNotice(epoch===editEpoch.current
+          ? `草稿已保存为第 ${saved.revision} 次修订（未正式发布）`
+          : '保存了操作开始时的修订；期间的新编辑仍未保存，请重新保存')
       } else if (mode === 'preview') {
         const result = await onPreview(prepareB1TechnicalTrial(copy,trial))
-        setPreview(result)
-        setNotice('技术规则预览已生成；不代表学校制度审核通过')
+        if(epoch===editEpoch.current) {
+          setPreview(result)
+          setNotice('技术规则预览已生成；不代表学校制度审核通过')
+        } else {
+          setNotice('预览期间作者内容或样例已改变，请重新运行')
+        }
       } else {
+        if(isDirty) throw new Error('B1_AUTHOR_UNSAVED_CHANGES: 请先保存当前草稿，再冻结候选')
         const frozen = await onFreezeCandidate(copy, revision)
-        setNotice('不可变候选已冻结：' + frozen.fingerprint.slice(0, 24) + '…（仍未发布）')
+        if(epoch===editEpoch.current)
+          setNotice('不可变候选已冻结：' + frozen.fingerprint.slice(0, 24) + '…（仍未发布）')
       }
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : String(reason))
@@ -137,7 +180,7 @@ export function ReviewV3AuthorWizard({
     <header className="space-y-2">
       <h2 className="text-xl font-bold">自建审核业务</h2>
       <p className="text-sm text-muted-foreground">从空白创建业务、材料字段、核验责任和工作流程。所有内容仅为作者候选；学校制度发布需另行授权。</p>
-      <p className="text-xs text-muted-foreground">作者态修订 #{revision} · candidate-held · 未获政策批准</p>
+      <p className="text-xs text-muted-foreground">作者态修订 #{revision} · candidate-held · 未获政策批准 · {isDirty?'有未保存修改':'当前显示内容已保存'}</p>
     </header>
     <Section title="1. 业务定义">
       <label className="block text-sm">业务标识（英文/数字/连字符）
@@ -161,7 +204,7 @@ export function ReviewV3AuthorWizard({
       {draft.sources.map((source, i) => <div key={i} className="grid gap-2 rounded border border-border p-2 sm:grid-cols-2">
         <label className="text-xs">来源 ID
           <input className={inputClass} value={source.sourceId}
-            onChange={(e) => updateSource(i,'sourceId',e.target.value)} />
+            onChange={(e) => editIdentity('source','rename',source.sourceId,e.target.value)} />
         </label>
         <label className="text-xs">来源性质
           <select className={inputClass} value={source.kind}
@@ -178,7 +221,7 @@ export function ReviewV3AuthorWizard({
           <input className={inputClass} value={source.locator}
             onChange={(e) => updateSource(i,'locator',e.target.value)} />
         </label>
-        <button type="button" className={buttonClass} onClick={() => change((d) => { d.sources.splice(i,1) })}>删除来源</button>
+        <button type="button" className={buttonClass} onClick={() => editIdentity('source','delete',source.sourceId)}>删除来源</button>
       </div>)}
       <button type="button" className={buttonClass} onClick={() => change((d) => {
         d.sources.push({sourceId:`source-${d.sources.length+1}`,kind:'user-declared',
@@ -189,7 +232,7 @@ export function ReviewV3AuthorWizard({
     <Section title="3. 申请字段及材料要求">
       {draft.fields.map((field,i) => <div key={i} className="grid gap-2 rounded border border-border p-2 sm:grid-cols-2">
         <label className="text-xs">字段键
-          <input className={inputClass} value={field.key} onChange={(e)=>updateField(i,'key',e.target.value)}/>
+          <input className={inputClass} value={field.key} onChange={(e)=>editIdentity('field','rename',field.key,e.target.value)}/>
         </label>
         <label className="text-xs">显示名称
           <input className={inputClass} value={field.label} onChange={(e)=>updateField(i,'label',e.target.value)}/>
@@ -218,7 +261,7 @@ export function ReviewV3AuthorWizard({
         </label>}
         <label className="text-sm"><input type="checkbox" checked={field.required}
           onChange={(e)=>updateField(i,'required',e.target.checked)}/> 必填字段</label>
-        <button type="button" className={buttonClass} onClick={()=>change((d)=>{d.fields.splice(i,1)})}>删除字段</button>
+        <button type="button" className={buttonClass} onClick={()=>editIdentity('field','delete',field.key)}>删除字段</button>
       </div>)}
       <button type="button" className={buttonClass} onClick={()=>change((d)=>{
         d.fields.push({ key:`field-${d.fields.length+1}`,label:'新字段',type:'text',required:true,
@@ -229,7 +272,9 @@ export function ReviewV3AuthorWizard({
       <p className="text-xs text-muted-foreground">对象用于技术预览；正式案卷绑定必须由 Main/Dev-C 按实际 Subject 再编译。</p>
       {draft.targets.map((target,i)=><div key={i} className="grid gap-2 rounded border border-border p-2 sm:grid-cols-2">
         {(['targetKey','objectKey','subjectId','scenario'] as const).map((key)=><label key={key} className="text-xs">{key}
-          <input className={inputClass} value={target[key]} onChange={(e)=>updateTarget(i,key,e.target.value)}/>
+          <input className={inputClass} value={target[key]} onChange={(e)=>key==='targetKey'
+            ? editIdentity('target','rename',target.targetKey,e.target.value)
+            : updateTarget(i,key,e.target.value)}/>
         </label>)}
         <div className="space-y-2 sm:col-span-2">
           <p className="text-xs text-muted-foreground">试跑样例值，仅用于技术预览，不写入作者草稿或正式案卷；留空保持 unknown。</p>
@@ -248,7 +293,7 @@ export function ReviewV3AuthorWizard({
               onChange={e=>setSampleValue(target.targetKey,field,e.target.value)}/>}
           </label>)}
         </div>
-        <button type="button" className={buttonClass} onClick={()=>change((d)=>{d.targets.splice(i,1)})}>删除对象</button>
+        <button type="button" className={buttonClass} onClick={()=>editIdentity('target','delete',target.targetKey)}>删除对象</button>
       </div>)}
       <button type="button" className={buttonClass} onClick={()=>change((d)=>{
         const number=d.targets.length+1
@@ -365,7 +410,7 @@ export function ReviewV3AuthorWizard({
     <div className="flex flex-wrap gap-2">
       <button type="button" disabled={busy} className={buttonClass} onClick={()=>void perform('save')}>保存修订</button>
       <button type="button" disabled={busy} className={buttonClass} onClick={()=>void perform('preview')}>技术预览 / 试跑规则</button>
-      <button type="button" disabled={busy} className={buttonClass} onClick={()=>void perform('freeze')}>冻结候选（非正式发布）</button>
+      <button type="button" disabled={busy || isDirty} title={isDirty?'先保存当前修改才能冻结':'冻结已保存修订'} className={buttonClass} onClick={()=>void perform('freeze')}>冻结候选（非正式发布）</button>
       <button type="button" disabled={busy} className={buttonClass} onClick={exportCandidate}>导出候选配置</button>
     </div>
     {error && <p role="alert" className="text-sm text-red-500">未执行：{error}</p>}
