@@ -77,9 +77,7 @@ function makeHarness(options?:{
         {...model,api:options?.modelApi??model.api} as never,
         {messages:[]} as never,
         {transport:options?.requestedTransport??'sse',
-          ...(options?.opaqueUpstreamFetch ? {
-            fetch:async()=>new Response('',{status:200}),
-          }:{}),
+          ...(options?.opaqueUpstreamFetch ? {fetch:globalThis.fetch}:{}),
         },
       )
     },
