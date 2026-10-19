@@ -48,3 +48,17 @@ C0 定义可被唯一权威 Dev-C 消费的 `CanonicalPlan`、`SourceIdentity`�
 - `cross_owner_test_SHA = none`
 
 **处理原则**：只有 Dev-C 明确批准且提交真实代码+相关负例绿灯，Dev-B 才把 `B-INT-01` 改为集成已完成。
+
+## R02 增量：B2 ZIP 与源暂存原件 checkpoint 的接口事实（2026-10-19）
+
+新增 B 侧源码（本文件更新前独立提交 `0fbeff6b46c60a48ca0a38a982e0f8c39f307f0f`）：
+
+- `review-zip-intake-v3-b2.ts`：真实 ZIP 原始字节校验、限额、CRC、安全 path、逐文件成功/拒止；不接受 Renderer 路径，也不写正式材料。
+- `review-zip-staging-v3-b2.ts`：**仅 Main 验真后的** ZIP byte buffer + physicalArchiveKey，逐条申请 owner/frame token，暂存为 `unassigned/needs-user-confirmation`。
+- `review-import-checkpoint-v3-b2.ts`：独立存放原件 ZIP、来源 hash、逐文件状态；重启只能返回 `needs-main-revalidation` 并经 Main 重新授权。不能冒充业务意义上的 CurrentCase Material 或正式 ImportBatch CAS 写入。
+- `review-intake-adapter-v3-b2.ts` 增加 basename-only 的跨平台文件名门禁、按 ownerGeneration 分离幂等 requestKey 和 documentVersion。
+- `B2-ZIP-CHECKPOINT-I-SLICE-HANDOFF.md` 给出精确源测试及 I 可先引用的不涉及 CurrentCase 片段。
+
+**新增明确请求**：C 在 B-CR-001 裁决中拆分 `native picker/drop physicalSourceKey`、`ImportBatch receipt/复核事务`、`ApplyMaterial/SourceIdentity currentValidity` 为三个可独立签的 Main 端口。I 可先在独立集成分支引入 ZIP Decoder 及纯暂存候选；绝不授权直接通过 parser body 创建可信 actor/DocumentVersion。
+
+**状态**：上述 B 代码已写入 #142，但接入 C 的 IPC、App 主进程委托及真实发布验证仍 `PENDING_C`，不因新增存档文件而变更本申请的 `decision = PENDING`。断电后归档原文与元数据需进行设备级断电、EACCES/ENOSPC/符号链接目录安全验收，不能把自校验 SHA 当作签发认可。
