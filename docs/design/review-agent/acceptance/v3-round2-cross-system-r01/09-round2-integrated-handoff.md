@@ -26,7 +26,7 @@
 ## 三、重要已证差异和未知范围
 
 1. **源代码静态 VERIFIED**：D4 vs P06 `workspace-service-v2.projectedCase/syncWorkspaceProjectionV2` 的 fixedD2及archived Observation撤效差；`pi-case-review-service.promptFor` 的多target与旧scenario差；Main IPC 的 intake/bg/batch/actor 入口差。
-2. **高影响候选 PARTIAL**：P06 Batch finalize 是否能接受其他批次基于不同 Run 的决定（未运行负例）；自动批准内层exact run防御（外层已有限制，不能宣称可直接越权）；Renderer actor forged对实际业务权限可达性（未攻测）。
+2. **高影响候选 PARTIAL**：P06 `assertBatchBusinessReadyForFinalization` 已独立核对确实没有比对 entry.runId 和最终决定 basedOnRunId，能否据此跨批错误定稿仍未运行负例；自动批准内层exact run防御（外层已有限制，不能宣称可直接越权）；Renderer actor forged对实际业务权限可达性（未攻测）。
 3. **Git 证据 VERIFIED_METADATA/PARTIAL**：main↔D4、D4↔P06分叉；R02↔R03分叉；#97 文件清单575项。GitHub compare的300截断不能替代本地 `git cherry/patch-id`；#97完全移植不可宣布 VERIFIED。
 4. **环境阻断 BLOCKED**：`git ls-remote` exit 128（DNS github.com无法解析）；因此本机无法 clone/full git diff；本轮未执行任何仓库 test、Electron、Provider、Office、跨PID/ENOSPC、真实 SchoolPort。既有历史 CI 或修复文档不能冒充本轮证据。
 
