@@ -201,6 +201,28 @@ describe('B4 R24 all 32 real R14 clause anchors, technical-only per-instance sem
       expect(result.findings.every(x => x.candidatePredicate === 'unknown')).toBe(true)
     })
   }
+  // Exercise every one of the 32 actual R14 high-risk original rule anchors,
+  // rather than only one illustrative rule per domain.
+  for (const item of proof().items) {
+    const selected = {
+      domain: item.domain as B4HighRiskDomain,
+      templateId: item.templateId,
+      ruleId: item.original.ruleId,
+    }
+    test('all-32 ' + selected.domain + ' ' + selected.ruleId +
+      ': exact object and stale/cross-object provenance', () => {
+      const input = matrix(selected.domain, item.rawSha256)
+      const audited = inspectB4HighRiskInstanceEvidence(proof(), archives, selected, input)
+      expect(audited.sourceSha256).toBe(item.rawSha256)
+      expect(audited.checkedDimensions).toEqual([...B4_REQUIRED_DIMENSIONS[selected.domain]])
+      expect(audited.findings.map(x => x.candidatePredicate))
+        .toEqual(['applicable','not-applicable','unknown','unknown'])
+      expect(audited.findings[2]!.reason).toBe('WRONG_OBJECT_EVIDENCE')
+      expect(audited.findings.every(x => !x.schoolAuthorityVerified &&
+        !x.historicalInstanceSemanticsPreserved && !x.publicationAllowed)).toBe(true)
+    })
+  }
+
   test('falsified archived clause-to-Check semantics cannot be used by R24', () => {
     const p = proof()
     p.items[0]!.technical.sourceIds[0] = 'forged-source'
