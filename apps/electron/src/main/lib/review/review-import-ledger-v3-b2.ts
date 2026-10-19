@@ -244,7 +244,7 @@ export class ReviewB2InputLedger {
     try {fd=openSync(lock,'wx',0o600)} catch { fail('LOCKED') }
     try{
       const current=this.read(ctx,source)
-      if(!current)fail('NOT_STARTED')
+      if(!current) throw new Error('B2_LEDGER_NOT_STARTED')
       const payloadHash=hash(JSON.stringify({archiveId,decision,principalId:authority.principalId}))
       const earlier=current!.mutations.find(m=>m.requestId===requestId)
       if(earlier){
@@ -255,7 +255,9 @@ export class ReviewB2InputLedger {
       const item=current!.files.find(file=>file.index===decision.entryIndex)
       const original=source.fileReceipts.find(file=>file.index===decision.entryIndex)
       if(!item || !original || original.status!=='accepted' ||
-         item.status!=='needs-user-confirmation')fail('ENTRY_NOT_CONFIRMABLE')
+         item.status!=='needs-user-confirmation') {
+        throw new Error('B2_LEDGER_ENTRY_NOT_CONFIRMABLE')
+      }
       if(decision.status==='accepted' && original.rawSha256!==decision.rawSha256)fail('SOURCE_MISMATCH')
       if(decision.status!=='accepted' && (!decision.reason?.trim() ||
          decision.role!==undefined || decision.subjectId!==undefined))fail('REJECTION_REASON_REQUIRED')
