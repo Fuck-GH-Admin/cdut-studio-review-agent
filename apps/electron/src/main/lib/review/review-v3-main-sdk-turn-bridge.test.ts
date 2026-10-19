@@ -231,6 +231,19 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
       .toBe('recorded')
     expect(h.turns.snapshot(lease).usedTurns).toBe(1)
   })
+  it('A4-DISPATCH-06: SDK duplicate across distinct dispatches is not a retry',async()=>{
+    const h=fixture()
+    let calls=0
+    h.setNext(async run=>({kind:'completed-turn',receiptId:'sdk-stale-1',run}))
+    await h.bridge.next(h.call,'graph')
+    calls++
+    await expect(h.bridge.next(h.call,'graph')).rejects.toThrow('REQUEST_ID_COLLISION')
+    calls++
+    expect(calls).toBe(2)
+    expect(h.turns.snapshot(h.grant).usedTurns).toBe(1)
+    expect(h.dispatch.unresolved(h.run)).toBe(true)
+    expect(h.producer.replayCandidates()).toHaveLength(0)
+  })
   it('A4-DISPATCH-03: invalid Host Run leaves durable unresolved intent',async()=>{
     const h=fixture()
     h.setNext(async run=>({kind:'completed-turn',receiptId:'wrong-case',
@@ -351,12 +364,15 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     })
     expect(h.calls()).toBe(24)
   })
-  it('A3-SDK-09: duplicate SDK receipt does not double charge across host replay',async()=>{
+  it('A3-SDK-09: second physical Provider dispatch reusing a turn receipt fails closed',async()=>{
     const h=fixture()
     h.setNext(async run=>({kind:'completed-turn',receiptId:'same-sdk-turn',run}))
-    await h.bridge.next(h.call,'direct')
-    await h.bridge.next(h.call,'direct')
+    expect((await h.bridge.next(h.call,'direct')).kind).toBe('recorded')
+    await expect(h.bridge.next(h.call,'direct')).rejects.toThrow('REQUEST_ID_COLLISION')
     expect(h.turns.snapshot(h.grant).usedTurns).toBe(1)
+    expect(h.calls()).toBe(2)
+    expect(h.dispatch.unresolved(h.run)).toBe(true)
+    await expect(h.bridge.next(h.call,'direct')).rejects.toThrow('Unresolved SDK Provider dispatch')
     expect(h.calls()).toBe(2)
   })
 })
