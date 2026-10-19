@@ -1,0 +1,3112 @@
+{
+  "schemaVersion": "review-v3-b4-high-risk-semantic-evidence/1",
+  "d4FrozenSHA": "b68443b23293b4714e61a3b81383d3d3a56434fc",
+  "classifications": {
+    "ruleIdentity": "MATCHED_RAW_ORIGINAL",
+    "semantic": "NOT_ATTESTED",
+    "schoolPolicy": "NOT_VERIFIED",
+    "independentGold": "NOT_AUTHORIZED_OR_NOT_RUN",
+    "publicationAllowed": false
+  },
+  "method": "Raw original line-scope excerpt compared against actual pinned D4 Check and SourceRef metadata; absence of a field in archive means not evidenced here, not that all runtime behavior is missing. Tests specify outstanding cases; no authority granted.",
+  "items": [
+    {
+      "domain": "G03",
+      "templateId": "g03-t12",
+      "rawSha256": "a6c7131a8b8dbf5e14cfab532d0eaa7db880ef09237c18045bedf7df3325dd8b",
+      "original": {
+        "ruleId": "R-14",
+        "headingLine": 356,
+        "heading": "### R-14｜保卫/外部许可",
+        "excerpt": "- **审核目标 / 被核动作与最小对象**：保卫或外部批准；`activity×scope`；证据分组`E_SECURITY_APPROVAL`。\n- **适用学校/政策版本**：仅当`policy_profile_id`和`resource_config_version`已获权威确认且覆盖申请地点、日期和主体时执行确定性限制；B来源 `S09, S16, S18` 是存在性/差异论据，不代表自动成为本校生效规范。\n- **触发条件 / 未知行为**：`require_security_clearance`；`true`→检查关联义务；`false`且事实充分→`NOT_APPLICABLE`；`unknown`→`RULE_CONFIG_PENDING`/`AUTHORITATIVE_DATA_PENDING`并锁住终审准用。\n- **生效阶段**：最早 `ST-05`（具体节点顺序由校本流程配置）；后续版本变化需重评相关子项。\n- **必要字段/材料/权威事实与等价组**：B字段/材料 `F19, F27, M06`；等价组 `E_SECURITY`；观察到的现实要求：必须有与同一赛事时段场馆范围匹配的正式许可。\n- **客观判定边界**：只查审批状态和范围。查批件是否覆盖活动时间、人数、场所、组织；不得自发签许可。\n- **缺失、矛盾或已知不符合的动作**：未批准不能写体育最终全面使用许可。字段或条件附件缺失且可补→`NEEDS_SUPPLEMENT`；权威记录不可达→`AUTHORITATIVE_DATA_PENDING`；相互冲突→`EVIDENCE_CONFLICT`及证据位置；有权已正式否决或明确禁用→`NOT_ELIGIBLE`/`FORMAL_DENIED`（由权限系统证实）；专业无法判定→`PROFESSIONAL_REVIEW_PENDING`。\n- **审批权限与下一动作**：由学校配置指定的单位/体育主管/保卫/馆方处理相应节点；AI只输出证据指向与复核建议，不产生签字、放行或许可。\n- **来源 / 输出问题码 / 作者测试线索**：`S09, S16, S18`；`SECURITY_APPROVAL_PENDING`；测试`Q14`包含本条件正例、不触发例、缺证/冲突或来源未知例。",
+        "excerptEndsBeforeLine": 368
+      },
+      "technical": {
+        "archiveBlobSha": "ba865c2745ed3ef7d09628e312b892a7734e7cbd",
+        "checkIds": [
+          "g03-t12@1:module/use-safety/r14"
+        ],
+        "sourceIds": [
+          "source-r14"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "source-r14",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "md-g03-t12-a6c7131a8b8dbf5e",
+            "locator": "§9/R-14"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "g03-t12@1:module/use-safety/r14",
+            "taskTitle": "R-14｜保卫/外部许可",
+            "scope": {
+              "businessTypes": [
+                "g03-sports-slot"
+              ],
+              "evidenceFacts": [
+                "d2:object:g03-sports-slot:r14"
+              ]
+            },
+            "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "source-r14"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "scope_item_id",
+          "physical_venue_zone",
+          "time_interval",
+          "authorized_issuer"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "scope_item_id",
+          "physical_venue_zone",
+          "time_interval",
+          "authorized_issuer"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同案两个不同场馆/片区/时段，仅第一对象有可信许可：第二对象不得随案自动获得许可",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G03",
+      "templateId": "g03-t12",
+      "rawSha256": "a6c7131a8b8dbf5e14cfab532d0eaa7db880ef09237c18045bedf7df3325dd8b",
+      "original": {
+        "ruleId": "R-17",
+        "headingLine": 392,
+        "heading": "### R-17｜主管与馆方权限",
+        "excerpt": "- **审核目标 / 被核动作与最小对象**：单位主管、场馆及终审权限；`approval-node`；证据分组`E_APPROVAL_CHAIN`。\n- **适用学校/政策版本**：仅当`policy_profile_id`和`resource_config_version`已获权威确认且覆盖申请地点、日期和主体时执行确定性限制；B来源 `S06, S08, S11` 是存在性/差异论据，不代表自动成为本校生效规范。\n- **触发条件 / 未知行为**：`workflow_required`；`true`→检查关联义务；`false`且事实充分→`NOT_APPLICABLE`；`unknown`→`RULE_CONFIG_PENDING`/`AUTHORITATIVE_DATA_PENDING`并锁住终审准用。\n- **生效阶段**：最早 `ST-04`（具体节点顺序由校本流程配置）；后续版本变化需重评相关子项。\n- **必要字段/材料/权威事实与等价组**：B字段/材料 `F24, F25, F26, F49, M13`；等价组 `E_APPROVAL`；观察到的现实要求：主办主管同意、馆方资源核实、体育主管有权终审不可互代。\n- **客观判定边界**：校方OA签批状态。审批节点由有效学校流程定义，先后关系可为并行。\n- **缺失、矛盾或已知不符合的动作**：缺上游批准=等待，不等于材料假。字段或条件附件缺失且可补→`NEEDS_SUPPLEMENT`；权威记录不可达→`AUTHORITATIVE_DATA_PENDING`；相互冲突→`EVIDENCE_CONFLICT`及证据位置；有权已正式否决或明确禁用→`NOT_ELIGIBLE`/`FORMAL_DENIED`（由权限系统证实）；专业无法判定→`PROFESSIONAL_REVIEW_PENDING`。\n- **审批权限与下一动作**：由学校配置指定的单位/体育主管/保卫/馆方处理相应节点；AI只输出证据指向与复核建议，不产生签字、放行或许可。\n- **来源 / 输出问题码 / 作者测试线索**：`S06, S08, S11`；`APPROVAL_PENDING`；测试`Q17`包含本条件正例、不触发例、缺证/冲突或来源未知例。",
+        "excerptEndsBeforeLine": 404
+      },
+      "technical": {
+        "archiveBlobSha": "ba865c2745ed3ef7d09628e312b892a7734e7cbd",
+        "checkIds": [
+          "g03-t12@1:module/use-safety/r17"
+        ],
+        "sourceIds": [
+          "source-r17"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "source-r17",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "md-g03-t12-a6c7131a8b8dbf5e",
+            "locator": "§9/R-17"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "g03-t12@1:module/use-safety/r17",
+            "taskTitle": "R-17｜主管与馆方权限",
+            "scope": {
+              "businessTypes": [
+                "g03-sports-slot"
+              ],
+              "evidenceFacts": [
+                "d2:object:g03-sports-slot:r17"
+              ]
+            },
+            "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "source-r17"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "scope_item_id",
+          "physical_venue_zone",
+          "time_interval",
+          "authorized_issuer"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "scope_item_id",
+          "physical_venue_zone",
+          "time_interval",
+          "authorized_issuer"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同案两个不同场馆/片区/时段，仅第一对象有可信许可：第二对象不得随案自动获得许可",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G03",
+      "templateId": "g03-t12",
+      "rawSha256": "a6c7131a8b8dbf5e14cfab532d0eaa7db880ef09237c18045bedf7df3325dd8b",
+      "original": {
+        "ruleId": "R-18",
+        "headingLine": 404,
+        "heading": "### R-18｜提交不等于批准",
+        "excerpt": "- **审核目标 / 被核动作与最小对象**：预约提交与批准区别；`case×scope`；证据分组`E_FINAL_APPROVAL`。\n- **适用学校/政策版本**：仅当`policy_profile_id`和`resource_config_version`已获权威确认且覆盖申请地点、日期和主体时执行确定性限制；B来源 `S08, S11` 是存在性/差异论据，不代表自动成为本校生效规范。\n- **触发条件 / 未知行为**：`submitted!=approved`；`true`→检查关联义务；`false`且事实充分→`NOT_APPLICABLE`；`unknown`→`RULE_CONFIG_PENDING`/`AUTHORITATIVE_DATA_PENDING`并锁住终审准用。\n- **生效阶段**：最早 `ST-06`（具体节点顺序由校本流程配置）；后续版本变化需重评相关子项。\n- **必要字段/材料/权威事实与等价组**：B字段/材料 `F01, F24, F25, F26, F46, M16`；等价组 `E_APPROVAL`；观察到的现实要求：已发起/排队/预留/待审核≠最终使用许可。\n- **客观判定边界**：以权威审批事件为准。仅有正式主管批准且无未决阻断才有权报告许可。\n- **缺失、矛盾或已知不符合的动作**：未终审不准自动写“已批准”。字段或条件附件缺失且可补→`NEEDS_SUPPLEMENT`；权威记录不可达→`AUTHORITATIVE_DATA_PENDING`；相互冲突→`EVIDENCE_CONFLICT`及证据位置；有权已正式否决或明确禁用→`NOT_ELIGIBLE`/`FORMAL_DENIED`（由权限系统证实）；专业无法判定→`PROFESSIONAL_REVIEW_PENDING`。\n- **审批权限与下一动作**：由学校配置指定的单位/体育主管/保卫/馆方处理相应节点；AI只输出证据指向与复核建议，不产生签字、放行或许可。\n- **来源 / 输出问题码 / 作者测试线索**：`S08, S11`；`NOT_YET_APPROVED`；测试`Q18`包含本条件正例、不触发例、缺证/冲突或来源未知例。",
+        "excerptEndsBeforeLine": 416
+      },
+      "technical": {
+        "archiveBlobSha": "ba865c2745ed3ef7d09628e312b892a7734e7cbd",
+        "checkIds": [
+          "g03-t12@1:module/use-lifecycle/r18"
+        ],
+        "sourceIds": [
+          "source-r18"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "source-r18",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "md-g03-t12-a6c7131a8b8dbf5e",
+            "locator": "§9/R-18"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "g03-t12@1:module/use-lifecycle/r18",
+            "taskTitle": "R-18｜提交不等于批准",
+            "scope": {
+              "businessTypes": [
+                "g03-sports-slot"
+              ],
+              "evidenceFacts": [
+                "d2:object:g03-sports-slot:r18"
+              ]
+            },
+            "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "source-r18"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "scope_item_id",
+          "physical_venue_zone",
+          "time_interval",
+          "authorized_issuer"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "scope_item_id",
+          "physical_venue_zone",
+          "time_interval",
+          "authorized_issuer"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同案两个不同场馆/片区/时段，仅第一对象有可信许可：第二对象不得随案自动获得许可",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G03",
+      "templateId": "g03-t12",
+      "rawSha256": "a6c7131a8b8dbf5e14cfab532d0eaa7db880ef09237c18045bedf7df3325dd8b",
+      "original": {
+        "ruleId": "R-19",
+        "headingLine": 416,
+        "heading": "### R-19｜改期/撤销",
+        "excerpt": "- **审核目标 / 被核动作与最小对象**：修改/退约处理；`scope×version`；证据分组`E_CHANGE`。\n- **适用学校/政策版本**：仅当`policy_profile_id`和`resource_config_version`已获权威确认且覆盖申请地点、日期和主体时执行确定性限制；B来源 `S06, S07, S08` 是存在性/差异论据，不代表自动成为本校生效规范。\n- **触发条件 / 未知行为**：`changed_scope`；`true`→检查关联义务；`false`且事实充分→`NOT_APPLICABLE`；`unknown`→`RULE_CONFIG_PENDING`/`AUTHORITATIVE_DATA_PENDING`并锁住终审准用。\n- **生效阶段**：最早 `ST-07`（具体节点顺序由校本流程配置）；后续版本变化需重评相关子项。\n- **必要字段/材料/权威事实与等价组**：B字段/材料 `F41, F42, F46, M11`；等价组 `E_CHANGE`；观察到的现实要求：改场馆、时段、人数或规模需依目标校规重审。\n- **客观判定边界**：版本和资源比较。变更影响范围按校规重审；旧回执不能盖过新场地时段。\n- **缺失、矛盾或已知不符合的动作**：旧批件范围不能覆盖新内容。字段或条件附件缺失且可补→`NEEDS_SUPPLEMENT`；权威记录不可达→`AUTHORITATIVE_DATA_PENDING`；相互冲突→`EVIDENCE_CONFLICT`及证据位置；有权已正式否决或明确禁用→`NOT_ELIGIBLE`/`FORMAL_DENIED`（由权限系统证实）；专业无法判定→`PROFESSIONAL_REVIEW_PENDING`。\n- **审批权限与下一动作**：由学校配置指定的单位/体育主管/保卫/馆方处理相应节点；AI只输出证据指向与复核建议，不产生签字、放行或许可。\n- **来源 / 输出问题码 / 作者测试线索**：`S06, S07, S08`；`CHANGE_REAPPROVAL_REQUIRED`；测试`Q19`包含本条件正例、不触发例、缺证/冲突或来源未知例。",
+        "excerptEndsBeforeLine": 428
+      },
+      "technical": {
+        "archiveBlobSha": "ba865c2745ed3ef7d09628e312b892a7734e7cbd",
+        "checkIds": [
+          "g03-t12@1:module/use-lifecycle/r19"
+        ],
+        "sourceIds": [
+          "source-r19"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "source-r19",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "md-g03-t12-a6c7131a8b8dbf5e",
+            "locator": "§9/R-19"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "g03-t12@1:module/use-lifecycle/r19",
+            "taskTitle": "R-19｜改期/撤销",
+            "scope": {
+              "businessTypes": [
+                "g03-sports-slot"
+              ],
+              "evidenceFacts": [
+                "d2:object:g03-sports-slot:r19"
+              ]
+            },
+            "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "source-r19"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "scope_item_id",
+          "physical_venue_zone",
+          "time_interval",
+          "authorized_issuer"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "scope_item_id",
+          "physical_venue_zone",
+          "time_interval",
+          "authorized_issuer"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同案两个不同场馆/片区/时段，仅第一对象有可信许可：第二对象不得随案自动获得许可",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G03",
+      "templateId": "g03-t12",
+      "rawSha256": "a6c7131a8b8dbf5e14cfab532d0eaa7db880ef09237c18045bedf7df3325dd8b",
+      "original": {
+        "ruleId": "R-22",
+        "headingLine": 452,
+        "heading": "### R-22｜分片区分场次",
+        "excerpt": "- **审核目标 / 被核动作与最小对象**：多场次、分区核准；`scope`；证据分组`E_SEGMENT`。\n- **适用学校/政策版本**：仅当`policy_profile_id`和`resource_config_version`已获权威确认且覆盖申请地点、日期和主体时执行确定性限制；B来源 `S11, S12` 是存在性/差异论据，不代表自动成为本校生效规范。\n- **触发条件 / 未知行为**：`multiple_segments`；`true`→检查关联义务；`false`且事实充分→`NOT_APPLICABLE`；`unknown`→`RULE_CONFIG_PENDING`/`AUTHORITATIVE_DATA_PENDING`并锁住终审准用。\n- **生效阶段**：最早 `ST-03`（具体节点顺序由校本流程配置）；后续版本变化需重评相关子项。\n- **必要字段/材料/权威事实与等价组**：B字段/材料 `F14, F18, F48`；等价组 `E_SEGMENT`；观察到的现实要求：学校支持时可按具体片区/时段局部审批，不支持则拆单。\n- **客观判定边界**：按审批工作流适配。内部逐段建议不等于学校正式部分批准；不支持则拆单/人工。\n- **缺失、矛盾或已知不符合的动作**：不凭模型伪造“部分批准”。字段或条件附件缺失且可补→`NEEDS_SUPPLEMENT`；权威记录不可达→`AUTHORITATIVE_DATA_PENDING`；相互冲突→`EVIDENCE_CONFLICT`及证据位置；有权已正式否决或明确禁用→`NOT_ELIGIBLE`/`FORMAL_DENIED`（由权限系统证实）；专业无法判定→`PROFESSIONAL_REVIEW_PENDING`。\n- **审批权限与下一动作**：由学校配置指定的单位/体育主管/保卫/馆方处理相应节点；AI只输出证据指向与复核建议，不产生签字、放行或许可。\n- **来源 / 输出问题码 / 作者测试线索**：`S11, S12`；`PARTIAL_SCOPE_UNSUPPORTED`；测试`Q22`包含本条件正例、不触发例、缺证/冲突或来源未知例。",
+        "excerptEndsBeforeLine": 464
+      },
+      "technical": {
+        "archiveBlobSha": "ba865c2745ed3ef7d09628e312b892a7734e7cbd",
+        "checkIds": [
+          "g03-t12@1:module/use-resource/r22"
+        ],
+        "sourceIds": [
+          "source-r22"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "source-r22",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "md-g03-t12-a6c7131a8b8dbf5e",
+            "locator": "§9/R-22"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "g03-t12@1:module/use-resource/r22",
+            "taskTitle": "R-22｜分片区分场次",
+            "scope": {
+              "businessTypes": [
+                "g03-sports-slot"
+              ],
+              "evidenceFacts": [
+                "d2:object:g03-sports-slot:r22"
+              ]
+            },
+            "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "source-r22"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "scope_item_id",
+          "physical_venue_zone",
+          "time_interval",
+          "authorized_issuer"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "scope_item_id",
+          "physical_venue_zone",
+          "time_interval",
+          "authorized_issuer"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同案两个不同场馆/片区/时段，仅第一对象有可信许可：第二对象不得随案自动获得许可",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G03",
+      "templateId": "g03-t12",
+      "rawSha256": "a6c7131a8b8dbf5e14cfab532d0eaa7db880ef09237c18045bedf7df3325dd8b",
+      "original": {
+        "ruleId": "R-23",
+        "headingLine": 464,
+        "heading": "### R-23｜政策版本与参数",
+        "excerpt": "- **审核目标 / 被核动作与最小对象**：政策来源不确定；`case×policy`；证据分组`E_POLICY`。\n- **适用学校/政策版本**：仅当`policy_profile_id`和`resource_config_version`已获权威确认且覆盖申请地点、日期和主体时执行确定性限制；B来源 `S01, S08, S09, S17` 是存在性/差异论据，不代表自动成为本校生效规范。\n- **触发条件 / 未知行为**：`school_policy_missing`；`true`→检查关联义务；`false`且事实充分→`NOT_APPLICABLE`；`unknown`→`RULE_CONFIG_PENDING`/`AUTHORITATIVE_DATA_PENDING`并锁住终审准用。\n- **生效阶段**：最早 `ST-01`（具体节点顺序由校本流程配置）；后续版本变化需重评相关子项。\n- **必要字段/材料/权威事实与等价组**：B字段/材料 `F02, F39, F40`；等价组 `E_POLICY`；观察到的现实要求：没有本校适用规则不能拿外校提前期或人数阈值强制拒。\n- **客观判定边界**：要求政策配置/人工。跨校样例仅供参考；缺校本规定严禁自动套用外校阈值。\n- **缺失、矛盾或已知不符合的动作**：未知≠申请人不合格。字段或条件附件缺失且可补→`NEEDS_SUPPLEMENT`；权威记录不可达→`AUTHORITATIVE_DATA_PENDING`；相互冲突→`EVIDENCE_CONFLICT`及证据位置；有权已正式否决或明确禁用→`NOT_ELIGIBLE`/`FORMAL_DENIED`（由权限系统证实）；专业无法判定→`PROFESSIONAL_REVIEW_PENDING`。\n- **审批权限与下一动作**：由学校配置指定的单位/体育主管/保卫/馆方处理相应节点；AI只输出证据指向与复核建议，不产生签字、放行或许可。\n- **来源 / 输出问题码 / 作者测试线索**：`S01, S08, S09, S17`；`RULE_CONFIG_PENDING`；测试`Q23`包含本条件正例、不触发例、缺证/冲突或来源未知例。",
+        "excerptEndsBeforeLine": 476
+      },
+      "technical": {
+        "archiveBlobSha": "ba865c2745ed3ef7d09628e312b892a7734e7cbd",
+        "checkIds": [
+          "g03-t12@1:module/use-lifecycle/r23"
+        ],
+        "sourceIds": [
+          "source-r23"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "source-r23",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "md-g03-t12-a6c7131a8b8dbf5e",
+            "locator": "§9/R-23"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "g03-t12@1:module/use-lifecycle/r23",
+            "taskTitle": "R-23｜政策版本与参数",
+            "scope": {
+              "businessTypes": [
+                "g03-sports-slot"
+              ],
+              "evidenceFacts": [
+                "d2:object:g03-sports-slot:r23"
+              ]
+            },
+            "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "source-r23"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "scope_item_id",
+          "physical_venue_zone",
+          "time_interval",
+          "authorized_issuer"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "scope_item_id",
+          "physical_venue_zone",
+          "time_interval",
+          "authorized_issuer"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同案两个不同场馆/片区/时段，仅第一对象有可信许可：第二对象不得随案自动获得许可",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G03",
+      "templateId": "g03-t12",
+      "rawSha256": "a6c7131a8b8dbf5e14cfab532d0eaa7db880ef09237c18045bedf7df3325dd8b",
+      "original": {
+        "ruleId": "R-27",
+        "headingLine": 512,
+        "heading": "### R-27｜正式否决撤销",
+        "excerpt": "- **审核目标 / 被核动作与最小对象**：原审批失效/正式否决；`approval-node×scope`；证据分组`E_LATEST_DECISION`。\n- **适用学校/政策版本**：仅当`policy_profile_id`和`resource_config_version`已获权威确认且覆盖申请地点、日期和主体时执行确定性限制；B来源 `S06, S08` 是存在性/差异论据，不代表自动成为本校生效规范。\n- **触发条件 / 未知行为**：`revoked_or_denied`；`true`→检查关联义务；`false`且事实充分→`NOT_APPLICABLE`；`unknown`→`RULE_CONFIG_PENDING`/`AUTHORITATIVE_DATA_PENDING`并锁住终审准用。\n- **生效阶段**：最早 `ST-06`（具体节点顺序由校本流程配置）；后续版本变化需重评相关子项。\n- **必要字段/材料/权威事实与等价组**：B字段/材料 `F26, F42, F46, M13, M16`；等价组 `E_APPROVAL`；观察到的现实要求：正式拒绝或撤销审批使对应许可无效。\n- **客观判定边界**：校方正式审计日志。有权最新有效记录否决同范围，旧截图不能恢复许可。\n- **缺失、矛盾或已知不符合的动作**：不能以旧PDF“已批”越权通行。字段或条件附件缺失且可补→`NEEDS_SUPPLEMENT`；权威记录不可达→`AUTHORITATIVE_DATA_PENDING`；相互冲突→`EVIDENCE_CONFLICT`及证据位置；有权已正式否决或明确禁用→`NOT_ELIGIBLE`/`FORMAL_DENIED`（由权限系统证实）；专业无法判定→`PROFESSIONAL_REVIEW_PENDING`。\n- **审批权限与下一动作**：由学校配置指定的单位/体育主管/保卫/馆方处理相应节点；AI只输出证据指向与复核建议，不产生签字、放行或许可。\n- **来源 / 输出问题码 / 作者测试线索**：`S06, S08`；`DENIED_OR_REVOKED`；测试`Q27`包含本条件正例、不触发例、缺证/冲突或来源未知例。",
+        "excerptEndsBeforeLine": 524
+      },
+      "technical": {
+        "archiveBlobSha": "ba865c2745ed3ef7d09628e312b892a7734e7cbd",
+        "checkIds": [
+          "g03-t12@1:module/use-lifecycle/r27"
+        ],
+        "sourceIds": [
+          "source-r27"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "source-r27",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "md-g03-t12-a6c7131a8b8dbf5e",
+            "locator": "§9/R-27"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "g03-t12@1:module/use-lifecycle/r27",
+            "taskTitle": "R-27｜正式否决撤销",
+            "scope": {
+              "businessTypes": [
+                "g03-sports-slot"
+              ],
+              "evidenceFacts": [
+                "d2:object:g03-sports-slot:r27"
+              ]
+            },
+            "applicabilityNote": "三态未知不得按假或缺件处理；按校本有权来源确定",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "source-r27"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "scope_item_id",
+          "physical_venue_zone",
+          "time_interval",
+          "authorized_issuer"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "scope_item_id",
+          "physical_venue_zone",
+          "time_interval",
+          "authorized_issuer"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同案两个不同场馆/片区/时段，仅第一对象有可信许可：第二对象不得随案自动获得许可",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G04",
+      "templateId": "d4-g04-t03",
+      "rawSha256": "9c889be9151854cbe43e3e94f5389c2a5fa0619e5e90867b14c117cee8e03cee",
+      "original": {
+        "ruleId": "R-06",
+        "headingLine": 333,
+        "heading": "### R-06｜考试阈值及等号边界",
+        "excerpt": "- **审核目标 / 作用对象**：`person_exam_kind`，对符合条件的每个unit逐个判断；不能以整批代理。\n- **适用政策、来源与效力**：`school_profile.school_id + current_effective_version + target_lab_id + role/scope`；来源 `C01,X03,X10`；本校条款基础/业务实现细化；具体阈值仍按学校配置。\n- **触发条件（三态）**：`policy.exam_threshold_status=KNOWN`。`FALSE → RC-01`（前提可确认时）；`UNKNOWN → RC-07/RC-06`，本条不可静默跳过或作为自动通过依据。\n- **生效阶段**：`ST-05`。未到阶段仅生成合法的待办，不将后续结果作初始必交材料。\n- **必要证据/替代组合**：`EV-01`。只采用第7章对该事实定义的合法OR组；跨层次检查采取AND，不允许一张证明替代所有事实。\n- **能够判定的事实与范围**：可信成绩/合格状态满足对应校院考试规则。\n- **缺件、冲突、未知、下一步**：不合格RC-11；分数来源冲突RC-05；阈值未知RC-07；对应主问题码`RC-07`，必须留存证据位置、尚缺权威来源、受权确认人和目标处理阶段。\n- **合法例外与权限禁区**：渠道可能有不同门槛，不能硬编码90/95/85。系统不得从此规则自动签发资格。\n- **作者走查线索（不是D金标）**：考试渠道及等号边界。",
+        "excerptEndsBeforeLine": 345
+      },
+      "technical": {
+        "archiveBlobSha": "43c0876f4bc7256416d06d5521a4e337961d7540",
+        "checkIds": [
+          "d4-g04-t03@1:module/use-scope-staff/r06",
+          "d4-g04-t03@1:module/use-scope-student/r06"
+        ],
+        "sourceIds": [
+          "src-r06",
+          "src-original",
+          "src-r06",
+          "src-original"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r06",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L333#r06"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          },
+          {
+            "sourceId": "src-r06",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L333#r06"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "d4-g04-t03@1:module/use-scope-staff/r06",
+            "taskTitle": "考试阈值及等号边界",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r06"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r06",
+              "src-original"
+            ]
+          },
+          {
+            "checkId": "d4-g04-t03@1:module/use-scope-student/r06",
+            "taskTitle": "考试阈值及等号边界",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r06"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r06",
+              "src-original"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一人不同实验室或授权范围，仅一单元满足校本条件：不得传播资格给另一单元",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G04",
+      "templateId": "d4-g04-t03",
+      "rawSha256": "9c889be9151854cbe43e3e94f5389c2a5fa0619e5e90867b14c117cee8e03cee",
+      "original": {
+        "ruleId": "R-11",
+        "headingLine": 393,
+        "heading": "### R-11｜参观校本政策未知",
+        "excerpt": "- **审核目标 / 作用对象**：`visitor_visit_scope`，对符合条件的每个unit逐个判断；不能以整批代理。\n- **适用政策、来源与效力**：`school_profile.school_id + current_effective_version + target_lab_id + role/scope`；来源 `C01,X02`；本校条款基础/业务实现细化；具体阈值仍按学校配置。\n- **触发条件（三态）**：`activity=visit_only AND policy.visit_path=UNKNOWN`。`FALSE → RC-01`（前提可确认时）；`UNKNOWN → RC-07/RC-06`，本条不可静默跳过或作为自动通过依据。\n- **生效阶段**：`ST-03`。未到阶段仅生成合法的待办，不将后续结果作初始必交材料。\n- **必要证据/替代组合**：`F15,F51,M22`。只采用第7章对该事实定义的合法OR组；跨层次检查采取AND，不允许一张证明替代所有事实。\n- **能够判定的事实与范围**：不提前激活免考或拒件要求。\n- **缺件、冲突、未知、下一步**：RC-07转保卫/实验室主管确定途径；对应主问题码`RC-07`，必须留存证据位置、尚缺权威来源、受权确认人和目标处理阶段。\n- **合法例外与权限禁区**：UNKNOWN不得当ALLOW也不得当DENY。系统不得从此规则自动签发资格。\n- **作者走查线索（不是D金标）**：未知参观路径不得默认禁止。",
+        "excerptEndsBeforeLine": 405
+      },
+      "technical": {
+        "archiveBlobSha": "43c0876f4bc7256416d06d5521a4e337961d7540",
+        "checkIds": [
+          "d4-g04-t03@1:module/use-scope-staff/r11",
+          "d4-g04-t03@1:module/use-scope-student/r11"
+        ],
+        "sourceIds": [
+          "src-r11",
+          "src-original",
+          "src-r11",
+          "src-original"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r11",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L393#r11"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          },
+          {
+            "sourceId": "src-r11",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L393#r11"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "d4-g04-t03@1:module/use-scope-staff/r11",
+            "taskTitle": "参观校本政策未知",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r11"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r11",
+              "src-original"
+            ]
+          },
+          {
+            "checkId": "d4-g04-t03@1:module/use-scope-student/r11",
+            "taskTitle": "参观校本政策未知",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r11"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r11",
+              "src-original"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一人不同实验室或授权范围，仅一单元满足校本条件：不得传播资格给另一单元",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G04",
+      "templateId": "d4-g04-t03",
+      "rawSha256": "9c889be9151854cbe43e3e94f5389c2a5fa0619e5e90867b14c117cee8e03cee",
+      "original": {
+        "ruleId": "R-14",
+        "headingLine": 429,
+        "heading": "### R-14｜有权资格签发",
+        "excerpt": "- **审核目标 / 作用对象**：`person_lab_scope`，对符合条件的每个unit逐个判断；不能以整批代理。\n- **适用政策、来源与效力**：`school_profile.school_id + current_effective_version + target_lab_id + role/scope`；来源 `C01,X01,X03`；本校条款基础/业务实现细化；具体阈值仍按学校配置。\n- **触发条件（三态）**：`policy.approval_chain=KNOWN`。`FALSE → RC-01`（前提可确认时）；`UNKNOWN → RC-07/RC-06`，本条不可静默跳过或作为自动通过依据。\n- **生效阶段**：`ST-08..ST-10`。未到阶段仅生成合法的待办，不将后续结果作初始必交材料。\n- **必要证据/替代组合**：`EV-07,EV-04`。只采用第7章对该事实定义的合法OR组；跨层次检查采取AND，不允许一张证明替代所有事实。\n- **能够判定的事实与范围**：仅权责单位完成全部必要节点后可记正式生效。\n- **缺件、冲突、未知、下一步**：前置完成而签批待定RC-08；越权签字RC-08或RC-05；对应主问题码`RC-08`，必须留存证据位置、尚缺权威来源、受权确认人和目标处理阶段。\n- **合法例外与权限禁区**：申请前不要求许可书已经生成。系统不得从此规则自动签发资格。\n- **作者走查线索（不是D金标）**：导师签名不等于正式批准。",
+        "excerptEndsBeforeLine": 441
+      },
+      "technical": {
+        "archiveBlobSha": "43c0876f4bc7256416d06d5521a4e337961d7540",
+        "checkIds": [
+          "d4-g04-t03@1:module/use-identity-staff/r14",
+          "d4-g04-t03@1:module/use-identity-student/r14"
+        ],
+        "sourceIds": [
+          "src-r14",
+          "src-original",
+          "src-r14",
+          "src-original"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r14",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L429#r14"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          },
+          {
+            "sourceId": "src-r14",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L429#r14"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "d4-g04-t03@1:module/use-identity-staff/r14",
+            "taskTitle": "有权资格签发",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r14"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r14",
+              "src-original"
+            ]
+          },
+          {
+            "checkId": "d4-g04-t03@1:module/use-identity-student/r14",
+            "taskTitle": "有权资格签发",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r14"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r14",
+              "src-original"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一人不同实验室或授权范围，仅一单元满足校本条件：不得传播资格给另一单元",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G04",
+      "templateId": "d4-g04-t03",
+      "rawSha256": "9c889be9151854cbe43e3e94f5389c2a5fa0619e5e90867b14c117cee8e03cee",
+      "original": {
+        "ruleId": "R-15",
+        "headingLine": 441,
+        "heading": "### R-15｜批次人员分别核验",
+        "excerpt": "- **审核目标 / 作用对象**：`each_person_scope`，对符合条件的每个unit逐个判断；不能以整批代理。\n- **适用政策、来源与效力**：`school_profile.school_id + current_effective_version + target_lab_id + role/scope`；来源 `X05,X07,B2-X20`；跨校实例或设计约束；CDUT须有明示政策才能激活强制条件。\n- **触发条件（三态）**：`beneficiary_count>1`。`FALSE → RC-01`（前提可确认时）；`UNKNOWN → RC-07/RC-06`，本条不可静默跳过或作为自动通过依据。\n- **生效阶段**：`ST-03..ST-09`。未到阶段仅生成合法的待办，不将后续结果作初始必交材料。\n- **必要证据/替代组合**：`EV-12,EV-01`。只采用第7章对该事实定义的合法OR组；跨层次检查采取AND，不允许一张证明替代所有事实。\n- **能够判定的事实与范围**：逐人实名考核与培训/许可独立输出。\n- **缺件、冲突、未知、下一步**：单人缺证只阻断其单元；批次导入不代表全员合格；对应主问题码`RC-03`，必须留存证据位置、尚缺权威来源、受权确认人和目标处理阶段。\n- **合法例外与权限禁区**：公用培训内容可共用，个体成绩不可共用。系统不得从此规则自动签发资格。\n- **作者走查线索（不是D金标）**：14人合格1人未训。",
+        "excerptEndsBeforeLine": 453
+      },
+      "technical": {
+        "archiveBlobSha": "43c0876f4bc7256416d06d5521a4e337961d7540",
+        "checkIds": [
+          "d4-g04-t03@1:module/use-identity-staff/r15",
+          "d4-g04-t03@1:module/use-identity-student/r15"
+        ],
+        "sourceIds": [
+          "src-r15",
+          "src-original",
+          "src-r15",
+          "src-original"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r15",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L441#r15"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          },
+          {
+            "sourceId": "src-r15",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L441#r15"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "d4-g04-t03@1:module/use-identity-staff/r15",
+            "taskTitle": "批次人员分别核验",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r15"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r15",
+              "src-original"
+            ]
+          },
+          {
+            "checkId": "d4-g04-t03@1:module/use-identity-student/r15",
+            "taskTitle": "批次人员分别核验",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r15"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r15",
+              "src-original"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一人不同实验室或授权范围，仅一单元满足校本条件：不得传播资格给另一单元",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G04",
+      "templateId": "d4-g04-t03",
+      "rawSha256": "9c889be9151854cbe43e3e94f5389c2a5fa0619e5e90867b14c117cee8e03cee",
+      "original": {
+        "ruleId": "R-19",
+        "headingLine": 489,
+        "heading": "### R-19｜停用/撤销两类事件",
+        "excerpt": "- **审核目标 / 作用对象**：`person_and_lab_separately`，对符合条件的每个unit逐个判断；不能以整批代理。\n- **适用政策、来源与效力**：`school_profile.school_id + current_effective_version + target_lab_id + role/scope`；来源 `C01,B2-X13`；本校条款基础/业务实现细化；具体阈值仍按学校配置。\n- **触发条件（三态）**：`lab_suspension=T OR person_revocation=T`。`FALSE → RC-01`（前提可确认时）；`UNKNOWN → RC-07/RC-06`，本条不可静默跳过或作为自动通过依据。\n- **生效阶段**：`ST-10..ST-12`。未到阶段仅生成合法的待办，不将后续结果作初始必交材料。\n- **必要证据/替代组合**：`EV-09`。只采用第7章对该事实定义的合法OR组；跨层次检查采取AND，不允许一张证明替代所有事实。\n- **能够判定的事实与范围**：分别读取个人有效资格与实验室允许作业状态。\n- **缺件、冲突、未知、下一步**：正式失效→RC-10或RC-11阻断实际操作；待恢复RC-06；对应主问题码`RC-10`，必须留存证据位置、尚缺权威来源、受权确认人和目标处理阶段。\n- **合法例外与权限禁区**：CDUT第30条仅明确实验室暂停，个人撤证路径外校证实。系统不得从此规则自动签发资格。\n- **作者走查线索（不是D金标）**：房间被停用但个人证有效。",
+        "excerptEndsBeforeLine": 501
+      },
+      "technical": {
+        "archiveBlobSha": "43c0876f4bc7256416d06d5521a4e337961d7540",
+        "checkIds": [
+          "d4-g04-t03@1:module/use-authority-staff/r19",
+          "d4-g04-t03@1:module/use-authority-student/r19"
+        ],
+        "sourceIds": [
+          "src-r19",
+          "src-original",
+          "src-r19",
+          "src-original"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r19",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L489#r19"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          },
+          {
+            "sourceId": "src-r19",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L489#r19"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "d4-g04-t03@1:module/use-authority-staff/r19",
+            "taskTitle": "停用/撤销两类事件",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r19"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r19",
+              "src-original"
+            ]
+          },
+          {
+            "checkId": "d4-g04-t03@1:module/use-authority-student/r19",
+            "taskTitle": "停用/撤销两类事件",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r19"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r19",
+              "src-original"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一人不同实验室或授权范围，仅一单元满足校本条件：不得传播资格给另一单元",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G04",
+      "templateId": "d4-g04-t03",
+      "rawSha256": "9c889be9151854cbe43e3e94f5389c2a5fa0619e5e90867b14c117cee8e03cee",
+      "original": {
+        "ruleId": "R-20",
+        "headingLine": 501,
+        "heading": "### R-20｜新考试不自动恢复正式停权",
+        "excerpt": "- **审核目标 / 作用对象**：`person_and_lab_separately`，对符合条件的每个unit逐个判断；不能以整批代理。\n- **适用政策、来源与效力**：`school_profile.school_id + current_effective_version + target_lab_id + role/scope`；来源 `C01,B2-X13`；本校条款基础/业务实现细化；具体阈值仍按学校配置。\n- **触发条件（三态）**：`training_new_pass=T AND prior_suspension_event=T`。`FALSE → RC-01`（前提可确认时）；`UNKNOWN → RC-07/RC-06`，本条不可静默跳过或作为自动通过依据。\n- **生效阶段**：`ST-11..ST-12`。未到阶段仅生成合法的待办，不将后续结果作初始必交材料。\n- **必要证据/替代组合**：`EV-09,EV-01`。只采用第7章对该事实定义的合法OR组；跨层次检查采取AND，不允许一张证明替代所有事实。\n- **能够判定的事实与范围**：须有权恢复决定，不能以新考试覆盖旧停权。\n- **缺件、冲突、未知、下一步**：恢复令未核RC-06；仍暂停RC-10；对应主问题码`RC-06`，必须留存证据位置、尚缺权威来源、受权确认人和目标处理阶段。\n- **合法例外与权限禁区**：个人停证与房间停用可能同时存在。系统不得从此规则自动签发资格。\n- **作者走查线索（不是D金标）**：补考合格后仍处停权。",
+        "excerptEndsBeforeLine": 513
+      },
+      "technical": {
+        "archiveBlobSha": "43c0876f4bc7256416d06d5521a4e337961d7540",
+        "checkIds": [
+          "d4-g04-t03@1:module/use-scope-staff/r20",
+          "d4-g04-t03@1:module/use-scope-student/r20"
+        ],
+        "sourceIds": [
+          "src-r20",
+          "src-original",
+          "src-r20",
+          "src-original"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r20",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L501#r20"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          },
+          {
+            "sourceId": "src-r20",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L501#r20"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "d4-g04-t03@1:module/use-scope-staff/r20",
+            "taskTitle": "新考试不自动恢复正式停权",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r20"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r20",
+              "src-original"
+            ]
+          },
+          {
+            "checkId": "d4-g04-t03@1:module/use-scope-student/r20",
+            "taskTitle": "新考试不自动恢复正式停权",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r20"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r20",
+              "src-original"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一人不同实验室或授权范围，仅一单元满足校本条件：不得传播资格给另一单元",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G04",
+      "templateId": "d4-g04-t03",
+      "rawSha256": "9c889be9151854cbe43e3e94f5389c2a5fa0619e5e90867b14c117cee8e03cee",
+      "original": {
+        "ruleId": "R-22",
+        "headingLine": 525,
+        "heading": "### R-22｜人员资格不等于物理门禁",
+        "excerpt": "- **审核目标 / 作用对象**：`person_lab_scope`，对符合条件的每个unit逐个判断；不能以整批代理。\n- **适用政策、来源与效力**：`school_profile.school_id + current_effective_version + target_lab_id + role/scope`；来源 `C01,X01,B2-X14`；本校条款基础/业务实现细化；具体阈值仍按学校配置。\n- **触发条件（三态）**：`eligibility_or_qualification_known=T`。`FALSE → RC-01`（前提可确认时）；`UNKNOWN → RC-07/RC-06`，本条不可静默跳过或作为自动通过依据。\n- **生效阶段**：`ST-07..ST-10`。未到阶段仅生成合法的待办，不将后续结果作初始必交材料。\n- **必要证据/替代组合**：`EV-07`。只采用第7章对该事实定义的合法OR组；跨层次检查采取AND，不允许一张证明替代所有事实。\n- **能够判定的事实与范围**：只输出人员安全资格，门禁由T01另行授权与记录。\n- **缺件、冲突、未知、下一步**：如无门禁只标T01依赖，不判T03不合格；对应主问题码`RC-02`，必须留存证据位置、尚缺权威来源、受权确认人和目标处理阶段。\n- **合法例外与权限禁区**：单独进入实际实验需要更完整许可链。系统不得从此规则自动签发资格。\n- **作者走查线索（不是D金标）**：有培训许可但未开门禁。",
+        "excerptEndsBeforeLine": 537
+      },
+      "technical": {
+        "archiveBlobSha": "43c0876f4bc7256416d06d5521a4e337961d7540",
+        "checkIds": [
+          "d4-g04-t03@1:module/use-identity-staff/r22",
+          "d4-g04-t03@1:module/use-identity-student/r22"
+        ],
+        "sourceIds": [
+          "src-r22",
+          "src-original",
+          "src-r22",
+          "src-original"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r22",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L525#r22"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          },
+          {
+            "sourceId": "src-r22",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L525#r22"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "d4-g04-t03@1:module/use-identity-staff/r22",
+            "taskTitle": "人员资格不等于物理门禁",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r22"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r22",
+              "src-original"
+            ]
+          },
+          {
+            "checkId": "d4-g04-t03@1:module/use-identity-student/r22",
+            "taskTitle": "人员资格不等于物理门禁",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r22"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r22",
+              "src-original"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一人不同实验室或授权范围，仅一单元满足校本条件：不得传播资格给另一单元",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G04",
+      "templateId": "d4-g04-t03",
+      "rawSha256": "9c889be9151854cbe43e3e94f5389c2a5fa0619e5e90867b14c117cee8e03cee",
+      "original": {
+        "ruleId": "R-28",
+        "headingLine": 597,
+        "heading": "### R-28｜同人多范围部分结果",
+        "excerpt": "- **审核目标 / 作用对象**：`each_person_lab_scope`，对符合条件的每个unit逐个判断；不能以整批代理。\n- **适用政策、来源与效力**：`school_profile.school_id + current_effective_version + target_lab_id + role/scope`；来源 `X01,X05`；跨校实例或设计约束；CDUT须有明示政策才能激活强制条件。\n- **触发条件（三态）**：`target_scope_count>1`。`FALSE → RC-01`（前提可确认时）；`UNKNOWN → RC-07/RC-06`，本条不可静默跳过或作为自动通过依据。\n- **生效阶段**：`ST-03..ST-10`。未到阶段仅生成合法的待办，不将后续结果作初始必交材料。\n- **必要证据/替代组合**：`EV-01,EV-02,EV-07`。只采用第7章对该事实定义的合法OR组；跨层次检查采取AND，不允许一张证明替代所有事实。\n- **能够判定的事实与范围**：独立判每一实验室风险和资格作用范围。\n- **缺件、冲突、未知、下一步**：某范围不满足只阻断其对应项，不影响其他独立合格项；对应主问题码`RC-11`，必须留存证据位置、尚缺权威来源、受权确认人和目标处理阶段。\n- **合法例外与权限禁区**：不合并不同房间审核效力。系统不得从此规则自动签发资格。\n- **作者走查线索（不是D金标）**：低风险房合格高风险房未批。",
+        "excerptEndsBeforeLine": 609
+      },
+      "technical": {
+        "archiveBlobSha": "43c0876f4bc7256416d06d5521a4e337961d7540",
+        "checkIds": [
+          "d4-g04-t03@1:module/use-scope-staff/r28",
+          "d4-g04-t03@1:module/use-scope-student/r28"
+        ],
+        "sourceIds": [
+          "src-r28",
+          "src-original",
+          "src-r28",
+          "src-original"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r28",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L597#r28"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          },
+          {
+            "sourceId": "src-r28",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L597#r28"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "d4-g04-t03@1:module/use-scope-staff/r28",
+            "taskTitle": "同人多范围部分结果",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r28"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r28",
+              "src-original"
+            ]
+          },
+          {
+            "checkId": "d4-g04-t03@1:module/use-scope-student/r28",
+            "taskTitle": "同人多范围部分结果",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r28"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r28",
+              "src-original"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一人不同实验室或授权范围，仅一单元满足校本条件：不得传播资格给另一单元",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G04",
+      "templateId": "d4-g04-t03",
+      "rawSha256": "9c889be9151854cbe43e3e94f5389c2a5fa0619e5e90867b14c117cee8e03cee",
+      "original": {
+        "ruleId": "R-30",
+        "headingLine": 621,
+        "heading": "### R-30｜未知校本阈值不得臆造",
+        "excerpt": "- **审核目标 / 作用对象**：`person_exam_kind`，对符合条件的每个unit逐个判断；不能以整批代理。\n- **适用政策、来源与效力**：`school_profile.school_id + current_effective_version + target_lab_id + role/scope`；来源 `C01,C03,B2-C07`；本校条款基础/业务实现细化；具体阈值仍按学校配置。\n- **触发条件（三态）**：`policy.effective_version_or_threshold=UNKNOWN`。`FALSE → RC-01`（前提可确认时）；`UNKNOWN → RC-07/RC-06`，本条不可静默跳过或作为自动通过依据。\n- **生效阶段**：`ST-03..ST-08`。未到阶段仅生成合法的待办，不将后续结果作初始必交材料。\n- **必要证据/替代组合**：`EV-01,F51`。只采用第7章对该事实定义的合法OR组；跨层次检查采取AND，不允许一张证明替代所有事实。\n- **能够判定的事实与范围**：先查正式pass状态或有权校本规则，不能自行填默认数值。\n- **缺件、冲突、未知、下一步**：RC-07；若官方已有pass状态，可确认事实但资格批准仍待签；对应主问题码`RC-07`，必须留存证据位置、尚缺权威来源、受权确认人和目标处理阶段。\n- **合法例外与权限禁区**：2016已废止，本校具体年限仍未知。系统不得从此规则自动签发资格。\n- **作者走查线索（不是D金标）**：CDUT分数未知与官方合格记录。",
+        "excerptEndsBeforeLine": 633
+      },
+      "technical": {
+        "archiveBlobSha": "43c0876f4bc7256416d06d5521a4e337961d7540",
+        "checkIds": [
+          "d4-g04-t03@1:module/use-scope-staff/r30",
+          "d4-g04-t03@1:module/use-scope-student/r30"
+        ],
+        "sourceIds": [
+          "src-r30",
+          "src-original",
+          "src-r30",
+          "src-original"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r30",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L621#r30"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          },
+          {
+            "sourceId": "src-r30",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L621#r30"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "d4-g04-t03@1:module/use-scope-staff/r30",
+            "taskTitle": "未知校本阈值不得臆造",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r30"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r30",
+              "src-original"
+            ]
+          },
+          {
+            "checkId": "d4-g04-t03@1:module/use-scope-student/r30",
+            "taskTitle": "未知校本阈值不得臆造",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r30"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r30",
+              "src-original"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一人不同实验室或授权范围，仅一单元满足校本条件：不得传播资格给另一单元",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G04",
+      "templateId": "d4-g04-t03",
+      "rawSha256": "9c889be9151854cbe43e3e94f5389c2a5fa0619e5e90867b14c117cee8e03cee",
+      "original": {
+        "ruleId": "R-31",
+        "headingLine": 633,
+        "heading": "### R-31｜系统不可达非未通过",
+        "excerpt": "- **审核目标 / 作用对象**：`person_scope`，对符合条件的每个unit逐个判断；不能以整批代理。\n- **适用政策、来源与效力**：`school_profile.school_id + current_effective_version + target_lab_id + role/scope`；来源 `C05,X01`；跨校实例或设计约束；CDUT须有明示政策才能激活强制条件。\n- **触发条件（三态）**：`trusted_lookup=UNAVAILABLE`。`FALSE → RC-01`（前提可确认时）；`UNKNOWN → RC-07/RC-06`，本条不可静默跳过或作为自动通过依据。\n- **生效阶段**：`ST-03..ST-09`。未到阶段仅生成合法的待办，不将后续结果作初始必交材料。\n- **必要证据/替代组合**：`EV-01,EV-07`。只采用第7章对该事实定义的合法OR组；跨层次检查采取AND，不允许一张证明替代所有事实。\n- **能够判定的事实与范围**：保留最后有效引用但不推断官方当前状态。\n- **缺件、冲突、未知、下一步**：RC-06，正式证明可转有权单位辅助核验；对应主问题码`RC-06`，必须留存证据位置、尚缺权威来源、受权确认人和目标处理阶段。\n- **合法例外与权限禁区**：接口恢复后新查询不得继续用旧缓存冒充现状。系统不得从此规则自动签发资格。\n- **作者走查线索（不是D金标）**：成绩平台宕机但纸件存在。",
+        "excerptEndsBeforeLine": 645
+      },
+      "technical": {
+        "archiveBlobSha": "43c0876f4bc7256416d06d5521a4e337961d7540",
+        "checkIds": [
+          "d4-g04-t03@1:module/use-scope-staff/r31",
+          "d4-g04-t03@1:module/use-scope-student/r31"
+        ],
+        "sourceIds": [
+          "src-r31",
+          "src-original",
+          "src-r31",
+          "src-original"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r31",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L633#r31"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          },
+          {
+            "sourceId": "src-r31",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L633#r31"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "d4-g04-t03@1:module/use-scope-staff/r31",
+            "taskTitle": "系统不可达非未通过",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r31"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r31",
+              "src-original"
+            ]
+          },
+          {
+            "checkId": "d4-g04-t03@1:module/use-scope-student/r31",
+            "taskTitle": "系统不可达非未通过",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r31"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r31",
+              "src-original"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一人不同实验室或授权范围，仅一单元满足校本条件：不得传播资格给另一单元",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G04",
+      "templateId": "d4-g04-t03",
+      "rawSha256": "9c889be9151854cbe43e3e94f5389c2a5fa0619e5e90867b14c117cee8e03cee",
+      "original": {
+        "ruleId": "R-38",
+        "headingLine": 717,
+        "heading": "### R-38｜外部人员多主体签批",
+        "excerpt": "- **审核目标 / 作用对象**：`person_external_path`，对符合条件的每个unit逐个判断；不能以整批代理。\n- **适用政策、来源与效力**：`school_profile.school_id + current_effective_version + target_lab_id + role/scope`；来源 `B2-X13`；跨校实例或设计约束；CDUT须有明示政策才能激活强制条件。\n- **触发条件（三态）**：`external_and_local_multisign_rule=T`。`FALSE → RC-01`（前提可确认时）；`UNKNOWN → RC-07/RC-06`，本条不可静默跳过或作为自动通过依据。\n- **生效阶段**：`ST-02..ST-08`。未到阶段仅生成合法的待办，不将后续结果作初始必交材料。\n- **必要证据/替代组合**：`EV-04`。只采用第7章对该事实定义的合法OR组；跨层次检查采取AND，不允许一张证明替代所有事实。\n- **能够判定的事实与范围**：按所属学校明确的派出、接收导师、学院安全员及负责人各节点签认。\n- **缺件、冲突、未知、下一步**：节点尚未来RC-08；错主体RC-05或RC-08；对应主问题码`RC-08`，必须留存证据位置、尚缺权威来源、受权确认人和目标处理阶段。\n- **合法例外与权限禁区**：中山化工保险等条件不可强加给CDUT。系统不得从此规则自动签发资格。\n- **作者走查线索（不是D金标）**：多页外来人申请表签字归属。",
+        "excerptEndsBeforeLine": 729
+      },
+      "technical": {
+        "archiveBlobSha": "43c0876f4bc7256416d06d5521a4e337961d7540",
+        "checkIds": [
+          "d4-g04-t03@1:module/use-authority-staff/r38",
+          "d4-g04-t03@1:module/use-authority-student/r38"
+        ],
+        "sourceIds": [
+          "src-r38",
+          "src-original",
+          "src-r38",
+          "src-original"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r38",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L717#r38"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          },
+          {
+            "sourceId": "src-r38",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L717#r38"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "d4-g04-t03@1:module/use-authority-staff/r38",
+            "taskTitle": "外部人员多主体签批",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r38"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r38",
+              "src-original"
+            ]
+          },
+          {
+            "checkId": "d4-g04-t03@1:module/use-authority-student/r38",
+            "taskTitle": "外部人员多主体签批",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r38"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r38",
+              "src-original"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一人不同实验室或授权范围，仅一单元满足校本条件：不得传播资格给另一单元",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G04",
+      "templateId": "d4-g04-t03",
+      "rawSha256": "9c889be9151854cbe43e3e94f5389c2a5fa0619e5e90867b14c117cee8e03cee",
+      "original": {
+        "ruleId": "R-40",
+        "headingLine": 741,
+        "heading": "### R-40｜批次建档不等于逐人合格",
+        "excerpt": "- **审核目标 / 作用对象**：`each_person_exam_status`，对符合条件的每个unit逐个判断；不能以整批代理。\n- **适用政策、来源与效力**：`school_profile.school_id + current_effective_version + target_lab_id + role/scope`；来源 `B2-X20,B2-X17`；跨校实例或设计约束；CDUT须有明示政策才能激活强制条件。\n- **触发条件（三态）**：`cohort_import_exists=T`。`FALSE → RC-01`（前提可确认时）；`UNKNOWN → RC-07/RC-06`，本条不可静默跳过或作为自动通过依据。\n- **生效阶段**：`ST-02..ST-08`。未到阶段仅生成合法的待办，不将后续结果作初始必交材料。\n- **必要证据/替代组合**：`EV-12`。只采用第7章对该事实定义的合法OR组；跨层次检查采取AND，不允许一张证明替代所有事实。\n- **能够判定的事实与范围**：批次导入、个人考试与个人许可为三个独立状态。\n- **缺件、冲突、未知、下一步**：仅有初始名单→RC-04/RC-06；不得自动全批通过；对应主问题码`RC-04`，必须留存证据位置、尚缺权威来源、受权确认人和目标处理阶段。\n- **合法例外与权限禁区**：外来人员也可能由院系管理员代建账号。系统不得从此规则自动签发资格。\n- **作者走查线索（不是D金标）**：名单导入10人只有7人考合格。",
+        "excerptEndsBeforeLine": 753
+      },
+      "technical": {
+        "archiveBlobSha": "43c0876f4bc7256416d06d5521a4e337961d7540",
+        "checkIds": [
+          "d4-g04-t03@1:module/use-scope-staff/r40",
+          "d4-g04-t03@1:module/use-scope-student/r40"
+        ],
+        "sourceIds": [
+          "src-r40",
+          "src-original",
+          "src-r40",
+          "src-original"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r40",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L741#r40"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          },
+          {
+            "sourceId": "src-r40",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L741#r40"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "d4-g04-t03@1:module/use-scope-staff/r40",
+            "taskTitle": "批次建档不等于逐人合格",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r40"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r40",
+              "src-original"
+            ]
+          },
+          {
+            "checkId": "d4-g04-t03@1:module/use-scope-student/r40",
+            "taskTitle": "批次建档不等于逐人合格",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r40"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r40",
+              "src-original"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一人不同实验室或授权范围，仅一单元满足校本条件：不得传播资格给另一单元",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G04",
+      "templateId": "d4-g04-t03",
+      "rawSha256": "9c889be9151854cbe43e3e94f5389c2a5fa0619e5e90867b14c117cee8e03cee",
+      "original": {
+        "ruleId": "R-41",
+        "headingLine": 753,
+        "heading": "### R-41｜个人资格作废与实验室停用独立",
+        "excerpt": "- **审核目标 / 作用对象**：`person_and_lab`，对符合条件的每个unit逐个判断；不能以整批代理。\n- **适用政策、来源与效力**：`school_profile.school_id + current_effective_version + target_lab_id + role/scope`；来源 `B2-X13,C01`；本校条款基础/业务实现细化；具体阈值仍按学校配置。\n- **触发条件（三态）**：`person_revoked_or_lab_suspended=T`。`FALSE → RC-01`（前提可确认时）；`UNKNOWN → RC-07/RC-06`，本条不可静默跳过或作为自动通过依据。\n- **生效阶段**：`ST-10..ST-12`。未到阶段仅生成合法的待办，不将后续结果作初始必交材料。\n- **必要证据/替代组合**：`EV-09`。只采用第7章对该事实定义的合法OR组；跨层次检查采取AND，不允许一张证明替代所有事实。\n- **能够判定的事实与范围**：分别验证两个不同权威事件和独立恢复链。\n- **缺件、冲突、未知、下一步**：正式作废RC-10；房间停用RC-10对实际操作禁行；个人是否恢复待核；对应主问题码`RC-10`，必须留存证据位置、尚缺权威来源、受权确认人和目标处理阶段。\n- **合法例外与权限禁区**：CDUT仅有房间暂停明文，个人撤证仅外校示例。系统不得从此规则自动签发资格。\n- **作者走查线索（不是D金标）**：房间恢复后个人仍失效。",
+        "excerptEndsBeforeLine": 765
+      },
+      "technical": {
+        "archiveBlobSha": "43c0876f4bc7256416d06d5521a4e337961d7540",
+        "checkIds": [
+          "d4-g04-t03@1:module/use-identity-staff/r41",
+          "d4-g04-t03@1:module/use-identity-student/r41"
+        ],
+        "sourceIds": [
+          "src-r41",
+          "src-original",
+          "src-r41",
+          "src-original"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r41",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L753#r41"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          },
+          {
+            "sourceId": "src-r41",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L753#r41"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "d4-g04-t03@1:module/use-identity-staff/r41",
+            "taskTitle": "个人资格作废与实验室停用独立",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r41"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r41",
+              "src-original"
+            ]
+          },
+          {
+            "checkId": "d4-g04-t03@1:module/use-identity-student/r41",
+            "taskTitle": "个人资格作废与实验室停用独立",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r41"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r41",
+              "src-original"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一人不同实验室或授权范围，仅一单元满足校本条件：不得传播资格给另一单元",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G04",
+      "templateId": "d4-g04-t03",
+      "rawSha256": "9c889be9151854cbe43e3e94f5389c2a5fa0619e5e90867b14c117cee8e03cee",
+      "original": {
+        "ruleId": "R-44",
+        "headingLine": 789,
+        "heading": "### R-44｜基本资格与专项许可分层",
+        "excerpt": "- **审核目标 / 作用对象**：`person_lab_scope`，对符合条件的每个unit逐个判断；不能以整批代理。\n- **适用政策、来源与效力**：`school_profile.school_id + current_effective_version + target_lab_id + role/scope`；来源 `B2-X19`；跨校实例或设计约束；CDUT须有明示政策才能激活强制条件。\n- **触发条件（三态）**：`basic_pass=T AND special_lab_permission=UNKNOWN_OR_FALSE`。`FALSE → RC-01`（前提可确认时）；`UNKNOWN → RC-07/RC-06`，本条不可静默跳过或作为自动通过依据。\n- **生效阶段**：`ST-06..ST-10`。未到阶段仅生成合法的待办，不将后续结果作初始必交材料。\n- **必要证据/替代组合**：`EV-01,EV-02,EV-07`。只采用第7章对该事实定义的合法OR组；跨层次检查采取AND，不允许一张证明替代所有事实。\n- **能够判定的事实与范围**：基础考试可判事实合格，但高风险房间资格仍需特训/批准。\n- **缺件、冲突、未知、下一步**：专业条件未知RC-07；明确缺失RC-11；对应主问题码`RC-11`，必须留存证据位置、尚缺权威来源、受权确认人和目标处理阶段。\n- **合法例外与权限禁区**：不必因此取消对普通房间的既有资格。系统不得从此规则自动签发资格。\n- **作者走查线索（不是D金标）**：基础pass不能全室通行。",
+        "excerptEndsBeforeLine": 801
+      },
+      "technical": {
+        "archiveBlobSha": "43c0876f4bc7256416d06d5521a4e337961d7540",
+        "checkIds": [
+          "d4-g04-t03@1:module/use-authority-staff/r44",
+          "d4-g04-t03@1:module/use-authority-student/r44"
+        ],
+        "sourceIds": [
+          "src-r44",
+          "src-original",
+          "src-r44",
+          "src-original"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r44",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L789#r44"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          },
+          {
+            "sourceId": "src-r44",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md:L789#r44"
+          },
+          {
+            "sourceId": "src-original",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "9c889be9151854cbe43e",
+            "locator": "G04-T03_正式业务模板_MD_v0.1.md #全部"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "d4-g04-t03@1:module/use-authority-staff/r44",
+            "taskTitle": "基本资格与专项许可分层",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r44"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r44",
+              "src-original"
+            ]
+          },
+          {
+            "checkId": "d4-g04-t03@1:module/use-authority-student/r44",
+            "taskTitle": "基本资格与专项许可分层",
+            "scope": {
+              "businessTypes": [
+                "g04-lab-person"
+              ],
+              "evidenceFacts": [
+                "d2:object:g04-lab-person:r44"
+              ]
+            },
+            "applicabilityNote": "需依原文触发及当期制度判定，未确认保留 pending",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r44",
+              "src-original"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "person_uid",
+          "target_lab_uid",
+          "scope_kind",
+          "action",
+          "policy_snapshot_id"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一人不同实验室或授权范围，仅一单元满足校本条件：不得传播资格给另一单元",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G06",
+      "templateId": "g06-t06",
+      "rawSha256": "77f89ac22112477e472d03cbac2696a1a58760dfec38466fe6bce8ee2db75204",
+      "original": {
+        "ruleId": "R-12",
+        "headingLine": 212,
+        "heading": "### R-12｜素材许可范围",
+        "excerpt": "- **依据等级/适用政策**：`条件式+学校版权配置`。**触发条件**：`非自有/第三方/受限内容且拟对外传播`。**生效阶段**：`ST03→07`。**最小目标对象**：`asset+action`。\n- **必要字段、材料与等价证据**：`F19,F35;MS06;EV04`。**必须核明的事实**：核授权作品、许可方主体、渠道、范围、有效期和传播用途是否覆盖。\n- **缺件、冲突或未知时的确定处理**：权利人存争议→MANUAL_REVIEW；缺许可→SUPPLEMENT/替换。**人工/下一步**：向合法权利人/法务补证。\n- **来源**：`S09,S03`；**输出问题码**：`Q12`；**可交D独立研究的测试线索**：第三方图仅授权纸刊；**B来源映射**：B-CR07。",
+        "excerptEndsBeforeLine": 217
+      },
+      "technical": {
+        "archiveBlobSha": "5c13298264aa02810a4db5b426eeb5bd956d67fe",
+        "checkIds": [
+          "g06-t06@1:module/use-r12/check"
+        ],
+        "sourceIds": [
+          "src-r12"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r12",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "g06-t06-v01-77f89ac22112477e",
+            "locator": "G06-T06_正式业务模板_MD_v0.1.md:L212"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "g06-t06@1:module/use-r12/check",
+            "taskTitle": "R-12｜素材许可范围",
+            "scope": {
+              "businessTypes": [
+                "g06-news-release-action"
+              ],
+              "evidenceFacts": [
+                "d2:object:g06-news-release-action:scope"
+              ]
+            },
+            "applicabilityNote": "G06-T06_正式业务模板_MD_v0.1.md:L212",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r12"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一素材跨不同渠道/操作/发布版本，仅一动作获得发行授权：另一动作保持 pending",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G06",
+      "templateId": "g06-t06",
+      "rawSha256": "77f89ac22112477e472d03cbac2696a1a58760dfec38466fe6bce8ee2db75204",
+      "original": {
+        "ruleId": "R-16",
+        "headingLine": 232,
+        "heading": "### R-16｜保密审批或安全路由",
+        "excerpt": "- **依据等级/适用政策**：`专业义务/条件式`。**触发条件**：`学校制度明确或材料含涉密线索`。**生效阶段**：`ST03→09`。**最小目标对象**：`version+action`。\n- **必要字段、材料与等价证据**：`F16,F23;MS09;EV06`。**必须核明的事实**：只有有权限的保密意见覆盖当前披露版方可形成对应完成状态。\n- **缺件、冲突或未知时的确定处理**：网页是否保密审核栏为空/为是均不等于真实审批记录。**人工/下一步**：隔离材料并转专业保密部门。\n- **来源**：`S03,S04,S08`；**输出问题码**：`Q16`；**可交D独立研究的测试线索**：空页面保密栏被误判违规；**B来源映射**：B-CR06。",
+        "excerptEndsBeforeLine": 237
+      },
+      "technical": {
+        "archiveBlobSha": "5c13298264aa02810a4db5b426eeb5bd956d67fe",
+        "checkIds": [
+          "g06-t06@1:module/use-r16/check"
+        ],
+        "sourceIds": [
+          "src-r16"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r16",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "g06-t06-v01-77f89ac22112477e",
+            "locator": "G06-T06_正式业务模板_MD_v0.1.md:L232"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "g06-t06@1:module/use-r16/check",
+            "taskTitle": "R-16｜保密审批或安全路由",
+            "scope": {
+              "businessTypes": [
+                "g06-news-release-action"
+              ],
+              "evidenceFacts": [
+                "d2:object:g06-news-release-action:scope"
+              ]
+            },
+            "applicabilityNote": "G06-T06_正式业务模板_MD_v0.1.md:L232",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r16"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一素材跨不同渠道/操作/发布版本，仅一动作获得发行授权：另一动作保持 pending",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G06",
+      "templateId": "g06-t06",
+      "rawSha256": "77f89ac22112477e472d03cbac2696a1a58760dfec38466fe6bce8ee2db75204",
+      "original": {
+        "ruleId": "R-19",
+        "headingLine": 247,
+        "heading": "### R-19｜当前审批决定合法性",
+        "excerpt": "- **依据等级/适用政策**：`渠道政策激活`。**触发条件**：`有自称“通过/拒绝”决定`。**生效阶段**：`ST07→10`。**最小目标对象**：`action+version`。\n- **必要字段、材料与等价证据**：`F22,F27,F36;EV07`。**必须核明的事实**：决定来自有权限的人、针对对应版本/平台、处于有效期和未撤销状态。\n- **缺件、冲突或未知时的确定处理**：只有聊天截图→UNVERIFIED；正式否决→DECLINED。**人工/下一步**：按决定进入审批或停止。\n- **来源**：`S07,S08`；**输出问题码**：`Q19`；**可交D独立研究的测试线索**：过期审批截屏；**B来源映射**：B-CR10。",
+        "excerptEndsBeforeLine": 252
+      },
+      "technical": {
+        "archiveBlobSha": "5c13298264aa02810a4db5b426eeb5bd956d67fe",
+        "checkIds": [
+          "g06-t06@1:module/use-r19/check"
+        ],
+        "sourceIds": [
+          "src-r19"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r19",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "g06-t06-v01-77f89ac22112477e",
+            "locator": "G06-T06_正式业务模板_MD_v0.1.md:L247"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "g06-t06@1:module/use-r19/check",
+            "taskTitle": "R-19｜当前审批决定合法性",
+            "scope": {
+              "businessTypes": [
+                "g06-news-release-action"
+              ],
+              "evidenceFacts": [
+                "d2:object:g06-news-release-action:scope"
+              ]
+            },
+            "applicabilityNote": "G06-T06_正式业务模板_MD_v0.1.md:L247",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r19"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一素材跨不同渠道/操作/发布版本，仅一动作获得发行授权：另一动作保持 pending",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G06",
+      "templateId": "g06-t06",
+      "rawSha256": "77f89ac22112477e472d03cbac2696a1a58760dfec38466fe6bce8ee2db75204",
+      "original": {
+        "ruleId": "R-20",
+        "headingLine": 252,
+        "heading": "### R-20｜多渠道逐动作授权",
+        "excerpt": "- **依据等级/适用政策**：`设计要求`。**触发条件**：`单稿发布渠道≥2`。**生效阶段**：`ST02→11`。**最小目标对象**：`action`。\n- **必要字段、材料与等价证据**：`F02,F09,F22,F33;EV01,EV07`。**必须核明的事实**：各channel+version独立记录条件和有权决定，不交叉继承。\n- **缺件、冲突或未知时的确定处理**：任一未核→仅该action待核，汇总不能全部放行。**人工/下一步**：逐渠道补授权。\n- **来源**：`S07,S08,S09`；**输出问题码**：`Q20`；**可交D独立研究的测试线索**：校网通过不能官微自动通过；**B来源映射**：B-CR05。",
+        "excerptEndsBeforeLine": 257
+      },
+      "technical": {
+        "archiveBlobSha": "5c13298264aa02810a4db5b426eeb5bd956d67fe",
+        "checkIds": [
+          "g06-t06@1:module/use-r20/check"
+        ],
+        "sourceIds": [
+          "src-r20"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r20",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "g06-t06-v01-77f89ac22112477e",
+            "locator": "G06-T06_正式业务模板_MD_v0.1.md:L252"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "g06-t06@1:module/use-r20/check",
+            "taskTitle": "R-20｜多渠道逐动作授权",
+            "scope": {
+              "businessTypes": [
+                "g06-news-release-action"
+              ],
+              "evidenceFacts": [
+                "d2:object:g06-news-release-action:scope"
+              ]
+            },
+            "applicabilityNote": "G06-T06_正式业务模板_MD_v0.1.md:L252",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r20"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一素材跨不同渠道/操作/发布版本，仅一动作获得发行授权：另一动作保持 pending",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G06",
+      "templateId": "g06-t06",
+      "rawSha256": "77f89ac22112477e472d03cbac2696a1a58760dfec38466fe6bce8ee2db75204",
+      "original": {
+        "ruleId": "R-21",
+        "headingLine": 257,
+        "heading": "### R-21｜未经批准不得声称已发布",
+        "excerpt": "- **依据等级/适用政策**：`状态不变量`。**触发条件**：`申请者声明已批或已上线`。**生效阶段**：`ST03→11`。**最小目标对象**：`action`。\n- **必要字段、材料与等价证据**：`F22,F24,F27;EV07,EV09`。**必须核明的事实**：submitted≠approved，approved≠published，必须按可信证据区分。\n- **缺件、冲突或未知时的确定处理**：后台不可访问→UNVERIFIED；正式否决→DECLINED。**人工/下一步**：等待有权审核或执行回执。\n- **来源**：`S03,S07,S08`；**输出问题码**：`Q21`；**可交D独立研究的测试线索**：稿件已审但未上线；**B来源映射**：B-CR10。",
+        "excerptEndsBeforeLine": 262
+      },
+      "technical": {
+        "archiveBlobSha": "5c13298264aa02810a4db5b426eeb5bd956d67fe",
+        "checkIds": [
+          "g06-t06@1:module/use-r21/check"
+        ],
+        "sourceIds": [
+          "src-r21"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r21",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "g06-t06-v01-77f89ac22112477e",
+            "locator": "G06-T06_正式业务模板_MD_v0.1.md:L257"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "g06-t06@1:module/use-r21/check",
+            "taskTitle": "R-21｜未经批准不得声称已发布",
+            "scope": {
+              "businessTypes": [
+                "g06-news-release-action"
+              ],
+              "evidenceFacts": [
+                "d2:object:g06-news-release-action:scope"
+              ]
+            },
+            "applicabilityNote": "G06-T06_正式业务模板_MD_v0.1.md:L257",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r21"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一素材跨不同渠道/操作/发布版本，仅一动作获得发行授权：另一动作保持 pending",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G06",
+      "templateId": "g06-t06",
+      "rawSha256": "77f89ac22112477e472d03cbac2696a1a58760dfec38466fe6bce8ee2db75204",
+      "original": {
+        "ruleId": "R-22",
+        "headingLine": 262,
+        "heading": "### R-22｜实质修改后重审判断",
+        "excerpt": "- **依据等级/适用政策**：`建议+政策可配`。**触发条件**：`已有批准且送审版本发生实质变化`。**生效阶段**：`ST09→10`。**最小目标对象**：`claim+asset+action`。\n- **必要字段、材料与等价证据**：`F08,F26,F36;MS10;EV08`。**必须核明的事实**：识别科研数字/成果状态/隐私素材等变化是否超原审批范围。\n- **缺件、冲突或未知时的确定处理**：规则或影响未知→MANUAL_REVIEW；不可自动继承旧同意。**人工/下一步**：以修改版申请重审。\n- **来源**：`S08,S09`；**输出问题码**：`Q22`；**可交D独立研究的测试线索**：批准后增加未公开数据；**B来源映射**：B-CR09。",
+        "excerptEndsBeforeLine": 267
+      },
+      "technical": {
+        "archiveBlobSha": "5c13298264aa02810a4db5b426eeb5bd956d67fe",
+        "checkIds": [
+          "g06-t06@1:module/use-r22/check"
+        ],
+        "sourceIds": [
+          "src-r22"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r22",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "g06-t06-v01-77f89ac22112477e",
+            "locator": "G06-T06_正式业务模板_MD_v0.1.md:L262"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "g06-t06@1:module/use-r22/check",
+            "taskTitle": "R-22｜实质修改后重审判断",
+            "scope": {
+              "businessTypes": [
+                "g06-news-release-action"
+              ],
+              "evidenceFacts": [
+                "d2:object:g06-news-release-action:scope"
+              ]
+            },
+            "applicabilityNote": "G06-T06_正式业务模板_MD_v0.1.md:L262",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r22"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一素材跨不同渠道/操作/发布版本，仅一动作获得发行授权：另一动作保持 pending",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G06",
+      "templateId": "g06-t06",
+      "rawSha256": "77f89ac22112477e472d03cbac2696a1a58760dfec38466fe6bce8ee2db75204",
+      "original": {
+        "ruleId": "R-25",
+        "headingLine": 277,
+        "heading": "### R-25｜撤稿和停止传播",
+        "excerpt": "- **依据等级/适用政策**：`正式纠错路径`。**触发条件**：`已发布后权利异议/重大事实错误`。**生效阶段**：`ST11→12`。**最小目标对象**：`article+asset`。\n- **必要字段、材料与等价证据**：`F25,F26;MS10;EV08`。**必须核明的事实**：标注撤稿范围、影响渠道、原URL、处理依据；不可自行执行删除。\n- **缺件、冲突或未知时的确定处理**：是否撤稿需有权决定，暂时限传播可交人工。**人工/下一步**：通知频道运营者与法务。\n- **来源**：`S08,S09`；**输出问题码**：`Q25`；**可交D独立研究的测试线索**：一张侵权图需要撤图还是撤整篇；**B来源映射**：B-CR11。",
+        "excerptEndsBeforeLine": 282
+      },
+      "technical": {
+        "archiveBlobSha": "5c13298264aa02810a4db5b426eeb5bd956d67fe",
+        "checkIds": [
+          "g06-t06@1:module/use-r25/check"
+        ],
+        "sourceIds": [
+          "src-r25"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r25",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "g06-t06-v01-77f89ac22112477e",
+            "locator": "G06-T06_正式业务模板_MD_v0.1.md:L277"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "g06-t06@1:module/use-r25/check",
+            "taskTitle": "R-25｜撤稿和停止传播",
+            "scope": {
+              "businessTypes": [
+                "g06-news-release-action"
+              ],
+              "evidenceFacts": [
+                "d2:object:g06-news-release-action:scope"
+              ]
+            },
+            "applicabilityNote": "G06-T06_正式业务模板_MD_v0.1.md:L277",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r25"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一素材跨不同渠道/操作/发布版本，仅一动作获得发行授权：另一动作保持 pending",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G06",
+      "templateId": "g06-t06",
+      "rawSha256": "77f89ac22112477e472d03cbac2696a1a58760dfec38466fe6bce8ee2db75204",
+      "original": {
+        "ruleId": "R-27",
+        "headingLine": 287,
+        "heading": "### R-27｜多素材独立结论",
+        "excerpt": "- **依据等级/适用政策**：`逐对象规则`。**触发条件**：`一个动作含多个素材/主张`。**生效阶段**：`ST03→10`。**最小目标对象**：`asset/claim/action`。\n- **必要字段、材料与等价证据**：`F14,F17,F19,F33;EV03,EV04`。**必须核明的事实**：针对每个对象独立给可用、缺证、冲突、需复核、NA。\n- **缺件、冲突或未知时的确定处理**：单张无授权不应否认其他合法素材。**人工/下一步**：仅替换相关素材；总动作是否可发布待有权人。\n- **来源**：`S07,S09`；**输出问题码**：`Q27`；**可交D独立研究的测试线索**：三张图两张合规一张缺授权；**B来源映射**：B-CR12。",
+        "excerptEndsBeforeLine": 292
+      },
+      "technical": {
+        "archiveBlobSha": "5c13298264aa02810a4db5b426eeb5bd956d67fe",
+        "checkIds": [
+          "g06-t06@1:module/use-r27/check"
+        ],
+        "sourceIds": [
+          "src-r27"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r27",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "g06-t06-v01-77f89ac22112477e",
+            "locator": "G06-T06_正式业务模板_MD_v0.1.md:L287"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "g06-t06@1:module/use-r27/check",
+            "taskTitle": "R-27｜多素材独立结论",
+            "scope": {
+              "businessTypes": [
+                "g06-news-release-action"
+              ],
+              "evidenceFacts": [
+                "d2:object:g06-news-release-action:scope"
+              ]
+            },
+            "applicabilityNote": "G06-T06_正式业务模板_MD_v0.1.md:L287",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r27"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一素材跨不同渠道/操作/发布版本，仅一动作获得发行授权：另一动作保持 pending",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G06",
+      "templateId": "g06-t06",
+      "rawSha256": "77f89ac22112477e472d03cbac2696a1a58760dfec38466fe6bce8ee2db75204",
+      "original": {
+        "ruleId": "R-29",
+        "headingLine": 297,
+        "heading": "### R-29｜可信数据不可达",
+        "excerpt": "- **依据等级/适用政策**：`可靠性不变量`。**触发条件**：`权限接口故障/数据不可访问`。**生效阶段**：`ST03→07`。**最小目标对象**：`evidence`。\n- **必要字段、材料与等价证据**：`F28,F34;EV01,EV03,EV07`。**必须核明的事实**：UNVERIFIED与MISSING、FALSE分离；不得虚构已验证事实。\n- **缺件、冲突或未知时的确定处理**：未知→HOLD/待有权查询，不默认宽松通过。**人工/下一步**：重试或人工原件核验。\n- **来源**：`S01,S07,S08`；**输出问题码**：`Q29`；**可交D独立研究的测试线索**：权利库查询失败；**B来源映射**：B-CR13。",
+        "excerptEndsBeforeLine": 302
+      },
+      "technical": {
+        "archiveBlobSha": "5c13298264aa02810a4db5b426eeb5bd956d67fe",
+        "checkIds": [
+          "g06-t06@1:module/use-r29/check"
+        ],
+        "sourceIds": [
+          "src-r29"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r29",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "g06-t06-v01-77f89ac22112477e",
+            "locator": "G06-T06_正式业务模板_MD_v0.1.md:L297"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "g06-t06@1:module/use-r29/check",
+            "taskTitle": "R-29｜可信数据不可达",
+            "scope": {
+              "businessTypes": [
+                "g06-news-release-action"
+              ],
+              "evidenceFacts": [
+                "d2:object:g06-news-release-action:scope"
+              ]
+            },
+            "applicabilityNote": "G06-T06_正式业务模板_MD_v0.1.md:L297",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r29"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一素材跨不同渠道/操作/发布版本，仅一动作获得发行授权：另一动作保持 pending",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G06",
+      "templateId": "g06-t06",
+      "rawSha256": "77f89ac22112477e472d03cbac2696a1a58760dfec38466fe6bce8ee2db75204",
+      "original": {
+        "ruleId": "R-30",
+        "headingLine": 302,
+        "heading": "### R-30｜校本制度未知",
+        "excerpt": "- **依据等级/适用政策**：`政策治理不变量`。**触发条件**：`当前校内送审节点/强制表不可确认`。**生效阶段**：`ST01→07`。**最小目标对象**：`policy+action`。\n- **必要字段、材料与等价证据**：`F28;EV01,EV07`。**必须核明的事实**：不能把S07/S08外校表格、单位层级当作CDUT硬拒条件。\n- **缺件、冲突或未知时的确定处理**：POLICY_UNKNOWN→保持待配置/专业分流。**人工/下一步**：有权部门确认政策版本。\n- **来源**：`S01,S07,S08`；**输出问题码**：`Q30`；**可交D独立研究的测试线索**：要求CDUT必盖外校流程单；**B来源映射**：B-CR13。",
+        "excerptEndsBeforeLine": 307
+      },
+      "technical": {
+        "archiveBlobSha": "5c13298264aa02810a4db5b426eeb5bd956d67fe",
+        "checkIds": [
+          "g06-t06@1:module/use-r30/check"
+        ],
+        "sourceIds": [
+          "src-r30"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r30",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "g06-t06-v01-77f89ac22112477e",
+            "locator": "G06-T06_正式业务模板_MD_v0.1.md:L302"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "g06-t06@1:module/use-r30/check",
+            "taskTitle": "R-30｜校本制度未知",
+            "scope": {
+              "businessTypes": [
+                "g06-news-release-action"
+              ],
+              "evidenceFacts": [
+                "d2:object:g06-news-release-action:scope"
+              ]
+            },
+            "applicabilityNote": "G06-T06_正式业务模板_MD_v0.1.md:L302",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r30"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一素材跨不同渠道/操作/发布版本，仅一动作获得发行授权：另一动作保持 pending",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    },
+    {
+      "domain": "G06",
+      "templateId": "g06-t06",
+      "rawSha256": "77f89ac22112477e472d03cbac2696a1a58760dfec38466fe6bce8ee2db75204",
+      "original": {
+        "ruleId": "R-34",
+        "headingLine": 322,
+        "heading": "### R-34｜撤回或失效重审",
+        "excerpt": "- **依据等级/适用政策**：`生命周期`。**触发条件**：`主动撤回、主体失权、许可到期或事实被更正`。**生效阶段**：`ST04→13`。**最小目标对象**：`action+asset`。\n- **必要字段、材料与等价证据**：`F19,F22,F25,F28;EV04,EV07,EV08`。**必须核明的事实**：旧审批对新版本/新权限/到期许可不可当然延续。\n- **缺件、冲突或未知时的确定处理**：权限证据更新缺失→HOLD；有正式撤回→WITHDRAWN。**人工/下一步**：重开新案或补合法授权。\n- **来源**：`S08,S09`；**输出问题码**：`Q34`；**可交D独立研究的测试线索**：原授权过期仍沿用旧新闻批准；**B来源映射**：设计。\n### 8.1 规则对已核实本校信息的适用门槛\n`N01`科研诚信原则支持“事实应有可靠出处”和责任链，但不能建立“每篇新闻都交新诚信承诺书”的强制材料规则；`N02/N03`成果要报仅是某研究中心结题时提供的上游辅助证明；`S03/S04/S05/N05`网页展示“是否保密审核”“文图是否侵权”等字段，**只证明公开页面有该字段，不证明申报表必须填写或审批历史一定存在**；`N04`是2004年历史通知不可作2026当前强制；`S07/S08/S09`外校制度只启发通道设计，CDUT审批链必须另有适用依据。[N01][N02][S03][S07][S08]",
+        "excerptEndsBeforeLine": 331
+      },
+      "technical": {
+        "archiveBlobSha": "5c13298264aa02810a4db5b426eeb5bd956d67fe",
+        "checkIds": [
+          "g06-t06@1:module/use-r34/check"
+        ],
+        "sourceIds": [
+          "src-r34"
+        ],
+        "sourceEvidence": [
+          {
+            "sourceId": "src-r34",
+            "verification": "content-checked",
+            "applicability": "unknown",
+            "documentVersionId": "g06-t06-v01-77f89ac22112477e",
+            "locator": "G06-T06_正式业务模板_MD_v0.1.md:L322"
+          }
+        ],
+        "observedScopes": [
+          {
+            "checkId": "g06-t06@1:module/use-r34/check",
+            "taskTitle": "R-34｜撤回或失效重审",
+            "scope": {
+              "businessTypes": [
+                "g06-news-release-action"
+              ],
+              "evidenceFacts": [
+                "d2:object:g06-news-release-action:scope"
+              ]
+            },
+            "applicabilityNote": "G06-T06_正式业务模板_MD_v0.1.md:L322",
+            "responsibilityEvidence": "NOT_IN_B4_CHECK_METADATA",
+            "sourceIds": [
+              "src-r34"
+            ]
+          }
+        ],
+        "expectedReviewDimensions": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ],
+        "dimensionsNotEvidencedInArchivedCheckFields": [
+          "release_action_id",
+          "channel_id",
+          "claim_id",
+          "asset_id",
+          "publication_version"
+        ]
+      },
+      "disposition": {
+        "status": "CANDIDATE_CHECK_TRACEABLE_SEMANTIC_UNPROVEN",
+        "authorityVerified": false,
+        "applicabilityVerified": false,
+        "independentGold": false,
+        "authorMayPublish": false,
+        "requiredReview": [
+          "Check applicability/unknown/branch predicate against original full clause",
+          "Check every actual business object instance and correct active source version",
+          "Check named human authority and durable actor/receipt boundary",
+          "Verify revisions, current policy, and independent Gold separately"
+        ],
+        "targetedNegativeTest": "同一素材跨不同渠道/操作/发布版本，仅一动作获得发行授权：另一动作保持 pending",
+        "negativeTestStatus": "NOT_EXECUTED_TARGET_MACHINE_OR_GOLD"
+      }
+    }
+  ]
+}
