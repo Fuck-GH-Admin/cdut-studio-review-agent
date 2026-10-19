@@ -11,7 +11,7 @@ export function sourceRefTargetsBlock(ref: SourceRef, document: SourceDocument, 
     const column = typeof block.table?.column === 'number' ? spreadsheetColumnName(block.table.column) : String(block.table?.column ?? '')
     return block.table?.row === location.row && column.toLocaleUpperCase() === location.column.toLocaleUpperCase() && (!block.table.sheet || block.table.sheet === location.sheet)
   }
-  if (location.kind === 'pdf-rect') return block.page === location.page
+  if (location.kind === 'pdf-rect' || location.kind === 'pdf-page') return block.page === location.page
   if (location.kind === 'text-range') {
     if (ref.quote && block.text.includes(ref.quote)) return true
     const start = document.blocks.slice(0, blockIndex).reduce((offset, item) => offset + item.text.length + 1, 0)

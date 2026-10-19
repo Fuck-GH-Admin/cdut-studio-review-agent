@@ -10,7 +10,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 
 import { createHash } from 'node:crypto'
 import { join } from 'node:path'
 import type { ReviewCase } from '@profer/shared'
-import type { DocumentVersion, FieldValue, ReviewCaseV2, ReviewSubject, TemplateVersion } from '@profer/shared'
+import type { DocumentVersion, FieldValue, ReviewCaseV2, ReviewSubject, TemplateVersion, SourceLocation, ReviewDocumentBlock, SourceDocument } from '@profer/shared'
 import { getConfigDir } from '../config-paths'
 
 /** V1 领域包 → V2 模板映射（未知 ID 不默认综测：H14 延续到迁移层） */
@@ -51,6 +51,31 @@ function blockHash(texts: string[]): string {
   return createHash('sha1').update(texts.join('\n'), 'utf-8').digest('hex')
 }
 
+/** Preserve truthful sheet/cell and PDF page coordinates from the source parser.
+ * The generic V1 block index is an extracted-block ordinal, not a PDF box. */
+function sheetColumn(index: number): string {
+  if (!Number.isSafeInteger(index) || index < 1) return ''
+  let current = index, output = ''
+  while (current > 0) {
+    current -= 1
+    output = String.fromCharCode(65 + current % 26) + output
+    current = Math.floor(current / 26)
+  }
+  return output
+}
+export function w1BlockLocation(doc: SourceDocument, block: ReviewDocumentBlock, index: number): SourceLocation {
+  if (block.table?.sheet && Number.isSafeInteger(block.table.row) && block.table.row > 0) {
+    const column = sheetColumn(block.table.column)
+    if (column) return { kind: 'sheet-cell', sheet: block.table.sheet,
+      row: block.table.row, column }
+  }
+  if (doc.fileName.toLowerCase().endsWith('.pdf') &&
+      Number.isSafeInteger(block.page) && block.page > 0) {
+    return { kind: 'pdf-page', page: block.page }
+  }
+  return { kind: 'paragraph', index }
+}
+
 /** V1 源文档 → V2 文档版本（versionId 稳定：docId-v1） */
 export function documentToVersion(doc: ReviewCase['documents'][number]): DocumentVersion {
   const legacyAssetPath = (doc as { imageAssetPath?: string }).imageAssetPath
@@ -69,7 +94,7 @@ export function documentToVersion(doc: ReviewCase['documents'][number]): Documen
     blocks: doc.blocks.map((block, index) => ({
       blockId: block.id,
       text: block.text ?? '',
-      location: { kind: 'paragraph' as const, index },
+      location: w1BlockLocation(doc, block, index),
       kind: block.kind === 'image' ? 'image' : block.kind === 'table-cell' ? 'table' : 'text',
       ...(block.kind === 'heading' || block.kind === 'paragraph' || block.kind === 'list-item' || block.kind === 'table-cell' ? { format: block.kind } : {}),
       ...(block.table ? { table: block.table } : {}),

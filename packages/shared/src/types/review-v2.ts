@@ -68,6 +68,8 @@ export type TriState = 'true' | 'false' | 'unknown'
 /** 材料中的位置（五选一；无准确坐标用 file 级并说明） */
 export type SourceLocation =
   | { kind: 'pdf-rect'; page: number; rect: { x: number; y: number; w: number; h: number } }
+  /** True PDF page only; never fabricate a rectangle from text extraction. */
+  | { kind: 'pdf-page'; page: number }
   | { kind: 'sheet-cell'; sheet: string; row: number; column: string }
   | { kind: 'paragraph'; index: number }
   | { kind: 'text-range'; start: number; end: number }
@@ -108,7 +110,7 @@ export interface DocumentVersion {
     format?: 'heading' | 'paragraph' | 'list-item' | 'table-cell' | 'ocr-text' | 'vision-text'
     ocr?: { imageBlockId: string; engine: string; confidence: number; rect: { x: number; y: number; w: number; h: number } }
     vision?: { imageBlockId: string; engine: string }
-    table?: { row: number; column: number }
+    table?: { row: number; column: number; sheet?: string }
     imageAlt?: string
     imageAssetPath?: string
   }>

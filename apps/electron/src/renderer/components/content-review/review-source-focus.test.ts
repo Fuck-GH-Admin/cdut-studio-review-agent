@@ -14,6 +14,8 @@ describe('V2 SourceRef 三栏定位映射', () => {
     expect(sourceRefTargetsBlock(ref({ kind: 'paragraph', index: 1 }), document, blocks[1]!)).toBeTrue()
     expect(sourceRefTargetsBlock(ref({ kind: 'sheet-cell', sheet: '证明表', row: 4, column: 'B' }), document, blocks[1]!)).toBeTrue()
     expect(sourceRefTargetsBlock(ref({ kind: 'pdf-rect', page: 2, rect: { x: 0, y: 0, w: 1, h: 1 } }), document, blocks[1]!)).toBeTrue()
+    expect(sourceRefTargetsBlock(ref({ kind: 'pdf-page', page: 2 }), document, blocks[1]!)).toBeTrue()
+    expect(sourceRefTargetsBlock(ref({ kind: 'pdf-page', page: 2 }), document, blocks[0]!)).toBeFalse()
   })
 
   test('文件级引用只定位到文档首块，避免所有原文同时跳动', () => {
