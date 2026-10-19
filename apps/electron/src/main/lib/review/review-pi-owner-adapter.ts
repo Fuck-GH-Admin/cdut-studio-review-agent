@@ -32,7 +32,7 @@ export const V3_REVIEW_TOOLS = [
 ] as const
 export type V3ReviewTool = (typeof V3_REVIEW_TOOLS)[number]
 
-export type V3OwnerState = 'active' | 'revoked' | 'deleted' | 'terminal' | 'recovery-required'
+export type V3OwnerState = 'active' | 'paused' | 'revoked' | 'deleted' | 'terminal' | 'recovery-required'
 export interface V3OwnerLease {
   readonly grantId: string
   readonly sessionId: string
@@ -104,6 +104,7 @@ function assertLeaseValid(lease: V3OwnerLease): void {
       !lease.processEpoch || !lease.caseId || !lease.attemptId || !lease.runId ||
       !Number.isSafeInteger(lease.generation) || lease.generation < 1 ||
       !/^[a-f0-9]{64}$/i.test(lease.manifestHash) ||
+      !['active','paused','revoked','deleted','terminal','recovery-required'].includes(lease.state) ||
       !lease.planFingerprint || !Number.isFinite(lease.expiresAt) ||
       !Array.isArray(lease.permittedTools) ||
       !lease.permittedTools.every(t => V3_REVIEW_TOOLS.includes(t)) ||
@@ -245,7 +246,7 @@ export class V3ReviewOwnerAdapter {
     this.journal = decode(this.revision)
     // No old lease may become live merely because Main restarted.
     for (const [id, old] of Object.entries(this.journal.owners)) {
-      if (old.state === 'active') this.localDenied.add(id)
+      if (old.state === 'active' || old.state === 'paused') this.localDenied.add(id)
     }
   }
 
@@ -333,7 +334,7 @@ export class V3ReviewOwnerAdapter {
     this.assertFresh()
     const lease = this.journal.owners[sessionId]
     return lease ? structuredClone((this.localDenied.has(sessionId) ||
-      lease.processEpoch !== this.processEpoch) && lease.state === 'active'
+      lease.processEpoch !== this.processEpoch) && (lease.state === 'active' || lease.state === 'paused')
       ? { ...lease, state: 'recovery-required' as const } : lease) : null
   }
 
@@ -393,7 +394,59 @@ export class V3ReviewOwnerAdapter {
       : run()
   }
 
-  private settle(sessionId: string, state: Exclude<V3OwnerState, 'active'>): void {
+  /**
+   * Durable pause is a scheduling state, not a revoke and not a new Run.
+   * Immediately deny this PID's old grant before the disk commit. If disk
+   * I/O fails, keep it denied: only an explicit recovery can reconcile.
+   */
+  pause(sessionId: string): void {
+    this.localDenied.add(sessionId)
+    this.assertFresh()
+    const old = this.journal.owners[sessionId]
+    if (!old || old.state !== 'active' ||
+        old.processEpoch !== this.processEpoch) {
+      throw new C0ContractError('CASE_SCOPE_FORBIDDEN', 'Only current active Owner can pause')
+    }
+    this.persist({
+      ...this.journal,
+      owners: {...this.journal.owners, [sessionId]: {...old, state: 'paused'}},
+    })
+  }
+
+  /**
+   * Main-attested same-process resume. Rotate the grantId so a pre-pause
+   * in-flight Host await can NEVER be accepted after a later resume.
+   * Cross-process restart requires recovery and a newly authorized attempt;
+   * paused state never automatically revives.
+   */
+  resumePaused(sessionId: string, formerGrantId: string, senderKey: string,
+    principal: Principal): V3OwnerLease {
+    this.assertFresh()
+    const old = this.journal.owners[sessionId]
+    if (!old || old.state !== 'paused' || old.processEpoch !== this.processEpoch ||
+        old.grantId !== formerGrantId || old.senderKey !== senderKey ||
+        Date.now() >= old.expiresAt || !old.runEvidence || !old.planSnapshot ||
+        !principal?.scope?.caseIds.includes(old.caseId)) {
+      throw new C0ContractError('CASE_SCOPE_FORBIDDEN', 'Paused Owner is not eligible to resume')
+    }
+    this.authority.authorizeExecution({
+      principal, run: structuredClone(old.runEvidence),
+      plan: structuredClone(old.planSnapshot), sessionId, senderKey,
+    })
+    if (!this.authority.isCurrent({lease: structuredClone(old),principal})) {
+      throw new C0ContractError('CASE_SCOPE_FORBIDDEN', 'Main denied Owner resume')
+    }
+    const renewed: V3OwnerLease = {...old, grantId: randomUUID(),state: 'active'}
+    this.persist({
+      ...this.journal,
+      owners: {...this.journal.owners, [sessionId]: renewed},
+    })
+    // Only after the committed state and new capability are both present.
+    this.localDenied.delete(sessionId)
+    return structuredClone(renewed)
+  }
+
+  private settle(sessionId: string, state: Exclude<V3OwnerState, 'active' | 'paused'>): void {
     this.localDenied.add(sessionId) // deny even if another PID changed the file
     this.assertFresh()
     const old = this.journal.owners[sessionId]
@@ -419,7 +472,7 @@ export class V3ReviewOwnerAdapter {
   quarantineInterrupted(): string[] {
     this.assertFresh()
     const ids = Object.entries(this.journal.owners)
-      .filter(([id, lease]) => lease.state === 'active' &&
+      .filter(([id, lease]) => (lease.state === 'active' || lease.state === 'paused') &&
         (lease.processEpoch !== this.processEpoch || this.localDenied.has(id)))
       .map(([id]) => id)
     if (!ids.length) return []
