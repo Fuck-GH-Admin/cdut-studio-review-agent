@@ -73,16 +73,7 @@ function makeHarness(options?:{
       await session.agent.streamFunction(
         {...model,api:options?.modelApi??model.api} as never,
         {messages:[]} as never,
-        {transport:options?.requestedTransport??'sse',
-          fetch:async (_url,_init)=>{
-            physicalCalls++
-            const headers=new Headers()
-            if(options?.nativeReceipt!==null){
-              headers.set('x-request-id',options?.nativeReceipt??'provider-request-1')
-            }
-            return new Response('',{status:options?.httpStatus??200,headers})
-          },
-        },
+        {transport:options?.requestedTransport??'sse'},
       )
     },
   }
@@ -92,6 +83,14 @@ function makeHarness(options?:{
     return {
       session:inner,prompt:'main-only frozen prompt',
       trustedOrigin:options?.origin??'https://approved.example',
+      transportFetch:async (_url,_init)=>{
+        physicalCalls++
+        const headers=new Headers()
+        if(options?.nativeReceipt!==null){
+          headers.set('x-request-id',options?.nativeReceipt??'provider-request-1')
+        }
+        return new Response('',{status:options?.httpStatus??200,headers})
+      },
     }
   }}
   const engine=new V3APiHttpSingleRequestEngine(factory)
