@@ -191,17 +191,26 @@
     {
       "sha": "6a90a235325d6802e119bf3a143f4b5d6ec7bc85",
       "scope": "I-only real parser, forged block, revoked source negative tests"
+    },
+    {
+      "sha": "bed8c537bd2a2187c33d006afe0f9d9c7b7bbd2e",
+      "scope": "I-only cross-Subject source binding fail-closed gate"
+    },
+    {
+      "sha": "df7b79e663a96841310b8f91b90311bead62e9fd",
+      "scope": "I-only subject mismatch negative and exact same-Subject positive"
     }
   ],
   "newIIntegrationProbes": {
-    "count": 7,
+    "count": 8,
     "results": "COMMITTED_NOT_VERIFIED",
     "crossModules": [
       "Dev-B B1 immutable candidate Plan",
       "Dev-B B2 Main-scoped staging and real Source parser registry",
       "Dev-B B3 conservative route",
       "Dev-A A3 exact technical Check×target",
-      "Dev-C C1 archived CurrentValidity"
+      "Dev-C C1 archived CurrentValidity",
+      "B2 material Subject scope must match each B1 Check target"
     ],
     "formallyPersistedBusinessRuns": 0
   },
