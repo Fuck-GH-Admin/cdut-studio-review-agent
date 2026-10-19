@@ -257,6 +257,9 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     controller.abort()
     resolve({kind:'completed-turn',receiptId:'sdk-after-cancel',run:h.run})
     await expect(pending).rejects.toThrow()
+    // The Main cancellation has finished, but the real SDK promise owns the
+    // session guard until its own settlement handler completes.
+    await new Promise<void>(resolve=>setImmediate(resolve))
     expect(h.dispatch.unresolved(h.run)).toBe(true)
     const reopened=new V3ASDKDispatchFence(h.dispatchStore,h.owners)
     expect(reopened.unresolved(h.run)).toBe(true)
@@ -541,6 +544,7 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
     expect(h.producer.replayCandidates()).toEqual([])
     expect(h.dispatch.unresolved(h.run)).toBe(true)
+    await new Promise<void>(resolve=>setImmediate(resolve))
     await expect(h.bridge.next(h.call,'batch')).rejects.toThrow('Unresolved SDK Provider dispatch')
     expect(h.calls()).toBe(1)
   })
