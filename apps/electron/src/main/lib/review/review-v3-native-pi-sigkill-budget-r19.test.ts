@@ -113,7 +113,7 @@ describe('Dev-A R19-08 true SIGKILL inside native completed Turn Budget CAS',()=
         if(postcommit){
           const budget=readSealed(budgetFile)
           expect(budget.sha256).toBe(proof.budgetProposedSha256)
-          expect(budget.sha256).toBe(proof.budgetAfterSha256)
+          expect(proof.budgetAfterSha256).toBe(budget.sha256)
           const turns=Object.values(budget.payload.runs as Record<
             string,{usedTurns:number;receiptIds:string[]}
           >)
