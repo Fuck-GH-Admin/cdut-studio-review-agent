@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { B1BufferedIdentityInput } from './B1BufferedIdentityInput'
+import { B1BufferedIdentityInput, resolveB1IdentityFinish } from './B1BufferedIdentityInput'
 import { renameB1AuthorIdentity } from './review-v3-author-edit'
 import { compileReviewB1Plan, type B1AuthorDocument } from '../../../main/lib/review/review-template-plan-adapter-v3-b1'
 
@@ -47,5 +47,38 @@ describe('B1 author identity input: complete edit versus transient IME state',()
     expect(()=>renameB1AuthorIdentity(original,'source','src','')).toThrow(
       'B1_AUTHOR_EDIT_ID_INVALID')
     expect(original).toEqual(doc())
+  })
+})
+
+describe('B1 R12 IME/stale-prop commit fence',()=>{
+  const baseline={startedWith:'source-old',latestValue:'source-old',
+    buffer:'source-new',composing:false,cancelled:false,sawExternalChange:false}
+  test('commits only one full, separate non-composing input',()=>{
+    expect(resolveB1IdentityFinish(baseline)).toEqual({kind:'commit',nextId:'source-new'})
+  })
+  test('blur mid-composition must not persist partial Chinese IME text',()=>{
+    expect(resolveB1IdentityFinish({...baseline,buffer:'sh',composing:true})).toEqual(
+      {kind:'discard',reason:'composing'})
+  })
+  test('Escape cancels, even if buffer is complete',()=>{
+    expect(resolveB1IdentityFinish({...baseline,cancelled:true})).toEqual(
+      {kind:'discard',reason:'cancelled'})
+  })
+  test('external parent update during editing must not be silently reverted',()=>{
+    expect(resolveB1IdentityFinish({...baseline,latestValue:'source-remote'})).toEqual(
+      {kind:'discard',reason:'stale-parent'})
+    expect(resolveB1IdentityFinish({...baseline,sawExternalChange:true})).toEqual(
+      {kind:'discard',reason:'stale-parent'})
+  })
+  test('empty transient change is not committed if user restores original ID',()=>{
+    expect(resolveB1IdentityFinish({...baseline,buffer:'source-old'})).toEqual(
+      {kind:'discard',reason:'unchanged'})
+  })
+  test('final invalid and collision validation remains in reference graph, not IME buffer',()=>{
+    const complete=resolveB1IdentityFinish({...baseline,buffer:''})
+    expect(complete).toEqual({kind:'commit',nextId:''})
+    if (complete.kind!=='commit')throw new Error('expected complete candidate')
+    expect(()=>renameB1AuthorIdentity(doc(),'source','src',complete.nextId)).toThrow(
+      'B1_AUTHOR_EDIT_ID_INVALID')
   })
 })

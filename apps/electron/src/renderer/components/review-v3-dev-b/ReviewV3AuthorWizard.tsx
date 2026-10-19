@@ -209,7 +209,7 @@ export function ReviewV3AuthorWizard({
       </label>
     </Section>
     <Section title="2. 业务依据及材料来源">
-      {draft.sources.map((source, i) => <div key={i} className="grid gap-2 rounded border border-border p-2 sm:grid-cols-2">
+      {draft.sources.map((source, i) => <div key={source.sourceId} className="grid gap-2 rounded border border-border p-2 sm:grid-cols-2">
         <label className="text-xs">来源 ID
           <B1BufferedIdentityInput className={inputClass} value={source.sourceId}
             onCommit={next=>editIdentity('source','rename',source.sourceId,next)} />
@@ -238,7 +238,7 @@ export function ReviewV3AuthorWizard({
       })}>添加来源</button>
     </Section>
     <Section title="3. 申请字段及材料要求">
-      {draft.fields.map((field,i) => <div key={i} className="grid gap-2 rounded border border-border p-2 sm:grid-cols-2">
+      {draft.fields.map((field,i) => <div key={field.key} className="grid gap-2 rounded border border-border p-2 sm:grid-cols-2">
         <label className="text-xs">字段键
           <B1BufferedIdentityInput className={inputClass} value={field.key}
             onCommit={next=>editIdentity('field','rename',field.key,next)}/>
@@ -279,7 +279,7 @@ export function ReviewV3AuthorWizard({
     </Section>
     <Section title="4. 对象与预览样本">
       <p className="text-xs text-muted-foreground">对象用于技术预览；正式案卷绑定必须由 Main/Dev-C 按实际 Subject 再编译。</p>
-      {draft.targets.map((target,i)=><div key={i} className="grid gap-2 rounded border border-border p-2 sm:grid-cols-2">
+      {draft.targets.map((target,i)=><div key={target.targetKey} className="grid gap-2 rounded border border-border p-2 sm:grid-cols-2">
         {(['targetKey','objectKey','subjectId','scenario'] as const).map((key)=><label key={key} className="text-xs">{key}
           {key==='targetKey'
             ? <B1BufferedIdentityInput className={inputClass} value={target.targetKey}
