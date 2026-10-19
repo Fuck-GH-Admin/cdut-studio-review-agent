@@ -110,6 +110,9 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
     // body. HTTP headers, onResponse and Pi agent_settled alone cannot attest
     // that an SSE completion marker was delivered to the SDK.
     let sseTerminated=false
+    // R17: application terminal frames are not necessarily the end of HTTP.
+    // Only the exact SDK-consumed response pipe's normal EOF permits receipt.
+    let sseTransportEof=false
     let startedTurn=false
     let finishedTurn=false
     let agentEnded=false
@@ -270,6 +273,13 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
                 inspect(chunk)
                 controller.enqueue(chunk)
               },
+              flush(){
+                // Only a normal close of this SDK-consumed HTTP stream reaches
+                // flush. A late transport error/cancel cannot mint completion.
+                // Never separately drain/tee/clone an upstream response.
+                sseTransportEof=true
+                if(linePrefix.trim() || frameEvent || dataLines)corrupted=true
+              },
             }),
           )
           // This wraps the existing single response; it does not create an
@@ -305,7 +315,8 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
       // alone is not sufficient proof the physical HTTP callback ran.
       const observedId=physicalResponseId as string|undefined
       if(corrupted || invocations!==1 || httpCalls!==1 ||
-          !observedId || !sseTerminated || !startedTurn || !finishedTurn ||
+          !observedId || !sseTerminated || !sseTransportEof ||
+           !startedTurn || !finishedTurn ||
           !agentEnded || !agentSettled) {
         return fail('Pi HTTP Provider request/stream completion provenance unavailable')
       }
