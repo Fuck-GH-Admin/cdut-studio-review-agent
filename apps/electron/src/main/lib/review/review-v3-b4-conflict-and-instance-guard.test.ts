@@ -32,7 +32,7 @@ const originalPins: B4ConflictedOriginalPin[] = [
 ]
 const riskTargets: Array<{ domain: B4HighRiskDomain; templateId: string; ruleId: string }> = [
   { domain: 'G03', templateId: 'g03-t12', ruleId: 'R-14' },
-  { domain: 'G04', templateId: 'g04-t03', ruleId: 'R-06' },
+  { domain: 'G04', templateId: 'd4-g04-t03', ruleId: 'R-06' },
   { domain: 'G06', templateId: 'g06-t06', ruleId: 'R-12' },
 ]
 const matrix = (domain: B4HighRiskDomain, source: string): B4RiskInstance[] => {
