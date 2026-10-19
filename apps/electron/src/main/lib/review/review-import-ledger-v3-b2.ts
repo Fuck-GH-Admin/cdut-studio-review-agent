@@ -58,9 +58,15 @@ export interface B2InputMutation {
   ownerGeneration: number
   entryIndex: number
   status: B2InputDecision['status']
+  /** /2 receipt pins the exact accepted file binding, not only its status. */
+  confirmedRole?: B2InputRole | null
+  confirmedSubjectId?: string | null
+  confirmedRawSha256?: string | null
+  /** For a terminal refusal, the exact user reason is part of the receipt. */
+  decisionReason?: string | null
 }
 export interface B2InputBatchLedger {
-  schemaVersion: 'review-v3-b2-input-ledger/1'
+  schemaVersion: 'review-v3-b2-input-ledger/1' | 'review-v3-b2-input-ledger/2'
   kind: 'import'
   archiveId: string
   archiveSha256: string
@@ -104,7 +110,7 @@ export class ReviewB2InputLedger {
     return this.archiveVault.inspect(ctx, archiveId) // validates bytes+archive manifest+owner
   }
   private verify(source:B2ArchiveCheckpoint, record:B2InputBatchLedger, ctx:B2MainContext): void {
-    if (record.schemaVersion!=='review-v3-b2-input-ledger/1' || record.kind!=='import' ||
+    if (!['review-v3-b2-input-ledger/1','review-v3-b2-input-ledger/2'].includes(record.schemaVersion) || record.kind!=='import' ||
         record.archiveId!==source.archiveId || record.archiveSha256!==source.archiveSha256 ||
         record.sourceManifestHash!==source.manifestSha256 ||
         record.ownerId!==ctx.ownerId || record.caseCandidateId!==ctx.caseCandidateId ||
@@ -151,6 +157,29 @@ export class ReviewB2InputLedger {
          originals.get(action.entryIndex)?.status!=='accepted' ||
          terminalByEntry.has(action.entryIndex)) fail('CORRUPT')
       terminalByEntry.set(action.entryIndex,action)
+      // /2 sealed fields make the accepted Subject/role/raw bytes independently
+      // replayable. /1 is deliberately read-only: its old checksum did not
+      // preserve this original binding in each receipt.
+      if(record.schemaVersion==='review-v3-b2-input-ledger/2') {
+        if(!('confirmedRole' in action) || !('confirmedSubjectId' in action) ||
+           !('confirmedRawSha256' in action) || !('decisionReason' in action)) fail('CORRUPT')
+        const item=record.files.find(file=>file.index===action.entryIndex)
+        if(action.status==='accepted') {
+          if(!item || item.status!=='accepted' ||
+             action.confirmedRole!==item.role ||
+             action.confirmedSubjectId!==item.subjectId ||
+             action.confirmedRawSha256!==item.rawSha256 ||
+             !['application','supporting'].includes(action.confirmedRole as string) ||
+             !localId.test(action.confirmedSubjectId ?? '') ||
+             !shaFormat.test(action.confirmedRawSha256 ?? '') ||
+             action.decisionReason!==null) fail('CORRUPT')
+        } else if(action.confirmedRole!==null ||
+                  action.confirmedSubjectId!==null ||
+                  action.confirmedRawSha256!==null ||
+                  typeof action.decisionReason!=='string' ||
+                  !action.decisionReason.trim() ||
+                  item?.reason!==action.decisionReason) fail('CORRUPT')
+      }
       // append-only receipt chain; wrong in-place edits cannot pass checksum
       const {receiptHash,...unsigned}=action
       if(hash(JSON.stringify(unsigned))!==receiptHash) fail('CORRUPT')
@@ -207,7 +236,7 @@ export class ReviewB2InputLedger {
   }
   private initial(source:B2ArchiveCheckpoint,ctx:B2MainContext):B2InputBatchLedger {
     const plain:Omit<B2InputBatchLedger,'ledgerHash'>={
-      schemaVersion:'review-v3-b2-input-ledger/1',kind:'import',
+      schemaVersion:'review-v3-b2-input-ledger/2',kind:'import',
       archiveId:source.archiveId,archiveSha256:source.archiveSha256,
       sourceManifestHash:source.manifestSha256,
       ownerId:ctx.ownerId,caseCandidateId:ctx.caseCandidateId,revision:0,
@@ -268,6 +297,7 @@ export class ReviewB2InputLedger {
     try{
       const current=this.read(ctx,source)
       if(!current) throw new Error('B2_LEDGER_NOT_STARTED')
+      if(current.schemaVersion!=='review-v3-b2-input-ledger/2')fail('LEGACY_SCHEMA_UNPINNED')
       const payloadHash=hash(JSON.stringify({archiveId,decision,principalId:authority.principalId}))
       const earlier=current!.mutations.find(m=>m.requestId===requestId)
       if(earlier){
@@ -297,6 +327,10 @@ export class ReviewB2InputLedger {
         previousHash:current!.mutations.at(-1)?.receiptHash??'GENESIS',
         decidedBy:authority.principalId,ownerGeneration:ctx.ownerGeneration,
         entryIndex:decision.entryIndex,status:decision.status,
+        confirmedRole:decision.status==='accepted'?decision.role!:null,
+        confirmedSubjectId:decision.status==='accepted'?decision.subjectId!:null,
+        confirmedRawSha256:decision.status==='accepted'?decision.rawSha256!:null,
+        decisionReason:decision.status==='accepted'?null:decision.reason!,
       }
       const receipt:B2InputMutation={...unsigned,receiptHash:hash(JSON.stringify(unsigned))}
       const {ledgerHash: _unused,...previous}=current!
