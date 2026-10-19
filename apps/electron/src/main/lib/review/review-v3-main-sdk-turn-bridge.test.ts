@@ -173,6 +173,17 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     }))
     await expect(h.bridge.next(h.call,'direct')).rejects.toThrow()
   })
+  it('A3-SDK-16: semantically identical frozen Run with reordered keys is accepted',async()=>{
+    const h=fixture()
+    h.setNext(async run=>({
+      kind:'completed-turn',
+      receiptId:'sdk-reordered-run',
+      run:Object.fromEntries(Object.entries(run).reverse()) as unknown as RunEvidenceIdentity,
+    }))
+    const outcome=await h.bridge.next(h.call,'direct')
+    expect(outcome.kind).toBe('recorded')
+    expect(h.turns.snapshot(h.grant).usedTurns).toBe(1)
+  })
   it('A3-SDK-06: revoke during awaited SDK result forbids turn charging and terminal',async()=>{
     const h=fixture()
     let resolve!:(out:V3ATurnHostOutcome)=>void
