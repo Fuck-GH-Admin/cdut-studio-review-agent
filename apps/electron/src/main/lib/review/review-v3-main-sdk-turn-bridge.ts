@@ -16,6 +16,15 @@ import {
   type V3ATurnSnapshot, type V3ATurnBudget,
 } from './review-v3-execution-turn-budget'
 
+/** Ignore object insertion order, but not any immutable Run identity value. */
+function canonical(value: unknown): string {
+  if (value === null || typeof value !== 'object') return JSON.stringify(value) ?? 'null'
+  if (Array.isArray(value)) return '[' + value.map(canonical).join(',') + ']'
+  const record=value as Record<string,unknown>
+  return '{' + Object.keys(record).filter(k=>record[k]!==undefined).sort()
+    .map(k=>JSON.stringify(k)+':'+canonical(record[k])).join(',') + '}'
+}
+
 export type V3ASDKMode = 'direct' | 'hidden' | 'graph' | 'batch'
 
 /** Process-local protection if Main accidentally constructs two bridges. */
@@ -152,8 +161,8 @@ export class V3ASDKTurnBridge {
       // A legitimate SDK result received after revoke/expiry/cold restart is
       // no longer permission to record a turn, propose an event or run again.
       const current=this.authorized(call)
-      if (!received || JSON.stringify(received.run) !== JSON.stringify(frozen) ||
-          JSON.stringify(current) !== JSON.stringify(frozen)) {
+      if (!received || canonical(received.run) !== canonical(frozen) ||
+          canonical(current) !== canonical(frozen)) {
         throw new C0ContractError('RUN_IDENTITY_MISMATCH',
           'SDK Host receipt bound to a different immutable Run')
       }
