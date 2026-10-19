@@ -24,7 +24,7 @@ import {V3APiHttpSingleRequestEngine,
 } from './review-v3-pi-http-provider-engine'
 
 const [mode,rootArg]=process.argv.slice(2)
-if(!rootArg || !['crash','recover','late','quarantine','postcommit-eio','precommit-enospc','reopen-postcommit','reopen-precommit'].includes(mode??'')){
+if(!rootArg || !['crash','recover','late','quarantine','postcommit-eio','precommit-enospc','reopen-postcommit','reopen-precommit','complete','recover-complete','replay-receipt','recover-reused'].includes(mode??'')){
   throw new Error('R19 worker requires an explicit crash/recover mode and test root')
 }
 const root=rootArg
@@ -46,7 +46,8 @@ const sealed=(filename:string):{payload:Record<string,unknown>;sha256:string}=>{
   return object
 }
 const durableMarker=(data:unknown)=>{
-  const file=openSync(paths.marker,'wx',0o600)
+  const file=openSync(mode==='replay-receipt'
+    ?join(root,'replayed-physical-fetch-entered.json'):paths.marker,'wx',0o600)
   try{
     writeSync(file,JSON.stringify(data))
     fsyncSync(file)
@@ -116,11 +117,18 @@ const dispatcher=(owner:V3ReviewOwnerAdapter)=>
   new V3ASDKDispatchFence(createFileOwnerPersistence(paths.dispatch),owner)
 
 async function crashOrLate():Promise<void>{
-  const {run,plan,source,principal}=scope('r19-case')
+  const fixture=scope('r19-case')
+  const {plan,source,principal}=fixture
   const owner=new V3ReviewOwnerAdapter(ownerStore(),authority)
+  const replay=mode==='replay-receipt'
+  const run=replay?{
+    ...fixture.run,runId:'r19-reused-run',attemptId:'r19-reused-attempt',
+  }:fixture.run
   const lease=owner.grant({
-    principal,run,plan,sources:[source],sessionId:'r19-old-session',
-    senderKey:'r19-old-frame',expiresAt:Date.now()+120000,
+    principal,run,plan,sources:[source],
+    sessionId:replay?'r19-reused-session':'r19-old-session',
+    senderKey:replay?'r19-reused-frame':'r19-old-frame',
+    expiresAt:Date.now()+120000,
     permittedTools:['review_submit_result'],
   })
   const turns=new V3ATurnBudget(createFileOwnerPersistence(paths.turns),owner)
@@ -205,6 +213,11 @@ async function crashOrLate():Promise<void>{
               controller.close()
               return
             }
+            if(mode==='complete' || mode==='replay-receipt'){
+              controller.enqueue(new TextEncoder().encode(remainingSse))
+              controller.close()
+              return
+            }
             // R19-01: no terminal/EOF, parent must SIGKILL.
             return new Promise<void>(()=>{})
           },
@@ -239,6 +252,51 @@ async function crashOrLate():Promise<void>{
       pid:process.pid,nativeEvents,denial,dispatchState:records.at(-1)?.state,
       usedTurns:turns.snapshot(lease).usedTurns,
       proposalExists:existsSync(paths.events),fetchCalls:fetches,
+    })+'\n')
+    return
+  }
+  if(mode==='complete' || mode==='replay-receipt'){
+    let resultKind='',denial=''
+    try{
+      const result=await bridge.next(callOf(lease,principal),'direct')
+      resultKind=result.kind
+    }catch(error){denial=String(error)}
+    const chains=sealed(paths.dispatch).payload.runs as Record<string,{
+      records:{id:string;state:string;receiptId?:string;caseId?:string;grantId:string}[]
+    }>
+    const all=Object.values(chains).flatMap(c=>c.records)
+    const own=all.find(x=>x.id && x.grantId===lease.grantId)
+    const snap=turns.snapshot(lease)
+    const previous=replay?owner.get('r19-old-session'):null
+    const oldUsed=previous?turns.snapshot(previous).usedTurns:null
+    if(nativeEvents.join(',')!=='turn_start,turn_end,agent_end,agent_settled' ||
+      fetches!==1 || existsSync(paths.events)){
+      throw Error('R19-05 Pi actual native settled/one-fetch evidence missing')
+    }
+    if(replay){
+      if(!denial.includes('One SDK receipt cannot attest two different Provider dispatches') ||
+        resultKind || own?.state!=='in-flight' || snap.usedTurns!==0 ||
+        previous?.state!=='recovery-required' || oldUsed!==1){
+        throw Error('R19-05 duplicate real native receipt was accepted: '+
+          JSON.stringify({denial,resultKind,own,snap,oldUsed,previous}))
+      }
+    }else{
+      if(denial || resultKind!=='recorded' || snap.usedTurns!==1 ||
+        own?.state!=='settled' || own.receiptId!=='r19-provider-physical-001'){
+        throw Error('R19-05 normal native completion not durable: '+
+          JSON.stringify({denial,resultKind,own,snap}))
+      }
+    }
+    process.stdout.write('R19_NORMAL '+JSON.stringify({
+      mode,pid:process.pid,processEpoch:owner.processEpoch,
+      runId:run.runId,attemptId:run.attemptId,
+      grantId:lease.grantId,dispatchId:own?.id,
+      dispatchState:own?.state,receiptId:own?.receiptId??null,
+      nativeEvents,fetches,usedTurns:snap.usedTurns,
+      oldUsedTurns:oldUsed,denial,resultKind,proposalExists:existsSync(paths.events),
+      ownerLedgerSha256:sealed(paths.owner).sha256,
+      dispatchLedgerSha256:sealed(paths.dispatch).sha256,
+      turnLedgerSha256:sealed(paths.turns).sha256,
     })+'\n')
     return
   }
@@ -467,7 +525,93 @@ function reopenFault(postcommit:boolean):void{
     originalState:oldRecords.at(-1)?.state??null,
   })+'\n')
 }
-if(mode==='crash' || mode==='late')await crashOrLate()
+
+/** New actual PID must not silently make the completed old Owner active. */
+function recoverCompleted():void{
+  const owners=new V3ReviewOwnerAdapter(ownerStore(),authority)
+  const old=owners.get('r19-old-session')
+  if(!old || old.state!=='recovery-required' ||
+    old.processEpoch===owners.processEpoch){
+    throw Error('R19-05 previous process Owner unexpectedly trusted')
+  }
+  const q=owners.quarantineInterrupted()
+  if(q.length!==1 || q[0]!==old.sessionId ||
+    owners.get(old.sessionId)?.state!=='recovery-required'){
+    throw Error('R19-05 Owner could not cold quarantine')
+  }
+  let oldCapabilityDenied=false
+  const principal=scope('r19-case').principal
+  try{
+    owners.assertAuthorized(old.sessionId,old.grantId,
+      old.senderKey,principal,'review_submit_result')
+  }catch{oldCapabilityDenied=true}
+  if(!oldCapabilityDenied)throw Error('R19-05 cold Owner was resurrected')
+  const dispatch=dispatcher(owners)
+  const turns=new V3ATurnBudget(createFileOwnerPersistence(paths.turns),owners)
+  const oldTurn=turns.snapshot(old)
+  if(oldTurn.usedTurns!==1 || dispatch.unresolved(old.runEvidence!) ||
+    existsSync(paths.events)){
+    throw Error('R19-05 cold persisted technical outcome mismatch')
+  }
+  const runs=sealed(paths.dispatch).payload.runs as
+    Record<string,{records:{state:string;receiptId?:string;id:string}[]}>
+  const records=Object.values(runs).flatMap(c=>c.records)
+  if(records.length!==1 || records[0]?.state!=='settled' ||
+    records[0]?.receiptId!=='r19-provider-physical-001'){
+    throw Error('R19-05 settled durable dispatch receipt mismatch')
+  }
+  process.stdout.write('R19_COLD_COMPLETE '+JSON.stringify({
+    pid:process.pid,processEpoch:owners.processEpoch,
+    oldProcessEpoch:old.processEpoch,oldState:old.state,
+    oldCapabilityDenied,quarantined:q,oldUsedTurns:oldTurn.usedTurns,
+    oldDispatchState:records[0]?.state,
+    oldReceiptId:records[0]?.receiptId,
+    proposalExists:existsSync(paths.events),
+    ownerLedgerSha256:sealed(paths.owner).sha256,
+    dispatchLedgerSha256:sealed(paths.dispatch).sha256,
+    turnLedgerSha256:sealed(paths.turns).sha256,
+  })+'\n')
+}
+/** Fourth physical PID: failed duplicate must remain unresolved on cold read. */
+function recoverDuplicated():void{
+  const owners=new V3ReviewOwnerAdapter(ownerStore(),authority)
+  const old=owners.get('r19-old-session')
+  const replay=owners.get('r19-reused-session')
+  if(!old || !replay || old.state!=='recovery-required' ||
+     replay.state!=='recovery-required'){
+    throw Error('R19-05 cold duplicate Owner scope not fail-closed')
+  }
+  const q=owners.quarantineInterrupted()
+  if(q.length!==1 || q[0]!==replay.sessionId){
+    throw Error('R19-05 last duplicate Owner was not quarantined')
+  }
+  const turns=new V3ATurnBudget(createFileOwnerPersistence(paths.turns),owners)
+  const dispatch=dispatcher(owners)
+  if(turns.snapshot(old).usedTurns!==1 || turns.snapshot(replay).usedTurns!==0 ||
+    dispatch.unresolved(old.runEvidence!) || !dispatch.unresolved(replay.runEvidence!) ||
+    existsSync(paths.events)){
+    throw Error('R19-05 duplicate cold recover state mismatch')
+  }
+  const records=Object.values(sealed(paths.dispatch).payload.runs as
+    Record<string,{records:{state:string;receiptId?:string}[]}>)
+    .flatMap(c=>c.records)
+  if(records.length!==2 ||
+    records.filter(x=>x.state==='settled' && x.receiptId==='r19-provider-physical-001').length!==1 ||
+    records.filter(x=>x.state==='in-flight').length!==1){
+    throw Error('R19-05 duplicate receipt persisted as trusted second claim')
+  }
+  process.stdout.write('R19_COLD_DUPLICATE '+JSON.stringify({
+    pid:process.pid,quarantined:q,oldUsedTurns:turns.snapshot(old).usedTurns,
+    rejectedRunUsedTurns:turns.snapshot(replay).usedTurns,
+    unresolvedDuplicate:dispatch.unresolved(replay.runEvidence!),
+    settledReceipts:records.filter(x=>x.state==='settled').length,
+    pendingRecords:records.filter(x=>x.state==='in-flight').length,
+    proposalExists:existsSync(paths.events),
+  })+'\n')
+}
+if(mode==='crash' || mode==='late' || mode==='complete' || mode==='replay-receipt')await crashOrLate()
+else if(mode==='recover-complete')recoverCompleted()
+else if(mode==='recover-reused')recoverDuplicated()
 else if(mode==='quarantine')quarantineWhileOldAlive()
 else if(mode==='postcommit-eio')await faultDispatch(true)
 else if(mode==='precommit-enospc')await faultDispatch(false)
