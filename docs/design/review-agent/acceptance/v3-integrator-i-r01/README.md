@@ -1,5 +1,7 @@
 # Integrator-I R01｜使用说明
 
+**四线共同规则的唯一权威文档**：[ABCI-UNIFIED-COORDINATION-AND-STATUS.md](./ABCI-UNIFIED-COORDINATION-AND-STATUS.md)。A/B/C/I 每次启动先读其最新版本、协调分支 HEAD 和自身进度区；C 独占正式决议。此 README 与 I 技术任务书不构成第二份跨线规则。**共享协调分支仅用于 docs-only 规则与摘要进度，生产代码、详细证据仍在各自工程分支/Draft PR。**
+
 启动一个独立新会话，直接提供 `INTEGRATOR-I-EXECUTION-TASK.md`。该 Agent 不是独立架构师，不能直接合并 Dev-A/B/C 的完整分支，也不能抢占 Dev-C 的共享文件 Owner。
 
 现在就可以开始 **I0**：真实核对 SHA/CI、源码差分、CR-A-001/B-CR-001、owner、建立分层接线方案与 docs-only Draft PR。
