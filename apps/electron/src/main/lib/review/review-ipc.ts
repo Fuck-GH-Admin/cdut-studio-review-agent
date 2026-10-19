@@ -108,6 +108,13 @@ export function registerReviewIpc(): void {
     if (mode !== undefined && mode !== 'files' && mode !== 'folder') throw new Error('D4_INTAKE_PICKER_MODE_INVALID')
     return stageD4Intake(event.sender.id, parent, mode ?? 'files')
   })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.SAVE_D4_REVIEWER_FORM, async (event, raw: unknown) => {
+    const { BrowserWindow } = require('electron') as typeof import('electron')
+    const owner = BrowserWindow.fromWebContents(event.sender)
+    if (!owner || event.senderFrame !== owner.webContents.mainFrame) throw new Error('D4_FORM_SENDER_INVALID')
+    const { saveD4ReviewerForm } = require('./review-d4-field-form') as typeof import('./review-d4-field-form')
+    return saveD4ReviewerForm(raw as Parameters<typeof saveD4ReviewerForm>[0])
+  })
   ipcMain.handle(REVIEW_IPC_CHANNELS.ASSESS_D4_CASE_BATCH, (event, raw: unknown) => {
     const { BrowserWindow } = require('electron') as typeof import('electron')
     const owner = BrowserWindow.fromWebContents(event.sender)

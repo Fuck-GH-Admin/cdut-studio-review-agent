@@ -106,6 +106,20 @@ export type D4CaseBatchChoice =
   | { kind: 'skip' }
   | { kind: 'append' }
   | { kind: 'replace'; documentId: string }
+/** Explicit reviewer-configured form metadata for a frozen D2 responsibility key.
+ * NOT a school policy and NOT a mutation of the immutable authoring plan. */
+export interface D4ReviewerFieldSpec {
+  key: string; label: string
+  kind: 'text' | 'number' | 'date' | 'boolean' | 'enum' | 'multi'
+  required: boolean
+  options?: Array<{ value: string; label: string }>
+  min?: number; max?: number
+}
+export interface D4ReviewerFormSnapshot {
+  subjectId: string; planFingerprint: string
+  fields: D4ReviewerFieldSpec[]
+  recordedAt: string; recordedBy: 'local-reviewer'
+}
 export interface D4BatchRun {
   id: string
   role: 'application' | 'evidence'
@@ -422,6 +436,8 @@ export interface ReviewCase {
   d4IntakeWarnings?: Array<{ originLabel: string; reason: string }>
   /** Main-owned resume checkpoint; never contains paths or temporary picker tokens. */
   d4BatchRuns?: D4BatchRun[]
+  /** Append-only reviewer-approved form definitions, scoped per D2 Subject. */
+  d4ReviewerFormSnapshots?: D4ReviewerFormSnapshot[]
   /** Immutable Main-recorded hash/within-batch origin for imported folder and ZIP members. */
   d4IntakeOrigins?: Array<{ documentId: string; originLabel: string; sha256: string }>
   /** Main-written version transitions. 'pending' survives a crash before archival;
@@ -553,6 +569,7 @@ export const REVIEW_IPC_CHANNELS = {
   STAGE_D4_INTAKE: 'review:stage-d4-intake',
   ASSESS_D4_CASE_BATCH: 'review:assess-d4-case-batch',
   APPLY_D4_CASE_BATCH: 'review:apply-d4-case-batch',
+  SAVE_D4_REVIEWER_FORM: 'review:save-d4-reviewer-form',
   RETRY_D4_DOCUMENT: 'review:retry-d4-document',
   STAGE_D4_DROPPED_BYTES: 'review:stage-d4-dropped-bytes',
   DISCARD_D4_INTAKE: 'review:discard-d4-intake',

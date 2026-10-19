@@ -3847,6 +3847,9 @@ const reviewAPI = {
   listD4Templates: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_D4_TEMPLATES) as Promise<import('@profer/shared').D4ClientTemplate[]>,
   stageD4Intake: (mode?: 'files' | 'folder') => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.STAGE_D4_INTAKE, mode) as Promise<import('@profer/shared').D4IntakePreview | null>,
   discardD4Intake: (token: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.DISCARD_D4_INTAKE, token) as Promise<boolean>,
+  saveD4ReviewerForm: (input: { caseId: string; subjectId: string; planFingerprint: string;
+    expectedRevision: number; fields: import('@profer/shared').D4ReviewerFieldSpec[] }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SAVE_D4_REVIEWER_FORM, input) as Promise<import('@profer/shared').D4ReviewerFormSnapshot>,
   stageD4DroppedBytes: (items: Array<{ name: string; bytes: Uint8Array }>) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.STAGE_D4_DROPPED_BYTES, items) as Promise<import('@profer/shared').D4IntakePreview>,
   retryD4Document: (input: { caseId: string; documentId: string; expectedRevision: number }) =>
