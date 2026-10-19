@@ -39,6 +39,7 @@ function fixture(options?:{
   abortAfterResponse?:boolean
   revokeDuringFetch?:boolean
   sseBody?:string
+  api?:'openai-completions'|'openai-responses'
 }){
   const caseId='i3-physical-witness-'+(++serial)
   const run:RunEvidenceIdentity={
@@ -88,7 +89,7 @@ function fixture(options?:{
       expect(text).toBe('main-verified-test-prompt')
       listener?.({type:'turn_start'})
       await agent.streamFunction(
-        {api:'openai-completions',provider:'openai',id:'main-fixture'} as never,
+        {api:fixtureOptions.api??'openai-completions',provider:'openai',id:'main-fixture'} as never,
         {messages:[]} as never,
         {transport:'sse'} as never,
       )
@@ -151,7 +152,7 @@ function fixture(options?:{
 
 describe('I4 A18 exact native HTTP SSE vs independent C physical Host boundary',()=>{
   test('I4-A18-01: a fully flushed Responses terminal is A-only; C Read requires independent observer',async()=>{
-    const f=fixture({sseBody:'event: response.completed\ndata: {"type":"response.completed"}\n\n'})
+    const f=fixture({api:'openai-responses',sseBody:'event: response.completed\ndata: {"type":"response.completed"}\n\n'})
     const result=await f.port.nextTurn(f.input)
     expect(result.kind).toBe('completed-turn')
     if(result.kind!=='completed-turn')throw Error('A native terminal not completed')
