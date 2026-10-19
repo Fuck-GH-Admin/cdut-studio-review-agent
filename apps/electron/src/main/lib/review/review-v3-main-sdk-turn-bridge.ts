@@ -33,6 +33,8 @@ export interface V3AMainSDKTurnPort {
   nextTurn(request: {
     readonly run: RunEvidenceIdentity
     readonly mode: V3ASDKMode
+    /** Main lifecycle cancellation; a signal never self-attests a terminal. */
+    readonly signal?: AbortSignal
   }): Promise<V3ATurnHostOutcome>
 }
 
@@ -99,7 +101,12 @@ export class V3ASDKTurnBridge {
    * second Main authorization check. A thrown SDK error is not a Host receipt.
    * It must be resolved by Main recovery, not silently billed or called PASS.
    */
-  async next(call: V3ReviewToolCall, mode: V3ASDKMode): Promise<V3ATurnDriveResult> {
+  async next(call: V3ReviewToolCall, mode: V3ASDKMode,
+    signal?: AbortSignal): Promise<V3ATurnDriveResult> {
+    if (signal?.aborted) {
+      throw new C0ContractError('CASE_SCOPE_FORBIDDEN',
+        'Main cancelled SDK execution before Host invocation')
+    }
     if (call.tool !== 'review_submit_result' ||
         !['direct','hidden','graph','batch'].includes(mode)) {
       throw new C0ContractError('CASE_SCOPE_FORBIDDEN','Invalid trusted SDK turn mode')
@@ -131,8 +138,12 @@ export class V3ASDKTurnBridge {
           event:await this.closeExhausted(call)}
       }
       const received=await this.sdk.nextTurn({
-        run:structuredClone(frozen),mode,
+        run:structuredClone(frozen),mode,signal,
       })
+      if (signal?.aborted) {
+        throw new C0ContractError('CASE_SCOPE_FORBIDDEN',
+          'Main cancelled in-flight SDK turn; Host return rejected')
+      }
       // A legitimate SDK result received after revoke/expiry/cold restart is
       // no longer permission to record a turn, propose an event or run again.
       const current=this.authorized(call)
