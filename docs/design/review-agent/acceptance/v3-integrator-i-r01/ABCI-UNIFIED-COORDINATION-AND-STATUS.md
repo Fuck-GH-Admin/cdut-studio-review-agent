@@ -190,7 +190,7 @@ A/B/I 发现阻断，先用已有类型化接口排障；无法自行解决时�
 - `GATES`：旧锚点离线 CI success (上述四个 workflow)；本轮 C 新代码先前 PR CI 因 Host receipt 类型收窄失败，已于 `6a9de1ecc4d8d24dc1c29935230b28a579f997df` 修复；**当前精确 SHA PR CI `39240944254` SUCCESS**，全仓 typecheck/boundaries/主进程+预加载+渲染构建及 Bun **4012 PASS/5 SKIP/0 FAIL**；其他专用 workflow 仍以实际结果为准；I1 联合 Gate O、Gate E、Gate P `NOT_RUN`，Gate L `BLOCKED_NO_AUTH`。本协议裁决不等于代码/产品验收。
 - `NEXT`：保留最新 C 合同 PR CI 证明并检查其余专用 workflow；继续 C1 正式 Main 入口及 Source/Plan validity，再提供下一代码锚点给 I；并推进 C2 唯一 ReviewRun writer。I 只集成已授权的技术切片。
 - `I0_REVIEW`：[#146](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/146) @ `c84f575addcbb1f36b5eff0acb27442b91073fa1` 已由 C 按旧锁定输入和 3 个精确成功 workflow 签 `I0_ACCEPTED_SCOPED`；I1 技术只读接线准入 `GO`，**I1 联合 Gate O 仍 NOT_RUN、正式 writer/发布仍 BLOCKED**。I 须自己更新 I 进度区与另建 I1 锁。
-<!-- END:STATUS:C -->
+- `C1_LEGACY_ENTRY_GAP`：继续开发时核查确认，正式 Main `review-ipc.ts` 的旧 `CREATE_CASE` 仍先调用 V1 `createEmptyCase` 写 legacy `case.json`，随后 `ensureWorkspaceAggregateV2` 再转投 V2；旧 `UPDATE_CASE_SETTINGS` 也仍写 V1。即使当前 `workspace-service-v2.ts` 保护了原生 V2 不受旧投影覆盖，**尚未完成「所有新增案卷只有一个权威写入口」**；不得把 C1 只凭已有回归标为完成。下一批 C1 需以现有 Renderer 用户流程兼容为前提，将这些 V1 Main 意图转译到 C0 Main-trusted native typed commands，旧案只读影子/显式迁移，集中覆盖同 ID、重试、人工确认与失败不变性，禁止简单关闭 V1 来假达标。\n<!-- END:STATUS:C -->
 
 ### I — Owner: Integrator-I
 <!-- BEGIN:STATUS:I -->
