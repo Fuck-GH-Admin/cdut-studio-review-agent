@@ -36,3 +36,10 @@
 安全细读发现：如果只用每次安装内的 `Set<approvalId>`，旧真实 Main 观察源对象在 uninstall/reinstall 后、若仍可返回相同历史回执，一个成功消费但 Case 尚未正常落盘的审批可能被再次视为未使用。后续 C-owned 额外提交 `0a6935ae651e9c12a5a8960e2af02d53d16a81ec`，改用 `WeakMap<privilegedPhysicalObserver, Set<approvalId>>`，进程内同一 Main observer 对象重装共享已消费 tombstone，`close()` 只封闭该安装的 gate、**不清空已消费 ID**。另一独立 Main observer/source 不因此自动获得可信证明；真正生产发布时需确保旧确认源不可在进程冷启动重新水合，也需要真正的 Main 人工观察事件与 Owner 授权来源。
 
 独立新测试文件 `review-v3-main-removal-consent.test.ts` 首次 `b927d04bbecc12896956f4dcfd367e4fc6071505`，最后 `66f89699260ef181fffdb556394f05a2b8aa8407` 补同源重新安装拒绝；正反例含：同一审批 ID 只能用一次、无 Main 观察源 fail-closed、精准版本/身份/义务/理由绑定、5 分钟 TTL/未来时间拒绝、4096 容量整门禁关闭、同源 reinstall 仍拒绝重放。当前最终候选为 `66f89699260ef181fffdb556394f05a2b8aa8407`，PR CI `39339668422`、Baseline `39339668453`、Batch `39339668360`、D1 `39339668400`、D2 `39339668358`，**尚未独立最终签 Gate O**。须读取原始新 SHA TS、全 Bun 与专项再签。
+
+## 全量 Bun 首次成功执行后的遗留夹具失败
+
+C 候选 `66f89699260ef181fffdb556394f05a2b8aa8407`：PR CI [39339668422](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39339668422) job `118358979451`：TS、boundaries、skin、三端 Electron build 全通过，原始 Bun **4159 PASS / 5 SKIP / 1 FAIL（4165 tests/479 files）**；Baseline `39339668453`、Batch `39339668360`、D1 `39339668400`、D2 `39339668358` **4/5 SUCCESS**，不得签。
+唯一失败是原先已绿的 `C-MAIN-WIRE-R02 ... published Plan writer can be installed independently` 在 `review-v3-main-author-plan-ipc.test.ts:327`：该测试模拟只安装 writer 时使用一个精简对象字面量，仅注入旧 `getCaseGrant/canUpgradeCase/publishedPlanSource`，忘记加入当前强制删除必须有的物理 Main `removalConsentSource`；CAS 正确拒绝，旧断言期待 `true` 因而失败。**不是**发布者/Case 原件或新审批逻辑被绕过。
+
+修复提交 `67960811880e0a84bf62eb6f828ea6c72a101901`，仅修改该 C-owned **旧测试夹具**，从已存在的 `f.authority.removalConsentSource` 注入独立 Main 观察源。生产 `consent` gate、默认 fail-closed、原来的精确 identities/Owner/TTL/one-use 否决未弱化。最新准确 CI 状态应按此新 SHA 重新查询 PR + 4 专项全部结果。
