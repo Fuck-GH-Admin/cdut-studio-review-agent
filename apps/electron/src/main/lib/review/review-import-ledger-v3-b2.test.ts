@@ -171,6 +171,20 @@ describe('B-IN-01/02: durable source-only ImportBatch input status ledger',()=>{
     } finally {rmSync(path)}
     expect(f.ledger.snapshot(ctx,f.archiveId)).toEqual(before)
   })
+  test('orphaned transaction temp blocks restart instead of silently completing a receipt',()=>{
+    const f=fixture('orphan-temp')
+    const original=f.ledger.getOrCreate(ctx,f.archiveId)
+    const dir=join(f.ledgerDir,f.archiveId)
+    const orphan=join(dir,'ledger-'+'a'.repeat(20)+'.tmp')
+    writeFileSync(orphan,'{"revision":999,"incomplete":true}',{flag:'wx'})
+    expect(()=>f.ledger.snapshot(ctx,f.archiveId)).toThrow('B2_LEDGER_RECOVERY_REQUIRED')
+    expect(()=>f.ledger.getOrCreate(ctx,f.archiveId)).toThrow('B2_LEDGER_RECOVERY_REQUIRED')
+    expect(()=>f.ledger.decide(ctx,f.archiveId,0,'replay-orphan',
+      confirm(0,original.files[0]!.rawSha256!),trusted)).toThrow('B2_LEDGER_RECOVERY_REQUIRED')
+    expect(readFileSync(orphan,'utf8')).toContain('incomplete')
+    rmSync(orphan)
+    expect(f.ledger.snapshot(ctx,f.archiveId)).toEqual(original)
+  })
   test('v2 receipt seals accepted Subject, role and raw original hash across restart',()=>{
     const f=fixture('sealed-binding')
     const start=f.ledger.getOrCreate(ctx,f.archiveId)
