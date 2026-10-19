@@ -82,13 +82,13 @@ describe('V3 A2 scoped execution proposals', () => {
 
   it('A-OWN-03: revoke during Host await prevents read receipt event', async () => {
     const h = start()
-    let complete!: (x: { receiptId: string; result: string }) => void
-    const waiting = new Promise<{ receiptId: string; result: string }>(resolve => {
+    let complete!: (x: { receiptId: string; actualSource: typeof h.call.source; result: string }) => void
+    const waiting = new Promise<{ receiptId: string; actualSource: typeof h.call.source; result: string }>(resolve => {
       complete = resolve
     })
     const call = h.adapter.guardedRead(h.call, async () => waiting)
     h.owners.revoke(h.call.sessionId)
-    complete({ receiptId: 'read-after-revoke', result: 'sensitive data' })
+    complete({ receiptId: 'read-after-revoke', actualSource: h.call.source, result: 'sensitive data' })
     await expect(call).rejects.toThrow()
     expect(h.adapter.pending()).toEqual([])
   })
@@ -103,7 +103,7 @@ describe('V3 A2 scoped execution proposals', () => {
       'receipt')).toThrow()
     h.setCurrent(false)
     await expect(h.adapter.guardedRead(h.call, async () => ({
-      receiptId: 'should-not-run', result: 'content',
+      receiptId: 'should-not-run', actualSource: h.call.source, result: 'content',
     }))).rejects.toThrow()
   })
 
