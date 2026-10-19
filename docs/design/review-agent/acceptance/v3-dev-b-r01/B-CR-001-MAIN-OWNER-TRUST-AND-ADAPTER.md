@@ -75,3 +75,18 @@ C0 定义可被唯一权威 Dev-C 消费的 `CanonicalPlan`、`SourceIdentity`�
 
 **Dev-B 当前行动**：保留自有 ZIP decoder/staging/checkpoint 源代码和负例，向 I 提供 `B2-ZIP-CHECKPOINT-I-SLICE-HANDOFF.md`，把新源 SHA 与 CI 实际结果固定后再请求新切片准入；不要求 I 等待本线全体 B4 完成。
 
+
+
+## R04：已交付的 B1 Main 作者端口与请求 Dev-C 挂接边界
+
+B 新增 `review-template-author-main-port-v3-b1.ts`，提供 `ReviewB1AuthorMainPort`：`saveDraft(ctx,doc,expectedRevision)`、`preview(ctx,doc)`、`freezeCandidate(ctx,templateId,expectedRevision)`。`ctx` 不是不可信 Renderer JSON；调用者必须由 C Main 以真实 sender/frame/owner/session 生成，附 C 可信 `B1AuthorPermission` 回调。端口会用真实 `principalId` 覆盖作者自称 `recordedBy`，并严格保持 `candidate-held`，绝不签发学校批准或创建 CurrentCase。
+
+请求 C 或按已批准受限 I glue 接入以下 *typed callbacks*（尚无授权写 C-owned Main handler 或 Preload 代码）：
+
+- `AuthorSaveDraft`：Main principal/owner/session/expectedRevision/正确 author scope；调用 B1 port，返回 draft revision，不写业务案卷。
+- `AuthorPreview`：同一可信身份与限额，允许 B 的第 51 套模板样例 trial 编译；临时 trial 值不可作为 CurrentCase 的已确认来源。
+- `FreezeCandidate`：只创建 candidate-held immutable Plan，冻结后只能另建版本；正式 `InstallPlan` 仍由 C 独占、待真实 policy provenance verifier/ACL 校验。
+- `AuthorExport`：renderer 仅导出候选声明配置及 `publicationAllowed=false`；导出 JSON 不等于 SchoolPort 受理/Gold 通过或官方发布。
+- `B2-claimArchiveRequest`：整包 `requestId/physicalArchiveKey/rawSha256` 需由可信 C Native 输入发放。B 的内存幂等和本地源档 checkpoint 不得被 I 当成正式 CurrentCase CAS/Receipt。
+
+**真实状态**：`B-CR-001 APPROVED_SLICED_SPEC / IMPLEMENTATION_PENDING`。上述新增文件为 B 自有源码和测试，新的 HEAD CI 未确认前 `SOURCE_ONLY`。无 C Main 授权实装或学生/老师真实学校 Principal，Dev-B 不能标 `B-INT-01 PASS`。
