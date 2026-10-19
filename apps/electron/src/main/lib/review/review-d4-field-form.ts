@@ -1,7 +1,7 @@
 /** W1 reviewer-owned typed input forms for immutable D2 scopes.
  * Does not publish authoring templates or claim school policy authority.
  */
-import type { D4ReviewerFieldSpec, D4ReviewerFormSnapshot, FieldValue } from '@profer/shared'
+import type { CaseAggregateV2, D4ReviewerFieldSpec, D4ReviewerFormSnapshot, FieldValue, SourceRef } from '@profer/shared'
 import { assertSafeId, getCase, updateCase } from './case-store'
 import { readAggregate } from './case-store-v2'
 
@@ -115,5 +115,66 @@ export function assertD4ReviewerFieldValue(caseId: string, subjectId: string,
        (Number.isNaN(Date.parse(value.value + 'T00:00:00Z')) ||
         new Date(value.value + 'T00:00:00Z').toISOString().slice(0, 10) !== value.value))) {
     throw new Error('D4_FORM_FIELD_DATE_INVALID')
+  }
+}
+
+
+/** Enforce D4 Subject / current document version / source coordinates in Main.
+ * Renderer-only checks are never sufficient for V2 IPC submissions. */
+export function assertD4ObservationScope(aggregate: CaseAggregateV2, input: {
+  subjectId: string; fieldKey: string; sourceRefs: SourceRef[]
+}): void {
+  const plan = aggregate.d2RuntimePlan
+  const subject = aggregate.caseV2.subjects.find(item => item.id === input.subjectId)
+  if (!plan || !subject) throw new Error('D4_OBSERVATION_FOREIGN_SUBJECT')
+  const keys = new Set(plan.mapping.filter(mapping => mapping.subjectId === input.subjectId)
+    .flatMap(mapping => [mapping.evidenceCoverage?.fieldKey,
+      ...(mapping.evidenceCoverage?.supportsFacts ?? []), ...gateKeys(mapping.gate?.when)])
+    .filter((key): key is string => typeof key === 'string' && !!key.trim()))
+  if (!keys.has(input.fieldKey) && !Object.prototype.hasOwnProperty.call(subject.fields, input.fieldKey))
+    throw new Error('D4_OBSERVATION_FIELD_OUTSIDE_FROZEN_SCOPE')
+  if (!Array.isArray(input.sourceRefs) || !input.sourceRefs.length)
+    throw new Error('D4_OBSERVATION_SOURCE_REQUIRED')
+  for (const ref of input.sourceRefs) {
+    if (!ref || ref.caseId !== aggregate.caseV2.id ||
+        !Number.isSafeInteger(ref.parseRevision)) throw new Error('D4_OBSERVATION_FOREIGN_SOURCE')
+    const doc = aggregate.caseV2.documents.find(item => item.versionId === ref.documentVersionId &&
+      item.active !== false && (item.role === 'application' || item.role === 'evidence') &&
+      (item.parseStatus === 'parsed' || item.parseStatus === 'partial') &&
+      item.parseRevision === ref.parseRevision)
+    if (!doc) throw new Error('D4_OBSERVATION_INACTIVE_OR_STALE_SOURCE')
+    if (!ref.location || typeof ref.location !== 'object' ||
+        (ref.location.kind !== 'file' && !doc.blocks.some(block =>
+          block.location && JSON.stringify(block.location) === JSON.stringify(ref.location)))) {
+      throw new Error('D4_OBSERVATION_SOURCE_COORDINATE_INVALID')
+    }
+    if (ref.quote?.trim() && !doc.blocks.some(block => block.text.includes(ref.quote!)) &&
+        doc.parseStatus === 'parsed') throw new Error('D4_OBSERVATION_UNSUPPORTED_QUOTE')
+  }
+}
+
+export function assertD4EvidenceLinkScope(aggregate: CaseAggregateV2, input: {
+  documentVersionId: string; subjectIds: string[]; supportsFact: string
+  evidenceLinkId?: string
+}): void {
+  const plan = aggregate.d2RuntimePlan
+  if (!plan || !Array.isArray(input.subjectIds) || input.subjectIds.length !== 1)
+    throw new Error('D4_EVIDENCE_SUBJECT_REQUIRED')
+  const subjectId = input.subjectIds[0]!
+  const doc = aggregate.caseV2.documents.find(item => item.versionId === input.documentVersionId &&
+    item.active !== false && item.role === 'evidence' &&
+    (item.parseStatus === 'parsed' || item.parseStatus === 'partial'))
+  if (!doc) throw new Error('D4_EVIDENCE_INACTIVE_OR_FOREIGN_VERSION')
+  if (!aggregate.caseV2.subjects.some(subject => subject.id === subjectId))
+    throw new Error('D4_EVIDENCE_SUBJECT_OUTSIDE_CASE')
+  const allowed = new Set(plan.mapping.filter(mapping => mapping.subjectId === subjectId)
+    .flatMap(mapping => [mapping.evidenceCoverage?.fieldKey, ...(mapping.evidenceCoverage?.supportsFacts ?? [])])
+    .filter((key): key is string => typeof key === 'string' && !!key.trim()))
+  if (!allowed.has(input.supportsFact)) throw new Error('D4_EVIDENCE_FACT_OUTSIDE_SUBJECT_SCOPE')
+  if (input.evidenceLinkId) {
+    const old = aggregate.evidenceLinks.find(item => item.id === input.evidenceLinkId)
+    if (!old || old.documentVersionId !== input.documentVersionId || old.subjectId !== subjectId ||
+        old.supportsFact !== input.supportsFact)
+      throw new Error('D4_EVIDENCE_LINK_IDENTITY_MISMATCH')
   }
 }

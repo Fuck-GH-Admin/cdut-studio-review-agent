@@ -11,7 +11,7 @@
 
 import type { Actor, CommandReceipt, EvidenceLink, FieldValue, Observation, ReviewCaseV2, TemplateVersion } from '@profer/shared'
 import { buildEvidenceLinks, recordObservation, transitionEvidenceLink } from './evidence-service'
-import { assertD4ReviewerFieldValue } from './review-d4-field-form'
+import { assertD4EvidenceLinkScope, assertD4ObservationScope, assertD4ReviewerFieldValue } from './review-d4-field-form'
 import { getTemplate } from './template-store'
 import { validatePolicyRef } from './policy-store'
 import { CommandValidationError, createAggregate, payloadHash, readAggregate, submitCommand } from './case-store-v2'
@@ -260,7 +260,10 @@ export function correctObservation(
 ): Promise<ReviewCommandResult<Observation>> {
   return submitCommand<CorrectObservationPayload, Observation>(caseId, { ...command, type: 'CorrectObservation' }, (aggregate, payload) => {
     if (!payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '更正必须附理由（保留更正历史）')
-    if (caseId.startsWith('d4-')) assertD4ReviewerFieldValue(caseId, payload.subjectId, payload.fieldKey, payload.value)
+    if (caseId.startsWith('d4-')) {
+      assertD4ReviewerFieldValue(caseId, payload.subjectId, payload.fieldKey, payload.value)
+      assertD4ObservationScope(aggregate, payload)
+    }
     return {
       summary: `更正事实 ${payload.subjectId}.${payload.fieldKey}`,
       mutate: (draft) => {
@@ -292,6 +295,7 @@ export interface SetEvidenceLinkPayload {
 
 export function setEvidenceLink(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: SetEvidenceLinkPayload }): Promise<ReviewCommandResult<EvidenceLink[]>> {
   return submitCommand<SetEvidenceLinkPayload, EvidenceLink[]>(caseId, { ...command, type: 'SetEvidenceLink' }, (aggregate, payload) => {
+    if (caseId.startsWith('d4-')) assertD4EvidenceLinkScope(aggregate, payload)
     if (payload.evidenceLinkId) {
       if (!payload.status) throw new CommandValidationError('VALIDATION_FAILED', '证明关联状态缺失')
       if (!aggregate.evidenceLinks.some((link) => link.id === payload.evidenceLinkId)) throw new CommandValidationError('NOT_FOUND', '证明关联不存在')
