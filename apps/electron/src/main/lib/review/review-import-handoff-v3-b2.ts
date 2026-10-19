@@ -42,6 +42,11 @@ export function proposeB2MaterialCandidates(
      current.sourceManifestHash!==archive.manifestSha256) {
     throw new Error('B2_HANDOFF_SOURCE_MISMATCH')
   }
+  // Legacy /1 receipt hashes do not seal the confirmed Subject/role.
+  // Those inputs require an explicit Main-owned re-confirmation, not a
+  // candidate that appears fully verified merely because its ledger SHA fits.
+  if(current.schemaVersion!=='review-v3-b2-input-ledger/2')
+    throw new Error('B2_HANDOFF_LEGACY_BINDING_UNVERIFIABLE')
   const result:B2ApplyMaterialCandidate[]=[]
   for(const file of current.files) {
     if(file.status!=='accepted')continue
@@ -51,7 +56,11 @@ export function proposeB2MaterialCandidates(
       throw new Error('B2_HANDOFF_UNVERIFIED_ENTRY')
     }
     const receipt=current.mutations.findLast(x=>x.entryIndex===file.index && x.status==='accepted')
-    if(!receipt || receipt.revision>current.revision)throw new Error('B2_HANDOFF_RECEIPT_NOT_FOUND')
+    if(!receipt || receipt.revision>current.revision ||
+       receipt.confirmedRole!==file.role ||
+       receipt.confirmedSubjectId!==file.subjectId ||
+       receipt.confirmedRawSha256!==file.rawSha256)
+      throw new Error('B2_HANDOFF_RECEIPT_NOT_FOUND')
     const payload={
       candidateKind:'input-only-unapplied' as const,
       archiveId,archiveSha256:archive.archiveSha256,
