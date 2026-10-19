@@ -1,9 +1,12 @@
 import { describe, expect, it } from 'bun:test'
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import {
   REVIEW_C0_SCHEMA_VERSION,
   type CanonicalPlan, type Principal, type RunEvidenceIdentity, type SourceIdentity,
 } from '@profer/shared'
-import { V3ReviewOwnerAdapter, type OwnerPersistence } from './review-pi-owner-adapter'
+import { V3ReviewOwnerAdapter, createFileOwnerPersistence, type OwnerPersistence } from './review-pi-owner-adapter'
 import {
   V3AProposalProducer, createAV3ProposalId, type AVerifiedExecutionHost,
 } from './review-v3-execution-proposal-producer'
@@ -76,7 +79,7 @@ function setup(caseId = 'case-a', sessionId = 'session-a') {
   }
   const producer = new V3AProposalProducer(proposalStore,owners,host)
   return {
-    ownerStore,proposalStore,owners,producer,principal,source,run,plan,call,host,
+    ownerStore,proposalStore,owners,producer,principal,source,run,plan,call,host,gate,
     grantId:lease.grantId,
     revoke:()=>owners.revoke(sessionId),
     denyMain:()=>{permitted=false},
@@ -177,6 +180,60 @@ describe('Dev-A versioned CR-A-001 A-1 proposal producer (Main Host only)', () =
     await expect(h.producer.check(call,tuple)).rejects.toThrow()
     expect(h.producer.replayCandidates()).toEqual([t])
   })
+  it('A3-V3-09: technical complete requires durable physical read and every applicable Check', async () => {
+    const h=setup()
+    const terminalCall=checkCall(h)
+    h.setTerminal({receiptId:'host-complete',actualStatus:'completed-technical'})
+    await expect(h.producer.terminal(terminalCall,'completed-technical')).rejects.toThrow()
+    await h.producer.read(h.call)
+    await expect(h.producer.terminal(terminalCall,'completed-technical')).rejects.toThrow()
+    h.setCheck({receiptId:'accepted-required',actualCheck:{...tuple,status:'accepted'}})
+    const check=await h.producer.check(terminalCall,tuple)
+    expect(check.sequence).toBe(2)
+    const completed=await h.producer.terminal(terminalCall,'completed-technical')
+    expect(completed.kind).toBe('terminal')
+    if (completed.kind!=='terminal') throw new Error('terminal expected')
+    expect(completed.sequence).toBe(3)
+    expect(completed.terminal.status).toBe('completed-technical')
+    expect(h.producer.replayCandidates()).toHaveLength(3)
+    await expect(h.producer.read(h.call)).rejects.toThrow()
+  })
+
+  it('A3-V3-10: rejected/unknown Host Check cannot be turned into completed', async () => {
+    const h=setup()
+    const call=checkCall(h)
+    await h.producer.read(h.call)
+    h.setCheck({receiptId:'host-rejected',actualCheck:{...tuple,status:'rejected'}})
+    await h.producer.check(call,tuple)
+    h.setTerminal({receiptId:'host-complete',actualStatus:'completed-technical'})
+    await expect(h.producer.terminal(call,'completed-technical')).rejects.toThrow()
+    h.setCheck({receiptId:'host-unknown',actualCheck:{...tuple,status:'unknown'}})
+    await h.producer.check(call,tuple)
+    await expect(h.producer.terminal(call,'completed-technical')).rejects.toThrow()
+    expect(h.producer.replayCandidates().map(e=>e.kind)).toEqual(['read','check','check'])
+  })
+
+  it('A2-V3-11: disk-backed Host proposals replay without reviving cold Owner authority', async () => {
+    const dir=mkdtempSync(join(tmpdir(),'review-v3-a-proposals-'))
+    try {
+      const h=setup()
+      const file=join(dir,'v3-proposals.json')
+      const persistence=createFileOwnerPersistence(file)
+      const producer=new V3AProposalProducer(persistence,h.owners,h.host)
+      const first=await producer.read(h.call)
+      expect(readFileSync(file,'utf8')).toContain('v3-dev-a-v3-proposals/1')
+      const coldOwner=new V3ReviewOwnerAdapter(h.ownerStore,h.gate)
+      const coldProducer=new V3AProposalProducer(persistence,coldOwner,h.host)
+      expect(coldProducer.replayCandidates()).toEqual([first])
+      await expect(coldProducer.read(h.call)).rejects.toThrow()
+      expect(coldProducer.replayCandidates()).toEqual([first])
+      writeFileSync(file,readFileSync(file,'utf8')+'tamper')
+      expect(()=>new V3AProposalProducer(persistence,coldOwner,h.host)).toThrow()
+    } finally {
+      rmSync(dir,{recursive:true,force:true})
+    }
+  })
+
   it('A2-V3-07: disk-full append cannot be returned as delivered or acknowledged', async () => {
     const h=setup()
     h.proposalStore.fail=true
