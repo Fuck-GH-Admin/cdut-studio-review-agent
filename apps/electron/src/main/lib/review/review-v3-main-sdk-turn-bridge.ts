@@ -136,6 +136,8 @@ export class V3ASDKTurnBridge {
     }
     this.busy=true
     activeSDKOwnerSessions.add(call.sessionId)
+    let pendingSDK:Promise<V3ATurnHostOutcome>|undefined
+    let abortWonWhilePending=false
     try {
       const frozen=this.authorized(call)
       const lease=this.owners.assertAuthorized(
@@ -161,9 +163,33 @@ export class V3ASDKTurnBridge {
       // Durable BEFORE any SDK/Provider side effect. Unknown Provider outcome
       // after crash, thrown error or disk fault blocks redispatch of same Run.
       const intent=this.dispatch.claim(call)
-      const received=await this.sdk.nextTurn({
+      // A Provider/worker may ignore AbortSignal and never resolve. Return a
+      // recovery-required error to Main promptly, WITHOUT releasing its active
+      // SDK session lock until the actual SDK promise settles. The persisted
+      // in-flight intent is not cleared and late results are never accepted.
+      pendingSDK=Promise.resolve(this.sdk.nextTurn({
         run:structuredClone(frozen),dispatchId:intent.dispatchId,mode,signal,
-      })
+      }))
+      let received:V3ATurnHostOutcome
+      if (signal) {
+        let onAbort:(()=>void)|undefined
+        const cancelled=new Promise<never>((_resolve,reject)=>{
+          onAbort=()=>{
+            abortWonWhilePending=true
+            reject(new C0ContractError('RECOVERY_REQUIRED',
+              'Main cancelled while SDK Provider result is unresolved'))
+          }
+          signal.addEventListener('abort',onAbort,{once:true})
+          if(signal.aborted)onAbort()
+        })
+        try {
+          received=await Promise.race([pendingSDK,cancelled])
+        } finally {
+          if(onAbort)signal.removeEventListener('abort',onAbort)
+        }
+      } else {
+        received=await pendingSDK
+      }
       if (signal?.aborted) {
         this.dispatch.lateDenied(frozen,intent.dispatchId)
         throw new C0ContractError('CASE_SCOPE_FORBIDDEN',
@@ -213,8 +239,18 @@ export class V3ASDKTurnBridge {
       }
       return {kind:'recorded',turn}
     } finally {
-      activeSDKOwnerSessions.delete(call.sessionId)
-      this.busy=false
+      const release=()=>{
+        activeSDKOwnerSessions.delete(call.sessionId)
+        this.busy=false
+      }
+      if(abortWonWhilePending && pendingSDK) {
+        // Own both settle paths; do not leak an unhandled rejection when the
+        // Provider fails after Main has already returned RECOVERY_REQUIRED.
+        // Until then a second bridge for the same Owner session stays denied.
+        void pendingSDK.then(release,release)
+      } else {
+        release()
+      }
     }
   }
 }
