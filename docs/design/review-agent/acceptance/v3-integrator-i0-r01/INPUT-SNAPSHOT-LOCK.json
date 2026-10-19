@@ -1,0 +1,166 @@
+{
+  "lockVersion": "v3-i0-input-lock/1",
+  "observedDate": "2026-10-19",
+  "governance": {
+    "version": "V3-ABCI-GOVERNANCE-R01/V1.0",
+    "branch": "docs/v3-integrator-i-r01-taskbook",
+    "observedHead": "5613466af85484e58ebc1e8cf7de227087322ad1",
+    "coordinationPr": 145,
+    "contractBlob": "c1b1e732e010fef7d0cc9cf629a65fcad88f4d61",
+    "taskBlob": "41d1373aa76f8235937d1c4041cee66f321e30cc"
+  },
+  "c0": {
+    "pr": 141,
+    "sha": "5682057c7232c914e72fdae525ce95fd33f32b53",
+    "schemaVersion": "review-c0/1",
+    "schemaBlob": "b7e5074a71cba3441aa76dd279c45f7021087bbc",
+    "manifestBlob": "a28532d3afcb8b77e6c432ace0e9648d4e320963",
+    "ownerManifestBlob": "36fc8dcf4190f090a5018fde13bee40a2f69c288",
+    "baseMain": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+    "prCi": {
+      "runId": 39224651824,
+      "conclusion": "success"
+    }
+  },
+  "sources": {
+    "A": {
+      "pr": 143,
+      "sha": "d8fd3e0e696caa1df7321c23c46e4f70a1f910f7",
+      "mergeBase": "5682057c7232c914e72fdae525ce95fd33f32b53",
+      "baseBranch": "feat/v3-dev-c-c0-contract-r01",
+      "prCi": {
+        "runId": 39228978591,
+        "conclusion": "success"
+      },
+      "changedProduction": [
+        "apps/electron/src/main/lib/review/review-execution-event-adapter-completeness.test.ts",
+        "apps/electron/src/main/lib/review/review-execution-event-adapter-completeness.ts",
+        "apps/electron/src/main/lib/review/review-execution-event-adapter-driver.test.ts",
+        "apps/electron/src/main/lib/review/review-execution-event-adapter-driver.ts",
+        "apps/electron/src/main/lib/review/review-execution-event-adapter.test.ts",
+        "apps/electron/src/main/lib/review/review-execution-event-adapter.ts",
+        "apps/electron/src/main/lib/review/review-pi-owner-adapter.test.ts",
+        "apps/electron/src/main/lib/review/review-pi-owner-adapter.ts"
+      ],
+      "sliceStates": {
+        "A1-owner": "READY_FOR_ADAPTER",
+        "A2-proposals": "READY_FOR_ADAPTER",
+        "A2-formal-run": "CONTRACT_BLOCKED",
+        "A3-coverage": "SOURCE_ONLY",
+        "A4-recovery": "SOURCE_ONLY"
+      }
+    },
+    "B": {
+      "pr": 142,
+      "sha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "mergeBase": "5682057c7232c914e72fdae525ce95fd33f32b53",
+      "baseBranch": "feat/v3-dev-c-c0-contract-r01",
+      "prCi": {
+        "runId": 39230036780,
+        "conclusion": "success"
+      },
+      "changedProduction": [
+        "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.test.ts",
+        "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.ts",
+        "apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.test.ts",
+        "apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.ts",
+        "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.test.ts",
+        "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts",
+        "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.test.ts",
+        "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.ts",
+        "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.test.ts",
+        "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.ts",
+        "apps/electron/src/main/lib/review/review-v3-b4-inventory.test.ts",
+        "apps/electron/src/renderer/components/review-v3-dev-b/ReviewV3AuthorWizard.tsx"
+      ],
+      "sliceStates": {
+        "B1-author-plan-candidate": "READY_FOR_ADAPTER",
+        "B2-staging-parser": "READY_FOR_ADAPTER",
+        "B3-conservative-routing": "SOURCE_ONLY",
+        "B4-50-candidate-ledger": "SOURCE_ONLY",
+        "B-formal-apply-install": "CONTRACT_BLOCKED"
+      }
+    },
+    "C": {
+      "pr": 144,
+      "sha": "31aa352c45a33d6832612884b0fea38e39b5cf8d",
+      "mergeBase": "5682057c7232c914e72fdae525ce95fd33f32b53",
+      "baseBranch": "feat/v3-dev-c-c0-contract-r01",
+      "prCi": {
+        "runId": 39229456164,
+        "conclusion": "success"
+      },
+      "changedProduction": [
+        "apps/electron/src/main/lib/review/application-service.ts",
+        "apps/electron/src/main/lib/review/material-lifecycle-v3.test.ts",
+        "apps/electron/src/main/lib/review/material-lifecycle-v3.ts",
+        "apps/electron/src/main/lib/review/material-service.ts",
+        "apps/electron/src/main/lib/review/plan-binding-v3.test.ts",
+        "apps/electron/src/main/lib/review/plan-binding-v3.ts",
+        "apps/electron/src/main/lib/review/review-c0-ipc.test.ts",
+        "apps/electron/src/main/lib/review/run-service-v2.ts",
+        "apps/electron/src/main/lib/review/source-current-validity-v3.test.ts",
+        "apps/electron/src/main/lib/review/source-current-validity-v3.ts",
+        "apps/electron/src/main/lib/review/workspace-business-service-v2.ts",
+        "apps/electron/src/main/lib/review/workspace-service-v2.test.ts",
+        "apps/electron/src/main/lib/review/workspace-service-v2.ts",
+        "packages/shared/src/types/review-v2-contracts.ts"
+      ],
+      "sliceStates": {
+        "C1-case-source-validity": "PASS_SCOPED",
+        "C1-case-full": "SOURCE_ONLY",
+        "C2-run-writer": "CONTRACT_BLOCKED",
+        "C3-batch": "CONTRACT_BLOCKED",
+        "C4-outbox": "CONTRACT_BLOCKED",
+        "C5-workbench": "CONTRACT_BLOCKED"
+      }
+    }
+  },
+  "permissions": {
+    "CExclusivePatterns": [
+      "packages/shared/src/types/**",
+      "apps/electron/src/main/lib/review/review-ipc.ts",
+      "apps/electron/src/main/lib/review/review-c0-authority.ts",
+      "apps/electron/src/main/lib/review/review-c0-case-service.ts",
+      "apps/electron/src/main/lib/review/application-service.ts",
+      "apps/electron/src/main/lib/review/workspace-service-v2.ts",
+      "apps/electron/src/main/lib/review/workspace-business-service-v2.ts",
+      "apps/electron/src/main/lib/review/run-store-v2.ts",
+      "apps/electron/src/main/lib/review/batch-store.ts",
+      "apps/electron/src/preload/index.ts"
+    ],
+    "crossBranchModifiedPathCollisions": [],
+    "sharedOrCOwnerFileTouchedByAB": []
+  },
+  "crs": {
+    "CR_A_001": {
+      "source": "docs/design/review-agent/acceptance/v3-dev-a-r01/CR-A-001-C0-EVENT-EXTENSION.md",
+      "sha": "a617ec6ac56bd36ed576138cf032b783afc6d74c",
+      "decision": "PENDING_C",
+      "blocked": "formal Run consume; target/check/extent/ACK binding"
+    },
+    "B_CR_001": {
+      "source": "docs/design/review-agent/acceptance/v3-dev-b-r01/B-CR-001-MAIN-OWNER-TRUST-AND-ADAPTER.md",
+      "sha": "2af4cb0a5a5bcbf3c29e20b394025673f1268cd0",
+      "decision": "PENDING_C",
+      "blocked": "trusted Main picker/context; ApplyMaterial/InstallPlan; publication authority"
+    },
+    "CIntegrationAnchor": {
+      "sha": null,
+      "decision": "PENDING_C_SELECTION"
+    }
+  },
+  "readiness": {
+    "integrationSha": null,
+    "integratedGateO": "NOT_RUN",
+    "gateE": "NOT_RUN",
+    "gateL": "BLOCKED_NO_AUTH",
+    "gateP": "NOT_RUN",
+    "cAcceptance": "PENDING_C_REVIEW",
+    "i0TestClass": "STAGED_ONLY",
+    "noIntegratedAPlusBPlusC": true,
+    "neverTreatTechnicalAsBusinessCompletion": true,
+    "neverTreatCandidateAsPublished": true
+  },
+  "productionMutationAllowed": false
+}
