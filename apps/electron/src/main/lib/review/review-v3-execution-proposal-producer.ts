@@ -397,6 +397,28 @@ export class V3AProposalProducer {
       terminal:{status:receipt.actualStatus,...(receipt.reason ? {reason:receipt.reason}:{})},
     })
   }
+  /**
+   * Technical-only journal terminal introspection for Main SDK preflight.
+   * A sealed attempt must never spend another Provider turn, regardless of
+   * its (possibly old-grant) terminal receipt. Does not confer a C2 ACK.
+   */
+  terminalCandidate(run: RunEvidenceIdentity): AExecutionProposal | null {
+    assertC0RunEvidenceIdentity(run)
+    this.fresh()
+    const chain = this.disk.attempts[keyOf(run)]
+    if (!chain) return null
+    if (chain.runDigest !== sha(run)) {
+      throw new C0ContractError('RUN_IDENTITY_MISMATCH',
+        'Terminal read Run identity differs from persisted attempt')
+    }
+    const last=chain.records[chain.records.length-1]
+    if (!chain.terminal) return null
+    if (!last || last.kind !== 'terminal') {
+      mismatch('Attempt declared sealed without technical terminal')
+    }
+    return structuredClone(last)
+  }
+
   /** Pending here means proposal-only replay. Dev-C has NOT issued a durable ACK. */
   replayCandidates(): AExecutionProposal[] {
     this.fresh()
