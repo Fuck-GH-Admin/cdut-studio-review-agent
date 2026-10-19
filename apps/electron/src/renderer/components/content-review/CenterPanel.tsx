@@ -283,6 +283,14 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
               subject.id, aggregate.d2RuntimePlan!.fingerprint)
             const confirmedLinks = aggregate.evidenceLinks.filter(link =>
               link.subjectId === subject.id && link.status === 'confirmed')
+            const reviewerMandatory = [...(reviewCase?.d4ReviewerFormSnapshots ?? [])].reverse()
+              .find(snapshot => snapshot.subjectId === subject.id &&
+                snapshot.planFingerprint === aggregate.d2RuntimePlan!.fingerprint)
+              ?.fields.filter(field => field.required) ?? []
+            const verifiedKeys = new Set(aggregate.observations.filter(observation =>
+              observation.subjectId === subject.id && observation.confirmed && observation.sourceRefs.length > 0)
+              .map(observation => observation.fieldKey))
+            const pendingMandatory = reviewerMandatory.filter(field => !verifiedKeys.has(field.key))
             return <section id={`review-subject-${encodeURIComponent(subject.id)}`} key={subject.id}
               className="rounded-xl border border-border/60 bg-card p-3 text-xs" data-testid="d4-subject-fact-workbench">
               <p className="font-medium">{subject.title}</p>
@@ -291,6 +299,11 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
                 {facts.length} 项材料事实 · {confirmedLinks.length} 条已确认的证明关联
               </p>
               <p className="mt-1 text-muted-foreground">审核对象 ID：{subject.id}。事实、条件、证据分别核对；模板仍为未发布技术候选。</p>
+              {!!pendingMandatory.length && <p role="status"
+                className="mt-2 rounded border border-amber-500/40 bg-amber-500/5 p-2 text-amber-700 dark:text-amber-300">
+                审核员标记需核对但尚无已确认来源：{pendingMandatory.map(field => field.label).join('、')}。
+                保持 unknown，不自动认定违规或通过。
+              </p>
               {Object.keys(subject.fields).length > 0 && <p className="mt-1 rounded bg-muted/50 p-2 text-foreground/80">
                 当前字段：{displaySubjectFields(subject.fields, subjectTemplate)}
               </p>}

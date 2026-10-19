@@ -55,6 +55,7 @@ describe('W1 reviewer typed form metadata is scoped to frozen D2 plan', () => {
         value: { kind: 'text', value: 'bypass' }, sourceRefs: [], reason: 'negative test' },
     })
     expect(invalidCorrection.ok).toBeFalse()
+    if (invalidCorrection.ok) throw new Error('Invalid type unexpectedly accepted')
     expect(invalidCorrection.message).toContain('D4_FORM_FIELD_KIND_MISMATCH')
     expect(readAggregate(created.id)!.observations.some(o => o.fieldKey === field &&
       o.value.kind === 'text' && o.confirmed)).toBeFalse()
