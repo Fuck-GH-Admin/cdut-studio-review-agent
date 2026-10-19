@@ -183,6 +183,7 @@ export class V3ExecutionEventAdapter {
       r.event.sequence === event.sequence && JSON.stringify(r.event) === JSON.stringify(event))
     if (!item) return false
     if (item.acked) return true
+    if (attempt.records.some(r => r.event.sequence < event.sequence && !r.acked)) return false
     const records = attempt.records.map(r => r === item ? { ...r, acked: true } : r)
     this.store({
       ...this.disk,
@@ -197,7 +198,7 @@ export class V3ExecutionEventAdapter {
    * Authorization is re-read after every awaited Host call, even on success.
    */
   async guardedRead<T>(call: V3ReviewToolCall,
-    execute: (source: SourceIdentity) => Promise<{ receiptId: string; result: T }>,
+    execute: (source: SourceIdentity) => Promise<{ receiptId: string; actualSource: SourceIdentity; result: T }>,
   ): Promise<{ result: T; delivery: V3EventDelivery }> {
     if (!call.source) throw new C0ContractError('SOURCE_STALE', 'Source required')
     this.owners.assertAuthorized(call.sessionId, call.grantId, call.senderKey,
@@ -205,8 +206,16 @@ export class V3ExecutionEventAdapter {
     const receipt = await execute(structuredClone(call.source))
     this.owners.assertAuthorized(call.sessionId, call.grantId, call.senderKey,
       call.principal, call.tool, call.source)
-    if (!receipt || !receipt.receiptId) {
-      throw new C0ContractError('SOURCE_STALE', 'Host did not attest actual read')
+    if (!receipt || !receipt.receiptId || !receipt.actualSource ||
+        receipt.actualSource.caseId !== call.source.caseId ||
+        receipt.actualSource.materialId !== call.source.materialId ||
+        receipt.actualSource.documentVersionId !== call.source.documentVersionId ||
+        receipt.actualSource.rawSha256 !== call.source.rawSha256 ||
+        receipt.actualSource.parseRevision !== call.source.parseRevision ||
+        receipt.actualSource.blockId !== call.source.blockId ||
+        receipt.actualSource.location.kind !== call.source.location.kind ||
+        receipt.actualSource.location.locator !== call.source.location.locator) {
+      throw new C0ContractError('SOURCE_STALE', 'Host receipt did not match exact frozen physical source')
     }
     // Append rechecks the grant once more immediately before durable event.
     return { result: receipt.result, delivery: this.proposeRead(call, receipt.receiptId) }
