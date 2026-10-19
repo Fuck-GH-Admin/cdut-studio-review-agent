@@ -164,14 +164,17 @@ A/B/I 发现阻断，先用已有类型化接口排障；无法自行解决时�
 ### B — Owner: Dev-B
 <!-- BEGIN:STATUS:B -->
 - `COORDINATION_ACK`：`ACK V1.0@5613466af85484e58ebc1e8cf7de227087322ad1`；认可 `V3-ABCI-GOVERNANCE-R01`、C 独占共享业务/安全裁决、I 只做已授权集成。本次重读协调 SHA `25f00eb1b95dc7f7ebe162bc3366b6fb08f2ba4f`、blob `c1b1e732e010fef7d0cc9cf629a65fcad88f4d61`，A 区已 ACK，不改其他区。
-- `SOURCE_HEAD`：工程 Draft PR #142 @ `f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc`，基于 C0 `5682057c7232c914e72fdae525ce95fd33f32b53`／`review-c0/1`；B 自有源码及测试，不触碰共享写权。C #144 `31aa352c45a33d6832612884b0fea38e39b5cf8d`，A #143 `d8fd3e0e696caa1df7321c23c46e4f70a1f910f7` 为此次取样。
-- `B1-plan`：#142 同上 SHA，`review-template-plan-adapter-v3-b1.ts` + test；immutable Plan、2 target × 6 Check、unknown/sourceVersion、模块依赖/digest 与删除 ACK；`READY_FOR_ADAPTER`（技术候选预览，不是正式 InstallPlan），C0/1，正式安装需 `B-CR-001` C 决议；I 可先集成无写权编译器。
-- `B2-source`：#142 同 SHA，`review-intake-adapter-v3-b2.ts`、`review-source-version-adapter-v3-b2.ts` + tests；单次 owner/sender/frame/generation token、物理 bytes hash、真实 parser 和已验证 SourceIdentity block；`READY_FOR_ADAPTER` 仅独立暂存/解析，真实 Main picker、持久版本/ImportBatch 与 ApplyMaterial `CONTRACT_BLOCKED`，需 B/C/I 分工。
-- `B3-router`：#142 同 SHA，`review-intake-routing-adapter-v3-b3.ts` + test；20s 倒计时、唯一明确/用户打断/歧义拒自动选择，不建案；`READY_FOR_ADAPTER`（纯建议），Main 真实输入和用户工作台接线尚未发生。
-- `B4-author-ui-assets`：#142 同 SHA，独立 `ReviewV3AuthorWizard.tsx`、`review-template-author-store-v3-b1.ts` + tests、`B4-50-CANDIDATE-SOURCE-LEDGER.csv`；`SOURCE_ONLY`（UI 未挂载、无完整第51套 UAT；G01–08 5/3/10/8/6/9/7/2 全部 candidate-held，50 条目录并非逐义务 Gold）。
-- `GATES`：Gate O 对精确 B HEAD：PR CI `39230036780`、D2 Scoped Pi `39230036753`、Review Baseline `39230036747` 全部 SUCCESS；`PASS_SCOPED`，不代表每条适配器/安全负例已通过。Gate E `NOT_RUN`；L `BLOCKED_NO_AUTH`（校方政策、身份、原件/独立Gold）；P `PARTIAL_NOT_ACCEPTED`（50逐条政策责任、第51套真实用户体验、100案/500文件、120+30/真人UAT）。
-- `BLOCKED`：`B-CR-001 PENDING_C_DECISION`，Main 身份/Native picker、source receipt、InstallPlan/ApplyMaterial 和发布授权；ZIP安全、durable ImportBatch/checkpoint/重试/真实 Office71/Electron 尚缺。I 可先逐片集成纯编译/解析/路由，不可越权正式写入。
-- `NEXT`：B 继续独立提升 #142 的 ZIP 安全与逐文件导入状态、可信 parser/SourceRef 对照、作者 UI/试跑/版本导出、50 候选逐义务账；将新固定 SHA、正反例及 Gate O/E/L/P 逐片交 I，不等待 A/C/I 轮次对齐。
+- `SOURCE_HEAD`：工程 Draft PR #142 @ `acc03b50bc5c4716a8dc59ccdf7e6e404ffe7602`，基于 C0 `5682057c7232c914e72fdae525ce95fd33f32b53`／`review-c0/1`；B 自有源码及测试，不触碰共享写权。C #144 `31aa352c45a33d6832612884b0fea38e39b5cf8d`，A #143 `d8fd3e0e696caa1df7321c23c46e4f70a1f910f7` 为此次取样。
+- `B1-plan`：#142 已验证旧切片 SHA `f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc`，`review-template-plan-adapter-v3-b1.ts` + test；immutable Plan、2 target × 6 Check、unknown/sourceVersion、模块依赖/digest 与删除 ACK；`READY_FOR_ADAPTER`（技术候选预览，不是正式 InstallPlan），C0/1，正式安装需 `B-CR-001` C 决议；I 可先集成无写权编译器。
+- `B2-source`：#142 旧已验证 SHA `f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc`，`review-intake-adapter-v3-b2.ts`、`review-source-version-adapter-v3-b2.ts` + tests；单次 owner/sender/frame/generation token、物理 bytes hash、真实 parser 和已验证 SourceIdentity block；`READY_FOR_ADAPTER` 仅独立暂存/解析，真实 Main picker、持久版本/ImportBatch 与 ApplyMaterial `CONTRACT_BLOCKED`，需 B/C/I 分工。
+- `B3-router`：#142 旧已验证 SHA `f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc`，`review-intake-routing-adapter-v3-b3.ts` + test；20s 倒计时、唯一明确/用户打断/歧义拒自动选择，不建案；`READY_FOR_ADAPTER`（纯建议），Main 真实输入和用户工作台接线尚未发生。
+- `B4-author-ui-assets`：#142 旧已验证 SHA `f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc`，独立 `ReviewV3AuthorWizard.tsx`、`review-template-author-store-v3-b1.ts` + tests、`B4-50-CANDIDATE-SOURCE-LEDGER.csv`；`SOURCE_ONLY`（UI 未挂载、无完整第51套 UAT；G01–08 5/3/10/8/6/9/7/2 全部 candidate-held，50 条目录并非逐义务 Gold）。
+- `B2-zip-intake-r02`：owner B，source #142 新代码固定 `4985997034a9a1ea9e1f84b6a530137982c019c3`（其后仅工程 docs 至 HEAD `acc03b50bc5c4716a8dc59ccdf7e6e404ffe7602`），源码 `review-zip-intake-v3-b2.ts`、`review-zip-staging-v3-b2.ts`、`review-import-checkpoint-v3-b2.ts`、加强 `review-intake-adapter-v3-b2.ts`，对应四组 `*.test.ts`；`SOURCE_ONLY / GATE_O_PENDING_NEW_SHA`（中央目录/ZIP slip/symlink/bomb/CRC、逐文件待确认、owner 令牌、独立持久原件 checkpoint 与重启需再授权）。I 可只读审查并准备 decoder 无写权集成；新 SHA 绿灯前不得替代 I 初始锁定旧 B 源，也不能当完整正式 ImportBatch。
+- `GATES`：旧 B1–B4 初始 SHA `f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc` 的 PR CI `39230036780`、D2 `39230036753`、Baseline `39230036747` 均 SUCCESS，仅旧切片 `PASS_SCOPED`。新工程 HEAD `acc03b50bc5c4716a8dc59ccdf7e6e404ffe7602` 的 PR CI `39240381200`、D2 `39240381181`、Baseline `39240381229` 观察时 QUEUED，`Gate O=NOT_YET_ATTESTED_AT_NEW_SHA`。旧中间 ZIP SHA `df6b6ba458eb7c6ef2e7a2942ccffa17c72cf2d2` 曾有 TypeScript TS2366 FAILURE，已在 `82502993797889742e6bffa966205fe863e28584` 修复，必须由新 CI 复证。Gate E=NOT_RUN，L=BLOCKED_NO_AUTH，P=PARTIAL_NOT_ACCEPTED。
+
+- `BLOCKED`：Dev-C 已在本文件 C 裁决区批准 `B-CR-001 / APPROVED_SLICED_SPEC / IMPLEMENTATION_PENDING`：B-0 技术候选可集成，B-1 Main owner/picker 方向、B-2 C 独占 ApplyMaterial/InstallPlan 命令方向获认可；**尚无正式可信 Main handlers、publisher/Gold 许可或 I C 文件租约**。`B-3` 真实 Native/Electron/Office、100 案/500 文件、逐责任50套及第51套UAT未达标；本地 ZIP archive checkpoint 仅原件恢复候选，不等于完整 ImportBatch/CurrentCase receipt。
+
+- `NEXT`：B #142 先以精确新 SHA CI 修复 ZIP+checkpoint 负例，再展开 Office71 真实多格式、用户自建第51套样本值/导出、50套逐义务对照；新已验证 SHA 与回归传 I，C 可信 Main/正式命令由 C2+ 后续提交，I 不代写。B-CR 真实状态已同步到 #142 `B-CR-001-MAIN-OWNER-TRUST-AND-ADAPTER.md`。
 <!-- END:STATUS:B -->
 
 ### C — Owner: Dev-C
