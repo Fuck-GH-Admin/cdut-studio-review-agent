@@ -105,7 +105,7 @@ describe('V3 A3 durable Main turn budget and A2 technical resume gate', () => {
     const resumed=h.owners.resumePaused(h.call.sessionId,h.lease.grantId,
       h.lease.senderKey,h.principal)
     const call={...h.call,grantId:resumed.grantId}
-    expect(()=>h.budget.recordCompletedTurn(h.call)).toThrow()
+    expect(()=>h.budget.recordCompletedTurn(h.call,'turn-13')).toThrow()
     expect(h.budget.snapshot(resumed)).toEqual({
       usedTurns:12,maxTurns:24,exhausted:false,
     })
