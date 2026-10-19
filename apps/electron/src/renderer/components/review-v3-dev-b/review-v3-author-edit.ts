@@ -89,3 +89,14 @@ export function b1AuthorHasUnsavedEdits(
 ):boolean {
   return saved===null || JSON.stringify(current)!==JSON.stringify(saved)
 }
+
+/** Allocate a new key after deletions/renames without colliding with older IDs. */
+export function nextB1AuthorId(existing:readonly string[],prefix:string):string {
+  if(!/^[A-Za-z][A-Za-z0-9._:/-]{0,80}$/.test(prefix)) codeError('ID_INVALID')
+  const used=new Set(existing)
+  for(let n=1;n<=10000;n++){
+    const result=prefix+'-'+n
+    if(!used.has(result) && validId(result))return result
+  }
+  return codeError('ID_SPACE_EXHAUSTED')
+}
