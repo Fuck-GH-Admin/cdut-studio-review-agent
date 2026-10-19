@@ -21,6 +21,9 @@ export function D4CaseBatchControls({ role, actions }: {
   const [dragging, setDragging] = React.useState(false)
   const [error, setError] = React.useState('')
   const [phase, setPhase] = React.useState('')
+  const [resumeBatchId, setResumeBatchId] = React.useState<string | null>(null)
+  const pendingBatches = currentCase?.d4BatchRuns?.filter(run => run.role === role &&
+    run.status !== 'completed' && run.files.some(file => file.status === 'pending' || file.status === 'failed')) ?? []
   const requestId = React.useRef<string | null>(null)
   const activeToken = React.useRef<string | null>(null)
   const sessionGeneration = React.useRef(0)
@@ -36,6 +39,7 @@ export function D4CaseBatchControls({ role, actions }: {
   }, [caseId, role, store])
 
   React.useEffect(() => {
+    setResumeBatchId(null)
     // Case switch reuses the same React component instance. Reset *all* visual
     // decisions so A's staged selection can never be applied to B's case.
     setPreview(null); setAssessment(null); setChoices([]); setAcknowledged(false); setError(''); setPhase('')
@@ -50,17 +54,18 @@ export function D4CaseBatchControls({ role, actions }: {
 
   if (!caseId || !caseId.startsWith('d4-')) return null
 
-  const close = async (): Promise<void> => {
+  const close = async (clearResume = true): Promise<void> => {
     if (activeToken.current) await window.reviewAPI.discardD4Intake(activeToken.current).catch(() => false)
     activeToken.current = null
     requestId.current = null
     setPreview(null); setAssessment(null); setChoices([]); setAcknowledged(false); setError(''); setPhase('')
+    if (clearResume) setResumeBatchId(null)
   }
   const open = async (mode: 'files' | 'folder', dropped?: File[]): Promise<void> => {
     if (busy) return
     setBusy(true); setError('')
     try {
-      await close()
+      await close(false)
       const generation = sessionGeneration.current
       let next: D4IntakePreview | null
       if (dropped) {
@@ -93,8 +98,10 @@ export function D4CaseBatchControls({ role, actions }: {
       }
       setPreview(next)
       setAssessment(proposed)
-      setChoices(proposed.files.map(file => file.duplicateOf || file.nameConflicts.length
-        ? { kind: 'skip' } : { kind: 'append' }))
+      const pending = resumeBatchId ? pendingBatches.find(run => run.id === resumeBatchId) : undefined
+      setChoices(pending ? pending.files.map(file => file.choice) :
+        proposed.files.map(file => file.duplicateOf || file.nameConflicts.length
+          ? { kind: 'skip' } : { kind: 'append' }))
     } catch (cause) { setError(cause instanceof Error ? cause.message : String(cause)) }
     finally { setBusy(false) }
   }
@@ -111,11 +118,12 @@ export function D4CaseBatchControls({ role, actions }: {
     try {
       const result = await window.reviewAPI.applyD4CaseBatch({
         caseId, token: preview.token, role, expectedRevision: assessment.expectedRevision,
-        choices, acknowledgeSkipped: acknowledged, requestId: requestId.current,
+        choices: resumeBatchId ? [] : choices, acknowledgeSkipped: acknowledged,
+        requestId: requestId.current, ...(resumeBatchId ? { resumeBatchId } : {}),
       })
       activeToken.current = null
       if (sessionGeneration.current !== generation || store.get(selectedCaseIdAtom) !== caseId) return
-      setPreview(null); setAssessment(null); setChoices([]); setAcknowledged(false)
+      setPreview(null); setAssessment(null); setChoices([]); setAcknowledged(false); setResumeBatchId(null)
       if (store.get(selectedCaseIdAtom) === caseId) await actions.selectCase(caseId)
       const incomplete = result.documents.filter(doc => doc.parseStatus !== 'parsed' ||
         !doc.blocks.some(block => !!block.text.trim())).length
@@ -143,6 +151,18 @@ export function D4CaseBatchControls({ role, actions }: {
         onClick={() => void open('folder')}>文件夹</button>
     </div>
     <p className="mt-1 text-muted-foreground">本机确认文件后先预检哈希、同名冲突和案卷版本，再由你决定。审核依据仍由左栏独立管理。</p>
+    {!!pendingBatches.length && <div className="mt-2 rounded border border-amber-500/50 p-2">
+      <p className="font-medium">待恢复的持久批次：{pendingBatches.length} 个</p>
+      {pendingBatches.map(run => <div key={run.id} className="mt-1 flex flex-wrap items-center gap-2">
+        <span>批次 {run.id.slice(0, 8)} · 待继续 {run.files.filter(file =>
+          file.status === 'pending' || file.status === 'failed').length} / {run.files.length}</span>
+        <button type="button" disabled={busy} className="rounded border px-2 py-1"
+          onClick={() => { setResumeBatchId(run.id); setError('重新选择整个原始批次的文件或 ZIP/文件夹，然后点击继续。Main 会核验每一份 SHA-256、来源和顺序，不允许修改原决策。') }}>
+          重新选择原批次
+        </button>
+      </div>)}
+      {resumeBatchId && <p className="mt-1">正在准备恢复 {resumeBatchId.slice(0, 8)}；请使用上方文件 / ZIP 或文件夹选择器。</p>}
+    </div>}
     <div role="region" aria-label={`拖入${role === 'application' ? '申报材料' : '证明材料'}以预检`}
       className={`mt-2 rounded border border-dashed px-3 py-3 text-center ${dragging ? 'border-primary bg-primary/5' : 'border-border/60'}`}
       onDragEnter={event => { event.preventDefault(); event.stopPropagation(); setDragging(true) }}
@@ -166,7 +186,7 @@ export function D4CaseBatchControls({ role, actions }: {
           {file.duplicateOf && <p className="text-amber-700 dark:text-amber-300">与当前案卷文件内容相同：{file.duplicateOf}（只允许跳过）</p>}
           {!file.duplicateOf && file.nameConflicts.length > 0 && <p className="text-amber-700 dark:text-amber-300">同名但内容不同，必须明确替换目标或跳过。旧版原件会保留在历史中。</p>}
           <select className="mt-1 w-full rounded border bg-background px-2 py-1"
-            aria-label={`处理文件 ${i + 1}`} disabled={busy || !!file.duplicateOf}
+            aria-label={`处理文件 ${i + 1}`} disabled={busy || !!file.duplicateOf || !!resumeBatchId}
             value={choices[i]?.kind === 'replace' ? `replace:${choices[i]!.kind === 'replace' ? choices[i]!.documentId : ''}` : choices[i]?.kind ?? 'skip'}
             onChange={e => setChoices(previous => previous.map((old, j) => j !== i ? old :
               e.target.value.startsWith('replace:') ? { kind: 'replace', documentId: e.target.value.slice(8) }
@@ -190,8 +210,8 @@ export function D4CaseBatchControls({ role, actions }: {
       <div className="flex gap-2">
         <button type="button" className="rounded border px-3 py-1" disabled={busy} onClick={() => void close()}>取消</button>
         <button type="button" className="rounded bg-primary px-3 py-1 text-primary-foreground"
-          disabled={busy || (!!assessment.skipped.length && !acknowledged)}
-          onClick={() => void apply()}>{busy ? '正在处理…' : '确认应用本批次决定'}</button>
+          disabled={busy || (!!assessment.skipped.length && !acknowledged && !resumeBatchId)}
+          onClick={() => void apply()}>{busy ? '正在处理…' : resumeBatchId ? '核验原始清单并继续未完成文件' : '确认应用本批次决定'}</button>
       </div>
     </div>}
     {phase && <p role="status" className="mt-2 text-muted-foreground">{phase}（已执行操作不会因关闭本面板回滚）</p>}

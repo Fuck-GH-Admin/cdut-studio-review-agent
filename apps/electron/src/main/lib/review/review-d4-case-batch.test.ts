@@ -206,4 +206,61 @@ describe('W1 post-case native append and revision-aware replacement', () => {
     expect(getCase(created.id)!.d4IntakeWarnings?.some(w => w.originLabel.includes('unsafe.exe'))).toBe(true)
     expect(getCase(created.id)!.documents[0]!.role).toBe('evidence')
   })
+  test('durable journal resumes only an exact restaged batch and does not re-execute completed skips', async () => {
+    const created = await create()
+    const originalFiles = [
+      { name: 'first-skipped.md', bytes: new TextEncoder().encode('# 第一份 人工跳过') },
+      { name: 'second-imported.md', bytes: new TextEncoder().encode('# 第二份 已入库') },
+    ]
+    const staged = await stageD4DroppedBytes(903, originalFiles)
+    const assessment = assessD4CaseBatch({ caseId: created.id, role: 'evidence', token: staged.token }, 903)
+    const run = await applyD4CaseBatch({ caseId: created.id, token: staged.token, role: 'evidence',
+      expectedRevision: assessment.expectedRevision, choices: [{ kind: 'skip' }, { kind: 'append' }],
+      acknowledgeSkipped: false }, 903)
+    expect(run.batchId).toBeDefined()
+    const stored = getCase(created.id)!
+    expect(stored.d4BatchRuns?.[0]!.status).toBe('completed')
+    expect(stored.d4BatchRuns?.[0]!.files.map(f => f.status)).toEqual(['skipped', 'stored'])
+    const imported = stored.documents.find(doc => doc.role === 'evidence')!
+    // Emulate a durable checkpoint after the second file failed before it was
+    // committed. Retire the synthetic attempt; do not delete historical bytes.
+    const { removeDocumentsFromCase } = await import('./case-import')
+    await removeDocumentsFromCase({ caseId: created.id, role: 'evidence', documentIds: [imported.id] })
+    await updateCase(created.id, fresh => ({
+      ...fresh, d4BatchRuns: fresh.d4BatchRuns!.map(entry => ({
+        ...entry, status: 'needs-reselection' as const,
+        files: entry.files.map(file => file.index !== 1 ? file :
+          { ...file, status: 'failed' as const, message: '模拟中断前失败' }),
+      })),
+    }), { reason: 'W1 合成中断场景' })
+    const changed = await stageD4DroppedBytes(903, [
+      originalFiles[0]!, { ...originalFiles[1]!, bytes: new TextEncoder().encode('# 篡改的第二份') },
+    ])
+    const changedAssess = assessD4CaseBatch({ caseId: created.id, role: 'evidence', token: changed.token }, 903)
+    await expect(applyD4CaseBatch({
+      caseId: created.id, token: changed.token, role: 'evidence',
+      expectedRevision: changedAssess.expectedRevision, choices: [], acknowledgeSkipped: false,
+      resumeBatchId: run.batchId!,
+    }, 903)).rejects.toThrow('D4_BATCH_RESUME_DIGEST_OR_MANIFEST_MISMATCH')
+    expect(discardD4Intake(changed.token, 903)).toBe(true)
+    const same = await stageD4DroppedBytes(903, originalFiles)
+    expect(() => assessD4CaseBatch({ caseId: created.id, role: 'evidence', token: same.token }, 904))
+      .toThrow('D4_INTAKE_TOKEN_INVALID')
+    const sameAssess = assessD4CaseBatch({ caseId: created.id, role: 'evidence', token: same.token }, 903)
+    const resumed = await applyD4CaseBatch({
+      caseId: created.id, token: same.token, role: 'evidence',
+      expectedRevision: sameAssess.expectedRevision, choices: [], acknowledgeSkipped: false,
+      resumeBatchId: run.batchId!,
+    }, 903)
+    expect(resumed.batchId).toBe(run.batchId)
+    expect(resumed.documents).toHaveLength(1)
+    const finished = getCase(created.id)!
+    expect(finished.d4BatchRuns?.[0]?.status).toBe('completed')
+    expect(finished.d4BatchRuns?.[0]?.files.map(file => file.status)).toEqual(['skipped', 'stored'])
+    expect(finished.archivedDocuments?.some(doc => doc.id === imported.id)).toBeTrue()
+    expect(finished.documents[0]?.id).toBe(resumed.documents[0]?.id)
+    // Skip warning from the first run must not be duplicated on resume.
+    expect(finished.d4IntakeWarnings?.filter(item => item.originLabel === 'first-skipped.md')).toHaveLength(1)
+  })
+
 })
