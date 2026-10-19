@@ -53,7 +53,7 @@ function zip(entries: Entry[]): Buffer {
     central.writeUInt32LE(packed.length, 20)
     central.writeUInt32LE(unpacked, 24)
     central.writeUInt16LE(name.length, 28)
-    central.writeUInt32LE(entry.externalAttributes ?? (0x81a4 << 16), 38)
+    central.writeUInt32LE((entry.externalAttributes ?? (0x81a4 << 16)) >>> 0, 38)
     central.writeUInt32LE(position, 42)
     centrals.push(central, name)
     position += local.length + name.length + packed.length
