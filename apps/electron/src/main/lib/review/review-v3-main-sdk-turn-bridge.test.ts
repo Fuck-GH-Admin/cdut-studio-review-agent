@@ -462,12 +462,10 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     expect(h.turns.snapshot(h.grant).usedTurns).toBe(1)
     expect(h.calls()).toBe(2)
   })
-  it('A4-R09-07: cold journal rejects duplicate receipt across two different Run chains',()=>{
+  it('A4-R09-07: cold journal rejects duplicate receipt across two different Run chains',async()=>{
     const h=fixture()
-    h.setNext(async run=>({kind:'completed-turn',receiptId:'seed',run}))
-    // Seed one valid settled record without making an actual Provider claim.
-    const first=h.dispatch.claim(h.call)
-    h.dispatch.settle(h.call,first.dispatchId,'reused-across-runs')
+    h.setNext(async run=>({kind:'completed-turn',receiptId:'reused-across-runs',run}))
+    expect((await h.bridge.next(h.call,'direct')).kind).toBe('recorded')
     const laterRun={...h.run,runId:'historical-run-B',attemptId:'historical-attempt-B'}
     const key=JSON.stringify([laterRun.runId,laterRun.attemptId,laterRun.ownerGeneration])
     const envelope=JSON.parse(h.dispatchStore.raw!) as {
@@ -490,7 +488,7 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     h.dispatchStore.raw=JSON.stringify(envelope)
     expect(()=>new V3ASDKDispatchFence(h.dispatchStore,h.owners))
       .toThrow('SDK dispatch ledger reuses one receipt across physical calls')
-    expect(h.calls()).toBe(0)
+    expect(h.calls()).toBe(1)
   })
   it('A4-R08-01: abort returns promptly but holds Owner SDK lock until hung Provider settles',async()=>{
     const h=fixture()
