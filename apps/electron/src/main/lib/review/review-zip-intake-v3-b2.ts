@@ -64,6 +64,7 @@ interface CentralEntry {
   localOffset: number
   externalAttributes: number
   extra: Buffer
+  invalidNameEncoding: boolean
 }
 
 const crcTable = new Uint32Array(256)
@@ -142,9 +143,10 @@ export function decodeReviewB2Zip(raw: Uint8Array, limits: B2ZipLimits = {}): B2
     const extra = bytes.subarray(offset + 46 + fileNameLength, offset + 46 + fileNameLength + extraLength)
     if (hasZip64(extra)) error('ZIP64_UNSUPPORTED')
     let name: string
-    try { name = decoder.decode(nameBytes) } catch { name = '[invalid-utf8-' + i + ']' }
+    let invalidNameEncoding = false
+    try { name = decoder.decode(nameBytes) } catch { name = '[invalid-utf8-' + i + ']'; invalidNameEncoding = true }
     centers.push({
-      index: i, name, nameBytes, extra,
+      index: i, name, nameBytes, extra, invalidNameEncoding,
       flags: read16(bytes, offset + 8), method: read16(bytes, offset + 10),
       crc: read32(bytes, offset + 16),
       compressedSize: read32(bytes, offset + 20),
@@ -161,9 +163,12 @@ export function decodeReviewB2Zip(raw: Uint8Array, limits: B2ZipLimits = {}): B2
   let expandedBytes = 0, compressedBytes = 0
   const ranges: Array<{ start: number; end: number }> = []
   for (const entry of centers) {
-    const compressedHash = entry.localOffset < centralOffset
-      ? SHA(bytes.subarray(entry.localOffset, Math.min(entry.localOffset + 30, centralOffset)))
-      : SHA(entry.nameBytes)
+    const possibleStart = entry.localOffset
+    const possibleDataStart = possibleStart + 30 <= centralOffset && read32(bytes, possibleStart) === SIG_LOCAL
+      ? possibleStart + 30 + read16(bytes, possibleStart + 26) + read16(bytes, possibleStart + 28) : -1
+    const compressedHash = possibleDataStart >= 0 && possibleDataStart + entry.compressedSize <= centralOffset
+      ? SHA(bytes.subarray(possibleDataStart, possibleDataStart + entry.compressedSize))
+      : SHA(entry.nameBytes) // fallback entry-name evidence; rejected entries have no validated payload
     const receipt = (status: B2ZipFileReceipt['status'], reason?: string, rawSha256?: string): void => {
       receipts.push({
         index: entry.index, entryName: entry.name, status, compressedSha256: compressedHash,
@@ -175,12 +180,13 @@ export function decodeReviewB2Zip(raw: Uint8Array, limits: B2ZipLimits = {}): B2
     const caseFold = normalized.toLocaleLowerCase('en-US')
     // Directory records are skipped; malicious paths/symlink metadata still rejected.
     if (isDirectory) {
-      if (!safeName(entry.name.slice(0, -1))) receipt('rejected', 'UNSAFE_DIRECTORY')
+      const unixMode = (entry.externalAttributes >>> 16) & 0xffff
+      if (entry.invalidNameEncoding || !safeName(entry.name.slice(0, -1)) || (unixMode & 0xf000) === 0xa000) receipt('rejected', 'UNSAFE_DIRECTORY')
       else receipt('skipped', 'DIRECTORY')
       continue
     }
-    if (!safeName(normalized) || seen.has(caseFold)) {
-      receipt('rejected', seen.has(caseFold) ? 'DUPLICATE_PATH' : 'UNSAFE_PATH')
+    if (entry.invalidNameEncoding || !safeName(normalized) || seen.has(caseFold)) {
+      receipt('rejected', entry.invalidNameEncoding ? 'INVALID_NAME_ENCODING' : seen.has(caseFold) ? 'DUPLICATE_PATH' : 'UNSAFE_PATH')
       continue
     }
     seen.add(caseFold)
