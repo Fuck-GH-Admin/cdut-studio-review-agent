@@ -152,11 +152,15 @@ A/B/I 发现阻断，先用已有类型化接口排障；无法自行解决时�
 
 ### B — Owner: Dev-B
 <!-- BEGIN:STATUS:B -->
-- `SOURCE_HEAD`：#142 @ `f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc`。
-- `DELIVERED`：B1 模板/Plan 候选、B2 staging/parser、B3 路由预演、B4 50 个候选来源目录和作者 UI 组件；**候选未被授予正式政策发布权**。
-- `BLOCKED`：`B-CR-001 PENDING_C`；主进程真实 picker、durable ImportBatch、校规/Gold 证据及无代码作者态完整 UAT 未完成。
-- `COORDINATION_ACK`：`PENDING_ACK_V1.0`（需 B 自己填写其 ACK 及提交 SHA）。
-- `NEXT`：保持 B 独立持续开发；将按源固定的候选 descriptor/source/coverage 与准确负例交 I，正式写入口请求 C。
+- `COORDINATION_ACK`：`ACK V1.0@5613466af85484e58ebc1e8cf7de227087322ad1`；认可 `V3-ABCI-GOVERNANCE-R01`、C 独占共享业务/安全裁决、I 只做已授权集成。本次重读协调 SHA `25f00eb1b95dc7f7ebe162bc3366b6fb08f2ba4f`、blob `c1b1e732e010fef7d0cc9cf629a65fcad88f4d61`，A 区已 ACK，不改其他区。
+- `SOURCE_HEAD`：工程 Draft PR #142 @ `f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc`，基于 C0 `5682057c7232c914e72fdae525ce95fd33f32b53`／`review-c0/1`；B 自有源码及测试，不触碰共享写权。C #144 `31aa352c45a33d6832612884b0fea38e39b5cf8d`，A #143 `d8fd3e0e696caa1df7321c23c46e4f70a1f910f7` 为此次取样。
+- `B1-plan`：#142 同上 SHA，`review-template-plan-adapter-v3-b1.ts` + test；immutable Plan、2 target × 6 Check、unknown/sourceVersion、模块依赖/digest 与删除 ACK；`READY_FOR_ADAPTER`（技术候选预览，不是正式 InstallPlan），C0/1，正式安装需 `B-CR-001` C 决议；I 可先集成无写权编译器。
+- `B2-source`：#142 同 SHA，`review-intake-adapter-v3-b2.ts`、`review-source-version-adapter-v3-b2.ts` + tests；单次 owner/sender/frame/generation token、物理 bytes hash、真实 parser 和已验证 SourceIdentity block；`READY_FOR_ADAPTER` 仅独立暂存/解析，真实 Main picker、持久版本/ImportBatch 与 ApplyMaterial `CONTRACT_BLOCKED`，需 B/C/I 分工。
+- `B3-router`：#142 同 SHA，`review-intake-routing-adapter-v3-b3.ts` + test；20s 倒计时、唯一明确/用户打断/歧义拒自动选择，不建案；`READY_FOR_ADAPTER`（纯建议），Main 真实输入和用户工作台接线尚未发生。
+- `B4-author-ui-assets`：#142 同 SHA，独立 `ReviewV3AuthorWizard.tsx`、`review-template-author-store-v3-b1.ts` + tests、`B4-50-CANDIDATE-SOURCE-LEDGER.csv`；`SOURCE_ONLY`（UI 未挂载、无完整第51套 UAT；G01–08 5/3/10/8/6/9/7/2 全部 candidate-held，50 条目录并非逐义务 Gold）。
+- `GATES`：Gate O 对精确 B HEAD：PR CI `39230036780`、D2 Scoped Pi `39230036753`、Review Baseline `39230036747` 全部 SUCCESS；`PASS_SCOPED`，不代表每条适配器/安全负例已通过。Gate E `NOT_RUN`；L `BLOCKED_NO_AUTH`（校方政策、身份、原件/独立Gold）；P `PARTIAL_NOT_ACCEPTED`（50逐条政策责任、第51套真实用户体验、100案/500文件、120+30/真人UAT）。
+- `BLOCKED`：`B-CR-001 PENDING_C_DECISION`，Main 身份/Native picker、source receipt、InstallPlan/ApplyMaterial 和发布授权；ZIP安全、durable ImportBatch/checkpoint/重试/真实 Office71/Electron 尚缺。I 可先逐片集成纯编译/解析/路由，不可越权正式写入。
+- `NEXT`：B 继续独立提升 #142 的 ZIP 安全与逐文件导入状态、可信 parser/SourceRef 对照、作者 UI/试跑/版本导出、50 候选逐义务账；将新固定 SHA、正反例及 Gate O/E/L/P 逐片交 I，不等待 A/C/I 轮次对齐。
 <!-- END:STATUS:B -->
 
 ### C — Owner: Dev-C
