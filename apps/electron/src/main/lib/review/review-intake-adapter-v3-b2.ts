@@ -13,10 +13,15 @@ import {
 const sha256 = (v: Uint8Array | string): string => createHash('sha256').update(v).digest('hex')
 const safe = (s: string): boolean => typeof s === 'string' && s.length > 0 && s.length <= 256 && !s.includes('\u0000')
 /** Display filename is not a path capability; later consumers must never join arbitrary paths. */
-const safeDisplayName = (s: string): boolean => safe(s) &&
-  !/[\\/\\\\]/.test(s) && s !== '.' && s !== '..' && !/[. ]$/.test(s) &&
-  !/[<>:\"|?*]/.test(s) && !/^[\\u0000-\\u001f\\u007f]/.test(s) &&
-  !/^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\\.|$)/i.test(s)
+const safeDisplayName = (s: string): boolean => {
+  if (!safe(s) || s.includes('/') || s.includes(String.fromCharCode(92)) ||
+      s === '.' || s === '..' || s.endsWith('.') || s.endsWith(' ')) return false
+  if ([...s].some((ch) => ch.charCodeAt(0) < 32 || ch.charCodeAt(0) === 127 ||
+      '<>:"|?*'.includes(ch))) return false
+  const device = s.split('.')[0]?.toUpperCase()
+  return !['CON','PRN','AUX','NUL',...Array.from({length:9},(_,i)=>'COM'+(i+1)),
+    ...Array.from({length:9},(_,i)=>'LPT'+(i+1))].includes(device ?? '')
+}
 const failed = (reason: string): never => { throw new Error('B2_' + reason) }
 const MAX_FILE_BYTES = 50 * 1024 * 1024
 
