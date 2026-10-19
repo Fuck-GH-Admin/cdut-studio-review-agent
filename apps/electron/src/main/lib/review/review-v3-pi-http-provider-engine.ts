@@ -90,6 +90,9 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
         origin.pathname!=='/' || origin.search || origin.hash) {
       return rejectNewSession('Only exact trusted HTTPS Provider origin is allowed')
     }
+    if(input.signal?.aborted) {
+      return rejectNewSession('Main aborted after Pi session creation')
+    }
     // Do not cancel a session already owned by another SDK invocation.
     if(session.agent.state.isStreaming)fail('Pi SDK session already running')
     if(consumedPiAgents.has(session.agent)) {
