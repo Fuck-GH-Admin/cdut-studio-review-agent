@@ -1,0 +1,306 @@
+{
+  "version": "v3-i1-technical-lock/1",
+  "governance": "V3-ABCI-GOVERNANCE-R01/V1.0",
+  "decision": "C-I1-AUTH-001 / I1_TECHNICAL_ENTRY_GO",
+  "decisionReference": "docs/design/review-agent/acceptance/v3-integrator-i-r01/ABCI-UNIFIED-COORDINATION-AND-STATUS.md",
+  "contract": "review-c0/1",
+  "approvedAnchors": {
+    "C": "31aa352c45a33d6832612884b0fea38e39b5cf8d",
+    "A": "d8fd3e0e696caa1df7321c23c46e4f70a1f910f7",
+    "B": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc"
+  },
+  "cAnchorPrCI": {
+    "pr": 144,
+    "runId": 39229456164,
+    "conclusion": "success"
+  },
+  "aSourcePrCI": {
+    "pr": 143,
+    "runId": 39228978591,
+    "conclusion": "success"
+  },
+  "bSourcePrCI": {
+    "pr": 142,
+    "runId": 39230036780,
+    "conclusion": "success"
+  },
+  "baseC0": "5682057c7232c914e72fdae525ce95fd33f32b53",
+  "importedSourceBlobs": [
+    {
+      "owner": "A",
+      "sourcePr": 143,
+      "sourceSha": "d8fd3e0e696caa1df7321c23c46e4f70a1f910f7",
+      "path": "apps/electron/src/main/lib/review/review-pi-owner-adapter.ts",
+      "blob": "356e5b3a290522c5d2db3a55eedac3b7805e69be"
+    },
+    {
+      "owner": "A",
+      "sourcePr": 143,
+      "sourceSha": "d8fd3e0e696caa1df7321c23c46e4f70a1f910f7",
+      "path": "apps/electron/src/main/lib/review/review-pi-owner-adapter.test.ts",
+      "blob": "f42897269526d6260dea4bac148564ef8c66f649"
+    },
+    {
+      "owner": "A",
+      "sourcePr": 143,
+      "sourceSha": "d8fd3e0e696caa1df7321c23c46e4f70a1f910f7",
+      "path": "apps/electron/src/main/lib/review/review-execution-event-adapter.ts",
+      "blob": "efa0f41cc2dab970b2cc5b92c0c00c3be3c6cf93"
+    },
+    {
+      "owner": "A",
+      "sourcePr": 143,
+      "sourceSha": "d8fd3e0e696caa1df7321c23c46e4f70a1f910f7",
+      "path": "apps/electron/src/main/lib/review/review-execution-event-adapter.test.ts",
+      "blob": "1084c8e215ba00fc8870c1f582138cbe72c5446a"
+    },
+    {
+      "owner": "A",
+      "sourcePr": 143,
+      "sourceSha": "d8fd3e0e696caa1df7321c23c46e4f70a1f910f7",
+      "path": "apps/electron/src/main/lib/review/review-execution-event-adapter-completeness.ts",
+      "blob": "0e15f14d2d1bc145acec8325d43e9e6276ead802"
+    },
+    {
+      "owner": "A",
+      "sourcePr": 143,
+      "sourceSha": "d8fd3e0e696caa1df7321c23c46e4f70a1f910f7",
+      "path": "apps/electron/src/main/lib/review/review-execution-event-adapter-completeness.test.ts",
+      "blob": "b6ae0556cb8e714d5d95c3f5d3943db30c5e379d"
+    },
+    {
+      "owner": "A",
+      "sourcePr": 143,
+      "sourceSha": "d8fd3e0e696caa1df7321c23c46e4f70a1f910f7",
+      "path": "apps/electron/src/main/lib/review/review-execution-event-adapter-driver.ts",
+      "blob": "c62d78908ce6156abb3f7be2380a0e64e243242b"
+    },
+    {
+      "owner": "A",
+      "sourcePr": 143,
+      "sourceSha": "d8fd3e0e696caa1df7321c23c46e4f70a1f910f7",
+      "path": "apps/electron/src/main/lib/review/review-execution-event-adapter-driver.test.ts",
+      "blob": "af42369e360b34408e0cee0e5fe79aeb77f1f71e"
+    },
+    {
+      "owner": "B",
+      "sourcePr": 142,
+      "sourceSha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "path": "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.ts",
+      "blob": "f140d4f66d741fa29757a8a3ddaba9d9d2cdd038"
+    },
+    {
+      "owner": "B",
+      "sourcePr": 142,
+      "sourceSha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "path": "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.test.ts",
+      "blob": "0476ae8e408cf124b19101c1fc48b9f8c9d3213f"
+    },
+    {
+      "owner": "B",
+      "sourcePr": 142,
+      "sourceSha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "path": "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.ts",
+      "blob": "aa60f9eb5b296c3ac5c68b042dc85dca855da5f1"
+    },
+    {
+      "owner": "B",
+      "sourcePr": 142,
+      "sourceSha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "path": "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.test.ts",
+      "blob": "ab57a0d51c9cdcaf241e849f3b1e653eb74a72cb"
+    },
+    {
+      "owner": "B",
+      "sourcePr": 142,
+      "sourceSha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.ts",
+      "blob": "50dd49f5b985f0f9da98cf63a1934dad0be38d70"
+    },
+    {
+      "owner": "B",
+      "sourcePr": 142,
+      "sourceSha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.test.ts",
+      "blob": "a4af4a8684912bd9202907e3f5883c6e49bd5dfd"
+    },
+    {
+      "owner": "B",
+      "sourcePr": 142,
+      "sourceSha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts",
+      "blob": "367390a7cab5d9fbb6ebaa3a25fe6ead942d8ff9"
+    },
+    {
+      "owner": "B",
+      "sourcePr": 142,
+      "sourceSha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.test.ts",
+      "blob": "e3dac69d7a20ed9219e413e0a24c49782871a3e7"
+    },
+    {
+      "owner": "B",
+      "sourcePr": 142,
+      "sourceSha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "path": "apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.ts",
+      "blob": "dd23b16675a74f7ef82c8037f477bca2f7a306d8"
+    },
+    {
+      "owner": "B",
+      "sourcePr": 142,
+      "sourceSha": "f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc",
+      "path": "apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.test.ts",
+      "blob": "c9b02622cd0718905ab7b2ba4074dacc8fb97aca"
+    }
+  ],
+  "importCommit": "b6e767f0c85eca8e1c83a5420bc31ea8b4533e8f",
+  "bridgeSourceCommit": "9a31c89d68d2bfea0f96cee52391c0f00c75cdfb",
+  "bridgeTestCommit": "96e20263f78869cca31b311edfa9d27923b7cff6",
+  "priorI0": {
+    "pr": 146,
+    "sha": "c84f575addcbb1f36b5eff0acb27442b91073fa1",
+    "cVerdict": "I0_ACCEPTED_SCOPED",
+    "inheritedByReferenceOnly": true
+  },
+  "ownership": {
+    "modifiedCExclusiveFiles": [],
+    "sourceBlobsCopiedUnmodified": true,
+    "importStrategy": "file-level Git blob tree + I-only changes, not whole A/B branch merge"
+  },
+  "limits": {
+    "formalRunWriter": false,
+    "formalCaseWriter": false,
+    "formalPlanPublisher": false,
+    "authorizedPicker": false,
+    "policyPublished": false,
+    "versionedNewCExecutionDtoIntegrated": false,
+    "notAProductionMainHandler": true
+  },
+  "gates": {
+    "integrationGateO": "PENDING_EXACT_SHA_CI",
+    "gateE": "NOT_RUN",
+    "gateL": "BLOCKED_NO_AUTH",
+    "gateP": "NOT_RUN",
+    "cEngineeringSignoff": "PENDING_C_REVIEW"
+  },
+  "bridgeFollowupCommits": [
+    {
+      "sha": "9afd9d80eb03041b665964efce8a34c1c9337126",
+      "scope": "I-only actual parser-registry SourceIdentity bridge"
+    },
+    {
+      "sha": "6a90a235325d6802e119bf3a143f4b5d6ec7bc85",
+      "scope": "I-only real parser, forged block, revoked source negative tests"
+    },
+    {
+      "sha": "bed8c537bd2a2187c33d006afe0f9d9c7b7bbd2e",
+      "scope": "I-only cross-Subject source binding fail-closed gate"
+    },
+    {
+      "sha": "df7b79e663a96841310b8f91b90311bead62e9fd",
+      "scope": "I-only subject mismatch negative and exact same-Subject positive"
+    }
+  ],
+  "newIIntegrationProbes": {
+    "count": 19,
+    "results": "COMMITTED_NOT_VERIFIED",
+    "crossModules": [
+      "Dev-B B1 immutable candidate Plan",
+      "Dev-B B2 Main-scoped staging and real Source parser registry",
+      "Dev-B B3 conservative route",
+      "Dev-A A3 exact technical Check×target",
+      "Dev-C C1 archived CurrentValidity",
+      "B2 material Subject scope must match each B1 Check target",
+      "registered C0 Main IPC teacher/school actor and sender/frame fail closed with B2/A1/A2 synthetic technical receipt",
+      "B2 staging revoke after Host await independently blocks A2 local proposal while A1 grant remains active",
+      "B2 Main-owned case/generation and C1 revision must fence B1/A3 synthetic preview eligibility"
+    ],
+    "formallyPersistedBusinessRuns": 0
+  },
+  "integrationPullRequest": 147,
+  "pullRequestBaseBranch": "integration/v3-i1-c-anchor-001-frozen",
+  "pullRequestBaseSHA": "31aa352c45a33d6832612884b0fea38e39b5cf8d",
+  "ownerEventSecondSlice": {
+    "status": "COMMITTED_NOT_VERIFIED",
+    "sourceAnchorsUnchanged": true,
+    "testFile": "apps/electron/src/main/lib/review/review-v3-integration-i1-owner-event.test.ts",
+    "bridgeFile": "apps/electron/src/main/lib/review/review-v3-integration-i1-technical.ts",
+    "newCases": 5,
+    "priorIOnlyCases": 8,
+    "totalIOnlyJointCases": 13,
+    "sources": [
+      "B2 parser-verified original bytes",
+      "B1 candidate immutable Plan",
+      "A1 Owner grant with Main-injected authority fixture",
+      "A2 local C0 proposal ledger and Host guardedRead",
+      "A3 technical exact Check×target projection",
+      "C1 archive CurrentValidity linked to A1 isCurrent"
+    ],
+    "codeCommits": [
+      "a4233bb563cdabef26dbbab4a1a67223474d8ebf",
+      "786ca5c4f0710f4a7d758cca6d7fc9d8079df9c9",
+      "c1a61938f4c9060ff9a7a6b54b6cf9238a4999f1",
+      "a71576d33eea627388d45e663e0e5641f3145f49"
+    ],
+    "formalWriter": false,
+    "realElectronMain": false,
+    "scope": "TECHNICAL_ONLY"
+  },
+  "cDecisionReply": {
+    "decision": "C-I1-REVIEW-R02 / CODE_SCOPE_ACCEPTED_NOT_GATE_O",
+    "reviewedPriorI1Sha": "09d67ee494481dcc32571c8887ea1326b9a45b36",
+    "contract": "review-c0/1",
+    "leaseActive": "I-LEASE-C-TEST-R01",
+    "leaseInactive": "I-LEASE-MAIN-PORT-R01",
+    "businessWriterLease": "DENIED",
+    "scopeAcceptedDoesNotEqualGatePass": true
+  },
+  "cLeasedTestAddition": {
+    "file": "apps/electron/src/main/lib/review/review-c0-ipc.test.ts",
+    "cAnchorSha": "31aa352c45a33d6832612884b0fea38e39b5cf8d",
+    "unchangedAnchorBlob": "7c4d73b209e926369747ae50f5ce4a5601e3effa",
+    "additiveCommit": "d6187b96ffc47b5606a57e78e0c2e6a2c7ae563b",
+    "existingTestCasesUntouched": true,
+    "existingSetupUntouched": true,
+    "diffLinesAdded": 167,
+    "diffLinesDeleted": 0,
+    "newJointCases": 2,
+    "realRegisteredC0MainHandler": true,
+    "liveElectronMain": false,
+    "realHostProvider": false,
+    "c2FormalAck": false,
+    "results": "COMMITTED_NOT_VERIFIED"
+  },
+  "postAwaitB2RevocationHardening": {
+    "scope": "I_ONLY",
+    "status": "COMMITTED_NOT_VERIFIED",
+    "issue": "B2 staging revoke during asynchronous Host read must fence local A2 proposal independently of A1 grant",
+    "bridgeCommit": "c5437861b491b643f7218c5396ba2b93d8f33015",
+    "testCommits": [
+      "d3d3fdd80951d49243b06b08dbf9bcb0006ea20a",
+      "7d6b797123cc49c2eb46371b3c2eb0dba8b6a56d"
+    ],
+    "newProbes": 2,
+    "sourceShaUnchanged": true,
+    "formalBusinessWrites": 0
+  },
+  "previewCaseRunScopeHardening": {
+    "scope": "I_OWNED_BRIDGE_AND_TESTS",
+    "status": "COMMITTED_NOT_VERIFIED",
+    "oldI1CodeSha": "89f7a0188bb396a84386dac77fa59ca67e99d60a",
+    "commits": [
+      "929df279c414381219740cdcf26ef0ab49ac548d",
+      "a72e762a0bb6aa16002841d46f03427b5a3a29c6",
+      "55175aff70f9f1b1e73d2d4f3c33e46ac6c10d4c"
+    ],
+    "checks": [
+      "Run.caseId === B2MainContext.caseCandidateId",
+      "Run.ownerGeneration === B2MainContext.ownerGeneration",
+      "Run.templateVersion === candidatePlan.templateVersion",
+      "optional C1 CaseAggregate.caseV2.revision === Run.caseRevision"
+    ],
+    "newJointCases": 2,
+    "sourceA_B_C_Frozen": true,
+    "cExclusiveProductionChanges": 0
+  }
+}
