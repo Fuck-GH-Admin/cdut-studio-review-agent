@@ -112,7 +112,25 @@ export function saveB1AuthorRevision(
   }
 }
 /** Freezes immutable candidate descriptor; does not alter the author source or Case. */
+/**
+ * Shares author.lock with saveB1AuthorRevision so a concurrent revision cannot
+ * be committed between latest-revision verification and candidate freezing.
+ * A busy writer fails closed; the caller may retry with a fresh revision.
+ */
 export function freezeB1Candidate(templateId: string, revision: number): B1FrozenCandidate {
+  const dir = folder(templateId)
+  mkdirSync(dir, { recursive: true, mode: 0o700 })
+  const lock = join(dir, 'author.lock')
+  const fd = openSync(lock, 'wx', 0o600)
+  try {
+    return freezeB1CandidateUnderLock(templateId, revision)
+  } finally {
+    closeSync(fd)
+    unlinkSync(lock)
+  }
+}
+
+function freezeB1CandidateUnderLock(templateId: string, revision: number): B1FrozenCandidate {
   const source = readB1AuthorRevision(templateId, revision)
   if (!source) throw new Error('B1_AUTHOR_REVISION_NOT_FOUND')
   const latest = readB1AuthorRevision(templateId)
