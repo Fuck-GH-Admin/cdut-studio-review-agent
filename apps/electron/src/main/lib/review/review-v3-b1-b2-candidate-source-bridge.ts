@@ -154,14 +154,16 @@ function resolveSource(
   if (selection.archiveId !== undefined || selection.entryIndex !== undefined) {
     if (!selection.archiveId || !Number.isSafeInteger(selection.entryIndex) ||
         (selection.entryIndex ?? -1) < 0) deny('ZIP_SELECTOR_INCOMPLETE')
-    if (!environment.vault || !environment.ledger) deny('ZIP_LEDGER_REQUIRED')
-    const scope = environment.trustedArchiveScopes?.find(x => x.archiveId === selection.archiveId)
+    const vault = environment.vault, ledger = environment.ledger
+    const archiveId = selection.archiveId
+    if (!vault || !ledger || !archiveId) deny('ZIP_LEDGER_REQUIRED')
+    const scope = environment.trustedArchiveScopes?.find(x => x.archiveId === archiveId)
     if (!scope) {
       result.state = 'needs-human-confirmation'
       result.reason = 'NATIVE_ARCHIVE_REAUTH_REQUIRED'
       return result
     }
-    const archive = environment.vault.inspect(ctx, selection.archiveId)
+    const archive = vault.inspect(ctx, archiveId)
     if (archive.ownerId !== ctx.ownerId ||
         archive.caseCandidateId !== ctx.caseCandidateId ||
         sha(scope.physicalArchiveKey) !== archive.physicalArchiveKeyDigest)
@@ -186,8 +188,8 @@ function resolveSource(
         candidate.requestId !== expectedRequest ||
         candidate.fileName !== original.entryName.split('/').at(-1) ||
         candidate.rawSha256 !== original.rawSha256) deny('ZIP_STAGED_ENTRY_IDENTITY_MISMATCH')
-    const proposals = proposeB2MaterialCandidates(ctx,environment.vault,
-      environment.staging,environment.ledger,selection.archiveId)
+    const proposals = proposeB2MaterialCandidates(ctx,vault,
+      environment.staging,ledger,archiveId)
     const proposal = proposals.find(x => x.entryIndex === selection.entryIndex)
     if (!proposal) {
       result.state = 'needs-human-confirmation'
@@ -199,6 +201,16 @@ function resolveSource(
         proposal.caseCandidateId !== ctx.caseCandidateId ||
         proposal.ownerId !== ctx.ownerId ||
         proposal.entryName !== original.entryName) deny('LEDGER_SOURCE_IDENTITY_MISMATCH')
+    // A recovered archive can retain old receipts: those are historical
+    // evidence, not new-generation authority to bind a live applicant.
+    const latestLedger = ledger.snapshot(ctx,archiveId)
+    const confirmed = latestLedger.mutations.find(m =>
+      m.receiptHash === proposal.confirmingReceiptHash)
+    if (!confirmed || confirmed.ownerGeneration !== ctx.ownerGeneration) {
+      result.state = 'needs-human-confirmation'
+      result.reason = 'HISTORIC_INPUT_RECEIPT_REAUTH_REQUIRED'
+      return result
+    }
     result.ledgerHash = proposal.sourceLedgerHash
     result.receiptHash = proposal.confirmingReceiptHash
     result.proposalHash = proposal.proposalHash
