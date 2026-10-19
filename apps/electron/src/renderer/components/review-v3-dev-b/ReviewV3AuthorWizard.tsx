@@ -12,7 +12,7 @@ import {
   type B1TrialValues,
 } from './review-v3-author-trial'
 import {
-  b1AuthorHasUnsavedEdits, deleteB1AuthorIdentity, nextB1AuthorId, renameB1AuthorIdentity, renameB1TrialKey,
+  b1AuthorHasUnsavedEdits, deleteB1AuthorIdentity, nextB1AuthorId, renameB1AuthorIdentity, renameB1TrialKey, renameB1AuthorCheckKey,
 } from './review-v3-author-edit'
 import type {
   B1AuthorDocument, B1Field, B1Obligation, B1Source, B1Target,
@@ -60,6 +60,7 @@ export function ReviewV3AuthorWizard({
   const [pendingImport,setPendingImport] = useState<{doc:B1AuthorDocument;epoch:number}|null>(null)
   const isDirty = b1AuthorHasUnsavedEdits(draft,savedSnapshot)
   const [pendingCheckDeletion,setPendingCheckDeletion] = useState<{checkKey:string;epoch:number}|null>(null)
+  const [pendingCheckRename,setPendingCheckRename] = useState<{from:string;to:string;epoch:number}|null>(null)
   const [confirmedCheckDeletions,setConfirmedCheckDeletions] = useState<string[]>([])
   const versionDiff = diffB1AuthorDocuments(savedSnapshot,draft)
   const outstandingCheckRemovalAck = versionDiff.deletedCheckKeys.filter(key=>!confirmedCheckDeletions.includes(key))
@@ -97,8 +98,39 @@ export function ReviewV3AuthorWizard({
       setError(reason instanceof Error ? reason.message : String(reason))
     }
   }
+  const requestCheckRename=(from:string,to:string):void=>{
+    if(from===to)return
+    try{
+      if(operationInFlight.current)throw new Error('B1_AUTHOR_RENAME_BUSY')
+      // Validate before opening a confirmation and without mutating the current draft.
+      renameB1AuthorCheckKey(draft,from,to)
+      setPendingCheckDeletion(null)
+      setPendingCheckRename({from,to,epoch:editEpoch.current})
+      setError('');setNotice('')
+    }catch(reason){setError(reason instanceof Error?reason.message:String(reason))}
+  }
+  const confirmCheckRename=():void=>{
+    if(!pendingCheckRename)return
+    try{
+      assertB1CheckDeleteDialogCurrent(draft,pendingCheckRename.from,
+        pendingCheckRename.epoch,editEpoch.current,operationInFlight.current)
+      const {from,to}=pendingCheckRename
+      const next=renameB1AuthorCheckKey(draft,from,to)
+      editEpoch.current+=1
+      setDraft(next)
+      setPreview(null)
+      setConfirmedCheckDeletions(current=>current.includes(from)?current:[...current,from])
+      setPendingCheckRename(null)
+      setError('')
+      setNotice('已确认旧 Check '+from+' 变更为新 ID '+to+'；仅作者草稿操作，正式升级仍须 C 的 durable ACK')
+    }catch(reason){
+      setPendingCheckRename(null)
+      setError(reason instanceof Error?reason.message:String(reason))
+    }
+  }
   const requestCheckDeletion=(checkKey:string):void=>{
     if(operationInFlight.current){setError('B1_AUTHOR_DELETE_BUSY');return}
+    setPendingCheckRename(null)
     setPendingCheckDeletion({checkKey,epoch:editEpoch.current})
     setError('');setNotice('')
   }
@@ -247,6 +279,7 @@ export function ReviewV3AuthorWizard({
       setSavedSnapshot(null)
       setConfirmedCheckDeletions([])
       setPendingCheckDeletion(null)
+      setPendingCheckRename(null)
       setTrial({})
       setPreview(null)
       setPendingImport(null)
@@ -387,9 +420,10 @@ export function ReviewV3AuthorWizard({
       })}>添加对象</button>
     </Section>
     <Section title="5. 核验责任与适用条件">
-      {checks.map((check,i)=><div key={i} className="space-y-2 rounded border border-border p-2">
-        <label className="block text-xs">Check ID
-          <input className={inputClass} value={check.checkKey} onChange={(e)=>updateCheck(i,'checkKey',e.target.value)}/>
+      {checks.map((check,i)=><div key={check.checkKey} className="space-y-2 rounded border border-border p-2">
+        <label className="block text-xs">Check ID（重命名须确认旧身份）
+          <B1BufferedIdentityInput className={inputClass} value={check.checkKey}
+            onCommit={next=>requestCheckRename(check.checkKey,next)}/>
         </label>
         <label className="block text-xs">应履行的责任/核验要求
           <textarea className={inputClass} rows={2} value={check.requirement}
@@ -518,6 +552,14 @@ export function ReviewV3AuthorWizard({
           <li key={item.area+'/'+item.kind+'/'+item.key}>{item.area} / {item.kind} / {item.key}</li>)}</ul>
       </details>}
     </Section>
+    {pendingCheckRename && <Section title="危险操作：确认 Check 身份变更">
+      <p role="alert" className="text-sm">旧 Check {pendingCheckRename.from} 将变更为 {pendingCheckRename.to}，这属于删除旧 Check 身份并创建新身份，而不是修改显示名称。</p>
+      <p className="text-xs">作者端仅保存本地确认；正式 Plan 升级的 Check×target×source 删除 ACK、旧 Plan/Run 历史保全和持久 Receipt 仍须 Dev-C 明确授权。</p>
+      <div className="flex gap-2">
+        <button type="button" disabled={busy} className={buttonClass} onClick={confirmCheckRename}>我确认变更 Check 身份</button>
+        <button type="button" disabled={busy} className={buttonClass} onClick={()=>setPendingCheckRename(null)}>取消</button>
+      </div>
+    </Section>}
     {pendingCheckDeletion && <Section title="危险操作：确认删除 Check">
       <p role="alert" className="text-sm">将从当前候选草稿删除 {pendingCheckDeletion.checkKey}。可能影响已有来源、对象、历史结果与修订解释。</p>
       <p className="text-xs">这仅记录当前作者界面的明确确认，不是 C 的正式 InstallPlan/UpgradePlan 删除 ACK。必须保留旧版 Plan 与审计 Receipt。</p>

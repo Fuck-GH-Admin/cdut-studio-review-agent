@@ -66,6 +66,27 @@ export function deleteB1AuthorIdentity(
   return copy
 }
 
+/**
+ * Changing a historical Check key is NOT a harmless label edit. It removes the
+ * previous Check identity and adds another. The UI must explicitly confirm it,
+ * and the later C-owned UpgradePlan still requires durable removal ACK.
+ */
+export function renameB1AuthorCheckKey(
+  original:B1AuthorDocument,from:string,to:string,
+):B1AuthorDocument {
+  if(!original||original.schemaVersion!=='review-b1/1'||original.status!=='candidate-held')
+    codeError('NOT_CANDIDATE')
+  if(!validId(to))codeError('ID_INVALID')
+  const next=structuredClone(original)
+  const matches=next.modules.flatMap(module=>module.checks).filter(check=>check.checkKey===from)
+  if(matches.length!==1)codeError('CHECK_ID_NOT_UNIQUE_OR_MISSING')
+  if(from===to)return next
+  if(next.modules.some(module=>module.checks.some(check=>check.checkKey===to)))
+    codeError('DUPLICATE_CHECK_ID')
+  matches[0]!.checkKey=to
+  return next
+}
+
 export function renameB1TrialKey(
   original:Record<string,Record<string,string|number|boolean|null>>,
   type:'field'|'target',from:string,to:string,
