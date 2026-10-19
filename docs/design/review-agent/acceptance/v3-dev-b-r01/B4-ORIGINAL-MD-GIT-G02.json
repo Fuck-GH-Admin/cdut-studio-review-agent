@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "review-b4-original-git/1",
+  "domain": "G02",
+  "sourceGitSha": "b68443b23293b4714e61a3b81383d3d3a56434fc",
+  "checkedAt": "2026-10-19",
+  "method": "immutable original MD Git blob comparison to manifest; SHA256 is catalog/manifest claim, NOT independently rehashed",
+  "publicationAllowed": false,
+  "records": [
+    {
+      "templateId": "g02-t01-review",
+      "manifestBlob": "c33d1dbc4b37ea1169fff56b40021643d198c6a8",
+      "status": "NO_ORIGINAL_PATH"
+    },
+    {
+      "templateId": "g02-t02-review",
+      "manifestBlob": "e211c62f94934bb110d25332df3854594995b3bd",
+      "status": "NO_ORIGINAL_PATH"
+    },
+    {
+      "templateId": "g02-t03-review",
+      "manifestBlob": "d38dc825d2775a7b148f9624223e84a9b9870123",
+      "status": "NO_ORIGINAL_PATH"
+    }
+  ]
+}
