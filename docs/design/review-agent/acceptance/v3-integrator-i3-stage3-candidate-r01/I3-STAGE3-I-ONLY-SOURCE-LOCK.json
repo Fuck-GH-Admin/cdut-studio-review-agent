@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "v3-i3-stage3-i-only-provisional-r01/1",
+  "stage": "CANDIDATE_NOT_AUTHORIZED_OR_C_ACCEPTED",
+  "pendingCR": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/144#issuecomment-6276302601",
+  "oldAcceptance": {
+    "signing": "C-I3-STAGE2-R01-FINAL-ENG-ACCEPT",
+    "signingCommit": "75f31782d90469e91c8a6ea759ac5acef2ebe624",
+    "signedI3Stage2": "687ed356de3aee59075b85bf09a978eedab12a02"
+  },
+  "frozen": {
+    "ref": "integration/v3-i3-stage2-accepted-frozen",
+    "commit": "687ed356de3aee59075b85bf09a978eedab12a02",
+    "C_R03": "e87f75e044becc35c28292cc835a2c2ec41df48a",
+    "A_R14": "56f450f3c783299ceb0a6489bf855a1ba8f0a913",
+    "B_I2": "bf88320e57b20ebc2023f27665c544ce2ba72ce4"
+  },
+  "candidate": {
+    "testOnlySourceCommit": "f5fde5b2b2fbd4da1d84b8ddcd4d130dc470b88d",
+    "onlyAddedSourcePath": "apps/electron/src/main/lib/review/review-v3-integration-i3-stage3-sdk-host-technical.test.ts",
+    "newTestBlob": "fd1957106bee70590da71d06e8cd0c58ef34dfea",
+    "testCount": 5,
+    "newOwnerSourceImport": 0,
+    "newCSourceImport": 0,
+    "newBSourceImport": 0,
+    "noPreviouslyAcceptedBlobReplacement": true
+  },
+  "requiredGate": {
+    "exactStage3CandidateCI": "PENDING_NEW_SHA",
+    "CStage3Authorization": "PENDING_EXPLICIT_C_DECISION",
+    "CFinalEngineeringAcceptance": "PENDING",
+    "ElectronE": "NOT_RUN",
+    "SchoolL": "BLOCKED_NO_AUTH",
+    "ProductP": "NOT_RUN",
+    "release": "NO_GO"
+  },
+  "constraints": {
+    "I_MainReadonly": "CONDITIONAL_NOT_ACTIVE",
+    "I_BusinessWriter": "DENIED",
+    "liveProvider": false,
+    "electronIPC": false,
+    "mainPhysicalHostRegistryProductionWired": false,
+    "durableRunACK": false
+  },
+  "rollback": [
+    "687ed356de3aee59075b85bf09a978eedab12a02",
+    "f5fde5b2b2fbd4da1d84b8ddcd4d130dc470b88d"
+  ]
+}
