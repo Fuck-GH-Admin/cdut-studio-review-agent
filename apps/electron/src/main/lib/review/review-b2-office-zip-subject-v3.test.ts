@@ -62,11 +62,11 @@ function makeXlsx():Buffer{
 describe('B2 real OOXML ZIP + per-Subject identity, candidate-only',()=>{
   test('mixed DOCX/XLSX are parsed from physical bytes with independent Subject-confirmed receipts',async()=>{
     const archiveZip=new JSZip()
-    archiveZip.file('sub-A/proposal.docx',await makeDocx('Original physical application'))
-    archiveZip.file('sub-B/results.xlsx',makeXlsx())
+    archiveZip.file('sub-A/proposal.docx',await makeDocx('Original physical application'),{createFolders:false})
+    archiveZip.file('sub-B/results.xlsx',makeXlsx(),{createFolders:false})
     archiveZip.file('sub-C/scan.png',Buffer.from(
       'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFAAH/q842iQAAAABJRU5ErkJggg==','base64',
-    ))
+    ),{createFolders:false})
     const original=await archiveZip.generateAsync({type:'nodebuffer',compression:'DEFLATE'})
     const staging=new ReviewB2StagingService()
     const vault=new ReviewB2ArchiveVault(staging,join(work,'archive'))
