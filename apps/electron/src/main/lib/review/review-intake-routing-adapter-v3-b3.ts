@@ -159,6 +159,16 @@ export class ReviewB3OwnerBoundRouteSession {
     if (this.scope!==null && scope!==this.scope)
       throw new Error('B3_ROUTING_SESSION_SCOPE_CHANGED')
 
+    // A caller must account for the ENTIRE Main-staged case set. Without
+    // this check, simply hiding a second application in the Renderer request
+    // could turn a multi-case intake into a false high-confidence default.
+    const currentCandidateIds=this.staging.listScopedCandidateIds(ctx)
+    const suppliedCandidateIds=input.materialCandidates.map(item=>item?.candidateId)
+    if(new Set(suppliedCandidateIds).size!==suppliedCandidateIds.length ||
+       suppliedCandidateIds.length!==currentCandidateIds.length ||
+       currentCandidateIds.some(id=>!suppliedCandidateIds.includes(id))) {
+      throw new Error('B3_ROUTING_INCOMPLETE_STAGED_SET')
+    }
     // An arbitrary Renderer candidate cannot impersonate a different staged
     // physical document, role, Subject, version or owner generation.
     const checked=input.materialCandidates.map(item=>{
