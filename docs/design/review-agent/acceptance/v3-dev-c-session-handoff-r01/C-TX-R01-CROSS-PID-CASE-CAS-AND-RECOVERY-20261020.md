@@ -36,3 +36,9 @@ Current engineering R01 checkpoint **`6febe8698e932e34a0137bf3d2eb04748a70ce7b`*
 If a real TypeScript/Bun/child-PID Gate O error occurs, preserve exact first fail, fix only C-owned files, and rerun 5 workflows at the next immutable SHA. Scope of final possible sign-off is `C_TX_R01_GATE_O=PASS_EXACT_SHA_LOCAL_FS_TECH_ONLY`, never Gate E/L/P.
 
 School L BLOCKED_NO_AUTH; Electron/Provider E NOT_RUN; Product P NOT_RUN; Release NO_GO.
+
+## First real Gate O fail and repair (immutable evidence)
+
+Original C-Tx code SHA `6febe8698e932e34a0137bf3d2eb04748a70ce7b`: D2 `39311898284`, job `118263343910` **FAILED TypeScript** before any new Bun child-process tests: `review-v3-case-disk-tx.ts` lines 171,174,180 `TS2345/TS18048` because potentially absent owner wasn't narrowed by throw-only `refuse`. Not a permission or application logic PASS; do not inherit earlier R05 tests.
+
+C-only narrow correction **`c78fec4369e6a893e4a0c89eca48657ea16b17b0`** explicitly returns `refuse('missing or invalid lock owner; inspect offline before changing')` before any maintenance authorization, PID check or filesystem unlock. If unknown Owner, fail closed as designed; no branch may treat missing owner as authorized. New exact-SHA GitHub Actions: PR `39312568970`, Baseline `39312568963`, Batch `39312569050`, D1 `39312568919`, D2 `39312568879` triggered but pending at creation. **C-Tx Gate O not signed until actual green CI and all child-PID tests.**
