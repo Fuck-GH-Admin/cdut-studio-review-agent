@@ -266,6 +266,55 @@ export class ReviewB2ArchiveVault {
       status:'needs-main-revalidation',
     }
   }
+  /**
+   * Restart recovery handshake. Only a newly authenticated Main owner may
+   * supply independently re-picked ORIGINAL archive bytes + physical key.
+   * Merely holding the recovered checkpoint bytes is NOT reauthorization.
+   * The ZIP decode policy and historic per-entry receipts are locked, and
+   * newly minted candidate IDs are NEVER old MaterialVersion / business ACK.
+   */
+  recoverAfterMainPicker(
+    ctx:B2MainContext,archiveId:string,reselected:B2TrustedZipInput,
+  ): {checkpoint:B2ArchiveCheckpoint; preview:B2ZipImportPreview;
+      status:'candidate-restaged-awaiting-owner-assignment';
+      businessWriteAllowed:false; priorReceiptsPreserved:true} {
+    this.staging.assertStillGranted(ctx)
+    const {checkpoint,bytes}=this.readVerified(ctx,archiveId)
+    if(ctx.ownerGeneration<=checkpoint.stagedOwnerGeneration)
+      code('REVALIDATION_REQUIRES_FRESH_OWNER_GENERATION')
+    if(checkpoint.schemaVersion!=='review-b2-archive/2'||!checkpoint.decodeLimits)
+      code('LEGACY_PROFILE_UNPINNED')
+    if(!reselected || typeof reselected.requestId!=='string' ||
+       reselected.requestId!==checkpoint.requestId ||
+       typeof reselected.physicalArchiveKey!=='string' ||
+       !reselected.physicalArchiveKey.trim() ||
+       reselected.physicalArchiveKey.length>256 ||
+       !(reselected.bytes instanceof Uint8Array) ||
+       reselected.bytes.byteLength!==checkpoint.byteLength ||
+       sha256(reselected.bytes)!==checkpoint.archiveSha256 ||
+       !Buffer.from(reselected.bytes).equals(bytes))
+      code('RESELECTED_ORIGINAL_MISMATCH')
+    // Re-decoding under the historical profile cannot change the prior
+    // accepted/rejected entries, even if the environment's default differs.
+    const profile=structuredClone(checkpoint.decodeLimits)
+    const decoded=decodeReviewB2Zip(reselected.bytes,profile)
+    if(decoded.receipts.length!==checkpoint.fileReceipts.length ||
+       decoded.receipts.some((item,i)=>{
+         const old=checkpoint.fileReceipts[i]
+         return !old || old.index!==item.index || old.entryName!==item.entryName ||
+           old.status!==item.status || (old.reason??null)!==(item.reason??null) ||
+           (old.rawSha256??null)!==(item.rawSha256??null) ||
+           old.compressedSha256!==item.compressedSha256
+       }))code('RECOVERY_RECEIPT_DRIFT')
+    this.staging.assertStillGranted(ctx)
+    const preview=stageReviewB2TrustedZip(ctx,this.staging,reselected,profile)
+    this.staging.assertStillGranted(ctx)
+    return {
+      checkpoint:structuredClone(checkpoint),preview,
+      status:'candidate-restaged-awaiting-owner-assignment',
+      businessWriteAllowed:false,priorReceiptsPreserved:true,
+    }
+  }
   /** Read-only integrity probe for UI checkpoint listing (never formal Material status). */
   inspect(ctx:B2MainContext,archiveId:string):B2ArchiveCheckpoint {
     return this.readVerified(ctx,archiveId).checkpoint
