@@ -138,7 +138,7 @@ export function ReviewV3CandidateIntakeSurface(props:B1B3CandidateWorkspaceProps
     <button type="button" className={action} onClick={()=>setSection('route')}>
       返回材料类型确认
     </button>
-    <ReviewV3AuthorWizard {...props.author}/>
+    <ReviewV3AuthorWizard key={scope} {...props.author}/>
   </div>
-  return <ReviewV3RouteReviewPanel {...props} onOpenCustomAuthor={()=>setSection('author')}/>
+  return <ReviewV3RouteReviewPanel key={scope} {...props} onOpenCustomAuthor={()=>setSection('author')}/>
 }
