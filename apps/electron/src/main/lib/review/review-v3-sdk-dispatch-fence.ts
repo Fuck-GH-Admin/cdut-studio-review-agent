@@ -133,6 +133,29 @@ export class V3ASDKDispatchFence {
       },
     )
   }
+  /**
+   * Same SDK receipt re-delivered for ONE claim is handled by the turn ledger.
+   * It is NOT valid for two distinct Provider invocations to share one receipt:
+   * otherwise the second physical turn could be incorrectly counted as a retry.
+   */
+  assertUniqueReceipt(run:RunEvidenceIdentity,id:string,receiptId:string):void{
+    assertC0RunEvidenceIdentity(run)
+    this.current()
+    if(!receiptId?.trim()) {
+      throw new C0ContractError('CONTRACT_INVALID','SDK Host receipt missing')
+    }
+    const chain=this.entry(run)
+    const last=chain?.records.at(-1)
+    if(!last || last.id!==id || last.state!=='in-flight'){
+      reject('SDK receipt has no current in-flight dispatch')
+    }
+    if(chain!.records.some(previous=>
+      previous.id!==id && previous.state==='settled' &&
+      previous.receiptId===receiptId)){
+      throw new C0ContractError('REQUEST_ID_COLLISION',
+        'One SDK receipt cannot attest two different Provider dispatches')
+    }
+  }
   /** Only after matching SDK result AND durable turn or terminal proposal. */
   settle(call:V3ReviewToolCall,id:string,receiptId:string):void{
     if(!receiptId?.trim()){
@@ -147,6 +170,7 @@ export class V3ASDKDispatchFence {
         const last=chain?.records.at(-1)
         if(!last || last.id!==id || last.grantId!==lease.grantId ||
           last.state!=='in-flight')reject('SDK dispatch settlement has no current claim')
+        this.assertUniqueReceipt(run,id,receiptId)
         const next:SDKDispatchChain={runHash:chain!.runHash,records:[
           ...chain!.records.slice(0,-1),
           {...last,state:'settled',receiptId},
