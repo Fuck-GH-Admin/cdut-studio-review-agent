@@ -182,3 +182,17 @@ A1 unfinished: actual session manager and Orchestrator admission/stop; persist A
 - 新测试：`A3-TURN-01` 23/24 与 24/24 终态；`A3-TURN-02` pause/rotated grant 第 1–24 轮不可复位；`A3-TURN-03` 真实文件恢复旧 Owner quarantine 而 budget preserved；`A3-TURN-04` ENOSPC；`A3-TURN-05` forged grant/wrong tool/损坏账本；`A3-TURN-06` 跨 grant 重复 SDK turn ID 不二次计费；`A3-TURN-07` post-commit EIO 冷恢复幂等。
 - **边界**：由 Main 真实 SDK Adapter 提供可靠的 turn receipt ID 仍待 I/C 对实际执行入口接线，本轮测试使用合成 Main/Host，**不构成真实 Provider 的 24 轮 Gate E 或 C2 Run 完成**。旧 C0 producer不变；不修改 `packages/shared/**`、Main IPC、Preload、V2 Case writer 或 C2 Run consumer。
 - 源工程 SHA 在 #143 查 latest HEAD；Gate O 仅接受该 SHA typecheck、boundary、build、全量回归成功的独立日志。新代码目前已提交而 PR CI 仍处 GitHub 队列；不得继承旧 `d8fd3e0...` 结果。E=NOT_RUN、L=BLOCKED_NO_AUTH、P=NOT_RUN。
+
+## A3-R05｜Main SDK 单轮回调桥接与中断恢复（源已提交，最新 Gate O 待执行）
+
+- **工程新增**：`apps/electron/src/main/lib/review/review-v3-main-sdk-turn-bridge.ts` + `.test.ts`；现有 `review-v3-execution-proposal-producer.ts` 增加 `terminalCandidate(run)` 只读检查。所有为 Dev-A 自有端口代码，未改 `packages/shared/**`、`review-ipc.ts`、Preload、Case/Run/Batch/Outbox、正式业务状态或 C 的执行合同。
+- `V3ASDKTurnBridge` 构造函数接收 Main-only `V3ReviewOwnerAdapter`、`V3ATurnBudget`、`V3AProposalProducer`、可信 `V3AMainSDKTurnPort.nextTurn()`；后者**必须**由实际 SDK Main Host 回调提供 `RunEvidenceIdentity` 和稳定 SDK turn receipt ID，**不能**是 Renderer/Pi 模型文本或模型自述。当前该真实 SDK 端口**没有接入**：本批只验证隔离桥接层和合成 SDK Host 正反例。
+- `next(call,mode,signal?)` 接受 direct/hidden/graph/batch 技术模式，SDK 调用前后分别复查当前 Main Owner grant、window/sender、Run+attempt/generation。Host 回执冻结 Run 不同、空 SDK receipt、延迟完成但 Owner 已撤权/暂停/权限失效、已取消的 Main `AbortSignal`，一律拒绝轮次计数和新增 proposal。
+- SDK 返回 `completed-turn`：仅当回执 Run 完全一致、当前 grant 有效且未被取消时，将 receipt 交给 A3-R04 持久 CAS/幂等轮次预算；达到 24/24 后才调用 A2 Producer 的 Host-attested `needs-resume` 技术终态，**不生成业务 PASS**。24 轮尚未达标不生成 `needs-resume`；第 24 轮已入 turn journal 但 terminal append ENOSPC，允许 `closeExhausted` 仅补技术 proposal，不再调用 SDK/重复扣轮次。
+- SDK 回调返回明确 `interrupted`（cancelled/timed-out/failed）：仅尝试生成 Host 自己再确认的同状态 terminal 技术候选，不伪造 SDK 完成轮数；若 Provider 直接抛出异常而非 Main Host 已确认的回执，则向上抛出、不自行臆造终态。**当前仍未接入真实 Provider 的 failure classifier / AbortController 生命周期**。
+- 独立持久事件 ledger 已有 `terminal` 时，Main bridge 在 SDK 调用前通过 `terminalCandidate` 阻断后续 SDK 执行；唯一例外是**同 grant** 且预算已耗尽的 `needs-resume` 只读返回原技术候选，不能重新调用 SDK 或继承旧 grant 的正式 C ACK。
+- 两个意外并存的 Main bridge 对象按 process-local Owner session 共用 active-SDK guard，拒绝同 session 的并发 SDK `next`；不声称这替代跨 OS PID 的实际工作量调度与 durable execution lock。跨进程持久互斥仍在 Main Owner ledger 最后授权/落盘阶段进行，Owner epoch 冷重启后旧 grant 不可复活。
+- 可执行合成负例 `A3-SDK-01..15`：普通成功只记 turn、24/24 技术 terminal 与重放不重复调用 SDK、timeout 仅技术 terminal、不认 Provider 抛错、不认伪 Run/空 receipt、revoke/Main authority 失效的 Host late result、ENOSPC terminal recovery、同 receipt 去重、terminal 已 sealed 拒再执行、pause→new grant 拦截旧 SDK promise、Main `AbortSignal` 预取消和执行期取消，以及两桥同 Owner 并发冲突。**全部为已提交测试，尚不能宣称通过**。
+- 当前原 #143 base C0 `5682057c7232c914e72fdae525ce95fd33f32b53`；C 新 `review-v3-execution/1` DTO/validator 在 C #144 另一个 SHA，必须由 I/C 在相同新集成 SHA 上验证实际 DTO 类型、Host receipt registry 和 C2 durable Run consumer；不得宣称 A 仅通过合成测试即签业务 ACK。
+- **未解决**：Main 真 SDK callback 注册、Pi turn ↔ stable receipt 的物理来源证明、Graph/batch 真实生产并发、跨 PID SDK singleton、Provider 取消/关闭窗口实机、真实 EACCES/ENOSPC 盘及硬崩溃、C2 durable receipt replay、同 SHA A/C/I Gate O/E/P/L。正式发布必须继续 NO_GO。
+- **验收控制**：本批收口 SHA 只以 #143 最终 HEAD 为准；上一已绿 A SHA `d8fd3e0e696caa1df7321c23c46e4f70a1f910f7` 仍是 I1 首批来源，禁止自动浮动。GitHub PR CI/D2/Baseline 当前 runner 多次排队，新代码必须由同 SHA 的真实 workflow 成功证明；Gate O=`PENDING_EXACT_SHA_CI`，E=`NOT_RUN`，L=`BLOCKED_NO_AUTH`，P=`NOT_RUN`。
