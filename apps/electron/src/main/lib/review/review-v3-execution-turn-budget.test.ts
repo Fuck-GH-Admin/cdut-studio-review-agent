@@ -115,6 +115,7 @@ describe('V3 A3 durable Main turn budget and A2 technical resume gate', () => {
     expect(h.budget.snapshot(resumed)).toEqual({
       usedTurns:12,maxTurns:24,exhausted:false,
     })
+    expect(h.budget.recordCompletedTurn(call,'turn-1').usedTurns).toBe(12)
     for(let i=13;i<=24;i++){
       expect(h.budget.recordCompletedTurn(call,'turn-'+i).usedTurns).toBe(i)
     }
