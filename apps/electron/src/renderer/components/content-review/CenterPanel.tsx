@@ -303,7 +303,7 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
                 className="mt-2 rounded border border-amber-500/40 bg-amber-500/5 p-2 text-amber-700 dark:text-amber-300">
                 审核员标记需核对但尚无已确认来源：{pendingMandatory.map(field => field.label).join('、')}。
                 保持 unknown，不自动认定违规或通过。
-              </p>
+              </p>}
               {Object.keys(subject.fields).length > 0 && <p className="mt-1 rounded bg-muted/50 p-2 text-foreground/80">
                 当前字段：{displaySubjectFields(subject.fields, subjectTemplate)}
               </p>}
