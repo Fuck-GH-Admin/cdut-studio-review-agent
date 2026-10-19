@@ -107,6 +107,33 @@ describe('V3 A2 scoped execution proposals', () => {
     }))).rejects.toThrow()
   })
 
+  it('A-TOOL-02: Host attestation of a different document/block never becomes read coverage', async () => {
+    const h = start()
+    await expect(h.adapter.guardedRead(h.call, async () => ({
+      receiptId: 'real-read-wrong-source',
+      actualSource: { ...h.call.source, blockId: 'other-block' },
+      result: 'not trusted',
+    }))).rejects.toThrow()
+    expect(h.adapter.pending()).toHaveLength(0)
+    const good = await h.adapter.guardedRead(h.call, async source => ({
+      receiptId: 'real-read-one-block',
+      actualSource: source,
+      result: 'one actual block',
+    }))
+    expect(good.delivery.event.eventKind).toBe('read-receipt-proposal')
+    expect(good.delivery.event.toolReceipt?.sourceVersionId).toBe('v1')
+    // C0 has no full-document coverage field: never claim full read from one block.
+  })
+
+  it('A-RUN-02: ACK cannot skip an earlier unacknowledged sequence', () => {
+    const h = start()
+    const a = h.adapter.proposeRead(h.call, 'first')
+    const b = h.adapter.proposeRead(h.call, 'second')
+    expect(h.adapter.acknowledge(b.deliveryId, b.event)).toBe(false)
+    expect(h.adapter.acknowledge(a.deliveryId, a.event)).toBe(true)
+    expect(h.adapter.acknowledge(b.deliveryId, b.event)).toBe(true)
+  })
+
   it('A-RUN-01: terminal failed is technical failure, never a business pass', () => {
     const h = start()
     const a = h.adapter.proposeRead(h.call, 'actual-read')
