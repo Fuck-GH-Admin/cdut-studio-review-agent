@@ -335,7 +335,7 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
   it('A4-R10-16: pinned Pi HTTP request-id + turn_end traverses durable A4 SDK bridge',async()=>{
     const h=fixture()
     let transportCalls=0
-    let listener:((event:{type:string;message?:unknown})=>void)|undefined
+    let listener:((event:{type:string;message?:unknown;willRetry?:boolean})=>void)|undefined
     const original:StreamFn=async (_model,_context,options)=>{
       await options!.fetch!('https://trusted.provider.example/v1/chat/completions',{
         method:'POST',
@@ -349,7 +349,7 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     const session={
       agent:{state:{isStreaming:false},streamFunction:original},
       dispose(){disposed=true},
-      subscribe(cb:(event:{type:string;message?:unknown})=>void){
+      subscribe(cb:(event:{type:string;message?:unknown;willRetry?:boolean})=>void){
         listener=cb
         return ()=>{listener=undefined}
       },
