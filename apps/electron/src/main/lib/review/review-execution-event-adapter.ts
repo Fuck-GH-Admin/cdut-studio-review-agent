@@ -18,7 +18,11 @@ export interface V3EventDelivery {
   readonly deliveryId: string
   readonly event: ExecutionEvent
 }
-type DeliveryRecord = V3EventDelivery & { acked: boolean }
+type DeliveryRecord = V3EventDelivery & {
+  acked: boolean
+  /** Private outbox metadata; not a C0 ExecutionEvent or verified Run fact. */
+  physicalSourceDigest?: string
+}
 interface EventDisk {
   version: 'v3-dev-a-event/1'
   attempts: Record<string, { nextSequence: number; terminal: boolean; records: DeliveryRecord[] }>
@@ -54,6 +58,10 @@ function load(raw: string | null): EventDisk {
     for (const record of attempt.records) {
       assertC0ExecutionEvent(record.event)
       seq += 1
+      if (record.physicalSourceDigest !== undefined &&
+          !/^[a-f0-9]{64}$/i.test(record.physicalSourceDigest)) {
+        throw new C0ContractError('RECOVERY_REQUIRED', 'Event source digest malformed')
+      }
       if (record.event.sequence !== seq ||
           record.event.attemptId + ':' + record.event.generation !== id ||
           record.deliveryId !== sha(JSON.stringify(record.event)) ||
@@ -76,13 +84,28 @@ function seal(data: EventDisk): string {
 
 export class V3ExecutionEventAdapter {
   private readonly disk: EventDisk
+  private revision: string | null
   private busy = false
   constructor(private readonly persistence: OwnerPersistence,
     private readonly owners: V3ReviewOwnerAdapter) {
-    this.disk = load(persistence.read())
+    this.revision = persistence.read()
+    this.disk = load(this.revision)
+  }
+  private assertFresh(): void {
+    if (this.persistence.read() !== this.revision) {
+      throw new C0ContractError('RECOVERY_REQUIRED',
+        'Event journal changed in another process; cannot use stale sequence or ACK')
+    }
   }
   private store(next: EventDisk): void {
-    this.persistence.write(seal(next))
+    this.assertFresh()
+    const serialized = seal(next)
+    if (this.persistence.compareAndWrite) {
+      this.persistence.compareAndWrite(this.revision, serialized)
+    } else {
+      this.persistence.write(serialized)
+    }
+    this.revision = serialized
     this.disk.attempts = next.attempts
   }
   private key(attemptId: string, generation: number): string {
@@ -97,11 +120,34 @@ export class V3ExecutionEventAdapter {
     if (this.busy) throw new C0ContractError('RECOVERY_REQUIRED', 'Event outbox busy')
     this.busy = true
     try {
-      const lease = this.owners.assertAuthorized(call.sessionId, call.grantId,
-        call.senderKey, call.principal, call.tool, call.source)
+      this.assertFresh()
+      return this.owners.withAuthorizedEvent(
+        call.sessionId, call.grantId, call.senderKey, call.principal,
+        call.tool, call.source, lease => {
       const k = this.key(lease.attemptId, lease.generation)
       const previous = this.disk.attempts[k] ?? {
         nextSequence: 1, terminal: false, records: [],
+      }
+      const sourceDigest = call.source ? sha(JSON.stringify(call.source)) : undefined
+      // A tool callback may be delivered again by the SDK. Identical Host
+      // receipts must never create two Review proposals, even after a local
+      // delivery ACK. Reusing a receipt for another physical block is a
+      // collision, not proof that both blocks were actually read.
+      if (toolReceipt) {
+        const duplicate = previous.records.find(r =>
+          r.event.toolReceipt?.receiptId === toolReceipt.receiptId)
+        if (duplicate) {
+          const old = duplicate.event
+          if (old.eventKind !== kind ||
+              old.toolReceipt?.permissionGrantId !== toolReceipt.permissionGrantId ||
+              old.toolReceipt?.sourceVersionId !== toolReceipt.sourceVersionId ||
+              duplicate.physicalSourceDigest !== sourceDigest) {
+            throw new C0ContractError('REQUEST_ID_COLLISION',
+              'Host receipt reused for a different tool or physical Source')
+          }
+          this.assertFresh()
+          return structuredClone({ deliveryId: duplicate.deliveryId, event: old })
+        }
       }
       if (previous.terminal) {
         throw new C0ContractError('RUN_IDENTITY_MISMATCH', 'Terminal attempt is sealed')
@@ -116,7 +162,10 @@ export class V3ExecutionEventAdapter {
       const delivery: V3EventDelivery = {
         deliveryId: sha(JSON.stringify(event)), event,
       }
-      const record: DeliveryRecord = { ...delivery, acked: false }
+      const record: DeliveryRecord = {
+        ...delivery, acked: false,
+        ...(sourceDigest ? { physicalSourceDigest: sourceDigest } : {}),
+      }
       const next = {
         ...this.disk,
         attempts: {
@@ -130,6 +179,8 @@ export class V3ExecutionEventAdapter {
       }
       this.store(next)
       return structuredClone(delivery)
+        },
+      )
     } finally {
       this.busy = false
     }
@@ -168,12 +219,14 @@ export class V3ExecutionEventAdapter {
   }
 
   pending(): V3EventDelivery[] {
+    this.assertFresh()
     return Object.values(this.disk.attempts).flatMap(attempt =>
       attempt.records.filter(x => !x.acked)
         .map(x => structuredClone({ deliveryId: x.deliveryId, event: x.event })))
   }
   /** Dev-C ACK must match the exact attempt/generation/sequence/id tuple. */
   acknowledge(deliveryId: string, event: ExecutionEvent): boolean {
+    this.assertFresh()
     assertC0ExecutionEvent(event)
     if (deliveryId !== sha(JSON.stringify(event))) return false
     const k = this.key(event.attemptId, event.generation)

@@ -12,10 +12,15 @@ const HASH = 'a'.repeat(64)
 class MemoryStore implements OwnerPersistence {
   raw: string | null = null
   failWrites = false
+  failAfterCommit = false
   read() { return this.raw }
   write(data: string) {
     if (this.failWrites) throw Object.assign(new Error('ENOSPC'), { code: 'ENOSPC' })
     this.raw = data
+    if (this.failAfterCommit) {
+      this.failAfterCommit = false
+      throw Object.assign(new Error('EIO after journal replacement'), { code: 'EIO' })
+    }
   }
 }
 function fixtures(caseId = 'case-a', sessionId = 'review-session-a') {
@@ -85,6 +90,70 @@ describe('V3 A1 Main owner journal + isolation', () => {
       first.senderKey, b.principal, 'review_read_documents', b.source)).toThrow()
   })
 
+  it('A-PAUSE-01: pause revokes old tool capability; Main resume rotates grant without changing Run', () => {
+    const h=host()
+    const {request,principal,source}=fixtures()
+    const first=h.adapter.grant(request)
+    h.adapter.pause(first.sessionId)
+    expect(h.adapter.get(first.sessionId)?.state).toBe('paused')
+    // Local pause is deliberate, not a crashed/reopened Owner. Only the old
+    // grant is denied until Main explicitly resumes with a new grantId.
+    expect(h.adapter.quarantineInterrupted()).toEqual([])
+    expect(h.adapter.get(first.sessionId)?.state).toBe('paused')
+    expect(()=>h.adapter.assertAuthorized(first.sessionId, first.grantId,
+      first.senderKey, principal,'review_read_documents',source)).toThrow()
+    expect(()=>h.adapter.assertOrdinarySession(first.sessionId)).toThrow()
+    const next=h.adapter.resumePaused(first.sessionId,first.grantId,first.senderKey,principal)
+    expect(next.grantId).not.toEqual(first.grantId)
+    expect(next.runId).toBe(first.runId)
+    expect(next.attemptId).toBe(first.attemptId)
+    expect(next.generation).toBe(first.generation)
+    expect(next.processEpoch).toBe(first.processEpoch)
+    expect(()=>h.adapter.assertAuthorized(first.sessionId,first.grantId,
+      first.senderKey,principal,'review_read_documents',source)).toThrow()
+    expect(h.adapter.assertAuthorized(next.sessionId,next.grantId,
+      next.senderKey,principal,'review_read_documents',source).grantId).toBe(next.grantId)
+    expect(()=>h.adapter.resumePaused(first.sessionId,first.grantId,
+      first.senderKey,principal)).toThrow()
+    h.adapter.revoke(first.sessionId)
+    expect(()=>h.adapter.resumePaused(first.sessionId,next.grantId,
+      next.senderKey,principal)).toThrow()
+  })
+
+  it('A-PAUSE-02: paused Owner cannot resume after Main denial or cold restart', () => {
+    const h=host()
+    const {request,principal,source}=fixtures()
+    const grant=h.adapter.grant(request)
+    h.adapter.pause(grant.sessionId)
+    h.deny()
+    expect(()=>h.adapter.resumePaused(grant.sessionId,grant.grantId,
+      grant.senderKey,principal)).toThrow()
+    const cold=new V3ReviewOwnerAdapter(h.store,h.gate)
+    expect(cold.get(grant.sessionId)?.state).toBe('recovery-required')
+    expect(()=>cold.resumePaused(grant.sessionId,grant.grantId,
+      grant.senderKey,principal)).toThrow()
+    expect(cold.quarantineInterrupted()).toEqual([grant.sessionId])
+    expect(cold.get(grant.sessionId)?.state).toBe('recovery-required')
+    expect(()=>cold.assertAuthorized(grant.sessionId,grant.grantId,
+      grant.senderKey,principal,'review_read_documents',source)).toThrow()
+  })
+
+  it('A-PAUSE-03: failed pause keeps Owner denied; never a silent resume', () => {
+    const h=host()
+    const {request,principal,source}=fixtures()
+    const grant=h.adapter.grant(request)
+    h.store.failWrites=true
+    expect(()=>h.adapter.pause(grant.sessionId)).toThrow('ENOSPC')
+    expect(h.adapter.get(grant.sessionId)?.state).toBe('recovery-required')
+    expect(()=>h.adapter.assertAuthorized(grant.sessionId,grant.grantId,
+      grant.senderKey,principal,'review_read_documents',source)).toThrow()
+    expect(()=>h.adapter.resumePaused(grant.sessionId,grant.grantId,
+      grant.senderKey,principal)).toThrow()
+    h.store.failWrites=false
+    const fresh=new V3ReviewOwnerAdapter(h.store,h.gate)
+    expect(fresh.quarantineInterrupted()).toEqual([grant.sessionId])
+  })
+
   it('A-OWN-02/P02: deleted session cannot revive or be ordinary after late upsert', () => {
     const h = host()
     const { request, source, principal } = fixtures()
@@ -129,6 +198,24 @@ describe('V3 A1 Main owner journal + isolation', () => {
       lease.senderKey, principal, 'review_read_documents', source)).toThrow()
   })
 
+  it('A-FAIL-03: uncertain post-commit I/O error never returns a valid Owner grant ACK', () => {
+    const h = host()
+    const {request,source,principal}=fixtures()
+    h.store.failAfterCommit=true
+    expect(()=>h.adapter.grant(request)).toThrow('EIO after journal replacement')
+    // Bytes may have reached disk, but original Main has no successful ACK
+    // and cannot trust its in-memory revision or issue new privileges.
+    expect(()=>h.adapter.get(request.sessionId)).toThrow()
+    expect(()=>h.adapter.grant(fixtures('case-b','session-b').request)).toThrow()
+    const cold = new V3ReviewOwnerAdapter(h.store,h.gate)
+    expect(cold.get(request.sessionId)?.state).toBe('recovery-required')
+    const lease = cold.get(request.sessionId)
+    if (!lease) throw new Error('committed-but-not-acked Owner record lost')
+    expect(()=>cold.assertAuthorized(request.sessionId,lease.grantId,
+      lease.senderKey,principal,'review_read_documents',source)).toThrow()
+    expect(cold.quarantineInterrupted()).toEqual([request.sessionId])
+  })
+
   it('A-FAIL-01/A-FAIL-02: actual atomic journal survives read and fails closed on corruption', () => {
     const dir = mkdtempSync(join(tmpdir(), 'review-v3-a-owner-'))
     try {
@@ -148,6 +235,73 @@ describe('V3 A1 Main owner journal + isolation', () => {
       expect(persisted).toContain('recovery-required')
       writeFileSync(file, persisted.slice(0, Math.max(2, persisted.length - 30)))
       expect(() => new V3ReviewOwnerAdapter(persistence, gate)).toThrow()
+    } finally {
+      rmSync(dir, { recursive: true, force: true })
+    }
+  })
+
+  it('A-PAUSE-05: disk-backed pause/restart requires quarantine, not auto-resume', () => {
+    const dir=mkdtempSync(join(tmpdir(),'review-v3-a-pause-disk-'))
+    try {
+      const path=join(dir,'owner.json')
+      const store=createFileOwnerPersistence(path)
+      const {gate}=host()
+      const main=new V3ReviewOwnerAdapter(store,gate)
+      const {request,principal,source}=fixtures()
+      const initial=main.grant(request)
+      main.pause(initial.sessionId)
+      expect(readFileSync(path,'utf8')).toContain('"paused"')
+      const afterRestart=new V3ReviewOwnerAdapter(store,gate)
+      expect(afterRestart.get(initial.sessionId)?.state).toBe('recovery-required')
+      expect(()=>afterRestart.resumePaused(initial.sessionId,initial.grantId,
+        initial.senderKey,principal)).toThrow()
+      expect(afterRestart.quarantineInterrupted()).toEqual([initial.sessionId])
+      expect(readFileSync(path,'utf8')).toContain('recovery-required')
+      expect(()=>afterRestart.assertAuthorized(initial.sessionId,initial.grantId,
+        initial.senderKey,principal,'review_read_documents',source)).toThrow()
+    } finally {
+      rmSync(dir,{recursive:true,force:true})
+    }
+  })
+
+  it('A-FAIL-02: two Main instances cannot overwrite a stale Owner journal', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'review-v3-a-cas-'))
+    try {
+      const file = join(dir, 'owner-journal.json')
+      const persistence = createFileOwnerPersistence(file)
+      const { gate } = host()
+      const first = new V3ReviewOwnerAdapter(persistence, gate)
+      const stale = new V3ReviewOwnerAdapter(persistence, gate)
+      const one = fixtures()
+      const two = fixtures('case-b', 'review-session-b')
+      const lease = first.grant(one.request)
+      expect(() => stale.assertOrdinarySession(lease.sessionId)).toThrow()
+      expect(() => stale.grant(two.request)).toThrow()
+      expect(() => stale.get(lease.sessionId)).toThrow()
+      const reopened = new V3ReviewOwnerAdapter(persistence, gate)
+      expect(reopened.get(lease.sessionId)?.state).toBe('recovery-required')
+      expect(reopened.quarantineInterrupted()).toEqual([lease.sessionId])
+      expect(() => first.assertAuthorized(lease.sessionId, lease.grantId,
+        lease.senderKey, one.principal, 'review_read_documents', one.source)).toThrow()
+      expect(new V3ReviewOwnerAdapter(persistence, gate).get(lease.sessionId)?.state)
+        .toBe('recovery-required')
+    } finally {
+      rmSync(dir, { recursive: true, force: true })
+    }
+  })
+
+  it('A-FAIL-02: contended inter-process lock is recovery-required, not a grant ACK', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'review-v3-a-locked-'))
+    try {
+      const file = join(dir, 'owner-journal.json')
+      const persistence = createFileOwnerPersistence(file)
+      const { gate } = host()
+      const hostA = new V3ReviewOwnerAdapter(persistence, gate)
+      writeFileSync(file + '.write-lock', 'other-process', { flag: 'wx' })
+      expect(() => hostA.grant(fixtures().request)).toThrow()
+      expect(hostA.get(fixtures().request.sessionId)).toBeNull()
+      rmSync(file + '.write-lock')
+      expect(hostA.grant(fixtures().request).state).toBe('active')
     } finally {
       rmSync(dir, { recursive: true, force: true })
     }
