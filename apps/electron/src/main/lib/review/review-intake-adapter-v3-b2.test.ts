@@ -72,4 +72,17 @@ describe('B2 scoped staging (Main-issued token integration still pending)', () =
     expect(store.grant(next).token).toMatch(/^[a-f0-9]{64}$/)
     expect(() => store.read(next, first.candidateId)).toThrow('B2_MATERIAL_SCOPE_MISMATCH')
   })
+  test('B-IN-01: no path, Windows device, NUL, backslash or control-character display name', () => {
+    const store = new ReviewB2StagingService()
+    for (const name of ['../escape.pdf', 'C:\\foo.pdf', 'CON.txt', 'NUL', 'bad/name.txt', 'trailing.',
+      'null' + String.fromCharCode(0) + '.txt']) {
+      expect(() => store.stage(a, store.grant(a).token, input({
+        fileName: name, requestId: 'name-' + Buffer.from(name).toString('hex'),
+      }))).toThrow('B2_MATERIAL_INVALID')
+    }
+    const good = store.stage(a, store.grant(a).token,
+      input({ fileName: '科研材料（正式）.pdf', requestId: 'unicode-safe' }))
+    expect(good.fileName).toBe('科研材料（正式）.pdf')
+  })
+
 })
