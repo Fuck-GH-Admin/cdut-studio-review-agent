@@ -199,21 +199,15 @@ C 回复必须留下可引用的决策文件或 PR 评论（含 **批准范围�
 4. 同一 HEAD 执行完整离线工程门禁和正反例；将失败归属发回 A、B、C 指定 Owner，I 自身只修 glue。
 5. 提交 `I1-REVIEW-REQUEST` 给 C，包含合并源码输入、变更 diff、负例、没有通过的门禁和回滚。获得 `C_ACCEPTED_FOR_NEXT_ENGINEERING_STAGE` 才能冻结 I1 的共享工程检查点；**仍不是可合并 main 或可正式发布的批准**。
 
-## 10. 必须交付的仓库文件
+## 10. 单一跨线协调文档与工程证据归属（R01 统一修订）
 
-独立目录建议：`docs/design/review-agent/acceptance/v3-integrator-i-r01/`。每轮更新以下文件并保持机器可读内容：
+**唯一跨线规则与最近进度文件**：`docs/design/review-agent/acceptance/v3-integrator-i-r01/ABCI-UNIFIED-COORDINATION-AND-STATUS.md`，存放在 #145 协调分支 `docs/v3-integrator-i-r01-taskbook`。其职责、CR/委托、检查点晋级、单文件分区和乐观锁提交规则优先于本任务书的协作组织描述。跨线规则仅由 Dev-C 修改/裁决，A/B/I 只能更新各自区段。
 
-1. `README.md`：当前阶段、当前基线、集成范围与明确 NO-GO。
-2. `01-input-lock-and-ci.json`：C0/A/B/C/I 原 SHA、真实 CI status、合约指纹、Git 祖先、构建平台。
-3. `02-owner-dependency-and-slice-register.csv`：每个能力片段的能力ID、ARCH ID、F/A/C/S/D/K 验收 ID、owner、源文件 blob SHA、接入目标、状态与集成 commit。
-4. `03-contract-decisions-and-change-requests.md`：CR-A-001、B-CR-001、I-CR 与 C 决策（未批准明确 PENDING）。
-5. `04-integration-topology-and-command-paths.md`：实际接线、调用链、写权威、权限和 IPC/事件次序，不以预期架构图冒充现有行为。
-6. `05-bridge-commit-and-conflict-ledger.csv`：源 commit/blob → I commit、文件/函数、手动解决冲突、反例、回滚路径。
-7. `06-gate-o-execution-and-negative-cases.md`：准确命令、Exit Code、HEAD、OS/Bun/Node、测试数字、首次失败、后续修复及日志/fixture SHA256；哪些测试仍未执行。
-8. `07-i1-i4-checkpoint-status.md`：检查点准入、实际已验证行为、剩余阻断、C 签收及风险。
-9. `08-next-integration-handoff.md`：下一批各 Owner 的明确任务、输入固定 SHA、CR 与待执行测试。
+**不要在 #145 协调分支为 I0/I1 再新增九份互相竞争的进度或裁决账本。** I 在自己独立工程 `integration/v3-i*` 分支及 Draft PR 中实际实现 glue、集成测试、输入锁定、源 blob→I commit 映射、完整日志与失败证据（根据工作需要存适当的机器可读附件和测试产物）；当且仅当源 SHA、门禁、切片和阻断发生实质变化，按统一协议 `7` 将其**摘要**同步到上述唯一文件的 `STATUS:I`。A、B、C 的详细证据同样留在原工程 PR；本协议只索引不可变 SHA 和状态，不复制敏感材料。
 
-可以配合隔离的 synthetic-only 证据 JSON，但不要把真实凭据/学生文件/受限 Gold 与敏感绝对路径放到 PR。**交付需要真实工程代码 + 单元与集成测试 + Draft PR**；仅 I0 阶段允许因为合同门槛而 docs-only。
+必须能从 I 工程 Draft PR **实际找到**以下证据（可整合到一个真实交接/验收记录中，不强制九个文件）：输入 SHA/CI/合同；owner 与依赖切片；需 C 决策的 CR；真实 Main/Source/Run 拓扑；桥接 commit 与冲突/回流；精确集成 HEAD 的 Gate O 正负例日志；I1–I4 检查点与回滚条件；下一批责任人。任何未执行的门禁标 NOT_RUN/BLOCKED，不以文件数量代替有效集成。
+
+I0 允许独立工程 PR 暂时只交 preflight 证据，但协调文件 I 区必须记录其 SHA、阻断与下一行动；I1 起必须真正提交受批准范围内的代码、测试和新集成 SHA。
 
 ## 11. Gate、回滚与停止规则
 
