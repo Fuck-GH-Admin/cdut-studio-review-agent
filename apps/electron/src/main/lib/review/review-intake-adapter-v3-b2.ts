@@ -80,6 +80,7 @@ export class ReviewB2StagingService {
   private grants = new Map<string, LiveGrant>()
   private materials = new Map<string, Stored>()
   private requests = new Map<string, { fingerprint: string; candidateId: string }>()
+  private archiveRequests = new Map<string, string>()
   private revokedOwners = new Set<string>()
   constructor(private readonly now: () => number = Date.now) {}
 
@@ -115,6 +116,23 @@ export class ReviewB2StagingService {
     }
   }
   assertStillGranted(ctx: B2MainContext): void { this.requireContext(ctx) }
+  /**
+   * Entire-archive idempotency guard; avoids a changed ZIP retry silently
+   * mixing files from two different snapshots under one requestId. Main owns
+   * and validates physicalArchiveKey; the caller cannot self-issue identity.
+   */
+  claimArchiveRequest(ctx: B2MainContext, requestId: string, physicalArchiveKey: string,
+    archiveSha256: string): void {
+    this.requireContext(ctx)
+    if (!safe(requestId) || !safe(physicalArchiveKey) || !/^[a-f0-9]{64}$/.test(archiveSha256)) {
+      failed('ARCHIVE_REQUEST_INVALID')
+    }
+    const key = JSON.stringify([ctx.ownerId, ctx.ownerGeneration, ctx.caseCandidateId, requestId])
+    const identity = sha256(JSON.stringify([physicalArchiveKey, archiveSha256]))
+    const previous = this.archiveRequests.get(key)
+    if (previous && previous !== identity) failed('REQUEST_ID_COLLISION')
+    if (!previous) this.archiveRequests.set(key, identity)
+  }
   /** Untrusted bytes are defensively copied; no path is opened on Renderer instruction. */
   stage(
     ctx: B2MainContext,
