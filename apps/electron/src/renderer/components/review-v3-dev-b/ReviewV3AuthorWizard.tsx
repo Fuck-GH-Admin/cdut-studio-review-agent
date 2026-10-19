@@ -9,7 +9,7 @@ import {
   type B1TrialValues,
 } from './review-v3-author-trial'
 import {
-  b1AuthorHasUnsavedEdits, deleteB1AuthorIdentity, renameB1AuthorIdentity, renameB1TrialKey,
+  b1AuthorHasUnsavedEdits, deleteB1AuthorIdentity, nextB1AuthorId, renameB1AuthorIdentity, renameB1TrialKey,
 } from './review-v3-author-edit'
 import type {
   B1AuthorDocument, B1Field, B1Obligation, B1Source, B1Target,
@@ -224,7 +224,7 @@ export function ReviewV3AuthorWizard({
         <button type="button" className={buttonClass} onClick={() => editIdentity('source','delete',source.sourceId)}>删除来源</button>
       </div>)}
       <button type="button" className={buttonClass} onClick={() => change((d) => {
-        d.sources.push({sourceId:`source-${d.sources.length+1}`,kind:'user-declared',
+        d.sources.push({sourceId:nextB1AuthorId(d.sources.map(s=>s.sourceId),'source'),kind:'user-declared',
           documentVersionId:'unverified-source-version', locator:'author-explicit-input',
           recordedBy:'local-author-unverified'})
       })}>添加来源</button>
@@ -264,7 +264,7 @@ export function ReviewV3AuthorWizard({
         <button type="button" className={buttonClass} onClick={()=>editIdentity('field','delete',field.key)}>删除字段</button>
       </div>)}
       <button type="button" className={buttonClass} onClick={()=>change((d)=>{
-        d.fields.push({ key:`field-${d.fields.length+1}`,label:'新字段',type:'text',required:true,
+        d.fields.push({ key:nextB1AuthorId(d.fields.map(f=>f.key),'field'),label:'新字段',type:'text',required:true,
           sourceId:d.sources[0]?.sourceId??''})
       })}>添加字段</button>
     </Section>
@@ -296,9 +296,12 @@ export function ReviewV3AuthorWizard({
         <button type="button" className={buttonClass} onClick={()=>editIdentity('target','delete',target.targetKey)}>删除对象</button>
       </div>)}
       <button type="button" className={buttonClass} onClick={()=>change((d)=>{
-        const number=d.targets.length+1
-        d.targets.push({targetKey:`target-${number}`,objectKey:`object-${number}`,
-          subjectId:`subject-${number}`,scenario:'generic-object',fieldValues:{}})
+        d.targets.push({
+          targetKey:nextB1AuthorId(d.targets.map(t=>t.targetKey),'target'),
+          objectKey:nextB1AuthorId(d.targets.map(t=>t.objectKey),'object'),
+          subjectId:nextB1AuthorId(d.targets.map(t=>t.subjectId),'subject'),
+          scenario:'generic-object',fieldValues:{},
+        })
       })}>添加对象</button>
     </Section>
     <Section title="5. 核验责任与适用条件">
@@ -363,9 +366,8 @@ export function ReviewV3AuthorWizard({
         <button type="button" className={buttonClass} onClick={()=>change((d)=>{d.modules[0]!.checks.splice(i,1)})}>删除 Check（版本升级需授权确认）</button>
       </div>)}
       <button type="button" className={buttonClass} onClick={()=>change((d)=>{
-        const number=d.modules[0]!.checks.length+1
         d.modules[0]!.checks.push({
-          checkKey:`check-${number}`,requirement:'请填写原始责任',responsibility:'reviewer',
+          checkKey:nextB1AuthorId(d.modules.flatMap(m=>m.checks.map(c=>c.checkKey)),'check'),requirement:'请填写原始责任',responsibility:'reviewer',
           sourceIds:d.sources[0]?[d.sources[0].sourceId]:[],
           targetKeys:d.targets.map(t=>t.targetKey),condition:{kind:'always'},
         })
@@ -390,7 +392,7 @@ export function ReviewV3AuthorWizard({
         <button type="button" className={buttonClass} onClick={()=>change((d)=>{d.stages.splice(i,1)})}>删除阶段</button>
       </div>)}
       <button type="button" className={buttonClass} onClick={()=>change((d)=>{d.stages.push({
-        stageId:`stage-${d.stages.length+1}`,role:'reviewer',mode:'manual',
+        stageId:nextB1AuthorId(d.stages.map(s=>s.stageId),'stage'),role:'reviewer',mode:'manual',
       })})}>添加阶段</button>
       {draft.outputs.map((output,i)=><div key={i} className="grid gap-2 sm:grid-cols-2">
         <label className="text-xs">输出 ID
@@ -404,7 +406,7 @@ export function ReviewV3AuthorWizard({
         <button type="button" className={buttonClass} onClick={()=>change((d)=>{d.outputs.splice(i,1)})}>删除输出</button>
       </div>)}
       <button type="button" className={buttonClass} onClick={()=>change((d)=>{d.outputs.push({
-        outputId:`output-${d.outputs.length+1}`,kind:'report',
+        outputId:nextB1AuthorId(d.outputs.map(o=>o.outputId),'output'),kind:'report',
       })})}>添加输出</button>
     </Section>
     <div className="flex flex-wrap gap-2">
