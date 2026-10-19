@@ -273,3 +273,21 @@ A1 unfinished: actual session manager and Orchestrator admission/stop; persist A
 - #143 最新 SHA 必须现场从 PR 重新读取；本轮代码不因旧 A 4023 pass、C 已绿 DTO 或 I1 的 17 个 synthetic 合同断言而自动签收。
 - `Gate O=CI_QUEUED/NOT_ATTESTED`（GitHub self-hosted Linux/X64 jobs 无运行结论）；`E=NOT_RUN`，`L=BLOCKED_NO_AUTH`，`P=NOT_RUN`。目标是**最终 SHA** `bun install --frozen-lockfile`、`bun run typecheck`、boundaries、skin contract、三端 build、`bun test --isolate --timeout 30000` 全量和 A4 专项、D2/Baseline。离线单趟验收仍使用同目录 `A4-R05-EXACT-SHA-OFFLINE-GATE-O-20261019.md`，应同时覆盖 A4-R06 用例。
 - 下一批集中任务为：① 在本机 SDK runtime 明确原生可验证的 turn/request/event ID 和唯一 Main callback，区分 query result 与物理 turn；② 把 A4 意图栅栏覆盖旧带图失败重试/多 turn 及 Provider/worker 取消，避免重复物理调用；③ 在经 C 授权的独立技术只读端口中联合 A/I 验证，不越权提交 C-owned Main 入口；④ C2 完成后仍需 C 独立核验 proposal/正式 durable ACK。
+
+## A4-R07｜真实 Pi SDK 物理单次请求见证端口（源码已提交，尚未实机接线）
+
+### 本批工程范围与安全裁决
+- 继续遵循 #145 C 签署的 `CR-A-001 APPROVED_SLICED_SPEC/IMPLEMENTATION_PENDING`，本轮只修改/新增 A 自有 `review-v3-sdk-physical-turn-port.ts`、其测试及 `review-v3-main-sdk-turn-bridge.test.ts`，没有写 C 共享 DTO/Main IPC/Preload/Case/Run/Decision/Outbox、没有自行签发正式 ACK，也没有更新 I1 的已固定旧 A source SHA。
+- 从真实 `pi-review-agent-client.ts`、`adapters/pi-agent-adapter.ts`、`pi-harness-lifecycle.ts` 与仓库锁定的 Pi SDK 0.86.1 补丁复查：当前已读可用事件里 `SDKMessage.result.success` 是一次 query 结果、`agent_end` 是 agent loop 生命周期、assistant UUID 是消息 ID，**均不提供可独立核实的 physical Provider requestId+receiptId**。因此不能把这些字段伪装为 Native SDK 回执。
+- 新增 `V3APhysicalSDKTurnPort`（实现 A3 `V3AMainSDKTurnPort`），要求 Main 实际注入原生 **in-process Provider request** 生命周期 witness；保守接收恰好一次 `requestStarted(nativeRequestId)` 与匹配的 `requestFinished(nativeRequestId,nativeReceiptId,status)`。SDK Native receipt 必须非空、不得直接回显 Main dispatchId；无见证、重复/迟到、第二次 Provider 尝试（native retry/带图降级二次 query）、wrong requestId、缺少可信状态、异常、取消都拒绝。早期 Main `dispatchId` 已在 A4-R06 于 Provider 调用前持久化，新的 adapter 仅进一步验证 physical-request 回执，不凭空制造 receipt。
+- `assertC0RunEvidenceIdentity(input.run)` 与 `mode` 白名单在 SDK side effect 前执行，拒绝非法 Run/模式。来源提交 `ba0fa298d40d8cfcfe2cc221190ac4d4fc1f8fcd` 与安全加强 `c94ee4347a90ca39ca7fe4bd31a1ebf2ec4fc9e9`。合成测试文件首次提交 `ee00c3789da1ffeac2aa373854a38c12e806afe6`，扩充提交 `bc3e73ef66eb43b28ab52cb9f46fa909172cc1e9`。
+- 测试覆盖 `R07-01..11` 加 `R07-14`（单请求正确接收、模型查询结果无效、内部 retry、伪 receipt、错误 native ID、Provider throw、pre/post cancellation、verified interrupted、延迟回调、空 Main dispatch/伪造 Run/mode）；另外 `R07-12/13` 在原 `review-v3-main-sdk-turn-bridge.test.ts`（`36764075e0ce05ced185a90a56b26864a4b19524`）实际将新 A-only port 送入 Main SDK bridge + durable A4 dispatch fence + 24-turn technical budget；二次尝试时不得增加预算、不得生成 C Run/ACK。这些是**14 条已提交测试代码，0 条本轮真实执行结果**，不可报告 `14/14 PASS`。
+- 目标机验收文档 `A4-R05-EXACT-SHA-OFFLINE-GATE-O-20261019.md` 已纳入新专项文件、真实 native callback 检查和 `NATIVE_PROVIDER_HOOK` 独立判定。CI GitHub self-hosted Linux/X64 仍可能缺 Runner；先现场核实最新 SHA workflow/jos 后明确状态。
+
+### 实际尚未完成（不能略过）
+1. Pi SDK/Provider 的真实 per-request 可验证 native hook 尚无证据已经存在/接线。**当前只有 A-owned 受控 adapter + 合成 Hook 测试，不是实际 SDK Host 注册**，无真实 Provider 请求、网络级发送次数/结束 receipt 或真实取消数据。标 `NATIVE_PROVIDER_HOOK=UNVERIFIED`、`Gate E=NOT_RUN`。
+2. 该 adapter 只在 SDK 真正提供、且在物理发包前触发的 in-process `requestStarted`、发包后可信 `requestFinished` 的条件下约束第二次请求。如果 SDK 在开始后才发事件或漏报重试，检测并不能“阻止已发出的第二次物理调用”；这属于真实 API 验收阻断，不能由合成测试替代。
+3. C2 Main `review-v3-execution/1` durable consumer/Host receipt registry、跨 PID worker、真实 Graph/Batch/Electron 与 SchoolPort 都未由 A 实现。只有 C 能批准正式业务接线/Run ACK；I 必须通过固定新 C 锚点联合 Gate O 才可集成新 A SHA。
+
+**后续顺序**：固定 #143 精确 SHA → 跑本机集中 Gate O（包含 R07-01..14，保留首败）→ 调查真实 Pi native Provider hook（若不可获取 request/receipt，保持 BLOCKED，不从 `agent_end` 猜测）→ 在 A 自有独立 adapter 上加真实取消/retry 路径负例 → 需要 C-owned 入口时正式提交 CR → I/C 接线与 Gate E/P/L 独立验收。禁止为了赶进度降低质量或虚构已通过。
+
