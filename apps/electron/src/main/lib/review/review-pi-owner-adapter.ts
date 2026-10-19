@@ -45,6 +45,9 @@ export interface V3OwnerLease {
   readonly manifestHash: string
   readonly planFingerprint: string
   readonly sourceIdentities: readonly SourceIdentity[]
+  /** Added in the versioned A2 producer era; old journals remain quarantined. */
+  readonly runEvidence?: RunEvidenceIdentity
+  readonly planSnapshot?: CanonicalPlan
   readonly permittedTools: readonly V3ReviewTool[]
   readonly expiresAt: number
   readonly state: V3OwnerState
@@ -105,6 +108,22 @@ function assertLeaseValid(lease: V3OwnerLease): void {
       !Array.isArray(lease.permittedTools) ||
       !lease.permittedTools.every(t => V3_REVIEW_TOOLS.includes(t)) ||
       !Array.isArray(lease.sourceIdentities)) fail('Owner journal contains invalid scope')
+  if (Boolean(lease.runEvidence) !== Boolean(lease.planSnapshot)) {
+    fail('Owner journal contains partial Run/Plan snapshot')
+  }
+  if (lease.runEvidence && lease.planSnapshot) {
+    assertC0RunEvidenceIdentity(lease.runEvidence)
+    assertC0CanonicalPlan(lease.planSnapshot)
+    if (lease.runEvidence.runId !== lease.runId ||
+        lease.runEvidence.attemptId !== lease.attemptId ||
+        lease.runEvidence.ownerGeneration !== lease.generation ||
+        lease.runEvidence.inputManifestHash !== lease.manifestHash ||
+        lease.runEvidence.planFingerprint !== lease.planFingerprint ||
+        lease.runEvidence.caseId !== lease.caseId ||
+        lease.planSnapshot.fingerprint !== lease.planFingerprint) {
+      fail('Owner journal Run/Plan snapshots mismatch durable lease')
+    }
+  }
   for (const source of lease.sourceIdentities) {
     assertC0SourceIdentity(source)
     if (source.caseId !== lease.caseId) fail('Owner journal contains cross-case source')
@@ -297,6 +316,8 @@ export class V3ReviewOwnerAdapter {
       manifestHash: request.run.inputManifestHash,
       planFingerprint: request.plan.fingerprint,
       sourceIdentities: request.sources.map(x => structuredClone(x)),
+      runEvidence: structuredClone(request.run),
+      planSnapshot: structuredClone(request.plan),
       permittedTools: [...new Set(request.permittedTools)],
       expiresAt: request.expiresAt, state: 'active',
     }
