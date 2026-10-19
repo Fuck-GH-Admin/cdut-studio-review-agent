@@ -23,6 +23,9 @@ import type {
 } from './review-v3-sdk-physical-turn-port'
 
 type PiSession = Pick<AgentSession,'agent'|'prompt'|'subscribe'>
+// Bun extends global fetch with .preconnect, which is not part of a plain
+// request transport. Keep the injected Main fetch deliberately callable-only.
+export type V3AHttpRequestTransport=(...args:Parameters<FetchFunction>)=>ReturnType<FetchFunction>
 
 export interface V3APiHttpRequestSpec {
   /** Must be a new, non-running Pi review session, not a shared user agent. */
@@ -32,7 +35,7 @@ export interface V3APiHttpRequestSpec {
   /** Main-approved HTTPS provider base origin; never derive from model text. */
   trustedOrigin: string
   /** Only a Main-owned audited fetch may replace native global fetch (tests only). */
-  transportFetch?: FetchFunction
+  transportFetch?: V3AHttpRequestTransport
 }
 
 export interface V3APiHttpSingleRequestFactory {
@@ -122,8 +125,10 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
         // only admissible transport is Main-selected direct fetch, and this
         // wrapper must be the one the Provider actually invokes.
         if(options?.fetch)return mark()
-        const upstreamFetch:FetchFunction=spec.transportFetch??globalThis.fetch
-        const guardedFetch:FetchFunction=async (resource,init)=>{
+        const upstreamFetch:V3AHttpRequestTransport=spec.transportFetch??globalThis.fetch
+        const guardedFetch:FetchFunction=Object.assign(
+          async (resource:Parameters<FetchFunction>[0],
+            init?:Parameters<FetchFunction>[1]):Promise<Response>=>{
           httpCalls++
           if(httpCalls!==1 || input.signal?.aborted)return mark()
           let url:URL
@@ -151,7 +156,11 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
           // UUID and NOT proof that the stream has finished.
           witness.requestStarted(physicalResponseId)
           return response
-        }
+          },
+          // Pi's fetch option follows Bun's augmented global fetch interface.
+          // Never expose an unguarded DNS preconnect shortcut to the Provider.
+          {preconnect:()=>mark()},
+        )
         const streamSignal=input.signal && options?.signal
           ? AbortSignal.any([input.signal,options.signal])
           : input.signal ?? options?.signal
@@ -165,13 +174,17 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
       }
       await session.prompt(spec.prompt)
       if(input.signal?.aborted)fail('Pi Provider aborted during model stream')
+      // The ID is written by the guarded asynchronous transport callback.
+      // Explicitly narrow after prompt() returns; a successful SDK prompt
+      // alone is not sufficient proof the physical HTTP callback ran.
+      const observedId=physicalResponseId as string|undefined
       if(corrupted || invocations!==1 || httpCalls!==1 ||
-          !physicalResponseId || !finishedTurn) {
-        fail('Pi HTTP Provider request/stream completion provenance unavailable')
+          !observedId || !finishedTurn) {
+        return fail('Pi HTTP Provider request/stream completion provenance unavailable')
       }
       witness.requestFinished({
-        nativeRequestId:physicalResponseId,
-        nativeReceiptId:physicalResponseId,
+        nativeRequestId:observedId,
+        nativeReceiptId:observedId,
         status:'completed',
       })
     } finally {
