@@ -263,7 +263,7 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     const freshBridge=new V3ASDKTurnBridge(
       h.owners,h.turns,h.producer,h.sdk,reopened,
     )
-    await expect(freshBridge.next(h.call,'direct')).rejects.toThrow('explicit recovery')
+    await expect(freshBridge.next(h.call,'direct')).rejects.toThrow('Unresolved SDK Provider dispatch')
     expect(h.calls()).toBe(1)
     expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
   })
@@ -324,6 +324,54 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     await expect(h.bridge.next(h.call,'direct')).rejects.toThrow()
     expect(h.dispatch.unresolved(h.run)).toBe(true)
     await expect(h.bridge.next(h.call,'direct')).rejects.toThrow('Unresolved SDK Provider dispatch')
+    expect(h.calls()).toBe(1)
+  })
+  it('A4-R08-01: abort returns promptly but holds Owner SDK lock until hung Provider settles',async()=>{
+    const h=fixture()
+    const controller=new AbortController()
+    let release!:(out:SyntheticTurnOutcome)=>void
+    h.setNext(()=>new Promise<SyntheticTurnOutcome>(resolve=>{release=resolve}))
+    const pending=h.bridge.next(h.call,'hidden',controller.signal)
+    expect(h.dispatch.unresolved(h.run)).toBe(true)
+    expect(h.calls()).toBe(1)
+    controller.abort()
+    // This must settle BEFORE release() is invoked, even if Provider ignores AbortSignal.
+    await expect(pending).rejects.toThrow(
+      'Main cancelled while SDK Provider result is unresolved',
+    )
+    expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
+    expect(h.producer.replayCandidates()).toEqual([])
+    const other=new V3ASDKTurnBridge(h.owners,h.turns,h.producer,h.sdk,h.dispatch)
+    await expect(other.next(h.call,'hidden')).rejects.toThrow('Concurrent SDK turn')
+    expect(h.calls()).toBe(1)
+    release({kind:'completed-turn',receiptId:'aborted-provider-late',run:h.run})
+    await new Promise<void>(resolve=>setImmediate(resolve))
+    expect(h.dispatch.unresolved(h.run)).toBe(true)
+    await expect(other.next(h.call,'hidden')).rejects.toThrow(
+      'Unresolved SDK Provider dispatch',
+    )
+    expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
+    expect(h.calls()).toBe(1)
+  })
+  it('A4-R08-02: Provider late rejection after abort has no unhandled receipt or retry',async()=>{
+    const h=fixture()
+    const controller=new AbortController()
+    let rejectLate!:(reason:Error)=>void
+    h.setNext(()=>new Promise<SyntheticTurnOutcome>((_,reject)=>{rejectLate=reject}))
+    const pending=h.bridge.next(h.call,'graph',controller.signal)
+    controller.abort()
+    await expect(pending).rejects.toThrow(
+      'Main cancelled while SDK Provider result is unresolved',
+    )
+    const other=new V3ASDKTurnBridge(h.owners,h.turns,h.producer,h.sdk,h.dispatch)
+    await expect(other.next(h.call,'graph')).rejects.toThrow('Concurrent SDK turn')
+    rejectLate(new Error('native socket failed after Main cancelled'))
+    await new Promise<void>(resolve=>setImmediate(resolve))
+    await expect(other.next(h.call,'graph')).rejects.toThrow(
+      'Unresolved SDK Provider dispatch',
+    )
+    expect(h.producer.replayCandidates()).toEqual([])
+    expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
     expect(h.calls()).toBe(1)
   })
   it('A4-R07-12: physical witness port + durable Main bridge charges one native SDK receipt',async()=>{
@@ -493,7 +541,7 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
     expect(h.producer.replayCandidates()).toEqual([])
     expect(h.dispatch.unresolved(h.run)).toBe(true)
-    await expect(h.bridge.next(h.call,'batch')).rejects.toThrow('explicit recovery')
+    await expect(h.bridge.next(h.call,'batch')).rejects.toThrow('Unresolved SDK Provider dispatch')
     expect(h.calls()).toBe(1)
   })
   it('A3-SDK-08: exhausted-turn terminal failure can replay without running SDK again',async()=>{
