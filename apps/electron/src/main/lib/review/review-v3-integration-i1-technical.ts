@@ -99,9 +99,19 @@ export function inspectI1TechnicalPreview(input: I1TechnicalPreviewInput): I1Tec
   if (input.proposedRun.sourceVersionIds.some(version => !versions.has(version))) {
     throw new Error('I1_RUN_SOURCE_NOT_STAGED')
   }
-  if (input.currentCaseSnapshot &&
-      input.currentCaseSnapshot.caseV2.id !== input.proposedRun.caseId) {
-    throw new Error('I1_CURRENT_CASE_SCOPE_MISMATCH')
+  // A3 checks the Plan fingerprint and Check coverage, but a draft preview
+  // must also refuse a Run claiming a different template release under the
+  // same frozen fingerprint. This does not authorize that release.
+  if (input.proposedRun.templateVersion !== descriptor.canonicalPlan.templateVersion) {
+    throw new Error('I1_RUN_TEMPLATE_VERSION_MISMATCH')
+  }
+  if (input.currentCaseSnapshot) {
+    if (input.currentCaseSnapshot.caseV2.id !== input.proposedRun.caseId) {
+      throw new Error('I1_CURRENT_CASE_SCOPE_MISMATCH')
+    }
+    if (input.currentCaseSnapshot.caseV2.revision !== input.proposedRun.caseRevision) {
+      throw new Error('I1_CURRENT_CASE_REVISION_MISMATCH')
+    }
   }
   // A3 checks exact Plan/Run/check-target/subject; it cannot commit a Run.
   const diagnostics = new V3ExecutionCompletenessAdapter(

@@ -130,6 +130,36 @@ describe('I1 frozen B1+B2+B3+A3+C1 read-only integration (synthetic Gate O)', ()
     })).toThrow('I1_RUN_MAIN_INTAKE_SCOPE_MISMATCH')
   })
 
+  test('wrong claimed template release and stale read-only Case snapshot cannot authorize a technical preview', () => {
+    const { staging, material } = stagingSample()
+    const draft = author(material.documentVersionId, true)
+    draft.targets = draft.targets.slice(0, 1)
+    draft.modules[0]!.checks[0]!.targetKeys = ['target-1']
+    const proposedRun = runFor(draft, material.documentVersionId)
+    const baseline = {
+      mainContext: ctx, staging, candidateIds: [material.candidateId],
+      authorDraft: draft, proposedRun, technicalObservations: [t1],
+    }
+    const caseSnapshot = {
+      caseV2: { id: ctx.caseCandidateId, revision: proposedRun.caseRevision },
+      evidenceLinks: [], observations: [],
+    } as unknown as CaseAggregateV2
+    // The Main read-only snapshot is advisory; when supplied it must match
+    // the proposed frozen revision. It cannot confer formal writer authority.
+    expect(inspectI1TechnicalPreview({
+      ...baseline, currentCaseSnapshot: caseSnapshot,
+    }).technicalPreviewEligible).toBe(true)
+    expect(() => inspectI1TechnicalPreview({
+      ...baseline, proposedRun: { ...proposedRun, templateVersion: 'forged-v2' },
+    })).toThrow('I1_RUN_TEMPLATE_VERSION_MISMATCH')
+    expect(() => inspectI1TechnicalPreview({
+      ...baseline,
+      currentCaseSnapshot: {
+        ...caseSnapshot, caseV2: { ...caseSnapshot.caseV2, revision: proposedRun.caseRevision + 1 },
+      },
+    })).toThrow('I1_CURRENT_CASE_REVISION_MISMATCH')
+  })
+
   test('both Host diagnostic tuples can be complete while cross-Subject evidence remains blocked', () => {
     const { staging, material } = stagingSample()
     const draft = author(material.documentVersionId, true)
@@ -167,7 +197,7 @@ describe('I1 frozen B1+B2+B3+A3+C1 read-only integration (synthetic Gate O)', ()
     const { staging, material } = stagingSample()
     const draft = author(material.documentVersionId, true)
     const snapshot = {
-      caseV2: { id: ctx.caseCandidateId, documents: [{ versionId: material.documentVersionId, active: false }] },
+      caseV2: { id: ctx.caseCandidateId, revision: 4, documents: [{ versionId: material.documentVersionId, active: false }] },
       evidenceLinks: [{ id: 'old-link', status: 'confirmed', documentVersionId: material.documentVersionId }],
       observations: [],
     } as unknown as CaseAggregateV2
