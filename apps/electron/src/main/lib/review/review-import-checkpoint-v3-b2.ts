@@ -22,7 +22,7 @@ const code = (s: string): never => { throw new Error('B2_ARCHIVE_' + s) }
 const idPattern = /^[A-Za-z0-9._:-]{1,128}$/
 const MAX_ARCHIVE_STORAGE_BYTES = 1024 * 1024 * 1024
 export interface B2ArchiveCheckpoint {
-  schemaVersion: 'review-b2-archive/1'
+  schemaVersion: 'review-b2-archive/1' | 'review-b2-archive/2'
   archiveId: string
   caseCandidateId: string
   ownerId: string
@@ -33,6 +33,8 @@ export interface B2ArchiveCheckpoint {
   archiveSha256: string
   byteLength: number
   fileReceipts: B2ZipFileReceipt[]
+  /** /2 stores exact bounded decompression policy for replay; legacy /1 has no policy lock. */
+  decodeLimits?: B2ZipLimits
   checkpointState: 'bytes-durable-needs-confirmation'
   manifestSha256: string
 }
@@ -101,7 +103,12 @@ export class ReviewB2ArchiveVault {
     } catch { code('RECOVERY_REQUIRED') }
     this.ensureOwner(ctx, checkpoint!)
     const {manifestSha256,...plain}=checkpoint!
-    if (checkpoint!.schemaVersion!=='review-b2-archive/1' ||
+    if (!['review-b2-archive/1','review-b2-archive/2'].includes(checkpoint!.schemaVersion) ||
+        (checkpoint!.schemaVersion==='review-b2-archive/2' &&
+          (!checkpoint!.decodeLimits || typeof checkpoint!.decodeLimits!=='object' ||
+           Array.isArray(checkpoint!.decodeLimits))) ||
+        (checkpoint!.schemaVersion==='review-b2-archive/1' &&
+          checkpoint!.decodeLimits!==undefined) ||
         checkpoint!.archiveId!==archiveId ||
         checkpoint!.checkpointState!=='bytes-durable-needs-confirmation' ||
         checkpoint!.byteLength!==bytes!.length ||
@@ -117,7 +124,10 @@ export class ReviewB2ArchiveVault {
     // The source may originally have been decoded with stricter BOMB limits:
     // keep that earlier rejection, never retroactively promote it to accepted.
     let real: ReturnType<typeof decodeReviewB2Zip>
-    try { real=decodeReviewB2Zip(bytes!) }
+    try {
+      real=decodeReviewB2Zip(bytes!,
+        checkpoint!.schemaVersion==='review-b2-archive/2' ? checkpoint!.decodeLimits : undefined)
+    }
     catch { code('CHECKPOINT_INTEGRITY') }
     if (real!.receipts.length!==checkpoint!.fileReceipts.length ||
         real!.archiveSha256!==checkpoint!.archiveSha256) code('CHECKPOINT_INTEGRITY')
@@ -129,7 +139,9 @@ export class ReviewB2ArchiveVault {
          claimed.compressedSha256!==actual.compressedSha256) code('CHECKPOINT_INTEGRITY')
       const stricterSizeReject=claimed.status==='rejected' &&
         claimed.reason==='BOMB_OR_SIZE_LIMIT' && actual.status==='accepted'
-      if (stricterSizeReject) {
+      if (stricterSizeReject && checkpoint!.schemaVersion==='review-b2-archive/1') {
+        // Older /1 did not store its original limit profile. Preserve a prior
+        // conservative rejection but never infer that bytes were accepted.
         if(claimed.rawSha256!==undefined) code('CHECKPOINT_INTEGRITY')
       } else if(claimed.status!==actual.status ||
         (claimed.rawSha256??null)!==(actual.rawSha256??null) ||
@@ -164,12 +176,12 @@ export class ReviewB2ArchiveVault {
       try {
         if (existsSync(join(dir,'archive.zip')) || existsSync(join(dir,'checkpoint.json'))) code('RECOVERY_REQUIRED')
         const plain:Omit<B2ArchiveCheckpoint,'manifestSha256'>={
-          schemaVersion:'review-b2-archive/1',archiveId,
+          schemaVersion:'review-b2-archive/2',archiveId,
           caseCandidateId:ctx.caseCandidateId,ownerId:ctx.ownerId,
           stagedOwnerGeneration:ctx.ownerGeneration,
           requestId:input.requestId,physicalArchiveKeyDigest:sha256(input.physicalArchiveKey),
           archiveSha256:decoded.archiveSha256,byteLength:input.bytes.byteLength,
-          fileReceipts:decoded.receipts,
+          fileReceipts:decoded.receipts,decodeLimits:structuredClone(limits??{}),
           checkpointState:'bytes-durable-needs-confirmation',
         }
         checkpoint={...plain,manifestSha256:sealedDigest(plain)}

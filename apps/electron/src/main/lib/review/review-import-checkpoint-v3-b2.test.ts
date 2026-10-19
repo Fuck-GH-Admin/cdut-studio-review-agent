@@ -127,6 +127,20 @@ describe('B2 durable input checkpoint is not a CurrentCase writer',()=>{
     writeFileSync(path,JSON.stringify(tampered))
     expect(()=>vault.inspect(ctx,checkpoint.archiveId)).toThrow('B2_ARCHIVE_CHECKPOINT_INTEGRITY')
   })
+  test('tampered archived decoder limits cannot retroactively promote rejected child',()=>{
+    const vault=new ReviewB2ArchiveVault(new ReviewB2StagingService(),home)
+    const checkpoint=vault.saveAndStage(ctx,{
+      physicalArchiveKey:'strict-bound-policy',requestId:'strict-policy-10',
+      bytes:makeZip('original must be rejected under locked size'),
+    },{maxEntryBytes:3}).checkpoint
+    const file=join(home,checkpoint.archiveId,'checkpoint.json')
+    const tampered=JSON.parse(readFileSync(file,'utf8'))
+    tampered.decodeLimits={maxEntryBytes:50*1024*1024}
+    const {manifestSha256:_before,...plain}=tampered
+    tampered.manifestSha256=createHash('sha256').update(JSON.stringify(plain)).digest('hex')
+    writeFileSync(file,JSON.stringify(tampered))
+    expect(()=>vault.inspect(ctx,checkpoint.archiveId)).toThrow('B2_ARCHIVE_CHECKPOINT_INTEGRITY')
+  })
   test('stricter originally rejected entry cannot be promoted during restart',()=>{
     const vault=new ReviewB2ArchiveVault(new ReviewB2StagingService(),home)
     const checkpoint=vault.saveAndStage(ctx,{
@@ -134,6 +148,8 @@ describe('B2 durable input checkpoint is not a CurrentCase writer',()=>{
       bytes:makeZip('original longer than three bytes'),
     },{maxEntryBytes:3}).checkpoint
     expect(checkpoint.fileReceipts[0]!.reason).toBe('BOMB_OR_SIZE_LIMIT')
+    expect(checkpoint.schemaVersion).toBe('review-b2-archive/2')
+    expect(checkpoint.decodeLimits).toEqual({maxEntryBytes:3})
     const reopened=new ReviewB2ArchiveVault(new ReviewB2StagingService(),home)
     expect(reopened.inspect(ctx,checkpoint.archiveId).fileReceipts[0]!.status).toBe('rejected')
     const intent=reopened.prepareRestage({...ctx,ownerGeneration:2},checkpoint.archiveId)
