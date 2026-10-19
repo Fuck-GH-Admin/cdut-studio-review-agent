@@ -62,7 +62,7 @@ flowchart LR
  H -. "must NOT substitute" .-> V
  V --> X["A-specific decision/snapshot"]
 ```
-P06 `review-ipc.ts:634–659` `RUN_BATCH_V2` 通过 `runBatchQueue` 将真实 Run ID 写入队列；`batch-store.ts:589–594` 的注入接口同时允许 `completed` 而 `runId=undefined`，不能把 `done` 认作真实来源。R02 以 `runId + runInputHash` 双绑定，R03 持久仅 `runId` 并重算当前输入，有一定拒止但**不同证据模型**。P06 `finalizeBatch` 调 `assertBatchBusinessReadyForFinalization`，2C 发现其中未显式保证 `decision.basedOnRunId===entry.runId`，尚待反例实证。
+P06 `review-ipc.ts:634–659` `RUN_BATCH_V2` 通过 `runBatchQueue` 将真实 Run ID 写入队列；`batch-store.ts:589–594` 的注入接口同时允许 `completed` 而 `runId=undefined`，不能把 `done` 认作真实来源。R02 以 `runId + runInputHash` 双绑定，R03 持久仅 `runId` 并重算当前输入，有一定拒止但**不同证据模型**。P06 `batch-store.ts:236–262` 的 `assertBatchBusinessReadyForFinalization` 已由2D独立全文读取：要求所有entry状态done、聚合stage为decided/archived、模板一致、无未办任务/申诉/补件、存在有效最终决定；**没有检查entry.runId非空，也没有比较decision.basedOnRunId===entry.runId**。静态省略 VERIFIED，跨批造成错误定稿的可达性仍待反例实证。
 **门禁 D1–D7**：A/B 不同 Run；B newer 且全部通过而 A 缺项；旧 done 无 runId；补件只回流指定 Batch；A 自动/按组/finalize 不可消费 B；旧 snapshot/Receipt 不可修改；未知来源 fail closed。状态：调用片段静态 VERIFIED，端到端独立测试 NOT_RUN。
 
 ## E｜复杂人工生命周期（PARTIAL / 学校身份 BLOCKED）
