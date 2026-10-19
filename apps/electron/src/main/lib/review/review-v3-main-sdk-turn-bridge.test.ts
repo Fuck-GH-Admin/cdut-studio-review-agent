@@ -823,7 +823,12 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     await expect(pending).rejects.toThrow()
     expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
     expect(h.producer.replayCandidates()).toEqual([])
-    expect(coldDispatch.unresolved(h.run)).toBe(true)
+    // Old PID can only change its A dispatch journal to late-denied;
+    // new PID's previously read snapshot must reject stale access.
+    expect(()=>coldDispatch.unresolved(h.run)).toThrow(
+      'SDK dispatch ledger changed; re-open')
+    const recoveredDispatch=new V3ASDKDispatchFence(h.dispatchStore,coldOwner)
+    expect(recoveredDispatch.unresolved(h.run)).toBe(true)
 
     const newRun={...h.run,runId:'cold-new-run',attemptId:'cold-new-attempt'}
     const granted=coldOwner.grant({
@@ -833,7 +838,7 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
       expiresAt:Date.now()+120_000,
       permittedTools:['review_submit_result'],
     })
-    expect(()=>coldDispatch.claim({
+    expect(()=>recoveredDispatch.claim({
       ...h.call,sessionId:granted.sessionId,grantId:granted.grantId,
       senderKey:granted.senderKey,
     })).toThrow('Unresolved SDK Provider dispatch on prior Run/Case')
