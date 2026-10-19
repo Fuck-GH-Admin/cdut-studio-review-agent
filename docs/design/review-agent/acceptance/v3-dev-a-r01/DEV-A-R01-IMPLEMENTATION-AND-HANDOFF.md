@@ -24,10 +24,11 @@ A2 new review-execution-event-adapter.ts:
 - guardedRead checks active owner/source before Host await, after Host await and again at append. Host must return actualSource matching the physical permitted SourceIdentity; only then is a proposed read receipt appended.
 - NEVER writes Run/Check/ReadReceipt/Decision. ACK is only an internal Dev-A delivery marker pending Dev-C's final authenticated consumer.
 
-A3 new review-execution-event-adapter-completeness.ts:
+A3 new review-execution-event-adapter-completeness.ts and review-execution-event-adapter-driver.ts:
 - Memory-only completeness projection bound to frozen Plan/Run. Enumerates exact Check×target×object×subject; distinguishes Host-accepted/rejected/missing/unknown, nonapplicable, timeout/cancel/failed/turn-exhaustion; zero business write.
 - 9/9 is called technically-complete only. Eight of nine, rejected, unknown and 24 exhausted cannot be declared finished; 1680-1480 computes 200 deterministically.
-- NOT yet wired to direct/background/Graph/batch call sites. Accepted Check event currently lacks target identity in C0, so correctness cannot be transported or finalized until Dev-C approves CR-A-001.
+- Shared Host-facing adapter now accepts direct/hidden/Graph/batch mode under the **same** frozen C0 proposal schema, gated physical read and Host-attested check submission. Matching Host identity and post-await Owner checks are required; rejected checks cannot become accepted proposals.
+- NOT yet wired to the existing direct/background/Graph/batch **actual production call sites**. Accepted Check event currently lacks target identity in C0, so correctness cannot be transported or finalized until Dev-C approves CR-A-001.
 
 A4 recovery work partially present:
 - Process-epoch denial and interrupted-grant quarantine, tamper detection, durable ACK/terminal attempt seal.
@@ -52,7 +53,7 @@ A4 recovery work partially present:
 | A-OWN-03 | BG-05, ARCH-013/017, A16 | guardedRead revoke-await | COMMITTED_NOT_VERIFIED |
 | A-TOOL-01 | BG-03, ARCH-010/013, D10 | scoped source and Host attestation | COMMITTED_NOT_VERIFIED; real path/symlink still NOT_RUN |
 | A-TOOL-02 | RUN-02/DOC-04, ARCH-010, D10 | single-block read proposal | PARTIAL: C0 cannot express full coverage |
-| A-RUN-01 | RUN-01/05/06, ARCH-006/017, F07/A08/D10 | exact nine, rejected/unknown/24, delta 200 | COMMITTED_NOT_VERIFIED; Provider not run |
+| A-RUN-01 | RUN-01/05/06, ARCH-006/017, F07/A08/D10 | exact nine, rejected/unknown/24, delta 200; all four Host runner modes | COMMITTED_NOT_VERIFIED; production runner wiring & Provider not run |
 | A-RUN-02 | RUN-04, ARCH-007/017, A16 | seq/ACK/replay/terminal/cancel state | COMMITTED_NOT_VERIFIED; crash/Provider not run |
 | A-FAIL-01 | BG-04/05/06, ARCH-013/017, A11 | cold restart old epoch | COMMITTED_NOT_VERIFIED; true kill not run |
 | A-FAIL-02 | BG-07, ARCH-016/017, A16 | injected ENOSPC writes | COMMITTED_NOT_VERIFIED; actual disk fault/crossPID NOT_RUN |
@@ -71,6 +72,7 @@ Commands for CI or an authorized isolated machine:
   bun test --isolate apps/electron/src/main/lib/review/review-pi-owner-adapter.test.ts
   bun test --isolate apps/electron/src/main/lib/review/review-execution-event-adapter.test.ts
   bun test --isolate apps/electron/src/main/lib/review/review-execution-event-adapter-completeness.test.ts
+  bun test --isolate apps/electron/src/main/lib/review/review-execution-event-adapter-driver.test.ts
   bun run typecheck
   bun run check:boundaries
   bun test --isolate --timeout 30000
@@ -86,4 +88,9 @@ Gate O: PENDING_CI. Gate E: NOT_RUN. Gate L: BLOCKED_NO_AUTH. Gate P: NOT_RUN; o
 5. Keep this Draft; do not merge direct into main or mark Review V3 complete.
 
 ## Next development work
-A1 unfinished: actual session manager and Orchestrator admission/stop; persist ACK/journal ordering across I/O faults. A2 unfinished: physical source mapper, full-source ledger, Host tool-result receipts and guarded submit. A3 unfinished: Graph/direct/background/batch invocation wrappers and proposal mapping after C approval. A4 unfinished: cross PID/restart/fault-volume tests and Dev-C ACK recovery.
+A1 unfinished: actual session manager and Orchestrator admission/stop; persist ACK/journal ordering across I/O faults. A2 unfinished: physical source mapper, full-source ledger, Host tool-result receipts and guarded submit. A3 unfinished: connect the now-implemented common Host wrapper to actual Graph/direct/background/batch caller entrypoints via Dev-C integration approval; C0 proposal mapping after C approval. A4 unfinished: cross PID/restart/fault-volume tests and Dev-C ACK recovery.
+
+## A3 incremental delivery
+- New adapter: `review-execution-event-adapter-driver.ts` (modes direct/hidden/graph/batch), test: `review-execution-event-adapter-driver.test.ts`.
+- Host read must supply matching actualSource; Host submit must echo the exact Check tuple and outcome after an await; both paths recheck current Main Owner generation. The adapter does not invoke arbitrary model tools.
+- `closeTechnical()` returns a memory-only proof of 9/9 Host receipts and does not emit a C0 completed/business-pass event. It is intentionally unusable as a Dev-C formal Run finalizer until CR-A-001 is decided.
