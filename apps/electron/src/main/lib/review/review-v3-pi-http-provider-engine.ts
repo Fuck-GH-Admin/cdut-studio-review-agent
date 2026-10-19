@@ -134,8 +134,16 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
             ? AbortSignal.any([input.signal,init.signal])
             : input.signal ?? init?.signal ?? undefined
           const response=await upstreamFetch(resource,{
-            ...init,...(downstreamSignal ? {signal:downstreamSignal} : {}),
+            ...init,
+            // Redirects could escape Main-pinned provider origin even when the
+            // first URL passed our check; never follow them silently.
+            redirect:'error',
+            ...(downstreamSignal ? {signal:downstreamSignal} : {}),
           })
+          if(response.redirected ||
+              (response.url && new URL(response.url).origin!==origin.origin)) {
+            return mark()
+          }
           if(!response.ok) return response
           physicalResponseId=requestId(response)
           if(!physicalResponseId)return mark()
