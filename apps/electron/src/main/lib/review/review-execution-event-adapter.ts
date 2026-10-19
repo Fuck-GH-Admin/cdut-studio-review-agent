@@ -54,7 +54,8 @@ function load(raw: string | null): EventDisk {
     for (const record of attempt.records) {
       assertC0ExecutionEvent(record.event)
       seq += 1
-      if (record.event.sequence !== seq || record.event.attemptId !== id ||
+      if (record.event.sequence !== seq ||
+          record.event.attemptId + ':' + record.event.generation !== id ||
           record.deliveryId !== sha(JSON.stringify(record.event)) ||
           typeof record.acked !== 'boolean' || seenTerminal) {
         throw new C0ContractError('RECOVERY_REQUIRED', 'Event replay chain invalid')
