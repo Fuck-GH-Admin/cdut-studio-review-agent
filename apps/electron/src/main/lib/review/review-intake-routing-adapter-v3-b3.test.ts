@@ -169,4 +169,111 @@ describe('B3 Main-scoped physical route session, no business writer',()=>{
       ...f.input,manualCatalog:[...f.input.manualCatalog,f.input.manualCatalog[0]!],
     })).toThrow('B3_ROUTING_CATALOG_DUPLICATE')
   })
+  test('R21-01 unknown business does not start a bogus 20s template default and is explicitly unmatched',()=>{
+    const f=mainFixture()
+    f.input.suggestions=[]
+    expect(f.session.evaluate(owner,f.input)).toMatchObject({
+      status:'unmatched',remainingMs:0,
+    })
+    f.setTime(99000)
+    expect(f.session.evaluate(owner,f.input).status).toBe('unmatched')
+    const standalone=planB3ConservativeRouting({...setup(),suggestions:[],nowMs:49000})
+    expect(standalone.status).toBe('unmatched')
+    expect(standalone.chosen).toBeUndefined()
+  })
+  test('R21-02 classifier cannot forge technical entitlement absent from current Main catalog',()=>{
+    const f=mainFixture()
+    f.input.suggestions[0]!.templateId='invented-51st-school-template'
+    f.setTime(22000)
+    expect(f.session.evaluate(owner,f.input).status).toBe('needs-user-confirmation')
+    f.setTime(48000)
+    expect(f.session.evaluate(owner,f.input).status).toBe('needs-user-confirmation')
+    // Same route but present as candidate-held only is equally ineligible.
+    f.input.suggestions[0]!.templateId='held'
+    expect(f.session.evaluate(owner,f.input).status).toBe('needs-user-confirmation')
+    // Main adding to the genuine technical catalog can restart a NEW timer.
+    f.input.suggestions[0]!.templateId='new-authorized'
+    f.input.manualCatalog=[...f.input.manualCatalog,{
+      templateId:'new-authorized',templateVersion:'v1',name:'Main technical only',
+      availability:'authorized-for-technical-selection',
+    }]
+    expect(f.session.evaluate(owner,f.input)).toMatchObject({
+      status:'countdown',remainingMs:20000,
+    })
+  })
+  test('R21-03 all staged files must be represented exactly once by physical-source evidence',()=>{
+    const f=mainFixture()
+    const grant=f.staging.grant(owner)
+    const second=f.staging.stage(owner,grant.token,{
+      requestId:'supporting-file',fileName:'supporting.txt',
+      physicalSourceKey:'native-physical-file-2',
+      bytes:Buffer.from('second source independent bytes'),
+      role:'supporting',subjectId:'subject-one',
+    })
+    f.input.materialCandidates=[...f.input.materialCandidates,second]
+    f.setTime(22000)
+    expect(f.session.evaluate(owner,f.input).status).toBe('needs-user-confirmation')
+    f.input.suggestions[0]!.evidence.push({
+      materialCandidateId:second.candidateId,rawSha256:second.rawSha256,
+      reason:'Verified second physical original',
+    })
+    expect(f.session.evaluate(owner,f.input)).toMatchObject({
+      status:'countdown',remainingMs:20000,
+    })
+    f.setTime(42000)
+    expect(f.session.evaluate(owner,f.input).status).toBe('default-selected')
+    f.input.suggestions[0]!.evidence.push(f.input.suggestions[0]!.evidence[0]!)
+    expect(f.session.evaluate(owner,f.input).status).toBe('needs-user-confirmation')
+  })
+  test('R21-04 duplicate or invented evidence cannot count towards missing files',()=>{
+    const f=mainFixture()
+    const duplicate=f.input.suggestions[0]!.evidence[0]!
+    f.input.suggestions[0]!.evidence=[duplicate,duplicate]
+    f.setTime(33000)
+    expect(f.session.evaluate(owner,f.input).status).toBe('needs-user-confirmation')
+    f.input.suggestions[0]!.evidence=[{
+      materialCandidateId:'unknown-candidate',rawSha256:duplicate.rawSha256,
+      reason:'Same filename but no staged identity',
+    }]
+    expect(f.session.evaluate(owner,f.input).status).toBe('needs-user-confirmation')
+  })
+  test('R21-05 two application roots or multiple Subjects must never self-select a business type',()=>{
+    const f=mainFixture()
+    const grant=f.staging.grant(owner)
+    const other=f.staging.stage(owner,grant.token,{
+      requestId:'other-applicant',fileName:'request-2.pdf',
+      physicalSourceKey:'native-application-2',
+      bytes:Buffer.from('another person application'),
+      role:'application',subjectId:'subject-two',
+    })
+    f.input.materialCandidates=[...f.input.materialCandidates,other]
+    f.input.suggestions[0]!.evidence.push({
+      materialCandidateId:other.candidateId,rawSha256:other.rawSha256,
+      reason:'Second application evidence',
+    })
+    f.setTime(49000)
+    expect(f.session.evaluate(owner,f.input).status).toBe('needs-user-confirmation')
+    // A second application from the same Subject still needs explicit human
+    // disambiguation; ownership identity alone does not define business type.
+    f.input.materialCandidates[1]={...other,subjectId:'subject-one'}
+    expect(()=>f.session.evaluate(owner,f.input)).toThrow('B3_ROUTING_STAGED_IDENTITY_MISMATCH')
+  })
+  test('R21-06 current original bytes must hash to B2 physical source identity before countdown',()=>{
+    const f=mainFixture()
+    const original=f.staging.read.bind(f.staging)
+    f.staging.read=(c,id)=>Buffer.concat([original(c,id),Buffer.from('tampered')])
+    expect(()=>f.session.evaluate(owner,f.input)).toThrow('B3_ROUTING_ORIGINAL_BYTES_MISMATCH')
+  })
+  test('R21-07 Main author catalog revoke restarts countdown and prevents old timeout',()=>{
+    const f=mainFixture()
+    expect(f.session.evaluate(owner,f.input).status).toBe('countdown')
+    f.setTime(31000)
+    f.input.manualCatalog[0]!.availability='candidate-held'
+    expect(f.session.evaluate(owner,f.input).status).toBe('needs-user-confirmation')
+    f.input.manualCatalog[0]!.availability='authorized-for-technical-selection'
+    expect(f.session.evaluate(owner,f.input)).toMatchObject({
+      status:'countdown',remainingMs:20000,
+    })
+  })
+
 })
