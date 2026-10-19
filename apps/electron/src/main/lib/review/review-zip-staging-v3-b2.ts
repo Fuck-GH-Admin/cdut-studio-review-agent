@@ -41,6 +41,8 @@ export function stageReviewB2TrustedZip(
     throw new Error('B2_ZIP_TRUSTED_INPUT_INVALID')
   }
   const decoded = decodeReviewB2Zip(archive.bytes, limits)
+  staging.claimArchiveRequest(ctx, archive.requestId, archive.physicalArchiveKey,
+    decoded.archiveSha256)
   const archivePhysicalKeyDigest = sha(JSON.stringify([
     ctx.ownerId, ctx.ownerGeneration, ctx.caseCandidateId,
     archive.physicalArchiveKey, decoded.archiveSha256,
