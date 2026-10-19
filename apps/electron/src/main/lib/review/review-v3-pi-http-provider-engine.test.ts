@@ -38,6 +38,7 @@ function makeHarness(options?:{
   modelApi?:string
   requestedTransport?:'sse'|'websocket'
   opaqueUpstreamFetch?:boolean
+  redirectProbe?:boolean
   stopReason?:'stop'|'error'|'toolUse'
   noTurn?:boolean
   failAfterFetch?:boolean
@@ -91,6 +92,10 @@ function makeHarness(options?:{
       trustedOrigin:options?.origin??'https://approved.example',
       transportFetch:async (_url,init)=>{
         physicalCalls++
+        if(options?.redirectProbe){
+          expect(init?.redirect).toBe('error')
+          throw new TypeError('redirect blocked by HTTPS origin policy')
+        }
         if(options?.abortDuringFetch){
           expect(init?.signal).toBeDefined()
           aborter.abort()
@@ -184,6 +189,11 @@ describe('A4-R10 pinned Pi 0.86.1 HTTP transport witness seam - in-memory Provid
     const replacement:StreamFn=()=>({} as ReturnType<StreamFn>)
     agent.streamFunction=replacement
     expect(agent.streamFunction).toBe(replacement)
+  })
+  it('R10-18: HTTP redirect following is disabled before native Provider fetch',async()=>{
+    const h=makeHarness({redirectProbe:true})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('redirect blocked')
+    expect(h.counts().physicalCalls).toBe(1)
   })
   it('R10-17: Main AbortSignal propagates to the real Pi HTTP transport fetch',async()=>{
     const h=makeHarness({abortDuringFetch:true})
