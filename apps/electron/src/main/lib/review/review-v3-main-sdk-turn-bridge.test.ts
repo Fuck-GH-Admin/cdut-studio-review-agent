@@ -16,6 +16,15 @@ import {
   V3ASDKTurnBridge, type V3ATurnHostOutcome,
 } from './review-v3-main-sdk-turn-bridge'
 
+
+/** In this isolated test the mock Main runtime echoes dispatchId automatically.
+ * Production Pi SDK messages cannot forge a physical completion receipt.
+ */
+type SyntheticTurnOutcome =
+  | {kind:'completed-turn';receiptId:string;run:RunEvidenceIdentity;dispatchId?:string}
+  | {kind:'interrupted';status:Extract<V3ATurnHostOutcome,{kind:'interrupted'}>['status'];
+      run:RunEvidenceIdentity;dispatchId?:string}
+
 class Store implements OwnerPersistence {
   raw:string|null=null
   fail=false
@@ -73,14 +82,19 @@ function fixture(){
   }
   let nextId=0
   let modeCount=0
-  let nextOutcome:(run:RunEvidenceIdentity)=>Promise<V3ATurnHostOutcome>=
+  let nextOutcome:(run:RunEvidenceIdentity)=>Promise<SyntheticTurnOutcome>=
     async sourceRun=>({
       kind:'completed-turn',receiptId:'sdk-turn-'+(++nextId),run:sourceRun,
     })
   const sdk={
-    nextTurn:async ({run,mode}:{
-      run:RunEvidenceIdentity,mode:'direct'|'hidden'|'graph'|'batch',
-    })=>{modeCount++;return nextOutcome(run)},
+    nextTurn:async ({run,mode,dispatchId}:{
+      run:RunEvidenceIdentity,dispatchId:string,
+      mode:'direct'|'hidden'|'graph'|'batch',
+    })=>{
+      modeCount++
+      const outcome=await nextOutcome(run)
+      return {...outcome,dispatchId:outcome.dispatchId??dispatchId}
+    },
   }
   const turns=new V3ATurnBudget(turnStore,owners)
   const host={
@@ -104,7 +118,7 @@ function fixture(){
     owners,turns,producer,bridge,call,run,grant,principal,sdk,dispatch,
     eventStore,turnStore,dispatchStore,
     setAllowed:(v:boolean)=>{authorized=v},
-    setNext:(fn:(run:RunEvidenceIdentity)=>Promise<V3ATurnHostOutcome>)=>{nextOutcome=fn},
+    setNext:(fn:(run:RunEvidenceIdentity)=>Promise<SyntheticTurnOutcome>)=>{nextOutcome=fn},
     calls:()=>modeCount,
   }
 }
@@ -216,8 +230,8 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
   })
   it('A4-DISPATCH-02: await-time grant rotation quarantines returned old SDK intent',async()=>{
     const h=fixture()
-    let release!:(out:V3ATurnHostOutcome)=>void
-    h.setNext(()=>new Promise<V3ATurnHostOutcome>(res=>{release=res}))
+    let release!:(out:SyntheticTurnOutcome)=>void
+    h.setNext(()=>new Promise<SyntheticTurnOutcome>(res=>{release=res}))
     const pending=h.bridge.next(h.call,'hidden')
     expect(h.dispatch.unresolved(h.run)).toBe(true)
     h.owners.pause(h.call.sessionId)
@@ -235,8 +249,8 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
   it('A4-DISPATCH-07: late-denied persisted across ledger reopen cannot redispatch',async()=>{
     const h=fixture()
     const controller=new AbortController()
-    let resolve!:(out:V3ATurnHostOutcome)=>void
-    h.setNext(()=>new Promise<V3ATurnHostOutcome>(res=>{resolve=res}))
+    let resolve!:(out:SyntheticTurnOutcome)=>void
+    h.setNext(()=>new Promise<SyntheticTurnOutcome>(res=>{resolve=res}))
     const pending=h.bridge.next(h.call,'direct',controller.signal)
     controller.abort()
     resolve({kind:'completed-turn',receiptId:'sdk-after-cancel',run:h.run})
@@ -273,6 +287,35 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     await expect(h.bridge.next(h.call,'direct')).rejects.toThrow('Unresolved SDK Provider dispatch')
     expect(h.calls()).toBe(1)
   })
+  it('A4-R06-01: callback from another physical dispatch cannot charge SDK turn',async()=>{
+    const h=fixture()
+    h.setNext(async run=>({
+      kind:'completed-turn',receiptId:'cross-dispatch-receipt',run,
+      dispatchId:'wrong-physical-dispatch',
+    }))
+    await expect(h.bridge.next(h.call,'hidden')).rejects.toThrow(
+      'SDK callback does not match persisted Main dispatch identity',
+    )
+    expect(h.calls()).toBe(1)
+    expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
+    expect(h.dispatch.unresolved(h.run)).toBe(true)
+    await expect(h.bridge.next(h.call,'hidden')).rejects.toThrow(
+      'Unresolved SDK Provider dispatch',
+    )
+    expect(h.calls()).toBe(1)
+  })
+  it('A4-R06-02: interrupted callback with mismatched dispatch cannot seal run',async()=>{
+    const h=fixture()
+    h.setNext(async run=>({
+      kind:'interrupted',status:'timed-out',run,dispatchId:'foreign-dispatch',
+    }))
+    await expect(h.bridge.next(h.call,'graph')).rejects.toThrow(
+      'SDK callback does not match persisted Main dispatch identity',
+    )
+    expect(h.dispatch.unresolved(h.run)).toBe(true)
+    expect(h.producer.replayCandidates()).toEqual([])
+    expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
+  })
   it('A3-SDK-16: semantically identical frozen Run with reordered keys is accepted',async()=>{
     const h=fixture()
     h.setNext(async run=>({
@@ -286,8 +329,8 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
   })
   it('A3-SDK-06: revoke during awaited SDK result forbids turn charging and terminal',async()=>{
     const h=fixture()
-    let resolve!:(out:V3ATurnHostOutcome)=>void
-    h.setNext(run=>new Promise<V3ATurnHostOutcome>(res=>{resolve=res}))
+    let resolve!:(out:SyntheticTurnOutcome)=>void
+    h.setNext(run=>new Promise<SyntheticTurnOutcome>(res=>{resolve=res}))
     const pending=h.bridge.next(h.call,'direct')
     h.owners.revoke(h.call.sessionId)
     resolve({kind:'completed-turn',receiptId:'late-sdk',run:h.run})
@@ -297,8 +340,8 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
   })
   it('A3-SDK-07: Main revocation inferred from authority after await also blocks',async()=>{
     const h=fixture()
-    let resolve!:(out:V3ATurnHostOutcome)=>void
-    h.setNext(run=>new Promise<V3ATurnHostOutcome>(res=>{resolve=res}))
+    let resolve!:(out:SyntheticTurnOutcome)=>void
+    h.setNext(run=>new Promise<SyntheticTurnOutcome>(res=>{resolve=res}))
     const pending=h.bridge.next(h.call,'direct')
     h.setAllowed(false)
     resolve({kind:'completed-turn',receiptId:'late-provider',run:h.run})
@@ -307,8 +350,8 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
   })
   it('A3-SDK-11: pause/resume while SDK awaits fences old grant and does not charge',async()=>{
     const h=fixture()
-    let resolve!:(out:V3ATurnHostOutcome)=>void
-    h.setNext(()=>new Promise<V3ATurnHostOutcome>(res=>{resolve=res}))
+    let resolve!:(out:SyntheticTurnOutcome)=>void
+    h.setNext(()=>new Promise<SyntheticTurnOutcome>(res=>{resolve=res}))
     const pending=h.bridge.next(h.call,'hidden')
     h.owners.pause(h.call.sessionId)
     const grant=h.owners.resumePaused(h.call.sessionId,h.grant.grantId,
@@ -338,8 +381,8 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
   })
   it('A3-SDK-15: two bridge instances cannot execute same Owner SDK concurrently',async()=>{
     const h=fixture()
-    let resolve!:(out:V3ATurnHostOutcome)=>void
-    h.setNext(()=>new Promise<V3ATurnHostOutcome>(res=>{resolve=res}))
+    let resolve!:(out:SyntheticTurnOutcome)=>void
+    h.setNext(()=>new Promise<SyntheticTurnOutcome>(res=>{resolve=res}))
     const first=h.bridge.next(h.call,'direct')
     const second=new V3ASDKTurnBridge(h.owners,h.turns,h.producer,h.sdk,h.dispatch)
     await expect(second.next(h.call,'hidden')).rejects.toThrow('Concurrent SDK turn')
@@ -360,8 +403,8 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
   it('A3-SDK-14: cancelled Main signal during SDK await drops valid-looking late turn',async()=>{
     const h=fixture()
     const controller=new AbortController()
-    let resolve!:(out:V3ATurnHostOutcome)=>void
-    h.setNext(()=>new Promise<V3ATurnHostOutcome>(res=>{resolve=res}))
+    let resolve!:(out:SyntheticTurnOutcome)=>void
+    h.setNext(()=>new Promise<SyntheticTurnOutcome>(res=>{resolve=res}))
     const pending=h.bridge.next(h.call,'batch',controller.signal)
     controller.abort()
     resolve({kind:'completed-turn',receiptId:'late-after-signal',run:h.run})
