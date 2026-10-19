@@ -5,6 +5,10 @@
  */
 import { useRef, useState, type ReactNode } from 'react'
 import { B1BufferedIdentityInput } from './B1BufferedIdentityInput'
+import {
+  prepareB1CandidateReadPreview,assertB1CandidateReadAdoption,
+  type B1CandidateReadResponse,type B1CandidateReadPreview,
+} from './review-v3-author-revision-read'
 import { diffB1AuthorDocuments, assertB1DraftRemovalAcknowledgments, assertB1CheckDeleteDialogCurrent } from './review-v3-author-diff'
 import { parseB1AuthorCandidateImport,assertB1ImportReplaceSafe,B1_AUTHOR_IMPORT_MAX_BYTES } from './review-v3-author-import'
 import {
@@ -24,6 +28,12 @@ export interface B1AuthorWizardProps {
   onSaveDraft: (document: B1AuthorDocument, expectedRevision: number) => Promise<{ revision: number }>
   onPreview: (document: B1AuthorDocument) => Promise<ImmutablePlanDescriptorB1>
   onFreezeCandidate: (document: B1AuthorDocument, expectedRevision: number) => Promise<{ fingerprint: string }>
+  /**
+   * Optional future C-owned authorized read. It must bind Main Principal,
+   * session, frame, Owner and verified revision-chain digest; the Renderer
+   * does not create or authenticate any of these values.
+   */
+  onReadLatestCandidate?: (templateId:string,expectedRevision:number)=>Promise<B1CandidateReadResponse>
   initialDraft?: B1AuthorDocument
   initialRevision?: number
 }
@@ -49,7 +59,7 @@ function Section({ title, children }: { title: string; children: ReactNode }): R
   </section>
 }
 export function ReviewV3AuthorWizard({
-  onSaveDraft, onPreview, onFreezeCandidate, initialDraft, initialRevision = 0,
+  onSaveDraft, onPreview, onFreezeCandidate, onReadLatestCandidate, initialDraft, initialRevision = 0,
 }: B1AuthorWizardProps): ReactNode {
   const [draft, setDraft] = useState<B1AuthorDocument>(() => structuredClone(initialDraft ?? emptyB1AuthorDocument()))
   const [revision, setRevision] = useState(initialRevision)
@@ -58,6 +68,8 @@ export function ReviewV3AuthorWizard({
   const editEpoch = useRef(0)
   const operationInFlight = useRef(false)
   const [pendingImport,setPendingImport] = useState<{doc:B1AuthorDocument;epoch:number}|null>(null)
+  const [pendingLatestRead,setPendingLatestRead] = useState<B1CandidateReadPreview|null>(null)
+  const backedUpEpoch=useRef<number|null>(null)
   const isDirty = b1AuthorHasUnsavedEdits(draft,savedSnapshot)
   const [pendingCheckDeletion,setPendingCheckDeletion] = useState<{checkKey:string;epoch:number}|null>(null)
   const [pendingCheckRename,setPendingCheckRename] = useState<{from:string;to:string;epoch:number}|null>(null)
@@ -71,6 +83,7 @@ export function ReviewV3AuthorWizard({
   const [error, setError] = useState('')
   const change = (update: (doc: B1AuthorDocument) => void): void => {
     editEpoch.current += 1
+    setPendingLatestRead(null)
     setDraft((current) => { const next = structuredClone(current); update(next); return next })
     setPreview(null); setNotice(''); setError('')
   }
@@ -93,6 +106,7 @@ export function ReviewV3AuthorWizard({
         })
       }
       editEpoch.current += 1
+      setPendingLatestRead(null)
       setDraft(next);setPreview(null);setNotice('');setError('')
     } catch(reason) {
       setError(reason instanceof Error ? reason.message : String(reason))
@@ -117,6 +131,7 @@ export function ReviewV3AuthorWizard({
       const {from,to}=pendingCheckRename
       const next=renameB1AuthorCheckKey(draft,from,to)
       editEpoch.current+=1
+      setPendingLatestRead(null)
       setDraft(next)
       setPreview(null)
       setConfirmedCheckDeletions(current=>current.includes(from)?current:[...current,from])
@@ -160,6 +175,7 @@ export function ReviewV3AuthorWizard({
     try {
       const value=parseB1TrialInput(field,raw)
       editEpoch.current += 1
+      setPendingLatestRead(null)
       setTrial(current => ({
         ...current, [targetKey]: {...current[targetKey], [field.key]:value},
       }))
@@ -178,7 +194,8 @@ export function ReviewV3AuthorWizard({
       anchor.download=(draft.templateId || 'unpublished-business').replace(/[^A-Za-z0-9._-]/g,'_')+'.candidate.json'
       anchor.click()
       URL.revokeObjectURL(href)
-      setNotice('候选作者配置已导出：仅记录声明，不包含试跑样例，也不代表政策发布')
+      backedUpEpoch.current=editEpoch.current
+      setNotice('候选作者配置已请求导出（请核实浏览器实际保存文件）；只是备份辅助手段，不代表政策发布或已确认安全恢复')
     } catch (reason) {setError(reason instanceof Error ? reason.message : String(reason))}
   }
   const updateField = (index: number, key: keyof B1Field, value: unknown): void =>
@@ -228,6 +245,7 @@ export function ReviewV3AuthorWizard({
         const saved = await onSaveDraft(copy, revision)
         setRevision(saved.revision)
         setSavedSnapshot(copy)
+        setPendingLatestRead(null)
         setConfirmedCheckDeletions([])
         setNotice(epoch===editEpoch.current
           ? `草稿已保存为第 ${saved.revision} 次修订（未正式发布）`
@@ -283,9 +301,54 @@ export function ReviewV3AuthorWizard({
       setTrial({})
       setPreview(null)
       setPendingImport(null)
+      setPendingLatestRead(null)
+      backedUpEpoch.current=null
       setError('')
       setNotice('已替换为未保存的候选草稿。来源身份保持未验证；保存需 Main 授权及 revision CAS，重名候选不可覆盖')
     }catch(reason){setPendingImport(null);setError(reason instanceof Error?reason.message:String(reason))}
+  }
+  const readLatestForComparison=async():Promise<void>=>{
+    if(!onReadLatestCandidate || !draft.templateId){setError('B1_AUTHOR_READ_NOT_CONNECTED');return}
+    if(operationInFlight.current){setError('B1_AUTHOR_READ_BUSY');return}
+    operationInFlight.current=true
+    setBusy(true);setError('');setNotice('')
+    const epoch=editEpoch.current,readRevision=revision
+    try{
+      const result=await onReadLatestCandidate(draft.templateId,revision)
+      if(epoch!==editEpoch.current)throw new Error('B1_AUTHOR_READ_EDITED_WHILE_LOADING')
+      const compared=prepareB1CandidateReadPreview(result,{
+        templateId:draft.templateId,revision:readRevision,epoch,draft,saved:savedSnapshot,
+      })
+      setPendingLatestRead(compared)
+      setNotice(compared.remote.revision>revision
+        ? '可信读取结果已返回：先对照变更；确认前不会替换、合并或保存本地草稿'
+        : '读回的修订与本次已保存快照一致；无需恢复')
+    }catch(reason){
+      setPendingLatestRead(null)
+      setError(reason instanceof Error?reason.message:String(reason))
+    }finally{operationInFlight.current=false;setBusy(false)}
+  }
+  const adoptLatestRead=():void=>{
+    if(!pendingLatestRead)return
+    try{
+      assertB1CandidateReadAdoption(pendingLatestRead,{
+        templateId:draft.templateId,revision,epoch:editEpoch.current,
+        busy:operationInFlight.current,backupEpoch:backedUpEpoch.current,
+        hasUnsavedEdits:isDirty,
+      })
+      editEpoch.current+=1
+      const current=structuredClone(pendingLatestRead.remote.document)
+      setDraft(current)
+      setRevision(pendingLatestRead.remote.revision)
+      setSavedSnapshot(structuredClone(current))
+      setTrial({});setPreview(null)
+      setConfirmedCheckDeletions([])
+      setPendingCheckDeletion(null);setPendingCheckRename(null)
+      setPendingImport(null);setPendingLatestRead(null)
+      backedUpEpoch.current=null
+      setError('')
+      setNotice('已按明确选择载入候选最新修订；没有执行自动合并/保存或学校审批')
+    }catch(reason){setError(reason instanceof Error?reason.message:String(reason))}
   }
   const checks = draft.modules[0]?.checks ?? []
   return <div className="space-y-4 text-foreground" data-testid="review-v3-b1-author-wizard">
@@ -531,6 +594,10 @@ export function ReviewV3AuthorWizard({
       <button type="button" disabled={busy} className={buttonClass} onClick={()=>void perform('preview')}>技术预览 / 试跑规则</button>
       <button type="button" disabled={busy || isDirty} title={isDirty?'先保存当前修改才能冻结':'冻结已保存修订'} className={buttonClass} onClick={()=>void perform('freeze')}>冻结候选（非正式发布）</button>
       <button type="button" disabled={busy} className={buttonClass} onClick={exportCandidate}>导出候选配置</button>
+      {onReadLatestCandidate && <button type="button" disabled={busy || !draft.templateId}
+        className={buttonClass} onClick={()=>void readLatestForComparison()}>
+        从可信 Main 读取最新候选修订（先对比）
+      </button>}
       <label className={buttonClass+(busy?' opacity-40':'')} aria-label="导入尚未发布的用户声明候选">
         导入候选 JSON（先预览）
         <input type="file" className="sr-only" accept=".json,application/json" disabled={busy}
@@ -566,6 +633,22 @@ export function ReviewV3AuthorWizard({
       <div className="flex gap-2">
         <button type="button" disabled={busy} className={buttonClass} onClick={confirmCheckDeletion}>我确认移除此 Check</button>
         <button type="button" disabled={busy} className={buttonClass} onClick={()=>setPendingCheckDeletion(null)}>取消</button>
+      </div>
+    </Section>}
+    {pendingLatestRead && <Section title="可信读取结果对比（未执行替换）">
+      <p className="text-xs">Main 回传的候选身份：{pendingLatestRead.remote.templateId}；修订 {pendingLatestRead.currentRevision} → {pendingLatestRead.remote.revision}；digest {pendingLatestRead.remote.digest.slice(0,16)}…</p>
+      <p className="text-xs">与当前屏幕草稿相比 {pendingLatestRead.comparedWithCurrent.changes.length} 处变化，删除 Check {pendingLatestRead.comparedWithCurrent.deletedCheckKeys.length}。此读回不能授予出版或业务决定权限。</p>
+      {pendingLatestRead.comparedWithCurrent.changes.length>0 && <details>
+        <summary className="cursor-pointer text-xs">展开最新修订变更详情（最多 80 条）</summary>
+        <ul className="text-xs space-y-1">{pendingLatestRead.comparedWithCurrent.changes.slice(0,80).map(x=>
+          <li key={x.area+'/'+x.kind+'/'+x.key}>{x.area} / {x.kind} / {x.key}</li>)}</ul>
+      </details>}
+      {isDirty && <p role="alert" className="text-xs text-red-500">本地有未保存修改；先导出当前草稿并确认文件已保存，再明确选择载入最新修订。不会自动合并。</p>}
+      <div className="flex gap-2">
+        <button type="button" disabled={busy || pendingLatestRead.remote.revision<=revision}
+          className={buttonClass} onClick={adoptLatestRead}>确认放弃本地屏幕草稿并载入此修订</button>
+        <button type="button" disabled={busy} className={buttonClass}
+          onClick={()=>{setPendingLatestRead(null);setNotice('已保留本地草稿，未载入远端修订')}}>保留本地草稿</button>
       </div>
     </Section>}
     {pendingImport && <Section title="导入预览：尚未替换、保存或发布">
