@@ -24,7 +24,7 @@
 ```bash
 set -uo pipefail
 EXPECTED_SHA='<本次 #143 精确40位SHA>'
-LOG_ROOT="$PWD/dev-a-gate-o-$(date -u +%Y%m%dT%H%M%SZ)"
+LOG_ROOT="$PWD/../dev-a-gate-o-$(date -u +%Y%m%dT%H%M%SZ)"
 mkdir -p "$LOG_ROOT"
 git checkout --detach "$EXPECTED_SHA" || exit 2
 test "$(git rev-parse HEAD)" = "$EXPECTED_SHA" || exit 2
@@ -65,8 +65,7 @@ else
     apps/electron/src/main/lib/review/review-v3-execution-late-pid.test.ts
   run_gate typecheck bun run typecheck
   run_gate boundaries bun run check:boundaries
-  (cd apps/electron && bun run check:skin-contract) >"$LOG_ROOT/skin-contract.log" 2>&1
-  printf 'skin-contract exit=%s\n' "$?" >>"$LOG_ROOT/results.txt"
+  run_gate skin-contract bash -lc 'cd apps/electron && bun run check:skin-contract'
   run_gate main-build bash -lc 'cd apps/electron && bun run build:main'
   run_gate preload-build bash -lc 'cd apps/electron && bun run build:preload'
   run_gate renderer-build bash -lc 'cd apps/electron && bun run build:renderer'
