@@ -250,3 +250,92 @@ describe('B2 durable input checkpoint is not a CurrentCase writer',()=>{
   })
 
 })
+
+describe('B2 R18 restart reauthorization handshake never promotes old ZIP into Case',()=>{
+ test('new owner generation and re-picked identical original produce fresh candidate only, receipts pinned',()=>{
+   const one=new ReviewB2StagingService()
+   const archive={physicalArchiveKey:'native-r18-original-a',requestId:'r18-restart-a',
+     bytes:makeZip('recovered candidate bytes')}
+   const first=new ReviewB2ArchiveVault(one,home).saveAndStage(ctx,archive)
+   const nextCtx={...ctx,ownerGeneration:ctx.ownerGeneration+1}
+   const second=new ReviewB2StagingService()
+   const revived=new ReviewB2ArchiveVault(second,home)
+   const received=revived.recoverAfterMainPicker(nextCtx,first.checkpoint.archiveId,{
+     ...archive,physicalArchiveKey:'new-native-main-handle-at-restart',
+   })
+   expect(received.status).toBe('candidate-restaged-awaiting-owner-assignment')
+   expect(received.priorReceiptsPreserved).toBe(true)
+   expect(received.businessWriteAllowed).toBe(false)
+   expect(received.checkpoint).toEqual(first.checkpoint)
+   expect(received.preview.extracted).toEqual(first.checkpoint.fileReceipts)
+   expect(received.preview.candidates).toHaveLength(1)
+   expect(received.preview.candidates[0]!.candidateId).not.toBe(first.preview.candidates[0]!.candidateId)
+   expect(received.preview.candidates[0]!.ownerGeneration).toBe(nextCtx.ownerGeneration)
+   expect(received.preview.receipts[0]!.status).toBe('needs-user-confirmation')
+   expect(received.preview.candidates[0]!.role).toBe('unassigned')
+   expect(revived.inspect(nextCtx,first.checkpoint.archiveId)).toEqual(first.checkpoint)
+ })
+ test('recovery cannot use original generation, older generation, or a revoked owner',()=>{
+   const archive={physicalArchiveKey:'native-r18-original-b',requestId:'r18-restart-b',
+      bytes:makeZip('same original')}
+   const first=new ReviewB2ArchiveVault(new ReviewB2StagingService(),home)
+     .saveAndStage(ctx,archive).checkpoint
+   const staging=new ReviewB2StagingService()
+   const reopened=new ReviewB2ArchiveVault(staging,home)
+   for(const generation of [0,1]){
+     expect(()=>reopened.recoverAfterMainPicker({...ctx,ownerGeneration:generation},first.archiveId,archive))
+       .toThrow('B2_ARCHIVE_REVALIDATION_REQUIRES_FRESH_OWNER_GENERATION')
+   }
+   const later={...ctx,ownerGeneration:3}
+   staging.revoke(later)
+   expect(()=>reopened.recoverAfterMainPicker(later,first.archiveId,archive))
+     .toThrow('B2_OWNER_INVALID_OR_REVOKED')
+ })
+ test('cannot replay historical checkpoint using changed bytes, request or unsigned key',()=>{
+   const archive={physicalArchiveKey:'native-r18-original-c',requestId:'r18-restart-c',
+     bytes:makeZip('historical content')}
+   const old=new ReviewB2ArchiveVault(new ReviewB2StagingService(),home)
+     .saveAndStage(ctx,archive).checkpoint
+   const staging=new ReviewB2StagingService()
+   const reopened=new ReviewB2ArchiveVault(staging,home)
+   const fresh={...ctx,ownerGeneration:2}
+   for(const mutated of [
+     {...archive,bytes:makeZip('replaced content')},
+     {...archive,requestId:'changed-request'},
+     {...archive,physicalArchiveKey:' '},
+   ])expect(()=>reopened.recoverAfterMainPicker(fresh,old.archiveId,mutated))
+     .toThrow('B2_ARCHIVE_RESELECTED_ORIGINAL_MISMATCH')
+   expect(staging.previewImportBatch(fresh,[]).materialIds).toEqual([])
+   expect(reopened.inspect(fresh,old.archiveId).fileReceipts).toEqual(old.fileReceipts)
+ })
+ test('locked compression policy survives a new Main picker; rejected children stay rejected',()=>{
+   const archive={physicalArchiveKey:'native-r18-strict',requestId:'r18-strict-limit',
+     bytes:makeZip('bytes longer than allowed')}
+   const before=new ReviewB2ArchiveVault(new ReviewB2StagingService(),home)
+     .saveAndStage(ctx,archive,{maxEntryBytes:3}).checkpoint
+   const replay=new ReviewB2ArchiveVault(new ReviewB2StagingService(),home)
+     .recoverAfterMainPicker({...ctx,ownerGeneration:4},before.archiveId,archive)
+   expect(replay.preview.candidates).toHaveLength(0)
+   expect(replay.preview.extracted[0]!.status).toBe('rejected')
+   expect(replay.preview.extracted[0]!.reason).toBe('BOMB_OR_SIZE_LIMIT')
+   expect(replay.checkpoint.decodeLimits).toEqual({maxEntryBytes:3})
+ })
+ test('legacy unpinned archive can still be inspected but may not restage with invented default limits',()=>{
+   const archive={physicalArchiveKey:'native-r18-legacy',requestId:'r18-legacy',
+     bytes:makeZip('legacy bytes')}
+   const vault=new ReviewB2ArchiveVault(new ReviewB2StagingService(),home)
+   const original=vault.saveAndStage(ctx,archive).checkpoint
+   const path=join(home,original.archiveId,'checkpoint.json')
+   const json=JSON.parse(readFileSync(path,'utf8'))
+   json.schemaVersion='review-b2-archive/1'
+   delete json.decodeLimits
+   const {manifestSha256:_old,...plain}=json
+   json.manifestSha256=createHash('sha256').update(JSON.stringify(plain)).digest('hex')
+   writeFileSync(path,JSON.stringify(json))
+   const next=new ReviewB2ArchiveVault(new ReviewB2StagingService(),home)
+   expect(next.inspect({...ctx,ownerGeneration:9},original.archiveId).schemaVersion)
+     .toBe('review-b2-archive/1')
+   expect(()=>next.recoverAfterMainPicker({...ctx,ownerGeneration:9},original.archiveId,archive))
+     .toThrow('B2_ARCHIVE_LEGACY_PROFILE_UNPINNED')
+ })
+})
