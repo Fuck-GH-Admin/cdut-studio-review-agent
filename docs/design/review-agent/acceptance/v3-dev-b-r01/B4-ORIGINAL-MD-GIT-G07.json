@@ -2,7 +2,7 @@
   "schemaVersion": "review-b4-original-git/2",
   "domain": "G07",
   "sourceGitSha": "b68443b23293b4714e61a3b81383d3d3a56434fc",
-  "method": "manifest metadata and optional Git blob SHA1 pin comparison; not independent SHA256 rehash or policy authority",
+  "method": "G07 original blobs retrieved at each manifest-recorded historical branchCommit and compared to original.gitBlobSha1; SHA256 metadata not independently recalculated, no policy authorization.",
   "publicationAllowed": false,
   "records": [
     {
@@ -12,11 +12,13 @@
       "sourceSha256MetadataMatchesCatalog": true,
       "originalPath": "docs/design/review-agent/business-templates/G07/C/G07-T01/originals/G07-T01_正式业务模板_MD_v0.1.md",
       "expectedOriginalGitBlob": "8a998496a49fff82fbb57bd8894c2f7bf646ec6f",
-      "observedOriginalGitBlob": null,
+      "observedOriginalGitBlob": "8a998496a49fff82fbb57bd8894c2f7bf646ec6f",
       "originalSha256Recomputed": false,
-      "status": "ORIGINAL_PATH_UNAVAILABLE",
+      "status": "GIT_BLOB_PINNED_MATCH_HISTORIC_REF",
       "policy": "NOT_VERIFIED",
-      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN",
+      "actualOriginalSourceRef": "0fff12c5b5330b72566d33d81283da603f687793",
+      "originalContentBytes": 71809
     },
     {
       "templateId": "g07-t02",
@@ -25,11 +27,13 @@
       "sourceSha256MetadataMatchesCatalog": true,
       "originalPath": "docs/design/review-agent/business-templates/G07/T02/C-v2.1/G07-T02_正式业务模板_MD_v0.1.md",
       "expectedOriginalGitBlob": "46c48f80df90e99274986633ae29d7d407ed84b9",
-      "observedOriginalGitBlob": null,
+      "observedOriginalGitBlob": "46c48f80df90e99274986633ae29d7d407ed84b9",
       "originalSha256Recomputed": false,
-      "status": "ORIGINAL_PATH_UNAVAILABLE",
+      "status": "GIT_BLOB_PINNED_MATCH_HISTORIC_REF",
       "policy": "NOT_VERIFIED",
-      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN",
+      "actualOriginalSourceRef": "1564a20fb99c5ff13fd78ce3162d0ac93005e65c",
+      "originalContentBytes": 51531
     },
     {
       "templateId": "g07-t03",
@@ -38,11 +42,13 @@
       "sourceSha256MetadataMatchesCatalog": true,
       "originalPath": "docs/design/review-agent/business-templates/G07/author-handoff/G07-T03/C-v0.1/G07-T03_正式业务模板_MD_v0.1.md",
       "expectedOriginalGitBlob": "734f9fdeb16ee25c8b4e5b339b02a2af9baf1aee",
-      "observedOriginalGitBlob": null,
+      "observedOriginalGitBlob": "734f9fdeb16ee25c8b4e5b339b02a2af9baf1aee",
       "originalSha256Recomputed": false,
-      "status": "ORIGINAL_PATH_UNAVAILABLE",
+      "status": "GIT_BLOB_PINNED_MATCH_HISTORIC_REF",
       "policy": "NOT_VERIFIED",
-      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN",
+      "actualOriginalSourceRef": "e9f4db82176e235b87808787ddf12bd0806fa5ca",
+      "originalContentBytes": 66381
     },
     {
       "templateId": "g07-t04",
@@ -51,11 +57,13 @@
       "sourceSha256MetadataMatchesCatalog": true,
       "originalPath": "docs/design/review-agent/business-templates/G07/G07-T04/C-e0-r02/C-v0.1-original/G07-T04_正式业务模板_MD_v0.1.md",
       "expectedOriginalGitBlob": "9a629e8c6e6e9bf4c348fe413c32b564e50f580d",
-      "observedOriginalGitBlob": null,
+      "observedOriginalGitBlob": "9a629e8c6e6e9bf4c348fe413c32b564e50f580d",
       "originalSha256Recomputed": false,
-      "status": "ORIGINAL_PATH_UNAVAILABLE",
+      "status": "GIT_BLOB_PINNED_MATCH_HISTORIC_REF",
       "policy": "NOT_VERIFIED",
-      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN",
+      "actualOriginalSourceRef": "4f914de38ec971d119fbeef20f44d82939aa70de",
+      "originalContentBytes": 81721
     },
     {
       "templateId": "g07-t05",
@@ -64,11 +72,13 @@
       "sourceSha256MetadataMatchesCatalog": true,
       "originalPath": "docs/design/review-agent/business-templates/G07/author-handoffs/G07-T05/E0-r02/C_frozen/original_v0.1/G07-T05_正式业务模板_MD_v0.1.md",
       "expectedOriginalGitBlob": "6a7ef0cdd10ecaa7e851d6dc43a728a669484106",
-      "observedOriginalGitBlob": null,
+      "observedOriginalGitBlob": "6a7ef0cdd10ecaa7e851d6dc43a728a669484106",
       "originalSha256Recomputed": false,
-      "status": "ORIGINAL_PATH_UNAVAILABLE",
+      "status": "GIT_BLOB_PINNED_MATCH_HISTORIC_REF",
       "policy": "NOT_VERIFIED",
-      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN",
+      "actualOriginalSourceRef": "780cd209cecd6b90cd568997530b47ddde32aa2a",
+      "originalContentBytes": 48691
     },
     {
       "templateId": "g07-t06",
@@ -77,11 +87,13 @@
       "sourceSha256MetadataMatchesCatalog": true,
       "originalPath": "docs/design/review-agent/business-templates/G07/C/G07-T06/G07-T06_正式业务模板_MD_v0.1.md",
       "expectedOriginalGitBlob": "c3be13c801a56300e71e2a468632d263f8fa2de8",
-      "observedOriginalGitBlob": null,
+      "observedOriginalGitBlob": "c3be13c801a56300e71e2a468632d263f8fa2de8",
       "originalSha256Recomputed": false,
-      "status": "ORIGINAL_PATH_UNAVAILABLE",
+      "status": "GIT_BLOB_PINNED_MATCH_HISTORIC_REF",
       "policy": "NOT_VERIFIED",
-      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN",
+      "actualOriginalSourceRef": "0fbd811f9f6e8170c37b381e1b127ceab8fda348",
+      "originalContentBytes": 88730
     },
     {
       "templateId": "g07-t07",
@@ -90,11 +102,13 @@
       "sourceSha256MetadataMatchesCatalog": true,
       "originalPath": "docs/design/review-agent/business-templates/G07/author-deliverables/G07-T07/C-v0.1/G07-T07_正式业务模板_MD_v0.1.md",
       "expectedOriginalGitBlob": "f6d9c8c2820b165b6010fecddc1dde5a478a9ac2",
-      "observedOriginalGitBlob": null,
+      "observedOriginalGitBlob": "f6d9c8c2820b165b6010fecddc1dde5a478a9ac2",
       "originalSha256Recomputed": false,
-      "status": "ORIGINAL_PATH_UNAVAILABLE",
+      "status": "GIT_BLOB_PINNED_MATCH_HISTORIC_REF",
       "policy": "NOT_VERIFIED",
-      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN",
+      "actualOriginalSourceRef": "41b88bab6f84363e1d111f8c464cbe37cffddbcd",
+      "originalContentBytes": 60867
     }
   ]
 }
