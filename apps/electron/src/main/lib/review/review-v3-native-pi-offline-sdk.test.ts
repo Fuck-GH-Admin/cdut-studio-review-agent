@@ -69,7 +69,7 @@ const validSse=[
   sseEvent('response.completed',{response:responseEnvelope}),
 ].join('')
 
-type NativeFailureScenario='stream-break'|'main-abort'|'terminal-then-break'
+type NativeFailureScenario='stream-break'|'main-abort'|'terminal-then-break'|'abort-on-agent-end'
 async function nativeHarness(responseBody:string,scenario?:NativeFailureScenario){
   const dir=mkdtempSync(join(tmpdir(),'review-v3-native-pi-r16-'))
   dirs.push(dir)
@@ -149,6 +149,12 @@ async function nativeHarness(responseBody:string,scenario?:NativeFailureScenario
       })
       session=result.session
       session.subscribe(event=>{
+        // A realistic late Main cancellation: the provider body has already
+        // closed, but native Pi's final agent_settled event has not occurred.
+        if(scenario==='abort-on-agent-end' && event.type==='agent_end'){
+          mainAborter.abort(new DOMException(
+            'Main revoked after Provider EOF, before native settled','AbortError'))
+        }
         if((event.type==='message_end'||event.type==='turn_end') &&
           event.message?.role==='assistant' && event.message.stopReason==='error'){
           nativeFailures.push(event.type+':'+(event.message.errorMessage??'no native error detail'))
@@ -250,6 +256,23 @@ describe('Dev-A R16 real Pi 0.86.1 AgentSession offline — no external Provider
       .rejects.toThrow()
     expect(h.fetchCalls()).toBe(1)
     expect(h.requests).toEqual(['https://provider.r16.invalid/v1/responses'])
+  })
+
+  it('R18-01: Main cancellation after Provider EOF but before agent_settled denies physical completion',async()=>{
+    const h=await nativeHarness(validSse,'abort-on-agent-end')
+    await expect(h.host.nextTurn({...request,dispatchId:'native-r18-late-abort',
+      signal:h.mainAborter.signal})).rejects.toThrow()
+    expect(h.mainAborter.signal.aborted).toBe(true)
+    expect(h.fetchCalls()).toBe(1)
+    expect(h.requests).toEqual(['https://provider.r16.invalid/v1/responses'])
+    expect(h.events).toContain('agent_end')
+  })
+  it('R18-02: successful native SDK run remains single-fetch after cancellation-race harness addition',async()=>{
+    const h=await nativeHarness(validSse)
+    expect((await h.host.nextTurn({...request,dispatchId:'native-r18-success'})).kind)
+      .toBe('completed-turn')
+    expect(h.fetchCalls()).toBe(1)
+    expect(h.events).toEqual(expectedNativeEvents)
   })
 
 })
