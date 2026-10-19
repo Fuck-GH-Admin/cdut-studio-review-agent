@@ -105,7 +105,29 @@
 
 **当前 Gate 一律不可推测**：`O=NOT_ATTESTED`（R08 前一 SHA PR CI cancelled，D2/Baseline queued；R09 新 SHA 的 workflow 必须另读）、`E=NOT_RUN`、`L=BLOCKED_NO_AUTH`、`P=NOT_RUN`。这不是“功能百分比”，而是证据成熟度。
 
-## 9. 每批交付行必须具备
+## 9. A4-R10：固定 Pi SDK 0.86.1 HTTP Provider 实际 streamFn 取证（2026-10-19）
+
+**目前代码成熟度**：`A4_R10_SDK_STREAM_BOUNDARY_SOURCE_COMMITTED / HTTPS_SSE_REQUEST_WITNESS_SOURCE_COMMITTED / REAL_SDK_PROVIDER_GATE_E_NOT_ATTESTED`。不是 native SDK 已上线、也不是 C2 正式 Run ACK。
+
+### 实际锁定的依赖及 upstream 源码
+
+- 当前项目 `apps/electron/package.json` / 根 override 锁 `@earendil-works/pi-coding-agent/pi-agent-core/pi-ai 0.86.1`；上游固定 `v0.86.1` Git commit `13cbf77df2396303013a41646bcfa77b4271ae56`。
+- 该 tag 的 Pi `AgentSession.agent.streamFunction` 可公开写入，`createAgentSession()` 底层真实走 `modelRuntime.streamSimple`；OpenAI-compatible API 用 `fetch` 且存在 `retryProviderRequest` 外层重试。单看 `agent_end` / `SDKMessage.result.success` / assistant UUID / `onResponse` 均不能证明一笔**独立物理 HTTP Provider 请求已完整完成**。
+- 真客户端 `adapters/pi-agent-adapter.ts` 已在 `createAgentSession`（约 2634 行）后、`session.prompt`（约 3060 行）前包装 streamFn（约 2704 行），负责 Proxy 和 payload sanitization。真实 V3 接线不能直接覆盖并丢失这些已有能力。
+
+### 本轮 A-owned 生产代码 / 测试
+
+- 新 `review-v3-pi-http-provider-engine.ts`：直接按真实 Pi `AgentSession.agent.streamFunction`、`subscribe(turn_end)`、`prompt()` 接口做**独立 Main-only 限定技术 Engine**，并由 `V3APhysicalSDKTurnPort` 连接 A4/A3。不接受第二次 streamFn/HTTP fetch；`maxRetries:0`、`transport:'sse'`，Main-selected HTTPS origin、禁止 redirect；只支持 `openai-completions`/`openai-responses`，非 SSE、非 HTTPS、缺失 `x-request-id`、错误停止原因、abort/timeout、旧 Agent 复用均拒绝。Main 取消信号传入 Pi SDK streaming 和底层 fetch。
+- 新 `review-v3-pi-http-provider-engine.test.ts` 用内存 HTTP transport 覆盖 request ID、源/回执、HTTPS/redirect、二次调用、上游隐藏 fetch、SDK 正误结果、API/传输白名单、abort/reuse、真实 `Agent` 公开 streamFn 属性 smoke；`review-v3-main-sdk-turn-bridge.test.ts` 中 `A4-R10-16` 联合 A4 pre-dispatch journal + 24-turn budget。以上均为**测试源文件提交，不是实际执行**。
+- 完整逐来源证据/未获批 C CR：`docs/design/review-agent/acceptance/v3-dev-a-r01/A4-R10-PI-0861-TRANSPORT-EVIDENCE-AND-INTEGRATION-CR.md`。此文档是 A 的**请求提案**，不是 C 已批准租约。没有改 C-owned Main IPC/Preload/Run/Business writer，亦未改共享 `pi-agent-adapter.ts` 的生产入口。
+- **保障与剩余限制**：`x-request-id` 是 Provider 返回的 HTTP request identifier，不是密码学证明、也不是 Pi 统一 native turn receipt；校验须依赖 TLS/已批准 Host、一次真实 `fetch`、成功 SDK `turn_end`，仍需 Gate E 确认代理/透明 retry/真实 SSE EOF；没有 header 或非支持 API **保留 BLOCKED 而不是伪造回执**。
+- `Gate O`：本会话远端 Github 读写成功，但工具容器没有 Bun/GitHub clone DNS，不存在同 SHA 的实际 Bun/typecheck/build PASS。后续在 #143 最终 SHA 读取其 workflow/job，严格另锁。Gate E=`NOT_RUN`，Gate L=`BLOCKED_NO_AUTH`，Gate P=`NOT_RUN`。
+
+### 下一个关键检查点
+
+优先级不是再写一个泛 Provider adapter，而是先在**真实安装的 0.86.1 + 应用 Pi runtime**上，完成集中 Gate O 源码/构建/全量回归和官方 request ID 的 Gate E，确认是否能够无损复用现有 proxy/payload sanitizer。然后请 Dev-C 审核 `CR-A-PI-HTTP-WITNESS-R01` 并由 I 在新固定 source lock 上做技术接线。C2 技术账当前并非正式 durable Run ACK，A 无权擅自升级。
+
+## 10. 每批交付行必须具备
 
 `slice_id / source_sha (40位) / ownership_paths / first_failure / exact commands + env + exit + PASS/FAIL/SKIP / CI workflow+job / Gate O/E/L/P / unresolved_risks / next_owner / C lease if applicable / integration source-lock / rollback commit`。
 
