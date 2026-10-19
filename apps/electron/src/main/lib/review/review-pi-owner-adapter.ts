@@ -1,0 +1,336 @@
+/**
+ * V3 Dev-A Main-only execution owner. This is NOT an IPC entry point and not a
+ * second Case/Run store. C0 business authority must attest every admission.
+ *
+ * Model-supplied IDs, session metadata and old process journals never grant
+ * authority. A new process epoch quarantines all unfinished old leases.
+ * Durable ACK is returned only after the ledger write succeeds.
+ */
+import { createHash, randomUUID } from 'node:crypto'
+import {
+  closeSync, existsSync, fsyncSync, mkdirSync, openSync, readFileSync,
+  renameSync, unlinkSync, writeSync,
+} from 'node:fs'
+import { dirname, join } from 'node:path'
+import {
+  REVIEW_C0_SCHEMA_VERSION,
+  assertC0CanonicalPlan,
+  assertC0RunEvidenceIdentity,
+  assertC0SourceIdentity,
+  C0ContractError,
+  type CanonicalPlan,
+  type Principal,
+  type RunEvidenceIdentity,
+  type SourceIdentity,
+} from '@profer/shared'
+
+export const V3_REVIEW_TOOLS = [
+  'review_read_documents',
+  'review_inspect_document_image',
+  'review_inspect_original',
+  'review_submit_result',
+] as const
+export type V3ReviewTool = (typeof V3_REVIEW_TOOLS)[number]
+
+export type V3OwnerState = 'active' | 'revoked' | 'deleted' | 'terminal' | 'recovery-required'
+export interface V3OwnerLease {
+  readonly grantId: string
+  readonly sessionId: string
+  readonly senderKey: string
+  readonly processEpoch: string
+  readonly caseId: string
+  readonly attemptId: string
+  readonly runId: string
+  readonly generation: number
+  readonly manifestHash: string
+  readonly planFingerprint: string
+  readonly sourceIdentities: readonly SourceIdentity[]
+  readonly permittedTools: readonly V3ReviewTool[]
+  readonly expiresAt: number
+  readonly state: V3OwnerState
+}
+interface OwnerDisk {
+  version: 'v3-dev-a-owner/1'
+  generationBySession: Record<string, number>
+  owners: Record<string, V3OwnerLease>
+  tombstones: string[]
+}
+interface SealedLedger { payload: OwnerDisk; sha256: string }
+export interface OwnerPersistence {
+  read(): string | null
+  write(serialized: string): void
+}
+
+/** Main-only injection. Do not use a Renderer actor DTO to implement this hook. */
+export interface V3MainAuthority {
+  authorizeExecution(input: {
+    principal: Principal
+    run: RunEvidenceIdentity
+    plan: CanonicalPlan
+    sessionId: string
+    senderKey: string
+  }): void
+  /** Re-read the current Case/source/Owner authorization at each tool boundary. */
+  isCurrent(input: { lease: V3OwnerLease; principal: Principal }): boolean
+}
+export interface V3OwnerGrantRequest {
+  principal: Principal
+  run: RunEvidenceIdentity
+  plan: CanonicalPlan
+  sources: readonly SourceIdentity[]
+  sessionId: string
+  senderKey: string
+  expiresAt: number
+  permittedTools: readonly V3ReviewTool[]
+}
+const EMPTY = (): OwnerDisk => ({
+  version: 'v3-dev-a-owner/1', generationBySession: {}, owners: {}, tombstones: [],
+})
+const digest = (value: string): string => createHash('sha256').update(value).digest('hex')
+const own = (o: Record<string, unknown>, key: string): boolean =>
+  Object.prototype.hasOwnProperty.call(o, key)
+function fail(message: string): never {
+  throw new C0ContractError('RECOVERY_REQUIRED', message)
+}
+function assertLeaseValid(lease: V3OwnerLease): void {
+  if (!lease || !lease.grantId || !lease.sessionId || !lease.senderKey ||
+      !lease.processEpoch || !lease.caseId || !lease.attemptId || !lease.runId ||
+      !Number.isSafeInteger(lease.generation) || lease.generation < 1 ||
+      !/^[a-f0-9]{64}$/i.test(lease.manifestHash) ||
+      !lease.planFingerprint || !Number.isFinite(lease.expiresAt) ||
+      !Array.isArray(lease.permittedTools) ||
+      !lease.permittedTools.every(t => V3_REVIEW_TOOLS.includes(t)) ||
+      !Array.isArray(lease.sourceIdentities)) fail('Owner journal contains invalid scope')
+  for (const source of lease.sourceIdentities) {
+    assertC0SourceIdentity(source)
+    if (source.caseId !== lease.caseId) fail('Owner journal contains cross-case source')
+  }
+}
+function decode(raw: string | null): OwnerDisk {
+  if (raw === null) return EMPTY()
+  let envelope: SealedLedger
+  try { envelope = JSON.parse(raw) as SealedLedger }
+  catch { return fail('Owner journal JSON is damaged') }
+  if (!envelope || !envelope.payload || typeof envelope.sha256 !== 'string' ||
+      digest(JSON.stringify(envelope.payload)) !== envelope.sha256) {
+    fail('Owner journal integrity mismatch')
+  }
+  const p = envelope.payload
+  if (p.version !== 'v3-dev-a-owner/1' || !p.owners ||
+      typeof p.owners !== 'object' || Array.isArray(p.owners) ||
+      !p.generationBySession || typeof p.generationBySession !== 'object' ||
+      !Array.isArray(p.tombstones) || !p.tombstones.every(t => typeof t === 'string')) {
+    fail('Unsupported Owner journal schema')
+  }
+  for (const [id, lease] of Object.entries(p.owners)) {
+    assertLeaseValid(lease)
+    if (id !== lease.sessionId ||
+        (typeof p.generationBySession[id] !== 'number' ||
+        p.generationBySession[id] < lease.generation)) fail('Owner generation corrupted')
+  }
+  return p
+}
+function encode(data: OwnerDisk): string {
+  return JSON.stringify({ payload: data, sha256: digest(JSON.stringify(data)) })
+}
+
+/** Atomic file replace + file and parent-directory sync; errors propagate. */
+export function createFileOwnerPersistence(filePath: string): OwnerPersistence {
+  return {
+    read: () => existsSync(filePath) ? readFileSync(filePath, 'utf8') : null,
+    write: serialized => {
+      mkdirSync(dirname(filePath), { recursive: true })
+      const temp = join(dirname(filePath), '.' + randomUUID() + '.tmp')
+      let handle: number | undefined
+      try {
+        handle = openSync(temp, 'wx', 0o600)
+        const data = Buffer.from(serialized, 'utf8')
+        let offset = 0
+        while (offset < data.length) {
+          const n = writeSync(handle, data, offset, data.length - offset)
+          if (n <= 0) fail('Owner journal short write')
+          offset += n
+        }
+        fsyncSync(handle)
+        closeSync(handle)
+        handle = undefined
+        renameSync(temp, filePath)
+        const directory = openSync(dirname(filePath), 'r')
+        try { fsyncSync(directory) } finally { closeSync(directory) }
+      } finally {
+        if (handle !== undefined) closeSync(handle)
+        if (existsSync(temp)) unlinkSync(temp)
+      }
+    },
+  }
+}
+
+/**
+ * Host MUST instantiate once per Main process. Cross-PID locking and live
+ * Electron caller binding are Dev-C integration gates, not inferred here.
+ */
+export class V3ReviewOwnerAdapter {
+  readonly processEpoch = randomUUID()
+  private readonly localDenied = new Set<string>()
+  private readonly journal: OwnerDisk
+  private readonly authority: V3MainAuthority
+  private readonly persistence: OwnerPersistence
+
+  constructor(persistence: OwnerPersistence, authority: V3MainAuthority) {
+    if (!persistence || !authority ||
+        typeof authority.authorizeExecution !== 'function' ||
+        typeof authority.isCurrent !== 'function') {
+      throw new C0ContractError('ACTOR_UNTRUSTED', 'Main authorization port required')
+    }
+    this.persistence = persistence
+    this.authority = authority
+    this.journal = decode(persistence.read())
+    // No old lease may become live merely because Main restarted.
+    for (const [id, old] of Object.entries(this.journal.owners)) {
+      if (old.state === 'active') this.localDenied.add(id)
+    }
+  }
+
+  private persist(next: OwnerDisk): void {
+    // Do not mutate the working ledger before confirmed persistence.
+    this.persistence.write(encode(next))
+    this.journal.owners = next.owners
+    this.journal.generationBySession = next.generationBySession
+    this.journal.tombstones = next.tombstones
+  }
+
+  /** No ACK until grant is durably journalled. */
+  grant(request: V3OwnerGrantRequest): V3OwnerLease {
+    assertC0RunEvidenceIdentity(request.run)
+    assertC0CanonicalPlan(request.plan)
+    if (request.run.schemaVersion !== REVIEW_C0_SCHEMA_VERSION ||
+        !request.sessionId || !request.senderKey ||
+        !request.principal?.principalId || !request.principal?.sessionId ||
+        !request.principal.scope?.caseIds.includes(request.run.caseId) ||
+        !request.plan.fingerprint || request.plan.fingerprint !== request.run.planFingerprint ||
+        request.sources.length === 0 ||
+        !Number.isFinite(request.expiresAt) || request.expiresAt <= Date.now() ||
+        request.permittedTools.length === 0 ||
+        !request.permittedTools.every(tool => V3_REVIEW_TOOLS.includes(tool))) {
+      throw new C0ContractError('CONTRACT_INVALID', 'Owner grant scope/plan/tool invalid')
+    }
+    for (const src of request.sources) {
+      assertC0SourceIdentity(src)
+      if (src.caseId !== request.run.caseId ||
+          !request.run.sourceVersionIds.includes(src.documentVersionId)) {
+        throw new C0ContractError('SOURCE_STALE', 'Owner source not included in frozen Run')
+      }
+    }
+    const previous = this.journal.owners[request.sessionId]
+    if (this.journal.tombstones.includes(request.sessionId) || previous ||
+        this.localDenied.has(request.sessionId)) {
+      throw new C0ContractError('CASE_SCOPE_FORBIDDEN', 'Owner session ID cannot be reused')
+    }
+    const expected = (this.journal.generationBySession[request.sessionId] ?? 0) + 1
+    if (request.run.ownerGeneration !== expected) {
+      throw new C0ContractError('RUN_IDENTITY_MISMATCH', 'Owner generation not monotonic')
+    }
+    // The Main port must bind actual sender+window, current Case and principal.
+    this.authority.authorizeExecution({
+      principal: request.principal, run: request.run, plan: request.plan,
+      sessionId: request.sessionId, senderKey: request.senderKey,
+    })
+    const lease: V3OwnerLease = {
+      grantId: randomUUID(), sessionId: request.sessionId,
+      senderKey: request.senderKey, processEpoch: this.processEpoch,
+      caseId: request.run.caseId, attemptId: request.run.attemptId,
+      runId: request.run.runId, generation: expected,
+      manifestHash: request.run.inputManifestHash,
+      planFingerprint: request.plan.fingerprint,
+      sourceIdentities: request.sources.map(x => structuredClone(x)),
+      permittedTools: [...new Set(request.permittedTools)],
+      expiresAt: request.expiresAt, state: 'active',
+    }
+    this.persist({
+      ...this.journal,
+      owners: { ...this.journal.owners, [lease.sessionId]: lease },
+      generationBySession: { ...this.journal.generationBySession, [lease.sessionId]: expected },
+    })
+    return structuredClone(lease)
+  }
+
+  get(sessionId: string): V3OwnerLease | null {
+    const lease = this.journal.owners[sessionId]
+    return lease ? structuredClone(lease.processEpoch !== this.processEpoch && lease.state === 'active'
+      ? { ...lease, state: 'recovery-required' as const } : lease) : null
+  }
+
+  /** Explicitly separate ordinary session operations from review owners. */
+  assertOrdinarySession(sessionId: string): void {
+    if (this.journal.tombstones.includes(sessionId) ||
+        own(this.journal.owners, sessionId) || this.localDenied.has(sessionId)) {
+      throw new C0ContractError('CASE_SCOPE_FORBIDDEN', 'Review-owned session is private')
+    }
+  }
+
+  assertAuthorized(sessionId: string, grantId: string, senderKey: string,
+    principal: Principal, tool: V3ReviewTool, source?: SourceIdentity): V3OwnerLease {
+    const lease = this.journal.owners[sessionId]
+    if (!lease || this.localDenied.has(sessionId) || lease.state !== 'active' ||
+        lease.processEpoch !== this.processEpoch ||
+        lease.grantId !== grantId || lease.senderKey !== senderKey ||
+        Date.now() >= lease.expiresAt ||
+        !lease.permittedTools.includes(tool) ||
+        !principal.scope?.caseIds.includes(lease.caseId) ||
+        !this.authority.isCurrent({ lease: structuredClone(lease), principal })) {
+      throw new C0ContractError('CASE_SCOPE_FORBIDDEN', 'Owner capability is not current')
+    }
+    if (source) {
+      assertC0SourceIdentity(source)
+      if (source.caseId !== lease.caseId ||
+          !lease.sourceIdentities.some(s =>
+            s.documentVersionId === source.documentVersionId &&
+            s.materialId === source.materialId &&
+            s.rawSha256 === source.rawSha256 &&
+            s.parseRevision === source.parseRevision &&
+            s.blockId === source.blockId &&
+            s.location.kind === source.location.kind &&
+            s.location.locator === source.location.locator)) {
+        throw new C0ContractError('SOURCE_STALE', 'Source is not in Main frozen allowlist')
+      }
+    }
+    return structuredClone(lease)
+  }
+
+  private settle(sessionId: string, state: Exclude<V3OwnerState, 'active'>): void {
+    const old = this.journal.owners[sessionId]
+    if (!old) throw new C0ContractError('CASE_SCOPE_FORBIDDEN', 'Unknown Owner session')
+    this.localDenied.add(sessionId) // deny before potentially failing disk I/O
+    const next: OwnerDisk = {
+      ...this.journal,
+      owners: { ...this.journal.owners, [sessionId]: { ...old, state } },
+      tombstones: state === 'deleted'
+        ? [...new Set([...this.journal.tombstones, sessionId])]
+        : [...this.journal.tombstones],
+    }
+    this.persist(next)
+  }
+  revoke(sessionId: string): void { this.settle(sessionId, 'revoked') }
+  deleteSession(sessionId: string): void { this.settle(sessionId, 'deleted') }
+  settleTerminal(sessionId: string): void { this.settle(sessionId, 'terminal') }
+
+  /**
+   * Cold start MUST explicitly classify old active grants before exposing
+   * session state or continuing a paused attempt.
+   */
+  quarantineInterrupted(): string[] {
+    const ids = Object.entries(this.journal.owners)
+      .filter(([id, lease]) => lease.state === 'active' &&
+        (lease.processEpoch !== this.processEpoch || this.localDenied.has(id)))
+      .map(([id]) => id)
+    if (!ids.length) return []
+    const updated = { ...this.journal.owners }
+    for (const id of ids) {
+      const previous = updated[id]
+      if (!previous) fail('Owner to quarantine missing')
+      updated[id] = { ...previous, state: 'recovery-required' }
+    }
+    this.persist({ ...this.journal, owners: updated })
+    return ids
+  }
+}
