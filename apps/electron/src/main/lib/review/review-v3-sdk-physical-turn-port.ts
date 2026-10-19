@@ -119,21 +119,29 @@ export class V3APhysicalSDKTurnPort implements V3AMainSDKTurnPort {
     } finally {
       active=false
     }
-    if (unsafe || !result || !nativeRequestId ||
-        result.nativeRequestId!==nativeRequestId) {
-      deny('Native SDK Provider receipt provenance unavailable')
+    // The completion is set by an injected witness callback. TypeScript
+    // cannot prove that the awaited engine invoked that callback, so narrow
+    // the captured result explicitly rather than using an unsafe non-null !.
+    const observed=result as typeof result | {
+      nativeRequestId:string
+      nativeReceiptId:string
+      status:'completed' | V3ATurnInterruption
+    }
+    if (unsafe || !observed || !nativeRequestId ||
+        observed.nativeRequestId!==nativeRequestId) {
+      return deny('Native SDK Provider receipt provenance unavailable')
     }
     if (input.signal?.aborted) {
-      deny('Main aborted after native SDK Provider dispatch')
+      return deny('Main aborted after native SDK Provider dispatch')
     }
-    if (result.status==='completed') {
+    if (observed.status==='completed') {
       return {
         kind:'completed-turn',run:input.run,
-        dispatchId:input.dispatchId,receiptId:result.nativeReceiptId,
+        dispatchId:input.dispatchId,receiptId:observed.nativeReceiptId,
       }
     }
     return {
-      kind:'interrupted',status:result.status,run:input.run,
+      kind:'interrupted',status:observed.status,run:input.run,
       dispatchId:input.dispatchId,
     }
   }
