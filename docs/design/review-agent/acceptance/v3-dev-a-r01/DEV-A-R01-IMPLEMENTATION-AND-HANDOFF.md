@@ -109,3 +109,8 @@ A1 unfinished: actual session manager and Orchestrator admission/stop; persist A
 2. C's Run consumer must revalidate attemptId/generation/sequence/manifest/Owner/current Case/Source before accepting a replay. Dev-A local ACK is not business persistence or approval.
 3. Never reopen a grant from a previous processEpoch. Quarantine then issue a fresh trusted Main authorization and generation under an approved C contract.
 4. Run two *actual OS PIDs*, cold kill, crash-after-rename, ENOSPC/EACCES and post-reboot recovery on an isolated fault volume before declaring Gate E.
+
+### Separate OS-process CAS probes added
+- `review-pi-owner-adapter-multipid.test.ts` invokes an independent Bun child process through `spawnSync(process.execPath, ['-e', ...])`. One case has the child commit a file CAS and verifies the parent with an old expected snapshot cannot overwrite it; the other has the child create an exclusive lock and verifies the parent fails closed. The fixture uses a disposable temporary directory and **no real Case/Run/Provider data**.
+- This is a genuine two-PID test **of the filesystem persistence primitive only**. It does not certify that the Electron Main Orchestrator across two real user sessions or Dev-C Run consumer is safe; kill/recovery, actual full volume, cross-file atomicity and authorization remain unverified.
+- Only a successful exact-HEAD PR CI after the test addition counts as Gate O evidence. Failed/cancelled/queued CI is not PASS.
