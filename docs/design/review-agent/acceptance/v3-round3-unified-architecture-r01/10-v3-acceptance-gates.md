@@ -34,3 +34,5 @@
 | Provider/校方/Gold/Electron未跑却标PASSED | 发布结论 |
 
 每个失败至少保留`first_failure.json`、fixture SHA、stdout/stderr SHA256、实际persistent artifacts哈希、commit SHA和可重复步骤。允许累计功能后集中目标机验收，但不能停止日常离线CI。
+## Gate P｜原始产品目标与评测保全
+必须逐项核对原始`02`之F01–F18、`04`之A01–A18/C01–C04/S01–S03/D01–D12/K01–K16，以及120例+30盲测/用户可用性/规模/资源/真正Windows安装。详细见`16-original-product-acceptance-traceability.csv`及`16-original-product-acceptance-traceability.md`；全部R3状态NOT_RUN，不得以本轮架构与239选定离线测试覆盖原功能验收。
