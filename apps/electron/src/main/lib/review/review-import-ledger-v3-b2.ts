@@ -123,7 +123,8 @@ export class ReviewB2InputLedger {
     const seen=new Set<number>()
     for(const item of record.files){
       const original=originals.get(item.index)
-      if(!original || seen.has(item.index) || item.entryName!==original.entryName ||
+      if(!original) fail('CORRUPT')
+      if(seen.has(item.index) || item.entryName!==original.entryName ||
          item.compressedSha256!==original.compressedSha256 ||
          !['pending','needs-user-confirmation','accepted','skipped','rejected'].includes(item.status) ||
          ![null,'application','supporting'].includes(item.role) ||
