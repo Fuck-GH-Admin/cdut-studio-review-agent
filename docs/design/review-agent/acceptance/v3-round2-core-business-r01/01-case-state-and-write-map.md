@@ -48,7 +48,7 @@ flowchart LR
  V2UI["V2CasePanel / reviewAPI"] --> IPC2["review-ipc CREATE_CASE_V2"]
  IPC2 --> APP["application-service<br/>createCaseFromTemplate"]
  APP --> CA["case-store-v2.createAggregate"]
- CA --> AG["V2 aggregate.json<br/>caseV2 / observations / links / tasks / decisions / receiptLog"]
+ CA --> AG["V2 state.v2.json<br/>caseV2 / observations / links / tasks / decisions / receiptLog"]
  V2UI --> ACT["updateFields / correctObservation<br/>setEvidenceLink / workspace business"]
  ACT --> S["submitCommand"]
  S --> ID{"requestId + type +<br/>payloadHash 重放?"}
