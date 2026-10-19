@@ -23,3 +23,11 @@ Six authoring tests include deterministic Check/source identity, missing local-o
 - Existing `submitCommand` receipts persist summary and payload hash, and old+new immutable Plan history can reconstruct deleted identity; no school decision made.
 - No IPC/Preload/UI Main wiring, no cross-host storage or hard-power-loss claim; real Gate E NOT_RUN, L BLOCKED_NO_AUTH, product UAT/P NOT_RUN, Release NO_GO.
 - I #151 exact `687ed356...` remains signed only for A R14 technical replay and cannot import this C new revision implicitly. No I Main writer lease or B Main/IPC code permission.
+
+## C BCR002-B final exact-SHA Gate O — formally signed
+
+Final Dev-C #144 HEAD `461b5c9e7abc17a020c843f279118208196f5ef0`, after author-read B1 structural compatibility commits `fb807d9932665a495d6fc8eaa23c29877a20c66c` and `461b5c9e7abc17a020c843f279118208196f5ef0`. Supersedes earlier `d7d6254...` **PENDING** checkpoint without mis-claiming its individual CI outcome.
+
+Five GitHub Actions at this SAME SHA all completed/success: PR `39317813298` job `118283792839` frozen install + all TypeScript, package boundaries, skin, three Electron builds, and whole Bun **4124 pass/5 OS skip/0 fail (4129 tests across 476 files)**. Original raw Bun records **6/6** `C B-CR-002-B formal removed-Check UpgradePlan CAS+Receipt` tests `(pass)`; Baseline `39317813334`, Batch `39317813301`, D1 `39317813320`, D2 `39317813387` SUCCESS. Full original C BCR002-A 7-case regressions remain passing in this combined suite.
+
+Formal common #145 `DECISIONS:C` **`C-BCR002-B-FINAL-GATE-O / PASS_EXACT_SHA_461B5C9 / C_OFFLINE_UPGRADEPLAN_REMOVAL_ACK_CAS_RECEIPT`**. Signed scope only C's inert non-IPC business removal contract; no B publisher authenticity source installed, no real trusted Main actor/Owner injection for end-user write, no authorized I edit of C files, no published 50/51 templates, no real Electron E, L, P or Release GO.
