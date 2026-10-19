@@ -312,6 +312,20 @@ export class ReviewB2SourceVersionAdapter {
         record.parsed.status === 'failed') throw new Error('B2_SOURCE_STALE')
     const block = record.parsed.blocks.find((candidate) => candidate.blockId === blockId)
     if (!block) throw new Error('B2_SOURCE_BLOCK_UNVERIFIED')
+    // Re-validate the physical bytes at evidence mint time; a parser registry
+    // cache is not an authority over a future replacement/revocation of the
+    // Main-held material. Only the active scoped staging capability is trusted.
+    const current = this.staging.getCandidate(ctx,candidateId)
+    if(current.documentVersionId!==record.parsed.documentVersionId ||
+       current.materialId!==record.parsed.materialId ||
+       current.rawSha256!==record.parsed.rawSha256 ||
+       current.caseCandidateId!==record.parsed.caseCandidateId ||
+       current.ownerId!==ctx.ownerId || current.ownerGeneration!==ctx.ownerGeneration)
+      throw new Error('B2_SOURCE_PHYSICAL_REVISION_MISMATCH')
+    const original = this.staging.read(ctx,candidateId)
+    if(sha256(original)!==record.parsed.rawSha256 ||
+       original.byteLength!==current.byteLength)
+      throw new Error('B2_SOURCE_PHYSICAL_BYTES_MISMATCH')
     const result: SourceIdentity = {
       schemaVersion: REVIEW_C0_SCHEMA_VERSION,
       caseId: record.parsed.caseCandidateId, materialId: record.parsed.materialId,
