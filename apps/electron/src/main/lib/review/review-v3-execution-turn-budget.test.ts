@@ -1,4 +1,4 @@
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdtempSync, readFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it } from 'bun:test'
@@ -78,15 +78,15 @@ describe('V3 A3 durable Main turn budget and A2 technical resume gate', () => {
   it('A3-TURN-01: 23/24 is not exhausted; 24/24 only allows needs-resume technical proposal',async()=>{
     const h=prepare()
     for(let i=1;i<=23;i++){
-      expect(h.budget.recordCompletedTurn(h.call)).toEqual({
+      expect(h.budget.recordCompletedTurn(h.call,'turn-'+i)).toEqual({
         usedTurns:i,maxTurns:24,exhausted:false,
       })
     }
     await expect(h.events.terminal(h.call,'needs-resume')).rejects.toThrow()
-    expect(h.budget.recordCompletedTurn(h.call)).toEqual({
+    expect(h.budget.recordCompletedTurn(h.call,'turn-24')).toEqual({
       usedTurns:24,maxTurns:24,exhausted:true,
     })
-    expect(()=>h.budget.recordCompletedTurn(h.call)).toThrow()
+    expect(()=>h.budget.recordCompletedTurn(h.call,'turn-25')).toThrow()
     await expect(h.events.read({...h.call,tool:'review_read_documents',source:h.source}))
       .rejects.toThrow()
     const t=await h.events.terminal(h.call,'needs-resume')
@@ -99,9 +99,9 @@ describe('V3 A3 durable Main turn budget and A2 technical resume gate', () => {
   })
   it('A3-TURN-02: Main pause/resume rotates grant but does not reset 24-turn Run budget',()=>{
     const h=prepare()
-    for(let i=0;i<12;i++)h.budget.recordCompletedTurn(h.call)
+    for(let i=0;i<12;i++)h.budget.recordCompletedTurn(h.call,'turn-'+(i+1))
     h.owners.pause(h.call.sessionId)
-    expect(()=>h.budget.recordCompletedTurn(h.call)).toThrow()
+    expect(()=>h.budget.recordCompletedTurn(h.call,'turn-13')).toThrow()
     const resumed=h.owners.resumePaused(h.call.sessionId,h.lease.grantId,
       h.lease.senderKey,h.principal)
     const call={...h.call,grantId:resumed.grantId}
@@ -110,7 +110,7 @@ describe('V3 A3 durable Main turn budget and A2 technical resume gate', () => {
       usedTurns:12,maxTurns:24,exhausted:false,
     })
     for(let i=13;i<=24;i++){
-      expect(h.budget.recordCompletedTurn(call).usedTurns).toBe(i)
+      expect(h.budget.recordCompletedTurn(call,'turn-'+i).usedTurns).toBe(i)
     }
     expect(h.budget.exhausted(resumed)).toBe(true)
   })
@@ -119,11 +119,11 @@ describe('V3 A3 durable Main turn budget and A2 technical resume gate', () => {
     try{
       const file=join(dir,'turns.json')
       const h=prepare(createFileOwnerPersistence(file))
-      for(let i=0;i<7;i++)h.budget.recordCompletedTurn(h.call)
+      for(let i=0;i<7;i++)h.budget.recordCompletedTurn(h.call,'turn-'+(i+1))
       const next=new V3ATurnBudget(createFileOwnerPersistence(file),h.owners)
       expect(next.snapshot(h.lease).usedTurns).toBe(7)
       expect(readFileSync(file,'utf8')).toContain('v3-dev-a-turns/1')
-      h.budget.recordCompletedTurn(h.call)
+      h.budget.recordCompletedTurn(h.call,'turn-8')
       expect(()=>next.snapshot(h.lease)).toThrow()
       const reopened=new V3ATurnBudget(createFileOwnerPersistence(file),h.owners)
       expect(reopened.snapshot(h.lease).usedTurns).toBe(8)
@@ -138,17 +138,28 @@ describe('V3 A3 durable Main turn budget and A2 technical resume gate', () => {
     const store=new MemoryStore()
     const h=prepare(store)
     store.fail=true
-    expect(()=>h.budget.recordCompletedTurn(h.call)).toThrow('ENOSPC')
+    expect(()=>h.budget.recordCompletedTurn(h.call,'first')).toThrow('ENOSPC')
     expect(h.budget.snapshot(h.lease).usedTurns).toBe(0)
     store.fail=false
-    expect(h.budget.recordCompletedTurn(h.call).usedTurns).toBe(1)
+    expect(h.budget.recordCompletedTurn(h.call,'first').usedTurns).toBe(1)
     expect(h.budget.exhausted(h.lease)).toBe(false)
+  })
+  it('A3-TURN-06: stable Main SDK receipt retries cannot inflate 24-turn budget',()=>{
+    const h=prepare()
+    expect(h.budget.recordCompletedTurn(h.call,'sdk-turn-1').usedTurns).toBe(1)
+    expect(h.budget.recordCompletedTurn(h.call,'sdk-turn-1').usedTurns).toBe(1)
+    for(let i=2;i<=24;i++)h.budget.recordCompletedTurn(h.call,'sdk-turn-'+i)
+    expect(h.budget.recordCompletedTurn(h.call,'sdk-turn-1')).toEqual({
+      usedTurns:24,maxTurns:24,exhausted:true,
+    })
+    expect(()=>h.budget.recordCompletedTurn(h.call,'sdk-turn-25')).toThrow()
+    expect(()=>h.budget.recordCompletedTurn(h.call,'')).toThrow()
   })
   it('A3-TURN-05: forged grant, wrong tool and damaged budget fail closed',()=>{
     const h=prepare()
-    expect(()=>h.budget.recordCompletedTurn({...h.call,grantId:'wrong'})).toThrow()
-    expect(()=>h.budget.recordCompletedTurn({...h.call,tool:'review_read_documents'})).toThrow()
-    h.budget.recordCompletedTurn(h.call)
+    expect(()=>h.budget.recordCompletedTurn({...h.call,grantId:'wrong'},'forged')).toThrow()
+    expect(()=>h.budget.recordCompletedTurn({...h.call,tool:'review_read_documents'},'wrong-tool')).toThrow()
+    h.budget.recordCompletedTurn(h.call,'valid')
     const store=h.store as MemoryStore
     store.value=(store.value??'')+'damage'
     expect(()=>h.budget.snapshot(h.lease)).toThrow()
