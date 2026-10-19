@@ -56,7 +56,7 @@ describe('B-INT input proposal is distinct from C ApplyMaterial',()=>{
     expect(proposed[0]!.candidateKind).toBe('input-only-unapplied')
     expect(proposed[0]!.confirmingReceiptHash).toBe(accepted.receipt.receiptHash)
     expect(proposed[0]!.sourceLedgerHash).toBe(accepted.ledger.ledgerHash)
-    expect(proposed[0]!.rawSha256).toBe(first.files[0]!.rawSha256)
+    expect(proposed[0]!.rawSha256).toBe(first.files[0]!.rawSha256!)
     expect(proposed[0]!.proposalHash).toMatch(/^[a-f0-9]{64}$/)
     expect('caseId' in proposed[0]!).toBe(false)
     expect('sourceIdentity' in proposed[0]!).toBe(false)
