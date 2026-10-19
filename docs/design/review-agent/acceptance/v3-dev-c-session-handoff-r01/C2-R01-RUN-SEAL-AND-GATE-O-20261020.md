@@ -65,3 +65,12 @@ bun run --filter='@profer/electron' build:renderer
 - 不从 A/B 目前失败的移动 HEAD 自动取新来源；I1 旧源已过 Gate O，但与 C2-R01 不是同一结合版本。
 - C2-R01 可在 Gate O 绿后作为**C 主线技术候选**，并与 I 另行冻结、签署 *技术验证用* 新锚点。**任何正式 Host 入口与业务 writer 仍是 C 独占，须后续单独签来源信任与桥接 CR。**
 - 回滚不得删除已持久化的 `state.v2.json`、`v3TechnicalExecution`、`v3ReviewRun`、原件 byteHash 或历史 Receipt；应保留法证副本并进行显式 schema reader 降级/迁移评估。
+
+
+## R01 Gate O 首次真实失败及修复记录（后续追加，2026-10-20）
+
+- **首败精确 SHA**：`e5329580484fcdc94b6fb330e8e2d5656c3c6b3b`；PR CI [#39291535211](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/actions/runs/39291535211)，job `118193295130` 确实执行了安装与全仓 `bun run typecheck`，以 code 2 退出，后续步骤未执行。
+- **四条真实 TypeScript 诊断**：`review-v3-run-writer.ts:74 TS2532`（历史 Receipt 的 Actor 可空）；`review-v3-technical-ledger.ts:106 TS2304`（缺少 `executionProposalId` 导入）；同文件 `:225 TS18048` 和 `:253 TS2322`（校验函数虽保证 Plan 存在，但 TS 跨函数控制流不能收窄可选 aggregate 字段）。
+- **仅对首败的修复**：C writer `50cd7775160b33ef003c435dd5463ac6ecb14967` 用明确可空 Actor 比较（空 Actor 仍拒绝显示证据）；C ledger `3242b22a0825eec347b2748680bb746eb0f55215` 补纯函数导入并在验证后本地捕获经显式 fail-close 校验的 CanonicalPlan。没有放宽 Owner/Host/原件/Chain 信任门禁。
+- **最新候选源码 SHA**：`3242b22a0825eec347b2748680bb746eb0f55215`，其完整 Gate O 必须单独运行；**不能从旧失败 SHA 或 C1 的旧绿色 SHA 借用任何成功结论**。
+- 第一批源源码上的 12 项 C2 writer 负例和既有 C2 journal 测试都已提交，但在首次 CI 的 TS 步骤之前/之后未实际运行；如最新测试步骤出现新首败，保留日志再修，不接受删除安全断言作为捷径。
