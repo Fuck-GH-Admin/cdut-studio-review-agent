@@ -96,7 +96,7 @@ fi
 
 1. `A4-DISPATCH-01/04`：SDK 派发意图写盘前 ENOSPC → **0 Provider 调用**；写盘成功却抛 EIO → 冷 reopen `in-flight`，不重派。
 2. `A4-DISPATCH-02`、`A3-SDK-11`：SDK 在 Host await 时授权轮换，旧结果不充预算；新 grant 对同 Run 再次调用 SDK 被 `RECOVERY_REQUIRED` 拦截。
-3. `A3-SDK-14`、`A4-DISPATCH-07`：AbortSignal 迟到有效样式 SDK 回执不能记账，`late-denied` 在本进程和磁盘 ledger reopen 后均不重派；SDK 物理调用次数保持 1，预算保持 0。
+3. `A3-SDK-14`、`A4-DISPATCH-07`：AbortSignal 后到达的有效样式 SDK 回执不能记账。**Abort 赢得竞态且 SDK 尚未完成：保留 `in-flight`；SDK 先完成而旧 grant 失效：`late-denied`**。两种状态都在本进程和磁盘 reopen 后禁止自动重派；Provider 调用次数维持 1，预算 0。
 4. `A4-DISPATCH-06`、`A3-SDK-09`：不同 dispatchId/Provider 调用使用相同 SDK receiptId → `REQUEST_ID_COLLISION`，不能二次冲抵同一预算轮次。
 5. 9/9 exact Check 才允许 `completed-technical`；8/9 / unknown / rejected / 伪造 SourceIdentity / 仅宣称全文读取但未物理覆盖，都不能通过；技术通过不能当正式 C2 ACK。
 6. `review-v3-execution-crashpid.test.ts` 与 `late-pid.test.ts`：真实 Linux child OS PID，SIGKILL 冷启动隔离，另 PID await 期间撤权导致 **0 late proposal**。要记录真实 PID、marker、退出代码与暂存目录证据；若平台自动 SKIP，只能记 OS-SKIP，不能 PASS。
@@ -113,6 +113,14 @@ fi
 - **R08-PID-01**: actual Bun/Linux OS child, A-owned Owner + SDK dispatch + turn budget persisted to real files; child SIGKILL inside synthetic SDK callback after durable `claim`. New PID re-opens journals, quarantines old Owner grant, observes **in-flight** SDK intent / 0 completed turns / no technical proposal. Preserve marker PID, signal, SHA and temp file hashes in redacted logs; this is **real OS process test with synthetic Provider**, not Gate E.
 - Existing `A3-SDK-14` / `A4-DISPATCH-07` cancellation regressions now expect `in-flight` (if abort wins before SDK promise settles), *not* the old `late-denied` branch. Both states remain `RECOVERY_REQUIRED`. Exact error string must match new implementation and no new provider call is permitted.
 - For true Provider Gate E still separately validate native cancellation propagation, actual network/inference call lifetime, SDK retry and image downgrade. A Main timeout is only a wait cancellation; it does not prove upstream Provider physically stopped. Never equate the quick Main error with safe retry.
+
+### R09 cross-Run Provider isolation / global receipt evidence (new)
+
+- Test names `A4-R09-01..07` reside in `review-v3-main-sdk-turn-bridge.test.ts` and **are submitted, not yet executed**. They exercise fresh Run/attempt plus fresh Owner session same Case blocked by unresolved Provider, unrelated Case permitted, cold journal reopen still blocked, legacy unresolved record lacking Case/Owner attribution quarantines all new Runs (no guessed ownership), mixed present/missing attribution treated as corrupt, distinct Run physical dispatch returning same settled receipt rejected, and distinct Run chains with same receipt rejected on cold reopen.
+- Actual OS PID child SIGKILL extension in `review-v3-sdk-dispatch-crashpid.test.ts` now includes `R09-PID-02` **within the existing R08-PID-01 test body**: new process creates new Owner session and Run for the same case and fails SDK claim. Record it as one OS test with an added R09 assertion group, not fabricated two separately executed tests.
+- Cold historical dispatch journal v1 need not be silently migrated: old unscoped `in-flight` or `late-denied` must fail closed globally for safety, whereas correctly scoped still-unresolved records must only quarantine their Case/Owner session. No deletes or guessed SDK turn receipts.
+- Two distinct SDK/provider physical dispatches may never settle against the same `receiptId` **even if Run/case/session differs**. The full ledger scan runs before completed turn budget mutation; the hash-sealed journal decoder independently rejects already persisted collisions. Normal independent Case with unique receipt must continue to work.
+- Exact #143 SHA Gate O must verify original Owner/proposal/24-turn tests as well as R09 negatives; `Gate E` still requires installed Pi native API/Provider and independent request/receipt observations. All R09 changes are A-owned technical ledger behavior, not C business recovery or formal Run ACK.
 
 ## 5. 留存与报告格式
 
@@ -133,6 +141,6 @@ fi
 
 `V3AMainSDKTurnPort` 现在强制 `dispatchId` 参数和回执配对，但这只阻止**拿错已经持久化意图**的结果。单纯 `SDKMessage.result.success`、assistant UUID、Pi Harness `agent_end` 不能证明真实独立 SDK Provider turn 完成；合成测试自动 echo `dispatchId` 不构成 Gate E。集中实机时必须额外确认 Main SDK Host 回执的实际来源、唯一物理调用次数、native retry、带图失败后文本重发和 SDK cancel/worker 终态。
 
-## 6. 下一批不是自动接线
+## 7. 下一批不是自动接线
 
 目前 #143 的 `V3ASDKTurnBridge` 尚无真实 SDK Main callback 注册。旧 `pi-review-agent-client.ts` 使用 Pi `options.query()` + `SDKMessage`，旧 Pi SDK adapter `onHarnessLifecycle` 只是无稳定 receiptId 的被动观测；不能用任何随机 ID/模型字符串替代真实物理 turn receipt。为新 Main 注入建立清晰 Host receipt provenance 与 Provider abort / native retry / 图像降级计数后，才交 I/C 集成验证。C 独占真实 Run writer/ACK/共享 DTO/IPC，未授权前不动这些文件。
