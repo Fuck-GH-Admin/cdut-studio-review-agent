@@ -17,6 +17,9 @@ import {
 } from './review-v3-execution-turn-budget'
 
 export type V3ASDKMode = 'direct' | 'hidden' | 'graph' | 'batch'
+
+/** Process-local protection if Main accidentally constructs two bridges. */
+const activeSDKOwnerSessions = new Set<string>()
 export type V3ATurnInterruption = Extract<
   ATechnicalStatus, 'cancelled' | 'timed-out' | 'failed'
 >
@@ -111,10 +114,12 @@ export class V3ASDKTurnBridge {
         !['direct','hidden','graph','batch'].includes(mode)) {
       throw new C0ContractError('CASE_SCOPE_FORBIDDEN','Invalid trusted SDK turn mode')
     }
-    if (this.busy) {
-      throw new C0ContractError('RECOVERY_REQUIRED','Concurrent SDK turn on same Main driver')
+    if (this.busy || activeSDKOwnerSessions.has(call.sessionId)) {
+      throw new C0ContractError('RECOVERY_REQUIRED',
+        'Concurrent SDK turn on same Main Owner session')
     }
     this.busy=true
+    activeSDKOwnerSessions.add(call.sessionId)
     try {
       const frozen=this.authorized(call)
       const lease=this.owners.assertAuthorized(
@@ -170,6 +175,7 @@ export class V3ASDKTurnBridge {
       }
       return {kind:'recorded',turn}
     } finally {
+      activeSDKOwnerSessions.delete(call.sessionId)
       this.busy=false
     }
   }
