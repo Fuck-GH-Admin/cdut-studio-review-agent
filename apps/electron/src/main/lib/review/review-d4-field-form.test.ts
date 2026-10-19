@@ -33,7 +33,7 @@ describe('W1 reviewer typed form metadata is scoped to frozen D2 plan', () => {
       binding.evidenceCoverage?.fieldKey)!.evidenceCoverage!.fieldKey
     const spec: D4ReviewerFieldSpec = { key: field, label: '审核员确认的使用人数',
       kind: 'number', required: false, min: 0, max: 500 }
-    const rev = getCase(created.id)!.revision!
+    const rev = (getCase(created.id)!.revision ?? 0)
     const saved = await saveD4ReviewerForm({ caseId: created.id, subjectId: 'classroom-subject',
       planFingerprint: plan.fingerprint, expectedRevision: rev, fields: [spec] })
     expect(saved.fields[0]).toEqual(spec)
@@ -48,12 +48,14 @@ describe('W1 reviewer typed form metadata is scoped to frozen D2 plan', () => {
     expect(() => assertD4ReviewerFieldValue(created.id, 'classroom-subject', field,
       { kind: 'number', value: 0 })).not.toThrow()
     const aggregate = readAggregate(created.id)!
-    await expect(correctObservation(created.id, {
+    const invalidCorrection = await correctObservation(created.id, {
       requestId: 'reject-invalid-w1-form-' + created.id, actor: { actorId: 'reviewer',
         actorSource: 'local', role: 'reviewer' }, expectedRevision: aggregate.caseV2.revision,
       payload: { subjectId: 'classroom-subject', fieldKey: field,
         value: { kind: 'text', value: 'bypass' }, sourceRefs: [], reason: 'negative test' },
-    })).rejects.toThrow('D4_FORM_FIELD_KIND_MISMATCH')
+    })
+    expect(invalidCorrection.ok).toBeFalse()
+    expect(invalidCorrection.message).toContain('D4_FORM_FIELD_KIND_MISMATCH')
     expect(readAggregate(created.id)!.observations.some(o => o.fieldKey === field &&
       o.value.kind === 'text' && o.confirmed)).toBeFalse()
     const updatedSpec = { ...spec, required: true, label: '审核员修订的字段标题' }
@@ -66,7 +68,7 @@ describe('W1 reviewer typed form metadata is scoped to frozen D2 plan', () => {
       academicYear: '2026-2027', d4: selection }, 501)
     const plan = readAggregate(created.id)!.d2RuntimePlan!
     const data = { caseId: created.id, subjectId: 'classroom-subject',
-      planFingerprint: plan.fingerprint, expectedRevision: getCase(created.id)!.revision! }
+      planFingerprint: plan.fingerprint, expectedRevision: (getCase(created.id)!.revision ?? 0) }
     await expect(saveD4ReviewerForm({ ...data, fields: [{
       key: 'foreign-certificate-score', label: '伪造来源', kind: 'text', required: true,
     }] })).rejects.toThrow('D4_FORM_FIELD_OUTSIDE_FROZEN_SCOPE_OR_INVALID')
