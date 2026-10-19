@@ -51,6 +51,7 @@ function decode(raw:string|null):SDKDispatchDisk {
     if(!k || !chain || !/^[a-f0-9]{64}$/.test(chain.runHash) ||
       !Array.isArray(chain.records))return reject('SDK dispatch chain corrupt')
     const ids=new Set<string>()
+    const settledReceipts=new Set<string>()
     for(let i=0;i<chain.records.length;i++){
       const item=chain.records[i]
       if(!item || typeof item.id!=='string' || !item.id.trim() ||
@@ -66,6 +67,12 @@ function decode(raw:string|null):SDKDispatchDisk {
         return reject('SDK dispatch ledger invalid/duplicated')
       }
       ids.add(item.id)
+      if(item.state==='settled') {
+        if(settledReceipts.has(item.receiptId!)){
+          return reject('SDK dispatch ledger reuses one receipt across physical calls')
+        }
+        settledReceipts.add(item.receiptId!)
+      }
     }
   }
   return envelope.payload
