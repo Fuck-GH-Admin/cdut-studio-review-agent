@@ -310,11 +310,19 @@ export class ReviewB2InputLedger {
       return {ledger:structuredClone(next),receipt:structuredClone(receipt)}
     } finally {closeSync(fd!);rmSync(lock,{force:true})}
   }
-  /** Fresh owner authentication required each time; no automatic case write. */
+  /** Snapshot participates in the same cross-PID input.lock as decisions. */
   snapshot(ctx:B2MainContext,archiveId:string):B2InputBatchLedger {
-    const source=this.checkedArchive(ctx,archiveId)
-    const record=this.read(ctx,source)
-    if(!record)fail('NOT_STARTED')
-    return structuredClone(record!)
+    const dir=this.folder(ctx,archiveId)
+    if(!existsSync(dir))fail('NOT_STARTED')
+    const lock=join(dir,'input.lock')
+    let fd:number
+    try {fd=openSync(lock,'wx',0o600)} catch {fail('LOCKED')}
+    try {
+      const source=this.checkedArchive(ctx,archiveId)
+      const record=this.read(ctx,source)
+      if(!record)fail('NOT_STARTED')
+      this.staging.assertStillGranted(ctx)
+      return structuredClone(record!)
+    } finally {closeSync(fd!);rmSync(lock,{force:true})}
   }
 }
