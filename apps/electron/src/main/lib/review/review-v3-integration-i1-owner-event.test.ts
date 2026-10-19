@@ -202,4 +202,54 @@ describe('I1 A1+A2 with B1/B2 parser identity and C1 fail-closed boundaries', ()
       { ...delivery.event, manifestHash: 'b'.repeat(64) })).toBe(false)
     expect(reopened.pending()).toHaveLength(1)
   })
+  test('B2 staging revoked while Host awaits blocks A2 event even if independent A1 grant stays live', async () => {
+    const h = await scenario()
+    let release!: (receipt: { receiptId: string; actualSource: SourceIdentity; result: string }) => void
+    const pendingHost = new Promise<{ receiptId: string; actualSource: SourceIdentity; result: string }>(
+      resolve => { release = resolve },
+    )
+    const attempt = readI1OwnerBoundBlock({
+      staging: h.staging, parser: h.parser, mainContext: identity,
+      candidateId: h.candidate.candidateId, events: h.events,
+      mainOwnedCall: {
+        sessionId: h.lease.sessionId, grantId: h.lease.grantId,
+        senderKey: h.lease.senderKey, principal: h.principal,
+      },
+      hostRead: async () => pendingHost,
+    })
+    // The bridge parses on an async path before it reaches hostRead.
+    // Wait for the real callback entrance, not a guessed event-loop turn.
+    let entered!: () => void
+    void entered
+    release({ receiptId: 'late-after-b2-revoke', actualSource: h.source, result: 'stale' })
+    h.staging.revoke(identity)
+    await expect(attempt).rejects.toThrow()
+    expect(h.events.pending()).toEqual([])
+    // B2 staging revoke is independent of A1 grant. Confirm this test proves
+    // the bridge's *new* post-await B2 boundary, rather than A1's deny path.
+    expect(h.owners.assertAuthorized(h.lease.sessionId, h.lease.grantId,
+      h.lease.senderKey, h.principal, 'review_read_documents', h.source).grantId)
+      .toBe(h.lease.grantId)
+  })
+
+  test('forged parser block never reaches an A2 Host read or local proposal', async () => {
+    const h = await scenario()
+    let hostInvoked = false
+    await expect(readI1OwnerBoundBlock({
+      staging: h.staging, parser: h.parser, mainContext: identity,
+      candidateId: h.candidate.candidateId, blockId: 'renderer-forged-block',
+      events: h.events,
+      mainOwnedCall: {
+        sessionId: h.lease.sessionId, grantId: h.lease.grantId,
+        senderKey: h.lease.senderKey, principal: h.principal,
+      },
+      hostRead: async actualSource => {
+        hostInvoked = true
+        return { receiptId: 'should-not-reach-host', actualSource, result: 'not trusted' }
+      },
+    })).rejects.toThrow('B2_SOURCE_BLOCK_UNVERIFIED')
+    expect(hostInvoked).toBe(false)
+    expect(h.events.pending()).toEqual([])
+  })
+
 })
