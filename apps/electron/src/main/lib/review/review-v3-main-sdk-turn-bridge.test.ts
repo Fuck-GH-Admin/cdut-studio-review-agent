@@ -355,12 +355,7 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
         await session.agent.streamFunction(
           {api:'openai-completions',provider:'openai',id:'pinned'} as never,
           {messages:[]} as never,
-          {transport:'sse',fetch:async()=>{
-            transportCalls++
-            return new Response('',{
-              status:200,headers:{'x-request-id':'native-http-request-r10-16'},
-            })
-          }},
+          {transport:'sse'},
         )
       },
     }
@@ -369,6 +364,12 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
         session:session as unknown as Pick<AgentSession,'agent'|'prompt'|'subscribe'>,
         prompt:'frozen-trusted-main-review-request',
         trustedOrigin:'https://trusted.provider.example',
+        transportFetch:async()=>{
+          transportCalls++
+          return new Response('',{
+            status:200,headers:{'x-request-id':'native-http-request-r10-16'},
+          })
+        },
       }),
     }))
     const bridge=new V3ASDKTurnBridge(h.owners,h.turns,h.producer,port,h.dispatch)
