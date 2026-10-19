@@ -53,6 +53,23 @@ describe('B-FLOW-01 Main-authorized author operation seam',()=>{
     expect(frozen.candidateStatus).toBe('candidate-held')
     await expect(service.freezeCandidate(ctx,source.templateId,0)).rejects.toThrow('B1_MAIN_REVISION_STALE')
   })
+  test('freezeSavedDocument rejects dirty renderer payload and stale revision, but accepts saved candidate',async()=>{
+    const service=new ReviewB1AuthorMainPort(()=>true)
+    const source=doc('custom-51-exact-snapshot')
+    const saved=await service.saveDraft(ctx,source,0)
+    const dirty=structuredClone(source)
+    dirty.modules[0]!.checks[0]!.requirement='Changed after save'
+    await expect(service.freezeSavedDocument(ctx,dirty,saved.revision))
+      .rejects.toThrow('B1_MAIN_UNSAVED_AUTHOR_CHANGES')
+    expect(readB1AuthorRevision(source.templateId)?.revision).toBe(saved.revision)
+    const frozen=await service.freezeSavedDocument(ctx,source,saved.revision)
+    expect(frozen.fingerprint).toMatch(/^[a-f0-9]{64}$/)
+    expect(frozen.candidateStatus).toBe('candidate-held')
+    await expect(service.freezeSavedDocument(ctx,source,saved.revision-1))
+      .rejects.toThrow('B1_MAIN_REVISION_STALE')
+    await expect(service.freezeSavedDocument({...ctx,ownerId:''},source,saved.revision))
+      .rejects.toThrow('B1_MAIN_AUTHOR_UNAUTHORIZED')
+  })
   test('unauthorized owner or revoked session cannot save, preview, freeze',async()=>{
     const service=new ReviewB1AuthorMainPort((actor)=>actor.sessionId==='trusted-main-session' &&
       actor.ownerGeneration===3 && actor.ownerId==='owner-main-1')
