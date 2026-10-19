@@ -182,6 +182,7 @@ export class V3AProposalProducer {
     if (!chain) return false
     const coverage = new V3ExecutionCompletenessAdapter(plan,run)
     const readVersions = new Set<string>()
+    const statusByCheck = new Map<string, ACheckStatus>()
     for (const event of chain.records) {
       // Previous pause/grant epochs may be replay candidates but can no longer
       // be used as proof that the newly reauthorized grant was complete.
@@ -189,6 +190,16 @@ export class V3AProposalProducer {
       if (event.kind === 'read') {
         readVersions.add(event.read.source.documentVersionId)
       } else if (event.kind === 'check') {
+        const checkId = JSON.stringify([
+          event.check.checkKey,event.check.targetKey,
+          event.check.objectKey,event.check.subjectId,
+        ])
+        const earlier = statusByCheck.get(checkId)
+        // Conflicting Host outcomes within one grant are ambiguous. A cannot
+        // prefer an earlier accepted result over a later rejected/unknown one.
+        // C must decide formal re-review or a fresh attempt.
+        if (earlier && earlier !== event.check.status) return false
+        statusByCheck.set(checkId,event.check.status)
         coverage.recordHostOutcome({...event.check,hostReceiptId:event.hostReceiptId})
       }
     }
