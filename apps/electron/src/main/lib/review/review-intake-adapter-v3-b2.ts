@@ -12,6 +12,11 @@ import {
 
 const sha256 = (v: Uint8Array | string): string => createHash('sha256').update(v).digest('hex')
 const safe = (s: string): boolean => typeof s === 'string' && s.length > 0 && s.length <= 256 && !s.includes('\u0000')
+/** Display filename is not a path capability; later consumers must never join arbitrary paths. */
+const safeDisplayName = (s: string): boolean => safe(s) &&
+  !/[\\/\\\\]/.test(s) && s !== '.' && s !== '..' && !/[. ]$/.test(s) &&
+  !/[<>:\"|?*]/.test(s) && !/^[\\u0000-\\u001f\\u007f]/.test(s) &&
+  !/^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\\.|$)/i.test(s)
 const failed = (reason: string): never => { throw new Error('B2_' + reason) }
 const MAX_FILE_BYTES = 50 * 1024 * 1024
 
@@ -120,7 +125,7 @@ export class ReviewB2StagingService {
         grant.caseCandidateId !== ctx.caseCandidateId) failed('TOKEN_SCOPE_MISMATCH')
     // Consume before any bytes copy or persistence; double-click and re-entrancy fail closed.
     grant.consumed = true
-    if (!safe(input.requestId) || !safe(input.fileName) || !safe(input.physicalSourceKey) ||
+    if (!safe(input.requestId) || !safeDisplayName(input.fileName) || !safe(input.physicalSourceKey) ||
         !['application','supporting','unassigned'].includes(input.role) ||
         (input.subjectId != null && !safe(input.subjectId)) ||
         !(input.bytes instanceof Uint8Array) ||
@@ -132,14 +137,14 @@ export class ReviewB2StagingService {
       physicalSourceKey: input.physicalSourceKey, rawSha256, fileName: input.fileName,
       subjectId: input.subjectId ?? null, role: input.role,
     }))
-    const requestKey = ctx.ownerId + '::' + ctx.caseCandidateId + '::' + input.requestId
+    const requestKey = JSON.stringify([ctx.ownerId,ctx.ownerGeneration,ctx.caseCandidateId,input.requestId])
     const prior = this.requests.get(requestKey)
     if (prior) {
       if (prior.fingerprint !== fingerprint) failed('REQUEST_ID_COLLISION')
       return structuredClone(this.materials.get(prior.candidateId)!.material)
     }
     const documentVersionId = 'docv-' + sha256(JSON.stringify({
-      caseCandidateId: ctx.caseCandidateId,
+      ownerId: ctx.ownerId, caseCandidateId: ctx.caseCandidateId,
       physicalSourceKey: input.physicalSourceKey, rawSha256,
     })).slice(0, 32)
     const candidateId = 'intake-' + randomBytes(16).toString('hex')
