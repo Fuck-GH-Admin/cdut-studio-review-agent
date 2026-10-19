@@ -106,7 +106,23 @@ export type D4CaseBatchChoice =
   | { kind: 'skip' }
   | { kind: 'append' }
   | { kind: 'replace'; documentId: string }
+export interface D4BatchRun {
+  id: string
+  role: 'application' | 'evidence'
+  status: 'running' | 'needs-reselection' | 'completed'
+  createdAt: string
+  updatedAt: string
+  skipped: Array<{ originLabel: string; reason: string }>
+  files: Array<{
+    index: number; name: string; originLabel: string; sizeBytes: number; sha256: string
+    choice: D4CaseBatchChoice
+    status: 'pending' | 'failed' | 'skipped' | 'stored' | 'replaced' | 'needs-review'
+    documentId?: string
+    message?: string
+  }>
+}
 export interface D4CaseBatchResult {
+  batchId?: string
   caseId: string
   documents: SourceDocument[]
   skipped: Array<{ originLabel: string; reason: string }>
@@ -404,6 +420,8 @@ export interface ReviewCase {
   documents: SourceDocument[]
   /** Main-generated, persistently retained reasons for omitted/failed native-batch inputs. */
   d4IntakeWarnings?: Array<{ originLabel: string; reason: string }>
+  /** Main-owned resume checkpoint; never contains paths or temporary picker tokens. */
+  d4BatchRuns?: D4BatchRun[]
   /** Immutable Main-recorded hash/within-batch origin for imported folder and ZIP members. */
   d4IntakeOrigins?: Array<{ documentId: string; originLabel: string; sha256: string }>
   /** Main-written version transitions. 'pending' survives a crash before archival;

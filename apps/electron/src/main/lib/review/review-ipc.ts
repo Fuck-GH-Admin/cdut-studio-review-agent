@@ -128,7 +128,9 @@ export function registerReviewIpc(): void {
     if (typeof input.caseId !== 'string' || typeof input.token !== 'string' ||
         (input.role !== 'application' && input.role !== 'evidence') ||
         !Number.isSafeInteger(input.expectedRevision) || !Array.isArray(input.choices) ||
-        typeof input.acknowledgeSkipped !== 'boolean') throw new Error('D4_BATCH_INPUT_INVALID')
+        typeof input.acknowledgeSkipped !== 'boolean' ||
+        (input.resumeBatchId !== undefined &&
+          (typeof input.resumeBatchId !== 'string' || !/^[a-f0-9-]{36}$/.test(input.resumeBatchId)))) throw new Error('D4_BATCH_INPUT_INVALID')
     const { applyD4CaseBatch } = require('./review-d4-case-batch') as typeof import('./review-d4-case-batch')
     return applyD4CaseBatch(input as Parameters<typeof applyD4CaseBatch>[0], event.sender.id,
       (progress) => {
