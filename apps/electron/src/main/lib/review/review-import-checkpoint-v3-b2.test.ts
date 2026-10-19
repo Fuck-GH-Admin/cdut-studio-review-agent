@@ -156,4 +156,94 @@ describe('B2 durable input checkpoint is not a CurrentCase writer',()=>{
     expect('physicalArchiveKey' in intent.restage).toBe(false)
   })
 
+  test('same archive retry cannot alter the historical ZIP decode policy or child confirmation',()=>{
+    const vault=new ReviewB2ArchiveVault(new ReviewB2StagingService(),home)
+    const item={physicalArchiveKey:'native-policy-replay',requestId:'policy-replay-11',
+      bytes:makeZip('original exceeds strict maximum')}
+    const locked=vault.saveAndStage(ctx,item,{maxEntryBytes:3}).checkpoint
+    expect(locked.fileReceipts[0]!.status).toBe('rejected')
+    expect(()=>vault.saveAndStage(ctx,item)).toThrow('B2_ARCHIVE_DECODE_PROFILE_CONFLICT')
+    expect(()=>vault.saveAndStage(ctx,item,{maxEntryBytes:50*1024*1024}))
+      .toThrow('B2_ARCHIVE_DECODE_PROFILE_CONFLICT')
+    expect(vault.inspect(ctx,locked.archiveId)).toEqual(locked)
+    const safeReplay=vault.saveAndStage(ctx,item,{maxEntryBytes:3})
+    expect(safeReplay.checkpoint).toEqual(locked)
+    expect(safeReplay.preview.receipts[0]!.status).toBe('rejected')
+  })
+  test('equivalent explicit default decompression policy preserves idempotent retry',()=>{
+    const vault=new ReviewB2ArchiveVault(new ReviewB2StagingService(),home)
+    const input={physicalArchiveKey:'native-effective-default',requestId:'default-profile-16',
+      bytes:makeZip('default replay')}
+    const first=vault.saveAndStage(ctx,input)
+    const second=vault.saveAndStage(ctx,input,{
+      maxArchiveBytes:256*1024*1024,
+      maxEntryBytes:50*1024*1024,
+      maxTotalBytes:200*1024*1024,
+      maxEntries:1000,
+      maxCompressionRatio:100,
+    })
+    expect(second.checkpoint).toEqual(first.checkpoint)
+    expect(second.preview.receipts).toEqual(first.preview.receipts)
+  })
+  test('global root capacity lock rejects another PID writer without orphan cleanup or mutations',()=>{
+    const staging=new ReviewB2StagingService()
+    const vault=new ReviewB2ArchiveVault(staging,home)
+    const lock=join(home,'capacity.lock')
+    writeFileSync(lock,'held-by-other-pid',{flag:'wx'})
+    try {
+      expect(()=>vault.saveAndStage(ctx,{
+        physicalArchiveKey:'native-during-capacity-lock',requestId:'locked-root-12',
+        bytes:makeZip('queued-not-written'),
+      })).toThrow('B2_ARCHIVE_CAPACITY_LOCKED')
+      expect(readFileSync(lock,'utf8')).toBe('held-by-other-pid')
+    } finally { rmSync(lock) }
+    const committed=vault.saveAndStage(ctx,{
+      physicalArchiveKey:'native-during-capacity-lock',requestId:'locked-root-12',
+      bytes:makeZip('queued-not-written'),
+    }).checkpoint
+    expect(vault.inspect(ctx,committed.archiveId)).toEqual(committed)
+  })
+  test('legacy /1 source is inspect-only and cannot be re-staged using an unknown size policy',()=>{
+    const vault=new ReviewB2ArchiveVault(new ReviewB2StagingService(),home)
+    const input={physicalArchiveKey:'native-legacy-profile',requestId:'legacy-profile-13',
+      bytes:makeZip('historical bytes')}
+    const created=vault.saveAndStage(ctx,input).checkpoint
+    const file=join(home,created.archiveId,'checkpoint.json')
+    const old=JSON.parse(readFileSync(file,'utf8'))
+    old.schemaVersion='review-b2-archive/1'
+    delete old.decodeLimits
+    const {manifestSha256:_old,...payload}=old
+    old.manifestSha256=createHash('sha256').update(JSON.stringify(payload)).digest('hex')
+    writeFileSync(file,JSON.stringify(old))
+    expect(vault.inspect(ctx,created.archiveId).schemaVersion).toBe('review-b2-archive/1')
+    expect(()=>vault.saveAndStage(ctx,input)).toThrow('B2_ARCHIVE_LEGACY_PROFILE_UNPINNED')
+    const intent=vault.prepareRestage({...ctx,ownerGeneration:2},created.archiveId)
+    expect(intent.status).toBe('needs-main-revalidation')
+    expect('physicalArchiveKey' in intent.restage).toBe(false)
+  })
+
+  test('orphaned ZIP from crash never becomes a fresh silently trusted checkpoint',()=>{
+    const vault=new ReviewB2ArchiveVault(new ReviewB2StagingService(),home)
+    const input={physicalArchiveKey:'native-crash-orphan',requestId:'orphan-test-14',
+      bytes:makeZip('original file recovered only by manual action')}
+    const checkpoint=vault.saveAndStage(ctx,input).checkpoint
+    rmSync(join(home,checkpoint.archiveId,'checkpoint.json'))
+    expect(()=>vault.saveAndStage(ctx,input)).toThrow('B2_ARCHIVE_RECOVERY_REQUIRED')
+    expect(readFileSync(join(home,checkpoint.archiveId,'archive.zip')).equals(input.bytes)).toBe(true)
+    expect(()=>vault.inspect(ctx,checkpoint.archiveId)).toThrow('B2_ARCHIVE_RECOVERY_REQUIRED')
+    expect(()=>readFileSync(join(home,'capacity.lock'))).toThrow()
+  })
+  test('root symlink is refused before writing or following it into another directory',()=>{
+    const staging=new ReviewB2StagingService()
+    const rootLink=join(home,'unsafe-root-link')
+    symlinkSync(home,rootLink,'dir')
+    try {
+      const vault=new ReviewB2ArchiveVault(staging,rootLink)
+      expect(()=>vault.saveAndStage(ctx,{
+        physicalArchiveKey:'native-symlink-root',requestId:'root-link-15',
+        bytes:makeZip('sensitive original'),
+      })).toThrow('B2_ARCHIVE_UNSAFE_ROOT')
+    } finally {rmSync(rootLink)}
+  })
+
 })

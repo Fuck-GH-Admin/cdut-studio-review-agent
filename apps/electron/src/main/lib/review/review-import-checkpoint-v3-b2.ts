@@ -21,6 +21,14 @@ const sha256 = (bytes: Uint8Array | string): string => createHash('sha256').upda
 const code = (s: string): never => { throw new Error('B2_ARCHIVE_' + s) }
 const idPattern = /^[A-Za-z0-9._:-]{1,128}$/
 const MAX_ARCHIVE_STORAGE_BYTES = 1024 * 1024 * 1024
+/** Canonical effective ZIP policy; object property order/default spellings cannot bypass retry identity. */
+const decodeProfile = (limits: B2ZipLimits = {}): string => JSON.stringify([
+  limits.maxArchiveBytes ?? 256 * 1024 * 1024,
+  limits.maxEntryBytes ?? 50 * 1024 * 1024,
+  limits.maxTotalBytes ?? 200 * 1024 * 1024,
+  limits.maxEntries ?? 1000,
+  limits.maxCompressionRatio ?? 100,
+])
 export interface B2ArchiveCheckpoint {
   schemaVersion: 'review-b2-archive/1' | 'review-b2-archive/2'
   archiveId: string
@@ -84,6 +92,33 @@ export class ReviewB2ArchiveVault {
       if (count>MAX_ARCHIVE_STORAGE_BYTES) code('CAPACITY_EXCEEDED')
     }
     return count
+  }
+  /**
+   * Cross-PID global quota serialization. Exclusive create is atomic on the
+   * local filesystem; an orphaned lock is a fail-closed recovery condition,
+   * never deleted automatically. In-flight staging stays non-authoritative.
+   */
+  private withCapacityLock<T>(ctx:B2MainContext, work:()=>T):T {
+    this.staging.assertStillGranted(ctx)
+    if (existsSync(this.baseDirectory) && !lstatSync(this.baseDirectory).isDirectory()) {
+      code('UNSAFE_ROOT')
+    }
+    mkdirSync(this.baseDirectory,{recursive:true,mode:0o700})
+    if (!lstatSync(this.baseDirectory).isDirectory()) code('UNSAFE_ROOT')
+    const lock=join(this.baseDirectory,'capacity.lock')
+    let fd:number
+    try { fd=openSync(lock,'wx',0o600) }
+    catch (error) {
+      if((error as NodeJS.ErrnoException).code==='EEXIST') code('CAPACITY_LOCKED')
+      code('CAPACITY_LOCK_UNAVAILABLE')
+    }
+    try {
+      this.staging.assertStillGranted(ctx)
+      return work()
+    } finally {
+      closeSync(fd!)
+      rmSync(lock,{force:true})
+    }
   }
   private ensureOwner(ctx:B2MainContext, checkpoint:B2ArchiveCheckpoint):void {
     this.staging.assertStillGranted(ctx)
@@ -157,6 +192,9 @@ export class ReviewB2ArchiveVault {
   saveAndStage(ctx:B2MainContext, input:B2TrustedZipInput, limits?:B2ZipLimits):
     { checkpoint:B2ArchiveCheckpoint; preview:B2ZipImportPreview } {
     this.staging.assertStillGranted(ctx)
+    // Hold one root lease from quota check through committed checkpoint rename:
+    // independent ZIP archives cannot both observe the same remaining budget.
+    return this.withCapacityLock(ctx,()=>{
     const archiveId=this.id(ctx,input)
     const archiveHash=sha256(input.bytes)
     const dir=this.safeArchiveDirectory(archiveId)
@@ -164,6 +202,10 @@ export class ReviewB2ArchiveVault {
     if (existsSync(join(dir,'checkpoint.json'))) {
       const old=this.readVerified(ctx,archiveId)
       if (old.checkpoint.archiveSha256!==archiveHash) code('REQUEST_ID_COLLISION')
+      if(old.checkpoint.schemaVersion!=='review-b2-archive/2' ||
+         !old.checkpoint.decodeLimits) code('LEGACY_PROFILE_UNPINNED')
+      if(decodeProfile(old.checkpoint.decodeLimits)!==decodeProfile(limits))
+        code('DECODE_PROFILE_CONFLICT')
       checkpoint=old.checkpoint
     } else {
       const decoded=decodeReviewB2Zip(input.bytes,limits)
@@ -207,6 +249,7 @@ export class ReviewB2ArchiveVault {
     }
     this.staging.assertStillGranted(ctx)
     return {checkpoint:structuredClone(checkpoint!),preview:stageReviewB2TrustedZip(ctx,this.staging,input,limits)}
+    })
   }
   /** New live owner is required on recovery; returns only restaging bytes, never old grants. */
   prepareRestage(ctx:B2MainContext,archiveId:string):B2RestageIntent {
