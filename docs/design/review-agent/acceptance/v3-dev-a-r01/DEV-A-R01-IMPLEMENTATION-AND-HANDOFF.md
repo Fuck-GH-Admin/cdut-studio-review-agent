@@ -313,3 +313,18 @@ A1 unfinished: actual session manager and Orchestrator admission/stop; persist A
 - 跨 PID 的真 Provider singleton 仍未证实。本批 PID 只证明 durable Owner + dispatch cold recovery 行为，不代表真实 Electron SDK/Provider Gate E；`@earendil-works/pi-coding-agent@0.86.1` 的 per-physical-request native Hook 仍 `UNVERIFIED`，真实 API/Provider 线路尚未接入。
 - R08 源码/测试已提交，**当前 Gate O 仍需对最终 HEAD 同一 SHA 真正安装/Bun/typecheck/build/专项和全量日志**。CI Runner 排队不等于通过。集中验证文档 `A4-R05-EXACT-SHA-OFFLINE-GATE-O-20261019.md` 已追加 R08 + PID。Gate E/L/P 按独立证据判定，不由 A 直接签发。
 
+## A4-R09｜跨 Run/跨 Owner 的同案未决 SDK 隔离与全账本 Native Receipt 去重（源码已提交，未验收）
+
+**开始输入**：Dev-A #143 R08 工程 SHA `dc59bf1fa41263308729ab6e6dedc90cba11edf3`。本轮仅更改 A-owned `review-v3-sdk-dispatch-fence.ts`、A 主技术测试 `review-v3-main-sdk-turn-bridge.test.ts`、真实 PID 合成 SDK 测试 `review-v3-sdk-dispatch-crashpid.test.ts` 及 A-owned 进度/验收文档。无 C 独占路径，#147 I1 老 A 锁源未更新。
+
+### 触发问题及修复
+
+- 原 R08 SDK dispatch journal 按 `[runId,attemptId,ownerGeneration]` 独立 key；某次 Provider callback 无法核实、原 Run 留下 `in-flight`，Main 另起一个同 Case 新 Run + 新 Owner session 时，`claim` 只看当前 Run 的链，因此可能再次执行 Provider、形成远端未知工作重叠。**主安全修复 `94ed6f92f3c8481762d48613a6f7c98616a8e3e7`**：记录每笔新派发的 `caseId` 和 `sessionId`，claim 时在 Owner grant 文件锁下扫描全部未决 dispatch chain：同 Case 或同 Owner session，禁止派发；正常别的 Case 可继续。**老 v1 hash-sealed journal 无两项 scope 字段是历史事实**，不能反向发明来源；一旦这样的旧 record 仍未决，所有新 Run 暂时隔离为 `RECOVERY_REQUIRED`。若只有 caseId 或只有 sessionId，视作污染账本而拒止。没有自动清账，也没有把技术栅栏升级为 C 正式 Run writer。
+- 原 `assertUniqueReceipt()`/冷 decode 只校验同一个 Run 的 settled receipt 去重，不同 Run/attempt/Case 借用同一个 SDK receipt 可能被计为不同 Provider turn。**修复 `164c92fef653227574fd7a2859ed42e563616fb5`**：在线所有 Run 链检查 `receiptId` 全局唯一；历史 hash sealed decode 也扫描全账本拒绝跨 Run 冲突。即使新 Run 的物理 Provider 派发真实进行，错用之前的完成 receipt 不会扣 24-turn budget，保留 unresolved 需明确恢复。SDK receipt 仍需未来真正的 native physical-request hook 证实来源，不能从 agent_end/assistant uuid 派生。
+
+### 测试与验收边界
+
+- **已提交但尚未运行**合成 A-only 新用例 `A4-R09-01..07`（主测试文件），含新 Run/新 session 同案拒止、不同案允许、cold reopen、旧无 scope fail-closed、半损坏 attribution 拒止、跨 Run 重复收据在线拒止及历史账本冷拒止。测试提交 `4c46f7b932c26f77309d2b26029182f489fd266d`、`ccaaddbd1106fe945a8c4950d9ba395f55febbcc`、`20f9ef1ed9bb120d2db8c37a9b4cf9e03a11dc12`。
+- **Linux PID 原测试增强**：在 `review-v3-sdk-dispatch-crashpid.test.ts` 已有实际 child PID/SIGKILL + 重开文件的用例中，另检查 parent Main 新 grant/new Run 同 Case 不能 claim SDK；提交 `d8a1a8d22f9fcbc19fc1036afd78067cc3e8bbad`。这只算一条真实 PID 测试里的新负例，不是已运行额外独立测试；Provider 本身仍是 synthetic。
+- 离线验收文档 `A4-R05-EXACT-SHA-OFFLINE-GATE-O-20261019.md` 已增 R09 安全断言，并修正 R08 取消竞态的 in-flight/late-denied 状态描述。
+- **依赖与终局**：A 生产源码成熟度可标 `A1/A2_IMPLEMENTED_SOURCE, A3/A4_IMPLEMENTED_A_ONLY_SEAM`，不能写 `A1–A4_PRODUCTION_COMPLETE`。O Gate 需要 R09 最终精确 SHA 的 Bun/typecheck/full CI，真实 E 需要 native Pi per-physical Provider hook、取消及 worker、Electron Main；C 需要正式 durable Run ACK、I 需要新冻结锚点；L/P 独立关闭。详见新增 `DEV-A-CURRENT-PROGRESS-AND-GATES.md` 的完整成熟度矩阵。
