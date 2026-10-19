@@ -115,12 +115,14 @@ describe('W1 post-case native append and revision-aware replacement', () => {
     const doc = before.caseV2.documents.find(item => item.role === 'application' && item.active !== false)!
     expect(doc.parseStatus).toBe('parsed')
     const subjectId = before.d2RuntimePlan!.targets[0]!.subjectId
+    const factKey = before.d2RuntimePlan!.mapping.find(binding =>
+      binding.subjectId === subjectId && binding.evidenceCoverage?.supportsFacts.length)!.evidenceCoverage!.supportsFacts[0]!
     const changed = await correctObservation(created.id, {
       requestId: 'w1-actual-source-correction-' + created.id,
       actor: { actorId: 'local-reviewer', actorSource: 'local', role: 'reviewer' },
       expectedRevision: before.caseV2.revision,
       payload: {
-        subjectId, fieldKey: 'capacity', value: { kind: 'text', value: '120 人（待进一步核验）' },
+        subjectId, fieldKey: factKey, value: { kind: 'text', value: '120 人（待进一步核验）' },
         sourceRefs: [{ caseId: created.id, documentVersionId: doc.versionId,
           parseRevision: doc.parseRevision, location: { kind: 'file' }, quote: '可供 120 人使用' }],
         reason: '审核员选择当前原件并人工更正，保留引用和原因',
@@ -128,7 +130,7 @@ describe('W1 post-case native append and revision-aware replacement', () => {
     })
     expect(changed.ok).toBe(true)
     const after = readAggregate(created.id)!
-    expect(after.observations.some(item => item.subjectId === subjectId && item.fieldKey === 'capacity' &&
+    expect(after.observations.some(item => item.subjectId === subjectId && item.fieldKey === factKey &&
       item.confirmed && item.sourceRefs[0]?.documentVersionId === doc.versionId &&
       item.sourceRefs[0]?.parseRevision === doc.parseRevision)).toBe(true)
     expect(after.receiptLog.some(item => item.type === 'CorrectObservation')).toBe(true)
