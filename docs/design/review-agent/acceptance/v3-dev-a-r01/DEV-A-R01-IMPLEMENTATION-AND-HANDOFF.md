@@ -218,3 +218,24 @@ A1 unfinished: actual session manager and Orchestrator admission/stop; persist A
 - 在 `V3ASDKDispatchFence.assertUniqueReceipt(run,dispatchId,receiptId)` 中先比较**所有已 settled 的其他 dispatchId**，同一回执见于不同派发直接抛 `REQUEST_ID_COLLISION`；SDK bridge 现在在调用 `recordCompletedTurn` 之前执行该校验，拒绝偷偷把新 SDK 调用扣到历史 receipt。`settle` 再校验一次，防止调用方跳过预算前校验。
 - 更新 `A3-SDK-09`：第二次 Provider 派发返回同 receipt 必须拒绝，预算仍是 1、dispatch 停留 unresolved、第三次自动运行被拦截；新增 `A4-DISPATCH-06` 验证 Graph 同类问题。原 A3 budget 层同 receipt 幂等能力依然保留，它是**同一 Host SDK 回调写盘重试**的基础，不授权第二次物理执行。
 - 该检验仍只有 Main 注入的 Host Receipt ID，无法替代真 SDK 的出厂原始回执/实际 Pi turn trace。最终 Main 绑定与 Provider Gate E 仍未完成；不能据此签署安全验收。
+
+## A4-R05｜late-denied SDK 意图拒绝自动重派（本会话修复，Gate O 待精确验证）
+
+**依据**：2026-10-19 Dev-A 新会话检查 #143 当前 A4-R04 真实源码，发现 `review-v3-sdk-dispatch-fence.ts::claim()` 只拒绝最后一条 `in-flight`，对 `late-denied` 无阻断；而 `V3ASDKTurnBridge.next()` 在 SDK promise 返回后遇到 `signal.aborted`、Owner grant 撤销/暂停/轮换时会调用 `lateDenied()`。因此，同一 Run/attempt/generation 在 SDK 已物理派发、旧结果被 Main 拒绝后，可能仅凭新 grant 或复用原授权再次调用 Provider，物理调用次数无法与持久 24-turn budget 对齐。这与「未知 Provider 结果不能自动重试」的 fail-closed 门禁相冲突。
+
+**已提交变更（仅 Dev-A 自有文件）**：
+- `ed097eddb52d4a4d295da7e875fb901b2f0ff219`：在 `V3ASDKDispatchFence.claim()` 拒绝 `late-denied`，返回 `RECOVERY_REQUIRED` + explicit recovery 提示；诊断方法 `unresolved()` 同时将 `in-flight` 与 `late-denied` 认定为需处理的技术派发。历史 `settled` 仍允许后续正常 SDK 轮次。
+- `e2960d825ff2167f2837585c26c2e1be801e59d7`：修订 `A4-DISPATCH-02` 与 `A3-SDK-11`，不再以同一 Run 中「恢复授权后再次调用 Provider」为正例；扩充 `A3-SDK-14` 验证 AbortSignal 期间 SDK 返回后禁止下一次调用；新增 `A4-DISPATCH-07` 验证 `late-denied` 磁盘账本重新打开后依旧阻断重派。所有用例应同时断言 SDK 物理调用次数未增加、预算未误记。
+- 这是对 A4-R04 「`lateDenied` 后新 grant 可重新派发」历史策略的**安全收紧**，不是修改 C0 或 C 的业务流程。旧描述保留用于变更追溯，以本节最新技术语义为准。没有实现自行清账、自动恢复或生成第二份业务 ReviewRun。
+- 此处「显式恢复」尚**没有**可调用的自动 reconcile API；该错误意味着需等将来 C 业务策略、可信 Provider/SDK 回执及 A 技术恢复合同确定后，才能对遗留 attempt 作人工/可信恢复裁决。不得为了完成测试而删除历史意图文件。
+
+**实时源头与 Gate**：提交后的待核验代码 SHA `e2960d825ff2167f2837585c26c2e1be801e59d7`（后续文档 commit 会产生新 HEAD，以实际 PR SHA 为最终准据）。此时源 SHA 的 PR CI `39261231218`、D2 `39261231367`、Baseline `39261231292` 均 **QUEUED**；自托管 Linux runner 未提供已执行测试证据。执行环境只具 GitHub 仓库读写，容器 DNS 无法 clone 仓库且无 Bun，**本会话没有声称跑过 Bun、typecheck、构建或实机**。Gate O=`BLOCKED_CI_UNASSIGNED/PENDING_EXACT_SHA_VERIFICATION`、E=`NOT_RUN`、L=`BLOCKED_NO_AUTH`、P=`NOT_RUN`。首个真实测试失败尚不可判定；不能用旧绿色 A SHA 替代。
+
+### P2 可信 Pi SDK Host 接口的实际源码核验与接线门禁
+- 现有技术入口 `apps/electron/src/main/lib/review/pi-review-agent-client.ts` 的 `createPiReviewModelClient()` 使用 `@earendil-works/pi-coding-agent`、`PiAgentQueryOptions`、`options.query()` 的 `AsyncIterable<SDKMessage>` 及 `abort(sessionId)`；`toolProfile:'review'`、`maxTurns:24` 是旧 Graph 语义请求参数，**不是**本 A3 `V3ASDKTurnBridge.nextTurn()` 的实际已登记 Main 端口。
+- 现有 `apps/electron/src/main/lib/adapters/pi-agent-adapter.ts` 的 `buildPiRetrySettings(input.provider,{isReviewRequest:input.toolProfile==='review'})` 针对 review 关闭 native retry；`pi-harness-lifecycle.ts` 提供的是 `turn_running/model_call_completed/retry_started/...` 被动生命周期信号，**未提供稳定的 per-physical-dispatch SDK receiptId 和冻结 Run 身份**。不得将这一被动事件、随机生成 ID、assistant 消息、Renderer 值冒充可信 Provider 收据。
+- 旧 `pi-review-agent-client.ts` 存在带图失败后文本降级的重试入口，且在部分工具完成/服务异常时返回 fallback JSON；在正式 V3 接线前必须证明这些 V2 行为不会越过 A4 的 `claim()` 派发意图、把第二次真实 SDK query 当成同一次 SDK turn 或错误的业务 Check ACK。
+- `review-pi-run-bridge.ts` 和 `review-pi-admission.ts` 当前仍以原 V2 `preparePiReviewRunV2/finishPiReviewRunV2` 与 Agent service 来处理后台会话；它们并未自动实现新的 C2 `review-v3-execution/1` 正式 Run 消费端。**本轮没有越权修改这些 C-owned 业务路径。**
+- A 下一批可独立推进：从 Main 的实际 Pi runtime 读取不可伪造的 dispatch/turn身份、分析 Provider Abort/timeout 后可信 outcome，编写 A-owned 映射与负例；真实 SDK 注册及 `pi-case-review-service.ts`、`review-ipc.ts`、共享 DTO、正式 ACK 接线须由 C 授权且在 I/C 同 SHA 联合验证。I1 继续锁定旧已绿 A `d8fd3e0...`，不可因 A 新提交自动换源。
+
+**下一精确验收**：在 self-hosted runner 恢复后对最终 #143 HEAD 依次跑 typecheck、check:boundaries、Main/Preload/Renderer build、`bun test --isolate` 全量与 `review-v3-main-sdk-turn-bridge.test.ts` 专项；补齐动作前后 Owner epoch、abort/rotation/cold journal、实际 SDK 回执源和跨 PID 崩溃/满盘证据。若 CI 仍无 runner，保留 `CI_UNASSIGNED`，不将本批标记 PASS。
