@@ -127,7 +127,17 @@
 
 优先级不是再写一个泛 Provider adapter，而是先在**真实安装的 0.86.1 + 应用 Pi runtime**上，完成集中 Gate O 源码/构建/全量回归和官方 request ID 的 Gate E，确认是否能够无损复用现有 proxy/payload sanitizer。然后请 Dev-C 审核 `CR-A-PI-HTTP-WITNESS-R01` 并由 I 在新固定 source lock 上做技术接线。C2 技术账当前并非正式 durable Run ACK，A 无权擅自升级。
 
-## 10. 每批交付行必须具备
+## 10. A4-R11：TypeScript 恢复优先，暂停继续堆 Provider 功能
+
+**本批是质量恢复，不是新的 Provider 功能完成阶段。** 读取 #143 原始失败 SHA `53af44752a16369cbaba3071b2a223321087986c` 的三个真实 workflow：PR CI `39277833762` / job `118146558559`、D2 `39277833713` / job `118146557300` 均在类型检查出现**相同 24 条** `@profer/electron` TypeScript 错误，后续测试 skipped；仅 Baseline `39277833670` / job `118146555484` 在原 SHA 获 `SUCCESS`。不能将该 baseline 当作 Gate O PASS。
+
+已在 A 独占文件实施逐错误来源的收口：执行事件生产器的缺项 journal/terminal 访问；EIO replay 测试的下标可空断言；SDK 派发栅栏 settled/late-denied 记录的最后一条校验；物理请求见证异步回调结果；Pi HTTP Provider `fetch.preconnect` Bun 严格签名、异步 Response request ID 及测试 factory 的显式 callable transport。原持久链拒止、一次物理请求与 Owner/Provider 边界均保留。
+
+**实际 CI 状态**：须以新的 #143 `head_sha` 对应 workflow 实时查询为准；新源码/文档 commit 提交 ≠ 编译通过。在同 SHA PR CI / D2 / Baseline 全部真实 `SUCCESS`、必需 build/tests 不被跳过前，`GATE_O=NOT_ATTESTED`。Gate E = NOT_RUN；Gate L = BLOCKED_NO_AUTH；Gate P = NOT_RUN。
+
+**详细修复账本与集中 Gate O 口径**：`A4-R11-TYPECHECK-REMEDIATION-AND-EXACT-SHA-GATE-O.md`。当前下个动作是盯住**最新修复 SHA** 的首个真实 TypeScript/测试/构建结果；若还有新首败，继续只修 A-owned 代码、固定新 SHA、完整重跑。不应在此期间扩充 SDK/Provider 正式工程而绕过 Gate O。
+
+## 11. 每批交付行必须具备
 
 `slice_id / source_sha (40位) / ownership_paths / first_failure / exact commands + env + exit + PASS/FAIL/SKIP / CI workflow+job / Gate O/E/L/P / unresolved_risks / next_owner / C lease if applicable / integration source-lock / rollback commit`。
 
