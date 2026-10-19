@@ -35,6 +35,7 @@ export function parseB1TrialInput(field: B1Field, raw: string): B1TrialValue {
     case 'evidence':
       throw new Error('B1_TRIAL_EVIDENCE_REQUIRES_REAL_SOURCE')
   }
+  throw new Error('B1_TRIAL_TYPE_UNSUPPORTED')
 }
 export function prepareB1TechnicalTrial(
   source: B1AuthorDocument, trial: B1TrialValues,
