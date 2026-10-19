@@ -58,6 +58,24 @@ export class ReviewB1AuthorMainPort {
     this.verify(ctx,doc?.templateId,'author-preview')
     return compileReviewB1Plan(this.sanitize(ctx,doc))
   }
+  /**
+   * Use this entrypoint for the wizard: freeze exactly the displayed, saved
+   * author source. Even if a renderer bypasses its dirty-state guard, it cannot
+   * freeze a prior persisted revision while presenting unsaved edits.
+   * The final store freeze rechecks the latest revision under author.lock.
+   */
+  async freezeSavedDocument(ctx:B1TrustedAuthorContext,doc:B1AuthorDocument,expectedRevision:number):
+    Promise<{fingerprint:string;candidateStatus:'candidate-held'}> {
+    this.verify(ctx,doc?.templateId,'candidate-freeze')
+    const clean=this.sanitize(ctx,doc)
+    const latest=readB1AuthorRevision(clean.templateId)
+    if(!latest || latest.revision!==expectedRevision)
+      throw new Error('B1_MAIN_REVISION_STALE')
+    if(JSON.stringify(latest.document)!==JSON.stringify(clean))
+      throw new Error('B1_MAIN_UNSAVED_AUTHOR_CHANGES')
+    const result=freezeB1Candidate(clean.templateId,expectedRevision)
+    return {fingerprint:result.descriptor.canonicalPlan.fingerprint,candidateStatus:'candidate-held'}
+  }
   async freezeCandidate(ctx:B1TrustedAuthorContext,templateId:string,expectedRevision:number):
     Promise<{fingerprint:string;candidateStatus:'candidate-held'}> {
     this.verify(ctx,templateId,'candidate-freeze')
