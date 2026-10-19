@@ -116,10 +116,11 @@ function verifyArchiveAndLedger(
   const receiptByEntry=new Map(record.mutations.map(m=>[m.entryIndex,m]))
   const entries:B23RecoveryEntry[]=checkpoint.fileReceipts.map(original=>{
     const file=record.files.find(f=>f.index===original.index)
-    if(!file || file.entryName!==original.entryName ||
+    if(!file)throw new Error('B_R23_ORIGINAL_ENTRY_IDENTITY_MISMATCH')
+    if(file.entryName!==original.entryName ||
        file.compressedSha256!==original.compressedSha256 ||
        (original.status==='accepted' && file.rawSha256!==original.rawSha256))
-      error('ORIGINAL_ENTRY_IDENTITY_MISMATCH')
+      throw new Error('B_R23_ORIGINAL_ENTRY_IDENTITY_MISMATCH')
     const historicalReceipt=receiptByEntry.get(original.index)??null
     const accepted=file.status==='accepted'
     if(accepted && (!historicalReceipt||historicalReceipt.status!=='accepted' ||
@@ -172,11 +173,13 @@ export function readB23RecoveryPreflight(
   const ctx=scopeFromMain(authority)
   staging.assertStillGranted(ctx)
   const author=readB1AuthorRevision(expected.templateId)
-  if(!author||author.revision!==expected.revision||
+  if(!author)throw new Error('B_R23_AUTHOR_REVISION_CONFLICT')
+  if(author.revision!==expected.revision||
      author.digest!==expected.revisionDigest||author.document.templateId!==expected.templateId)
-    error('AUTHOR_REVISION_CONFLICT')
+    throw new Error('B_R23_AUTHOR_REVISION_CONFLICT')
   const frozen=readB1FrozenCandidate(expected.templateId,expected.frozenFingerprint)
-  if(!frozen || frozen.revision!==author.revision ||
+  if(!frozen)throw new Error('B_R23_FROZEN_CANDIDATE_CONFLICT')
+  if(frozen.revision!==author.revision ||
       frozen.status!=='candidate-held' ||
       frozen.authorDigest!==frozen.descriptor.authorDigest ||
       frozen.descriptor.canonicalPlan.fingerprint!==expected.frozenFingerprint ||
@@ -184,7 +187,7 @@ export function readB23RecoveryPreflight(
     error('FROZEN_CANDIDATE_CONFLICT')
   verifyReviewB1Descriptor(author.document,frozen.descriptor)
   const registered=authority.currentArchiveIds(ctx,expected)
-  if(!Array.isArray(registered))error('ARCHIVE_REGISTRY_NOT_INSTALLED')
+  if(registered === null || !Array.isArray(registered))throw new Error('B_R23_ARCHIVE_REGISTRY_NOT_INSTALLED')
   if(registered.length>32||registered.length!==new Set(registered).size||
      registered.some(x=>typeof x!=='string'||!archiveId.test(x)))
     error('ARCHIVE_REGISTRY_INVALID')
