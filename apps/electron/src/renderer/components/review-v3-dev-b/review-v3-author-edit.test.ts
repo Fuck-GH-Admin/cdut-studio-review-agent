@@ -4,7 +4,7 @@ import {
   type B1AuthorDocument,
 } from '../../../main/lib/review/review-template-plan-adapter-v3-b1'
 import {
-  deleteB1AuthorIdentity, renameB1AuthorIdentity, renameB1TrialKey,
+  b1AuthorHasUnsavedEdits, deleteB1AuthorIdentity, renameB1AuthorIdentity, renameB1TrialKey,
 } from './review-v3-author-edit'
 import {
   exportB1AuthorCandidate, prepareB1TechnicalTrial,
@@ -93,6 +93,18 @@ describe('B1 51st author no-code editing integrity',()=>{
     expect('extra' in removed.targets[0]!.fieldValues).toBe(false)
     expect(compileReviewB1Plan(removed).canonicalPlan.bindings).toHaveLength(4)
     expect('extra' in draft.targets[0]!.fieldValues).toBe(true)
+  })
+  test('freezing requires exactly the persisted author snapshot; synthetic trial is independent',()=>{
+    const first=author51()
+    expect(b1AuthorHasUnsavedEdits(first,null)).toBe(true)
+    const saved=structuredClone(first)
+    expect(b1AuthorHasUnsavedEdits(first,saved)).toBe(false)
+    const edited=renameB1AuthorIdentity(first,'field','consent','clear-consent')
+    expect(b1AuthorHasUnsavedEdits(edited,saved)).toBe(true)
+    expect(b1AuthorHasUnsavedEdits(first,saved)).toBe(false)
+    const trial=prepareB1TechnicalTrial(first,{'person-one':{consent:true}})
+    expect(compileReviewB1Plan(trial).canonicalPlan.bindings[0]?.applicability).toBe('applicable')
+    expect(b1AuthorHasUnsavedEdits(first,saved)).toBe(false)
   })
   test('deleting a check changes only candidate Plan; dropped bindings require acknowledgement',()=>{
     const draft=author51()
