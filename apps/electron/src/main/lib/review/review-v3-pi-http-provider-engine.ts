@@ -106,25 +106,59 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
     let invocations=0
     let httpCalls=0
     let physicalResponseId:string|undefined
+    let startedTurn=false
     let finishedTurn=false
+    let agentEnded=false
+    let agentSettled=false
     let corrupted=false
     const mark=():never=>{
       corrupted=true
       return fail('Pi SDK Provider request count/provenance violated')
     }
+    // Exact Pi 0.86.1 lifecycle:
+    // turn_start -> (single physical fetch) -> turn_end -> agent_end ->
+    // agent_settled. agent_end may announce willRetry, and turn_end alone
+    // does NOT mean native retry/compaction/queued work has settled.
     const unsubscribe=session.subscribe(event=>{
-      if(event.type!=='turn_end')return
-      if(finishedTurn || event.message.role!=='assistant' ||
-          !['stop','length','toolUse'].includes(event.message.stopReason)){
-        corrupted=true
-        return
+      switch(event.type){
+        case 'turn_start':
+          if(startedTurn || finishedTurn || agentEnded || agentSettled) {
+            corrupted=true
+          } else {
+            startedTurn=true
+          }
+          break
+        case 'turn_end':
+          if(!startedTurn || finishedTurn || agentEnded || agentSettled ||
+              invocations!==1 || !physicalResponseId ||
+              event.message.role!=='assistant' ||
+              !['stop','length','toolUse'].includes(event.message.stopReason)){
+            corrupted=true
+          } else {
+            finishedTurn=true
+          }
+          break
+        case 'agent_end':
+          if(!finishedTurn || agentEnded || agentSettled || event.willRetry){
+            corrupted=true
+          } else {
+            agentEnded=true
+          }
+          break
+        case 'agent_settled':
+          if(!agentEnded || agentSettled){
+            corrupted=true
+          } else {
+            agentSettled=true
+          }
+          break
       }
-      finishedTurn=true
     })
     try{
       session.agent.streamFunction=(model,context,options)=>{
         invocations++
-        if(invocations!==1 || input.signal?.aborted ||
+        if(invocations!==1 || !startedTurn || finishedTurn ||
+            agentEnded || agentSettled || input.signal?.aborted ||
             !['openai-completions','openai-responses'].includes(model.api) ||
             options?.transport==='websocket' ||
             options?.transport==='websocket-cached'){
@@ -188,7 +222,8 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
       // alone is not sufficient proof the physical HTTP callback ran.
       const observedId=physicalResponseId as string|undefined
       if(corrupted || invocations!==1 || httpCalls!==1 ||
-          !observedId || !finishedTurn) {
+          !observedId || !startedTurn || !finishedTurn ||
+          !agentEnded || !agentSettled) {
         return fail('Pi HTTP Provider request/stream completion provenance unavailable')
       }
       witness.requestFinished({
