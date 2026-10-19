@@ -62,3 +62,30 @@ Store first failure, exit code, toolchain version and matched SHA. If target-mac
 5. Integrate through approved Dev-C adapter only, verify C0/Plan/source/sourceVersion and CurrentValidity fail closed, then combined Electron campaign.
 
 **Exit**: This Draft PR is reviewable partial code only. Do not merge or call B1–B4 complete.
+
+
+## B1–B4 additional code and inventory completed after initial ledger
+
+**B1 author persistence**: `review-template-author-store-v3-b1.ts` adds an append-only draft revision chain (incomplete drafts allowed) and immutable candidate Plan vault. Sources are not signed, candidate never becomes published. `review-template-author-store-v3-b1.test.ts` adds revision CAS, tamper rejection and pre-freeze validation. **Dev-B standalone UI**: `src/renderer/components/review-v3-dev-b/ReviewV3AuthorWizard.tsx` lets a user configure arbitrary business purpose, fields/material-evidence type, source/version, targets, checks, applicability conditions, stages and outputs without writing code. It provides callbacks for save/preview/freeze, **not mounted and not yet Main IPC integrated**; cannot be counted as completed no-code UAT or actual user release.
+
+**B2 real parser adapter**: `review-source-version-adapter-v3-b2.ts` reuses existing production `parseFileIntoSourceDocument` on original staged bytes in a randomly named private temporary file; namespaces blocks by real physical document version and parseRevision, stores owner-scoped verified block registry and creates C0 SourceIdentity **only** through `sourceForBlock`. PDF `pdf-rect` only if real bounds exist, spreadsheet `sheet-cell`, text/DOCX paragraph where possible, image/scan partial. No read receipt or confirmed/active material side-effect. `review-source-version-adapter-v3-b2.test.ts` includes real-text PDF, scan PDF, TXT and PNG synthetic-source integration and old-block/source isolation. **Not yet full multi-format DOCX/XLSX/ZIP/OCR acceptance**, and parser registry is in memory.
+
+**B3 routing**: `review-intake-routing-adapter-v3-b3.ts` selects a technical route only after 20 seconds and only for exactly one evidenced, high-confidence, available template and fully known file roles/Subjects, unless user interrupts; no CurrentCase writes. `review-intake-routing-adapter-v3-b3.test.ts` covers timer, evidence mismatch, ambiguity, candidate-held policy and manual correction. Runtime/renderer wiring and actual ML classification still NOT_IMPLEMENTED.
+
+**B4**: `B4-50-CANDIDATE-SOURCE-LEDGER.csv` contains 50 **source-anchored historical template** records read directly from #97 catalogs (G01 5 / G02 3 / G03 10 / G04 8 / G05 6 / G06 9 / G07 7 / G08 2), all `candidate-held`/`NOT_RUN`. `review-v3-b4-inventory.test.ts` asserts catalog completeness/status. This ledger does **NOT** pretend to be all 50 per-original-obligation `source→field→Check→test` mapping. G03 ten `GENERATED_NOT_RUN` and G04/G07 structural gaps remain explicit.
+
+**Original quality trace**: `B-LINE-ORIGINAL-ACCEPTANCE-MATRIX.csv` transcribes 19 Dev-B-owned F/A/C/S/D/K acceptance rows from #140 16, with independent Gate O/E/L statuses and original source SHA. Includes K14/K15 legacy gate; no synthetic fixture converted to Gold.
+
+**Cross-line formal request**: `B-CR-001-MAIN-OWNER-TRUST-AND-ADAPTER.md` is pending Dev-C decision. No Main/Preload/V2/current case changes were made.
+
+## CI first failure and corrective code
+
+Earlier D2 Scoped Pi CI (SHA `e77b55438cdb2f6a86f29bb984f4bb8821813b1b`, run `39227311788`) exposed strict TS failures: B1 possibly-undefined target and never function reachability; corrected in `c7fc23765620851e19cb0f9d49ccb051cfcee65e`. An intermediate run `39227541492` (SHA `87f3b1eec01cec3cb6e2a32feb85bc7b6fcb841a`) exposed B2 grant/material possibly undefined; corrected in `49c92c503606048c7aafbbf29335382f946dee50`. **These fixes must be verified again on the final HEAD; previous failure is not a final test success.** Earlier PR CI auto-cancelled on rapid commits; no inference from an older passing Review Baseline CI.
+
+### Current status / required next work
+- **B1 PARTIAL**: author UI component unmounted, no scoped author signature/policy approval/real plan installation, no full dynamic scoring DSL, no independent UAT.
+- **B2 PARTIAL**: trusted staging+real parser functions but no Native picker bridge, hardened ZIP archive, durable import receipt/recovery/backpressure, full OCR or Electron tests.
+- **B3 PARTIAL**: pure route planner and synthetic negatives; not wired to UI, no model classification, no formal Case command.
+- **B4 PARTIAL_INVENTORY**: 50 fixed catalogs anchored; individual policy source obligations, G03/G04/G07 and G05 complete semantic reconciliation not done, Gold authorization blocked.
+- **Integration BLOCKED**: Dev-C must provide authorized Main caller/context, whitelist physical source, versioned InstallPlan/ApplyMaterial and UI mount. Never claim current business released.
+- **CI status**: see exact final PR HEAD Actions, do not attribute C0 `3996 PASS` to Dev-B. Commands to run: `bun run typecheck`, `bun run check:boundaries`, `bun test apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.test.ts apps/electron/src/main/lib/review/review-template-author-store-v3-b1.test.ts apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.test.ts apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.test.ts apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.test.ts apps/electron/src/main/lib/review/review-v3-b4-inventory.test.ts`. Save logs with actual SHA and first failure.
