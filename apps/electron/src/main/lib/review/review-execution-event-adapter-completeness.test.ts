@@ -34,7 +34,8 @@ const obs = (i: number, status: 'accepted' | 'rejected' | 'unknown' | 'missing')
 })
 describe('V3 A3 exact Plan×target coverage', () => {
   it('A-RUN-01: all nine actual Host-accepted checks => technical only', () => {
-    const a = new V3ExecutionCompletenessAdapter(...Object.values(fixture()) as [CanonicalPlan, RunEvidenceIdentity])
+    const { plan, run } = fixture()
+    const a = new V3ExecutionCompletenessAdapter(plan, run)
     for (let i = 1; i <= 9; i++) a.recordHostOutcome(obs(i, 'accepted'))
     expect(a.snapshot().state).toBe('technically-complete')
     expect(a.snapshot().accepted).toHaveLength(9)
