@@ -1,0 +1,122 @@
+/**
+ * Integrator-I I1 technical-only seam across frozen A/B adapters and C1
+ * current-source validation. Not a Main handler, publisher, Case/Run writer,
+ * Host credential, or durable Receipt. Never export this as Renderer IPC.
+ */
+import type { CaseAggregateV2, RunEvidenceIdentity } from '@profer/shared'
+import {
+  compileReviewB1Plan, verifyReviewB1Descriptor,
+  type B1AuthorDocument,
+} from './review-template-plan-adapter-v3-b1'
+import {
+  ReviewB2StagingService, type B2MainContext, type B2MaterialCandidate,
+} from './review-intake-adapter-v3-b2'
+import {
+  planB3ConservativeRouting, type B3RouteSuggestion, type B3RouteState,
+} from './review-intake-routing-adapter-v3-b3'
+import {
+  V3ExecutionCompletenessAdapter, type A3CheckObservation,
+  type A3TechnicalSnapshot,
+} from './review-execution-event-adapter-completeness'
+import { currentSourceValidityBlockers } from './source-current-validity-v3'
+
+export interface I1TechnicalPreviewInput {
+  /** Main-injected in a future production caller; synthetic in the I1 test. */
+  mainContext: B2MainContext
+  staging: ReviewB2StagingService
+  candidateIds: readonly string[]
+  /** An untrusted B1 author draft: candidate compilation is NOT publication. */
+  authorDraft: B1AuthorDocument
+  /** RunEvidenceIdentity is checked structurally, NOT accepted by C2. */
+  proposedRun: RunEvidenceIdentity
+  /** Trusted Host must eventually supply these; tests use synthetic fixtures. */
+  technicalObservations?: readonly A3CheckObservation[]
+  /** Optional C1-owned read-only aggregate snapshot for stale-source diagnosis. */
+  currentCaseSnapshot?: CaseAggregateV2
+  routing?: {
+    startedAtMs: number
+    nowMs: number
+    automaticSelectionEnabled: boolean
+    userInterrupted: boolean
+    suggestions: B3RouteSuggestion[]
+  }
+}
+
+export interface I1TechnicalPreview {
+  readonly classification: 'STAGED_ONLY'
+  readonly publicationAllowed: false
+  readonly canInstallPlan: false
+  readonly canCommitRun: false
+  readonly canFinalizeDecision: false
+  readonly sourceVersionIds: readonly string[]
+  readonly planFingerprint: string
+  readonly coverage: A3TechnicalSnapshot
+  readonly sourceValidityBlockers: readonly string[]
+  readonly technicalPreviewEligible: boolean
+  readonly route?: B3RouteState
+}
+
+/**
+ * Preview only. Does not grant a Main Principal or vouch for caller-supplied
+ * Host observations. No acceptance or business writer can consume the result
+ * as an authorization token: the result explicitly denies all write actions.
+ */
+export function inspectI1TechnicalPreview(input: I1TechnicalPreviewInput): I1TechnicalPreview {
+  if (!input.candidateIds.length || new Set(input.candidateIds).size !== input.candidateIds.length) {
+    throw new Error('I1_CANDIDATE_SET_INVALID')
+  }
+  // Use B's owner-scoped registry, never trust a renderer-supplied candidate.
+  const candidates: B2MaterialCandidate[] = input.candidateIds.map(id =>
+    input.staging.getCandidate(input.mainContext, id))
+  const versions = new Set(candidates.map(c => c.documentVersionId))
+  if (versions.size !== candidates.length) {
+    throw new Error('I1_SOURCE_VERSION_COLLISION')
+  }
+
+  const descriptor = compileReviewB1Plan(input.authorDraft)
+  verifyReviewB1Descriptor(input.authorDraft, descriptor)
+  if (descriptor.publicationAllowed !== false) {
+    throw new Error('I1_CANDIDATE_MUST_REMAIN_UNPUBLISHED')
+  }
+  const sourceVersions = descriptor.sourceLedger.map(s => s.documentVersionId)
+  if (!sourceVersions.length || sourceVersions.some(version => !versions.has(version))) {
+    throw new Error('I1_PLAN_SOURCE_NOT_STAGED')
+  }
+  if (input.proposedRun.sourceVersionIds.some(version => !versions.has(version))) {
+    throw new Error('I1_RUN_SOURCE_NOT_STAGED')
+  }
+  if (input.currentCaseSnapshot &&
+      input.currentCaseSnapshot.caseV2.id !== input.proposedRun.caseId) {
+    throw new Error('I1_CURRENT_CASE_SCOPE_MISMATCH')
+  }
+  // A3 checks exact Plan/Run/check-target/subject; it cannot commit a Run.
+  const diagnostics = new V3ExecutionCompletenessAdapter(
+    descriptor.canonicalPlan, input.proposedRun,
+  )
+  for (const observation of input.technicalObservations ?? []) {
+    diagnostics.recordHostOutcome(observation)
+  }
+  const coverage = diagnostics.snapshot()
+  const blockers = input.currentCaseSnapshot
+    ? currentSourceValidityBlockers(input.currentCaseSnapshot)
+    : []
+  const route = input.routing ? planB3ConservativeRouting({
+    ...input.routing,
+    materialCandidates: candidates,
+  }) : undefined
+
+  return {
+    classification: 'STAGED_ONLY',
+    publicationAllowed: false,
+    canInstallPlan: false,
+    canCommitRun: false,
+    canFinalizeDecision: false,
+    sourceVersionIds: [...versions],
+    planFingerprint: descriptor.canonicalPlan.fingerprint,
+    coverage,
+    sourceValidityBlockers: blockers,
+    technicalPreviewEligible: blockers.length === 0 &&
+      coverage.state === 'technically-complete',
+    ...(route ? { route } : {}),
+  }
+}
