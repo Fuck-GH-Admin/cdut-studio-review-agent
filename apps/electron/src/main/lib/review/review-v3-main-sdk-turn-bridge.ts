@@ -15,6 +15,7 @@ import {
 import {
   type V3ATurnSnapshot, type V3ATurnBudget,
 } from './review-v3-execution-turn-budget'
+import type {V3ASDKDispatchFence} from './review-v3-sdk-dispatch-fence'
 
 /** Ignore object insertion order, but not any immutable Run identity value. */
 function canonical(value: unknown): string {
@@ -64,8 +65,9 @@ export class V3ASDKTurnBridge {
     private readonly turns: V3ATurnBudget,
     private readonly proposals: V3AProposalProducer,
     private readonly sdk: V3AMainSDKTurnPort,
+    private readonly dispatch: V3ASDKDispatchFence,
   ) {
-    if (!sdk || typeof sdk.nextTurn !== 'function') {
+    if (!sdk || typeof sdk.nextTurn !== 'function' || !dispatch) {
       throw new C0ContractError('ACTOR_UNTRUSTED', 'Main-attested SDK callback required')
     }
   }
@@ -151,16 +153,25 @@ export class V3ASDKTurnBridge {
         return {kind:'terminal-proposal',status:'needs-resume',
           event:await this.closeExhausted(call)}
       }
+      // Durable BEFORE any SDK/Provider side effect. Unknown Provider outcome
+      // after crash, thrown error or disk fault blocks redispatch of same Run.
+      const intent=this.dispatch.claim(call)
       const received=await this.sdk.nextTurn({
         run:structuredClone(frozen),mode,signal,
       })
       if (signal?.aborted) {
+        this.dispatch.lateDenied(frozen,intent.dispatchId)
         throw new C0ContractError('CASE_SCOPE_FORBIDDEN',
           'Main cancelled in-flight SDK turn; Host return rejected')
       }
       // A legitimate SDK result received after revoke/expiry/cold restart is
       // no longer permission to record a turn, propose an event or run again.
-      const current=this.authorized(call)
+      let current:RunEvidenceIdentity
+      try {current=this.authorized(call)}
+      catch(error){
+        this.dispatch.lateDenied(frozen,intent.dispatchId)
+        throw error
+      }
       if (!received || canonical(received.run) !== canonical(frozen) ||
           canonical(current) !== canonical(frozen)) {
         throw new C0ContractError('RUN_IDENTITY_MISMATCH',
@@ -171,6 +182,7 @@ export class V3ASDKTurnBridge {
           throw new C0ContractError('CONTRACT_INVALID','Unknown Host interruption')
         }
         const event=await this.proposals.terminal(call,received.status)
+        this.dispatch.settle(call,intent.dispatchId,event.hostReceiptId)
         return {kind:'terminal-proposal',status:received.status,event}
       }
       if (received.kind !== 'completed-turn' ||
@@ -178,6 +190,9 @@ export class V3ASDKTurnBridge {
         throw new C0ContractError('CONTRACT_INVALID','SDK Host turn receipt absent')
       }
       const turn=this.turns.recordCompletedTurn(call,received.receiptId)
+      // The SDK work is durably counted, even if its 24th-turn terminal later
+      // fails ENOSPC. Retrying terminal is safe; running SDK again is not.
+      this.dispatch.settle(call,intent.dispatchId,received.receiptId)
       if (turn.exhausted) {
         return {kind:'terminal-proposal',status:'needs-resume',
           event:await this.closeExhausted(call)}
