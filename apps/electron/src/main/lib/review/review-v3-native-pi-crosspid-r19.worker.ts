@@ -24,7 +24,7 @@ import {V3APiHttpSingleRequestEngine,
 } from './review-v3-pi-http-provider-engine'
 
 const [mode,rootArg]=process.argv.slice(2)
-if(!rootArg || !['crash','recover','late','quarantine','postcommit-eio','precommit-enospc','reopen-postcommit','reopen-precommit','complete','recover-complete','replay-receipt','recover-reused'].includes(mode??'')){
+if(!rootArg || !['crash','recover','late','quarantine','postcommit-eio','precommit-enospc','reopen-postcommit','reopen-precommit','complete','recover-complete','replay-receipt','recover-reused','settle-precommit-enospc','settle-postcommit-eio','recover-settle-precommit','recover-settle-postcommit'].includes(mode??'')){
   throw new Error('R19 worker requires an explicit crash/recover mode and test root')
 }
 const root=rootArg
@@ -132,7 +132,40 @@ async function crashOrLate():Promise<void>{
     permittedTools:['review_submit_result'],
   })
   const turns=new V3ATurnBudget(createFileOwnerPersistence(paths.turns),owner)
-  const dispatch=dispatcher(owner)
+  const settlementFault=mode==='settle-precommit-enospc'||
+    mode==='settle-postcommit-eio'
+  let injectedSettlementWrites=0
+  const backing=createFileOwnerPersistence(paths.dispatch)
+  const settlementStore:OwnerPersistence={
+    read:()=>backing.read(),
+    write:()=>{throw Error('R19-06 expected actual CAS persistence')},
+    compareAndWrite:(expected,bytes)=>{
+      const envelope=JSON.parse(bytes) as {payload:{runs:Record<string,{
+        records:{state:string}[]}>}}
+      const records=Object.values(envelope.payload.runs)
+        .flatMap(x=>x.records)
+      if(records.some(x=>x.state==='settled')){
+        injectedSettlementWrites++
+        if(mode==='settle-precommit-enospc'){
+          throw Object.assign(
+            new Error('R19-06 ENOSPC before durable SDK settlement'),
+            {code:'ENOSPC'},
+          )
+        }
+        if(mode==='settle-postcommit-eio'){
+          backing.compareAndWrite!(expected,bytes)
+          throw Object.assign(
+            new Error('R19-06 EIO after durable SDK settlement'),
+            {code:'EIO'},
+          )
+        }
+      }
+      backing.compareAndWrite!(expected,bytes)
+    },
+  }
+  const dispatch=settlementFault
+    ?new V3ASDKDispatchFence(settlementStore,owner)
+    :dispatcher(owner)
   const host={
     read:async()=>{throw Error('R19 physical document read not invoked')},
     check:async()=>{throw Error('R19 physical Check not invoked')},
@@ -213,7 +246,7 @@ async function crashOrLate():Promise<void>{
               controller.close()
               return
             }
-            if(mode==='complete' || mode==='replay-receipt'){
+            if(mode==='complete' || mode==='replay-receipt' || settlementFault){
               controller.enqueue(new TextEncoder().encode(remainingSse))
               controller.close()
               return
@@ -255,7 +288,7 @@ async function crashOrLate():Promise<void>{
     })+'\n')
     return
   }
-  if(mode==='complete' || mode==='replay-receipt'){
+  if(mode==='complete' || mode==='replay-receipt' || settlementFault){
     let resultKind='',denial=''
     try{
       const result=await bridge.next(callOf(lease,principal),'direct')
@@ -273,7 +306,20 @@ async function crashOrLate():Promise<void>{
       fetches!==1 || existsSync(paths.events)){
       throw Error('R19-05 Pi actual native settled/one-fetch evidence missing')
     }
-    if(replay){
+    if(settlementFault){
+      const expected=mode==='settle-postcommit-eio'
+        ?'R19-06 EIO after durable SDK settlement'
+        :'R19-06 ENOSPC before durable SDK settlement'
+      const expectedState=mode==='settle-postcommit-eio'?'settled':'in-flight'
+      if(!denial.includes(expected) || resultKind ||
+        own?.state!==expectedState ||
+        (expectedState==='settled' && own.receiptId!=='r19-provider-physical-001') ||
+        (expectedState==='in-flight' && own.receiptId!==undefined) ||
+        snap.usedTurns!==1 || injectedSettlementWrites!==1){
+        throw Error('R19-06 real native turn/SDK settlement fault not fail-closed: '+
+          JSON.stringify({denial,resultKind,own,snap,injectedSettlementWrites}))
+      }
+    }else if(replay){
       if(!denial.includes('One SDK receipt cannot attest two different Provider dispatches') ||
         resultKind || own?.state!=='in-flight' || snap.usedTurns!==0 ||
         previous?.state!=='recovery-required' || oldUsed!==1){
@@ -287,12 +333,13 @@ async function crashOrLate():Promise<void>{
           JSON.stringify({denial,resultKind,own,snap}))
       }
     }
-    process.stdout.write('R19_NORMAL '+JSON.stringify({
+    process.stdout.write((settlementFault?'R19_SETTLEMENT_FAULT ':'R19_NORMAL ')+JSON.stringify({
       mode,pid:process.pid,processEpoch:owner.processEpoch,
       runId:run.runId,attemptId:run.attemptId,
       grantId:lease.grantId,dispatchId:own?.id,
       dispatchState:own?.state,receiptId:own?.receiptId??null,
       nativeEvents,fetches,usedTurns:snap.usedTurns,
+      injectedSettlementWrites,
       oldUsedTurns:oldUsed,denial,resultKind,proposalExists:existsSync(paths.events),
       ownerLedgerSha256:sealed(paths.owner).sha256,
       dispatchLedgerSha256:sealed(paths.dispatch).sha256,
@@ -609,7 +656,90 @@ function recoverDuplicated():void{
     proposalExists:existsSync(paths.events),
   })+'\n')
 }
-if(mode==='crash' || mode==='late' || mode==='complete' || mode==='replay-receipt')await crashOrLate()
+
+/**
+ * R19-06: actual native SDK turn durably counted BEFORE SDK settlement fault.
+ * New OS PID must not count same turn twice. Fault code injected at disk CAS.
+ */
+function recoverSettlement(postcommit:boolean):void{
+  const owner=new V3ReviewOwnerAdapter(ownerStore(),authority)
+  const previous=owner.get('r19-old-session')
+  if(!previous || previous.state!=='recovery-required' ||
+    previous.processEpoch===owner.processEpoch){
+    throw Error('R19-06 cold previous Owner not quarantined')
+  }
+  const quarantined=owner.quarantineInterrupted()
+  if(quarantined.length!==1 || quarantined[0]!==previous.sessionId ||
+    owner.get(previous.sessionId)?.state!=='recovery-required'){
+    throw Error('R19-06 old Owner was not durably quarantined')
+  }
+  const turns=new V3ATurnBudget(createFileOwnerPersistence(paths.turns),owner)
+  const dispatch=dispatcher(owner)
+  const oldTurn=turns.snapshot(previous)
+  const unresolved=dispatch.unresolved(previous.runEvidence!)
+  if(oldTurn.usedTurns!==1 || unresolved===postcommit ||
+    existsSync(paths.events)){
+    throw Error('R19-06 cold recovered turn/dispatch state mismatch')
+  }
+  const records=Object.values(sealed(paths.dispatch).payload.runs as
+    Record<string,{records:{state:string;receiptId?:string;id:string}[]}>)
+    .flatMap(x=>x.records)
+  if(records.length!==1 ||
+    records[0]?.state!==(postcommit?'settled':'in-flight') ||
+    records[0]?.receiptId!==(postcommit?'r19-provider-physical-001':undefined)){
+    throw Error('R19-06 settlement boundary journal invalid')
+  }
+  const principal=scope('r19-case').principal
+  const newRun={...previous.runEvidence!,runId:'r19-r06-new-run',
+    attemptId:'r19-r06-new-attempt'}
+  const fresh=owner.grant({
+    principal,run:newRun,plan:previous.planSnapshot!,
+    sources:previous.sourceIdentities,sessionId:'r19-r06-new-session',
+    senderKey:'r19-r06-new-frame',expiresAt:Date.now()+120000,
+    permittedTools:['review_submit_result'],
+  })
+  let claimBlocked=false
+  let newDispatchId=''
+  try{
+    newDispatchId=dispatch.claim(callOf(fresh,principal)).dispatchId
+  }catch(error){
+    if(String(error).includes('Unresolved SDK Provider dispatch on prior Run/Case')){
+      claimBlocked=true
+    }else throw error
+  }
+  if(claimBlocked!==!postcommit || (postcommit && !newDispatchId)){
+    throw Error('R19-06 recovery failed to respect committed settlement')
+  }
+  let duplicateReceiptBlocked=false
+  if(postcommit){
+    try{
+      dispatch.assertUniqueReceipt(newRun,newDispatchId,
+        'r19-provider-physical-001')
+    }catch(error){
+      if(String(error).includes('One SDK receipt cannot attest two different Provider dispatches')){
+        duplicateReceiptBlocked=true
+      }else throw error
+    }
+    if(!duplicateReceiptBlocked)throw Error('R19-06 settled ID reused')
+  }
+  if(turns.snapshot(previous).usedTurns!==1 ||
+     turns.snapshot(fresh).usedTurns!==0){
+    throw Error('R19-06 turn charged twice across PID restart')
+  }
+  process.stdout.write('R19_SETTLEMENT_RECOVERY '+JSON.stringify({
+    pid:process.pid,postcommit,processEpoch:owner.processEpoch,
+    oldProcessEpoch:previous.processEpoch,quarantined,
+    oldUsedTurns:turns.snapshot(previous).usedTurns,
+    newUsedTurns:turns.snapshot(fresh).usedTurns,
+    unresolved,claimBlocked,newDispatchId,duplicateReceiptBlocked,
+    settledRecords:records.filter(x=>x.state==='settled').length,
+    inFlightRecords:records.filter(x=>x.state==='in-flight').length,
+    proposalExists:existsSync(paths.events),
+  })+'\n')
+}
+if(mode==='crash' || mode==='late' || mode==='complete' || mode==='replay-receipt' || mode==='settle-precommit-enospc' || mode==='settle-postcommit-eio')await crashOrLate()
+else if(mode==='recover-settle-precommit')recoverSettlement(false)
+else if(mode==='recover-settle-postcommit')recoverSettlement(true)
 else if(mode==='recover-complete')recoverCompleted()
 else if(mode==='recover-reused')recoverDuplicated()
 else if(mode==='quarantine')quarantineWhileOldAlive()
