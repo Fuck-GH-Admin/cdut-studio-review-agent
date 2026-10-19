@@ -31,3 +31,10 @@
 ## 签收边界
 
 只有 GitHub 同 SHA PR CI + Baseline + Batch + D1 + D2 全成功、全量 Bun 新 4 用例从原始日志独立核验才能签 `C-C2-R06-EXACT-GATE-O`。即便签过也仅是**进程内 Main Host 技术安全**，不是 Pi 真实 Provider、物理真实 Electron Gate E、完整崩溃后 durable Run fencing、School L/P 或发布。B R20 接口任务已异步通知 #142，C 不应等 B。
+
+## 首次完整 CI 真实失败及仅测试断言修复
+
+- 首个候选 #144 `81dfe52a741d5f1f1648faa4fdc1b81d2dfe063a`：PR CI `39327669157` job `118317722471` 的 TypeScript、boundaries、skin、三 Electron builds 全成功，完整 Bun **4141 PASS / 5 OS SKIP / 1 FAIL（4147 tests/477 files）**。Baseline `39327669023`、Batch `39327669064`、D1 `39327669041`、D2 `39327669029` 均成功，**不能签 5/5 Gate O**。
+- 唯一失败：旧 `review-v3-main-trusted-assembly.test.ts:194` `C2-R04 single Main-local Plan/Owner/Host/Pi assembly > explicit Run invalidation tombstones Host receipt`。原断言只接受 `Recycled`，新 Run-wide 先命中永久围栏、正确返回 `RECOVERY_REQUIRED: Run invalidated: late or unknown physical Host receipt denied`。这是**旧测试消息断言未同步到更严格的拒绝优先级**，并非 Run 被放行。
+- 新修正 SHA `7e80c5e782c0e7d5b41a804b11cd5cbe6a130c45`：**只改 1 个 C-owned 旧测试断言**，从 `.toThrow('Recycled')` 改为 `.toThrow('Run invalidated')`；不改业务算法、不扩权限、不改 Run-wide 安全实现，不降低 CI 门槛。
+- 必须在新 exact HEAD `7e80c5e...` 全部 5 项 CI completed/success，重新核对 new R06 4/4 与 old assembly 回归后才可正式签收。
