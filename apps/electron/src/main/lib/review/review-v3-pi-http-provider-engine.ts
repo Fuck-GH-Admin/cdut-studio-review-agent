@@ -106,6 +106,10 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
     let invocations=0
     let httpCalls=0
     let physicalResponseId:string|undefined
+    // Observed only from bytes actually pulled through the Provider response
+    // body. HTTP headers, onResponse and Pi agent_settled alone cannot attest
+    // that an SSE completion marker was delivered to the SDK.
+    let sseTerminated=false
     let startedTurn=false
     let finishedTurn=false
     let agentEnded=false
@@ -195,10 +199,51 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
           if(!response.ok) return response
           physicalResponseId=requestId(response)
           if(!physicalResponseId)return mark()
+          const contentType=response.headers.get('content-type')
+            ?.split(';',1)[0]?.trim().toLowerCase()
+          if(contentType!=='text/event-stream' || !response.body)return mark()
+          // Do not clone/tee: a second reader can buffer an unbounded response
+          // and might finish independently of the SDK consumer. Watch only
+          // bytes that pass through the actual response body consumed by Pi.
+          const decoder=new TextDecoder()
+          let linePrefix=''
+          const api=model.api
+          const inspect=(chunk:Uint8Array):void=>{
+            const parts=decoder.decode(chunk,{stream:true}).split('\n')
+            for(let i=0;i<parts.length;i++){
+              const next=linePrefix+parts[i]!.slice(0,128)
+              if(i<parts.length-1){
+                const line=next.trim()
+                if(line==='data: [DONE]' || line==='data:[DONE]' ||
+                    (api==='openai-responses' &&
+                     line==='event: response.completed')){
+                  sseTerminated=true
+                }
+                linePrefix=''
+              } else {
+                // Keep only the start of a line; SSE JSON can be enormous.
+                linePrefix=next.slice(0,128)
+              }
+            }
+          }
+          const observedBody=response.body.pipeThrough(
+            new TransformStream<Uint8Array,Uint8Array>({
+              transform(chunk,controller){
+                inspect(chunk)
+                controller.enqueue(chunk)
+              },
+            }),
+          )
+          // This wraps the existing single response; it does not create an
+          // additional HTTP request or independently drain its body.
+          const observedResponse=new Response(observedBody,{
+            status:response.status,statusText:response.statusText,
+            headers:response.headers,
+          })
           // This is a server-issued HTTP response ID, NOT a model/assistant
           // UUID and NOT proof that the stream has finished.
           witness.requestStarted(physicalResponseId)
-          return response
+          return observedResponse
           },
           // Pi's fetch option follows Bun's augmented global fetch interface.
           // Never expose an unguarded DNS preconnect shortcut to the Provider.
@@ -222,7 +267,7 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
       // alone is not sufficient proof the physical HTTP callback ran.
       const observedId=physicalResponseId as string|undefined
       if(corrupted || invocations!==1 || httpCalls!==1 ||
-          !observedId || !startedTurn || !finishedTurn ||
+          !observedId || !sseTerminated || !startedTurn || !finishedTurn ||
           !agentEnded || !agentSettled) {
         return fail('Pi HTTP Provider request/stream completion provenance unavailable')
       }
