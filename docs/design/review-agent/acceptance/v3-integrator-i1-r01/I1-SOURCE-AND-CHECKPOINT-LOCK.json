@@ -202,7 +202,7 @@
     }
   ],
   "newIIntegrationProbes": {
-    "count": 8,
+    "count": 13,
     "results": "COMMITTED_NOT_VERIFIED",
     "crossModules": [
       "Dev-B B1 immutable candidate Plan",
@@ -216,5 +216,31 @@
   },
   "integrationPullRequest": 147,
   "pullRequestBaseBranch": "integration/v3-i1-c-anchor-001-frozen",
-  "pullRequestBaseSHA": "31aa352c45a33d6832612884b0fea38e39b5cf8d"
+  "pullRequestBaseSHA": "31aa352c45a33d6832612884b0fea38e39b5cf8d",
+  "ownerEventSecondSlice": {
+    "status": "COMMITTED_NOT_VERIFIED",
+    "sourceAnchorsUnchanged": true,
+    "testFile": "apps/electron/src/main/lib/review/review-v3-integration-i1-owner-event.test.ts",
+    "bridgeFile": "apps/electron/src/main/lib/review/review-v3-integration-i1-technical.ts",
+    "newCases": 5,
+    "priorIOnlyCases": 8,
+    "totalIOnlyJointCases": 13,
+    "sources": [
+      "B2 parser-verified original bytes",
+      "B1 candidate immutable Plan",
+      "A1 Owner grant with Main-injected authority fixture",
+      "A2 local C0 proposal ledger and Host guardedRead",
+      "A3 technical exact Check×target projection",
+      "C1 archive CurrentValidity linked to A1 isCurrent"
+    ],
+    "codeCommits": [
+      "a4233bb563cdabef26dbbab4a1a67223474d8ebf",
+      "786ca5c4f0710f4a7d758cca6d7fc9d8079df9c9",
+      "c1a61938f4c9060ff9a7a6b54b6cf9238a4999f1",
+      "a71576d33eea627388d45e663e0e5641f3145f49"
+    ],
+    "formalWriter": false,
+    "realElectronMain": false,
+    "scope": "TECHNICAL_ONLY"
+  }
 }

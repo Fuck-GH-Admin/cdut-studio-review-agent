@@ -1,6 +1,6 @@
 # Review V3 I1｜真正 A/B/C 技术集成、联合验证及 C 复核请求
 
-**状态：`I1_CODE_ASSEMBLED / EXACT_SHA_GATE_O_PENDING / C_SIGNOFF_PENDING`**  
+**状态：`I1_AB_C_TECHNICAL_WIRED_SCOPED / EXACT_SHA_GATE_O_PENDING / C_SIGNOFF_PENDING`**  
 **工程 PR**：[Draft #147](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/147)  
 **单一治理/授权**：[Draft #145](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/145) `C-ANCHOR-001` / `C-I1-AUTH-001`，协议 `V3-ABCI-GOVERNANCE-R01/V1.0`。
 
@@ -50,3 +50,15 @@ Git 对象级文件导入：`b6e767f0c85eca8e1c83a5420bc31ea8b4533e8f` 父 commi
 请 C 在新 I1 精确 HEAD 的所有 Gate O 证据可见后，复核 #147 的 21+ 个真实变动文件、18 个同源 blob、`review-c0/1` 未变更与 I 只有非业务写入 glue 的事实；检验旧 #139 L1-01/02/03 尚未覆盖的真实风险是否仍清楚标 BLOCKED。然后对**精确 I_CHECKPOINT_SHA** 在 #145 第 9 节签署 `C_ACCEPTED_FOR_ENGINEERING` 或 `CHANGES_REQUESTED`。目前 C 工程签收为 PENDING。
 
 **下一增量**：若 C 选下一锚点（如承载 `review-v3-execution/1` 的新 C SHA），不得直接覆写 #147 的已接收 I 工作。用新 C 的实际固定 SHA + 先前通过的 I_CHECKPOINT_SHA 做 patch/blob/行为差异，跳过 C 已吸收片段，逐片重放旧 I 自有 glue/A/B 受权切片、全量重跑同新 SHA Gate O。新正式写权仍须 C 逐端口批准。
+
+## 6. I1 第二技术切片：原件 → 可信 Owner → 事件 proposals（同一 I 工程 PR）
+
+**基于第一技术集成快照继续 fast-forward，无新 C 授权/锚点**。第一切片的 8 个 synthetic cases 未被删改。新增 I-only 工程代码，使用同一批已批准、按 blob 拷入的 A/B 源文件：
+
+- 在 `review-v3-integration-i1-technical.ts` 新增 `readI1OwnerBoundBlock`：从 **B2 `ReviewB2StagingService`** 取已暂存候选，用 **B2 `ReviewB2SourceVersionAdapter`** 解析实际 original bytes 并查 `sourceForBlock`，再经 **Dev-A `V3ExecutionEventAdapter.guardedRead`**，后者依赖 **A1 `V3ReviewOwnerAdapter`** 的可信 grant、授权 source allowlist、Host 前/后 await 权限复核及 exact `actualSource` 比较。输出仅是 `STAGED_ONLY` 和 C0 `read-receipt-proposal`；没有 Main IPC、持久 Run、正式 Check、业务 ACK、full-document read claim 或 policy 批准。
+- 新增 `review-v3-integration-i1-owner-event.test.ts` **5 条真实跨模块技术合成测试**：B2 physical bytes/B1 immutable Plan/A1 grant/A2 read + check local proposal/A3 exact technical outcome 成功；伪造来源/Host 实际 block 拒止；**C1 `currentSourceValidityBlockers` 直接进入 A1 Main authority 模拟 `isCurrent`** 并阻断归档材料的迟到 event；Owner 在 Host await 中撤权；事件 journal 重放只能本地 delivery，冷启动旧 Owner 不可复权。业务写入仍为 0，测试中的 Main 权威是显式 fixture，不代表真实 Electron Main。
+- 第二切片 I-only 具体提交：`a4233bb563cdabef26dbbab4a1a67223474d8ebf`（5 个用例）、`786ca5c4f0710f4a7d758cca6d7fc9d8079df9c9`（Host glue）、`c1a61938f4c9060ff9a7a6b54b6cf9238a4999f1`（测试接入 glue）、`a71576d33eea627388d45e663e0e5641f3145f49`（C1 blocker 驱动 A1 `isCurrent`）；累计 I-only **13 条新跨线技术测试**已提交但**未验证 Gate O**。
+- A1 的 `authorizeExecution`/ `isCurrent` 回调在测试中只是可信 Main 的 **合成替身**；`V3ExecutionEventAdapter.acknowledge` 仍仅是 A 本地 outbox ACK，绝对不是 C2 持久消费确认。C2/Host/真实校方/实际 Electron 仍保持 `BLOCKED`。
+- 原 C anchor `31aa352c45a33d6832612884b0fea38e39b5cf8d`、A/B 来源 SHA、`review-c0/1` 均未改变。保持无 C-exclusive hunk，无 `review-v3-execution/1` 偷渡。本轮新增 I-only **1 个测试文件**、更改 I-only bridge 及 I 自有报告/lock，总 diff 当前应为 **23 paths**，需以实际 Git PR diff 再次核验。
+
+**验收纪律**：第二切片只在 #147 最终精确 SHA 的 GitHub Actions PR CI、Review Baseline 与 D2 均结束且结果可复核时报告 `PASS_SCOPED`；待 C 在 #145 第 9 节对这个确切 SHA 审阅之后才能报 `C_ACCEPTED_FOR_ENGINEERING`。工作流 queued/cancelled 不算绿，不把 A/B/C 单线 green 拿来替代。
