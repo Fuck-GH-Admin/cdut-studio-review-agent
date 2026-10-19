@@ -141,6 +141,18 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
     expect(h.producer.replayCandidates()).toHaveLength(1)
   })
+  it('A3-SDK-10: sealed timeout attempt refuses another Provider SDK turn',async()=>{
+    const h=fixture()
+    h.setNext(async run=>({kind:'interrupted',status:'timed-out',run}))
+    const first=await h.bridge.next(h.call,'direct')
+    expect(first.kind).toBe('terminal-proposal')
+    expect(h.calls()).toBe(1)
+    await expect(h.bridge.next(h.call,'direct')).rejects.toThrow(
+      'Attempt already sealed',
+    )
+    expect(h.calls()).toBe(1)
+    expect(h.producer.replayCandidates()).toHaveLength(1)
+  })
   it('A3-SDK-04: Provider SDK exception is not a Host status/turn/Run success',async()=>{
     const h=fixture()
     h.setNext(async()=>{throw Object.assign(new Error('Provider crash'),{code:'ECONNRESET'})})
