@@ -159,6 +159,9 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     const h=fixture()
     h.setNext(async()=>{throw Object.assign(new Error('Provider crash'),{code:'ECONNRESET'})})
     await expect(h.bridge.next(h.call,'batch')).rejects.toThrow('Provider crash')
+    expect(h.dispatch.unresolved(h.run)).toBe(true)
+    await expect(h.bridge.next(h.call,'batch')).rejects.toThrow('Unresolved SDK Provider dispatch')
+    expect(h.calls()).toBe(1)
     expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
     expect(h.producer.replayCandidates()).toEqual([])
   })
@@ -170,10 +173,46 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     await expect(h.bridge.next(h.call,'direct')).rejects.toThrow()
     expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
     expect(h.producer.replayCandidates()).toEqual([])
-    h.setNext(async run=>({
-      kind:'completed-turn',receiptId:'',run,
-    }))
+    expect(h.dispatch.unresolved(h.run)).toBe(true)
+    await expect(h.bridge.next(h.call,'direct')).rejects.toThrow('Unresolved SDK Provider dispatch')
+    const clean=fixture()
+    clean.setNext(async run=>({kind:'completed-turn',receiptId:'',run}))
+    await expect(clean.bridge.next(clean.call,'direct')).rejects.toThrow()
+    expect(clean.dispatch.unresolved(clean.run)).toBe(true)
+  })
+  it('A4-DISPATCH-01: dispatch disk ENOSPC prevents even the first SDK call',async()=>{
+    const h=fixture()
+    h.dispatchStore.fail=true
+    await expect(h.bridge.next(h.call,'direct')).rejects.toThrow('ENOSPC')
+    expect(h.calls()).toBe(0)
+    expect(h.dispatch.unresolved(h.run)).toBe(false)
+    expect(h.producer.replayCandidates()).toEqual([])
+  })
+  it('A4-DISPATCH-02: await-time grant rotation quarantines returned old SDK intent',async()=>{
+    const h=fixture()
+    let release!:(out:V3ATurnHostOutcome)=>void
+    h.setNext(()=>new Promise<V3ATurnHostOutcome>(res=>{release=res}))
+    const pending=h.bridge.next(h.call,'hidden')
+    expect(h.dispatch.unresolved(h.run)).toBe(true)
+    h.owners.pause(h.call.sessionId)
+    const lease=h.owners.resumePaused(h.call.sessionId,h.grant.grantId,
+      h.grant.senderKey,h.principal)
+    release({kind:'completed-turn',receiptId:'late-old-grant',run:h.run})
+    await expect(pending).rejects.toThrow()
+    expect(h.dispatch.unresolved(h.run)).toBe(false)
+    h.setNext(async run=>({kind:'completed-turn',receiptId:'fresh-after-resume',run}))
+    expect((await h.bridge.next({...h.call,grantId:lease.grantId},'hidden')).kind)
+      .toBe('recorded')
+    expect(h.turns.snapshot(lease).usedTurns).toBe(1)
+  })
+  it('A4-DISPATCH-03: invalid Host Run leaves durable unresolved intent',async()=>{
+    const h=fixture()
+    h.setNext(async run=>({kind:'completed-turn',receiptId:'wrong-case',
+      run:{...run,caseId:'other-case'}}))
     await expect(h.bridge.next(h.call,'direct')).rejects.toThrow()
+    expect(h.dispatch.unresolved(h.run)).toBe(true)
+    await expect(h.bridge.next(h.call,'direct')).rejects.toThrow('Unresolved SDK Provider dispatch')
+    expect(h.calls()).toBe(1)
   })
   it('A3-SDK-16: semantically identical frozen Run with reordered keys is accepted',async()=>{
     const h=fixture()
@@ -231,8 +270,10 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
     expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
     expect(h.producer.replayCandidates()).toEqual([])
     h.turnStore.fail=false
-    expect((await h.bridge.next(h.call,'direct')).kind).toBe('recorded')
-    expect(h.turns.snapshot(h.grant).usedTurns).toBe(1)
+    expect(h.dispatch.unresolved(h.run)).toBe(true)
+    await expect(h.bridge.next(h.call,'direct')).rejects.toThrow('Unresolved SDK Provider dispatch')
+    expect(h.calls()).toBe(1)
+    expect(h.turns.snapshot(h.grant).usedTurns).toBe(0)
   })
   it('A3-SDK-15: two bridge instances cannot execute same Owner SDK concurrently',async()=>{
     const h=fixture()
