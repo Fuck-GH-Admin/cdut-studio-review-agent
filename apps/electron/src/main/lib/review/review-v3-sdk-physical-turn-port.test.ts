@@ -125,6 +125,15 @@ describe('A4-R07 direct native physical SDK turn witness (synthetic hook; NO Gat
       status:'completed',
     })).toThrow('Missing, duplicated or mismatched native Provider completion')
   })
+  it('R07-14: invalid Run or mode is rejected before entering native Provider',async()=>{
+    let calls=0
+    const host=engine(async()=>{calls++})
+    await expect(host.nextTurn({...input(),run:{...run,caseId:''}}))
+      .rejects.toThrow()
+    await expect(host.nextTurn({...input(),mode:'untrusted' as V3APhysicalTurnInput['mode']}))
+      .rejects.toThrow('Unsupported SDK Host execution mode')
+    expect(calls).toBe(0)
+  })
   it('R07-11: Main dispatch identity missing is not delegated to SDK',async()=>{
     let calls=0
     const host=engine(async()=>{calls++})
