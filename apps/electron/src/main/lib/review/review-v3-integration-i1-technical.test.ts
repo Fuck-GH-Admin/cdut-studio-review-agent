@@ -4,7 +4,10 @@ import { ReviewB2StagingService, type B2MainContext } from './review-intake-adap
 import {
   compileReviewB1Plan, type B1AuthorDocument,
 } from './review-template-plan-adapter-v3-b1'
-import { inspectI1TechnicalPreview } from './review-v3-integration-i1-technical'
+import {
+  inspectI1TechnicalPreview, inspectI1PhysicalSourceBlock,
+} from './review-v3-integration-i1-technical'
+import { ReviewB2SourceVersionAdapter } from './review-source-version-adapter-v3-b2'
 
 const ctx: B2MainContext = {
   senderId: 10, frameId: 1, ownerId: 'trusted-main-local', ownerGeneration: 2,
@@ -155,6 +158,28 @@ describe('I1 frozen B1+B2+B3+A3+C1 read-only integration (synthetic Gate O)', ()
     expect(allowed.route?.status).toBe('default-selected')
     expect(allowed.canInstallPlan).toBe(false)
     expect(allowed.canFinalizeDecision).toBe(false)
+  })
+
+  test('actual parser registry binds staged physical bytes and refuses forged block/read claim', async () => {
+    const { staging, material } = stagingSample()
+    const parser = new ReviewB2SourceVersionAdapter(staging)
+    const registered = await inspectI1PhysicalSourceBlock({
+      staging, parser, mainContext: ctx, candidateId: material.candidateId,
+    })
+    expect(registered.classification).toBe('STAGED_ONLY')
+    expect(registered.status).toBe('VERIFIED_BLOCK_ONLY')
+    expect(registered.fullDocumentReadProven).toBe(false)
+    expect(registered.source?.rawSha256).toBe(material.rawSha256)
+    expect(registered.source?.documentVersionId).toBe(material.documentVersionId)
+    expect(registered.source?.location.kind).toBe('paragraph')
+    await expect(inspectI1PhysicalSourceBlock({
+      staging, parser, mainContext: ctx, candidateId: material.candidateId,
+      blockId: 'renderer-forged-block',
+    })).rejects.toThrow('B2_SOURCE_BLOCK_UNVERIFIED')
+    staging.revoke(ctx)
+    await expect(inspectI1PhysicalSourceBlock({
+      staging, parser, mainContext: ctx, candidateId: material.candidateId,
+    })).rejects.toThrow()
   })
   test('staging owner revoke denies further I1 previews and duplicate candidate ids fail', () => {
     const { staging, material } = stagingSample()
