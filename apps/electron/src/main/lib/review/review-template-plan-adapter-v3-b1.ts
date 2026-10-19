@@ -213,7 +213,7 @@ export function compileReviewB1Plan(author: B1AuthorDocument): ImmutablePlanDesc
       keys.add(check.checkKey)
       if (check.condition.kind === 'field-equals') {
         const field = fieldMap.get(check.condition.fieldKey)
-        if (!field) reject('B1_CONDITION_SOURCE_MISSING', check.checkKey)
+        if (!field) throw new Error('B1_CONDITION_SOURCE_MISSING: '+check.checkKey)
         if (field.type === 'evidence' || !matchesFieldType(field, check.condition.equals)) {
           reject('B1_CONDITION_TYPE_MISMATCH', check.checkKey)
         }
