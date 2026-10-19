@@ -92,6 +92,26 @@ export function ReviewV3AuthorWizard({
     change((doc) => { (doc.targets[index] as unknown as Record<string, unknown>)[key] = value })
   const updateCheck = (index: number, key: keyof B1Obligation, value: unknown): void =>
     change((doc) => { (doc.modules[0]!.checks[index] as unknown as Record<string, unknown>)[key] = value })
+  const defaultComparator = (fieldKey:string): string | number | boolean => {
+    const field=draft.fields.find(f=>f.key===fieldKey)
+    if (!field || field.type==='evidence') return 'example'
+    switch(field.type) {
+      case 'number': return 0
+      case 'boolean': return true
+      case 'enum': return field.enumValues?.[0] ?? 'example'
+      case 'date': return '2026-01-01'
+      default: return 'example'
+    }
+  }
+  const updateConditionEquals = (index:number, fieldKey:string, raw:string): void => {
+    try {
+      const field=draft.fields.find(f=>f.key===fieldKey)
+      if (!field || field.type==='evidence') throw new Error('B1_CONDITION_SOURCE_UNSUPPORTED')
+      const value=parseB1TrialInput(field,raw)
+      if (value===null) throw new Error('B1_CONDITION_VALUE_REQUIRED')
+      updateCheck(index,'condition',{kind:'field-equals',fieldKey,equals:value})
+    } catch(reason) { setError(reason instanceof Error ? reason.message : String(reason)) }
+  }
   const perform = async (mode: 'save' | 'preview' | 'freeze'): Promise<void> => {
     setBusy(true); setError(''); setNotice('')
     try {
@@ -266,20 +286,34 @@ export function ReviewV3AuthorWizard({
         <label className="block text-xs">适用条件
           <select className={inputClass} value={check.condition.kind} onChange={(e)=>updateCheck(i,'condition',
             e.target.value==='always' ? {kind:'always'} : {
-              kind:'field-equals',fieldKey:draft.fields[0]?.key??'',equals:'yes',
+              kind:'field-equals',
+              fieldKey:draft.fields.find(f=>f.type!=='evidence')?.key??'',
+              equals:defaultComparator(draft.fields.find(f=>f.type!=='evidence')?.key??''),
             })}>
             <option value="always">始终适用</option><option value="field-equals">字段等于指定值</option>
           </select>
         </label>
         {check.condition.kind==='field-equals'&&<div className="grid gap-2 sm:grid-cols-2">
           <select className={inputClass} value={check.condition.fieldKey} onChange={(e)=>updateCheck(i,'condition',{
-            kind:'field-equals',fieldKey:e.target.value,
-            equals:check.condition.kind==='field-equals'?check.condition.equals:'yes',
-          })}>{draft.fields.map(f=><option key={f.key} value={f.key}>{f.label}</option>)}</select>
-          <input className={inputClass} value={String(check.condition.equals)} onChange={(e)=>updateCheck(i,'condition',{
-            kind:'field-equals',fieldKey:check.condition.kind==='field-equals'?check.condition.fieldKey:'',
-            equals:e.target.value,
-          })}/>
+            kind:'field-equals',fieldKey:e.target.value,equals:defaultComparator(e.target.value),
+          })}>{draft.fields.filter(f=>f.type!=='evidence').map(f=>
+              <option key={f.key} value={f.key}>{f.label}</option>)}</select>
+          {draft.fields.find(f=>f.key===check.condition.fieldKey)?.type==='boolean' ?
+            <select className={inputClass} value={String(check.condition.equals)} onChange={e=>
+              updateConditionEquals(i,check.condition.kind==='field-equals'?check.condition.fieldKey:'',e.target.value)}>
+              <option value="true">是</option><option value="false">否</option>
+            </select> :
+            draft.fields.find(f=>f.key===check.condition.fieldKey)?.type==='enum' ?
+            <select className={inputClass} value={String(check.condition.equals)} onChange={e=>
+              updateConditionEquals(i,check.condition.kind==='field-equals'?check.condition.fieldKey:'',e.target.value)}>
+              {draft.fields.find(f=>f.key===check.condition.fieldKey)?.enumValues?.map(v=>
+                <option key={v} value={v}>{v}</option>)}
+            </select> :
+            <input className={inputClass}
+              type={draft.fields.find(f=>f.key===check.condition.fieldKey)?.type==='number'?'number':
+                draft.fields.find(f=>f.key===check.condition.fieldKey)?.type==='date'?'date':'text'}
+              value={String(check.condition.equals)} onChange={e=>
+                updateConditionEquals(i,check.condition.kind==='field-equals'?check.condition.fieldKey:'',e.target.value)}/>}
         </div>}
         <button type="button" className={buttonClass} onClick={()=>change((d)=>{d.modules[0]!.checks.splice(i,1)})}>删除 Check（版本升级需授权确认）</button>
       </div>)}
