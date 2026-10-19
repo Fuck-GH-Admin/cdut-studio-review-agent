@@ -1,5 +1,5 @@
 import { afterAll, describe, expect, test } from 'bun:test'
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { ReviewB2StagingService, type B2MainContext } from './review-intake-adapter-v3-b2'
@@ -84,4 +84,18 @@ describe('B2 durable input checkpoint is not a CurrentCase writer',()=>{
     staging.revoke(ctx)
     expect(()=>vault.inspect(ctx,checkpoint.archiveId)).toThrow('B2_OWNER_INVALID_OR_REVOKED')
   })
+  test('tampered symlink archive refuses access rather than reading external file',()=>{
+    const staging=new ReviewB2StagingService()
+    const vault=new ReviewB2ArchiveVault(staging,home)
+    const checkpoint=vault.saveAndStage(ctx,{
+      physicalArchiveKey:'native-file-link',requestId:'linked-5',bytes:makeZip('normal bytes'),
+    }).checkpoint
+    const stored=join(home,checkpoint.archiveId,'archive.zip')
+    rmSync(stored)
+    const outside=join(home,'out-of-scope.txt')
+    writeFileSync(outside,makeZip('external bytes'))
+    symlinkSync(outside,stored)
+    expect(()=>vault.inspect(ctx,checkpoint.archiveId)).toThrow('B2_ARCHIVE_RECOVERY_REQUIRED')
+  })
+
 })
