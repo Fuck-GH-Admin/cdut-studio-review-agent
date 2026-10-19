@@ -21,10 +21,11 @@ import {V3APiHttpSingleRequestEngine,
   type V3APiHttpSingleRequestFactory,type V3AHttpRequestTransport,
 } from './review-v3-pi-http-provider-engine'
 
-const [mode,root]=process.argv.slice(2)
-if(!root || !['crash','recover'].includes(mode??'')){
+const [mode,rootArg]=process.argv.slice(2)
+if(!rootArg || !['crash','recover'].includes(mode??'')){
   throw new Error('R19 worker requires an explicit crash/recover mode and test root')
 }
+const root=rootArg
 const paths={
   owner:join(root,'owner.json'),dispatch:join(root,'dispatch.json'),
   turns:join(root,'budget.json'),events:join(root,'events.json'),
