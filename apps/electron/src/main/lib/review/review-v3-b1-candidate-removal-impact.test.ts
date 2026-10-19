@@ -50,7 +50,7 @@ describe('B1 R16 candidate-only exact removed Check × target × source review',
   const r=buildB1CandidateRemovalImpact(old,pair(modified))
   expect(r.removed).toEqual([])
   expect(r.localAuthorReviewRequired).toBe(false)
-  expect(r.changedBindingKeys).toEqual(['permission::b'])
+  expect(r.changedBindingKeys).toEqual(['baseline::b','permission::b'])
   expect(()=>assertB1CandidateRemovalReview(r,[])).not.toThrow()
  })
  test('new source version is a changed binding, and cannot inherit old publisher',()=>{
