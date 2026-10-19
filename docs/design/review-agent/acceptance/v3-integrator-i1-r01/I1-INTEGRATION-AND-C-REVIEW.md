@@ -23,13 +23,13 @@ Git 对象级文件导入：`b6e767f0c85eca8e1c83a5420bc31ea8b4533e8f` 父 commi
 - `review-v3-integration-i1-technical.ts`：调用 **B2 Main-scoped staging registry** 取原件候选、**B1 compileReviewB1Plan/verifyReviewB1Descriptor** 生成候选不可变 Plan，与 **A3 V3ExecutionCompletenessAdapter** 对 `Check×target×object×subject` 做技术诊断，同时使用 **C1 currentSourceValidityBlockers** 拒止归档确认、用 **B3 planB3ConservativeRouting** 验证 20 秒唯一可信技术选路。
 - 同一 I 自有模块再连接 **B2 ReviewB2SourceVersionAdapter** 的实际原件解析与 `sourceForBlock` 注册表，从物理原件字节生成可追溯 C0 `SourceIdentity`，不允许由 Caller/Renderer 自报 block/locator；伪 block、旧 parse、撤权失败处理沿用 B 源代码。
 - 所有输出固定为 `STAGED_ONLY`，`publicationAllowed=false`，`canInstallPlan=false`、`canCommitRun=false`、`canFinalizeDecision=false`。即便技术覆盖全匹配，也只是技术诊断、不是正式业务完成、更不是校方受理。真实 Host 回执由 A/C 以后的正式接口提供；本 I1 仅合成技术输入且**不允许**将结果作为业务授权凭证。
-- `review-v3-integration-i1-technical.test.ts`：**7 条新合成跨线测试已提交（执行状态需以 I1 HEAD CI 为准）**，覆盖 B1/B2/A3 unknown 拒绝、Plan/Run 伪 Source 拒止、技术全匹配仍无写权、C1 归档旧来源拒止、B3 candidate-held/20s、B2 真解析/伪 block/撤权、重复与撤权拒止。A/B 的 9 个独立源测试文件也在同一 I1 tree；并应执行全部原有回归。
+- `review-v3-integration-i1-technical.test.ts`：**8 条新合成跨线测试已提交（执行状态需以 I1 HEAD CI 为准）**，覆盖 B1/B2/A3 unknown 拒绝、Plan/Run 伪 Source 拒止、技术全匹配仍无写权、C1 归档旧来源拒止、B3 candidate-held/20s、B2 真解析/伪 block/撤权、跨 Subject 材料错误绑定拒止与单 Subject 合法预览、重复与撤权拒止。A/B 的 9 个独立源测试文件也在同一 I1 tree；并应执行全部原有回归。
 - 不引入 C 最新 `review-v3-execution/1`（它在新的 C SHA，非旧锚点）。`CR-A-001` 已批准的未来 DTO 只是规范，正式事件生产者/Run writer 未接。`B-CR-001` 的 Main native picker/正式 Plan publisher 和 ApplyMaterial 也依旧由 C 独占，未擅加。
 
 ## 3. Source blob → I commit 与所有权证明
 
 - 18 个 A/B 文件保留**完全相同的 Git blob SHA**，原始清单见 JSON，不在本 Markdown 重复 18×40 位字符；代码导入提交 `b6e767f0...`。
-- I 自有胶水初始提交 `9a31c89d68d2bfea0f96cee52391c0f00c75cdfb`，联合测试初始提交 `96e20263f78869cca31b311edfa9d27923b7cff6`；解析真实物理块补充提交 `9afd9d80eb03041b665964efce8a34c1c9337126` 与 `6a90a235325d6802e119bf3a143f4b5d6ec7bc85`。
+- I 自有胶水初始提交 `9a31c89d68d2bfea0f96cee52391c0f00c75cdfb`，联合测试初始提交 `96e20263f78869cca31b311edfa9d27923b7cff6`；解析真实物理块补充提交 `9afd9d80eb03041b665964efce8a34c1c9337126` 与 `6a90a235325d6802e119bf3a143f4b5d6ec7bc85`；另有 Subject-source fail-closed `bed8c537bd2a2187c33d006afe0f9d9c7b7bbd2e` 与联合正反例 `df7b79e663a96841310b8f91b90311bead62e9fd`。
 - `UPSTREAM_TO_A`：目前无源代码修复；`UPSTREAM_TO_B`：无；`UPSTREAM_TO_C`：无；`I_ONLY`：两个新 `review-v3-integration-i1-technical*` 文件与本锁/本验收报告。
 - C 独占 `packages/shared/**`、`review-ipc.ts`、Main Principal、Preload、`application-service.ts`、Case/Run/Batch/Outbox 等 **零修改**。没有委托租约，I 不能修改它们；新版共享 DTO 也未借文件级导入绕过 C 签署。
 
