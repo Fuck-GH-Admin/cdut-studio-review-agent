@@ -125,7 +125,8 @@ function decode(raw: string | null): OwnerDisk {
   for (const [id, lease] of Object.entries(p.owners)) {
     assertLeaseValid(lease)
     if (id !== lease.sessionId ||
-        p.generationBySession[id] < lease.generation) fail('Owner generation corrupted')
+        (typeof p.generationBySession[id] !== 'number' ||
+        p.generationBySession[id] < lease.generation)) fail('Owner generation corrupted')
   }
   return p
 }
@@ -324,7 +325,11 @@ export class V3ReviewOwnerAdapter {
       .map(([id]) => id)
     if (!ids.length) return []
     const updated = { ...this.journal.owners }
-    for (const id of ids) updated[id] = { ...updated[id], state: 'recovery-required' }
+    for (const id of ids) {
+      const previous = updated[id]
+      if (!previous) fail('Owner to quarantine missing')
+      updated[id] = { ...previous, state: 'recovery-required' }
+    }
     this.persist({ ...this.journal, owners: updated })
     return ids
   }
