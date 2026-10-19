@@ -31,7 +31,7 @@ function guardTree(x:unknown,depth=0,seen={nodes:0}):void {
     for(const v of x)guardTree(v,depth+1,seen)
     return
   }
-  if(!rec(x))fail('JSON_VALUE')
+  if(!rec(x))throw new Error('B1_IMPORT_JSON_VALUE')
   for(const k of Object.keys(x)){
     if(['__proto__','prototype','constructor'].includes(k))fail('PROTOTYPE_KEY')
     guardTree(x[k],depth+1,seen)
@@ -44,23 +44,24 @@ function validateCandidate(d:Record<string,unknown>):void {
     !nonempty(d.templateVersion)||!nonempty(d.name)||!nonempty(d.purpose)||
     !array(d.sources,128)||!array(d.fields,256)||!array(d.targets,256)||
     !array(d.modules,64)||!array(d.stages,128)||!array(d.outputs,128))fail('AUTHOR_STRUCTURE')
-  const sources=d.sources
+  // Each array was structurally checked before narrowing untrusted JSON.
+  const sources=d.sources as unknown[]
   if(!sources.every(x=>rec(x)&&only(x,['sourceId','kind','documentVersionId','locator','recordedBy'])&&
     validKey(x.sourceId)&&['user-declared','policy-candidate'].includes(String(x.kind))&&
     nonempty(x.documentVersionId)&&nonempty(x.locator)&&nonempty(x.recordedBy)))fail('SOURCE_STRUCTURE')
-  const fields=d.fields
+  const fields=d.fields as unknown[]
   if(!fields.every(x=>rec(x)&&only(x,['key','label','type','required','enumValues','sourceId','subjectScoped'])&&
     validKey(x.key)&&nonempty(x.label)&&validKey(x.sourceId)&&
     ['text','number','date','boolean','enum','evidence'].includes(String(x.type))&&
     typeof x.required==='boolean'&&(x.subjectScoped===undefined||typeof x.subjectScoped==='boolean')&&
     (x.enumValues===undefined||strings(x.enumValues,128))))fail('FIELD_STRUCTURE')
-  const targets=d.targets
+  const targets=d.targets as unknown[]
   if(!targets.every(x=>rec(x)&&only(x,['targetKey','objectKey','subjectId','scenario','fieldValues'])&&
     validKey(x.targetKey)&&nonempty(x.objectKey)&&validKey(x.subjectId)&&nonempty(x.scenario)&&
     rec(x.fieldValues)&&Object.entries(x.fieldValues).every(([k,v])=>
       validKey(k)&&(v===null||typeof v==='string'||typeof v==='boolean'||
         (typeof v==='number'&&Number.isFinite(v))))))fail('TARGET_STRUCTURE')
-  const modules=d.modules
+  const modules=d.modules as unknown[]
   if(!modules.every(x=>rec(x)&&only(x,['moduleId','version','dependsOn','checks'])&&
     validKey(x.moduleId)&&nonempty(x.version)&&strings(x.dependsOn,64)&&
     array(x.checks,600)&&x.checks.every(c=>rec(c)&&
@@ -89,12 +90,15 @@ export function parseB1AuthorCandidateImport(json:string):B1AuthorDocument {
   let value:unknown
   try{value=JSON.parse(json)}catch{fail('INVALID_JSON')}
   guardTree(value)
-  if(!rec(value)||!only(value,['format','trustTier','publicationAllowed','candidate'])||
+  if(!rec(value))throw new Error('B1_IMPORT_UNTRUSTED_ENVELOPE')
+  if(!only(value,['format','trustTier','publicationAllowed','candidate'])||
     value.format!=='review-b1-candidate-export/1'||
     value.trustTier!=='unverified-user-authoring'||value.publicationAllowed!==false||
     !rec(value.candidate))fail('UNTRUSTED_ENVELOPE')
-  validateCandidate(value.candidate)
-  const result=structuredClone(value.candidate) as unknown as B1AuthorDocument
+  const candidate=value.candidate
+  if(!rec(candidate))throw new Error('B1_IMPORT_UNTRUSTED_ENVELOPE')
+  validateCandidate(candidate)
+  const result=structuredClone(candidate) as B1AuthorDocument
   // Deliberately drop claims of the previous machine/user as author identity.
   for(const source of result.sources)source.recordedBy='imported-local-unverified'
   return result

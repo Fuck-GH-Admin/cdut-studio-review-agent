@@ -54,7 +54,8 @@ export function validateB4RuleAnchorLedger(
   for(const item of ledger.templates){
     const archive=archives[item.domain]
     const target:B4ArchiveTemplate|undefined=archive?.templates.find(t=>t.templateId===item.templateId)
-    if(!target||ids.has(item.templateId)||archive?.frozenSourceGitSha!==ledger.baseSourceGitSHA ||
+    if(!target)throw new Error('B4_RULE_DIFF_TEMPLATE')
+    if(ids.has(item.templateId)||archive?.frozenSourceGitSha!==ledger.baseSourceGitSHA ||
       target.sourceSha256!==item.rawOriginalSha256 ||
       target.obligations.length!==item.workspaceCheckCount ||
       item.publicationAllowed!==false ||
@@ -81,7 +82,8 @@ export function validateB4RuleAnchorLedger(
       for(const id of rule.mappedCheckIds){
         if(usedChecks.has(id))fail('DUPLICATE_EDGE')
         const check=byId.get(id)
-        if(!check || check.bindingState!=='WORKSPACE_BOUND' ||
+        if(!check)throw new Error('B4_RULE_DIFF_CHECK_RULE_MISMATCH')
+        if(check.bindingState!=='WORKSPACE_BOUND' ||
           (item.domain==='G04'?check.taskId!==('r'+rule.ruleId.slice(2)):
             !check.taskTitle?.startsWith(rule.ruleId+'｜')))fail('CHECK_RULE_MISMATCH')
         usedChecks.add(id);sourceIds.push(...check.sourceIds)
