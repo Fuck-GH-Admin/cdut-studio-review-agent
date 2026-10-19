@@ -208,6 +208,8 @@ describe('I1 A1+A2 with B1/B2 parser identity and C1 fail-closed boundaries', ()
     const pendingHost = new Promise<{ receiptId: string; actualSource: SourceIdentity; result: string }>(
       resolve => { release = resolve },
     )
+    let notifyEntered!: () => void
+    const hostEntered = new Promise<void>(resolve => { notifyEntered = resolve })
     const attempt = readI1OwnerBoundBlock({
       staging: h.staging, parser: h.parser, mainContext: identity,
       candidateId: h.candidate.candidateId, events: h.events,
@@ -215,14 +217,15 @@ describe('I1 A1+A2 with B1/B2 parser identity and C1 fail-closed boundaries', ()
         sessionId: h.lease.sessionId, grantId: h.lease.grantId,
         senderKey: h.lease.senderKey, principal: h.principal,
       },
-      hostRead: async () => pendingHost,
+      hostRead: async () => {
+        notifyEntered()
+        return pendingHost
+      },
     })
-    // The bridge parses on an async path before it reaches hostRead.
-    // Wait for the real callback entrance, not a guessed event-loop turn.
-    let entered!: () => void
-    void entered
-    release({ receiptId: 'late-after-b2-revoke', actualSource: h.source, result: 'stale' })
+    // Do not race the async B2 parser: the Host callback must actually enter.
+    await hostEntered
     h.staging.revoke(identity)
+    release({ receiptId: 'late-after-b2-revoke', actualSource: h.source, result: 'stale' })
     await expect(attempt).rejects.toThrow()
     expect(h.events.pending()).toEqual([])
     // B2 staging revoke is independent of A1 grant. Confirm this test proves
