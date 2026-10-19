@@ -66,6 +66,15 @@ export interface I1TechnicalPreview {
  * as an authorization token: the result explicitly denies all write actions.
  */
 export function inspectI1TechnicalPreview(input: I1TechnicalPreviewInput): I1TechnicalPreview {
+  // A3 validates Plan/Check membership, but it has no knowledge of B2's
+  // Main-attested intake owner. Bind the proposal to that owner *before*
+  // any candidate/coverage is reported as eligible for a technical preview.
+  // In particular, a forged cross-case Run or a previous owner generation
+  // cannot borrow a valid physical documentVersionId from this staging scope.
+  if (input.proposedRun.caseId !== input.mainContext.caseCandidateId ||
+      input.proposedRun.ownerGeneration !== input.mainContext.ownerGeneration) {
+    throw new Error('I1_RUN_MAIN_INTAKE_SCOPE_MISMATCH')
+  }
   if (!input.candidateIds.length || new Set(input.candidateIds).size !== input.candidateIds.length) {
     throw new Error('I1_CANDIDATE_SET_INVALID')
   }

@@ -51,7 +51,7 @@ function author(documentVersionId: string, second: boolean | null = null): B1Aut
 }
 function runFor(draft: B1AuthorDocument, versionId: string): RunEvidenceIdentity {
   return {
-    schemaVersion: REVIEW_C0_SCHEMA_VERSION, runId: 'run-proposal-only', caseId: 'case-1',
+    schemaVersion: REVIEW_C0_SCHEMA_VERSION, runId: 'run-proposal-only', caseId: ctx.caseCandidateId,
     caseRevision: 4, planFingerprint: compileReviewB1Plan(draft).canonicalPlan.fingerprint,
     templateVersion: 'v1', inputManifestHash: 'a'.repeat(64),
     sourceVersionIds: [versionId], checkKeys: ['R01'], attemptId: 'attempt-1',
@@ -102,6 +102,34 @@ describe('I1 frozen B1+B2+B3+A3+C1 read-only integration (synthetic Gate O)', ()
       ...base, currentCaseSnapshot: { caseV2: { id: 'another-case' } } as CaseAggregateV2,
     })).toThrow('I1_CURRENT_CASE_SCOPE_MISMATCH')
   })
+  test('cross-case and stale Main owner generation cannot borrow staged B2 sources for technical preview', () => {
+    const { staging, material } = stagingSample()
+    const draft = author(material.documentVersionId, true)
+    draft.targets = draft.targets.slice(0, 1)
+    draft.modules[0]!.checks[0]!.targetKeys = ['target-1']
+    const validRun = runFor(draft, material.documentVersionId)
+    const input = {
+      mainContext: ctx, staging, candidateIds: [material.candidateId],
+      authorDraft: draft, proposedRun: validRun, technicalObservations: [t1],
+    }
+    const valid = inspectI1TechnicalPreview(input)
+    expect(valid.coverage.state).toBe('technically-complete')
+    expect(valid.technicalPreviewEligible).toBe(true)
+    expect(valid.canCommitRun).toBe(false)
+    const wrongCase = { ...validRun, caseId: 'another-case-with-same-physical-version' }
+    expect(() => inspectI1TechnicalPreview({
+      ...input, proposedRun: wrongCase,
+    })).toThrow('I1_RUN_MAIN_INTAKE_SCOPE_MISMATCH')
+    const staleGeneration = { ...validRun, ownerGeneration: ctx.ownerGeneration - 1 }
+    expect(() => inspectI1TechnicalPreview({
+      ...input, proposedRun: staleGeneration,
+    })).toThrow('I1_RUN_MAIN_INTAKE_SCOPE_MISMATCH')
+    // A nonmatching Main intake context itself must not validate this Run.
+    expect(() => inspectI1TechnicalPreview({
+      ...input, mainContext: { ...ctx, caseCandidateId: 'other-case' },
+    })).toThrow('I1_RUN_MAIN_INTAKE_SCOPE_MISMATCH')
+  })
+
   test('both Host diagnostic tuples can be complete while cross-Subject evidence remains blocked', () => {
     const { staging, material } = stagingSample()
     const draft = author(material.documentVersionId, true)
@@ -139,7 +167,7 @@ describe('I1 frozen B1+B2+B3+A3+C1 read-only integration (synthetic Gate O)', ()
     const { staging, material } = stagingSample()
     const draft = author(material.documentVersionId, true)
     const snapshot = {
-      caseV2: { id: 'case-1', documents: [{ versionId: material.documentVersionId, active: false }] },
+      caseV2: { id: ctx.caseCandidateId, documents: [{ versionId: material.documentVersionId, active: false }] },
       evidenceLinks: [{ id: 'old-link', status: 'confirmed', documentVersionId: material.documentVersionId }],
       observations: [],
     } as unknown as CaseAggregateV2
