@@ -9,6 +9,7 @@ import {
   prepareB1CandidateReadPreview,assertB1CandidateReadAdoption,assertB1CandidateBackupConfirmation,
   type B1CandidateReadResponse,type B1CandidateReadPreview,
 } from './review-v3-author-revision-read'
+import { assertB1ResumeReadStillCurrent, isB1PristineReopenLookup } from './review-v3-author-resume'
 import { diffB1AuthorDocuments, assertB1DraftRemovalAcknowledgments, assertB1CheckDeleteDialogCurrent } from './review-v3-author-diff'
 import { parseB1AuthorCandidateImport,assertB1ImportReplaceSafe,B1_AUTHOR_IMPORT_MAX_BYTES } from './review-v3-author-import'
 import {
@@ -349,18 +350,44 @@ export function ReviewV3AuthorWizard({
       setError(reason instanceof Error?reason.message:String(reason))
     }
   }
-  const adoptLatestRead=():void=>{
-    if(!pendingLatestRead)return
-    try{
-      assertB1CandidateReadAdoption(pendingLatestRead,{
+  const adoptLatestRead=async():Promise<void>=>{
+    if(!pendingLatestRead || !onReadLatestCandidate)return
+    if(operationInFlight.current){setError('B1_RESUME_OPERATION_BUSY');return}
+    const staged=pendingLatestRead,epoch=editEpoch.current
+    const pristine=isB1PristineReopenLookup(draft,revision,savedSnapshot,emptyB1AuthorDocument())
+    try {
+      // Do not initiate a Main read if current screen content has no valid
+      // backup/explicit discard acknowledgement.
+      assertB1CandidateReadAdoption(staged,{
+        templateId:draft.templateId,revision,epoch,
+        busy:false,backupEpoch:backedUpEpoch.current,
+        hasUnsavedEdits:isDirty && !pristine,
+      })
+    } catch(reason){
+      setError(reason instanceof Error?reason.message:String(reason))
+      return
+    }
+    operationInFlight.current=true
+    setBusy(true);setError('');setNotice('')
+    try {
+      // The first Main read only informed the diff. Re-read the actual latest
+      // revision right before adoption. C validates Principal/frame/Owner and
+      // any async authority epoch; B compares revision, digest AND source.
+      const refreshed=await onReadLatestCandidate(draft.templateId,revision)
+      const latest=assertB1ResumeReadStillCurrent(staged,refreshed,{
         templateId:draft.templateId,revision,epoch:editEpoch.current,
-        busy:operationInFlight.current,backupEpoch:backedUpEpoch.current,
-        hasUnsavedEdits:isDirty,
+        draft,saved:savedSnapshot,
+      })
+      if(epoch!==editEpoch.current)throw new Error('B1_RESUME_EDITED_DURING_CONFIRMATION')
+      assertB1CandidateReadAdoption(staged,{
+        templateId:draft.templateId,revision,epoch:editEpoch.current,
+        busy:false,backupEpoch:backedUpEpoch.current,
+        hasUnsavedEdits:isDirty && !pristine,
       })
       editEpoch.current+=1
-      const current=structuredClone(pendingLatestRead.remote.document)
+      const current=structuredClone(latest.document)
       setDraft(current)
-      setRevision(pendingLatestRead.remote.revision)
+      setRevision(latest.revision)
       setSavedSnapshot(structuredClone(current))
       setTrial({});setPreview(null)
       setConfirmedCheckDeletions([])
@@ -369,8 +396,13 @@ export function ReviewV3AuthorWizard({
       setPendingBackupConfirmation(null)
       backedUpEpoch.current=null
       setError('')
-      setNotice('已按明确选择载入候选最新修订；没有执行自动合并/保存或学校审批')
-    }catch(reason){setError(reason instanceof Error?reason.message:String(reason))}
+      setNotice('已重新核对 Main 当前作者修订和完整候选源后载入；没有自动合并/写入或学校审批')
+    }catch(reason){
+      const message=reason instanceof Error?reason.message:String(reason)
+      setPendingLatestRead(null)
+      setError(message)
+      setNotice('此次可信读回已失效；原屏幕草稿未丢弃。请重新读取 Main 最新版并对比；不会自动覆盖')
+    } finally {operationInFlight.current=false;setBusy(false)}
   }
   const checks = draft.modules[0]?.checks ?? []
   return <div className="space-y-4 text-foreground" data-testid="review-v3-b1-author-wizard">
@@ -679,10 +711,13 @@ export function ReviewV3AuthorWizard({
         <ul className="text-xs space-y-1">{pendingLatestRead.comparedWithCurrent.changes.slice(0,80).map(x=>
           <li key={x.area+'/'+x.kind+'/'+x.key}>{x.area} / {x.kind} / {x.key}</li>)}</ul>
       </details>}
-      {isDirty && <p role="alert" className="text-xs text-red-500">本地有未保存修改；先导出当前草稿并确认文件已保存，再明确选择载入最新修订。不会自动合并。</p>}
+      {isDirty && !isB1PristineReopenLookup(draft,revision,savedSnapshot,emptyB1AuthorDocument())
+        && <p role="alert" className="text-xs text-red-500">本地有未保存修改；先导出当前草稿并确认文件已保存，再明确选择载入最新修订。不会自动合并。</p>}
+      {isB1PristineReopenLookup(draft,revision,savedSnapshot,emptyB1AuthorDocument())
+        && <p className="text-xs text-muted-foreground">这是未加入其他信息的空白候选定位页，仅输入了已保存模板 ID；可显式重新打开，无需备份空白输入。确认载入前 Main 会再次读取并检验最新修订。</p>}
       <div className="flex gap-2">
         <button type="button" disabled={busy || pendingLatestRead.remote.revision<=revision}
-          className={buttonClass} onClick={adoptLatestRead}>确认放弃本地屏幕草稿并载入此修订</button>
+          className={buttonClass} onClick={()=>void adoptLatestRead()}>确认后重新核验 Main 当前修订并载入（不自动覆盖）</button>
         <button type="button" disabled={busy} className={buttonClass}
           onClick={()=>{setPendingLatestRead(null);setNotice('已保留本地草稿，未载入远端修订')}}>保留本地草稿</button>
       </div>
