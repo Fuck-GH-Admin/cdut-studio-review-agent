@@ -7,7 +7,7 @@
 import { createHash, randomBytes } from 'node:crypto'
 import {
   REVIEW_C0_SCHEMA_VERSION, assertC0ImportBatch,
-  type ImportBatch, type SourceIdentity,
+  type ImportBatch,
 } from '@profer/shared'
 
 const sha256 = (v: Uint8Array | string): string => createHash('sha256').update(v).digest('hex')
@@ -188,23 +188,5 @@ export class ReviewB2StagingService {
     assertC0ImportBatch(result)
     return result
   }
-  /** A parser must prove block identity and actual locations separately. */
-  sourceRef(ctx: B2MainContext, candidateId: string, parseRevision: string,
-    block: { blockId: string; kind: SourceIdentity['location']['kind']; locator: string }): SourceIdentity {
-    this.requireContext(ctx)
-    const record = this.materials.get(candidateId)?.material
-    if (!record || record.ownerId !== ctx.ownerId ||
-        record.ownerGeneration !== ctx.ownerGeneration || record.caseCandidateId !== ctx.caseCandidateId) {
-      failed('SOURCE_SCOPE_MISMATCH')
-    }
-    if (!safe(parseRevision) || !safe(block.blockId) || !safe(block.locator)) failed('SOURCE_BLOCK_INVALID')
-    // Candidate only; not a read receipt or trusted parser assertion.
-    return {
-      schemaVersion: REVIEW_C0_SCHEMA_VERSION,
-      caseId: ctx.caseCandidateId, materialId: record.materialId,
-      documentVersionId: record.documentVersionId, rawSha256: record.rawSha256,
-      parseRevision, blockId: block.blockId,
-      location: { kind: block.kind, locator: block.locator },
-    }
-  }
+  // SourceIdentity MUST be minted by a parser-verified block registry, not an arbitrary caller locator.
 }
