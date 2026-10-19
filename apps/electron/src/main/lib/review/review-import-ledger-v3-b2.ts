@@ -274,12 +274,12 @@ export class ReviewB2InputLedger {
         entryIndex:decision.entryIndex,status:decision.status,
       }
       const receipt:B2InputMutation={...unsigned,receiptHash:hash(JSON.stringify(unsigned))}
-      const bare:Omit<B2InputBatchLedger,'ledgerHash'>={
-        ...current!,revision:current!.revision+1,files,
+      const {ledgerHash: _unused,...previous}=current!
+      const plain:Omit<B2InputBatchLedger,'ledgerHash'>={
+        ...previous,revision:current!.revision+1,files,
         mutations:[...current!.mutations,receipt],
       }
-      const {ledgerHash: _unused,...noHash}=bare as B2InputBatchLedger
-      const next:B2InputBatchLedger={...noHash,ledgerHash:digestLedger(noHash)}
+      const next:B2InputBatchLedger={...plain,ledgerHash:digestLedger(plain)}
       this.staging.assertStillGranted(ctx)
       this.write(ctx,next)
       return {ledger:structuredClone(next),receipt:structuredClone(receipt)}
