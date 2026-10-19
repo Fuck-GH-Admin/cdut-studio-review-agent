@@ -121,8 +121,9 @@ export class V3ExecutionEventAdapter {
     this.busy = true
     try {
       this.assertFresh()
-      const lease = this.owners.assertAuthorized(call.sessionId, call.grantId,
-        call.senderKey, call.principal, call.tool, call.source)
+      return this.owners.withAuthorizedEvent(
+        call.sessionId, call.grantId, call.senderKey, call.principal,
+        call.tool, call.source, lease => {
       const k = this.key(lease.attemptId, lease.generation)
       const previous = this.disk.attempts[k] ?? {
         nextSequence: 1, terminal: false, records: [],
@@ -178,6 +179,8 @@ export class V3ExecutionEventAdapter {
       }
       this.store(next)
       return structuredClone(delivery)
+        },
+      )
     } finally {
       this.busy = false
     }
