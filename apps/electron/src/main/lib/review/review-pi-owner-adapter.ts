@@ -333,8 +333,13 @@ export class V3ReviewOwnerAdapter {
   get(sessionId: string): V3OwnerLease | null {
     this.assertFresh()
     const lease = this.journal.owners[sessionId]
-    return lease ? structuredClone((this.localDenied.has(sessionId) ||
-      lease.processEpoch !== this.processEpoch) && (lease.state === 'active' || lease.state === 'paused')
+    // A correctly committed same-process pause is an intentional scheduler
+    // state: old capabilities stay locally denied, but Main may explicitly
+    // resume with a rotated grant. Cold paused grants must be quarantined.
+    const mustRecover=lease && (lease.state==='active' || lease.state==='paused') &&
+      (lease.processEpoch!==this.processEpoch ||
+        (lease.state==='active' && this.localDenied.has(sessionId)))
+    return lease ? structuredClone(mustRecover
       ? { ...lease, state: 'recovery-required' as const } : lease) : null
   }
 
@@ -475,7 +480,8 @@ export class V3ReviewOwnerAdapter {
     this.assertFresh()
     const ids = Object.entries(this.journal.owners)
       .filter(([id, lease]) => (lease.state === 'active' || lease.state === 'paused') &&
-        (lease.processEpoch !== this.processEpoch || this.localDenied.has(id)))
+        (lease.processEpoch !== this.processEpoch ||
+          (lease.state === 'active' && this.localDenied.has(id))))
       .map(([id]) => id)
     if (!ids.length) return []
     const updated = { ...this.journal.owners }
