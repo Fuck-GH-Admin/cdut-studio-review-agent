@@ -201,3 +201,14 @@ A1 unfinished: actual session manager and Orchestrator admission/stop; persist A
 - Run evidence values are compared by canonical sorted-key JSON, not JavaScript object insertion order; exact case/run/attempt/generation/manifest fingerprints must still match. Synthetic `A3-SDK-16` covers a reordered but equivalent SDK Run while existing `A3-SDK-05` rejects modified attempt.
 - New process-local SDK lock is deliberately **not** proof of cross-PID singleton. A3-R05 remains isolated Main-port implementation, not the real SDK registration or C2 business outcome.
 - CI status must be taken from the final source SHA's PR CI, D2 and Baseline, not the intermediate cancelled jobs or prior green ancestor.
+
+## A4-R04｜可信 SDK 派发前持久意图与不确定结果拒绝重试
+
+- **问题证据（源码审阅，不是 CI 通过结论）**：此前 A3-R05 在 `V3ASDKTurnBridge.next()` 直接调用 `sdk.nextTurn()`，只有 SDK 返回完成后才调用 A3-R04 轮次预算写入。进程在 SDK 已开始但回执/预算写盘前崩溃，或 Provider 抛异常，账本可能仍显示 0 轮；自动重试可能再次调用 SDK。此前技术终态和轮次持久化 **不能证明此前没有派发过 SDK**。
+- **本批生产实现**：新增 A 自有 `review-v3-sdk-dispatch-fence.ts`（`V3ASDKDispatchFence`）；版本化 `v3-dev-a-sdk-dispatch/1` hash sealed 技术意图 ledger，`claim()` 在 SDK 开始前持 Main current grant/Owner cross-process lease fence 持久写 `in-flight`；`settle()` 仅在 SDK 完成并记录可信轮次预算后，或 Host 终态提案持久写入后标记 `settled`。不同于 C 业务 Transaction/ReviewRun/Outbox，此记录**没有业务 ACK 能力**。
+- 发生 SDK 原生异常、Host 返回的 Run 不可信、轮次预算写盘 ENOSPC、dispatch intent 写盘后抛 EIO 或进程突然死亡时，保留 `in-flight`，同固定 Run/attempt/generation 的后续 SDK 自动 `claim` 一律返回 `RECOVERY_REQUIRED`；**不自动重新执行模型，也不伪造完成/取消状态**。不能凭剩余轮次和 `Provider crash` 反推这轮从未执行。
+- SDK Promise 已真实返回，但旧 grant 在 await 期间被撤销/暂停、或 Main AbortSignal 已失效时，bridge 不写轮次/Host Check，调用仅针对匹配技术派发 ID 的 `lateDenied()` 记为已返回却拒绝的技术意图；它不会恢复旧授权。其后新 Main 授权的 grant 可重新派发。若进程在 Promise 返回前崩溃，仍保留 unresolved，不由 `lateDenied` 猜测结果。
+- `dispatch` 技术记录按冻结完整 Run JSON digest 及 `[runId,attemptId,ownerGeneration]` 绑定；不同 Run 身份、双派发、陈旧 journal CAS、重复 ID、非空 SDK 完成回执条件、损坏 hash seal 会 fail closed。意图链保存所有已 settled/late-denied 记录，不只保留最后一次状态。仅用于技术诊断和拒绝自动重试，不是正式 C2 Run 状态。
+- **额外合成测试**：`A4-DISPATCH-01..05`：派发前 ENOSPC → Provider 0 调用；写盘成功但返回 EIO → 新 fence 实例重读为 unresolved，仍阻止 SDK；Host 返回后撤权/轮换 grant → 无旧授权写盘，新 grant 可继续；Host 返回错误 Run/Provider 异常 → 保留 unresolved、第二次不调用 Provider；已存意图篡改后重读拒绝。已修订原 `A3-SDK-04/05/12` 预期：不可信结果或预算 ENOSPC 不再被立即重试；`A3-SDK-01..16` 的常规有效路径继续保留。
+- **失败恢复契约**：对真正无法断言 SDK 是否完成的 unresolved intent，本 A 适配器**没有**自动清账或代替 C2 完成恢复的途径。后续正式 Main/Provider recovery 必须用可验证的 SDK/Host 回执、当前 Case/Run/Owner、显式策略来决定 `reconcile` 或新 attempt，且只允许 C 提供业务重新执行/Run/ACK 权威。A 不做猜测性 replay。`closeExhausted()` 可在可信 24th turn 已经持久记账但技术终态写盘失败后补 terminal；不重新执行 SDK。
+- **边界和验收**：该 fence 尚未在真实 Pi SDK 回调及 Electron/Main 中注入，本批仅合成 Main/SDK + file CAS 负例，不是 Gate E。主代码仍在 Dev-A #143，未改 C 独占 DTO/Main IPC/Preload/Case/Run/Decision/Batch/Outbox；A 新 SHA 必须跑同版 PR CI、D2、Baseline Gate O，Gate E/P 未做、Gate L 无授权。I #147 继续旧已绿 A SHA，不随新 A 分支 HEAD 浮动。
