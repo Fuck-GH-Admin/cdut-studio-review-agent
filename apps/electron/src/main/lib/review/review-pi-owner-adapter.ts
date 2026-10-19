@@ -61,6 +61,8 @@ export interface OwnerPersistence {
   write(serialized: string): void
   /** Optional for synthetic stores; production file store enforces cross-PID CAS. */
   compareAndWrite?(expected: string | null, serialized: string): void
+  /** Hold the same file lock that serializes grant/revoke during a sync event append. */
+  withLeaseFence?<T>(operation: () => T): T
 }
 
 /** Main-only injection. Do not use a Renderer actor DTO to implement this hook. */
@@ -169,7 +171,7 @@ export function createFileOwnerPersistence(filePath: string): OwnerPersistence {
       if (existsSync(temp)) unlinkSync(temp)
     }
   }
-  const lockedWrite = (serialized: string, expected?: string | null): void => {
+  const exclusive = <T>(operation: () => T): T => {
     mkdirSync(parent, { recursive: true })
     let lock: number
     try {
@@ -178,20 +180,25 @@ export function createFileOwnerPersistence(filePath: string): OwnerPersistence {
       fail('Owner journal inter-process lock unavailable; recovery required')
     }
     try {
-      if (expected !== undefined && read() !== expected) {
-        fail('Stale Owner journal snapshot; refusing cross-PID overwrite')
-      }
-      atomicReplace(serialized)
+      return operation()
     } finally {
       closeSync(lock)
       // A failed unlock must be visible, not reported as a clean commit.
       unlinkSync(lockPath)
     }
   }
+  const lockedWrite = (serialized: string, expected?: string | null): void =>
+    exclusive(() => {
+      if (expected !== undefined && read() !== expected) {
+        fail('Stale Owner journal snapshot; refusing cross-PID overwrite')
+      }
+      atomicReplace(serialized)
+    })
   return {
     read,
     write: serialized => lockedWrite(serialized),
     compareAndWrite: (expected, serialized) => lockedWrite(serialized, expected),
+    withLeaseFence: exclusive,
   }
 }
 
@@ -347,6 +354,22 @@ export class V3ReviewOwnerAdapter {
     }
     this.assertFresh()
     return structuredClone(lease)
+  }
+
+  /**
+   * Serializes the final authorization and an A-owned synchronous event append
+   * against a cross-PID Owner revoke using the same file lock. This does not
+   * bind or validate Dev-C's business Run consumer.
+   */
+  withAuthorizedEvent<T>(sessionId: string, grantId: string, senderKey: string,
+    principal: Principal, tool: V3ReviewTool, source: SourceIdentity | undefined,
+    append: (lease: V3OwnerLease) => T): T {
+    const run = () => append(this.assertAuthorized(
+      sessionId, grantId, senderKey, principal, tool, source,
+    ))
+    return this.persistence.withLeaseFence
+      ? this.persistence.withLeaseFence(run)
+      : run()
   }
 
   private settle(sessionId: string, state: Exclude<V3OwnerState, 'active'>): void {
