@@ -171,3 +171,14 @@ A1 unfinished: actual session manager and Orchestrator admission/stop; persist A
 1. 检查 SIGKILL 子进程在 GitHub Linux runner 中能否加载 TS module 的 file URL、完整写盘后产生 marker，不能把超时/异常当安全拒绝。
 2. 检查跨 PID await 测试是否在 `ready` 后先持久 revoke、再 signal Host release；只有子进程 **明确 `RECOVERY_REQUIRED`、0 proposal** 才 PASS。
 3. 如果 CI 排队不运行，不将 tests-committed 改成 tests-passed，也不要凭 C / I / 旧 A CI 继承新切片的 Gate O。实际 C2 消费端的 ACK replay、真实用户 Electron/Provider 全流程仍由对应边界验收。
+
+## A3-R04｜Main-SDK 24 轮技术执行预算持久化（等待精确 CI）
+
+- 新增自有生产文件 `apps/electron/src/main/lib/review/review-v3-execution-turn-budget.ts` 与 `.test.ts`。`V3ATurnBudget` 是 **A 自有执行技术计数器**，不创建业务 ReviewRun/Check/Decision，也没有正式 ACK。
+- 每一次真实 SDK 完成轮次由 Main 传入 **稳定且非空的 Main 观察 SDK turn receipt ID**。`recordCompletedTurn(call,mainTurnReceiptId)` 必须持有当前 Owner `review_submit_result` 工具权限、Main principal/source scope，和 Owner 同一跨 PID lock 完成 CAS 持久化；同一次 Host/SDK turn 的回调重试返回原 count、不重复扣除。
+- 累计计数按固定 `(runId,attemptId,ownerGeneration)` 及完全冻结的 Run SHA 归属；Owner 暂停+再次 Main 授权轮换 grantId **不重置计数**。完整冷启动能读取 count，但无法绕过旧 Owner epoch quarantine 来新增 turn。已达到 `maxTurns=24` 的 attempt 对第 25 个新 SDK turn fail closed。
+- 接入 A2 新版 `V3AProposalProducer` 可选且 Main-owned `V3ATurnExhaustion` 端口：**必须确实完成 24/24 持久计数** 才能产生 `terminal.needs-resume` 候选（仍需独立 Host 终态 receipt）；在耗尽后继续请求 read/check 被拒绝，包括 Host await 后的再检查。默认不注入端口时不得自行生成 `needs-resume`，防止 Pi/Renderer 自称轮次耗尽。其它已存在 A2 V3 terminal 合同不变。
+- 文件 hash sealed，Owner file fence、CAS 防双 PID 旧快照，独立 budget file journal 可重新打开。ENOSPC 写盘前不返回假 turn ACK；模拟写盘已完成却抛出 EIO 时旧实例因 revision 不匹配不可信，重新打开同 SDK receipt 仍只记 1 轮。
+- 新测试：`A3-TURN-01` 23/24 与 24/24 终态；`A3-TURN-02` pause/rotated grant 第 1–24 轮不可复位；`A3-TURN-03` 真实文件恢复旧 Owner quarantine 而 budget preserved；`A3-TURN-04` ENOSPC；`A3-TURN-05` forged grant/wrong tool/损坏账本；`A3-TURN-06` 跨 grant 重复 SDK turn ID 不二次计费；`A3-TURN-07` post-commit EIO 冷恢复幂等。
+- **边界**：由 Main 真实 SDK Adapter 提供可靠的 turn receipt ID 仍待 I/C 对实际执行入口接线，本轮测试使用合成 Main/Host，**不构成真实 Provider 的 24 轮 Gate E 或 C2 Run 完成**。旧 C0 producer不变；不修改 `packages/shared/**`、Main IPC、Preload、V2 Case writer 或 C2 Run consumer。
+- 源工程 SHA 在 #143 查 latest HEAD；Gate O 仅接受该 SHA typecheck、boundary、build、全量回归成功的独立日志。新代码目前已提交而 PR CI 仍处 GitHub 队列；不得继承旧 `d8fd3e0...` 结果。E=NOT_RUN、L=BLOCKED_NO_AUTH、P=NOT_RUN。
