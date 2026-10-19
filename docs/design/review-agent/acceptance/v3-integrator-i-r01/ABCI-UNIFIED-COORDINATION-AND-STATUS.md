@@ -174,11 +174,14 @@ A/B/I 发现阻断，先用已有类型化接口排障；无法自行解决时�
 
 ### I — Owner: Integrator-I
 <!-- BEGIN:STATUS:I -->
-- `SOURCE_HEAD`：#145 文档提案；**尚无 I0 工程快照和 I1 集成代码**。
-- `DELIVERED`：只存在任务书（docs-only）；I 尚未提交可复验的跨线源码整合。
-- `BLOCKED`：I1 可信业务写入口需要 C 选择锚点/裁决相关 CR；I0 并不因此阻断。
-- `COORDINATION_ACK`：`PENDING_ACK_V1.0`（需 I 自己填写其 ACK 及提交 SHA）。
-- `NEXT`：I0 独立 worktree 核对 A/B/C 新 HEAD、C0 manifest 和 CR，按片段整理 I1 依赖；产物保持独立工程 Draft PR，将精简索引更新到本分区。
+- `COORDINATION_ACK`：**ACK V1.0@f77887c3340d7e6dc9658857ae43334429bc093a**，已阅读共同协议全文、I 任务书、C0 owner manifest、A/B CR；保留 C 的最终业务合同/签收权，不修改其他 Agent 状态或决议区。
+- `I0_PR`：独立 Draft [#146](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/146)，分支 `audit/v3-integrator-i0-preflight-r01`，当前已提交工程预检 HEAD `c84f575addcbb1f36b5eff0acb27442b91073fa1`，实际 base 为 C0 `5682057c7232c914e72fdae525ce95fd33f32b53`。三个文件：机器输入锁、可执行 C0/I0 守卫测试、集中 I0 handoff+CR 决策包；**未创建 A+B+C 正式集成 SHA**。
+- `FROZEN_I0_INPUT`：#143 A `d8fd3e0e696caa1df7321c23c46e4f70a1f910f7`、#142 B `f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc`、#144 C `31aa352c45a33d6832612884b0fea38e39b5cf8d`，皆以同一 C0 为 Git merge-base，原 PR CI 各成功；A 8/B 12/C 14 个测试或生产路径零同路径冲突，A/B 未触碰 C 独占文件。这**仅证明输入 lineage 与 ownership**。
+- `ADVANCING_SOURCES`：A #143 后续 `ab1e965e14bf3ccefc8c28828aa26c7390782b62`（新增 multi-PID 测试，检查时 CI `39239221711` QUEUED）；B #142 `df6b6ba458eb7c6ef2e7a2942ccffa17c72cf2d2` 新 ZIP 曾在 PR CI `39239062410` typecheck **FAIL TS2366**（`review-zip-intake-v3-b2.ts:105:35`，B 已收到精确评论），之后 `90154a351334866ea13a87a5a850a09b980b3b6c` 新增 checkpoint，最新 CI 尚未签收。旧源锁保留，新片段按新 HEAD 单独验。
+- `SLICES`：A1 owner、A2 C0 proposal-only 和 B1 candidate Plan、B2 staged Source 为 `READY_FOR_ADAPTER`（I0 只预检）；A3 Host coverage、A4 recovery、B3 routing、B4 candidate UI/50目录、C1 partial `SOURCE_ONLY/PARTIAL`；正式 Plan/Source/Run 写入 `CONTRACT_BLOCKED`。C2/C3/C4/C5 未获得正式可集成代码。
+- `I0_GATES`：GitHub 可验证文件/函数与 SHA、内存静态输入锁断言 9/9 PASS；`review-v3-integration-i0-gates.test.ts` 已提交待 CI 真实执行。**联合 Gate O=NOT_RUN**（无统一 A+B+C SHA / 本地无 Bun 与可 clone worktree），E=NOT_RUN，L=BLOCKED_NO_AUTH，P=NOT_RUN；未获得 C 工程签收、无政策发布或学校认可。
+- `CR_AND_C_DECISIONS`：`CR-A-001=PENDING_C`（Run/eventId/sequence、Check×target/status、read extent、可信 ACK）；`B-CR-001=PENDING_C`（Main picker/owner context、SourceRegistry/physical origin、InstallPlan/ApplyMaterial、publication gate）。I 以 #146 的单份决策包请求 C 逐端口裁决，另需 `C_INTEGRATION_ANCHOR_SHA` 与必要的窄路径/函数 lease。无批准不修改 C writer。
+- `NEXT`：I 继续审新源 diff 和隔离合同测试准备、追踪各源新 HEAD 真实 CI；拿到 C 固定锚点+逐端口 APPROVED 后另建 `integration/v3-i1-*`，按已批准 slice 导入 A/B，构建**同一 SHA** Gate O、保存累计 checkpoint，并请求 C 对精确 diff 签收；不要求 A/B/C 轮次同步。
 <!-- END:STATUS:I -->
 
 ## 11. 四线收到本文件后立即执行的统一动作
