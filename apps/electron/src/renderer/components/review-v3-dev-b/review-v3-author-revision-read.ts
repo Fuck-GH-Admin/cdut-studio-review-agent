@@ -42,14 +42,16 @@ export function prepareB1CandidateReadPreview(
   if(!response || typeof response!=='object'||Array.isArray(response))
     deny('RESPONSE_INVALID')
   const data=response as Record<string,unknown>
+  const revisionValue=data.revision
+  const digestValue=data.digest
   if(data.schemaVersion!=='review-b1-author-read/1' ||
      data.templateId!==local.templateId ||
      data.candidateStatus!=='candidate-held' ||
-     typeof data.digest!=='string'||!/^[a-f0-9]{64}$/.test(data.digest) ||
-     typeof data.revision!=='number'||!Number.isSafeInteger(data.revision)||
-     data.revision<1)
-    deny('RESPONSE_INVALID')
-  if(data.revision<local.revision)deny('OLDER_REVISION')
+     typeof digestValue!=='string'||!/^[a-f0-9]{64}$/.test(digestValue) ||
+     typeof revisionValue!=='number'||!Number.isSafeInteger(revisionValue)||
+     revisionValue<1)
+    throw new Error('B1_AUTHOR_READ_RESPONSE_INVALID')
+  if(revisionValue<local.revision)deny('OLDER_REVISION')
   const doc=data.document
   if(!doc||typeof doc!=='object'||Array.isArray(doc))deny('DOCUMENT_INVALID')
   const copy=structuredClone(doc) as B1AuthorDocument
@@ -59,7 +61,7 @@ export function prepareB1CandidateReadPreview(
      !Array.isArray(copy.modules)||!Array.isArray(copy.stages)||
      !Array.isArray(copy.outputs))
     deny('DOCUMENT_INVALID')
-  if(data.revision===local.revision){
+  if(revisionValue===local.revision){
     if(!local.saved||JSON.stringify(local.saved)!==JSON.stringify(copy))
       deny('SAME_REVISION_DIVERGED')
     // Reading the current revision is still safe as a no-op compare, but
@@ -67,7 +69,7 @@ export function prepareB1CandidateReadPreview(
   }
   return {
     remote:{schemaVersion:'review-b1-author-read/1',
-      templateId:local.templateId,revision:data.revision,digest:data.digest,
+      templateId:local.templateId,revision:revisionValue,digest:digestValue,
       document:copy,candidateStatus:'candidate-held'},
     currentRevision:local.revision,originalEpoch:local.epoch,
     comparedWithCurrent:diffB1AuthorDocuments(local.draft,copy),
