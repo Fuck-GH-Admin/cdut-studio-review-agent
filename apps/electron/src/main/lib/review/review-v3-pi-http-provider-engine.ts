@@ -15,7 +15,7 @@
  */
 import type {AgentSession} from '@earendil-works/pi-coding-agent'
 import type {FetchFunction} from '@earendil-works/pi-ai'
-import {C0ContractError} from '@profer/shared'
+import {assertC0RunEvidenceIdentity,C0ContractError} from '@profer/shared'
 import type {
   V3ANativeProviderWitness,
   V3APhysicalTurnInput,
@@ -62,6 +62,11 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
   constructor(private readonly factory:V3APiHttpSingleRequestFactory){}
 
   async invoke(input:V3APhysicalTurnInput,witness:V3ANativeProviderWitness):Promise<void>{
+    assertC0RunEvidenceIdentity(input.run)
+    if(!input.dispatchId?.trim() ||
+        !['direct','hidden','graph','batch'].includes(input.mode)){
+      fail('Trusted Main SDK dispatch/Run mode required')
+    }
     if(input.signal?.aborted)fail('Main aborted before Pi session creation')
     const spec=await this.factory.create(input)
     const session=spec.session
@@ -125,7 +130,12 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
           try{url=getUrl(resource)}
           catch{return mark()}
           if(url.protocol!=='https:' || url.origin!==origin.origin)return mark()
-          const response=await upstreamFetch(resource,init)
+          const downstreamSignal=input.signal && init?.signal
+            ? AbortSignal.any([input.signal,init.signal])
+            : input.signal ?? init?.signal ?? undefined
+          const response=await upstreamFetch(resource,{
+            ...init,...(downstreamSignal ? {signal:downstreamSignal} : {}),
+          })
           if(!response.ok) return response
           physicalResponseId=requestId(response)
           if(!physicalResponseId)return mark()
@@ -134,8 +144,12 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
           witness.requestStarted(physicalResponseId)
           return response
         }
+        const streamSignal=input.signal && options?.signal
+          ? AbortSignal.any([input.signal,options.signal])
+          : input.signal ?? options?.signal
         return previous(model,context,{
           ...options,
+          ...(streamSignal ? {signal:streamSignal} : {}),
           transport:'sse',
           maxRetries:0,
           fetch:guardedFetch,
