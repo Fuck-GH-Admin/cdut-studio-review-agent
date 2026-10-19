@@ -58,6 +58,8 @@ function makeHarness(options?:{
   willRetry?:boolean
   earlyAgentEnd?:boolean
   duplicateTurnEnd?:boolean
+  sseChunks?:string[]
+  sseType?:string
 }){
   let physicalCalls=0
   let streamCalls=0
@@ -72,10 +74,14 @@ function makeHarness(options?:{
     expect(streamOptions?.transport).toBe('sse')
     expect(streamOptions?.maxRetries).toBe(0)
     for(let i=0;i<(options?.sends??1);i++){
-      await streamOptions!.fetch!(
+      const response=await streamOptions!.fetch!(
         (options?.actualFetchOrigin??'https://approved.example')+'/v1/chat/completions',
         {method:'POST'},
       )
+      // The shim must consume the same response body the actual Pi OpenAI
+      // streaming client consumes. Synthetic lifecycle events alone are not
+      // sufficient evidence of SSE completion.
+      await response.text()
     }
     if(options?.failAfterFetch)throw Error('provider streaming connection lost')
     if(!options?.noTurn){
@@ -132,7 +138,18 @@ function makeHarness(options?:{
         if(options?.nativeReceipt!==null){
           headers.set('x-request-id',options?.nativeReceipt??'provider-request-1')
         }
-        return new Response('',{status:options?.httpStatus??200,headers})
+        headers.set('content-type',options?.sseType??'text/event-stream')
+        const chunks=options?.sseChunks??[
+          'data: {"id":"one"}\\n\\n'.replaceAll('\\n','\n'),
+          'data: [DONE]\\n\\n'.replaceAll('\\n','\n'),
+        ]
+        return new Response(new ReadableStream<Uint8Array>({
+          start(controller){
+            const encoder=new TextEncoder()
+            for(const chunk of chunks)controller.enqueue(encoder.encode(chunk))
+            controller.close()
+          },
+        }),{status:options?.httpStatus??200,headers})
       },
     }
   }}
@@ -191,6 +208,33 @@ describe('A4-R10 pinned Pi 0.86.1 HTTP transport witness seam - in-memory Provid
       .rejects.toThrow('Main aborted after Pi session creation')
     expect(h.counts().disposed).toBe(true)
     expect(h.counts().streamCalls).toBe(0)
+  })
+  it('R14-01: HTTP 200 + native agent_settled without SSE terminal is not a receipt',async()=>{
+    const h=makeHarness({sseChunks:['data: {"id":"partial"}\n\n']})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('provenance unavailable')
+    expect(h.counts().physicalCalls).toBe(1)
+    expect(h.counts().disposed).toBe(true)
+  })
+  it('R14-02: HTTP 200 with non-SSE content type fails before a trusted receipt',async()=>{
+    const h=makeHarness({sseType:'application/json'})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('request count/provenance')
+    expect(h.counts().physicalCalls).toBe(1)
+  })
+  it('R14-03: real SSE marker split across physical chunks is accepted',async()=>{
+    const h=makeHarness({sseChunks:['data: {"id":"one"}\n\n','data: [DO','NE]\r\n\r\n']})
+    expect((await h.host.nextTurn(input)).kind).toBe('completed-turn')
+    expect(h.counts().physicalCalls).toBe(1)
+  })
+  it('R14-04: Responses API response.completed is an explicit SSE terminal',async()=>{
+    const h=makeHarness({
+      modelApi:'openai-responses',
+      sseChunks:['event: response.completed\n','data: {"type":"response.completed"}\n\n'],
+    })
+    expect((await h.host.nextTurn(input)).kind).toBe('completed-turn')
+  })
+  it('R14-05: SSE text containing marker inside JSON is not a terminal frame',async()=>{
+    const h=makeHarness({sseChunks:['data: {"text":"data: [DONE]"}\n\n']})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('provenance unavailable')
   })
   it('R13-01: Pi turn_end without agent_settled cannot certify Provider completion',async()=>{
     const h=makeHarness({noAgentSettled:true})
