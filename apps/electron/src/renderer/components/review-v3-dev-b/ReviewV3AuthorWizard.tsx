@@ -6,7 +6,7 @@
 import { useRef, useState, type ReactNode } from 'react'
 import { B1BufferedIdentityInput } from './B1BufferedIdentityInput'
 import {
-  prepareB1CandidateReadPreview,assertB1CandidateReadAdoption,
+  prepareB1CandidateReadPreview,assertB1CandidateReadAdoption,assertB1CandidateBackupConfirmation,
   type B1CandidateReadResponse,type B1CandidateReadPreview,
 } from './review-v3-author-revision-read'
 import { diffB1AuthorDocuments, assertB1DraftRemovalAcknowledgments, assertB1CheckDeleteDialogCurrent } from './review-v3-author-diff'
@@ -70,6 +70,7 @@ export function ReviewV3AuthorWizard({
   const [pendingImport,setPendingImport] = useState<{doc:B1AuthorDocument;epoch:number}|null>(null)
   const [pendingLatestRead,setPendingLatestRead] = useState<B1CandidateReadPreview|null>(null)
   const backedUpEpoch=useRef<number|null>(null)
+  const [pendingBackupConfirmation,setPendingBackupConfirmation]=useState<{epoch:number;templateId:string}|null>(null)
   const isDirty = b1AuthorHasUnsavedEdits(draft,savedSnapshot)
   const [pendingCheckDeletion,setPendingCheckDeletion] = useState<{checkKey:string;epoch:number}|null>(null)
   const [pendingCheckRename,setPendingCheckRename] = useState<{from:string;to:string;epoch:number}|null>(null)
@@ -84,6 +85,7 @@ export function ReviewV3AuthorWizard({
   const change = (update: (doc: B1AuthorDocument) => void): void => {
     editEpoch.current += 1
     setPendingLatestRead(null)
+    setPendingBackupConfirmation(null)
     setDraft((current) => { const next = structuredClone(current); update(next); return next })
     setPreview(null); setNotice(''); setError('')
   }
@@ -107,6 +109,7 @@ export function ReviewV3AuthorWizard({
       }
       editEpoch.current += 1
       setPendingLatestRead(null)
+      setPendingBackupConfirmation(null)
       setDraft(next);setPreview(null);setNotice('');setError('')
     } catch(reason) {
       setError(reason instanceof Error ? reason.message : String(reason))
@@ -132,6 +135,7 @@ export function ReviewV3AuthorWizard({
       const next=renameB1AuthorCheckKey(draft,from,to)
       editEpoch.current+=1
       setPendingLatestRead(null)
+      setPendingBackupConfirmation(null)
       setDraft(next)
       setPreview(null)
       setConfirmedCheckDeletions(current=>current.includes(from)?current:[...current,from])
@@ -176,6 +180,7 @@ export function ReviewV3AuthorWizard({
       const value=parseB1TrialInput(field,raw)
       editEpoch.current += 1
       setPendingLatestRead(null)
+      setPendingBackupConfirmation(null)
       setTrial(current => ({
         ...current, [targetKey]: {...current[targetKey], [field.key]:value},
       }))
@@ -194,8 +199,9 @@ export function ReviewV3AuthorWizard({
       anchor.download=(draft.templateId || 'unpublished-business').replace(/[^A-Za-z0-9._-]/g,'_')+'.candidate.json'
       anchor.click()
       URL.revokeObjectURL(href)
-      backedUpEpoch.current=editEpoch.current
-      setNotice('候选作者配置已请求导出（请核实浏览器实际保存文件）；只是备份辅助手段，不代表政策发布或已确认安全恢复')
+      // Never mark as backed up until the user has actually checked the file.
+      setPendingBackupConfirmation({epoch:editEpoch.current,templateId:draft.templateId})
+      setNotice('浏览器已收到候选配置导出请求。请检查文件确实已保存，再在下方明确确认；否则不能舍弃未保存草稿')
     } catch (reason) {setError(reason instanceof Error ? reason.message : String(reason))}
   }
   const updateField = (index: number, key: keyof B1Field, value: unknown): void =>
@@ -302,6 +308,7 @@ export function ReviewV3AuthorWizard({
       setPreview(null)
       setPendingImport(null)
       setPendingLatestRead(null)
+      setPendingBackupConfirmation(null)
       backedUpEpoch.current=null
       setError('')
       setNotice('已替换为未保存的候选草稿。来源身份保持未验证；保存需 Main 授权及 revision CAS，重名候选不可覆盖')
@@ -328,6 +335,20 @@ export function ReviewV3AuthorWizard({
       setError(reason instanceof Error?reason.message:String(reason))
     }finally{operationInFlight.current=false;setBusy(false)}
   }
+  const confirmBackupAfterFileCheck=():void=>{
+    try{
+      assertB1CandidateBackupConfirmation(pendingBackupConfirmation,{
+        epoch:editEpoch.current,templateId:draft.templateId,busy:operationInFlight.current,
+      })
+      backedUpEpoch.current=editEpoch.current
+      setPendingBackupConfirmation(null)
+      setError('')
+      setNotice('已记录你的本地备份文件核对确认。该确认不由操作系统验证，载入远端修订前仍由你决定是否舍弃屏幕修改')
+    }catch(reason){
+      setPendingBackupConfirmation(null)
+      setError(reason instanceof Error?reason.message:String(reason))
+    }
+  }
   const adoptLatestRead=():void=>{
     if(!pendingLatestRead)return
     try{
@@ -345,6 +366,7 @@ export function ReviewV3AuthorWizard({
       setConfirmedCheckDeletions([])
       setPendingCheckDeletion(null);setPendingCheckRename(null)
       setPendingImport(null);setPendingLatestRead(null)
+      setPendingBackupConfirmation(null)
       backedUpEpoch.current=null
       setError('')
       setNotice('已按明确选择载入候选最新修订；没有执行自动合并/保存或学校审批')
@@ -633,6 +655,20 @@ export function ReviewV3AuthorWizard({
       <div className="flex gap-2">
         <button type="button" disabled={busy} className={buttonClass} onClick={confirmCheckDeletion}>我确认移除此 Check</button>
         <button type="button" disabled={busy} className={buttonClass} onClick={()=>setPendingCheckDeletion(null)}>取消</button>
+      </div>
+    </Section>}
+    {pendingBackupConfirmation && <Section title="备份确认（导出请求不代表文件保存成功）">
+      <p role="alert" className="text-xs">
+        请先在本机下载目录核实 {pendingBackupConfirmation.templateId || '未命名候选'} 的候选 JSON 文件确实存在，
+        并能打开查看当前修改。仅点击“导出候选配置”不能完成备份确认。
+      </p>
+      <div className="flex gap-2">
+        <button type="button" disabled={busy} className={buttonClass} onClick={confirmBackupAfterFileCheck}>
+          我已检查备份文件存在且内容正确
+        </button>
+        <button type="button" disabled={busy} className={buttonClass} onClick={()=>setPendingBackupConfirmation(null)}>
+          尚未完成备份
+        </button>
       </div>
     </Section>}
     {pendingLatestRead && <Section title="可信读取结果对比（未执行替换）">

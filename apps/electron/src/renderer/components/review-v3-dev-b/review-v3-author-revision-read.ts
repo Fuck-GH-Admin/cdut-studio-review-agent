@@ -90,3 +90,17 @@ export function assertB1CandidateReadAdoption(
   if(current.hasUnsavedEdits && current.backupEpoch!==current.epoch)
     deny('BACKUP_REQUIRED')
 }
+
+/**
+ * A DOM anchor click only requests a browser download. It is not proof of a
+ * completed backup. Require the user to explicitly confirm the current exact
+ * author epoch after checking the saved file before discarding dirty edits.
+ */
+export function assertB1CandidateBackupConfirmation(
+ requested:{epoch:number;templateId:string}|null,
+ current:{epoch:number;templateId:string;busy:boolean},
+):void{
+ if(!requested||current.busy||!current.templateId||
+   requested.epoch!==current.epoch||requested.templateId!==current.templateId)
+   throw new Error('B1_AUTHOR_READ_BACKUP_CONFIRMATION_STALE')
+}

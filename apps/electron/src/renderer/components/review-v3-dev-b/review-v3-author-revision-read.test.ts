@@ -1,6 +1,6 @@
 import {describe,expect,test} from 'bun:test'
 import {
-  prepareB1CandidateReadPreview,assertB1CandidateReadAdoption,type B1CandidateReadResponse,
+  prepareB1CandidateReadPreview,assertB1CandidateReadAdoption,assertB1CandidateBackupConfirmation,type B1CandidateReadResponse,
 } from './review-v3-author-revision-read'
 import type { B1AuthorDocument } from '../../../main/lib/review/review-template-plan-adapter-v3-b1'
 const make=():B1AuthorDocument=>({
@@ -63,5 +63,20 @@ describe('B1 R16 C-authorized revision-reader UI consumption, no automatic busin
   const p=prepareB1CandidateReadPreview(r,local())
   r.document.modules[0]!.version='evil'
   expect(p.remote.document.modules[0]!.version).toBe('2')
+ })
+})
+
+describe('B1 R17 backup download is never acknowledged merely by starting an export',()=>{
+ test('explicit acknowledgement applies only to the same draft/template epoch',()=>{
+  expect(()=>assertB1CandidateBackupConfirmation(null,{epoch:6,templateId:'candidate-author51',busy:false}))
+    .toThrow('B1_AUTHOR_READ_BACKUP_CONFIRMATION_STALE')
+  const requested={epoch:6,templateId:'candidate-author51'}
+  expect(()=>assertB1CandidateBackupConfirmation(requested,{epoch:6,templateId:'candidate-author51',busy:false}))
+    .not.toThrow()
+  for(const mismatch of [{epoch:7},{templateId:'candidate-author52'},{busy:true}]){
+   expect(()=>assertB1CandidateBackupConfirmation(requested,{
+    epoch:6,templateId:'candidate-author51',busy:false,...mismatch,
+   })).toThrow('B1_AUTHOR_READ_BACKUP_CONFIRMATION_STALE')
+  }
  })
 })
