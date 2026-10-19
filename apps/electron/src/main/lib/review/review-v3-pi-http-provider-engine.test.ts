@@ -24,9 +24,11 @@ const input:V3APhysicalTurnInput={
   run,mode:'direct',dispatchId:'main-durable-dispatch-1',
 }
 const model={api:'openai-completions',provider:'openai',id:'test'}
-type NativeTurnEvent={type:'turn_end';message:{
-  role:'assistant';stopReason:'stop'|'error'|'toolUse'
-}} | {type:'agent_end'}
+type NativeTurnEvent=
+  | {type:'turn_start'}
+  | {type:'turn_end';message:{role:'assistant';stopReason:'stop'|'error'|'toolUse'}}
+  | {type:'agent_end';willRetry:boolean}
+  | {type:'agent_settled'}
 type SessionShim={
   agent:{state:{isStreaming:boolean};streamFunction:StreamFn}
   subscribe:(listener:(e:NativeTurnEvent)=>void)=>()=>void
@@ -50,6 +52,12 @@ function makeHarness(options?:{
   startAborted?:boolean
   abortDuringFetch?:boolean
   abortAfterSessionCreate?:boolean
+  missingTurnStart?:boolean
+  noAgentEnd?:boolean
+  noAgentSettled?:boolean
+  willRetry?:boolean
+  earlyAgentEnd?:boolean
+  duplicateTurnEnd?:boolean
 }){
   let physicalCalls=0
   let streamCalls=0
@@ -70,9 +78,13 @@ function makeHarness(options?:{
       )
     }
     if(options?.failAfterFetch)throw Error('provider streaming connection lost')
-    if(!options?.noTurn)listener?.({
-      type:'turn_end',message:{role:'assistant',stopReason:options?.stopReason??'stop'},
-    })
+    if(!options?.noTurn){
+      const turnEnd:NativeTurnEvent={
+        type:'turn_end',message:{role:'assistant',stopReason:options?.stopReason??'stop'},
+      }
+      listener?.(turnEnd)
+      if(options?.duplicateTurnEnd)listener?.(turnEnd)
+    }
     return {} as Awaited<ReturnType<StreamFn>>
   }
   const session:SessionShim={
@@ -81,6 +93,8 @@ function makeHarness(options?:{
     dispose(){disposed=true;listener=undefined},
     async prompt(prompt){
       expect(prompt).toBe('main-only frozen prompt')
+      if(!options?.missingTurnStart)listener?.({type:'turn_start'})
+      if(options?.earlyAgentEnd)listener?.({type:'agent_end',willRetry:false})
       await session.agent.streamFunction(
         {...model,api:options?.modelApi??model.api} as never,
         {messages:[]} as never,
@@ -88,6 +102,10 @@ function makeHarness(options?:{
           ...(options?.opaqueUpstreamFetch ? {fetch:globalThis.fetch}:{}),
         },
       )
+      if(!options?.noAgentEnd)listener?.({
+        type:'agent_end',willRetry:options?.willRetry??false,
+      })
+      if(!options?.noAgentSettled)listener?.({type:'agent_settled'})
     },
   }
   const factory:V3APiHttpSingleRequestFactory={create:async ()=>{
@@ -173,6 +191,37 @@ describe('A4-R10 pinned Pi 0.86.1 HTTP transport witness seam - in-memory Provid
       .rejects.toThrow('Main aborted after Pi session creation')
     expect(h.counts().disposed).toBe(true)
     expect(h.counts().streamCalls).toBe(0)
+  })
+  it('R13-01: Pi turn_end without agent_settled cannot certify Provider completion',async()=>{
+    const h=makeHarness({noAgentSettled:true})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('provenance unavailable')
+    expect(h.counts().physicalCalls).toBe(1)
+    expect(h.counts().disposed).toBe(true)
+  })
+  it('R13-02: Pi agent_end willRetry forbids a trusted receipt before actual retry',async()=>{
+    const h=makeHarness({willRetry:true})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('provenance unavailable')
+    expect(h.counts().physicalCalls).toBe(1)
+  })
+  it('R13-03: Pi missing turn_start invalidates otherwise plausible response',async()=>{
+    const h=makeHarness({missingTurnStart:true})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('request count/provenance')
+    expect(h.counts().physicalCalls).toBe(0)
+  })
+  it('R13-04: Pi agent_end before physical fetch invalidates the turn',async()=>{
+    const h=makeHarness({earlyAgentEnd:true})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('request count/provenance')
+    expect(h.counts().physicalCalls).toBe(0)
+  })
+  it('R13-05: duplicate turn_end after one request cannot certify another outcome',async()=>{
+    const h=makeHarness({duplicateTurnEnd:true})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('provenance unavailable')
+    expect(h.counts().physicalCalls).toBe(1)
+  })
+  it('R13-06: native agent_settled without agent_end cannot issue completion',async()=>{
+    const h=makeHarness({noAgentEnd:true})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('provenance unavailable')
+    expect(h.counts().physicalCalls).toBe(1)
   })
   it('R10-02: two HTTP fetch attempts fail closed despite a successful Pi turn',async()=>{
     const h=makeHarness({sends:2})
