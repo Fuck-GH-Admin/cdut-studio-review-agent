@@ -108,7 +108,7 @@ function lastEOCD(bytes: Buffer): number {
     const commentLen = read16(bytes, i + 20)
     if (i + 22 + commentLen === bytes.length) return i
   }
-  error('EOCD_NOT_FOUND')
+  throw new Error('B2_ZIP_EOCD_NOT_FOUND')
 }
 /** Decode archives as sealed isolated entries; no unsafe partial extraction to disk. */
 export function decodeReviewB2Zip(raw: Uint8Array, limits: B2ZipLimits = {}): B2ZipDecodeResult {
