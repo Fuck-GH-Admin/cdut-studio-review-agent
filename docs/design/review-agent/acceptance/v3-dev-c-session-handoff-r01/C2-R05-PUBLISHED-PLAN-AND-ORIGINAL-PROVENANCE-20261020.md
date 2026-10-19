@@ -38,3 +38,19 @@
 Old exact C SHA `0f7a0de92d199772c55db77ddb49e64c12635636` **PR CI `39308572991` job `118251939823` failed full TypeScript check**, before boundaries/build/full Bun. Original log errors: `review-v3-main-plan-provenance.ts` TS2345 at 88, TS18048 at 106/113, TS2345 at 146, TS18048 at 147 (optional publication record/Plan not narrowed by a throw-only error helper). This is a real compiler failure, **not Gate O pass or malicious-source regression failing**; do not borrow Baseline/Batch successes from this SHA.
 
 Owner-only fix: `8273ff4669d4fe55065584b14513557468beecb8` adds explicit `return deny(...)` to the two rejected optional-record/Plan branches. Security behavior stays strict and fail closed, no trust callback or publication constraint weakened. **New exact SHA** PR CI `39308946455`, Baseline `39308946310`, Batch `39308946644`, D1 `39308946487`, D2 `39308946333` are started/not yet signed as Gate O. Wait for all same SHA workflow outcomes, full Bun and new R05 test lines before C signs.
+
+## FINAL C2-R05 exact-SHA Gate O — SIGNED (2026-10-20)
+
+Engineering C #144 **exact final HEAD `8273ff4669d4fe55065584b14513557468beecb8`** passed five complete same-SHA GitHub workflows, independently checked from Actions statuses, steps and raw PR Bun log:
+
+| Workflow | Run | Conclusion |
+| --- | --- | --- |
+| PR CI | `39308946455` / job `118253236542` | **completed/success**: frozen Bun, workspace TypeScript, boundaries, skin, Main/Preload/Renderer build and full Bun **4107 pass / 5 OS skip / 0 fail; 4112 tests across 473 files** |
+| Review Baseline | `39308946310` | **completed/success** |
+| Review Batch | `39308946644` | **completed/success** |
+| D1 Authoring | `39308946487` | **completed/success** |
+| D2 Scoped Pi | `39308946333` | **completed/success** |
+
+Raw Bun PR lines independently confirm all **8/8** new `C2-R05 physical published Plan and Case source provenance — Main only` tests individually `(pass)`. The initial SHA `0f7a0de...` PR typecheck failed five optional-value narrowing errors, with repaired `return deny(...)` in `8273ff4...`; old failure remains documented and must not be rewritten.
+
+**Formal C ruling: `C2-R05-GATE-O-R01 / PASS_EXACT_SHA_8273ff4 / MAIN_OFFLINE_PUBLISHED_PLAN_CONSUMER_ONLY`.** This does not claim a real school authorization or live Dev-B publisher, does not register actual Host/Provider/SDK/IPC, and does not activate formal C2 Run or School decision. Gate E NOT_RUN; Gate L BLOCKED_NO_AUTH; Gate P NOT_RUN; Release NO_GO. I3 remains frozen at earlier R03 `e87f75e...` and cannot float-import R05.
