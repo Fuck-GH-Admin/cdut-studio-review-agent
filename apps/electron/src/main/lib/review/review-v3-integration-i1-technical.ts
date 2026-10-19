@@ -210,7 +210,38 @@ export async function readI1OwnerBoundBlock<T>(input: {
   // source allowlist checks, Host actualSource matching and durable local append.
   const { result, delivery } = await input.events.guardedRead({
     ...input.mainOwnedCall, tool: 'review_read_documents', source: physical.source,
-  }, input.hostRead)
+  }, async expectedSource => {
+    const hostResult = await input.hostRead(expectedSource)
+    // The A1 Owner and B2 staging grants have *separate* lifecycles.
+    // A1's after-await authority check alone cannot prove that a B2 input
+    // candidate was not revoked while the Host was reading its bytes.
+    // Revalidate both the live staging grant and exact parser registry block
+    // after await and before A2 can append its local proposal. This is still
+    // a staged-only read, never a durable business receipt.
+    const current = input.staging.getCandidate(input.mainContext, input.candidateId)
+    if (current.caseCandidateId !== physical.source.caseId ||
+        current.materialId !== physical.source.materialId ||
+        current.documentVersionId !== physical.source.documentVersionId ||
+        current.rawSha256 !== physical.source.rawSha256 ||
+        current.status !== 'accepted') {
+      throw new Error('I1_PHYSICAL_SOURCE_REVOKED_OR_REPLACED')
+    }
+    const registered = input.parser.sourceForBlock(
+      input.mainContext, input.candidateId,
+      physical.source.parseRevision, physical.source.blockId,
+    )
+    if (registered.caseId !== physical.source.caseId ||
+        registered.materialId !== physical.source.materialId ||
+        registered.documentVersionId !== physical.source.documentVersionId ||
+        registered.rawSha256 !== physical.source.rawSha256 ||
+        registered.parseRevision !== physical.source.parseRevision ||
+        registered.blockId !== physical.source.blockId ||
+        registered.location.kind !== physical.source.location.kind ||
+        registered.location.locator !== physical.source.location.locator) {
+      throw new Error('I1_PHYSICAL_SOURCE_REGISTRY_CHANGED')
+    }
+    return hostResult
+  })
   return {
     classification: 'STAGED_ONLY',
     fullDocumentReadProven: false,
