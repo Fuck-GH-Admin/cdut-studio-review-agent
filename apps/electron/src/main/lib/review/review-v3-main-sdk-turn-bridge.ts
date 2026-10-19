@@ -189,6 +189,9 @@ export class V3ASDKTurnBridge {
           typeof received.receiptId !== 'string' || !received.receiptId.trim()) {
         throw new C0ContractError('CONTRACT_INVALID','SDK Host turn receipt absent')
       }
+      // Distinct physical Provider dispatches must never masquerade as an
+      // idempotent replay with the same Main-observed SDK turn receipt.
+      this.dispatch.assertUniqueReceipt(frozen,intent.dispatchId,received.receiptId)
       const turn=this.turns.recordCompletedTurn(call,received.receiptId)
       // The SDK work is durably counted, even if its 24th-turn terminal later
       // fails ENOSPC. Retrying terminal is safe; running SDK again is not.
