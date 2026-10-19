@@ -62,3 +62,15 @@ Git 对象级文件导入：`b6e767f0c85eca8e1c83a5420bc31ea8b4533e8f` 父 commi
 - 原 C anchor `31aa352c45a33d6832612884b0fea38e39b5cf8d`、A/B 来源 SHA、`review-c0/1` 均未改变。保持无 C-exclusive hunk，无 `review-v3-execution/1` 偷渡。本轮新增 I-only **1 个测试文件**、更改 I-only bridge 及 I 自有报告/lock，总 diff 当前应为 **23 paths**，需以实际 Git PR diff 再次核验。
 
 **验收纪律**：第二切片只在 #147 最终精确 SHA 的 GitHub Actions PR CI、Review Baseline 与 D2 均结束且结果可复核时报告 `PASS_SCOPED`；待 C 在 #145 第 9 节对这个确切 SHA 审阅之后才能报 `C_ACCEPTED_FOR_ENGINEERING`。工作流 queued/cancelled 不算绿，不把 A/B/C 单线 green 拿来替代。
+
+## 7. C 回复与 I 的生效测试租约：C0 Main 真正入口联合负例
+
+**来自 C #145 第 9 节 `C-I1-REVIEW-R02` 与 #147 C 独立评论**：对前一个 I1 SHA `09d67ee494481dcc32571c8887ea1326b9a45b36` 仅做 `CODE_SCOPE_ACCEPTED_NOT_GATE_O`，不批准 `C_ACCEPTED_FOR_ENGINEERING`。其批准的唯一立即生效跨边界租约是 **`I-LEASE-C-TEST-R01 / APPROVED_ACTIVE`**。未来 Main 技术 handler 只处于 `I-LEASE-MAIN-PORT-R01 / CONDITIONAL_NOT_ACTIVE`，**无** Preload/shared/正式 Main handler/Business writer 修改权。
+
+**租约执行前证据**：C 正式老锚点 `31aa352c45a33d6832612884b0fea38e39b5cf8d` 上的 `apps/electron/src/main/lib/review/review-c0-ipc.test.ts` Git blob `7c4d73b209e926369747ae50f5ce4a5601e3effa`。I 租约改动之前 #147 同一路径 blob **完全一致**。已在 I 的独立分支**只在文件末尾 append 新 `describe('I integration ...')`**，原全部 3 个 test、现有 setup、导入、fixture、断言的**整个原文件字节前缀未变**。追加 commit `d6187b96ffc47b5606a57e78e0c2e6a2c7ae563b`，Git compare 显示 **+167 行 / -0 行**，不写入 C #144 分支。
+
+**I-C0-IPC-01**：真正 B2 原始 bytes → B2 parser-registered SourceIdentity → B1 immutable `publicationAllowed=false` candidate → A1 synthetic-Main grant → A2 guarded Host read + C0 local outbox proposal。然后调用**真正注册的 `registerReviewIpc` C0 `UPDATE_FIELDS_V2` handler**，在真实 C0 sender/frame 测试 harness 中试图用虚假的 `school/teacher` actor 提交候选技术数据；要求 `ACTOR_UNTRUSTED`、既有 aggregate/receipt 不变、A2 proposal **只留在本地队列**、不伪造 C2 Run ACK。
+
+**I-C0-IPC-02**：同一真实来源/技术事件后，用不同 sender object 和不匹配的 frame 向正式 C0 Main handler 提交承载 technical deliveryId 的输入；要求两种 `SENDER_UNTRUSTED` 且 C0 aggregate/Receipt 不变。A1 Owner revoke 后若重复 B2→A1→A2 技术读取，必须拒绝追加迟到事件，原 pending 长度不增加。
+
+**测试范围说明**：这两项才触达真实已注册 C0 Main IPC **handler**，其 sender/frame 由既有合成 Electron hooks 模拟；**仍非实际 Electron GUI、C2 writer、学校 Principal、Host Provider 真凭证**。原 I1 13 项与新增两项组成**15 项 I-owned 合成联合测试**，需要精确新 HEAD GitHub PR CI 执行确认，不能因为代码提交/ C 旧 SHA scope review 就称通过。未激活其他 C 文件租约，`review-v3-execution-contract.test.ts` 还属于 C **新锚点之后**，本次不创建、不修改。

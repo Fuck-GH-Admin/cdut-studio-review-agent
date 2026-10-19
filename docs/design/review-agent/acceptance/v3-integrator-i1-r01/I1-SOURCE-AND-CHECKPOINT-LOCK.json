@@ -202,7 +202,7 @@
     }
   ],
   "newIIntegrationProbes": {
-    "count": 13,
+    "count": 15,
     "results": "COMMITTED_NOT_VERIFIED",
     "crossModules": [
       "Dev-B B1 immutable candidate Plan",
@@ -210,7 +210,8 @@
       "Dev-B B3 conservative route",
       "Dev-A A3 exact technical Check×target",
       "Dev-C C1 archived CurrentValidity",
-      "B2 material Subject scope must match each B1 Check target"
+      "B2 material Subject scope must match each B1 Check target",
+      "registered C0 Main IPC teacher/school actor and sender/frame fail closed with B2/A1/A2 synthetic technical receipt"
     ],
     "formallyPersistedBusinessRuns": 0
   },
@@ -242,5 +243,30 @@
     "formalWriter": false,
     "realElectronMain": false,
     "scope": "TECHNICAL_ONLY"
+  },
+  "cDecisionReply": {
+    "decision": "C-I1-REVIEW-R02 / CODE_SCOPE_ACCEPTED_NOT_GATE_O",
+    "reviewedPriorI1Sha": "09d67ee494481dcc32571c8887ea1326b9a45b36",
+    "contract": "review-c0/1",
+    "leaseActive": "I-LEASE-C-TEST-R01",
+    "leaseInactive": "I-LEASE-MAIN-PORT-R01",
+    "businessWriterLease": "DENIED",
+    "scopeAcceptedDoesNotEqualGatePass": true
+  },
+  "cLeasedTestAddition": {
+    "file": "apps/electron/src/main/lib/review/review-c0-ipc.test.ts",
+    "cAnchorSha": "31aa352c45a33d6832612884b0fea38e39b5cf8d",
+    "unchangedAnchorBlob": "7c4d73b209e926369747ae50f5ce4a5601e3effa",
+    "additiveCommit": "d6187b96ffc47b5606a57e78e0c2e6a2c7ae563b",
+    "existingTestCasesUntouched": true,
+    "existingSetupUntouched": true,
+    "diffLinesAdded": 167,
+    "diffLinesDeleted": 0,
+    "newJointCases": 2,
+    "realRegisteredC0MainHandler": true,
+    "liveElectronMain": false,
+    "realHostProvider": false,
+    "c2FormalAck": false,
+    "results": "COMMITTED_NOT_VERIFIED"
   }
 }
