@@ -22,7 +22,7 @@ import type {
   V3ANativeSingleRequestEngine,
 } from './review-v3-sdk-physical-turn-port'
 
-type PiSession = Pick<AgentSession,'agent'|'prompt'|'subscribe'>
+type PiSession = Pick<AgentSession,'agent'|'prompt'|'subscribe'|'dispose'>
 // Bun extends global fetch with .preconnect, which is not part of a plain
 // request transport. Keep the injected Main fetch deliberately callable-only.
 export type V3AHttpRequestTransport=(...args:Parameters<FetchFunction>)=>ReturnType<FetchFunction>
@@ -75,6 +75,7 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
     const session=spec.session
     if(!session?.agent || typeof session.prompt!=='function' ||
         typeof session.subscribe!=='function' ||
+        typeof session.dispose!=='function' ||
         !spec.prompt?.trim() || !spec.trustedOrigin) {
       fail('Trusted dedicated Pi SDK session/prompt unavailable')
     }
@@ -188,8 +189,16 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
         status:'completed',
       })
     } finally {
-      session.agent.streamFunction=previous
-      unsubscribe()
+      // Pi 0.86.1 AgentSession.dispose() aborts the agent, native retry,
+      // compaction, bash and cache warming and disconnects its listeners.
+      // Restoring streamFunction alone would leave an SDK session capable
+      // of later dispatch outside this single-request witness.
+      try {
+        session.dispose()
+      } finally {
+        try { unsubscribe() }
+        finally { session.agent.streamFunction=previous }
+      }
     }
   }
 }
