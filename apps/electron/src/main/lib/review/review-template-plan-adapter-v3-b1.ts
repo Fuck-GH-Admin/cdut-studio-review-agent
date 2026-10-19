@@ -184,6 +184,7 @@ export function compileReviewB1Plan(author: B1AuthorDocument): ImmutablePlanDesc
       case 'boolean': return typeof value === 'boolean'
       case 'evidence': return false
     }
+    return false
   }
   const targetMap = new Map(author.targets.map((t) => [t.targetKey, t]))
   if (targetMap.size !== author.targets.length || !unique(author.targets.map((t) => t.objectKey)) ||
