@@ -21,7 +21,7 @@ class Store implements OwnerPersistence {
     this.data = v
   }
 }
-function setup(caseId = 'case-a', sessionId = 'session-a') {
+function setup(caseId = 'case-a', sessionId = 'session-a', applicability: 'applicable' | 'unknown' = 'applicable') {
   const ownerStore = new Store()
   const proposalStore = new Store()
   const principal: Principal = {
@@ -44,7 +44,7 @@ function setup(caseId = 'case-a', sessionId = 'session-a') {
     templateId:'t1',templateVersion:'v1',moduleDigests:[],
     bindings:[{
       checkKey:'check-1',targetKey:'target-1',objectKey:'object-1',
-      subjectId:'student-1',sourceVersionIds:['dv1'],applicability:'applicable',
+      subjectId:'student-1',sourceVersionIds:['dv1'],applicability,
       conditionFingerprint:'cfp',
     }],
   }
@@ -146,16 +146,20 @@ describe('Dev-A versioned CR-A-001 A-1 proposal producer (Main Host only)', () =
     expect(h.producer.replayCandidates()).toHaveLength(1)
     await expect(h.producer.check(call,{...tuple,targetKey:'wrong'})).rejects.toThrow()
   })
-  it('A2-V3-04: accepted not inferred from unknown applicability', async () => {
-    const h=setup()
-    const owner=h.owners.get(h.call.sessionId)
-    expect(owner?.planSnapshot?.bindings[0]?.applicability).toBe('applicable')
-    // Attestation is checked against the frozen, authorized Plan, not a
-    // caller-submitted unchecked condition; corrupting the journal fails closed.
-    const wrongCall={...checkCall(h),grantId:'forged'}
-    await expect(h.producer.check(wrongCall,tuple)).rejects.toThrow()
+  it('A2-V3-04: accepted Check for unknown applicability is forbidden', async () => {
+    const h=setup('case-a','session-a','unknown')
+    expect(h.owners.get(h.call.sessionId)?.planSnapshot?.bindings[0]?.applicability)
+      .toBe('unknown')
+    await expect(h.producer.check(checkCall(h),tuple)).rejects.toThrow()
     expect(h.producer.replayCandidates()).toEqual([])
+    h.setCheck({receiptId:'host-unknown',actualCheck:{...tuple,status:'unknown'}})
+    const unknown=await h.producer.check(checkCall(h),tuple)
+    if (unknown.kind!=='check') throw new Error('check expected')
+    expect(unknown.check.status).toBe('unknown')
+    h.setTerminal({receiptId:'host-complete',actualStatus:'completed-technical'})
+    await expect(h.producer.terminal(checkCall(h),'completed-technical')).rejects.toThrow()
   })
+
   it('A2-V3-05: revoke during awaited Host read/check creates no event', async () => {
     const h=setup()
     let release!: (x: Awaited<ReturnType<AVerifiedExecutionHost['read']>>) => void
