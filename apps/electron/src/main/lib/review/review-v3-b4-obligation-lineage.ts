@@ -84,8 +84,8 @@ const safe=(v:unknown):v is string=>typeof v==='string'&&v.trim().length>0
 export function validateB4TechnicalArchive(data:unknown): B4TechnicalResult {
   // Distinct guards preserve TypeScript's narrowing of untrusted JSON across
   // the full header predicate. No unchecked B4 cast or policy promotion.
-  if(!isObject(data)) deny('ARCHIVE_HEADER')
-  if(!Array.isArray(data.templates)) deny('ARCHIVE_HEADER')
+  if(!isObject(data)) throw new Error('B4_LINEAGE_ARCHIVE_HEADER')
+  if(!Array.isArray(data.templates)) throw new Error('B4_LINEAGE_ARCHIVE_HEADER')
   if(data.schemaVersion!=='review-v3-b4-obligation-archive/1' ||
     !sha40.test(String(data.frozenSourceGitSha)) || !/^G0[1-8]$/.test(String(data.domain)) ||
     !Array.isArray(data.templates) || data.templates.length!==data.templateCount ||
