@@ -42,6 +42,7 @@ function makeHarness(options?:{
   noTurn?:boolean
   failAfterFetch?:boolean
   startAborted?:boolean
+  abortDuringFetch?:boolean
 }){
   let physicalCalls=0
   let streamCalls=0
@@ -88,8 +89,14 @@ function makeHarness(options?:{
     return {
       session:inner,prompt:'main-only frozen prompt',
       trustedOrigin:options?.origin??'https://approved.example',
-      transportFetch:async (_url,_init)=>{
+      transportFetch:async (_url,init)=>{
         physicalCalls++
+        if(options?.abortDuringFetch){
+          expect(init?.signal).toBeDefined()
+          aborter.abort()
+          expect(init?.signal?.aborted).toBe(true)
+          throw new DOMException('Main aborted during HTTP transport','AbortError')
+        }
         const headers=new Headers()
         if(options?.nativeReceipt!==null){
           headers.set('x-request-id',options?.nativeReceipt??'provider-request-1')
@@ -177,6 +184,12 @@ describe('A4-R10 pinned Pi 0.86.1 HTTP transport witness seam - in-memory Provid
     const replacement:StreamFn=()=>({} as ReturnType<StreamFn>)
     agent.streamFunction=replacement
     expect(agent.streamFunction).toBe(replacement)
+  })
+  it('R10-17: Main AbortSignal propagates to the real Pi HTTP transport fetch',async()=>{
+    const h=makeHarness({abortDuringFetch:true})
+    await expect(h.host.nextTurn({...input,signal:h.aborter.signal}))
+      .rejects.toThrow('Main aborted during HTTP transport')
+    expect(h.counts().physicalCalls).toBe(1)
   })
   it('R10-16: an opaque Pi-provided fetch wrapper is rejected instead of hiding retries',async()=>{
     const h=makeHarness({opaqueUpstreamFetch:true})
