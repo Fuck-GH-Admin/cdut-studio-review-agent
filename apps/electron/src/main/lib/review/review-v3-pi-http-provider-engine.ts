@@ -31,6 +31,8 @@ export interface V3APiHttpRequestSpec {
   prompt: string
   /** Main-approved HTTPS provider base origin; never derive from model text. */
   trustedOrigin: string
+  /** Only a Main-owned audited fetch may replace native global fetch (tests only). */
+  transportFetch?: FetchFunction
 }
 
 export interface V3APiHttpSingleRequestFactory {
@@ -111,7 +113,11 @@ export class V3APiHttpSingleRequestEngine implements V3ANativeSingleRequestEngin
             options?.transport==='websocket-cached'){
           return mark()
         }
-        const upstreamFetch:FetchFunction=options?.fetch??globalThis.fetch
+        // A preconfigured SDK fetch may hide retries inside a wrapper. The
+        // only admissible transport is Main-selected direct fetch, and this
+        // wrapper must be the one the Provider actually invokes.
+        if(options?.fetch)return mark()
+        const upstreamFetch:FetchFunction=spec.transportFetch??globalThis.fetch
         const guardedFetch:FetchFunction=async (resource,init)=>{
           httpCalls++
           if(httpCalls!==1 || input.signal?.aborted)return mark()
