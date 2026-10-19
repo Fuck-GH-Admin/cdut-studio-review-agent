@@ -64,7 +64,7 @@ describe('I2 B technical staged physical bytes → B4 historical proof → B1 un
   test('altered byte, forged Git pin, cross-owner read, revoked owner and path injection fail closed', () => {
     const h = actualOriginal()
     const tampered = Buffer.from(h.bytes)
-    tampered[1] ^= 1
+    tampered[1] = (tampered[1] ?? 0) ^ 1
     expect(() => verifyB4OriginalGitBytes(tampered,h.pin))
       .toThrow('B4_ORIGINAL_BYTES_CONTENT_MISMATCH')
     expect(() => verifyB4OriginalGitBytes(h.bytes,{
