@@ -96,3 +96,16 @@ I0 暂存测试 `apps/electron/src/main/lib/review/review-v3-integration-i0-gate
 - **不可声称**：本机 Bun、真实 worktree、单 SHA 联合 build/typecheck/boundaries、Electron/Office、真实 Provider/SchoolPort/政策/Gold、71条产品验收。Gate O **NOT_RUN（联合）**、Gate E **NOT_RUN**、Gate L **BLOCKED_NO_AUTH**、Gate P **NOT_RUN**。
 - **下一运行环境必做**：`git fetch` 四线冻结 refs → isolated `git worktree add` 校验 HEAD/clean → `bun install --frozen-lockfile` → `bun run typecheck` → `bun run check:boundaries` → `bun test apps/electron/src/main/lib/review/review-v3-integration-i0-gates.test.ts` → 全量受影响测试（未来真集成 SHA）→ build；记录 exit code、测试计数、日志摘要和首败。不因缺本地验证阻止下一轮独立文档/测试预备，但不准谎称 DONE 的联合门禁。
 - **发布结论**：`I0_INPUT_FROZEN + TEST_STAGED`；**不是** `I1_WIRED`、`C_ACCEPTED` 或 `RELEASE_GO`。
+
+## 7. 并发新提交增量核验（不改写第 1 节冻结输入）
+
+核验 I0 首个来源 SHA 后，A/B 在各自分支**继续推进**，证明无法把“最初读到 HEAD”误当“永久最新”。I0 的上表、机器锁和原始代码来源**保留为第 0 检查点**，后续 I1 源入选必须另外锁定和取得精确新 CI。
+
+- **A #143**：新 HEAD `ab1e965e14bf3ccefc8c28828aa26c7390782b62`，相对旧 A `d8fd3e0e696caa1df7321c23c46e4f70a1f910f7`：`ahead=7,behind=0`、merge-base=旧 A。修改 owner/event/test，新增 `review-pi-owner-adapter-multipid.test.ts`；对应 PR CI `39239221711` 在检查时为 QUEUED，故新切片 `SOURCE_ONLY / CI_PENDING`，不能把旧 A 的绿色沿用。未经进一步运行验证不把 multi-PID 测试称为真实跨 PID 产品验收。
+- **B #142**：新 ZIP 增量 `df6b6ba458eb7c6ef2e7a2942ccffa17c72cf2d2` 相对旧 B `f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc`：`ahead=5,behind=0`，新增 ZIP intake/staging 两源码+两测试；新 PR CI `39239062410` **FAIL**。Job `118015179695` 中 `bun run typecheck` 第一错误为 `review-zip-intake-v3-b2.ts:105:35 TS2366`（非所有分支返回值），后续 boundaries/build/tests **SKIPPED**；已在 #142 评论 `6265357010` 将精确失败交还 B，禁止 I 越权修 B 源文件或把新 ZIP 标 READY。
+- **B 随后新 HEAD**：`90154a351334866ea13a87a5a850a09b980b3b6c` 是在失败 ZIP HEAD 上 `ahead=1,behind=0` 的提交，仅新增 `review-import-checkpoint-v3-b2.ts`；检查当刻此 HEAD 尚无可见 PR CI，**旧 ZIP TS2366 的修复未获证实**，新来源 `SOURCE_ONLY / CI_NOT_YET_REPORTED`。
+- **C #144**：仍为 `31aa352c45a33d6832612884b0fea38e39b5cf8d`，未发现 C 正式新锚点/合同决议。#145 四线协调区 A/B 已 ACK V1.0（在 I 更新前先重新读取；I 只能编辑 I 自己的一段）。
+
+**最新一次的源 HEAD 并非当前已验证入选 SHA**：旧 A/B 继续可作为 I0 锁定的 candidate；新增 A/B 代码须经过对应新 HEAD 的 CI、来源差异和 I 独立预检后才可进批准的 I1。最新源变动不会强制 I 等各线达到同一轮次。
+
+**I0 附加核验**：通过 GitHub 读取当前锁的真实 blob `42b1e73111593d56cb2fd7d89febf9e10a7a17a4`，在 JS 内存实际执行 9 项数据一致性断言，9/9 PASS（包含假 C-owned 路径注入的拒止）。这是 **输入锁逻辑的轻量静态预检**；不是 Bun 定向测试，更不等于联合 Gate O PASS。
