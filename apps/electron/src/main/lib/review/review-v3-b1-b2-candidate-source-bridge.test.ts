@@ -306,3 +306,78 @@ describe('B R19 actual ZIP -> Main stage -> parser -> InputLedger -> B1 Check×t
     expect(old.bindings).toHaveLength(4)
   })
 })
+
+
+describe('B R19 conservative ledger and author semantics',()=>{
+  test('R19-11 skipped or rejected files retain original bytes but never become linked evidence',async()=>{
+    const f=fixture()
+    const input=f.vault.saveAndStage(ctx,{
+      requestId:'refused-files',physicalArchiveKey:'refusal-native-picker',
+      bytes:zip(inputs),
+    })
+    const archiveId=input.checkpoint.archiveId
+    const initial=f.ledger.getOrCreate(ctx,archiveId)
+    f.ledger.decide(ctx,archiveId,0,'skip-entry',{
+      entryIndex:0,status:'skipped',reason:'Applicant excluded this file',
+    },{principalId:'main-principal',authorize:()=>true})
+    f.ledger.decide(ctx,archiveId,1,'reject-entry',{
+      entryIndex:1,status:'rejected',reason:'Unverified applicant origin',
+    },{principalId:'main-principal',authorize:()=>true})
+    const parsed=await Promise.all(input.preview.candidates.map(c=>f.parser.parse(ctx,c)))
+    const doc=author(input.preview.candidates[0]!.documentVersionId,
+      input.preview.candidates[1]!.documentVersionId)
+    const picks:B19SourceSelection[]=[
+      {checkKey:'check-a1',targetKey:'target-1',sourceId:'s-a',
+       candidateId:input.preview.candidates[0]!.candidateId,
+       parseRevision:parsed[0]!.parseRevision,blockId:parsed[0]!.blocks[0]!.blockId,
+       requiredRole:'supporting',archiveId,entryIndex:0},
+      {checkKey:'check-b',targetKey:'target-1',sourceId:'s-b',
+       candidateId:input.preview.candidates[1]!.candidateId,
+       parseRevision:parsed[1]!.parseRevision,blockId:parsed[1]!.blocks[0]!.blockId,
+       requiredRole:'supporting',archiveId,entryIndex:1},
+    ]
+    const result=buildB19CandidateSourceBindings(ctx,doc,compileReviewB1Plan(doc),picks,{
+      ...f,trustedArchiveScopes:[{archiveId,physicalArchiveKey:'refusal-native-picker'}],
+    })
+    expect(result.bindings.find(b=>b.checkKey==='check-a1')?.state).toBe('needs-human-confirmation')
+    expect(result.bindings.find(b=>b.checkKey==='check-b')?.state).toBe('needs-human-confirmation')
+    expect(result.bindings.every(b=>b.state!=='linked-candidate')).toBe(true)
+    expect(f.ledger.snapshot(ctx,archiveId).files.map(x=>x.status)).toEqual(['skipped','rejected'])
+    expect(initial.files.every(x=>x.status==='needs-user-confirmation')).toBe(true)
+  })
+  test('R19-12 old input receipts cannot re-authorize across a new Main generation',async()=>{
+    const f=fixture(),entry=await imported(f,'generation','native-generation')
+    const newCtx={...ctx,ownerGeneration:ctx.ownerGeneration+1}
+    const fresh=f.vault.saveAndStage(newCtx,{
+      requestId:'generation',physicalArchiveKey:'native-generation',bytes:zip(inputs),
+    })
+    const parsed=await Promise.all(fresh.preview.candidates.map(c=>f.parser.parse(newCtx,c)))
+    const doc=author(fresh.preview.candidates[0]!.documentVersionId,
+      fresh.preview.candidates[1]!.documentVersionId)
+    const selected:B19SourceSelection[]=[{
+      checkKey:'check-a1',targetKey:'target-1',sourceId:'s-a',
+      candidateId:fresh.preview.candidates[0]!.candidateId,
+      parseRevision:parsed[0]!.parseRevision,blockId:parsed[0]!.blocks[0]!.blockId,
+      requiredRole:'supporting',archiveId:entry.archiveId,entryIndex:0,
+    }]
+    const snapshot=buildB19CandidateSourceBindings(newCtx,doc,compileReviewB1Plan(doc),
+      selected,{...f,trustedArchiveScopes:[{archiveId:entry.archiveId,
+        physicalArchiveKey:'native-generation'}]})
+    expect(snapshot.bindings[0]!.sources[0]!.reason).toBe('HISTORIC_INPUT_RECEIPT_REAUTH_REQUIRED')
+    expect(snapshot.bindings[0]!.state).toBe('needs-human-confirmation')
+    expect(f.ledger.snapshot(ctx,entry.archiveId).mutations[0]!.ownerGeneration).toBe(ctx.ownerGeneration)
+  })
+  test('R19-13 evidence-linked candidate does not override unknown author applicability',async()=>{
+    const f=fixture(),entry=await imported(f,'unknown-condition','unknown-native')
+    const doc=author(entry.candidates[0]!.documentVersionId,entry.candidates[1]!.documentVersionId)
+    doc.fields=[{key:'declared',label:'Applicant claim',type:'text',required:false,sourceId:'s-a'}]
+    doc.modules[0]!.checks[0]!.condition={
+      kind:'field-equals',fieldKey:'declared',equals:'yes',
+    }
+    const result=compile(f,entry,undefined,selections(entry),doc)
+    expect(result.bindings[0]!.applicability).toBe('unknown')
+    expect(result.bindings[0]!.sources[0]!.state).toBe('linked-candidate')
+    expect(result.bindings[0]!.state).toBe('unknown')
+    expect(result.bindings[1]!.state).toBe('linked-candidate')
+  })
+})
