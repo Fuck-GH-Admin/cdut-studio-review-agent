@@ -51,18 +51,36 @@ const matrix = (domain: B4HighRiskDomain, source: string): B4RiskInstance[] => {
   ]
 }
 describe('B4 R24 frozen Markdown version conflict, never policy authority', () => {
-  test('the exact three pinned historical D4 conflicts have no current raw bytes; never convert old hash observations into proof', () => {
+  test('three raw Library versions independently rehashed, never substituted for frozen originals', () => {
     const old = load('B4-50-ORIGINAL-LIBRARY-RECOVERY-R11.json') as {
       entries: Array<{ templateId: string; claimedD4SourceSha256: string;
         observedLibrarySha256: string; status: string }> }
     const sources = (load('B4-1-ORIGINAL-RAW-RECOVERY-R12B.json') as { quarantinedStill: string[] }).quarantinedStill
     expect(new Set(sources)).toEqual(new Set(originalPins.map(x => x.templateId)))
+    const rehashed = load('B4-R24-THREE-CONFLICTED-ORIGINAL-RAW-REHASH.json') as {
+      frozenD4SHA: string; publicationAllowed: boolean; schoolPolicyVerified: boolean;
+      conflicts: Array<{ templateId: string; observedRawSha256: string;
+        observedGitBlobSha1: string; observedByteCount: number;
+        frozenSourceSha256: string; sourceVerdict: string }>
+    }
+    expect(rehashed.frozenD4SHA).toBe(frozen)
+    expect(rehashed.conflicts).toHaveLength(3)
+    expect(rehashed.publicationAllowed).toBe(false)
+    expect(rehashed.schoolPolicyVerified).toBe(false)
     for (const pin of originalPins) {
       const observed = old.entries.find(x => x.templateId === pin.templateId)
       expect(observed?.claimedD4SourceSha256).toBe(pin.frozenSourceSha256)
       expect(observed?.status).toBe('HASH_MISMATCH_QUARANTINED')
       expect(observed?.observedLibrarySha256).toMatch(/^[a-f0-9]{64}$/)
       expect(observed?.observedLibrarySha256).not.toBe(pin.frozenSourceSha256)
+      const raw = rehashed.conflicts.find(x => x.templateId === pin.templateId)
+      expect(raw?.frozenSourceSha256).toBe(pin.frozenSourceSha256)
+      expect(raw?.observedRawSha256).toBe(observed?.observedLibrarySha256)
+      expect(raw?.observedGitBlobSha1).toMatch(/^[a-f0-9]{40}$/)
+      expect(raw?.observedByteCount).toBeGreaterThan(0)
+      expect(raw?.sourceVerdict).toBe('DIFFERENT_VERSION_QUARANTINED')
+      // Actual originals are NOT committed into GitHub; no bytes means the
+      // runtime verifier correctly returns RAW_NOT_AVAILABLE, not fake proof.
       const result = inspectB4OriginalVersion(pin)
       expect(result.state).toBe('RAW_NOT_AVAILABLE')
       expect(result.observedSourceSha256).toBeNull()
