@@ -37,6 +37,7 @@ export function buildB3RouteView(
     : null
   const messages:Record<B3RouteState['status'],[string,string]>={
     'awaiting-evidence':['等待材料与审核主体','缺少足够且同案的真实材料，不能自动选择模板。'],
+    'unmatched':['现有模板未匹配','当前材料未找到可验证的模板匹配。不会在倒计时后随意选取；请人工确认业务类别，或自建候选审核流程。'],
     'countdown':['确认材料类型','仅有一项满足技术条件的候选。倒计时结束前随时可以停止或手动选择。'],
     'needs-user-confirmation':['需要你确认审核业务','材料角色、来源、适用范围或模板资格尚不明确；不会自行建案。'],
     'manually-selected':['人工选择已记录为技术候选','最终使用前必须由 Main 重新校验模板权限和当前材料。'],
