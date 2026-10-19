@@ -21,6 +21,7 @@ import {
 import { V3ExecutionEventAdapter } from './review-execution-event-adapter'
 import { V3ExecutionCompletenessAdapter } from './review-execution-event-adapter-completeness'
 import { currentSourceValidityBlockers } from './source-current-validity-v3'
+import { readI1OwnerBoundBlock } from './review-v3-integration-i1-technical'
 
 function memoryJournal(): OwnerPersistence {
   let stored: string | null = null
@@ -106,10 +107,21 @@ async function scenario() {
 describe('I1 A1+A2 with B1/B2 parser identity and C1 fail-closed boundaries', () => {
   test('verified physical B2 source authorizes A1 and A2 Host read without formal business promotion', async () => {
     const h = await scenario()
-    const read = await h.events.guardedRead(h.readCall, async actualSource => ({
-      receiptId: 'test-host-read-1', actualSource, result: 'inspected one real parsed block',
-    }))
-    expect(read.result).toContain('one real parsed block')
+    const read = await readI1OwnerBoundBlock({
+      staging: h.staging, parser: h.parser, mainContext: identity,
+      candidateId: h.candidate.candidateId,
+      events: h.events,
+      mainOwnedCall: {
+        sessionId: h.lease.sessionId, grantId: h.lease.grantId,
+        senderKey: h.lease.senderKey, principal: h.principal,
+      },
+      hostRead: async actualSource => ({
+        receiptId: 'test-host-read-1', actualSource, result: 'inspected one real parsed block',
+      }),
+    })
+    expect(read.hostResult).toContain('one real parsed block')
+    expect(read.classification).toBe('STAGED_ONLY')
+    expect(read.fullDocumentReadProven).toBe(false)
     expect(read.delivery.event.eventKind).toBe('read-receipt-proposal')
     expect(read.delivery.event.toolReceipt?.sourceVersionId).toBe(h.candidate.documentVersionId)
     const check = h.events.proposeCheck({
