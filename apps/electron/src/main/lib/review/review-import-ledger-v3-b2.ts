@@ -12,7 +12,7 @@
 import { createHash, randomBytes } from 'node:crypto'
 import {
   closeSync, existsSync, fsyncSync, lstatSync, mkdirSync, openSync,
-  readFileSync, renameSync, rmSync, writeFileSync,
+  readFileSync, readdirSync, renameSync, rmSync, writeFileSync,
 } from 'node:fs'
 import { join } from 'node:path'
 import { getConfigDir } from '../config-paths'
@@ -210,6 +210,11 @@ export class ReviewB2InputLedger {
   }
   private read(ctx:B2MainContext, source:B2ArchiveCheckpoint): B2InputBatchLedger | undefined {
     const dir=this.folder(ctx,source.archiveId)
+    // A killed writer can leave a temporary ledger beside the old or new
+    // ledger.json. Never infer that the transaction completed just because
+    // another process subsequently removed the stale input.lock.
+    if(existsSync(dir) && readdirSync(dir).some(name=>
+      /^ledger-[a-f0-9]{20}\.tmp$/.test(name))) fail('RECOVERY_REQUIRED')
     const file=join(dir,'ledger.json')
     if(!existsSync(file)) return undefined
     if(!lstatSync(file).isFile() || lstatSync(file).nlink!==1) fail('FILE_UNSAFE')
