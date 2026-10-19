@@ -4,7 +4,7 @@
  */
 import {describe,expect,it} from 'bun:test'
 import type {AgentSession} from '@earendil-works/pi-coding-agent'
-import type {StreamFn} from '@earendil-works/pi-agent-core'
+import {Agent, type StreamFn} from '@earendil-works/pi-agent-core'
 import {V3APiHttpSingleRequestEngine} from './review-v3-pi-http-provider-engine'
 import {V3APhysicalSDKTurnPort} from './review-v3-sdk-physical-turn-port'
 import type {V3APhysicalTurnInput} from './review-v3-sdk-physical-turn-port'
@@ -37,6 +37,7 @@ function makeHarness(options?:{
   sends?:number
   modelApi?:string
   requestedTransport?:'sse'|'websocket'
+  opaqueUpstreamFetch?:boolean
   stopReason?:'stop'|'error'|'toolUse'
   noTurn?:boolean
   failAfterFetch?:boolean
@@ -73,7 +74,11 @@ function makeHarness(options?:{
       await session.agent.streamFunction(
         {...model,api:options?.modelApi??model.api} as never,
         {messages:[]} as never,
-        {transport:options?.requestedTransport??'sse'},
+        {transport:options?.requestedTransport??'sse',
+          ...(options?.opaqueUpstreamFetch ? {
+            fetch:async()=>new Response('',{status:200}),
+          }:{}),
+        },
       )
     },
   }
@@ -164,6 +169,19 @@ describe('A4-R10 pinned Pi 0.86.1 HTTP transport witness seam - in-memory Provid
       'Main cancelled before native SDK call',
     )
     expect(h.counts().streamCalls).toBe(0)
+  })
+  it('R10-SDK-01: installed pi-agent-core exposes writable Agent streamFunction surface',()=>{
+    const streamFunction:StreamFn=()=>({} as ReturnType<StreamFn>)
+    const agent=new Agent({streamFn:streamFunction})
+    expect(agent.streamFunction).toBe(streamFunction)
+    const replacement:StreamFn=()=>({} as ReturnType<StreamFn>)
+    agent.streamFunction=replacement
+    expect(agent.streamFunction).toBe(replacement)
+  })
+  it('R10-16: an opaque Pi-provided fetch wrapper is rejected instead of hiding retries',async()=>{
+    const h=makeHarness({opaqueUpstreamFetch:true})
+    await expect(h.host.nextTurn(input)).rejects.toThrow('request count/provenance')
+    expect(h.counts().physicalCalls).toBe(0)
   })
   it('R10-13: same Pi session cannot service another SDK physical dispatch',async()=>{
     const h=makeHarness()
