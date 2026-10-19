@@ -96,6 +96,10 @@ describe('V3 A1 Main owner journal + isolation', () => {
     const first=h.adapter.grant(request)
     h.adapter.pause(first.sessionId)
     expect(h.adapter.get(first.sessionId)?.state).toBe('paused')
+    // Local pause is deliberate, not a crashed/reopened Owner. Only the old
+    // grant is denied until Main explicitly resumes with a new grantId.
+    expect(h.adapter.quarantineInterrupted()).toEqual([])
+    expect(h.adapter.get(first.sessionId)?.state).toBe('paused')
     expect(()=>h.adapter.assertAuthorized(first.sessionId, first.grantId,
       first.senderKey, principal,'review_read_documents',source)).toThrow()
     expect(()=>h.adapter.assertOrdinarySession(first.sessionId)).toThrow()
