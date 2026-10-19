@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "review-b4-original-git/1",
+  "domain": "G01",
+  "sourceGitSha": "b68443b23293b4714e61a3b81383d3d3a56434fc",
+  "checkedAt": "2026-10-19",
+  "method": "immutable original MD Git blob comparison to manifest; SHA256 is catalog/manifest claim, NOT independently rehashed",
+  "publicationAllowed": false,
+  "records": [
+    {
+      "templateId": "g01-archive-utilization",
+      "manifestBlob": "bbb47d4a4767c19f8c1ba4eac8ce31acbdcc0cdc",
+      "originalPath": "docs/design/review-agent/business-templates/G01/originals/g01_archive_utilization_template_editor_spec_v1_5.md",
+      "originalGitBlobSha": "2f36f7de8eed196a1483e7410bf25575922117df",
+      "expectedOriginalGitBlobSha": "2f36f7de8eed196a1483e7410bf25575922117df",
+      "sourceSha256Claim": "65157e002dd4d1ccc08d32d341b4a1f7eacfc55d6a3c13a5da949aaf122f9785",
+      "originalContentBytes": 37628,
+      "sha256Computed": false,
+      "status": "GIT_BLOB_AND_MANIFEST_MATCH"
+    },
+    {
+      "templateId": "g01-special-campus-card",
+      "manifestBlob": "0b8c21f2fc7c08ff242067a7f880f5ba3acb5baf",
+      "originalPath": "docs/design/review-agent/business-templates/G01/originals/special_campus_card_template_v1.4.md",
+      "originalGitBlobSha": "c76427d092e455a5a353ff25aade7ced4de189e5",
+      "expectedOriginalGitBlobSha": "c76427d092e455a5a353ff25aade7ced4de189e5",
+      "sourceSha256Claim": "fa409cfa30ad0f0c624784f9beab4799cc1e31bbcf3d118c0e41a67deba8937f",
+      "originalContentBytes": 26924,
+      "sha256Computed": false,
+      "status": "GIT_BLOB_AND_MANIFEST_MATCH"
+    },
+    {
+      "templateId": "g01-student-identity-correction",
+      "manifestBlob": "f559296623c72cf5a897621a3267840397949ad2",
+      "status": "NO_ORIGINAL_PATH"
+    },
+    {
+      "templateId": "g01-political-procedure",
+      "manifestBlob": "2f63b260f410f48e7eb9e01f2691f5f8dfadc2f0",
+      "status": "NO_ORIGINAL_PATH"
+    },
+    {
+      "templateId": "g01-special-proof-seal",
+      "manifestBlob": "f8fa3399c97ea95b2574e79a1fbeeff2d4f7bdaa",
+      "status": "NO_ORIGINAL_PATH"
+    }
+  ]
+}
