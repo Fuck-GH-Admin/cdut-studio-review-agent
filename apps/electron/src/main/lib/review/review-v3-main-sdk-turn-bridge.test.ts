@@ -284,6 +284,25 @@ describe('Dev-A trusted Main SDK one-turn bridge, no C Run/ACK',()=>{
       .toThrow('SDK dispatch ledger invalid/duplicated')
     expect(h.calls()).toBe(0)
   })
+  it('A4-R06-04: persisted distinct dispatches with duplicate SDK receipt fail closed',()=>{
+    const h=fixture()
+    const key=JSON.stringify([h.run.runId,h.run.attemptId,h.run.ownerGeneration])
+    const runHash=createHash('sha256').update(JSON.stringify(h.run)).digest('hex')
+    const payload={
+      version:'v3-dev-a-sdk-dispatch/1',
+      runs:{[key]:{runHash,records:[
+        {id:'completed-one',grantId:h.grant.grantId,
+          state:'settled',receiptId:'duplicate-native-sdk-turn'},
+        {id:'completed-two',grantId:h.grant.grantId,
+          state:'settled',receiptId:'duplicate-native-sdk-turn'},
+      ]}},
+    }
+    const sha256=createHash('sha256').update(JSON.stringify(payload)).digest('hex')
+    h.dispatchStore.raw=JSON.stringify({payload,sha256})
+    expect(()=>new V3ASDKDispatchFence(h.dispatchStore,h.owners))
+      .toThrow('SDK dispatch ledger reuses one receipt across physical calls')
+    expect(h.calls()).toBe(0)
+  })
   it('A4-DISPATCH-06: SDK duplicate across distinct dispatches is not a retry',async()=>{
     const h=fixture()
     let calls=0
