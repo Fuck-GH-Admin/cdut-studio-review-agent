@@ -202,7 +202,7 @@
     }
   ],
   "newIIntegrationProbes": {
-    "count": 17,
+    "count": 19,
     "results": "COMMITTED_NOT_VERIFIED",
     "crossModules": [
       "Dev-B B1 immutable candidate Plan",
@@ -212,7 +212,8 @@
       "Dev-C C1 archived CurrentValidity",
       "B2 material Subject scope must match each B1 Check target",
       "registered C0 Main IPC teacher/school actor and sender/frame fail closed with B2/A1/A2 synthetic technical receipt",
-      "B2 staging revoke after Host await independently blocks A2 local proposal while A1 grant remains active"
+      "B2 staging revoke after Host await independently blocks A2 local proposal while A1 grant remains active",
+      "B2 Main-owned case/generation and C1 revision must fence B1/A3 synthetic preview eligibility"
     ],
     "formallyPersistedBusinessRuns": 0
   },
@@ -282,5 +283,24 @@
     "newProbes": 2,
     "sourceShaUnchanged": true,
     "formalBusinessWrites": 0
+  },
+  "previewCaseRunScopeHardening": {
+    "scope": "I_OWNED_BRIDGE_AND_TESTS",
+    "status": "COMMITTED_NOT_VERIFIED",
+    "oldI1CodeSha": "89f7a0188bb396a84386dac77fa59ca67e99d60a",
+    "commits": [
+      "929df279c414381219740cdcf26ef0ab49ac548d",
+      "a72e762a0bb6aa16002841d46f03427b5a3a29c6",
+      "55175aff70f9f1b1e73d2d4f3c33e46ac6c10d4c"
+    ],
+    "checks": [
+      "Run.caseId === B2MainContext.caseCandidateId",
+      "Run.ownerGeneration === B2MainContext.ownerGeneration",
+      "Run.templateVersion === candidatePlan.templateVersion",
+      "optional C1 CaseAggregate.caseV2.revision === Run.caseRevision"
+    ],
+    "newJointCases": 2,
+    "sourceA_B_C_Frozen": true,
+    "cExclusiveProductionChanges": 0
   }
 }

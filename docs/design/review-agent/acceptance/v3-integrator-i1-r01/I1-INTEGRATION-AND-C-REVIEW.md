@@ -88,3 +88,20 @@ Git 对象级文件导入：`b6e767f0c85eca8e1c83a5420bc31ea8b4533e8f` 父 commi
 - C 已批准的旧 C 锚点 `31aa352c45a33d6832612884b0fea38e39b5cf8d`、A SHA `d8fd3e0...`、B SHA `f7a7cf2...` 没有更换。这个修复不构成 `Gate O=PASS` 或 `C_ACCEPTED_FOR_ENGINEERING`。GitHub Actions 的最终精确 SHA CI 需要重新观察，且因环境无法本地 clone/Bun，未作本机执行声明。
 
 **后续**：若 CI 首败源自 I glue/test，I 在 #147 自修；若证据显示 B staging/A Owner/C IPC 真正源缺陷，按 Owner 回流。拿到三项同 HEAD 成功证据后，向 C 请求对最新精确 SHA 的工程签收；在此之前 `I-LEASE-MAIN-PORT-R01` 仍为 `CONDITIONAL_NOT_ACTIVE`。
+
+## 9. I1 第五技术切片：Main B2 scope × Run × Plan × C1 revision 一致性
+
+**独立确定的问题**：`inspectI1TechnicalPreview` 原来只对候选物理 DocumentVersion、B1 Plan 和 A3 Check 绑定，尚未在 I 层将拟议 `RunEvidenceIdentity.caseId` / `ownerGeneration` 与 B2 `B2MainContext.caseCandidateId` / `ownerGeneration` 精确相等比较。合成或不可信 Run 可以借同一物理版本的 technical preview 获得 `technicalPreviewEligible=true` 的误导性标志。A3 的计划覆盖检查不负责 Main intake owner scope，这必须由 I 的跨界胶水明确拒绝。
+
+**本轮真实代码修复**：
+- `review-v3-integration-i1-technical.ts::inspectI1TechnicalPreview` 在 A3 技术覆盖计算之前拒绝**跨案 Run 或旧 Owner generation**（`I1_RUN_MAIN_INTAKE_SCOPE_MISMATCH`）；不将 `RunEvidenceIdentity` 转成正式 C2 durable Run。
+- 同时拒绝 Run `templateVersion` 与 candidate CanonicalPlan `templateVersion` 不一致（`I1_RUN_TEMPLATE_VERSION_MISMATCH`）；若提供 C1 Main 只读 CaseAggregate，则除同案外，还需 `caseV2.revision === Run.caseRevision`（`I1_CURRENT_CASE_REVISION_MISMATCH`）。无快照仍仅为 STAGED_ONLY 预览，**不是当前案卷的可信签收**。
+- 更新原有 I-only fixture Run.caseId 为真实 B2 Main caseCandidateId，并让归档 Case 快照携带同案同 revision；保留旧测试原有断言与覆盖。
+- 新增 **I-only 2 项独立跨线负例测试**：合法单 Subject preview 仍仅技术合格；借物理版本的跨案 Run / 旧 generation / 伪造 Main context 必须拒绝；更换 template release 或使用滞后 C1 Case revision 即使同案同 source 也必须拒绝。有效快照包含 `documents` 以执行真实 `currentSourceValidityBlockers`，避免不完整 mock。
+- I-own runtime/test commit `929df279c414381219740cdcf26ef0ab49ac548d`、`a72e762a0bb6aa16002841d46f03427b5a3a29c6`，snapshot fixture corrective commit `55175aff70f9f1b1e73d2d4f3c33e46ac6c10d4c`。
+
+**严格权限**：18 个已锁 A/B source Git blob、老 C 代码锚点 `31aa352c45a33d6832612884b0fea38e39b5cf8d` 全部保持，唯一 C 测试租约仍为之前获 C 认可的 +167/-0，新增代码仅 I-own 两个文件。没有读取 A/B/C 浮动 HEAD 作为新可集成源；没有 `review-v3-execution/1` 偷渡、没有修改 Main/Preload/shared、Case/Run/Batch/Outbox，候选仍 `publicationAllowed=false`、所有正式 writer false。
+
+累计 I-own synthetic 联合测试 **19 项已提交但未得完整 Gate O 证明**（8+5+2+2+2），C 先前评审的 `CODE_SCOPE_COMPLIANT` 属于旧精确 SHA，并非当前新 SHA 的正式签收。
+
+**跨线推进准则**：A #143、B #142、C #144 持续生产新代码，不直接改变 I1 冻结来源。C #144 已有 Native Case 三栏、人工 Source pinned items、C2 internal technical ledger，但新 C anchor 必须由 C 自己在准确 code SHA、对应 CI 和权限边界下正式签出。I 下一阶段以该独立固定锚点执行来源→重放→联合 O，而不是跳跃使用最新浮动 HEAD。Main read-only 租约未激活，任何正式 C2 durable writer 仍由 C 独占。
