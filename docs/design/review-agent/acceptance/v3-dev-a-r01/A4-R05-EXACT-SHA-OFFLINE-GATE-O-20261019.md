@@ -100,6 +100,8 @@ fi
 6. `review-v3-execution-crashpid.test.ts` 与 `late-pid.test.ts`：真实 Linux child OS PID，SIGKILL 冷启动隔离，另 PID await 期间撤权导致 **0 late proposal**。要记录真实 PID、marker、退出代码与暂存目录证据；若平台自动 SKIP，只能记 OS-SKIP，不能 PASS。
 7. `V3ASDKTurnBudget` 23/24 不耗尽，24/24 Host 技术 needs-resume；另 grant 不重置；已成功 commit budget 但 terminal 落盘失败只能补 terminal，不能再调用 SDK。
 8. `V3ASDKDispatchFence` 仍只是技术 durable intent，不存在自行清账、模拟 Provider 恢复或第二份 ReviewRun writer。
+9. **A4-R06-01/02**：真实 Main 分发先持久生成 `dispatchId`，回调 `completed-turn` 或 `interrupted` 必须携带同一 ID；跨派发串回的可疑结果不能扣 SDK 预算、不能写 terminal、不能自动再调 Provider。
+10. **A4-R06-03/04**：冷启动读取旧 hash-sealed dispatch journal，若历史 `late-denied` 之后还有新 settled，或不同物理 dispatch 重用了同一 SDK receipt，必须保留原始账本并 `RECOVERY_REQUIRED`，不通过删除异常记录凑 PASS。
 
 ## 5. 留存与报告格式
 
@@ -107,6 +109,10 @@ fi
 - 针对 P0/P1，`Gate O = PASS_SCOPED` 仅在 **同一最终 SHA** 对应全套命令通过时可写；无 runner 为 `CI_UNASSIGNED`，本机通过则单独写 `LOCAL_GATE_O_PASS`，不伪称 GitHub PR CI success。
 - `Gate E=NOT_RUN` 直到真正 Electron/Preload/Main/真实 SDK Provider/隐藏会话/Graph/Batch/双 PID 应用链路验收；`Gate L=BLOCKED_NO_AUTH`；`Gate P=NOT_RUN`。
 - 输出压缩包必须脱敏：Provider API key、用户材料、原件路径、Main session token、用户身份/校方回执不得泄露。证据写 #143 A 工程记录；四线进度仅改 #145 文档 `STATUS:A` 段。
+
+## 6. R06 回执来源审计补充
+
+`V3AMainSDKTurnPort` 现在强制 `dispatchId` 参数和回执配对，但这只阻止**拿错已经持久化意图**的结果。单纯 `SDKMessage.result.success`、assistant UUID、Pi Harness `agent_end` 不能证明真实独立 SDK Provider turn 完成；合成测试自动 echo `dispatchId` 不构成 Gate E。集中实机时必须额外确认 Main SDK Host 回执的实际来源、唯一物理调用次数、native retry、带图失败后文本重发和 SDK cancel/worker 终态。
 
 ## 6. 下一批不是自动接线
 
