@@ -50,11 +50,11 @@ function decode(raw:string|null):SDKDispatchDisk {
     hash(JSON.stringify(envelope.payload))!==envelope.sha256) {
     return reject('SDK dispatch journal seal mismatch')
   }
+  const globalSettledReceipts=new Set<string>()
   for(const [k,chain] of Object.entries(envelope.payload.runs)){
     if(!k || !chain || !/^[a-f0-9]{64}$/.test(chain.runHash) ||
       !Array.isArray(chain.records))return reject('SDK dispatch chain corrupt')
     const ids=new Set<string>()
-    const settledReceipts=new Set<string>()
     for(let i=0;i<chain.records.length;i++){
       const item=chain.records[i]
       if(!item || typeof item.id!=='string' || !item.id.trim() ||
@@ -74,10 +74,10 @@ function decode(raw:string|null):SDKDispatchDisk {
       }
       ids.add(item.id)
       if(item.state==='settled') {
-        if(settledReceipts.has(item.receiptId!)){
+        if(globalSettledReceipts.has(item.receiptId!)){
           return reject('SDK dispatch ledger reuses one receipt across physical calls')
         }
-        settledReceipts.add(item.receiptId!)
+        globalSettledReceipts.add(item.receiptId!)
       }
     }
   }
@@ -187,9 +187,10 @@ export class V3ASDKDispatchFence {
     if(!last || last.id!==id || last.state!=='in-flight'){
       reject('SDK receipt has no current in-flight dispatch')
     }
-    if(chain!.records.some(previous=>
-      previous.id!==id && previous.state==='settled' &&
-      previous.receiptId===receiptId)){
+    if(Object.entries(this.disk.runs).some(([chainKey,previousChain])=>
+      previousChain.records.some(previous=>
+        previous.state==='settled' && previous.receiptId===receiptId &&
+          (chainKey!==key(run) || previous.id!==id)))){
       throw new C0ContractError('REQUEST_ID_COLLISION',
         'One SDK receipt cannot attest two different Provider dispatches')
     }
