@@ -1,0 +1,54 @@
+{
+  "schema": "v3-integrator-i4-b18-r01/exact-source-lock",
+  "authority": {
+    "A18_final_signed": "C-I4-A18-R01-FINAL-ENG-ACCEPT / YES_EXACT_SHA_SCOPED",
+    "C_signoff_commits": [
+      "ede3d1fcda3ab0194190a60b160a70852c48c1ca",
+      "b2d55829e5513d3c9dc25df2233d41e007989a77"
+    ],
+    "B18_permission": "I-CR-I4-R01-B18-VERSION=APPROVED_SCOPED_SEPARATE_CHECKPOINT"
+  },
+  "frozenParent": {
+    "ref": "integration/v3-i4-a18-accepted-frozen",
+    "sha": "ec880cd6b5bc6779095fcbdddb143b1034d751c5"
+  },
+  "source": {
+    "line": "Dev-B",
+    "PR": 142,
+    "sha": "263b7f36034cacd4d51a00edd5f39266c37037fa",
+    "sourceGateO": "B-only PR CI/Baseline/D2 3/3 green"
+  },
+  "replay": {
+    "branch": "integration/v3-i4-b18-source-version-r01",
+    "first_commit": "187d80fb04d64edda8a23998e991a324661384a6",
+    "exactObjects": [
+      {
+        "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts",
+        "type": "replace",
+        "old": "367390a7cab5d9fbb6ebaa3a25fe6ead942d8ff9",
+        "source": "b2101be80e3dce561f6365c3378b2930245dda73"
+      },
+      {
+        "path": "apps/electron/src/main/lib/review/review-v3-b2-version-transition.test.ts",
+        "type": "add",
+        "source": "1ca56df2317f345f86e962af4017af82ad10b4de"
+      }
+    ]
+  },
+  "limits": {
+    "B19": false,
+    "ZIP_archive": false,
+    "author_ui": false,
+    "schoolPublisher": false,
+    "MainOwnedFilesChanged": false,
+    "liveProvider": false,
+    "businessWriter": "DENIED",
+    "mainLease": "CONDITIONAL_NOT_ACTIVE",
+    "GateE": "NOT_RUN",
+    "GateL": "BLOCKED_NO_AUTH",
+    "GateP": "NOT_RUN",
+    "Release": "NO_GO"
+  },
+  "candidateFinalSHA": "PENDING_VERIFIED_FINAL",
+  "C_finalEngineeringAcceptance": "PENDING"
+}
