@@ -1,5 +1,6 @@
 import * as React from 'react'
 import type { D2ScenarioSelection, D2TargetBinding, D4ClientTemplate } from '@profer/shared'
+import { buildD4GenericObject, parseD4BulkObjectNames } from './d4-generic-object-builder'
 
 const LABELS: Record<string, string> = {
   self: '本人办理', proxy: '代为办理',
@@ -46,31 +47,28 @@ export function D4GenericObjectForm({
   onChange: (selection: D2ScenarioSelection) => void
 }): React.ReactElement {
   const targets = selection.targets
+  const [bulkNames, setBulkNames] = React.useState('')
+  const [bulkError, setBulkError] = React.useState('')
   const patchTarget = (index: number, patch: Partial<D2TargetBinding>): void => {
     onChange({ ...selection, targets: targets.map((item, i) => i === index ? { ...item, ...patch } : item) })
   }
+  const token = (): string => crypto.randomUUID().replace(/-/g, '').slice(0, 16)
   const addTarget = (): void => {
     if (targets.length >= 100 || !template.businessTypes?.length ||
         (template.primary.length > 0 && !template.selectionSource)) return
-    const token = crypto.randomUUID().replace(/-/g, '').slice(0, 16)
-    const source = template.selectionSource
-    const target: D2TargetBinding = {
-      kind: 'generic-object',
-      objectKey: `d4-object-${token}`,
-      subjectId: `d4-subject-${token}`,
-      title: '',
-      businessType: template.businessTypes[0]!,
-      ...(template.primary.length ? {
-        scenario: '',
-        scenarioSource: source ? { ...source, decidedBy: 'reviewer' as const } : undefined,
-        conditions: template.conditions.map(id => ({
-          id, applicability: 'unknown' as const,
-          sourceId: source!.sourceId, sourceVersionId: source!.sourceVersionId,
-          decidedBy: 'undetermined' as const,
-        })),
-      } : {}),
+    onChange({ ...selection, targets: [...targets, buildD4GenericObject(template, '', token())] })
+  }
+  const addBulk = (): void => {
+    try {
+      const names = parseD4BulkObjectNames(bulkNames, targets.map(t => t.title), 100 - targets.length)
+      onChange({ ...selection, targets: [
+        ...targets, ...names.map(name => buildD4GenericObject(template, name, token())),
+      ] })
+      setBulkNames('')
+      setBulkError('')
+    } catch (error) {
+      setBulkError(error instanceof Error ? error.message : String(error))
     }
-    onChange({ ...selection, targets: [...targets, target] })
   }
   const blocked = !template.businessTypes?.length || (template.primary.length > 0 && !template.selectionSource)
   return <div className="space-y-3" data-testid="d4-object-form">
@@ -79,6 +77,19 @@ export function D4GenericObjectForm({
       <button type="button" className="rounded-md border px-3 py-1.5 text-sm disabled:opacity-50"
         disabled={blocked || targets.length >= 100} onClick={addTarget}>添加对象</button>
     </div>
+    {!blocked && <details className="rounded-md border bg-background p-2 text-xs">
+      <summary className="cursor-pointer font-medium">批量录入对象名称（每次最多 20 个）</summary>
+      <p className="mt-2 text-muted-foreground">
+        每行一个实际业务对象。导入后逐个填写主场景和条件，默认全部条件未知；不会自动确认审核范围。
+      </p>
+      <textarea aria-label="逐行粘贴业务对象名称" rows={4}
+        className="mt-2 w-full rounded border bg-background px-2 py-1 text-sm"
+        placeholder={"一号教室 · 周一第一节\\n二号教室 · 周三第三节"}
+        value={bulkNames} onChange={e => { setBulkNames(e.target.value); setBulkError('') }}/>
+      <button type="button" className="rounded border px-3 py-1.5 text-sm"
+        disabled={!bulkNames.trim() || targets.length >= 100} onClick={addBulk}>导入对象并逐项确认</button>
+      {bulkError && <p role="alert" className="mt-2 text-destructive">{bulkError}</p>}
+    </details>}
     {blocked && <p role="alert" className="text-amber-700 dark:text-amber-300">
       此候选尚无可验证的通用对象类型或场景来源，不能生成真实对象；请切换模板。
     </p>}

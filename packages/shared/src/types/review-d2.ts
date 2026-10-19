@@ -28,12 +28,21 @@ export interface D4ClientSelection {
   reviewerConfirmation?: 'explicit-ui-confirmation'
   /** Main-owned one-use native-picker intake token; never a Renderer-supplied filesystem path. */
   intakeToken?: string
+  /** Reviewer-selected role for each staged file in picker order. Only application/evidence;
+   * applicant documents can NEVER become a policy/rule authority through intake.
+   * Main validates length + values against the claimed token's actual files.
+   */
+  intakeRoles?: Array<'application' | 'evidence'>
+  /** Explicit consent to omit entries listed by Main as unsupported, duplicates or over budget. */
+  acknowledgeSkippedFiles?: true
 }
 /** Preview returned after OS file selection; not a business fact or school authority. */
 export interface D4IntakePreview {
   token: string
   expiresAt: number
-  files: Array<{ name: string; sizeBytes: number }>
+  files: Array<{ name: string; sizeBytes: number; originLabel?: string }>
+  /** Main-generated skip ledger from the OS-picked folder, ZIP or multi-file selection. */
+  skipped?: Array<{ originLabel: string; reason: string }>
   route: {
     status: 'suggested' | 'manual-required' | 'multiple-tasks'
     suggestion?: { templateId: string; templateVersion: number; score: number; basis: string[] }

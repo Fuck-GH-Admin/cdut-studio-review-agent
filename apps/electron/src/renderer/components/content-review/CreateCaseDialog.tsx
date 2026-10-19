@@ -67,6 +67,8 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
   const [d4Mode, setD4Mode] = React.useState(false)
   const [d4, setD4] = React.useState<import('@profer/shared').D4ClientSelection>()
   const [intake, setIntake] = React.useState<D4IntakePreview | null>(null)
+  const [intakeRoles, setIntakeRoles] = React.useState<Array<'application' | 'evidence'>>([])
+  const [skippedAcknowledged, setSkippedAcknowledged] = React.useState(false)
   const [routedTemplateId, setRoutedTemplateId] = React.useState<string>()
   const [manualRouting, setManualRouting] = React.useState(false)
 
@@ -77,6 +79,9 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
     // Also invalidate a pending create if the parent closes via props (not Dialog UI).
     if (!open) {
       submitLock.current.closeSession()
+      // A parent-driven close must not leave Main-owned temporary originals
+      // staged until their TTL. A successful create already consumes its token.
+      if (intake?.token) void window.reviewAPI.discardD4Intake(intake.token).catch(() => false)
       return
     }
     setTitle('')
@@ -91,6 +96,8 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
     setD4Mode(false)
     setD4(undefined)
     setIntake(null)
+    setIntakeRoles([])
+    setSkippedAcknowledged(false)
     setRoutedTemplateId(undefined)
     setManualRouting(false)
   }, [open])
@@ -104,6 +111,7 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
 
   const selectedPack = resolveDomainPack(domainPackId)
   const intakeBlocked = intake?.route.status === 'multiple-tasks' || (intake ? intake.expiresAt <= Date.now() : false)
+    || (!!intake?.skipped?.length && !skippedAcknowledged)
   const canSubmit = title.trim().length > 0 && applicant.trim().length > 0 && (d4Mode ? !!d4 && !intakeBlocked : !!selectedTemplate) && !submitting
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
@@ -119,7 +127,8 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
         academicYear: academicYear.trim() || defaultAcademicYear(),
         domainPackId,
         reviewTemplate: !d4Mode && selectedTemplate ? { templateId: selectedTemplate.templateId, version: selectedTemplate.version } : undefined,
-        ...(d4Mode && d4 ? { d4: { ...d4, ...(intake ? { intakeToken: intake.token } : {}) } } : {}),
+        ...(d4Mode && d4 ? { d4: { ...d4, ...(intake ? { intakeToken: intake.token, intakeRoles,
+          ...((intake.skipped?.length && skippedAcknowledged) ? { acknowledgeSkippedFiles: true as const } : {}) } : {}) } } : {}),
       }),
       () => setSubmitting(true),
       (created) => {
@@ -168,16 +177,22 @@ export function CreateCaseDialog({ open, onOpenChange, templates, onCreate }: Cr
             />
           </div>
 
-          {d4Mode && <D4IntakePicker intake={intake} manuallyOverridden={manualRouting}
+          {d4Mode && <D4IntakePicker intake={intake} manuallyOverridden={manualRouting} enabled={open && !submitting}
+            documentRoles={intakeRoles} onDocumentRolesChange={setIntakeRoles}
+            skippedAcknowledged={skippedAcknowledged} onSkippedAcknowledgedChange={setSkippedAcknowledged}
             onIntake={value => {
-              setIntake(value); setD4(undefined); setRoutedTemplateId(undefined); setManualRouting(false)
+              setIntake(value)
+              setIntakeRoles(value ? value.files.map(() => 'application' as const) : [])
+              setSkippedAcknowledged(false)
+              setD4(undefined); setRoutedTemplateId(undefined); setManualRouting(false)
             }}
             onApplyRoute={id => { if (!manualRouting) setRoutedTemplateId(id) }}
           />}
-          {d4Mode ? <D4CaseSetup key={intake?.token ?? 'no-intake'} onChange={setD4}
-            preferredTemplateId={routedTemplateId}
-            onManualOverride={() => { setManualRouting(true); setRoutedTemplateId(undefined) }}
-          /> : <div className="space-y-1.5">
+          {d4Mode ? <fieldset disabled={submitting} className="min-w-0">
+            <D4CaseSetup key={intake?.token ?? 'no-intake'} onChange={setD4}
+              preferredTemplateId={routedTemplateId}
+              onManualOverride={() => { setManualRouting(true); setRoutedTemplateId(undefined) }}/>
+          </fieldset> : <div className="space-y-1.5">
             <Label htmlFor="review-case-template">审核模板</Label>
             <select
               id="review-case-template"

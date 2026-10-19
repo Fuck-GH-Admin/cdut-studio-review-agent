@@ -177,6 +177,23 @@ describe('单一工作台案卷映射到 V2 聚合', () => {
     })
     expect(confirmed.ok).toBeTrue()
 
+    aggregate = readAggregate(legacy.id)!
+    const originalVersion = aggregate.caseV2.documents.find(
+      document => document.versionId === `${evidenceDocument.id}-v1` )!
+    const correction = await correctObservation(legacy.id, {
+      requestId: 'remove-proof-confirmed-fact', actor: reviewer,
+      expectedRevision: aggregate.caseV2.revision,
+      payload: {
+        subjectId, fieldKey: 'manual-proof-check', value: { kind: 'text', value: '人工核对过的旧证明' },
+        sourceRefs: [{ caseId: legacy.id, documentVersionId: originalVersion.versionId,
+          parseRevision: originalVersion.parseRevision, location: { kind: 'file' } }],
+        reason: '合成测试：记录原件事实，随后撤下旧证明',
+      },
+    })
+    expect(correction.ok).toBeTrue()
+    expect(readAggregate(legacy.id)!.observations.some(observation =>
+      observation.fieldKey === 'manual-proof-check' && observation.confirmed)).toBeTrue()
+
     const removed = await removeDocumentsFromCase({ caseId: legacy.id, role: 'evidence', documentIds: [evidenceDocument.id] })
     aggregate = readAggregate(legacy.id)!
     expect(removed.documents.some((document) => document.id === evidenceDocument.id)).toBeFalse()
@@ -185,6 +202,11 @@ describe('单一工作台案卷映射到 V2 聚合', () => {
     expect(removed.items.every((item) => !item.evidenceDocumentIds.includes(evidenceDocument.id))).toBeTrue()
     expect(aggregate.caseV2.documents.find((document) => document.versionId === `${evidenceDocument.id}-v1`)).toMatchObject({ active: false, usage: 'unread' })
     expect(aggregate.evidenceLinks.find((link) => link.id === linkId)?.status).toBe('rejected')
+    const historicalFact = aggregate.observations.find(observation => observation.fieldKey === 'manual-proof-check')!
+    expect(historicalFact.confirmed).toBeFalse()
+    expect(historicalFact.value).toEqual({ kind: 'text', value: '人工核对过的旧证明' })
+    expect(historicalFact.sourceRefs[0]!.documentVersionId).toBe(`${evidenceDocument.id}-v1`)
+    expect(aggregate.receiptLog.some(receipt => receipt.type === 'CorrectObservation')).toBeTrue()
     expect(aggregate.receiptLog.some((receipt) => receipt.summary.includes('同步申报输入与材料'))).toBeTrue()
   })
 

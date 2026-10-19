@@ -35,6 +35,28 @@ describe('P1-C deterministic intake recommendations', () => {
     ], templates)
     expect(result.status).toBe('manual-required')
   })
+  test('frozen authored template names give previously unlisted G02 items conservative discoverability', () => {
+    const result = recommendD4Intake([{ name: '档案资料共享申请.pdf' }], templates)
+    expect(result.status).toBe('suggested')
+    expect(result.suggestion?.templateId).toBe('g02-t01-review')
+    expect(result.suggestion?.basis).toContain('文件名与完整候选名称一致')
+  })
+  test('short generic template names do not become unsafe catch-all routes', () => {
+    const short = [{ ...templates[2]!, templateId: 'g02-short', name: '申请' }] as D4ClientTemplate[]
+    expect(recommendD4Intake([{ name: '申请.pdf' }], short).status).toBe('manual-required')
+  })
+  test('name-matched files for different business matters still trigger fail-closed split', () => {
+    const result = recommendD4Intake([
+      { name: '档案资料共享申请.pdf' },
+      { name: '公共教学教室借用申请.md' },
+    ], templates)
+    expect(result.status).toBe('multiple-tasks')
+  })
+  test('full authoring name inside a plain-text sample may suggest, but PDF bytes do not', () => {
+    const long = [{ ...templates[2]!, name: '档案资料共享申请审核事项' }] as D4ClientTemplate[]
+    expect(recommendD4Intake([{ name: '材料说明.txt', textSample: '现办理档案资料共享申请审核事项。' }], long).status).toBe('suggested')
+    expect(recommendD4Intake([{ name: '材料说明.pdf', textSample: undefined }], long).status).toBe('manual-required')
+  })
   test('model cannot infer school facts, conditions, or applicant; exact candidate IDs are only recommendation', () => {
     const result = recommendD4Intake([{ name: 'g08-t02-技术案例.txt' }], templates)
     expect(result.status).toBe('suggested')

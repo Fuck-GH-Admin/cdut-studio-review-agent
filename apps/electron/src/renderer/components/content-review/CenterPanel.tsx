@@ -38,6 +38,7 @@ import {
   reviewWorkspaceRunAtom,
   reviewWorkspaceTemplateAtom,
   reviewAdjudicationEditorSubjectAtom,
+  reviewSourceFocusAtom,
 } from '@/atoms/review-atoms'
 import { cn } from '@/lib/utils'
 import type { ReviewActions } from './use-review-actions'
@@ -46,6 +47,14 @@ import { useReviewWorkspaceActions } from './use-review-workspace-actions'
 import { ReviewActionDialog } from './ReviewActionDialog'
 import { Button } from '@profer/ui/primitives/button'
 import { MaterialDropZone } from './MaterialDropZone'
+import { D4CaseBatchControls } from './D4CaseBatchControls'
+import { D4RetryDocumentButton } from './D4RetryDocumentButton'
+import { D4MaterialHistory } from './D4MaterialHistory'
+import { D4ReviewerFormEditor } from './D4ReviewerFormEditor'
+import { w1ReviewerFormTemplate } from './w1-reviewer-form'
+import { w1CandidateFactKeys, w1ObservationSources } from './w1-fact-source'
+import { w1AuthorResponsibilityCards } from './w1-author-responsibilities'
+import { w1ParseHumanFieldValue } from './w1-fact-value'
 import { MoveReviewDocumentButtons, RemoveReviewDocumentButton, ReviewMaterialDropZone, ReviewMaterialLaneActions } from './ReviewMaterialControls'
 
 interface ReviewItemDraft {
@@ -182,6 +191,7 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
         </p>
       </header>
 
+      {reviewCase?.id.startsWith('d4-') && <D4MaterialHistory reviewCase={reviewCase} reload={() => actions.selectCase(reviewCase.id)} />}
       {/* 申报文件只在中栏管理，和左栏审核依据、下方证明材料分开导入。 */}
       <section className="shrink-0 border-b border-border/40 px-3 py-3">
         <div className="flex items-center justify-between gap-2 px-1">
@@ -205,7 +215,8 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
           </div>
         )}
         <div className="mt-2">
-          <ReviewMaterialDropZone role="application" hasDocuments={documentsByRole.application.length > 0} actions={actions} />
+          {!reviewCase?.id.startsWith('d4-') && <ReviewMaterialDropZone role="application" hasDocuments={documentsByRole.application.length > 0} actions={actions} />}
+          <D4CaseBatchControls role="application" actions={actions} />
         </div>
       </section>
 
@@ -255,10 +266,96 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
         </div>
 
         {aggregate?.d2RuntimePlan ? <div className="space-y-2">
-          {aggregate.caseV2.subjects.map(subject => <div id={`review-subject-${encodeURIComponent(subject.id)}`} key={subject.id} className="rounded-xl bg-muted/40 p-3 text-xs">
-            <p className="font-medium">{subject.title}</p>
-            <p className="mt-1 text-muted-foreground">{subject.id} · {aggregate.d2RuntimePlan!.mapping.filter(m => m.subjectId === subject.id).length} 项固定责任</p>
-          </div>)}
+          {aggregate.caseV2.subjects.map(subject => {
+            const candidates = [
+              ...aggregate.observations.filter(observation => observation.subjectId === subject.id),
+              ...extractedObservations.filter(observation => observation.subjectId === subject.id),
+            ]
+            const facts = candidates.reduce<Array<Record<string, unknown>>>((list, value) => {
+              const observation = value as unknown as Record<string, unknown>
+              const index = list.findIndex(item => item.fieldKey === observation.fieldKey)
+              if (index < 0) list.push(observation)
+              else if (observation.extractedBy === 'user' || observation.confirmed === true) list[index] = observation
+              return list
+            }, [])
+            const factKeys = w1CandidateFactKeys(aggregate.d2RuntimePlan, subject.id)
+            const subjectTemplate = w1ReviewerFormTemplate(workspaceTemplate, reviewCase,
+              subject.id, aggregate.d2RuntimePlan!.fingerprint)
+            const confirmedLinks = aggregate.evidenceLinks.filter(link =>
+              link.subjectId === subject.id && link.status === 'confirmed')
+            const reviewerMandatory = [...(reviewCase?.d4ReviewerFormSnapshots ?? [])].reverse()
+              .find(snapshot => snapshot.subjectId === subject.id &&
+                snapshot.planFingerprint === aggregate.d2RuntimePlan!.fingerprint)
+              ?.fields.filter(field => field.required) ?? []
+            const verifiedKeys = new Set(aggregate.observations.filter(observation =>
+              observation.subjectId === subject.id && observation.confirmed && observation.sourceRefs.length > 0)
+              .map(observation => observation.fieldKey))
+            const pendingMandatory = reviewerMandatory.filter(field => !verifiedKeys.has(field.key))
+            return <section id={`review-subject-${encodeURIComponent(subject.id)}`} key={subject.id}
+              className="rounded-xl border border-border/60 bg-card p-3 text-xs" data-testid="d4-subject-fact-workbench">
+              <p className="font-medium">{subject.title}</p>
+              <p className="mt-1 text-muted-foreground">
+                {aggregate.d2RuntimePlan!.mapping.filter(m => m.subjectId === subject.id).length} 项固定责任 ·
+                {facts.length} 项材料事实 · {confirmedLinks.length} 条已确认的证明关联
+              </p>
+              <p className="mt-1 text-muted-foreground">审核对象 ID：{subject.id}。事实、条件、证据分别核对；模板仍为未发布技术候选。</p>
+              {!!pendingMandatory.length && <p role="status"
+                className="mt-2 rounded border border-amber-500/40 bg-amber-500/5 p-2 text-amber-700 dark:text-amber-300">
+                审核员标记需核对但尚无已确认来源：{pendingMandatory.map(field => field.label).join('、')}。
+                保持 unknown，不自动认定违规或通过。
+              </p>}
+              {Object.keys(subject.fields).length > 0 && <p className="mt-1 rounded bg-muted/50 p-2 text-foreground/80">
+                当前字段：{displaySubjectFields(subject.fields, subjectTemplate)}
+              </p>}
+              <p className="mt-1 text-muted-foreground">
+                本对象候选事实字段：{factKeys.length ? factKeys.map(key => businessFieldLabel(key, subjectTemplate)).join('、') : '尚未在当前映射中声明；不得自由编造字段'}
+              </p>
+              <details className="mt-2 rounded border border-border/50 p-2" data-testid="d4-author-responsibilities">
+                <summary className="cursor-pointer font-medium">本对象冻结作者态审核责任与人工核对说明</summary>
+                <p className="mt-1 text-muted-foreground">
+                  下列标题和要求来自本案不可变 D2 规则映射；它们是技术预审责任，不是校方许可或额外生成的表单字段。
+                  作者未声明的字段类型/必填约束不会自行补造。
+                </p>
+                <ul className="mt-2 space-y-2">
+                  {w1AuthorResponsibilityCards(aggregate.d2RuntimePlan!, subject.id).map(card =>
+                    <li key={card.ruleId} className="rounded border border-border/40 p-2">
+                      <strong>{card.title}</strong>
+                      <p className="mt-1 text-muted-foreground">
+                        适用：{card.applicability === 'applicable' ? '已明确适用' :
+                          card.applicability === 'not-applicable' ? '按冻结计划不适用' : '待人工确认'}
+                        · 来源权限：{card.authority === 'request-scope' ? '申请范围内技术核对' : '校规适用性未核实'}
+                      </p>
+                      <p className="mt-1 whitespace-pre-wrap text-muted-foreground">{card.requirement}</p>
+                      <p className="mt-1 break-all text-muted-foreground">责任键：{card.factKeys.join('、') || '未声明可确认事实字段'}</p>
+                    </li>)}
+                </ul>
+              </details>
+              {reviewCase && <D4ReviewerFormEditor
+                reviewCase={reviewCase} subjectId={subject.id} plan={aggregate.d2RuntimePlan!}
+                allowedKeys={factKeys} reload={() => actions.selectCase(reviewCase.id)} />}
+              <div className="mt-2 space-y-1.5">
+                {facts.map((observation, index) => <WorkspaceObservationCard
+                  key={`${String(observation.fieldKey)}-${index}`}
+                  observation={observation} aggregate={aggregate} template={subjectTemplate}
+                  onConfirm={(value, reason, override) => workspaceActions.confirmObservation(
+                    override ? { ...observation, sourceRefs: [override] } : observation, value, reason)}
+                />)}
+                {!facts.length && <p className="rounded border border-dashed p-2 text-muted-foreground">尚无已提取的事实。可以人工记录有来源的核验结果；没有材料依据时保持未知。</p>}
+                <ManualFactEntry subjectId={subject.id} subjectTitle={subject.title}
+                  subjectFields={subject.fields} candidateFields={factKeys}
+                  template={subjectTemplate} aggregate={aggregate}
+                  onSave={(fieldKey, value, sourceVersionId, blockId, reason) =>
+                    workspaceActions.confirmObservation({
+                      subjectId: subject.id, fieldKey, value,
+                      sourceRefs: [{ documentVersionId: sourceVersionId, ...(blockId ? { blockId } : {}) }],
+                    }, value, reason)}
+                />
+              </div>
+              <SubjectAdjudicationCard aggregate={aggregate} subject={subject}
+                template={subjectTemplate} canEdit={!!workspaceRun && !workspaceRunStale}
+                actions={workspaceActions}/>
+            </section>
+          })}
         </div> : items.length === 0 ? (
           <p className="rounded-lg border border-dashed border-border/60 px-3 py-6 text-center text-xs text-muted-foreground">
             导入待审材料后，系统会在开始审核时自动识别申报事项。
@@ -358,7 +455,8 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
                             observation={observation}
                             aggregate={aggregate}
                             template={workspaceTemplate}
-                            onConfirm={(value, reason) => workspaceActions.confirmObservation(observation, value, reason)}
+                            onConfirm={(value, reason, override) => workspaceActions.confirmObservation(
+                    override ? { ...observation, sourceRefs: [override] } : observation, value, reason)}
                           />
                         ))}
                       <details className="rounded-lg border border-border/50 px-2.5 py-1.5">
@@ -369,7 +467,7 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
                           subjectFields={aggregate.caseV2.subjects.find((subject) => subject.id === item.id)?.fields ?? {}}
                           template={workspaceTemplate}
                           aggregate={aggregate}
-                          onSave={(fieldKey, value, sourceVersionId, reason) => workspaceActions.confirmObservation({ subjectId: item.id, fieldKey, value, sourceRefs: sourceVersionId ? [{ documentVersionId: sourceVersionId }] : [] }, value, reason)}
+                          onSave={(fieldKey, value, sourceVersionId, blockId, reason) => workspaceActions.confirmObservation({ subjectId: item.id, fieldKey, value, sourceRefs: [{ documentVersionId: sourceVersionId, ...(blockId ? { blockId } : {}) }] }, value, reason)}
                         />
                       </details>
                     </div>
@@ -389,6 +487,11 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
           </div>
         )}
       </section>
+
+      {documentsByRole.application.filter(doc => doc.parseStatus !== 'parsed').map(doc =>
+        <section key={doc.id} className="px-3 pb-2">
+          <D4RetryDocumentButton document={doc} actions={actions} />
+        </section>)}
 
       {/* 未被条目卡引用的原文仍可见：识别失败与漏项不能使待审文件从界面消失。 */}
       {documentsByRole.application.map((document) => {
@@ -429,6 +532,7 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
               .map((item) => item.title)
             return (
               <div key={document.id}>
+                <D4RetryDocumentButton document={document} actions={actions} />
                 <EvidenceCard
                   evidence={evidence}
                   fileName={document.fileName}
@@ -443,7 +547,9 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
                 {aggregate && (
                   <details className="mt-1 rounded-lg border border-border/50 px-2.5 py-1.5">
                     <summary className="cursor-pointer text-xs font-medium text-muted-foreground">管理这份证明与申报事项的关联</summary>
-                    <EvidenceLinkControls aggregate={aggregate} documentVersionId={`${document.id}-v1`} actions={workspaceActions} />
+                    {aggregate.caseV2.documents.some(v => v.versionId === `${document.id}-v1` && v.active !== false)
+                      ? <EvidenceLinkControls aggregate={aggregate} documentVersionId={`${document.id}-v1`} actions={workspaceActions} />
+                      : <p role="alert" className="text-amber-700 dark:text-amber-300">当前文件版本尚未同步为有效 V2 来源，不能建立证明关联，请刷新案卷核对。</p>}
                   </details>
                 )}
                 <details className="mt-1 rounded-lg border border-border/50 bg-muted/20 px-2.5 py-1.5">
@@ -460,7 +566,8 @@ export function CenterPanel({ actions }: CenterPanelProps): React.ReactElement {
           })}
         </div>
         <div className="mt-2">
-          <ReviewMaterialDropZone role="evidence" hasDocuments={documentsByRole.evidence.length > 0} actions={actions} />
+          {!reviewCase?.id.startsWith('d4-') && <ReviewMaterialDropZone role="evidence" hasDocuments={documentsByRole.evidence.length > 0} actions={actions} />}
+          <D4CaseBatchControls role="evidence" actions={actions} />
         </div>
       </section>
       {workspaceRunStale && (
@@ -614,7 +721,7 @@ function displaySubjectFields(fields: Record<string, FieldValue>, template: Temp
 function businessFieldLabel(key: string, template: TemplateVersion | null): string {
   const configured = template?.fields.find((field) => field.key === key)?.label
   if (configured) return configured
-  return ({ level: '获奖等级', declaredScore: '申报分值', score: '申报分值', activityDate: '活动日期', organizer: '主办单位', category: '事项类别', title: '事项名称' } as Record<string, string>)[key] ?? '补充信息'
+  return ({ level: '获奖等级', declaredScore: '申报分值', score: '申报分值', activityDate: '活动日期', organizer: '主办单位', category: '事项类别', title: '事项名称' } as Record<string, string>)[key] ?? `事实字段：${key}`
 }
 
 function displayValue(raw: unknown): string {
@@ -628,31 +735,45 @@ function ManualFactEntry({
   subjectFields,
   template,
   aggregate,
+  candidateFields = [],
   onSave,
 }: {
   subjectId: string
   subjectTitle: string
   subjectFields: Record<string, FieldValue>
+  candidateFields?: string[]
   template: TemplateVersion | null
   aggregate: CaseAggregateV2
-  onSave(fieldKey: string, value: string, sourceVersionId: string, reason: string): Promise<void>
+  onSave(fieldKey: string, value: FieldValue, sourceVersionId: string, blockId: string, reason: string): Promise<void>
 }): React.ReactElement {
   const [open, setOpen] = React.useState(false)
   const [fieldKey, setFieldKey] = React.useState('')
   const [value, setValue] = React.useState('')
-  const [sourceVersionId, setSourceVersionId] = React.useState(aggregate.caseV2.documents.find((doc) => doc.role === 'evidence')?.versionId ?? '')
+  const [sourceVersionId, setSourceVersionId] = React.useState('')
+  const [sourceBlockId, setSourceBlockId] = React.useState('')
   const [reason, setReason] = React.useState('')
   const [busy, setBusy] = React.useState(false)
+  const [error, setError] = React.useState('')
+  const activeDocs = aggregate.caseV2.documents.filter(doc =>
+    doc.active !== false && (doc.parseStatus === 'parsed' || doc.parseStatus === 'partial'))
+  const sourceDoc = activeDocs.find(doc => doc.versionId === sourceVersionId)
   const fields = editableSubjectFields(subjectFields, template)
+  for (const key of candidateFields) {
+    if (!fields.some(item => item.key === key)) fields.push({
+      key, label: businessFieldLabel(key, template), kind: 'text', options: [],
+    })
+  }
   const selectedField = fields.find((field) => field.key === fieldKey)
   const save = async (): Promise<void> => {
-    if (!fieldKey.trim() || !value.trim() || !reason.trim()) return
+    if (!fieldKey.trim() || !value.trim() || !reason.trim() || !sourceDoc) return
     setBusy(true)
     try {
-      await onSave(fieldKey.trim(), value.trim(), sourceVersionId, reason.trim())
+      const typedValue = w1ParseHumanFieldValue(value, selectedField?.kind ?? 'text',
+        selectedField?.options.map(option => option.value) ?? [], subjectFields[fieldKey])
+      await onSave(fieldKey.trim(), typedValue, sourceVersionId, sourceBlockId, reason.trim())
       setOpen(false); setFieldKey(''); setValue(''); setReason('')
-    } catch (error) {
-      console.error(`[审核工作台] 手工录入 ${subjectTitle} 事实失败`, error)
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : String(cause))
     } finally { setBusy(false) }
   }
   return (
@@ -660,17 +781,30 @@ function ManualFactEntry({
       {!open ? <button onClick={() => setOpen(true)} className="rounded border px-2 py-1 text-xs hover:bg-background">手工录入事实</button> : (
         <div className="space-y-1.5 rounded-lg border bg-background p-2">
           <p className="text-xs font-medium">为“{subjectTitle}”添加人工核实事实</p>
+          {!fields.length && <p role="alert" className="text-amber-700 dark:text-amber-300">当前候选没有声明可录入的事实字段，不能从自由文本凭空增加审核责任。</p>}
           <label className="block text-xs">事实类型<select value={fieldKey} onChange={(event) => { setFieldKey(event.target.value); setValue('') }} className="mt-1 h-8 w-full rounded border bg-background px-2" aria-label="事实类型"><option value="">请选择事实类型</option>{fields.map((field) => <option key={field.key} value={field.key}>{field.label}</option>)}</select></label>
           <label className="block text-xs">核验结果{selectedField?.kind === 'enum' && selectedField.options.length > 0
             ? <select value={value} onChange={(event) => setValue(event.target.value)} className="mt-1 h-8 w-full rounded border bg-background px-2">{selectedField.options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select>
             : <input value={value} onChange={(event) => setValue(event.target.value)} className="mt-1 h-8 w-full rounded border px-2" placeholder="填写核验结果" aria-label="核验结果" />}</label>
-          <select value={sourceVersionId} onChange={(event) => setSourceVersionId(event.target.value)} className="h-7 w-full rounded border bg-background px-2" aria-label="事实来源材料">
-            <option value="">不关联材料来源</option>
-            {aggregate.caseV2.documents.map((doc) => <option key={doc.versionId} value={doc.versionId}>{doc.fileName}</option>)}
-          </select>
+          <label className="block text-xs">核验依据材料（必选）
+            <select value={sourceVersionId} onChange={(event) => { setSourceVersionId(event.target.value); setSourceBlockId('') }}
+              className="mt-1 h-7 w-full rounded border bg-background px-2" aria-label="事实来源材料">
+              <option value="">请选择仍有效且可解析的材料</option>
+              {activeDocs.map(doc => <option key={doc.versionId} value={doc.versionId}>{doc.fileName}</option>)}
+            </select>
+          </label>
+          {sourceDoc && <label className="block text-xs">原文定位（不能定位时仅文件级）
+            <select className="mt-1 h-7 w-full rounded border bg-background px-2" aria-label="事实来源原文块"
+              value={sourceBlockId} onChange={event => setSourceBlockId(event.target.value)}>
+              <option value="">仅关联到文件（定位精度较低）</option>
+              {sourceDoc.blocks.filter(block => block.text.trim()).map(block =>
+                <option value={block.blockId} key={block.blockId}>{block.text.slice(0, 90)}</option>)}
+            </select>
+          </label>}
           <input value={reason} onChange={(event) => setReason(event.target.value)} className="h-7 w-full rounded border px-2" placeholder="核实理由（必填）" aria-label="核实理由" />
+          {error && <p role="alert" className="text-destructive">{error}</p>}
           <div className="flex gap-1.5">
-            <button disabled={busy || !fieldKey.trim() || !value.trim() || !reason.trim()} onClick={() => void save()} className="rounded bg-primary px-2 py-1 text-primary-foreground disabled:opacity-50">保存事实</button>
+            <button disabled={busy || !fieldKey.trim() || !value.trim() || !reason.trim() || !sourceDoc || !fields.length} onClick={() => void save()} className="rounded bg-primary px-2 py-1 text-primary-foreground disabled:opacity-50">保存事实</button>
             <button disabled={busy} onClick={() => setOpen(false)} className="rounded border px-2 py-1">取消</button>
           </div>
         </div>
@@ -688,15 +822,26 @@ function WorkspaceObservationCard({
   observation: Record<string, unknown>
   aggregate: CaseAggregateV2
   template: TemplateVersion | null
-  onConfirm(value: unknown, reason: string): Promise<void>
+  onConfirm(value: unknown, reason: string, override?: { documentVersionId: string; blockId?: string }): Promise<void>
 }): React.ReactElement {
   const [editing, setEditing] = React.useState(false)
   const [value, setValue] = React.useState(displayValue(observation.value))
   const [reason, setReason] = React.useState('')
   const [busy, setBusy] = React.useState(false)
+  const [error, setError] = React.useState('')
+  const [sourceVersionId, setSourceVersionId] = React.useState('')
+  const [blockId, setBlockId] = React.useState('')
+  const setSourceFocus = useSetAtom(reviewSourceFocusAtom)
+  const validatedSources = w1ObservationSources(aggregate, observation.sourceRefs)
+  const currentSource = aggregate.caseV2.documents.find(doc => doc.versionId === sourceVersionId && doc.active !== false)
+  const canConfirmSource = validatedSources.length > 0 || !!currentSource
   const subjectId = String(observation.subjectId ?? '')
   const fieldKey = String(observation.fieldKey ?? '事实')
   const fieldLabel = businessFieldLabel(fieldKey, template)
+  const subject = aggregate.caseV2.subjects.find(item => item.id === subjectId)
+  const inScope = !aggregate.d2RuntimePlan || (!!subject &&
+    (w1CandidateFactKeys(aggregate.d2RuntimePlan, subjectId).includes(fieldKey) ||
+     Object.prototype.hasOwnProperty.call(subject.fields, fieldKey)))
   const refs = Array.isArray(observation.sourceRefs) ? observation.sourceRefs : []
   const sourceNames = refs.flatMap((raw) => {
     if (!raw || typeof raw !== 'object' || !('documentVersionId' in raw)) return []
@@ -707,11 +852,22 @@ function WorkspaceObservationCard({
   const run = async (nextValue: unknown, nextReason: string): Promise<void> => {
     setBusy(true)
     try {
-      await onConfirm(nextValue, nextReason)
+      const originalValue = observation.value
+      const storedValue = originalValue && typeof originalValue === 'object' && 'kind' in originalValue
+        ? originalValue as FieldValue : undefined
+      const currentField = subject?.fields[fieldKey]
+      const templateField = template?.fields.find(field => field.key === fieldKey)
+      const kind = storedValue?.kind ?? currentField?.kind ?? templateField?.kind ?? 'text'
+      const typedValue = typeof nextValue === 'string'
+        ? w1ParseHumanFieldValue(nextValue, kind,
+          templateField?.options?.map(option => option.value) ?? [], storedValue ?? currentField)
+        : nextValue
+      await onConfirm(typedValue, nextReason,
+        sourceVersionId ? { documentVersionId: sourceVersionId, ...(blockId ? { blockId } : {}) } : undefined)
       setEditing(false)
       setReason('')
-    } catch (error) {
-      console.error('[审核工作台] 保存事实失败', error)
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : String(cause))
     } finally {
       setBusy(false)
     }
@@ -728,16 +884,59 @@ function WorkspaceObservationCard({
         <div className="mt-1.5 space-y-1.5">
           <input className="h-7 w-full rounded border bg-background px-2" value={value} onChange={(event) => setValue(event.target.value)} aria-label={`${fieldLabel}核验结果`} />
           <input className="h-7 w-full rounded border bg-background px-2" value={reason} onChange={(event) => setReason(event.target.value)} placeholder="更正理由（必填）" aria-label="更正理由" />
+          <label className="block text-xs">更正依据（未选择时沿用可验证的原来源）
+            <select value={sourceVersionId} onChange={event => { setSourceVersionId(event.target.value); setBlockId('') }}
+              className="mt-1 h-7 w-full rounded border bg-background px-2" aria-label="更正来源材料">
+              <option value="">沿用原来源</option>
+              {aggregate.caseV2.documents.filter(doc => doc.active !== false &&
+                (doc.parseStatus === 'parsed' || doc.parseStatus === 'partial')).map(doc =>
+                  <option value={doc.versionId} key={doc.versionId}>{doc.fileName}</option>)}
+            </select>
+          </label>
+          {currentSource && <label className="block text-xs">原文位置
+            <select value={blockId} onChange={event => setBlockId(event.target.value)}
+              className="mt-1 h-7 w-full rounded border bg-background px-2" aria-label="更正来源原文块">
+              <option value="">文件级引用</option>
+              {currentSource.blocks.filter(b => b.text.trim()).map(b =>
+                <option key={b.blockId} value={b.blockId}>{b.text.slice(0, 80)}</option>)}
+            </select>
+          </label>}
           <div className="flex gap-1.5">
-            <button disabled={busy || !reason.trim()} onClick={() => void run(value, reason)} className="rounded bg-primary px-2 py-1 text-primary-foreground disabled:opacity-50">保存更正</button>
+            <button disabled={busy || !reason.trim() || !canConfirmSource || !inScope} onClick={() => void run(value, reason)} className="rounded bg-primary px-2 py-1 text-primary-foreground disabled:opacity-50">保存更正</button>
             <button disabled={busy} onClick={() => setEditing(false)} className="rounded border px-2 py-1">取消</button>
           </div>
         </div>
       )}
-      {sourceNames.length > 0 && <p className="mt-1 text-muted-foreground">来源：{[...new Set(sourceNames)].join('、')}</p>}
+      {validatedSources.length > 0 && <div className="mt-1 flex flex-wrap gap-1">
+        {validatedSources.map((ref, i) => <button type="button" key={i}
+          className="rounded border border-border px-1.5 py-0.5 text-xs text-muted-foreground hover:text-primary"
+          onClick={() => {
+            const source = aggregate.caseV2.documents.find(doc => doc.versionId === ref.documentVersionId)
+            setSourceFocus({ ref, purpose: source?.role === 'rule' ? 'rule' :
+              source?.role === 'evidence' ? 'evidence' : 'application', nonce: Date.now() })
+          }}>
+          定位来源：{aggregate.caseV2.documents.find(doc => doc.versionId === ref.documentVersionId)?.fileName ?? ref.documentVersionId}
+          {ref.location.kind === 'file' ? '（仅文件级）' : ''}
+        </button>)}
+      </div>}
+      {!validatedSources.length && <p className="mt-1 text-amber-700 dark:text-amber-300">尚无可验证的有效来源，确认前须手动选择材料。</p>}
+      {!inScope && <p role="alert" className="mt-1 text-amber-700 dark:text-amber-300">
+        该识别字段不属于当前对象的冻结责任范围，只作待核线索，不能在此确认为已核验事实。
+      </p>}
+      {error && <p role="alert" className="mt-1 text-destructive">{error}</p>}
+      {!confirmed && !editing && !canConfirmSource && <label className="mt-1.5 block text-xs">
+        请选择核验来源
+        <select value={sourceVersionId} onChange={event => { setSourceVersionId(event.target.value); setBlockId('') }}
+          className="mt-1 h-7 w-full rounded border bg-background px-2" aria-label="确认事实来源材料">
+          <option value="">尚未选择来源</option>
+          {aggregate.caseV2.documents.filter(doc => doc.active !== false &&
+            (doc.parseStatus === 'parsed' || doc.parseStatus === 'partial')).map(doc =>
+            <option value={doc.versionId} key={doc.versionId}>{doc.fileName}</option>)}
+        </select>
+      </label>}
       {!confirmed && !editing && (
         <div className="mt-1.5 flex gap-1.5">
-          <button disabled={busy} onClick={() => void run(observation.value, '审核员核对原始材料后确认该识别结果')} className="rounded border px-2 py-1 text-xs hover:bg-background disabled:opacity-50">识别正确</button>
+          <button disabled={busy || !canConfirmSource || !inScope} onClick={() => void run(observation.value, '审核员核对原始材料后确认该识别结果')} className="rounded border px-2 py-1 text-xs hover:bg-background disabled:opacity-50">识别正确</button>
           <button disabled={busy} onClick={() => { setValue(displayValue(observation.value)); setEditing(true) }} className="rounded border px-2 py-1 text-xs hover:bg-background disabled:opacity-50">识别有误</button>
         </div>
       )}
@@ -760,11 +959,16 @@ function EvidenceLinkControls({
   const links = aggregate.evidenceLinks.filter((link) => link.documentVersionId === documentVersionId)
   const doc = aggregate.caseV2.documents.find((item) => item.versionId === documentVersionId)
   const titles = new Map(aggregate.caseV2.subjects.map((subject) => [subject.id, subject.title]))
-  const facts = [...new Set(aggregate.d2RuntimePlan?.mapping.filter(m => m.subjectId === subjectId).flatMap(m => m.evidenceCoverage?.supportsFacts ?? []) ?? [])]
+  const facts = [...new Set(aggregate.d2RuntimePlan?.mapping
+    .filter(m => m.subjectId === subjectId)
+    .flatMap(m => [m.evidenceCoverage?.fieldKey, ...(m.evidenceCoverage?.supportsFacts ?? [])])
+    .filter((fact): fact is string => !!fact && !!fact.trim()) ?? [])]
   const supportsFact = facts.includes(selectedFact) ? selectedFact : facts[0]
   const update = async (input: Parameters<typeof actions.transitionEvidenceLink>[0]): Promise<void> => {
     setBusy(true)
-    try { await actions.transitionEvidenceLink(input) } catch (error) { console.error('[审核工作台] 更新证明关联失败', error) } finally { setBusy(false) }
+    try { await actions.transitionEvidenceLink(input) }
+    catch (error) { toast.error(error instanceof Error ? error.message : String(error)) }
+    finally { setBusy(false) }
   }
   return (
     <div className="mt-1 rounded-lg border border-border/50 bg-card px-2.5 py-2 text-xs">

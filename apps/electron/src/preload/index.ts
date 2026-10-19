@@ -3845,8 +3845,27 @@ const reviewAPI = {
   listRuns: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_RUNS, caseId) as Promise<import('@profer/shared').ReviewRun[]>,
   getCase: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_CASE, caseId) as Promise<import('@profer/shared').ReviewCase | undefined>,
   listD4Templates: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_D4_TEMPLATES) as Promise<import('@profer/shared').D4ClientTemplate[]>,
-  stageD4Intake: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.STAGE_D4_INTAKE) as Promise<import('@profer/shared').D4IntakePreview | null>,
+  stageD4Intake: (mode?: 'files' | 'folder') => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.STAGE_D4_INTAKE, mode) as Promise<import('@profer/shared').D4IntakePreview | null>,
   discardD4Intake: (token: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.DISCARD_D4_INTAKE, token) as Promise<boolean>,
+  resolveD4MaterialTransition: (input: { caseId: string; newDocumentId: string;
+    expectedRevision: number; decision: 'keep-old' | 'keep-new' }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESOLVE_D4_MATERIAL_TRANSITION, input) as Promise<{
+      status: 'archived' | 'abandoned'; oldDocumentId: string; newDocumentId: string
+    }>,
+  saveD4ReviewerForm: (input: { caseId: string; subjectId: string; planFingerprint: string;
+    expectedRevision: number; fields: import('@profer/shared').D4ReviewerFieldSpec[] }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SAVE_D4_REVIEWER_FORM, input) as Promise<import('@profer/shared').D4ReviewerFormSnapshot>,
+  stageD4DroppedBytes: (items: Array<{ name: string; bytes: Uint8Array }>) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.STAGE_D4_DROPPED_BYTES, items) as Promise<import('@profer/shared').D4IntakePreview>,
+  retryD4Document: (input: { caseId: string; documentId: string; expectedRevision: number }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RETRY_D4_DOCUMENT, input) as Promise<import('@profer/shared').D4DocumentRetryResult>,
+  assessD4CaseBatch: (input: { caseId: string; token: string; role: 'application' | 'evidence' }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.ASSESS_D4_CASE_BATCH, input) as Promise<import('@profer/shared').D4CaseBatchAssessment>,
+  applyD4CaseBatch: (input: {
+    caseId: string; token: string; role: 'application' | 'evidence'; expectedRevision: number
+    choices: import('@profer/shared').D4CaseBatchChoice[]; acknowledgeSkipped: boolean
+    requestId?: string; resumeBatchId?: string
+  }) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.APPLY_D4_CASE_BATCH, input) as Promise<import('@profer/shared').D4CaseBatchResult>,
   createCase: (input: {
     title: string
     type: import('@profer/shared').ReviewCaseType

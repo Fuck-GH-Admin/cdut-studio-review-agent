@@ -3,18 +3,31 @@ import type { D4IntakePreview } from '@profer/shared'
 
 /** 20-second auto-adoption is only a template-selection convenience, NEVER case submission. */
 export function D4IntakePicker({
-  intake, onIntake, onApplyRoute, manuallyOverridden,
+  intake, onIntake, onApplyRoute, manuallyOverridden, documentRoles, onDocumentRolesChange, skippedAcknowledged, onSkippedAcknowledgedChange, enabled = true,
 }: {
   intake: D4IntakePreview | null
   onIntake: (value: D4IntakePreview | null) => void
   onApplyRoute: (templateId: string) => void
   manuallyOverridden: boolean
+  documentRoles: Array<'application' | 'evidence'>
+  onDocumentRolesChange: (roles: Array<'application' | 'evidence'>) => void
+  skippedAcknowledged: boolean
+  onSkippedAcknowledgedChange: (checked: boolean) => void
+  /** Freeze OS-picker operations while creating/closing the parent case. */
+  enabled?: boolean
 }): React.ReactElement {
   const [working, setWorking] = React.useState(false)
   const [error, setError] = React.useState('')
   const [seconds, setSeconds] = React.useState<number | null>(null)
   const applied = React.useRef(false)
   const [dragging, setDragging] = React.useState(false)
+  const stillEnabled = React.useRef(enabled)
+  // A native picker can complete after the dialog closed. Reject/discard its
+  // late token instead of resurrecting staged originals in a later case.
+  React.useEffect(() => {
+    stillEnabled.current = enabled
+    return () => { stillEnabled.current = false }
+  }, [enabled])
   React.useEffect(() => {
     applied.current = false
     setSeconds(intake?.route.status === 'suggested' ? 20 : null)
@@ -32,20 +45,25 @@ export function D4IntakePicker({
     const timer = window.setTimeout(() => setSeconds(s => s === null ? null : Math.max(0, s - 1)), 1000)
     return () => window.clearTimeout(timer)
   }, [intake, seconds, manuallyOverridden])
-  const pick = async (): Promise<void> => {
-    if (working) return
+  const pick = async (mode: 'files' | 'folder'): Promise<void> => {
+    if (working || !enabled) return
     setError('')
     setWorking(true)
     try {
-      const next = await window.reviewAPI.stageD4Intake()
+      const next = await window.reviewAPI.stageD4Intake(mode)
       if (!next) return
-      if (intake?.token) await window.reviewAPI.discardD4Intake(intake.token)
+      if (!stillEnabled.current) {
+        await window.reviewAPI.discardD4Intake(next.token).catch(() => false)
+        return
+      }
+      if (intake?.token) await window.reviewAPI.discardD4Intake(intake.token).catch(() => false)
       onIntake(next)
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e))
     } finally { setWorking(false) }
   }
   const discard = async (): Promise<void> => {
+    if (!enabled) return
     if (intake?.token) await window.reviewAPI.discardD4Intake(intake.token).catch(() => false)
     onIntake(null)
     setError('')
@@ -54,21 +72,56 @@ export function D4IntakePicker({
     <div className="flex items-center justify-between gap-2">
       <strong className="text-sm">先选申请材料（可选）</strong>
       <div className="flex gap-2">
-        {intake && <button type="button" className="rounded border px-2 py-1 text-xs" onClick={() => void discard()} disabled={working}>清除暂存</button>}
-        <button type="button" disabled={working} className="rounded border px-2 py-1 text-xs" onClick={() => void pick()}>
-          {working ? '正在读取…' : intake ? '重新选择材料' : '系统选择文件'}
+        {intake && <button type="button" className="rounded border px-2 py-1 text-xs" onClick={() => void discard()} disabled={working || !enabled}>清除暂存</button>}
+        <button type="button" disabled={working || !enabled} className="rounded border px-2 py-1 text-xs" onClick={() => void pick('files')}>
+          {working ? '正在读取…' : '选择文件 / ZIP'}
+        </button>
+        <button type="button" disabled={working || !enabled} className="rounded border px-2 py-1 text-xs" onClick={() => void pick('folder')}>
+          选择文件夹
         </button>
       </div>
     </div>
     <div role="region" aria-label="D4 路由材料入口"
       onDragOver={e => { e.preventDefault(); setDragging(true) }}
       onDragLeave={e => { e.preventDefault(); setDragging(false) }}
-      onDrop={e => { e.preventDefault(); setDragging(false); void pick() }}
+      onDrop={e => { e.preventDefault(); setDragging(false); if (enabled) void pick('files') }}
       className={'rounded-md border border-dashed p-2 text-xs ' + (dragging ? 'bg-muted' : 'text-muted-foreground')}>
-      支持拖入触发系统文件选择确认，或点击“系统选择文件”。文件由 Main 暂存，尚未建案或审核。
+      松开拖入文件将打开系统选择框，由你再次确认本机文件；不会直接信任网页提供的文件路径。
     </div>
     {intake && <>
-      <p className="text-xs" data-testid="d4-intake-files">{intake.files.map(file => file.name).join('、')}</p>
+      <div className="space-y-2 rounded-md bg-muted/30 p-2" data-testid="d4-intake-files">
+        <p className="text-xs font-medium">逐份材料用途（{intake.files.length} 份）</p>
+        <p className="text-xs text-muted-foreground">
+          默认作为申报材料；只有你明确选为“证明材料”时才放入证明区。
+          不会自动关联某个审核对象，也不会把材料变为校方审核依据。
+        </p>
+        {intake.files.map((file, index) => <label key={`${intake.token}-${index}`}
+          className="flex flex-wrap items-center justify-between gap-2 rounded border bg-background p-2 text-xs">
+          <span className="min-w-0 flex-1 break-all">{file.originLabel ?? file.name} · {(file.sizeBytes / 1024).toFixed(1)} KiB</span>
+          <select aria-label={`材料 ${index + 1} 的用途`}
+            className="h-8 rounded border bg-background px-2 text-xs"
+            disabled={!enabled}
+            value={documentRoles[index] ?? 'application'}
+            onChange={e => onDocumentRolesChange(intake.files.map((_, i) => i === index
+              ? e.target.value as 'application' | 'evidence'
+              : documentRoles[i] ?? 'application'))}>
+            <option value="application">申报材料（待审）</option>
+            <option value="evidence">证明材料（待关联）</option>
+          </select>
+        </label>)}
+      </div>
+      {(intake.skipped?.length ?? 0) > 0 && <section role="alert" className="space-y-2 rounded border border-amber-500/50 p-2 text-xs">
+        <strong>有 {intake.skipped!.length} 份材料未纳入本次暂存</strong>
+        <p>包括无效文件、重复内容、超限文件或 ZIP 中不可读取的条目。不会悄悄丢弃，请确认后再创建案卷；原因将保存在案卷历史。</p>
+        <ul className="max-h-36 list-disc space-y-1 overflow-y-auto pl-4">
+          {intake.skipped!.map((item, index) => <li key={index} className="break-all">{item.originLabel}：{item.reason}</li>)}
+        </ul>
+        <label className="flex items-center gap-2">
+          <input type="checkbox" disabled={!enabled} checked={skippedAcknowledged}
+            onChange={e => onSkippedAcknowledgedChange(e.target.checked)}/>
+          我已检查未导入清单，并同意创建注明缺失材料的案卷
+        </label>
+      </section>}
       <p className="text-xs" data-testid="d4-route-status">{intake.route.reason}</p>
       {intake.route.suggestion && <p className="text-xs">
         建议模板：<strong>{intake.route.suggestion.templateId}</strong>；

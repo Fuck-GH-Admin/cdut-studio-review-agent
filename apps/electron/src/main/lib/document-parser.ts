@@ -766,6 +766,31 @@ function isPdfTextItem(item: unknown): item is PdfTextItem {
   )
 }
 
+/** Exact text-layer page numbers; intentionally no invented PDF rectangles.
+ * Pages with no text stay absent and must be reviewed via raster/OCR. */
+export async function extractPdfReviewPages(filePath: string): Promise<Array<{ page: number; text: string }>> {
+  const buffer = readFileSync(filePath)
+  const pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs') as unknown as PdfJsModule
+  pdfjs.GlobalWorkerOptions.workerSrc = pathToFileURL(require.resolve('pdfjs-dist/legacy/build/pdf.worker.mjs')).href
+  const pdf = await pdfjs.getDocument({
+    data: new Uint8Array(buffer), disableFontFace: true,
+    isEvalSupported: false, useWorkerFetch: false,
+  }).promise
+  try {
+    const pages: Array<{ page: number; text: string }> = []
+    for (let number = 1; number <= pdf.numPages; number += 1) {
+      const content = await (await pdf.getPage(number)).getTextContent()
+      const parts: string[] = []
+      for (const item of content.items) {
+        if (!isPdfTextItem(item)) continue
+        parts.push(item.str)
+        if (item.hasEOL) parts.push('\n')
+      }
+      pages.push({ page: number, text: parts.join(' ').replace(/[ \t]+\n/g, '\n').trim() })
+    }
+    return pages
+  } finally { await pdf.destroy() }
+}
 async function extractPdfWithPdfJs(buffer: Buffer): Promise<string> {
   const pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs') as unknown as PdfJsModule
   // esbuild 后模块位于 dist/main.cjs，默认相对 worker 路径会失效。

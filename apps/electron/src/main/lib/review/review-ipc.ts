@@ -100,12 +100,79 @@ export function registerReviewIpc(): void {
     const { listD4ClientTemplates } = require('./review-d4-client') as typeof import('./review-d4-client')
     return listD4ClientTemplates()
   })
-  ipcMain.handle(REVIEW_IPC_CHANNELS.STAGE_D4_INTAKE, async (event) => {
+  ipcMain.handle(REVIEW_IPC_CHANNELS.STAGE_D4_INTAKE, async (event, mode: unknown) => {
     const { BrowserWindow } = require('electron') as typeof import('electron')
     const parent = BrowserWindow.fromWebContents(event.sender)
     if (!parent || event.senderFrame !== parent.webContents.mainFrame) throw new Error('D4_INTAKE_SENDER_INVALID')
     const { stageD4Intake } = require('./review-d4-intake') as typeof import('./review-d4-intake')
-    return stageD4Intake(event.sender.id, parent)
+    if (mode !== undefined && mode !== 'files' && mode !== 'folder') throw new Error('D4_INTAKE_PICKER_MODE_INVALID')
+    return stageD4Intake(event.sender.id, parent, mode ?? 'files')
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RESOLVE_D4_MATERIAL_TRANSITION, async (event, raw: unknown) => {
+    const { BrowserWindow } = require('electron') as typeof import('electron')
+    const owner = BrowserWindow.fromWebContents(event.sender)
+    if (!owner || event.senderFrame !== owner.webContents.mainFrame)
+      throw new Error('D4_RESOLVE_SENDER_INVALID')
+    const { resolveD4MaterialTransition } = require('./review-d4-material-resolution') as typeof import('./review-d4-material-resolution')
+    return resolveD4MaterialTransition(raw as Parameters<typeof resolveD4MaterialTransition>[0])
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.SAVE_D4_REVIEWER_FORM, async (event, raw: unknown) => {
+    const { BrowserWindow } = require('electron') as typeof import('electron')
+    const owner = BrowserWindow.fromWebContents(event.sender)
+    if (!owner || event.senderFrame !== owner.webContents.mainFrame) throw new Error('D4_FORM_SENDER_INVALID')
+    const { saveD4ReviewerForm } = require('./review-d4-field-form') as typeof import('./review-d4-field-form')
+    return saveD4ReviewerForm(raw as Parameters<typeof saveD4ReviewerForm>[0])
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.ASSESS_D4_CASE_BATCH, (event, raw: unknown) => {
+    const { BrowserWindow } = require('electron') as typeof import('electron')
+    const owner = BrowserWindow.fromWebContents(event.sender)
+    if (!owner || event.senderFrame !== owner.webContents.mainFrame) throw new Error('D4_BATCH_SENDER_INVALID')
+    if (!raw || typeof raw !== 'object') throw new Error('D4_BATCH_INPUT_INVALID')
+    const input = raw as Record<string, unknown>
+    if (typeof input.caseId !== 'string' || typeof input.token !== 'string' ||
+        (input.role !== 'application' && input.role !== 'evidence')) throw new Error('D4_BATCH_INPUT_INVALID')
+    const { assessD4CaseBatch } = require('./review-d4-case-batch') as typeof import('./review-d4-case-batch')
+    return assessD4CaseBatch({ caseId: input.caseId, token: input.token, role: input.role }, event.sender.id)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.APPLY_D4_CASE_BATCH, async (event, raw: unknown) => {
+    const { BrowserWindow } = require('electron') as typeof import('electron')
+    const owner = BrowserWindow.fromWebContents(event.sender)
+    if (!owner || event.senderFrame !== owner.webContents.mainFrame) throw new Error('D4_BATCH_SENDER_INVALID')
+    if (!raw || typeof raw !== 'object') throw new Error('D4_BATCH_INPUT_INVALID')
+    const input = raw as Record<string, unknown>
+    if (typeof input.caseId !== 'string' || typeof input.token !== 'string' ||
+        (input.role !== 'application' && input.role !== 'evidence') ||
+        !Number.isSafeInteger(input.expectedRevision) || !Array.isArray(input.choices) ||
+        typeof input.acknowledgeSkipped !== 'boolean' ||
+        (input.resumeBatchId !== undefined &&
+          (typeof input.resumeBatchId !== 'string' || !/^[a-f0-9-]{36}$/.test(input.resumeBatchId)))) throw new Error('D4_BATCH_INPUT_INVALID')
+    const { applyD4CaseBatch } = require('./review-d4-case-batch') as typeof import('./review-d4-case-batch')
+    return applyD4CaseBatch(input as Parameters<typeof applyD4CaseBatch>[0], event.sender.id,
+      (progress) => {
+        if (!event.sender.isDestroyed()) event.sender.send(REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT_PROGRESS, progress)
+      })
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.STAGE_D4_DROPPED_BYTES, async (event, raw: unknown) => {
+    const { BrowserWindow } = require('electron') as typeof import('electron')
+    const owner = BrowserWindow.fromWebContents(event.sender)
+    if (!owner || event.senderFrame !== owner.webContents.mainFrame) throw new Error('D4_DROP_SENDER_INVALID')
+    const { stageD4DroppedBytes } = require('./review-d4-intake') as typeof import('./review-d4-intake')
+    // Runtime validates every byte array, each filename, count and total size.
+    // Renderer-supplied file paths are not accepted in this channel.
+    return stageD4DroppedBytes(event.sender.id, raw as Parameters<typeof stageD4DroppedBytes>[1])
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RETRY_D4_DOCUMENT, async (event, raw: unknown) => {
+    const { BrowserWindow } = require('electron') as typeof import('electron')
+    const owner = BrowserWindow.fromWebContents(event.sender)
+    if (!owner || event.senderFrame !== owner.webContents.mainFrame) throw new Error('D4_RETRY_SENDER_INVALID')
+    if (!raw || typeof raw !== 'object') throw new Error('D4_RETRY_INPUT_INVALID')
+    const input = raw as Record<string, unknown>
+    if (typeof input.caseId !== 'string' || typeof input.documentId !== 'string' ||
+        !Number.isSafeInteger(input.expectedRevision)) throw new Error('D4_RETRY_INPUT_INVALID')
+    const { retryD4CaseDocument } = require('./review-d4-document-retry') as typeof import('./review-d4-document-retry')
+    return retryD4CaseDocument({
+      caseId: input.caseId, documentId: input.documentId, expectedRevision: input.expectedRevision as number,
+    })
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.DISCARD_D4_INTAKE, (event, token: unknown) => {
     if (typeof token !== 'string') return false

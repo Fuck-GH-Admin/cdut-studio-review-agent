@@ -89,6 +89,72 @@ export interface ImportDocumentsResult {
   canceled: boolean
 }
 
+/** W1 post-create import: everything is based on Main OS-picked staged bytes. */
+export interface D4CaseBatchAssessment {
+  caseId: string
+  token: string
+  expectedRevision: number
+  role: 'application' | 'evidence'
+  skipped: Array<{ originLabel: string; reason: string }>
+  files: Array<{
+    index: number; name: string; originLabel: string; sizeBytes: number
+    duplicateOf?: string
+    nameConflicts: Array<{ documentId: string; fileName: string }>
+  }>
+}
+export type D4CaseBatchChoice =
+  | { kind: 'skip' }
+  | { kind: 'append' }
+  | { kind: 'replace'; documentId: string }
+/** Explicit reviewer-configured form metadata for a frozen D2 responsibility key.
+ * NOT a school policy and NOT a mutation of the immutable authoring plan. */
+export interface D4ReviewerFieldSpec {
+  key: string; label: string
+  kind: 'text' | 'number' | 'date' | 'boolean' | 'enum' | 'multi'
+  required: boolean
+  options?: Array<{ value: string; label: string }>
+  min?: number; max?: number
+}
+export interface D4ReviewerFormSnapshot {
+  subjectId: string; planFingerprint: string
+  fields: D4ReviewerFieldSpec[]
+  recordedAt: string; recordedBy: 'local-reviewer'
+}
+export interface D4BatchRun {
+  id: string
+  role: 'application' | 'evidence'
+  status: 'running' | 'needs-reselection' | 'completed'
+  createdAt: string
+  updatedAt: string
+  skipped: Array<{ originLabel: string; reason: string }>
+  files: Array<{
+    index: number; name: string; originLabel: string; sizeBytes: number; sha256: string
+    choice: D4CaseBatchChoice
+    status: 'pending' | 'failed' | 'skipped' | 'stored' | 'replaced' | 'needs-review'
+    documentId?: string
+    message?: string
+  }>
+}
+export interface D4CaseBatchResult {
+  batchId?: string
+  caseId: string
+  documents: SourceDocument[]
+  skipped: Array<{ originLabel: string; reason: string }>
+  replacements: Array<{ oldDocumentId: string; newDocumentId: string }>
+}
+
+/** Reprocess only an archived-in-case, Main-verified original (no Renderer host path). */
+export interface D4DocumentRetryResult {
+  caseId: string
+  documentId: string
+  attemptDocumentId: string
+  status: 'replaced' | 'still-incomplete' | 'needs-review'
+  parseStatus: ReviewParseStatus
+  message: string
+}
+
+
+
 /** 材料导入的逐文件进度；扫描 PDF 会额外报告页检查和图像渲染阶段。 */
 export interface ReviewImportProgressEvent {
   requestId: string
@@ -366,6 +432,20 @@ export interface ReviewCase {
   updatedAt: string
   /** 来源文档（依据 + 申报 + 证明） */
   documents: SourceDocument[]
+  /** Main-generated, persistently retained reasons for omitted/failed native-batch inputs. */
+  d4IntakeWarnings?: Array<{ originLabel: string; reason: string }>
+  /** Main-owned resume checkpoint; never contains paths or temporary picker tokens. */
+  d4BatchRuns?: D4BatchRun[]
+  /** Append-only reviewer-approved form definitions, scoped per D2 Subject. */
+  d4ReviewerFormSnapshots?: D4ReviewerFormSnapshot[]
+  /** Immutable Main-recorded hash/within-batch origin for imported folder and ZIP members. */
+  d4IntakeOrigins?: Array<{ documentId: string; originLabel: string; sha256: string }>
+  /** Main-written version transitions. 'pending' survives a crash before archival;
+   * the real active/archived documents remain authoritative when reconciling. */
+  d4MaterialTransitions?: Array<{
+    previousDocumentId: string; newDocumentId: string; kind: 'replace' | 'retry'
+    status: 'pending' | 'archived' | 'archive-failed' | 'abandoned'; originLabel: string
+  }>
   /** 已从当前审核材料中移除的文件；保留记录用于 V2 来源追溯。 */
   archivedDocuments?: SourceDocument[]
   /** 规则包 */
@@ -487,6 +567,12 @@ export const REVIEW_IPC_CHANNELS = {
   LIST_D4_TEMPLATES: 'review:list-d4-templates',
   /** Native OS picker: Main stages originals, returning only a bounded opaque token. */
   STAGE_D4_INTAKE: 'review:stage-d4-intake',
+  ASSESS_D4_CASE_BATCH: 'review:assess-d4-case-batch',
+  APPLY_D4_CASE_BATCH: 'review:apply-d4-case-batch',
+  SAVE_D4_REVIEWER_FORM: 'review:save-d4-reviewer-form',
+  RESOLVE_D4_MATERIAL_TRANSITION: 'review:resolve-d4-material-transition',
+  RETRY_D4_DOCUMENT: 'review:retry-d4-document',
+  STAGE_D4_DROPPED_BYTES: 'review:stage-d4-dropped-bytes',
   DISCARD_D4_INTAKE: 'review:discard-d4-intake',
   /** 多选导入文件到案卷（逐文件返回解析结果与失败项） */
   IMPORT_DOCUMENT: 'review:import-document',

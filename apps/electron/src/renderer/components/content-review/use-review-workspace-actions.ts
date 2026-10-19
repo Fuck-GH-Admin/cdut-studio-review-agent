@@ -1,6 +1,8 @@
 import { useCallback } from 'react'
 import { useAtomValue, useStore } from 'jotai'
-import type { Actor, CaseAggregateV2, FieldValue, ReviewCommandV2, SourceRef } from '@profer/shared'
+import type { Actor, CaseAggregateV2, FieldValue, ReviewCommandV2 } from '@profer/shared'
+import { w1CandidateFactKeys, w1ObservationSources } from './w1-fact-source'
+import { w1AssertEvidenceAssignment } from './w1-evidence-assignment'
 import {
   reviewWorkspaceAggregatesByCaseAtom,
   reviewWorkspaceExtractedObservationsByCaseAtom,
@@ -16,26 +18,6 @@ function fieldValue(value: unknown): FieldValue {
   if (typeof value === 'number' && Number.isFinite(value)) return { kind: 'number', value }
   if (typeof value === 'boolean') return { kind: 'boolean', value }
   return { kind: 'text', value: value == null ? '' : String(value) }
-}
-
-function sourceRefsFor(aggregate: CaseAggregateV2, refs: unknown): SourceRef[] {
-  if (!Array.isArray(refs)) return []
-  return refs.flatMap((raw) => {
-    if (!raw || typeof raw !== 'object') return []
-    const value = raw as { documentVersionId?: unknown; quote?: unknown }
-    if (typeof value.documentVersionId !== 'string') return []
-    const document = aggregate.caseV2.documents.find((item) => item.versionId === value.documentVersionId)
-    if (!document) return []
-    const quote = typeof value.quote === 'string' ? value.quote : undefined
-    const block = quote ? document.blocks.find((item) => item.text.includes(quote) || quote.includes(item.text)) : undefined
-    return [{
-      caseId: aggregate.caseV2.id,
-      documentVersionId: document.versionId,
-      parseRevision: document.parseRevision,
-      location: block?.location ?? { kind: 'file' as const },
-      ...(quote ? { quote } : {}),
-    }]
-  })
 }
 
 export function useReviewWorkspaceActions(): {
@@ -101,13 +83,20 @@ export function useReviewWorkspaceActions(): {
   const confirmObservation = useCallback(async (observation: Record<string, unknown>, value: unknown = observation.value, reason = '审核员核对材料后确认该事实') => {
     const aggregate = await currentAggregate()
     if (typeof observation.subjectId !== 'string' || typeof observation.fieldKey !== 'string') throw new Error('事实缺少事项或字段标识')
+    const subject = aggregate.caseV2.subjects.find(item => item.id === observation.subjectId)
+    if (!subject) throw new Error('W1_FACT_SUBJECT_NOT_IN_ACTIVE_CASE')
+    if (aggregate.d2RuntimePlan &&
+        !w1CandidateFactKeys(aggregate.d2RuntimePlan, subject.id).includes(observation.fieldKey) &&
+        !Object.prototype.hasOwnProperty.call(subject.fields, observation.fieldKey)) {
+      throw new Error('W1_FACT_FIELD_OUTSIDE_FROZEN_SCOPE')
+    }
     await apply(await window.reviewAPI.correctObservationV2({ caseId: aggregate.caseV2.id, command: command(aggregate, {
       type: 'CorrectObservation',
       payload: {
         subjectId: observation.subjectId,
         fieldKey: observation.fieldKey,
         value: fieldValue(value),
-        sourceRefs: sourceRefsFor(aggregate, observation.sourceRefs),
+        sourceRefs: w1ObservationSources(aggregate, observation.sourceRefs),
         reason,
       },
     }) }))
@@ -115,6 +104,7 @@ export function useReviewWorkspaceActions(): {
 
   const transitionEvidenceLink = useCallback(async (input: { id?: string; documentVersionId: string; subjectId: string; supportsFact: string; status: 'confirmed' | 'rejected' }) => {
     const aggregate = await currentAggregate()
+    w1AssertEvidenceAssignment(aggregate, input)
     await apply(await window.reviewAPI.setEvidenceLinkV2({ caseId: aggregate.caseV2.id, command: command(aggregate, {
       type: 'SetEvidenceLink',
       payload: input.id

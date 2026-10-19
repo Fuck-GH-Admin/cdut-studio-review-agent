@@ -9,13 +9,34 @@ import { buildDemoCase } from './demo-fixtures/demo-case-fixture'
 import { saveCase } from './case-store'
 import { ensureBuiltinTemplateDrafts } from './builtin-templates'
 import { getTemplate as getTemplateStored, saveDraft as saveDraftStored } from './template-store'
-import { getCaseV2, mapDomainToTemplate, migrateCaseToV2 } from './migration'
+import { documentToVersion, getCaseV2, mapDomainToTemplate, migrateCaseToV2 } from './migration'
 import { resolveModelSelection } from '@profer/shared'
 
 const CONFIG_DIR = join(import.meta.dir, '../../../../../../work/tmp', `profer-test-migrate-${Date.now()}`)
 process.env.PROFER_CONFIG_DIR = CONFIG_DIR
 afterAll(() => rmSync(CONFIG_DIR, { recursive: true, force: true }))
 
+describe('W1 truthful multi-format original source locations', () => {
+  test('Excel sheet / AA column and actual row persist into immutable SourceRef location', () => {
+    const file = { id: 'doc-sheet', fileName: '材料.xlsx', role: 'evidence', origin: 'upload',
+      blocks: [{ id: 'c1', kind: 'table-cell', text: '有效事实', page: 1,
+        table: { row: 9, column: 27, sheet: '经费证明' } }],
+      sizeBytes: 123, mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      parseStatus: 'parsed' } as unknown as Parameters<typeof documentToVersion>[0]
+    const version = documentToVersion(file)
+    expect(version.blocks[0]!.location).toEqual({ kind: 'sheet-cell', sheet: '经费证明', row: 9, column: 'AA' })
+  })
+  test('PDF real page only, with no invented bounding rectangle or guessed first page', () => {
+    const file = { id: 'doc-pdf', fileName: '证明.pdf', role: 'application', origin: 'upload',
+      blocks: [{ id: 'p1', kind: 'paragraph', text: '第九页文本', page: 9 }],
+      sizeBytes: 456, mimeType: 'application/pdf', parseStatus: 'parsed',
+    } as unknown as Parameters<typeof documentToVersion>[0]
+    expect(documentToVersion(file).blocks[0]!.location).toEqual({ kind: 'pdf-page', page: 9 })
+    const noPage = { ...file, blocks: [{ id: 'old', kind: 'paragraph' as const,
+      text: '旧兜底文字', page: 0 }] }
+    expect(documentToVersion(noPage).blocks[0]!.location).toEqual({ kind: 'paragraph', index: 0 })
+  })
+})
 describe('V1→V2 迁移（M1）', () => {
   test('Given 综测 demo 案卷 When 迁移 Then V2 可读且分数转字段、fixture 保留', () => {
     ensureBuiltinTemplateDrafts({ getTemplate: getTemplateStored, saveDraft: saveDraftStored })

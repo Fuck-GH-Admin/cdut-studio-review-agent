@@ -20,7 +20,7 @@ import { dirname, extname, join } from 'node:path'
 import { TextDecoder } from 'node:util'
 import { load } from 'cheerio'
 import type { ReviewDocumentBlock, SourceDocument } from '@profer/shared'
-import { extractDocxReviewContent, extractSpreadsheetReviewContent, extractTextFromFile } from '../document-parser'
+import { extractDocxReviewContent, extractSpreadsheetReviewContent, extractTextFromFile, extractPdfReviewPages } from '../document-parser'
 
 /** 支持直接按文本切块的扩展名 */
 const TEXT_EXTENSIONS = new Set(['.md', '.txt', '.csv', '.json', '.html', '.htm', '.eml'])
@@ -451,7 +451,36 @@ export async function parseFileIntoSourceDocument(
     }
   }
 
-  // 其他文档类（PDF / Office）：复用既有解析器提取文本，再走同一套纯文本切块管线
+  // PDF must retain its *real page number*. The older combined-text pathway
+  // silently assigned every line page=1 and could create false precise citations.
+  if (ext === '.pdf') {
+    try {
+      const pages = await extractPdfReviewPages(filePath)
+      const blocks = pages.flatMap(({ page, text }) =>
+        parseTextIntoBlocks(fileName, text).map((block, index) => ({
+          ...block, page, id: blockIdAt(slug, (page - 1) * 100000 + index),
+        })))
+      if (!blocks.length) {
+        return draftOf('partial', [], 'PDF 无可读文本层；扫描件页面须 OCR/视觉或人工核对，原件保留')
+      }
+      const blankPages = pages.filter(item => !item.text.trim()).map(item => item.page)
+      return draftOf(blankPages.length ? 'partial' : 'parsed', blocks,
+        blankPages.length ? 'PDF 第 ' + blankPages.join('、') +
+          ' 页无文本层；不得视为全部页面已审阅' : undefined)
+    } catch (error) {
+      try {
+        const fallback = await extractTextFromFile(filePath)
+        if (fallback.trim()) return draftOf('partial', parseTextIntoBlocks(fileName, fallback),
+          'PDF 按页结构提取失败，纯文本兜底无可靠页码；需人工对照原件')
+      } catch {
+        // Fail closed, preserving the source and original parse error below.
+      }
+      return draftOf('failed', placeholderBlocks(), 'PDF 无法可靠解析：' +
+        (error instanceof Error ? error.message : String(error)))
+    }
+  }
+
+  // 其他文档类（Office）：复用既有解析器提取文本，再走同一套纯文本切块管线
   if (DOCUMENT_EXTENSIONS.has(ext)) {
     let extracted = ''
     try {

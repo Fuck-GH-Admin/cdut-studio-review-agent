@@ -190,6 +190,15 @@ export async function syncWorkspaceProjectionV2(caseId: string): Promise<CaseAgg
           draft.evidenceLinks = draft.evidenceLinks.map((link) => archivedVersionIds.has(link.documentVersionId)
             ? { ...link, status: 'rejected' }
             : link)
+          // A human-confirmed observation may not keep passing D2 gates after
+          // any of its original source versions was archived. Keep its original
+          // value, SourceRefs and immutable receipt; only revoke current efficacy.
+          // The reviewer must explicitly re-confirm against a live version.
+          draft.observations = draft.observations.map((observation) =>
+            observation.confirmed && observation.sourceRefs.some(ref =>
+              archivedVersionIds.has(ref.documentVersionId))
+              ? { ...observation, confirmed: false }
+              : observation)
         }
         // 来自 V1 识别的关联先作为 AI 候选；审核员可在工作台确认、拒绝或改绑。
         for (const item of draft.d2RuntimePlan ? [] : legacy.items) {

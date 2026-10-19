@@ -182,12 +182,17 @@ export async function importDocumentFromPath(input: {
   onProgress?: (event: ReviewImportProgressEvent) => void
   fileIndex?: number
   fileCount?: number
+  /** Main-internal archival replay; never accepted as a Renderer-supplied path or role. */
+  originalFileName?: string
 }): Promise<SourceDocument> {
   assertSafeId(input.caseId)
   const reviewCase = getCase(input.caseId)
   if (!reviewCase) throw new Error(`案卷不存在: ${input.caseId}`)
   const filePath = input.sourcePath
-  const fileName = filePath.split(/[\\/]/).pop() ?? '审核材料'
+  const fileName = input.originalFileName ?? filePath.split(/[\\/]/).pop() ?? '审核材料'
+  if (!fileName || fileName === '.' || fileName === '..' || fileName.includes('/') || fileName.includes('\\') || fileName.includes(String.fromCharCode(0))) {
+    throw new Error('REVIEW_IMPORT_UNSAFE_FILENAME')
+  }
   const progressContext = { ...input, fileName }
   const reportProgress = (payload: ImportProgressPayload): void => emitImportProgress(progressContext, {
     ...payload,
@@ -277,6 +282,8 @@ export async function removeDocumentsFromCase(input: {
   caseId: string
   role: SourceDocument['role']
   documentIds?: string[]
+  /** Optional Main-side optimistic guard, checked inside case-store's write queue. */
+  expectedRevision?: number
 }): Promise<ReviewCase> {
   assertSafeId(input.caseId)
   if (input.documentIds !== undefined && (!Array.isArray(input.documentIds) || input.documentIds.some((id) => typeof id !== 'string' || !id))) {
@@ -304,7 +311,12 @@ export async function removeDocumentsFromCase(input: {
         ? { rulePacks: fresh.rulePacks.filter((pack) => !removedIds.has(pack.documentId)) }
         : {}),
       ...(input.role === 'application'
-        ? { subjectDocumentIds: fresh.subjectDocumentIds?.filter((documentId) => !removedIds.has(documentId)) }
+        ? {
+            // Remove stale V1 items anchored to the retired original while
+            // retaining the archived source file for audit and revision history.
+            items: retainedItems,
+            subjectDocumentIds: fresh.subjectDocumentIds?.filter((documentId) => !removedIds.has(documentId)),
+          }
         : {}),
       ...(input.role === 'evidence'
         ? {
@@ -319,7 +331,8 @@ export async function removeDocumentsFromCase(input: {
           }
         : {}),
     }
-  }, { reason: `从当前审核中移除${input.role === 'rule' ? '审核依据' : input.role === 'application' ? '申报材料' : '证明材料'}` })
+  }, { expectedRevision: input.expectedRevision,
+    reason: `从当前审核中移除${input.role === 'rule' ? '审核依据' : input.role === 'application' ? '申报材料' : '证明材料'}` })
   await syncWorkspaceProjectionV2(input.caseId)
   return updated
 }
