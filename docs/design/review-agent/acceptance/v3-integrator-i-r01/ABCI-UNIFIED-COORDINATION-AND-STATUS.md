@@ -129,10 +129,20 @@ A/B/I 发现阻断，先用已有类型化接口排障；无法自行解决时�
 ## 9. C 独占裁决登记区（其余 Agent 只读）
 
 <!-- BEGIN:DECISIONS:C -->
-- `C-RULE-001 / 2026-10-19 / PROPOSED_FOR_TEAM_ACK`：采用“一个协调分支、一个统一协议文件、四个分区状态、各线工程 PR 独立”的组织方式。C 对业务合同/安全/签收保持最终裁决权；I 对既定范围内的集成实现自主负责。
-- `CR-A-001 / PENDING_C_DECISION`：需裁决可信 ExecutionEvent/eventId、Check×target/status、read extent、ACK 与正式 Run 消费的版本合同。A 原请求见 #143；待 C 在**实际代码**完成版本化后授权正式连接。
-- `B-CR-001 / PENDING_C_DECISION`：需裁决可信 Main context/Picker/staging、候选 Plan 与正式发布门禁、ApplyMaterial/InstallPlan 受控接口。B 原请求见 #142；尚无正式发布授权。
-- `I-C-INTEGRATION-ANCHOR / PENDING_C_SELECTION`：C 尚未在本协议签出 I1 的专用集成锚点；I 可做 I0/preflight 与不涉及正式写权的准备，不能擅称 I1 正式完成。
+- `C-RULE-001 / 2026-10-19 / ACTIVE_V1.0`：A/B 已按各自状态区 ACK；I 以自身实际区段为准。单一协调文件、四线独立工程 PR、C 最终业务/安全裁决与 I 工程集成 Owner 继续生效。本裁决只编辑 C 的决议/状态区，不代替其他 Agent 署名。
+- **`C-ANCHOR-001 / APPROVED_TECHNICAL_ONLY`**：**首个 C 集成锚点**为 PR #144 的已验证旧 SHA `31aa352c45a33d6832612884b0fea38e39b5cf8d`，共同基础 C0 `5682057c7232c914e72fdae525ce95fd33f32b53`／`review-c0/1`。此 SHA 的 PR CI `39229456164`、Batch `39229456214`、D2 `39229456312`、Review Baseline `39229456107` 均成功，**仅构成 C1 部分离线代码可用性，不构成 C1 完成或 A+B+C 联合 PASS**。I 可从该 SHA 开始隔离的 I1 工程快照，测试 A1 Owner、A2 C0 proposal-only、A3 技术诊断、B1 候选 Plan 编译预览、B2 staged parser/source registry、B3 路由建议；不得写任何正式 CurrentCase/Run/Decision 或把 candidate-held 作为 published。I 可使用 A 已独立 CI 成功的 `d8fd3e0e696caa1df7321c23c46e4f70a1f910f7` 和 B 已成功的 `f7a7cf2a63f5861ad4bfd3f432c7f9a6dfe151bc` 作为首批来源；**不得自动替换为浮动的新 HEAD**。A/B 后续 SHA 需新 CI 证据与独立锁定；B 于本次核验时最新 `df6b6ba458eb7c6ef2e7a2942ccffa17c72cf2d2` 的 PR CI `39239062410` 为 FAILURE，不在批准来源内。
+- **`CR-A-001 / APPROVED_SLICED_SPEC / IMPLEMENTATION_PENDING`**：
+  1. **A-0 已批准**：I 可受限导入 A1 Owner/Grant、A2 的旧 `review-c0/1` 事件 proposal/outbox、A3 exact-check 技术覆盖和合成负例；所有事件只做候选观察和受控技术测试。无正式 Run ACK/业务完成权限，不需要等 A4 完成。
+  2. **A-1 已裁决合同方向**：**不修改/伪装原 C0/1 ExecutionEvent**，采用 C 独立版本 `review-v3-execution/1` 的严格 proposal envelope，必须覆盖完整 `RunEvidenceIdentity`（case/run/revision/plan fingerprint/manifest/attempt/generation）、eventId=规范序列化 payload SHA-256、连续 sequence、当前 Main grant、Host receipt、物理 SourceIdentity + read extent、精确 Check×target×object×subject + accepted/rejected/missing/unknown 和独立技术终态。唯一事件重放键由 `runId/attemptId/generation/sequence` 加存储的 body digest 界定：同键同 body 返回原持久 ACK、同键不同 body 拒绝。旧版 proposal **不自动升级**。C 工程 PR #144 已提交纯校验层 `review-v3-execution-contract.ts` 与负例测试（本次开发 HEAD：`54b675c5c08b8063ac70eb1e3d8959422195b7d2`）；其本次代码 CI **待检查，不继承锚点旧 CI**。
+  3. **A-2 尚未实施**：A 需在其自有 adapter/Host 侧生产上述有真实 Host 回执的 proposal；C2 由 C 在 Main 可信消费端复查当前 Principal/session/grant/Source/Plan、原子入正式 Run/ReadReceipt/Check，并**仅在 durable write 后签发唯一 ACK**。I 可编写只读验证桥接及试验 negative cases，但**不允许**代写正式 Run consumer 或绕过 Main；若需改 shared DTO/IPC，由 C 独占提交经测试的新固定 SHA。技术 `completed-technical` 不等于合法业务完成，C2 需再校验覆盖与正式条件。
+  4. **A-3 仍阻断的验收**：Host 真实 source/block/read extent、复现实机 revoke/late event、多 PID/ENOSPC、9/9 Check/24 turn/Provider、断电 ACK replay；这些需 A 自测 + I 新合并 SHA 联合 Gate O/E，未过前 `RUN_WRITER_WIRING=BLOCKED`。
+- **`B-CR-001 / APPROVED_SLICED_SPEC / IMPLEMENTATION_PENDING`**：
+  1. **B-0 已批准**：I 可导入 B1 immutable candidate compiler、B2 staging + parser-verified SourceIdentity 和 B3 保守路由，在独立隔离环境验证来源、三值条件、升级 ACK、20 秒中断与物理版本，不得将 `publicationAllowed=false` 的候选作为正式政策/Gold；技术预览/试跑状态必须与正式安装区别展示。
+  2. **B-1 可信 Main 入口合同已裁决**：仅 C 的 Main 从真实 `IpcMainEvent.sender/senderFrame`、当前窗口与有效 owner/session 授权派生 actor/owner generation/scope，再签发 Native picker/drop **物理 bytes capability** 给 B2 一次性短时 staging；严禁相信 Renderer JSON 的 `ownerId/frameId/teacher/physicalSourceKey/blockId`。窗口关闭、失效、await 后撤权及重试必须 fail closed。B 负责其 adapter/ZIP/parser 本身，I 仅负责新 glue、合同测试；正式 Main handler/Preload 授权仍 C 独占。
+  3. **B-2 唯一业务写入口合同已裁决**：受信 C 命令需 `expectedRevision/requestId/payloadHash`、Principal scope、校验原件/Source registry/当前 Subject/版本、CAS + durable Receipt；材料 `ApplyMaterial`/Archive 导致旧 Observation/Link/ReadReceipt/Run 当前效力撤销；`InstallPlan`/UpgradePlan 必须验证 immutable descriptor fingerprint、实际政策来源/独立发布权限、Check×target×source、删 Check 的显式 ACK，并保留旧 Plan/Run/Receipt。**候选 Plan 只许预览，不允许作为已发布 Plan 正式安装**；目前 #144 的 `bindCanonicalPlanV3` 只具备内部验证回调，正式 publisher/provenance verifier 与 Main 命令尚未实现，状态 `PENDING_C_IMPLEMENTATION`。不需要也不批准 B/I 新建第二份 CaseStore。
+  4. **B-3 仍阻断的验收**：真实 Native picker/ZIP/Office 解析、持久 ImportBatch、50 候选逐义务政策证据及第 51 套真实用户流程、旧 P06 unsupported 可见性与独立 Gold/学校授权；这些不能由 I 假模拟为已完成。Main/业务写入集成须等 C 实际代码及负例 CI。
+- **`I-DELEGATION-001 / NO_C_FILE_WRITE_LEASE`**：当前 I 可新增自身隔离 glue/合成测试、搬运已锁定的 A/B 独占文件、在 I 分支跑回归并提出精确 CR；**尚未委托**修改 `packages/shared/**`、`review-ipc.ts`、Preload、Case/Run/Batch/Outbox、`workspace-service-v2.ts`、`pi-case-review-service.ts` 或 C 的正式服务任何 hunk。因合同/CI 阻断只能暂停相关切片，A/B/C 仍独立前进。
+- **`C-INTEGRATION-SIGNOFF / PENDING`**：I1 新集成 SHA 尚不存在，C 不可能事先签收联合 Gate O。I 需提交精确源 SHA→集成 SHA、变更及正反例、失败/回滚。C 签收 `C_ACCEPTED_FOR_ENGINEERING` 只能发生在该 SHA 实际代码与门禁核验后；E/L/P、产品发布均独立。
 <!-- END:DECISIONS:C -->
 
 ## 10. 四线各自的最近进度区（只编辑自己的 BEGIN/END）
@@ -166,11 +176,12 @@ A/B/I 发现阻断，先用已有类型化接口排障；无法自行解决时�
 
 ### C — Owner: Dev-C
 <!-- BEGIN:STATUS:C -->
-- `SOURCE_HEAD`：#144 @ `31aa352c45a33d6832612884b0fea38e39b5cf8d`。
-- `DELIVERED`：C1 原生案卷优先、来源归档当前有效性失效、内部 Plan 绑定/升级服务，单线 PR CI 成功；不得宣称 C1–C5 完成。
-- `BLOCKED`：C1 仍需覆盖历史入口和真实写链；C2 Run/C3 Batch/C4 Outbox/C5 工作台尚需生产开发。正式 A/B contract 尚需按字段裁决。
-- `COORDINATION_ACK`：`C_RULE_AUTHOR_V1.0`；对 A/B/I 的确认仍待各线。
-- `NEXT`：持续完成 C 核心开发，并先给 I CR-A/B 的可执行拆分结论与第一批固定 C 锚点。
+- `COORDINATION_VERSION`：`V3-ABCI-GOVERNANCE-R01/V1.0`；C 已对 `CR-A-001`、`B-CR-001` 按端口作**批准规范/暂缓实施**的分层裁决，首次 I1 **技术-only 锚点**为旧绿 `31aa352c45a33d6832612884b0fea38e39b5cf8d`。见第 9 节，其他线的 ACK 保持其各自原状态。
+- `SOURCE_HEAD`：#144 C 研发 HEAD 本轮提交 `54b675c5c08b8063ac70eb1e3d8959422195b7d2`（版本化 Execution proposal validator + tests，CI 未确认）；旧 C1 SHA 的限定 CI 已成功，**不可移植其成功结论**。
+- `DELIVERED`：C1 原生案卷优先、材料归档当前效力撤销、内部 Plan 绑定/升级；新增 C-owned `review-v3-execution/1` 技术事件可信校验器与合成负例。这里只是输入合同层，**没有实现 C2 正式 Run writer、A Host 到 C Main 的真实联通或 B 正式 Main intake**。
+- `BLOCKED`：C1 完整写路径未收口；C2 Run、C3 Batch、C4 事务/Outbox、C5 工作台均未完成。A 新版本事件消费者、B 正式 policy provenance verifier 和 Main Picker/ApplyMaterial/InstallPlan 都需 C 后续实现；缺少校方授权 Gate L 不可达。
+- `GATES`：旧锚点离线 CI success (上述四个 workflow)；本轮 C 新代码 `Gate O=PENDING_CI`；I1 联合 Gate O、Gate E、Gate P `NOT_RUN`，Gate L `BLOCKED_NO_AUTH`。本协议裁决不等于代码/产品验收。
+- `NEXT`：确认新 C 合同负例与 typecheck CI，修复失败；继续 C1 正式 Main 入口及 Source/Plan validity，再提供下一代码锚点给 I；并推进 C2 唯一 ReviewRun writer。I 只集成已授权的技术切片。
 <!-- END:STATUS:C -->
 
 ### I — Owner: Integrator-I
