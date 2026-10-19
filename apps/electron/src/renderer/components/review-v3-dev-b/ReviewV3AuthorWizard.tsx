@@ -5,6 +5,7 @@
  */
 import { useRef, useState, type ReactNode } from 'react'
 import { B1BufferedIdentityInput } from './B1BufferedIdentityInput'
+import { parseB1AuthorCandidateImport,assertB1ImportReplaceSafe,B1_AUTHOR_IMPORT_MAX_BYTES } from './review-v3-author-import'
 import {
   exportB1AuthorCandidate, parseB1TrialInput, prepareB1TechnicalTrial,
   type B1TrialValues,
@@ -54,6 +55,8 @@ export function ReviewV3AuthorWizard({
   const [savedSnapshot, setSavedSnapshot] = useState<B1AuthorDocument|null>(()=>
     initialRevision>0 && initialDraft ? structuredClone(initialDraft) : null)
   const editEpoch = useRef(0)
+  const operationInFlight = useRef(false)
+  const [pendingImport,setPendingImport] = useState<{doc:B1AuthorDocument;epoch:number}|null>(null)
   const isDirty = b1AuthorHasUnsavedEdits(draft,savedSnapshot)
   const [preview, setPreview] = useState<ImmutablePlanDescriptorB1 | null>(null)
   const [trial, setTrial] = useState<B1TrialValues>({})
@@ -154,6 +157,8 @@ export function ReviewV3AuthorWizard({
     } catch(reason) { setError(reason instanceof Error ? reason.message : String(reason)) }
   }
   const perform = async (mode: 'save' | 'preview' | 'freeze'): Promise<void> => {
+    if(operationInFlight.current){setError('B1_AUTHOR_OPERATION_BUSY');return}
+    operationInFlight.current=true
     setBusy(true); setError(''); setNotice('')
     const epoch=editEpoch.current
     try {
@@ -181,7 +186,38 @@ export function ReviewV3AuthorWizard({
       }
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : String(reason))
-    } finally { setBusy(false) }
+    } finally { operationInFlight.current=false;setBusy(false) }
+  }
+  const stageImport = async (file: File): Promise<void> => {
+    if(operationInFlight.current){setError('B1_IMPORT_OPERATION_BUSY');return}
+    if(file.size>B1_AUTHOR_IMPORT_MAX_BYTES){setError('B1_IMPORT_FILE_TOO_LARGE');return}
+    operationInFlight.current=true
+    setBusy(true);setError('');setNotice('')
+    const epoch=editEpoch.current
+    try {
+      const candidate=parseB1AuthorCandidateImport(await file.text())
+      if(epoch!==editEpoch.current)throw new Error('B1_IMPORT_CHANGED_DURING_READ')
+      setPendingImport({doc:candidate,epoch})
+      setNotice('导入预览就绪：请核对候选业务身份和字段数量，再明确确认替换当前屏幕草稿；尚未写入 Main')
+    } catch(reason){
+      setPendingImport(null)
+      setError(reason instanceof Error?reason.message:String(reason))
+    } finally{operationInFlight.current=false;setBusy(false)}
+  }
+  const confirmImport=():void=>{
+    if(!pendingImport)return
+    try{
+      assertB1ImportReplaceSafe(pendingImport.epoch,editEpoch.current,operationInFlight.current)
+      editEpoch.current+=1
+      setDraft(structuredClone(pendingImport.doc))
+      setRevision(0)
+      setSavedSnapshot(null)
+      setTrial({})
+      setPreview(null)
+      setPendingImport(null)
+      setError('')
+      setNotice('已替换为未保存的候选草稿。来源身份保持未验证；保存需 Main 授权及 revision CAS，重名候选不可覆盖')
+    }catch(reason){setPendingImport(null);setError(reason instanceof Error?reason.message:String(reason))}
   }
   const checks = draft.modules[0]?.checks ?? []
   return <div className="space-y-4 text-foreground" data-testid="review-v3-b1-author-wizard">
@@ -425,7 +461,26 @@ export function ReviewV3AuthorWizard({
       <button type="button" disabled={busy} className={buttonClass} onClick={()=>void perform('preview')}>技术预览 / 试跑规则</button>
       <button type="button" disabled={busy || isDirty} title={isDirty?'先保存当前修改才能冻结':'冻结已保存修订'} className={buttonClass} onClick={()=>void perform('freeze')}>冻结候选（非正式发布）</button>
       <button type="button" disabled={busy} className={buttonClass} onClick={exportCandidate}>导出候选配置</button>
+      <label className={buttonClass+(busy?' opacity-40':'')} aria-label="导入尚未发布的用户声明候选">
+        导入候选 JSON（先预览）
+        <input type="file" className="sr-only" accept=".json,application/json" disabled={busy}
+          onChange={event=>{
+            const file=event.currentTarget.files?.[0]
+            event.currentTarget.value=''
+            if(file)void stageImport(file)
+          }}/>
+      </label>
     </div>
+    {pendingImport && <Section title="导入预览：尚未替换、保存或发布">
+      <p className="text-xs">来源：不可信用户文件；Main 身份/学校政策/Gold 均未验真。</p>
+      <p className="text-sm">{pendingImport.doc.name} · {pendingImport.doc.templateId} · v{pendingImport.doc.templateVersion}</p>
+      <p className="text-xs">来源 {pendingImport.doc.sources.length} · 字段 {pendingImport.doc.fields.length} · 对象 {pendingImport.doc.targets.length} · Check {pendingImport.doc.modules.reduce((n,m)=>n+m.checks.length,0)}</p>
+      <p className="text-xs">确认将舍弃屏幕现有未保存修改，并把新候选设为修订 0；历史原件仍留在 Main，不能绕过已有模板 revision CAS。</p>
+      <div className="flex gap-2">
+        <button type="button" disabled={busy} className={buttonClass} onClick={confirmImport}>确认替换为未保存草稿</button>
+        <button type="button" disabled={busy} className={buttonClass} onClick={()=>{setPendingImport(null);setNotice('已取消导入；原草稿未改动')}}>取消导入</button>
+      </div>
+    </Section>}
     {error && <p role="alert" className="text-sm text-red-500">未执行：{error}</p>}
     {notice && <p role="status" className="text-sm">{notice}</p>}
     {preview && <Section title="候选编译与三值适用性预览">
