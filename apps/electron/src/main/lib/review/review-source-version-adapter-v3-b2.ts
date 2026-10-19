@@ -70,7 +70,11 @@ export class ReviewB2SourceVersionAdapter {
         candidate.ownerGeneration !== ctx.ownerGeneration ||
         candidate.caseCandidateId !== ctx.caseCandidateId ||
         candidate.status !== 'accepted') throw new Error('B2_SOURCE_SCOPE_MISMATCH')
-    const bytes = this.staging.read(ctx, candidate.candidateId)
+    const trusted = this.staging.getCandidate(ctx, candidate.candidateId)
+    if (JSON.stringify(trusted) !== JSON.stringify(candidate)) {
+      throw new Error('B2_SOURCE_CANDIDATE_TAMPERED')
+    }
+    const bytes = this.staging.read(ctx, trusted.candidateId)
     const hash = sha256(bytes)
     if (hash !== candidate.rawSha256 || bytes.byteLength !== candidate.byteLength) {
       throw new Error('B2_SOURCE_BYTES_MISMATCH')
