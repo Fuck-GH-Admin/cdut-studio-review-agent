@@ -16,6 +16,15 @@ import type {
 } from './review-pi-owner-adapter'
 import type {V3ReviewToolCall} from './review-execution-event-adapter'
 
+/** Scoped technical receipt chain. NEVER C2MainPhysicalHostReceipt. */
+export interface V3ATechnicalDispatchWitness {
+  readonly dispatchId:string
+  readonly grantId:string
+  readonly caseId:string|undefined
+  readonly sessionId:string|undefined
+  readonly state:'in-flight'|'settled'|'late-denied'
+  readonly technicalReceiptId:string|undefined
+}
 interface SDKDispatchRecord {
   id: string
   grantId: string
@@ -238,6 +247,19 @@ export class V3ASDKDispatchFence {
       {...last,state:'late-denied'},
     ]}
     this.persist({...this.disk,runs:{...this.disk.runs,[key(run)]:next}})
+  }
+  /** Main-current Owner gates readback; no source of C physical Host truth. */
+  technicalSnapshot(call:V3ReviewToolCall):readonly V3ATechnicalDispatchWitness[]{
+    const lease=this.owners.assertAuthorized(call.sessionId,call.grantId,
+      call.senderKey,call.principal,'review_submit_result')
+    this.current()
+    const run=pinned(lease)
+    const records=this.entry(run)?.records??[]
+    return records.map(r=>({
+      dispatchId:r.id,grantId:r.grantId,caseId:r.caseId,
+      sessionId:r.sessionId,state:r.state,
+      technicalReceiptId:r.receiptId,
+    }))
   }
   /** Both in-flight and late-denied still need recovery, never auto-retry. */
   unresolved(run:RunEvidenceIdentity):boolean{

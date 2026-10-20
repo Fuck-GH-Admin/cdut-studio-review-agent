@@ -9,7 +9,8 @@ import {C0ContractError,type RunEvidenceIdentity,
 import type {V3ReviewToolCall} from './review-execution-event-adapter'
 import type {V3ReviewOwnerAdapter,V3OwnerLease} from './review-pi-owner-adapter'
 import type {V3ATurnBudget,V3ATurnSnapshot} from './review-v3-execution-turn-budget'
-import type {V3ASDKDispatchFence} from './review-v3-sdk-dispatch-fence'
+import type {V3ASDKDispatchFence,V3ATechnicalDispatchWitness}
+  from './review-v3-sdk-dispatch-fence'
 import type {AExecutionProposal,V3AProposalProducer} from
   './review-v3-execution-proposal-producer'
 
@@ -44,6 +45,7 @@ export interface A22TechnicalEvidenceEnvelope {
   /** A-verified Host read/check/terminal proposal chain, NOT C Host facts. */
   readonly technicalEvents:readonly AExecutionProposal[]
   readonly turnBudget:V3ATurnSnapshot
+  readonly sdkDispatches:readonly V3ATechnicalDispatchWitness[]
   readonly unresolvedProviderEffect:boolean
   readonly canSealCReviewRun:false
   readonly evidenceHash:string
@@ -108,7 +110,12 @@ export class A22TechnicalEvidenceHandoff {
       }
     }
     const budget=this.turns.snapshot(lease)
+    const sdkDispatches=this.dispatch.technicalSnapshot(call)
     const unknown=this.dispatch.unresolved(run)
+    if(unknown!==sdkDispatches.some(x=>
+      x.state==='in-flight'||x.state==='late-denied')){
+      reject('technical Dispatch journal readbacks differ')
+    }
     // Recheck after multiple immutable A ledgers were read; C STILL must
     // independently verify current physical Main Host receipts at commit.
     this.owners.assertAuthorized(
@@ -130,7 +137,8 @@ export class A22TechnicalEvidenceHandoff {
         subjectId:b.subjectId,sourceVersionIds:[...b.sourceVersionIds],
       })),
       technicalEvents:structuredClone(events),
-      turnBudget:budget,unresolvedProviderEffect:unknown,
+      turnBudget:budget,sdkDispatches:structuredClone(sdkDispatches),
+      unresolvedProviderEffect:unknown,
       canSealCReviewRun:false as const,
     }
     return {...proof,evidenceHash:sha(proof)}

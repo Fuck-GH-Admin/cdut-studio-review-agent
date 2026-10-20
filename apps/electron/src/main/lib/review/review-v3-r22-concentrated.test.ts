@@ -150,6 +150,11 @@ describe('Dev-A R22 actual owner + durable multi-turn background execution',()=>
     expect(coordinator.inspect(a.caseId)).toMatchObject({state:'completed-technical'})
     expect(a.turns.snapshot(a.lease).usedTurns).toBe(3)
     expect(b.turns.snapshot(b.lease).usedTurns).toBe(2)
+    const firstDispatches=a.dispatch.technicalSnapshot(a.call)
+    expect(firstDispatches).toHaveLength(3)
+    expect(firstDispatches.every(x=>x.state==='settled'&&
+      x.grantId===a.lease.grantId&&x.caseId===a.caseId&&
+      !!x.dispatchId&&!!x.technicalReceiptId)).toBe(true)
     expect((await coordinator.run({requestId:'req-a',call:a.call,
       sequence:a.sequence(['direct','hidden','graph'])})).state)
       .toBe('completed-technical')
@@ -208,6 +213,7 @@ describe('Dev-A R22 actual owner + durable multi-turn background execution',()=>
     expect(pack).toMatchObject({
       trust:'A_TECHNICAL_ONLY_C_PHYSICAL_OBSERVER_REQUIRED',
       run:a.run,unresolvedProviderEffect:false,canSealCReviewRun:false,
+      sdkDispatches:[],
       turnBudget:{usedTurns:0},
     })
     expect(pack.technicalEvents).toHaveLength(3)
