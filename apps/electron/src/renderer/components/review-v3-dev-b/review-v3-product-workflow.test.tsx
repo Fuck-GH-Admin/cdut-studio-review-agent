@@ -3,7 +3,7 @@ import {renderToStaticMarkup} from 'react-dom/server'
 import {ReviewV3CandidateIntakeSurface} from './ReviewV3CandidateIntakeSurface'
 import {assertB32RemediationReceipt} from './ReviewV3ProductWorkspace'
 import {
- buildB32ProductView,pageB32Checks,pageB32Issues,assertB32StillCurrent,
+ buildB32ProductView,pageB32Checks,pageB32Issues,filterB32Materials,filterB32Checks,assertB32StillCurrent,
  type B32ProductRead,
 } from './review-v3-product-workflow'
 const route={status:'unmatched' as const,remainingMs:0,reason:'no evidenced template'}
@@ -58,6 +58,29 @@ describe('B R30–R32 renderer reads real complete input and blocks untrusted au
   expect(assertB32RemediationReceipt(ack,'G01:issue','sha-1')).toBe(true)
   expect(()=>assertB32RemediationReceipt(ack,'G01:issue','sha-2')).toThrow('B_PRODUCT_REMEDIATION_ACK_INVALID')
   expect(()=>assertB32RemediationReceipt({...ack,receiptId:''},'G01:issue','sha-1')).toThrow('B_PRODUCT_REMEDIATION_ACK_INVALID')
+ })
+ test('file filters keep every original in inventory and locate second ZIP',()=>{
+  const complete=buildB32ProductView(physical())
+  expect(complete.materials).toHaveLength(3)
+  expect(filterB32Materials(complete.materials,'ITEM2')).toHaveLength(1)
+  expect(filterB32Materials(complete.materials,'item2')[0]?.sourceType).toBe('ZIP_ENTRY')
+  expect(filterB32Materials(complete.materials,'', 'supporting')).toHaveLength(2)
+  expect(filterB32Materials(complete.materials,'student-A')).toHaveLength(3)
+  expect(filterB32Materials(complete.materials,'no-such-source')).toHaveLength(0)
+  expect(complete.totalStaged).toBe(3)
+ })
+ test('Check provenance search keeps UNKNOWN filters independent of source accounting',()=>{
+  const rows=[{key:'one',checkKey:'K01',targetKey:'T',objectKey:'O',subjectId:'S',
+    applicability:'unknown' as const,unresolved:true,
+    sources:[{sourceId:'ref-A',state:'pending',documentVersionId:null,
+      parserBlockId:null,parseRevision:null,rawSha256:null,locator:'page 2',reason:'needs review'}]},
+   {key:'two',checkKey:'K02',targetKey:'T',objectKey:'O',subjectId:'S',
+    applicability:'applicable' as const,unresolved:false,sources:[]}]
+  expect(filterB32Checks(rows,'REF-A')).toHaveLength(1)
+  expect(filterB32Checks(rows,'page 2',true)[0]?.checkKey).toBe('K01')
+  expect(filterB32Checks(rows,'',true)).toHaveLength(1)
+  expect(filterB32Checks(rows,'K02',true)).toHaveLength(0)
+  expect(rows).toHaveLength(2)
  })
  test('three material inventory includes second ZIP and enables human-only unmatched authorship',()=>{
   const v=buildB32ProductView(physical())
