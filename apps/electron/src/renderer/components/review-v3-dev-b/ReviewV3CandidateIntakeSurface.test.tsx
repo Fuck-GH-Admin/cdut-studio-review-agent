@@ -1,7 +1,7 @@
 import {describe,expect,test} from 'bun:test'
 import {renderToStaticMarkup} from 'react-dom/server'
 import type {B3RouteState} from '../../../main/lib/review/review-intake-routing-adapter-v3-b3'
-import {ReviewV3CandidateIntakeSurface,ReviewV3RouteReviewPanel} from './ReviewV3CandidateIntakeSurface'
+import {ReviewV3CandidateIntakeSurface,ReviewV3RouteReviewPanel,assertB3TechnicalChoiceAck} from './ReviewV3CandidateIntakeSurface'
 const catalog=[
   {templateId:'approved-template',templateVersion:'1.0',name:'Technical Template',
     availability:'authorized-for-technical-selection' as const},
@@ -31,6 +31,16 @@ describe('B1+B3 candidate workspace markup (not Main IPC / user UAT)',()=>{
     expect(html).toContain('Candidate Draft')
     expect(html).toContain('当前展示 2 套候选版本')
     expect(html).toContain('不建案')
+  })
+  test('manual technical choice only reports confirmed if Main returned matching response',()=>{
+    const choice={proposalOnly:true as const,caseCandidateId:'case-1',sessionKey:'session',
+      templateId:'G01-T01',templateVersion:'1'}
+    expect(assertB3TechnicalChoiceAck(undefined,choice)).toBe(false)
+    const ack={candidateOnly:true as const,technicalChoiceRecorded:true as const,
+      caseCandidateId:'case-1',templateId:'G01-T01',templateVersion:'1'}
+    expect(assertB3TechnicalChoiceAck(ack,choice)).toBe(true)
+    expect(()=>assertB3TechnicalChoiceAck({...ack,templateId:'G01-T02'},choice))
+      .toThrow('B3_MAIN_TECHNICAL_ACK_MISMATCH')
   })
   test('technical timeout is visibly not a formal Case/Policy decision',()=>{
     const html=renderToStaticMarkup(<ReviewV3RouteReviewPanel
