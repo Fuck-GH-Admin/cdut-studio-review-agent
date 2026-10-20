@@ -156,11 +156,17 @@ export function auditB4R25OriginalClauseBindings(
     const parts = row.original.excerpt.split('\n')
     const exceptional = domain === 'G06' && row.templateId === 'g06-t06' &&
       row.original.ruleId === 'R-34'
+    const observedBodySha256 =
+      hash(parts.slice(0, pin.rawRuleBodyNonBlankLines).join('\n'))
     if (pin.r14AdditionalNonRuleContextLines !== (exceptional ? 2 : 0) ||
         parts.length !== pin.rawRuleBodyNonBlankLines +
           pin.r14AdditionalNonRuleContextLines ||
-        hash(parts.slice(0, pin.rawRuleBodyNonBlankLines).join('\n')) !==
-          pin.rawExcerptSha256) throw new Error('B4_R25_RAW_CLAUSE_VERBATIM_MISMATCH_' + id)
+        observedBodySha256 !== pin.rawExcerptSha256)
+      throw new Error('B4_R25_RAW_CLAUSE_VERBATIM_MISMATCH_' + id +
+        '_LINES_' + parts.length + '_EXPECTED_' +
+        (pin.rawRuleBodyNonBlankLines + pin.r14AdditionalNonRuleContextLines) +
+        '_OBSERVED_SHA_' + observedBodySha256 +
+        '_PINNED_SHA_' + pin.rawExcerptSha256)
     if (exceptional) spill++
     const clauseParts = parts.slice(0, pin.rawRuleBodyNonBlankLines)
     const trigger = clauseParts.find(line => line.includes('触发条件'))
