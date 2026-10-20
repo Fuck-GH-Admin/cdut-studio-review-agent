@@ -166,13 +166,14 @@ export class A24BoundedTechnicalBatchScheduler {
           if(task.caseId!==caseId||task.requestId!==request.requestId){
             deny('Main scheduler Case/technical receipt mismatch')
           }
-          if((this.stopped||this.cancelledCases.has(caseId))&&
-             task.state==='completed-technical'){
-            // A stopped batch is not allowed to report a new technical PASS
-            // based solely on a late completion from an unchecked port.
+          if(task.state==='recovery-required'||task.state==='stopping'||
+             task.state==='running'||this.stopped||
+             this.cancelledCases.has(caseId)){
+            // A stopped, unresolved or cancelled Provider task is NEVER a
+            // successful batch item, including a late terminal callback.
             results[i]={caseId,requestId:request.requestId,
               outcome:'recovery-required',
-              reason:'BATCH_CANCELLED_LATE_RESULT_REQUIRES_RECONCILIATION'}
+              reason:task.reason??'PROVIDER_OUTCOME_REQUIRES_MANUAL_REVIEW'}
           }else{
             results[i]={caseId,requestId:request.requestId,
               outcome:'technical',task}
