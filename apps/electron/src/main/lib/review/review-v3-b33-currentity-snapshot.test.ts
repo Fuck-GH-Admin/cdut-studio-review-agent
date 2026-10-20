@@ -65,9 +65,10 @@ describe('B33 deterministic complete physical-material version, not a credential
   }
  })
  test('conservative technical route transition changes checksum, countdown remaining-only does not',()=>{
-  const base=input(),other=structuredClone(base)
-  other.route={status:'manually-selected',reason:'Human confirmed',
-   remainingMs:0,chosen:{templateId:'g02-t01',templateVersion:'1'}}
+  const base=input()
+  const other={...structuredClone(base),route:{status:'manually-selected' as const,
+   reason:'Human confirmed',remainingMs:0,
+   chosen:{templateId:'g02-t01',templateVersion:'1'}}}
   expect(()=>assertB33StillCurrent(base,other)).toThrow('B_R33_CURRENT_SOURCE_OR_OWNER_CHANGED')
   const countdown={...base,route:{status:'countdown' as const,remainingMs:19990,reason:'one candidate'}}
   const later={...countdown,route:{...countdown.route,remainingMs:15000}}

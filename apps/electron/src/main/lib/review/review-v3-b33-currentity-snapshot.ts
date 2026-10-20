@@ -112,7 +112,7 @@ export function buildB33StableCurrentity(input:B33CurrentInput):B33CurrentSnapsh
        sources.add(s.sourceId)
        if(s.state==='linked-candidate'){
          const original=s.candidateId?byId.get(s.candidateId):undefined
-         if(!original)deny('LINKED_SOURCE_MISSING_FROM_FULL_STAGING')
+         if(!original)throw new Error('B_R33_LINKED_SOURCE_MISSING_FROM_FULL_STAGING')
          if(original.rawSha256!==s.rawSha256||
             original.documentVersionId!==s.documentVersionId||
             original.materialId!==s.materialId||
