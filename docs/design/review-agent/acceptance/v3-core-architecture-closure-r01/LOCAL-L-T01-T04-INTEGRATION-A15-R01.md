@@ -10,7 +10,7 @@
 | **A：先接 T02** | **#181** | `feat/v3-t02-ocr-source-geometry-r01` / `ee0b787d80edd0d9d81089610c617c750d3a055f` | PPTX 内嵌媒体关系路径、真实像素坐标的 OCR 块、B2 staged 只读预览、UI bbox；5 文件 | **PR CI、Review Baseline、D2 Scoped 均 SUCCESS**；不涉及核心 R01 合同 |
 | **B：接 T01 作者态** | **#183** | `feat/v3-arch-r01-t01-typed-criteria` / `f5ae8bb1eb9883e57d44e77a4216f12d78c61796` | 新 `ReviewV3T01NumberRuleEditor`、`deterministicConstraint`、负责人确认、A15 20 人规则从 UI max 移到业务标准；8 文件 | **PR CI FAILURE，日志仅见现有主线 T05 测试 `TS2339` 两处；该次流程未跑单测**，不能声称全部绿 |
 | **C：对齐合同后接 T04 编译器** | **#182** | `feat/v3-core-t04-published-plan-r01` / `e39cbbd2643533e879c9607b9dc2e2956ffdedca` | 新 `compilePublishedTemplateReviewPlan`、T04 `material-min-count`、A15 规则域单测；4 文件 | **Baseline SUCCESS；PR CI / D2 Scoped FAILURE**，同两处 T05 测试类型错误；产品 Run 还未接 |
-| **D：最后接 T03 Run 门禁** | **#184** | `feat/v3-architecture-r01-t03-run-gate` / `1f3e2ce1521de81dfccb56f4a149dac7a7753b7f` | `assessT03RunAction`、`selectT03CurrentRun` + 定向测试和 Main 交接；3 文件，**不修改 T05 Main** | **Baseline SUCCESS；D2 Scoped FAILURE**（同 T05 TS 错）；**PR CI 核查时 IN_PROGRESS**，不能用旧 SHA 绿灯代替 |
+| **D：最后接 T03 Run 门禁** | **#184** | `feat/v3-architecture-r01-t03-run-gate` / `1f3e2ce1521de81dfccb56f4a149dac7a7753b7f` | `assessT03RunAction`、`selectT03CurrentRun` + 定向测试和 Main 交接；3 文件，**不修改 T05 Main** | **Baseline SUCCESS；D2 Scoped FAILURE**（同 T05 TS 错）；**PR CI 最终 FAILURE**，同主线 T05 测试 TS2339，未到后续测试阶段；不能用旧 SHA 绿灯代替 |
 
 所有四分支均从 `main@5643959a4219` 派生；而现 main 已前进。每个 PR 都是 **docs/source 增量**，不是“完整 E2E 已通过”。
 
@@ -76,7 +76,7 @@
 - `stage-pass` 遇 `non-compliant` 必须阻断，若模板明确允许例外，需 Main 核验 `checkId + policyVersionId + actor + reason`。拒绝/退回不是 stage-pass；无 Run 时可以合法开缺件补件请求，**不能虚构 Run**；
 - 每个阶段决定在现有 `submitCommand` CAS 内再次校验，最后复用 T05 `applyT05LocalStageProposal` 追加业务事件；不可建第二套状态机。
 
-对 #184 最新 HEAD 未结束的 CI，L 不必空等：可先做 read-only 对照/本地隔离集成，**未经核验不直接算该提交 CI 绿灯**。若新旧 Main 等价，则复用旧 Main，不为“接入新模块”增加重复抽象。
+对 #184 最新 HEAD 的 CI 失败（同主线 T05 TS2339），L 不必空等：可先做 read-only 对照/本地隔离集成，**未经核验不直接算该提交 CI 绿灯**。若新旧 Main 等价，则复用旧 Main，不为“接入新模块”增加重复抽象。
 
 ## 5. A15 启动点与执行顺序
 
