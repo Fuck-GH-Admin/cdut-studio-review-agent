@@ -108,7 +108,7 @@
       "ruleId": "R-27",
       "rawSourceSha256": "a6c7131a8b8dbf5e14cfab532d0eaa7db880ef09237c18045bedf7df3325dd8b",
       "headingLine": 512,
-      "rawExcerptSha256": "1a85cb8d2d3c83d6af63793c860ad9d4b774900c7ac04dc55ceb0871e743979c",
+      "rawExcerptSha256": "cfdcefbdf8b97ff797c775f0d2d6bc5ef0e6276a2f691e3dfa6abe5d25101332",
       "rawRuleBodyNonBlankLines": 9,
       "r14AdditionalNonRuleContextLines": 0
     },
@@ -358,7 +358,7 @@
       "ruleId": "R-34",
       "rawSourceSha256": "77f89ac22112477e472d03cbac2696a1a58760dfec38466fe6bce8ee2db75204",
       "headingLine": 322,
-      "rawExcerptSha256": "44320e4d1da4b105a35dc17387bb3244874de576d031388f43183df495deddd2",
+      "rawExcerptSha256": "a3400b087b6f433e35e39bf836831bce9c1bcdc32b9aa52fb083c3a5dcfe4300",
       "rawRuleBodyNonBlankLines": 4,
       "r14AdditionalNonRuleContextLines": 2
     }
