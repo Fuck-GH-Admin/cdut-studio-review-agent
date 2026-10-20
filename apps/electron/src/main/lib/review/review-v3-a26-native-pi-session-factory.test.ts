@@ -31,7 +31,7 @@ function modelOptions(dir:string):PiAgentQueryOptions{
     systemPrompt:'Local unpublished candidate technical check. Never claim school approval.',
     permissionMode:'default',
     toolProfile:'review',
-  } as PiAgentQueryOptions
+  } as unknown as PiAgentQueryOptions
 }
 describe('A26 real private Pi session setup',()=>{
   it('A26-01 builds actual Pi SDK session with selected OpenAI model, separate history',async()=>{
