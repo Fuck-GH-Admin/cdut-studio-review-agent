@@ -139,7 +139,8 @@ export function reconcileB28CandidateObservations(
   const changed:B28QueueChange[]=[]
   for(const item of next.issues){
     const older=before.get(item.id)
-    if(!older||older.domain!==item.domain||
+    if(!older)throw new Error('B_R28_FROZEN_ISSUE_IDENTITY_CHANGED')
+    if(older.domain!==item.domain||
        older.templateId!==item.templateId||
        older.checkId!==item.checkId||
        older.sourceId!==item.sourceId||

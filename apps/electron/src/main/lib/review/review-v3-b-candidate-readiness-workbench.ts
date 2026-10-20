@@ -77,7 +77,8 @@ export function buildB27CandidateReadiness(
   let sourcesLinked=true
   for(const [k,declared] of expected){
     const entry=actual.get(k)
-    if(!entry||entry.checkKey!==declared.checkKey||
+    if(!entry)throw new Error('B_R27_PROVENANCE_BINDING_MISMATCH')
+    if(entry.checkKey!==declared.checkKey||
        entry.targetKey!==declared.targetKey||
        entry.objectKey!==declared.objectKey||entry.subjectId!==declared.subjectId||
        entry.applicability!==declared.applicability||
