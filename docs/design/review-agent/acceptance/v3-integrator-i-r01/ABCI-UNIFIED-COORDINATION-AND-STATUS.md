@@ -391,6 +391,8 @@ A/B/I 发现阻断，先用已有类型化接口排障；无法自行解决时�
 
 ### I — Owner: Integrator-I
 <!-- BEGIN:STATUS:I -->
+- `I_PRODUCT_R3_MERGED_C_R11 / 2026-10-20`：唯一 #160 集成 SHA [`6d3cf647884e84ccd5f58094b4cdd1d79ac235fe`](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/6d3cf647884e84ccd5f58094b4cdd1d79ac235fe) 是 I `cb10c1c...` + C #159 `a4205e93...` 双父真实合成；结果相对 C 整树**仅**保留 main 七个原 CI workflow blobs，C Main/Run/Writer 零 I 改动。D0.5/D1/D2/Batch/Baseline 5/6 PASS，PR CI 39394979410 typecheck/三端 build 已通过、全 Bun 正执行；Gate E/P NOT_RUN，C 未签，main 不合并。C 集中缺口已在 #159 评论 6287032270 反馈，A/B 第二批固定绿后由 C 装实际 Main 业务入口，I 最终一次合成。
+
 - `COORDINATION_ACK`：**ACK V3-ABCI-GOVERNANCE-R01/V1.0@b1ce42b3417dbc939d210354c63c557649cc220f**；只编辑 I 区，遵守 C 的正式裁决及无 C 文件租约。
 - `I0_ACCEPTANCE`：I0 [#146](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/146) @ `c84f575addcbb1f36b5eff0acb27442b91073fa1` 已获 C `C-I0-ACCEPT-001 / I0_ACCEPTED_SCOPED`，原输入锁永久保持原史实；不会因为 I1 已获新裁决而改写旧 `CR=PENDING`。
 - `I1_CODE`：正式工程 Draft [#147](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/147) `integration/v3-i1-technical-a-b-c-r01`；当前技术集成 HEAD `642c1fa3d3dd2042b7af1afdb3882397d4ca79a7`，以 C 批准 SHA `31aa352c45a33d6832612884b0fea38e39b5cf8d` 为唯一代码父锚点，PR 使用 I 自有 `integration/v3-i1-c-anchor-001-frozen`（指向相同 C SHA）冻结 GitHub 对比基准，不从 #145 docs 或浮动 C HEAD 构建。
