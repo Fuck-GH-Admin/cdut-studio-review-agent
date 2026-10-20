@@ -23,7 +23,7 @@ type MapDoc={
   A22_delta:Delta[]
   B32_delta:Delta[]
 }
-const projectRoot=fileURLToPath(new URL('../../../../../../',import.meta.url))
+const projectRoot=fileURLToPath(new URL('../../../../../../',import.meta.url)).replace(/\/$/,'')
 const mapPath=join(projectRoot,'docs/design/review-agent/acceptance/v3-integrator-i7-r01/I7-00-EXACT-R10-A22-B32-SOURCE-ABI-CLOSURE.json')
 const readMap=():MapDoc=>JSON.parse(readFileSync(mapPath,'utf8')) as MapDoc
 const gitBlob=(bytes:Uint8Array):string=>createHash('sha1')
@@ -122,6 +122,6 @@ describe('I7 C R10 versus signed I6 immutable readonly closure',()=>{
     }
     expect(record.pid).not.toBe(process.pid)
     expect(record).toMatchObject({independentMainInstalled:false,schoolPublished:false,
-      runAck:false,denied:'C_MAIN_B20_MAIN_IDENTITY_NOT_INSTALLED'})
+      runAck:false,denied:'C_MAIN_B20_MAIN_INSTALLATION_MISSING'})
   })
 })
