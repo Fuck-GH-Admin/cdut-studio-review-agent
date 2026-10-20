@@ -19,12 +19,11 @@ const physical=():B32ProductRead=>({
   candidateOnly:true,publicationAllowed:false,schoolPolicyVerified:false,
   authoritativeMainIdentityIssuedByB:false,
   caseCandidateId:'case-1',ownerId:'owner-1',ownerGeneration:1,
-  principalId:'principal-1',authorityEpoch:1,senderId:10,frameId:2,
+  scopeIdentitySha256:'c'.repeat(64),
   allStagedCount:3,applicationCount:1,unassignedCount:0,archivedZipEntryCount:2,
   sources:['direct','zip-one','zip-two'].map((x,i)=>({
    candidateId:x,materialId:'material-'+i,documentVersionId:'v-'+i,
    rawSha256:'a'.repeat(64),byteLength:10,fileName:'item'+i+'.pdf',
-   requestId:'request-'+i,physicalSourceKey:i?'zip-'+i:'native-1',
    role:i?'supporting' as const:'application' as const,
    subjectId:'student-A',archiveDerived:i>0,rawBytesRechecked:true as const,
   })),
@@ -70,7 +69,7 @@ describe('B R30–R32 renderer reads real complete input and blocks untrusted au
   b.inventory!.sources[1]!.rawSha256='b'.repeat(64)
   expect(()=>assertB32StillCurrent(a,b)).toThrow('B_PRODUCT_REOPENED_CURRENT_SOURCE_CHANGED')
   const c=physical()
-  c.inventory!.authorityEpoch=2
+  c.inventory!.scopeIdentitySha256='d'.repeat(64)
   expect(()=>assertB32StillCurrent(a,c)).toThrow('B_PRODUCT_REOPENED_CURRENT_SOURCE_CHANGED')
  })
  test('a linked Check cannot cite a hidden or missing physical B2 candidate',()=>{

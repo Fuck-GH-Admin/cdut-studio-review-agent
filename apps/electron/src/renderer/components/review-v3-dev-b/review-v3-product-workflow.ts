@@ -94,6 +94,7 @@ export function buildB32ProductView(data:B32ProductRead):B32ProductView {
  if(inventory.schemaVersion!=='review-v3-b30-complete-source-inventory/1'||
     inventory.candidateOnly!==true||inventory.publicationAllowed!==false||
     inventory.caseCandidateId!==data.caseCandidateId||
+    !sha.test(inventory.scopeIdentitySha256)||
     inventory.allStagedCount!==inventory.sources.length||
     new Set(inventory.sources.map(x=>x.candidateId)).size!==inventory.sources.length||
     inventory.applicationCount!==inventory.sources.filter(x=>x.role==='application').length||
@@ -122,7 +123,7 @@ export function buildB32ProductView(data:B32ProductRead):B32ProductView {
      data.readiness.readyForFormalDecision!==false)
     reject('READINESS_STALE')
  }else if(data.readiness!==null)reject('READINESS_WITHOUT_CANDIDATE')
- const materialIds=new Set(inventory.sources.map(x=>x.candidateId))
+ const materialsById=new Map(inventory.sources.map(x=>[x.candidateId,x]))
  const warnings:string[]=[]
  if(inventory.applicationCount!==1)warnings.push('申请主体数量不是 1，禁止自动选择或生成单主体模板')
  if(inventory.unassignedCount)warnings.push('存在未确认角色的原件，需要先分配材料用途')
@@ -139,8 +140,14 @@ export function buildB32ProductView(data:B32ProductRead):B32ProductView {
  const checks:B32CheckRow[]=(candidate?.candidateProvenance.bindings??[]).map(binding=>{
   const rows=binding.sources.map(source=>{
    const id=source.candidateId
-   if(source.state==='linked-candidate'&&(!id||!materialIds.has(id)))
-     reject('CHECK_LINK_TO_MISSING_MATERIAL')
+   if(source.state==='linked-candidate'){
+    const current=id?materialsById.get(id):undefined
+    if(!current)reject('CHECK_LINK_TO_MISSING_MATERIAL')
+    if(current.rawSha256!==source.rawSha256||
+       current.documentVersionId!==source.documentVersionId||
+       current.subjectId!==source.subjectId)
+      reject('CHECK_SOURCE_VERSION_OR_SUBJECT_STALE')
+   }
    const locator=locatorOf(source.readExtent)
    return {sourceId:source.sourceId,state:source.state,
      documentVersionId:source.documentVersionId,

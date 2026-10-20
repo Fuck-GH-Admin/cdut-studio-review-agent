@@ -13,14 +13,15 @@ export interface B30SourceInventory {
  candidateOnly:true;publicationAllowed:false;schoolPolicyVerified:false
  authoritativeMainIdentityIssuedByB:false
  caseCandidateId:string;ownerId:string;ownerGeneration:number
- principalId:string;authorityEpoch:number;senderId:number;frameId:number
+ /** Opaque identity only: no Principal/session/frame/Picker key crosses to Renderer. */
+ scopeIdentitySha256:string
  allStagedCount:number;applicationCount:number;unassignedCount:number
  /** A grouping aid only; each ZIP entry remains an independent original. */
  archivedZipEntryCount:number
  sources:Array<{
   candidateId:string;materialId:string;documentVersionId:string
-  rawSha256:string;byteLength:number;fileName:string;requestId:string
-  physicalSourceKey:string;role:B2MaterialCandidate['role'];subjectId:string|null
+  rawSha256:string;byteLength:number;fileName:string
+  role:B2MaterialCandidate['role'];subjectId:string|null
   archiveDerived:boolean;rawBytesRechecked:true
  }>
 }
@@ -71,7 +72,6 @@ export function readB30AllCurrentMaterials(
     candidateId:material.candidateId,materialId:material.materialId,
     documentVersionId:material.documentVersionId,rawSha256:material.rawSha256,
     byteLength:material.byteLength,fileName:material.fileName,
-    requestId:material.requestId,physicalSourceKey:material.physicalSourceKey,
     role:material.role,subjectId:material.subjectId,
     archiveDerived:material.physicalSourceKey.startsWith('zip-'),
     rawBytesRechecked:true,
@@ -85,8 +85,11 @@ export function readB30AllCurrentMaterials(
    candidateOnly:true,publicationAllowed:false,schoolPolicyVerified:false,
    authoritativeMainIdentityIssuedByB:false,
    caseCandidateId:start.caseCandidateId,ownerId:start.ownerId,
-   ownerGeneration:start.ownerGeneration,principalId:start.principalId,
-   authorityEpoch:start.authorityEpoch,senderId:start.senderId,frameId:start.frameId,
+   ownerGeneration:start.ownerGeneration,
+   scopeIdentitySha256:createHash('sha256').update(JSON.stringify([
+    start.principalId,start.sessionId,start.senderId,start.frameId,
+    start.ownerId,start.ownerGeneration,start.caseCandidateId,start.authorityEpoch,
+   ])).digest('hex'),
    allStagedCount:sources.length,
    applicationCount:sources.filter(x=>x.role==='application').length,
    unassignedCount:sources.filter(x=>x.role==='unassigned').length,
