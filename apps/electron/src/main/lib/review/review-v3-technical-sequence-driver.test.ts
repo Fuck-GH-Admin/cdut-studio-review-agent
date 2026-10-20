@@ -3,6 +3,7 @@
  * These tests cover ONLY the new multi-turn orchestrator (not Gate E).
  */
 import {describe,expect,it} from 'bun:test'
+import type {Principal} from '@profer/shared'
 import type {V3ReviewOwnerAdapter,V3OwnerLease} from './review-pi-owner-adapter'
 import type {V3ATurnBudget} from './review-v3-execution-turn-budget'
 import type {V3ASDKTurnBridge,V3ATurnDriveResult,V3ASDKMode}
@@ -34,8 +35,13 @@ function fixture(){
     },
   } as V3ASDKTurnBridge
   const driver=new V3ATechnicalSequenceDriver(owners,turns,sdk)
+  const principal:Principal={
+    source:'local',principalId:'main-sequence-fixture',role:'reviewer',
+    sessionId:'trusted-sequence-frame',assurance:'local-device',
+    scope:{caseIds:['seq-case'],actions:['start-review']},
+  }
   const call={sessionId:'seq-session',grantId:'g1',senderKey:'s1',
-    principal:{},tool:'review_submit_result' as const}
+    principal,tool:'review_submit_result' as const}
   const plan=(modes:V3ASDKMode[],expectedUsedTurns=0):V3ATechnicalSequence=>({
     version:'v3-dev-a-technical-sequence/1',expectedUsedTurns,modes,
   })
@@ -92,7 +98,7 @@ describe('Dev-A R21 Main-only multi-turn execution, no C business writer',()=>{
     })
     const final=await y.driver.execute(y.call,y.plan(['batch','batch']))
     expect(final.kind).toBe('terminal-proposal')
-    expect(final.executed).toBe(0)
+    expect(final.executed).toBe(1)
     expect(y.modes).toHaveLength(1)
   })
 })

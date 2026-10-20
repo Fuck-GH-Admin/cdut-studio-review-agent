@@ -104,7 +104,8 @@ export class V3ATechnicalSequenceDriver {
             after.usedTurns>before.usedTurns+1){
             refuse('Terminal sequence contradicted durable Turn Budget')
           }
-          return {kind:'terminal-proposal',executed,
+          return {kind:'terminal-proposal',
+            executed:executed+(after.usedTurns-before.usedTurns),
             result:outcome}
         }
         if(after.usedTurns!==before.usedTurns+1||
