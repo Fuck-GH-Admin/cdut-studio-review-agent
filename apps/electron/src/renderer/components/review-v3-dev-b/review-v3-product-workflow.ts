@@ -90,7 +90,8 @@ export function buildB32ProductView(data:B32ProductRead):B32ProductView {
   }
  }
  const inventory=data.inventory
- if(!inventory||inventory.schemaVersion!=='review-v3-b30-complete-source-inventory/1'||
+ if(!inventory)throw new Error('B_PRODUCT_CURRENT_MATERIAL_UNIVERSE_INVALID')
+ if(inventory.schemaVersion!=='review-v3-b30-complete-source-inventory/1'||
     inventory.candidateOnly!==true||inventory.publicationAllowed!==false||
     inventory.caseCandidateId!==data.caseCandidateId||
     inventory.allStagedCount!==inventory.sources.length||

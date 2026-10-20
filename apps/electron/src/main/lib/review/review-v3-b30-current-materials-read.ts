@@ -51,7 +51,7 @@ export function readB30AllCurrentMaterials(
  staging:ReviewB2StagingService,
 ):B30SourceInventory {
  const start=readCurrentScope()
- if(!scopeValid(start))fail('C_MAIN_SCOPE_NOT_INSTALLED')
+ if(!scopeValid(start))throw new Error('B_R30_C_MAIN_SCOPE_NOT_INSTALLED')
  staging.assertStillGranted(start)
  const ids=staging.listScopedCandidateIds(start)
  if(!Array.isArray(ids)||ids.length>500||
