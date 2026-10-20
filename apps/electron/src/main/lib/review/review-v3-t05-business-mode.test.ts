@@ -8,6 +8,7 @@
  * - 计划覆盖不足、执行失败、未执行都阻断通过，但允许退回/拒绝。
  */
 import { afterAll, afterEach, describe, expect, test } from 'bun:test'
+import type { CaseAggregateV2 } from '@profer/shared'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -35,7 +36,7 @@ function aggregate(overrides: Record<string, unknown> = {}) {
     tasks: [], decisions: [], supplements: [], dispositions: [], receiptLog: [],
     observations: [], evidenceLinks: [],
     ...overrides,
-  } as never
+  } as unknown as CaseAggregateV2
 }
 
 function run(checks: Array<Record<string, unknown>>, extra: Record<string, unknown> = {}) {
