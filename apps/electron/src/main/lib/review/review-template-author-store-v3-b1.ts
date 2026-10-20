@@ -4,8 +4,8 @@
  * Main must bind a trusted author before exposing this adapter through IPC.
  */
 import { createHash } from 'node:crypto'
-import { closeSync, existsSync, mkdirSync, openSync, readFileSync, readdirSync, unlinkSync, writeFileSync } from 'node:fs'
-import { join } from 'node:path'
+import { closeSync, constants, existsSync, fstatSync, fsyncSync, lstatSync, mkdirSync, openSync, readFileSync, readdirSync, unlinkSync, writeFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
 import { getConfigDir } from '../config-paths'
 import {
   compileReviewB1Plan, verifyReviewB1Descriptor,
@@ -41,6 +41,60 @@ export interface B1FrozenCandidate {
   /** NOT official published, not school-signed. */
   status: 'candidate-held'
 }
+/** Never follow a symlink under the B-owned candidate vault, even during reads.
+ * getConfigDir is the application's trusted anchor; child directories are not.
+ */
+const filesystemStat = (path:string):ReturnType<typeof lstatSync>|null => {
+  try{return lstatSync(path)}catch(error){
+    if((error as NodeJS.ErrnoException).code==='ENOENT')return null
+    throw error
+  }
+}
+const safeDirectory = (path:string,create=false):boolean => {
+  const before=filesystemStat(path)
+  if(before && !before.isDirectory())fail('AUTHOR_UNSAFE_DIRECTORY')
+  if(!before && create)mkdirSync(path,{mode:0o700})
+  const after=filesystemStat(path)
+  if(after && !after.isDirectory())fail('AUTHOR_UNSAFE_DIRECTORY')
+  return Boolean(after)
+}
+const vaultDirectory=(id:string,sub?:'revisions'|'frozen',create=false):string=>{
+  const root=join(getConfigDir(),'review-v3-author-candidate')
+  const template=folder(id)
+  if(!safeDirectory(root,create))return sub?join(template,sub):template
+  if(!safeDirectory(template,create))return sub?join(template,sub):template
+  if(!sub)return template
+  safeDirectory(join(template,sub),create)
+  return join(template,sub)
+}
+const safeRead=(path:string):string=>{
+  const before=filesystemStat(path)
+  if(!before || !before.isFile() || before.nlink!==1)throw new Error('B1_AUTHOR_UNSAFE_FILE')
+  const fd=openSync(path,constants.O_RDONLY | (constants.O_NOFOLLOW??0))
+  try{
+    const actual=fstatSync(fd)
+    if(!actual.isFile() || actual.nlink!==1 ||
+      actual.ino!==before.ino||actual.dev!==before.dev)fail('AUTHOR_UNSAFE_FILE')
+    return readFileSync(fd,'utf8')
+  }finally{closeSync(fd)}
+}
+const syncDirectory=(path:string):void=>{
+  // Windows directory handle fsync is not supported by the Node API.
+  // The individual file fsync still holds; avoid falsely claiming
+  // Windows hard-power-loss ordering parity with POSIX.
+  if(process.platform==='win32')return
+  const fd=openSync(path,'r')
+  try{fsyncSync(fd)}finally{closeSync(fd)}
+}
+/** Append immutable file without overwriting an existing revision/fingerprint. */
+const writeImmutable=(path:string,record:unknown):void=>{
+  const fd=openSync(path,'wx',0o600)
+  try{
+    writeFileSync(fd,JSON.stringify(record,null,2)+'\n','utf8')
+    fsyncSync(fd)
+  }finally{closeSync(fd)}
+  syncDirectory(dirname(path))
+}
 const revisionFile = (id: string, n: number): string => join(folder(id), 'revisions', n + '.json')
 const validateDraft = (doc: B1AuthorDocument): void => {
   if (!doc || doc.schemaVersion !== 'review-b1/1' ||
@@ -64,8 +118,10 @@ const verifyRevision = (record: B1AuthorRevision, id: string, n: number, previou
 }
 /** Strict full-chain verify: missing parent cannot be skipped by reading a newer snapshot. */
 export function readB1AuthorRevision(templateId: string, revision?: number): B1AuthorRevision | undefined {
-  const dir = join(folder(templateId), 'revisions')
-  if (!existsSync(dir)) return undefined
+  if(revision!==undefined && (!Number.isSafeInteger(revision)||revision<1))
+    fail('AUTHOR_REVISION_INVALID')
+  const dir=vaultDirectory(templateId,'revisions')
+  if (!safeDirectory(dir)) return undefined
   const entries = readdirSync(dir).filter((name) => /^[1-9]\d*\.json$/.test(name))
     .map((name) => Number(name.slice(0, -5))).filter(Number.isSafeInteger).sort((a, b) => a - b)
   const selected = revision ?? entries.at(-1)
@@ -75,8 +131,11 @@ export function readB1AuthorRevision(templateId: string, revision?: number): B1A
   for (let n = 1; n <= selected; n += 1) {
     if (!entries.includes(n)) throw new Error('B1_HISTORY_BROKEN_MISSING_PARENT')
     let next: B1AuthorRevision
-    try { next = JSON.parse(readFileSync(revisionFile(templateId, n), 'utf8')) as B1AuthorRevision }
-    catch { throw new Error('B1_HISTORY_BROKEN_INVALID_JSON') }
+    try { next = JSON.parse(safeRead(revisionFile(templateId, n))) as B1AuthorRevision }
+    catch(error) {
+      if(error instanceof Error && error.message==='B1_AUTHOR_UNSAFE_FILE')throw error
+      throw new Error('B1_HISTORY_BROKEN_INVALID_JSON')
+    }
     verifyRevision(next, templateId, n, previous)
     previous = next
   }
@@ -89,10 +148,9 @@ export function saveB1AuthorRevision(
   validateDraft(document)
   if (!authorId?.trim()) throw new Error('B1_AUTHOR_REQUIRED')
   if (!Number.isSafeInteger(expectedRevision) || expectedRevision < 0) throw new Error('B1_EXPECTED_REVISION_INVALID')
-  const dir = folder(document.templateId)
-  mkdirSync(join(dir, 'revisions'), { recursive: true })
-  const lock = join(dir, 'author.lock')
-  const fd = openSync(lock, 'wx')
+  const dir = vaultDirectory(document.templateId,'revisions',true)
+  const lock = join(folder(document.templateId), 'author.lock')
+  const fd = openSync(lock, 'wx',0o600)
   try {
     const prior = readB1AuthorRevision(document.templateId)
     const current = prior?.revision ?? 0
@@ -103,8 +161,7 @@ export function saveB1AuthorRevision(
       document: structuredClone(document), digest: sha256(document),
       ...(prior ? { parentDigest: prior.digest } : {}),
     }
-    writeFileSync(revisionFile(document.templateId, next.revision),
-      JSON.stringify(next, null, 2) + '\n', { encoding: 'utf8', flag: 'wx' })
+    writeImmutable(join(dir,next.revision+'.json'),next)
     return structuredClone(next)
   } finally {
     closeSync(fd)
@@ -118,8 +175,7 @@ export function saveB1AuthorRevision(
  * A busy writer fails closed; the caller may retry with a fresh revision.
  */
 export function freezeB1Candidate(templateId: string, revision: number): B1FrozenCandidate {
-  const dir = folder(templateId)
-  mkdirSync(dir, { recursive: true, mode: 0o700 })
+  const dir = vaultDirectory(templateId,undefined,true)
   const lock = join(dir, 'author.lock')
   const fd = openSync(lock, 'wx', 0o600)
   try {
@@ -141,8 +197,7 @@ function freezeB1CandidateUnderLock(templateId: string, revision: number): B1Fro
     authorDigest: descriptor.authorDigest, descriptor,
     frozenAt: new Date().toISOString(), status: 'candidate-held',
   }
-  const dir = join(folder(templateId), 'frozen')
-  mkdirSync(dir, { recursive: true })
+  const dir = vaultDirectory(templateId,'frozen',true)
   const file = join(dir, descriptor.canonicalPlan.fingerprint + '.json')
   if (existsSync(file)) {
     const previous = readB1FrozenCandidate(templateId, descriptor.canonicalPlan.fingerprint)
@@ -150,16 +205,21 @@ function freezeB1CandidateUnderLock(templateId: string, revision: number): B1Fro
         previous.authorDigest !== descriptor.authorDigest) throw new Error('B1_FROZEN_IDENTITY_CONFLICT')
     return previous
   }
-  writeFileSync(file, JSON.stringify(result, null, 2) + '\n', { encoding: 'utf8', flag: 'wx' })
+  writeImmutable(file,result)
   return result
 }
 export function readB1FrozenCandidate(templateId: string, fingerprint: string): B1FrozenCandidate | undefined {
   if (!/^[a-f0-9]{64}$/.test(fingerprint)) throw new Error('B1_FINGERPRINT_INVALID')
-  const file = join(folder(templateId), 'frozen', fingerprint + '.json')
-  if (!existsSync(file)) return undefined
+  const dir=vaultDirectory(templateId,'frozen')
+  if (!safeDirectory(dir))return undefined
+  const file = join(dir, fingerprint + '.json')
+  if (!filesystemStat(file)) return undefined
   let result: B1FrozenCandidate
-  try { result = JSON.parse(readFileSync(file, 'utf8')) as B1FrozenCandidate }
-  catch { throw new Error('B1_FROZEN_CORRUPT') }
+  try { result = JSON.parse(safeRead(file)) as B1FrozenCandidate }
+  catch(error) {
+    if(error instanceof Error && error.message==='B1_AUTHOR_UNSAFE_FILE')throw error
+    throw new Error('B1_FROZEN_CORRUPT')
+  }
   if (!result || result.schemaVersion !== 'review-b1-frozen/1' ||
       result.templateId !== templateId || result.status !== 'candidate-held' ||
       result.descriptor?.canonicalPlan?.fingerprint !== fingerprint ||

@@ -1,0 +1,290 @@
+{
+  "schema": "review-v3-i5-exact-offline-composition/1",
+  "authority": {
+    "B": "CR-B20-R23-EXACT-SOURCE-INTEGRATION-R01 / APPROVED_SCOPED_NON_C_OWNED_SOURCE_REPLAY_ONLY",
+    "C": "C-I5-B20-S1S2-EXACT-R01 / S2=APPROVED_SCOPED_IMMUTABLE_OFFLINE_CONTRACT_REPLAY_ONLY",
+    "delegation_id": "C-I5-S2-IMMUTABLE-B20-READ-R01",
+    "decisions": [
+      "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/144#issuecomment-6280157417",
+      "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/144#issuecomment-6280485665"
+    ]
+  },
+  "immutableParent": "d9ba4ba54293963f8d962182548a627d52b566a3",
+  "sourceOnlyCheckpoint": "cec7b9a07696e4ec0955ae3aa555a31bb96cb49d",
+  "sourceCommits": {
+    "B": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+    "C": "d5a61304ddb09c38fea7982623786f0ce56ed220"
+  },
+  "files": [
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-v3-b1-b2-main-read-bundle-v3-b.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "2ff051fc5d18a2c0ef9465188a3611a71a0989ee",
+      "oldBlob": null,
+      "op": "add",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "065251ca843c51e68e225dc688bb7a8caab2fea7",
+      "oldBlob": "37cf71a31a88754fc213322e389d4c96a5eeaf77",
+      "op": "replace",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "974f0b0d127301ed71ad10df5ae64623ce378882",
+      "oldBlob": "974f0b0d127301ed71ad10df5ae64623ce378882",
+      "op": "already-identical",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "e911663006cb105aad382a6a107630534e014739",
+      "oldBlob": "ebc5f82ca72870839bfa441e6752f81a088c601c",
+      "op": "replace",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "b2101be80e3dce561f6365c3378b2930245dda73",
+      "oldBlob": "b2101be80e3dce561f6365c3378b2930245dda73",
+      "op": "already-identical",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-import-checkpoint-v3-b2.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "35b4d9e757b5b1530c7ca0407c405e8513b5caf7",
+      "oldBlob": null,
+      "op": "add",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-import-ledger-v3-b2.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "273b8ea71ed739f01238c5bcf1f57be7a39a6502",
+      "oldBlob": null,
+      "op": "add",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-v3-b1-b2-candidate-source-bridge.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "e322df7ddc0910f5065d7a887507218cac7a7713",
+      "oldBlob": null,
+      "op": "add",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-zip-staging-v3-b2.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "38d87196e49b73c62b6019ff2b1dceac3f02b175",
+      "oldBlob": null,
+      "op": "add",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-zip-intake-v3-b2.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "2289f2fb2ca395fb81d93270e3d33116359993c4",
+      "oldBlob": null,
+      "op": "add",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-import-handoff-v3-b2.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "b1a8e05ffb49cf26888b5252700eb508cca4e3b4",
+      "oldBlob": null,
+      "op": "add",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-v3-b1-b2-main-read-bundle-v3-b.test.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "65fc1149b6bd73b2e51f0e0e960541204055128d",
+      "oldBlob": null,
+      "op": "add",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-v3-b1-b2-candidate-source-bridge.test.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "f3039718333ee217b5542b1398bc4c4a8e08e777",
+      "oldBlob": null,
+      "op": "add",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-import-checkpoint-v3-b2.test.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "bd6d6cd21e796f7309e68c3899cff4f22ba12066",
+      "oldBlob": null,
+      "op": "add",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-import-ledger-v3-b2.test.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "dd9d9f693f1f79d55c994bca0dad4ca111d85cdc",
+      "oldBlob": null,
+      "op": "add",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.test.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "b6f1c25079e6f54f7953ccb94b71679176fc912e",
+      "oldBlob": "b6f1c25079e6f54f7953ccb94b71679176fc912e",
+      "op": "already-identical",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.test.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "f0d0b442e59ab1dc75089b592a6f449481577383",
+      "oldBlob": "f0d0b442e59ab1dc75089b592a6f449481577383",
+      "op": "already-identical",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-import-handoff-v3-b2.test.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "dddf137852aade9fd224c27a1458887467cfd26b",
+      "oldBlob": null,
+      "op": "add",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-zip-staging-v3-b2.test.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "edefc665e0db38313a63bc46298c4c9b8ffe35d1",
+      "oldBlob": null,
+      "op": "add",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-zip-intake-v3-b2.test.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "1aa380afcb83078025f25d2ce1ce15816db0b5e8",
+      "oldBlob": null,
+      "op": "add",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "B",
+      "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.test.ts",
+      "sourceCommit": "d96c3d176159cd12f4befd2a91bfeade44dca216",
+      "gitBlob": "0011844e2a2d6fdd7eb00abdfc1ea697d3700ea0",
+      "oldBlob": "e3dac69d7a20ed9219e413e0a24c49782871a3e7",
+      "op": "replace",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "C",
+      "path": "apps/electron/src/main/lib/review/review-v3-main-b20-trusted-candidate-read.ts",
+      "sourceCommit": "d5a61304ddb09c38fea7982623786f0ce56ed220",
+      "gitBlob": "d0e6ea271e0b20474060131f1f29a74b876463c3",
+      "oldBlob": null,
+      "op": "add",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "C",
+      "path": "apps/electron/src/main/lib/review/review-v3-main-b20-trusted-candidate-read.test.ts",
+      "sourceCommit": "d5a61304ddb09c38fea7982623786f0ce56ed220",
+      "gitBlob": "36c74c06cb21f34ba4f15af39fd860b935a5829d",
+      "oldBlob": null,
+      "op": "add",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "C",
+      "path": "apps/electron/src/main/lib/review/review-v3-main-author-revision-read.ts",
+      "sourceCommit": "d5a61304ddb09c38fea7982623786f0ce56ed220",
+      "gitBlob": "ba80feb8d29844376c22e7422cde5ff33792b94f",
+      "oldBlob": null,
+      "op": "add",
+      "sourceEqualsImportedTarget": true
+    },
+    {
+      "owner": "C",
+      "path": "apps/electron/src/main/lib/review/review-v3-main-author-revision-read.test.ts",
+      "sourceCommit": "d5a61304ddb09c38fea7982623786f0ce56ed220",
+      "gitBlob": "788223c45822d3c9e0e40d110060c1d419e8a664",
+      "oldBlob": null,
+      "op": "add",
+      "sourceEqualsImportedTarget": true
+    }
+  ],
+  "IonlyTest": {
+    "path": "apps/electron/src/main/lib/review/review-v3-integration-i5-b20-cmain-offline.test.ts",
+    "sourceOwner": "I",
+    "status": "NEW",
+    "additionalWorker": "apps/electron/src/main/lib/review/review-v3-integration-i5-coldpid.worker.ts",
+    "exactCases": 10,
+    "coldPidSemantics": "independent OS PID reads durable B1; without current physical source registry returns UNKNOWN candidate only, never linked/published/business-writable; does not constitute Main auth"
+  },
+  "scope": {
+    "actualElectronMainWired": false,
+    "nativePickerInstalled": false,
+    "numericB20ScopeFromPhysicalMain": false,
+    "realSchoolPublisher": false,
+    "CbusinessWriter": false,
+    "technicalFakeMainFixtures": true,
+    "formalGateE": "NOT_RUN",
+    "schoolGateL": "BLOCKED_NO_AUTH",
+    "productGateP": "NOT_RUN",
+    "release": "NO_GO"
+  },
+  "gateO": "PENDING_NEW_FINAL_EXACT_SHA",
+  "CengineeringAcceptance": "PENDING_C",
+  "rollback": {
+    "returnToSignedParent": "d9ba4ba54293963f8d962182548a627d52b566a3",
+    "noMutationOfExistingAcceptedRefs": true,
+    "noExternalBusinessMutationsAllowed": true
+  },
+  "sourceReplaySummary": {
+    "approvedEntries": 25,
+    "alreadyIdentical": 4,
+    "changedPaths": 21,
+    "sourceOnlyHead": "cec7b9a07696e4ec0955ae3aa555a31bb96cb49d"
+  },
+  "firstFailures": [
+    {
+      "exactSHA": "c25982c22459c5aefe918851bb5cf2c281ee4aab",
+      "workflow": 39351110136,
+      "job": 118395229763,
+      "result": "4438 PASS / 5 SKIP / 1 FAIL",
+      "case": "I5-10",
+      "reason": "I-only worker incorrectly expected B2 read-only scoped input to reject absent historical grant; B2 is not C Main identity issuer. Correct cold process contract is all UNKNOWN physical links and no publish/write.",
+      "fixedPaths": "I-owned test/worker only",
+      "C_or_B_production_hunks": 0
+    }
+  ]
+}
