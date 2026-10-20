@@ -27,6 +27,9 @@ describe('B1+B3 candidate workspace markup (not Main IPC / user UAT)',()=>{
     expect(html).toContain('Technical Template')
     expect(html).not.toContain('value="[&quot;candidate-only&quot;')
     expect(html).toContain('自建审核业务（候选）')
+    expect(html).toContain('查看尚不可提交的')
+    expect(html).toContain('Candidate Draft')
+    expect(html).toContain('当前展示 2 套候选版本')
     expect(html).toContain('不建案')
   })
   test('technical timeout is visibly not a formal Case/Policy decision',()=>{
