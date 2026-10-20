@@ -15,7 +15,7 @@
 
 - Main B-owned helper `apps/electron/src/main/lib/review/review-v3-b33-currentity-snapshot.ts@0aadc435be5d005678628e346e2324ab379cde0f`。
 - Renderer ID reopen helper `apps/electron/src/renderer/components/review-v3-dev-b/review-v3-b33-author-reopen.ts@fde0b281a8df90bd65cd1bfe584957f5fbb05938`。
-- Main new test `review-v3-b33-currentity-snapshot.test.ts@991280024c27185b0f1bff092eb52034f9d258e5`；reopen test `review-v3-b33-author-reopen.test.ts@42ff1db730c17499789ff2f662b73d89e1a6b972`。
+- Main new test `review-v3-b33-currentity-snapshot.test.ts@5ed13426a41feebb035e76c6dce42dcd065c4756`；reopen test `review-v3-b33-author-reopen.test.ts@42ff1db730c17499789ff2f662b73d89e1a6b972`。
 - 已改动的 B UI `ReviewV3ProductWorkspace.tsx@2bd9645cfb7ee0baffe55ae63fdff499fd84611d`、入口 `ReviewV3CandidateIntakeSurface.tsx@e0ec266a7c815c43d7b098b65895a91a99cc5c30`、Renderer helper `review-v3-product-workflow.ts@40558b169f3bde85e21af451b87aa8ef4ff40301`。
 
 **此清单不是 C 的已授权重放合同**。上轮 C 准许的 R30–R32 固定六 blob 仍保持原 SHA，不应以新版浮动替换。R33 所需但**尚未获得 C 重放许可**的 B26–R29 深层生产依赖包括：
@@ -38,3 +38,5 @@
 ### R33 首轮真实工程失败记录
 
 首轮源码父 `57c49c7d4c549fc2a8f84f3cff89b1c9f7287334` 的 PR CI `39383783237` job `118498699919` 在严格 TS 检查中报 TS2322（测试狭窄 `unmatched` 状态）和 TS18048（缺 SourceRef 原始记录未显式 throw）。已在 `382a903b73715c26d78279ecd1a1c7baf8653378` 只修此二处：缺当前原件仍硬拒绝，不用 `any` 或断言压错。后续以**最后的单一 HEAD GitHub PR/D2/Baseline 和完整 Bun 日志为准**，不得把上一版绿灯套给新 SHA。
+
+补充首轮 Bun 真实失败：`57505f5b966cc7813c15af0245f6559ff59ddeed` PR CI `39384116893` job `118499881939`：**4360 PASS/5 SKIP/1 FAIL**，新增 R33 来源变动测试只接受后置 `CURRENT_SOURCE_OR_OWNER_CHANGED`，但某种修改先触发严格 `INVENTORY_NOT_CURRENT`，功能本身拒绝了不一致的账本。调整定向断言明确区分 (a) 合法来源变化→新 SHA；(b) 非法材料清单→显式拒绝，而非放宽真实性校验。后续全仓最终状态仍须以最后同 SHA 3/3 CI 为准。

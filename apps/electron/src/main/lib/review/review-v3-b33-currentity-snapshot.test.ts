@@ -61,7 +61,19 @@ describe('B33 deterministic complete physical-material version, not a credential
    (i:ReturnType<typeof input>)=>{i.inventory.scopeIdentitySha256='c'.repeat(64)},
   ]){
     const other=structuredClone(base);mutate(other)
-    expect(()=>assertB33StillCurrent(base,other)).toThrow('B_R33_CURRENT_SOURCE_OR_OWNER_CHANGED')
+    // Semantically changed inputs either create a DIFFERENT stable digest,
+    // or fail closed earlier on a malformed full-inventory ledger. They
+    // can never be reused as the previous technical candidate version.
+    const prior=buildB33StableCurrentity(base).readVersion
+    let current:string|null=null,refused:string|null=null
+    try{current=buildB33StableCurrentity(other).readVersion}
+    catch(error){refused=error instanceof Error?error.message:String(error)}
+    if(refused!==null)
+      expect(refused).toMatch(/^B_R33_(INVENTORY_NOT_CURRENT|CURRENT_SOURCE_OR_OWNER_CHANGED)$/)
+    else {
+      expect(current).not.toBe(prior)
+      expect(()=>assertB33StillCurrent(base,other)).toThrow('B_R33_CURRENT_SOURCE_OR_OWNER_CHANGED')
+    }
   }
  })
  test('conservative technical route transition changes checksum, countdown remaining-only does not',()=>{
