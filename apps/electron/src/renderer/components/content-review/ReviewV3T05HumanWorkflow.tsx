@@ -6,6 +6,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { CaseAggregateV2, ReviewCommandResult, SupplementRequest } from '@profer/shared'
 import { Button } from '@profer/ui/primitives/button'
+import { ReviewV3F13AppealHistory } from './ReviewV3F13AppealHistory'
 
 type StageAction = 'stage-pass' | 'return-for-supplement' | 'return-to-previous-stage' | 'final-reject'
 type SupplementOutcome = 'satisfied' | 'insufficient' | 'cancelled'
@@ -90,11 +91,6 @@ const decisionLabel: Record<string, string> = {
 const supplementLabel: Record<string, string> = {
   open: '待回复', responded: '待核对', insufficient: '仍不满足', satisfied: '已满足', cancelled: '已取消',
 }
-const appealLabel: Record<string, string> = {
-  submitted: '已提交', 'in-review': '复审中', upheld: '维持原决定',
-  overturned: '已更正', withdrawn: '已撤回',
-}
-
 const newRequestId = (prefix: string): string =>
   prefix + '-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8)
 
@@ -416,15 +412,7 @@ export function ReviewV3T05HumanWorkflow({
 
       <section className="space-y-2 rounded-md bg-muted/30 p-2">
         <h4 className="font-medium">异议与申诉</h4>
-        {aggregate.appeals.map((appeal) => (
-          <div key={appeal.id} className="rounded border bg-background p-2">
-            <p className="font-medium">{appealLabel[appeal.status] ?? appeal.status} · 针对决定 {appeal.againstDecisionId}</p>
-            <p>{appeal.statement}</p>
-            <p className="text-muted-foreground">{appeal.appellant.actorId} · {new Date(appeal.createdAt).toLocaleString()}
-              {appeal.reviewDecisionId ? ' · 复核决定 ' + appeal.reviewDecisionId : ''}</p>
-          </div>
-        ))}
-        {aggregate.appeals.length === 0 && <p className="text-muted-foreground">暂无申诉。</p>}
+        <ReviewV3F13AppealHistory aggregate={aggregate} />
         <p className="font-medium">提交方申请复审</p>
         <select className="w-full rounded border bg-background px-2 py-1" value={appealDecisionId}
           onChange={(event) => setAppealDecisionId(event.target.value)}>
