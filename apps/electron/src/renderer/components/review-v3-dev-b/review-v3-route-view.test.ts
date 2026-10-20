@@ -1,6 +1,6 @@
 import { describe,expect,test } from 'bun:test'
 import type {B3ManualCatalogEntry,B3RouteState} from '../../../main/lib/review/review-intake-routing-adapter-v3-b3'
-import {buildB3RouteView,requireB3VisibleManualChoice} from './review-v3-route-view'
+import {buildB3RouteView,filterB3Catalog,requireB3VisibleManualChoice} from './review-v3-route-view'
 
 const options:B3ManualCatalogEntry[]=[
   {templateId:'activity',templateVersion:'v1',name:'Activity Use',
@@ -21,6 +21,15 @@ describe('B1+B3 visible routing candidate contract',()=>{
     expect(view.authority).toBe('technical-candidate-only')
     expect(view.eligible).toHaveLength(1)
     expect(view.held).toHaveLength(1)
+  })
+  test('search by name/ID/version finds held and eligible without granting held a Main choice',()=>{
+    const view=buildB3RouteView(show('needs-user-confirmation'),options)
+    expect(filterB3Catalog(view.eligible,'ACTIV')).toHaveLength(1)
+    expect(filterB3Catalog(view.held,'DRAFT')[0]?.name).toBe('Unpublished Draft')
+    expect(filterB3Catalog(view.held,'v2')).toHaveLength(1)
+    expect(filterB3Catalog(view.eligible,'unpublished')).toHaveLength(0)
+    expect(()=>requireB3VisibleManualChoice(options,'draft','v2'))
+      .toThrow('B3_VIEW_TEMPLATE_NOT_TECHNICALLY_AVAILABLE')
   })
   test('expired candidate must exactly match technically eligible catalog',()=>{
     const valid=buildB3RouteView({...show('default-selected'),chosen:{
