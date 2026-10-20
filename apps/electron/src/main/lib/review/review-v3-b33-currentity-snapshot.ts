@@ -160,7 +160,7 @@ export function buildB33StableCurrentity(input:B33CurrentInput):B33CurrentSnapsh
   v.scopeIdentitySha256,materialFacts,
   [input.route.status,input.route.chosen?.templateId??null,
    input.route.chosen?.templateVersion??null,
-   input.route.interrupted??null],
+   input.route.reason],
   input.catalogVersion??null,currentAuthor,checks,
   input.historical?.snapshotSha256??null,
   input.recovery??null,
