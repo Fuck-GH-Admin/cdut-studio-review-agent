@@ -168,6 +168,22 @@ export function ReviewV3ProductWorkspace({
       candidate.planCondition!=='unknown'||candidate.document.status!=='candidate-held'||
       candidate.descriptor.publicationAllowed!==false)
     throw new Error('B_PRODUCT_R29_DRAFT_UNTRUSTED')
+   // A returned R29 author candidate MUST account for every current B30
+   // physical original. A caller may not omit the second ZIP or swap its
+   // Subject/version while keeping a plausible compiled B1 descriptor.
+   const all=again.inventory.sources
+   const byId=new Map(candidate.sourceCandidates.map(x=>[x.candidateId,x]))
+   if(byId.size!==all.length||candidate.sourceCandidates.length!==all.length||
+      all.some(original=>{
+       const source=byId.get(original.candidateId)
+       return !source||source.rawSha256!==original.rawSha256||
+        source.documentVersionId!==original.documentVersionId||
+        source.role!==original.role
+      })||candidate.subjectId!==all[0]?.subjectId||
+      candidate.document.sources.length!==all.length||
+      candidate.descriptor.bindingDetails.some(x=>
+       x.applicability!=='unknown'||x.sourceIds.length!==all.length))
+     throw new Error('B_PRODUCT_R29_SOURCE_SET_INCOMPLETE_OR_CHANGED')
    setRead(again)
    setEditor({key:candidate.snapshotSha256,document:candidate.document})
    setTab('author')
