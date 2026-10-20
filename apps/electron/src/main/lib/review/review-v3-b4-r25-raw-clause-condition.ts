@@ -251,7 +251,7 @@ export function evaluateB4R25ClauseBoundConditions(
       receipt.rawExcerptSha256 === clause.rawExcerptSha256 &&
       receipt.triggerLineSha256 === clause.triggerLineSha256 &&
       receipt.bindingSha256 === clause.bindingSha256
-    const predicate = matches ? prior.technicalApplicability : 'unknown'
+    const predicate = matches ? prior.candidatePredicate : 'unknown'
     return {
       instanceKey: prior.instanceKey, candidatePredicate: predicate,
       reason: !receipt ? 'CLAUSE_RECEIPT_MISSING' :
