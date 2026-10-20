@@ -1,0 +1,1417 @@
+{
+  "schemaVersion": "v3-integrator-i6-exact-source-map/1",
+  "generatedFrom": "independent GitHub Contents directory listing at four exact fixed commits",
+  "scope": "one main review directory; all names matching review-v3/review-{template,source,intake,import,zip}/plan-binding-v3",
+  "I5FrozenRef": "integration/v3-i5-b20-accepted-frozen",
+  "fixedSources": {
+    "I5": "a77a70b3a75da11728d99dba35717b18b02a5089",
+    "C_R09": "d7548c3eefedb10f4cc23c12e70712e1e1fd1e3a",
+    "A_R21": "703e2bf8e20a7b598e1eb923d5faf6f7b17ab3a9",
+    "B_R29": "4c4f277773c0e20185a7364d0bb66439d51ca7a4"
+  },
+  "approval": "READ_ONLY_DIFF_NOT_SOURCE_REPLAY_PERMISSION",
+  "policy": "C Main, shared, Case, Run, Host, SchoolPort, BusinessWriter are C-owned. A R21/B R29/C R09 need independent exact C CR before any new I replay.",
+  "classifications": {
+    "SAME_BLOB_I5_C_R09": 14,
+    "CONFLICT_C_OWNED_VERSION": 5,
+    "ALREADY_I5_B_EQUIVALENT": 24,
+    "IN_I5_NOT_IN_OTHER_LINE": 14,
+    "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED": 33,
+    "MISSING_IN_I5_C_OWNED_NO_REPLAY_PERMISSION": 19,
+    "MISSING_IN_I5_A_OWNED_NEW_CR_REQUIRED": 14,
+    "ALREADY_I5_A_EQUIVALENT": 16
+  },
+  "fileCount": 139,
+  "files": [
+    {
+      "path": "apps/electron/src/main/lib/review/plan-binding-v3.test.ts",
+      "blobs": {
+        "I5": "bdd3f90ebcab8a53cf5766e565dbba56c8d8a55c",
+        "C_R09": "bdd3f90ebcab8a53cf5766e565dbba56c8d8a55c",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "SAME_BLOB_I5_C_R09"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/plan-binding-v3.ts",
+      "blobs": {
+        "I5": "8a252806f9d470b4abc3b9896f58509768885f79",
+        "C_R09": "5870588b953def085504874cad61c47438510421",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "CONFLICT_C_OWNED_VERSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-import-checkpoint-v3-b2.test.ts",
+      "blobs": {
+        "I5": "bd6d6cd21e796f7309e68c3899cff4f22ba12066",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "bd6d6cd21e796f7309e68c3899cff4f22ba12066"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-import-checkpoint-v3-b2.ts",
+      "blobs": {
+        "I5": "35b4d9e757b5b1530c7ca0407c405e8513b5caf7",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "35b4d9e757b5b1530c7ca0407c405e8513b5caf7"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-import-handoff-v3-b2.test.ts",
+      "blobs": {
+        "I5": "dddf137852aade9fd224c27a1458887467cfd26b",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "dddf137852aade9fd224c27a1458887467cfd26b"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-import-handoff-v3-b2.ts",
+      "blobs": {
+        "I5": "b1a8e05ffb49cf26888b5252700eb508cca4e3b4",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "b1a8e05ffb49cf26888b5252700eb508cca4e3b4"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-import-ledger-v3-b2.test.ts",
+      "blobs": {
+        "I5": "dd9d9f693f1f79d55c994bca0dad4ca111d85cdc",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "dd9d9f693f1f79d55c994bca0dad4ca111d85cdc"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-import-ledger-v3-b2.ts",
+      "blobs": {
+        "I5": "273b8ea71ed739f01238c5bcf1f57be7a39a6502",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "273b8ea71ed739f01238c5bcf1f57be7a39a6502"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.test.ts",
+      "blobs": {
+        "I5": "f0d0b442e59ab1dc75089b592a6f449481577383",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "f0d0b442e59ab1dc75089b592a6f449481577383"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.ts",
+      "blobs": {
+        "I5": "e911663006cb105aad382a6a107630534e014739",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "e911663006cb105aad382a6a107630534e014739"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.test.ts",
+      "blobs": {
+        "I5": "16fafce274b5fcbc86be27618d5001ecf2cd7baa",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "2c9d8497baa7c9b1bbf89c4b6a78c3c3041c67be"
+      },
+      "disposition": "IN_I5_NOT_IN_OTHER_LINE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.ts",
+      "blobs": {
+        "I5": "51a0fa003eb444e91ac246f2789b31db149f2456",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "cd1d5b885e6fcc801b5e6c9df3e42a102b447f56"
+      },
+      "disposition": "IN_I5_NOT_IN_OTHER_LINE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.test.ts",
+      "blobs": {
+        "I5": "0011844e2a2d6fdd7eb00abdfc1ea697d3700ea0",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "0011844e2a2d6fdd7eb00abdfc1ea697d3700ea0"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts",
+      "blobs": {
+        "I5": "b2101be80e3dce561f6365c3378b2930245dda73",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "b2101be80e3dce561f6365c3378b2930245dda73"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-template-author-main-port-v3-b1.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "6e10fc1363fff6c034ada884e90d8f64b6b9527f"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-template-author-main-port-v3-b1.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "1a046806994f76cca51267c62fd931a458983a7a"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.test.ts",
+      "blobs": {
+        "I5": "b6f1c25079e6f54f7953ccb94b71679176fc912e",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "b6f1c25079e6f54f7953ccb94b71679176fc912e"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.ts",
+      "blobs": {
+        "I5": "065251ca843c51e68e225dc688bb7a8caab2fea7",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "065251ca843c51e68e225dc688bb7a8caab2fea7"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.test.ts",
+      "blobs": {
+        "I5": "0476ae8e408cf124b19101c1fc48b9f8c9d3213f",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "0476ae8e408cf124b19101c1fc48b9f8c9d3213f"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.ts",
+      "blobs": {
+        "I5": "974f0b0d127301ed71ad10df5ae64623ce378882",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "974f0b0d127301ed71ad10df5ae64623ce378882"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b-bulk-product-workbench.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "6efe85242247ab485f7fac315b7e77a488507daa"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b-bulk-remediation-cycle.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "53e946327f7354e5a16fa5017779049bdcf682e3"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b-candidate-readiness-workbench.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "426e93270e2a533575c83a7f1408adf7a577b2dc"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b1-author-fs-hardening.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "5d39ff7fb9dee2eae251cdb27f5bce67bfebad9b"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b1-b2-candidate-source-bridge.test.ts",
+      "blobs": {
+        "I5": "f3039718333ee217b5542b1398bc4c4a8e08e777",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "f3039718333ee217b5542b1398bc4c4a8e08e777"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b1-b2-candidate-source-bridge.ts",
+      "blobs": {
+        "I5": "e322df7ddc0910f5065d7a887507218cac7a7713",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "e322df7ddc0910f5065d7a887507218cac7a7713"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b1-b2-main-read-bundle-v3-b.test.ts",
+      "blobs": {
+        "I5": "65fc1149b6bd73b2e51f0e0e960541204055128d",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "65fc1149b6bd73b2e51f0e0e960541204055128d"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b1-b2-main-read-bundle-v3-b.ts",
+      "blobs": {
+        "I5": "2ff051fc5d18a2c0ef9465188a3611a71a0989ee",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "2ff051fc5d18a2c0ef9465188a3611a71a0989ee"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b1-b2-recovery-preflight-v3-b.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "27da50b5a5a57b89027f4a3870d94bd0cdd48655"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b1-b2-recovery-preflight-v3-b.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "7001e2e5baa7bdebb7c4ee852e9150e8c97af4e6"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b1-candidate-removal-impact.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "015675dbea0d1f57b847854213fc1d370ffde503"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b1-candidate-removal-impact.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "cb184038a071b9da342645bd41207f1ff1b627f6"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b2-candidate-read-extent.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "9333f3497532c6a8e5b3e72ec81cf391ab2fa806"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b2-physical-revalidation.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "0f428d805b06a116ee05f2d2d68b862d2eb49de4"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b2-version-transition.test.ts",
+      "blobs": {
+        "I5": "1ca56df2317f345f86e962af4017af82ad10b4de",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "1ca56df2317f345f86e962af4017af82ad10b4de"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b3-unmatched-author-bootstrap.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "62afbc80a8720385342ae824233ccd061497bb19"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b3-unmatched-author-bootstrap.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "7af5fb6db342f3308257e1adf5232bc1ca5459ea"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b4-bulk-evidence-workbench.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "456192fc5932929b9193f6833cee0bd6e4fadd44"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b4-conflict-and-instance-guard.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "9fb95568290c74a60d51e9ac99519f3c8f5a9164"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b4-conflict-and-instance-guard.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "f714143a303a757293b4357c26fc38662bde4c46"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b4-g01-original-anchors.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "802f91ba1b40fba5acd9c9082c0410629861fbae"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b4-high-risk-semantic-evidence.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "9af7ab540ebd452f50d647b83e947188084d9661"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b4-high-risk-semantic-evidence.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "86ffd95ee4537f6dd0b09bb5f677348c69ba0f28"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b4-inventory.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "a1ce746d75b38578eda0fe287010e85633ce6e2a"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b4-library-original-audit.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "ad8e2c468fe863706c39315fd79f2a05427c8119"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b4-object-isolation.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "ff4fc46ff35106bf7bf69a615080fc2c33ea19b5"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b4-object-isolation.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "009c12382ddbc955965be0ce9b796739cc6905f8"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b4-obligation-lineage.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "f4fb27edacfc927119d58669af0a8e1f8e429809"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b4-obligation-lineage.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "1d2c9bc22630000906ea976f7a3a77cfd49dd2e3"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b4-original-byte-verifier.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "33c32e21aca3a533cca9cab074f3181ae67e0bcc"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b4-original-byte-verifier.ts",
+      "blobs": {
+        "I5": "02565186990a7e67e5e1e37fb83931384be9fffd",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "02565186990a7e67e5e1e37fb83931384be9fffd"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b4-original-evidence.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "5c947291404458b3c03f772e4ef49c1aeb2a765f"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b4-r12-original-recovery.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "9a8b1da3210037bcb1dbed6d1dcec7c96e60f033"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b4-r25-raw-clause-condition.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "92fb5e042520b4af3f94c3510278fad7cd743ce8"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b4-r25-raw-clause-condition.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "43b3b1dc825f9e22596ba9ff1823e908a046a3ee"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b4-rule-source-diff.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "bc8819e6ea20b9b6b78c69b13d949d21d82cf70a"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b4-rule-source-diff.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "d725f339ac37b5974dbef039252418e81ec9a381"
+      },
+      "disposition": "MISSING_IN_I5_B_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-case-disk-tx.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": "11ff465c33eeb12490fc3780ae0ae3fcea523fc3",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_C_OWNED_NO_REPLAY_PERMISSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-case-disk-tx.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": "cb5617c99f807b6c477143aa84a9f5f5a798f4d4",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_C_OWNED_NO_REPLAY_PERMISSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-durable-host-fence.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": "697c2608e6d12777cc910e79e88c14ffee0673c8",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_C_OWNED_NO_REPLAY_PERMISSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-durable-host-fence.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": "75e989ef7deb63f36d9c9e2f636d800e69064d0c",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_C_OWNED_NO_REPLAY_PERMISSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-durable-host-fence.worker.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": "bdcb4e7f33f96271cbb7ad107590ea7f7b60804a",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_C_OWNED_NO_REPLAY_PERMISSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-execution-contract.test.ts",
+      "blobs": {
+        "I5": "7a12de582b376f3ea6fa83c34e990aaaeebee1ba",
+        "C_R09": "7a12de582b376f3ea6fa83c34e990aaaeebee1ba",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "SAME_BLOB_I5_C_R09"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-execution-contract.ts",
+      "blobs": {
+        "I5": "1b05a8c29c972b8902b2ece742260a0dc019be6b",
+        "C_R09": "1b05a8c29c972b8902b2ece742260a0dc019be6b",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "SAME_BLOB_I5_C_R09"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-execution-crashpid.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": "4bf4d195dc61fc786f9a57209efa06358205a624",
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_A_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-execution-late-pid.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": "dd0d7f1f6c267d679e6277d162681ed00577a569",
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_A_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-execution-proposal-producer.test.ts",
+      "blobs": {
+        "I5": "a117b42d54294b485b8887b71dc7c77651e0f991",
+        "C_R09": null,
+        "A_R21": "a117b42d54294b485b8887b71dc7c77651e0f991",
+        "B_R29": null
+      },
+      "disposition": "ALREADY_I5_A_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-execution-proposal-producer.ts",
+      "blobs": {
+        "I5": "c4eb67ff185ecd889864431a898bee77c352fc84",
+        "C_R09": null,
+        "A_R21": "c4eb67ff185ecd889864431a898bee77c352fc84",
+        "B_R29": null
+      },
+      "disposition": "ALREADY_I5_A_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-execution-turn-budget.test.ts",
+      "blobs": {
+        "I5": "0aeacb5b1770a93a1091b0009143dd012eb6854c",
+        "C_R09": null,
+        "A_R21": "0aeacb5b1770a93a1091b0009143dd012eb6854c",
+        "B_R29": null
+      },
+      "disposition": "ALREADY_I5_A_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-execution-turn-budget.ts",
+      "blobs": {
+        "I5": "34d52ebb9716fd964aa3e9a82e7f3f5671d2e221",
+        "C_R09": null,
+        "A_R21": "34d52ebb9716fd964aa3e9a82e7f3f5671d2e221",
+        "B_R29": null
+      },
+      "disposition": "ALREADY_I5_A_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i1-owner-event.test.ts",
+      "blobs": {
+        "I5": "1093f4da880eff1631637589949e9fd8514f2765",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "IN_I5_NOT_IN_OTHER_LINE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i1-technical.test.ts",
+      "blobs": {
+        "I5": "8a9a156c5e8a246d62845a338d95f047e8d6cd2f",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "IN_I5_NOT_IN_OTHER_LINE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i1-technical.ts",
+      "blobs": {
+        "I5": "267e60a0bee072d49abe3c9ff35a7384a78538db",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "IN_I5_NOT_IN_OTHER_LINE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i2-a-proposal.test.ts",
+      "blobs": {
+        "I5": "8d0d41b66fcb21ab63af9aa62a2b7c0e41237b9d",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "IN_I5_NOT_IN_OTHER_LINE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i2-b-source.test.ts",
+      "blobs": {
+        "I5": "826619b177e1589cf83573999d71a32f9ada2d5b",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "IN_I5_NOT_IN_OTHER_LINE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i3-a-c-provider-boundary.test.ts",
+      "blobs": {
+        "I5": "81a7b486f33f17fe6b817649cf786c512979e99e",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "IN_I5_NOT_IN_OTHER_LINE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i3-stage3-sdk-host-technical.test.ts",
+      "blobs": {
+        "I5": "fd1957106bee70590da71d06e8cd0c58ef34dfea",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "IN_I5_NOT_IN_OTHER_LINE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i4-a18-sse-host-boundary.test.ts",
+      "blobs": {
+        "I5": "42d69f7ff1df4f4f061b0ef54c8c5de233ee0996",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "IN_I5_NOT_IN_OTHER_LINE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i4-b18-version-host-boundary.test.ts",
+      "blobs": {
+        "I5": "bc5bd02e52b674e09187b8de76b7fbb906e64dc3",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "IN_I5_NOT_IN_OTHER_LINE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i5-b20-cmain-offline.test.ts",
+      "blobs": {
+        "I5": "754a86fbffa12787309090e58b38bffb4ca647a0",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "IN_I5_NOT_IN_OTHER_LINE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i5-coldpid.worker.ts",
+      "blobs": {
+        "I5": "fb2cc8ef6346acd8117362513b513cb2f28b3fa9",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "IN_I5_NOT_IN_OTHER_LINE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-legacy-entry-gates.test.ts",
+      "blobs": {
+        "I5": "86a1675b5295564bc4290911fde4bdf85095f7bf",
+        "C_R09": "86a1675b5295564bc4290911fde4bdf85095f7bf",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "SAME_BLOB_I5_C_R09"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-author-plan-ipc.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": "e6b6e95e376a0c430837903e2db249af2e7e288a",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_C_OWNED_NO_REPLAY_PERMISSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-author-plan-ipc.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": "00d77c3fb40562f5ca71c9f48fc7e00e8a19a3a0",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_C_OWNED_NO_REPLAY_PERMISSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-author-revision-read.test.ts",
+      "blobs": {
+        "I5": "788223c45822d3c9e0e40d110060c1d419e8a664",
+        "C_R09": "788223c45822d3c9e0e40d110060c1d419e8a664",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "SAME_BLOB_I5_C_R09"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-author-revision-read.ts",
+      "blobs": {
+        "I5": "ba80feb8d29844376c22e7422cde5ff33792b94f",
+        "C_R09": "ba80feb8d29844376c22e7422cde5ff33792b94f",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "SAME_BLOB_I5_C_R09"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-b20-electron-ipc.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": "e8d4fb85d86295f97bbf2eb20c064fdaa193e6f7",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_C_OWNED_NO_REPLAY_PERMISSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-b20-trusted-candidate-read.test.ts",
+      "blobs": {
+        "I5": "36c74c06cb21f34ba4f15af39fd860b935a5829d",
+        "C_R09": "36c74c06cb21f34ba4f15af39fd860b935a5829d",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "SAME_BLOB_I5_C_R09"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-b20-trusted-candidate-read.ts",
+      "blobs": {
+        "I5": "d0e6ea271e0b20474060131f1f29a74b876463c3",
+        "C_R09": "d0e6ea271e0b20474060131f1f29a74b876463c3",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "SAME_BLOB_I5_C_R09"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-host-receipt-registry.test.ts",
+      "blobs": {
+        "I5": "9b0054cb293397620db6b72ff99eb26adef1b185",
+        "C_R09": "a54d71db69b11caa3c0ed827f8c416806bb7d6f9",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "CONFLICT_C_OWNED_VERSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-host-receipt-registry.ts",
+      "blobs": {
+        "I5": "bba17b3c3e01ebf0be643bf00fbf1284028f1e7f",
+        "C_R09": "26359d4b2f3a10f517bc284d426187d5dd030e54",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "CONFLICT_C_OWNED_VERSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-native-archive-registry.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": "9513ab4330a2ae2077f5d71da2d5cf8d679fb230",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_C_OWNED_NO_REPLAY_PERMISSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-native-archive-registry.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": "9354427a70a3d34ff7d5e7fbf8aa2a501b59ed33",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_C_OWNED_NO_REPLAY_PERMISSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-native-removal-observer.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": "57971a23ac2cd042e8b63db50d77de20e910d3ff",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_C_OWNED_NO_REPLAY_PERMISSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-native-removal-observer.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": "cee650e8ab44449dac06868e122499601d0e51ac",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_C_OWNED_NO_REPLAY_PERMISSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-pi-factory.test.ts",
+      "blobs": {
+        "I5": "6a5317f99100327208699eb1c819e7741ca0679b",
+        "C_R09": "6a5317f99100327208699eb1c819e7741ca0679b",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "SAME_BLOB_I5_C_R09"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-pi-factory.ts",
+      "blobs": {
+        "I5": "d342ae0e14055ca0f73875782d773afa432aa7fd",
+        "C_R09": "d342ae0e14055ca0f73875782d773afa432aa7fd",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "SAME_BLOB_I5_C_R09"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-plan-provenance.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": "307aee441956c7dd4e1069f6bfc0c476acec778c",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_C_OWNED_NO_REPLAY_PERMISSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-plan-provenance.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": "e9d1be91ada606bb63669cf822a97dfb7ad6dd1c",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_C_OWNED_NO_REPLAY_PERMISSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-removal-consent.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": "4de469cc240c56e7c94d49bdb6365d24d89f275e",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_C_OWNED_NO_REPLAY_PERMISSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-removal-consent.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": "698a703ad551f6e09fdf9f1c008130a4ff8ccdd4",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_C_OWNED_NO_REPLAY_PERMISSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-sdk-turn-bridge.test.ts",
+      "blobs": {
+        "I5": "b42a605ec733a64e701e312bd32154f7c574b331",
+        "C_R09": null,
+        "A_R21": "b42a605ec733a64e701e312bd32154f7c574b331",
+        "B_R29": null
+      },
+      "disposition": "ALREADY_I5_A_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-sdk-turn-bridge.ts",
+      "blobs": {
+        "I5": "7937bd0b995ebdb5730399a761e58e2a329c52fe",
+        "C_R09": null,
+        "A_R21": "7937bd0b995ebdb5730399a761e58e2a329c52fe",
+        "B_R29": null
+      },
+      "disposition": "ALREADY_I5_A_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-trust-port.test.ts",
+      "blobs": {
+        "I5": "8338e5de998718bb136e0004bc7bf66237479960",
+        "C_R09": "8338e5de998718bb136e0004bc7bf66237479960",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "SAME_BLOB_I5_C_R09"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-trust-port.ts",
+      "blobs": {
+        "I5": "17f78ce719c31311e528ce0092da0df8283f4460",
+        "C_R09": "17f78ce719c31311e528ce0092da0df8283f4460",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "SAME_BLOB_I5_C_R09"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-trusted-assembly.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": "1108533d3cdebd4f7232a6c15605394ef3cfeb60",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_C_OWNED_NO_REPLAY_PERMISSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-trusted-assembly.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": "04a5fd6e87b04d3f78de6caf2da5401a92d0905b",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_C_OWNED_NO_REPLAY_PERMISSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-native-pi-crosspid-r19.test.ts",
+      "blobs": {
+        "I5": "7855139e7bdf367f8ed023483c8905a59903ca27",
+        "C_R09": null,
+        "A_R21": "7855139e7bdf367f8ed023483c8905a59903ca27",
+        "B_R29": null
+      },
+      "disposition": "ALREADY_I5_A_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-native-pi-crosspid-r19.worker.ts",
+      "blobs": {
+        "I5": "ffbb803a7e93e47488bcb7e97f0537258ff76f04",
+        "C_R09": null,
+        "A_R21": "eef13e8d0c25713c73738df998592b338437ebca",
+        "B_R29": null
+      },
+      "disposition": "IN_I5_NOT_IN_OTHER_LINE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-native-pi-offline-sdk.test.ts",
+      "blobs": {
+        "I5": "5e2dfa65ac53443da4535b6bf50211d5b1b32502",
+        "C_R09": null,
+        "A_R21": "5e2dfa65ac53443da4535b6bf50211d5b1b32502",
+        "B_R29": null
+      },
+      "disposition": "ALREADY_I5_A_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-native-pi-operator-recovery-r20.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": "7d666d5a844e8c57269f058253c81768d3a28443",
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_A_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-native-pi-revoke-r19.test.ts",
+      "blobs": {
+        "I5": "27f9d589b37f7560bc1945b5ba2a303f746436e3",
+        "C_R09": null,
+        "A_R21": "27f9d589b37f7560bc1945b5ba2a303f746436e3",
+        "B_R29": null
+      },
+      "disposition": "ALREADY_I5_A_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-native-pi-settlement-fault-r19.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": "97818471e36a2901d05bd6be30e5c375d6174909",
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_A_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-native-pi-sigkill-budget-r19.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": "3b9dacb834ed4292a915137711736108b3784b8f",
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_A_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-native-pi-sigkill-settlement-r19.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": "b5981414dd68e16867b783fdb721036b97683f86",
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_A_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-owner-reconciliation-intent.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": "4b872dfdbb6718cdfe3ba4e988784cbc0cf4b9b7",
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_A_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-owner-reconciliation-intent.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": "a828708ae939151c2973c0b1663f7d81357b6e8a",
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_A_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-owner-reconciliation-r20.worker.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": "c392a1198456ab21b95920af708e06d74f446809",
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_A_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-owner-recovery-evidence.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": "bd1bc951a5d0feac4fd8f545e53f5fe8ae289543",
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_A_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-owner-recovery-evidence.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": "fc9b3d5783dddd21dfa11a30a7fd8a8c27b19b7d",
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_A_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-pi-http-provider-engine.test.ts",
+      "blobs": {
+        "I5": "5587965061519b3c4174d6f3950fc0d7b9425b4c",
+        "C_R09": null,
+        "A_R21": "5587965061519b3c4174d6f3950fc0d7b9425b4c",
+        "B_R29": null
+      },
+      "disposition": "ALREADY_I5_A_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-pi-http-provider-engine.ts",
+      "blobs": {
+        "I5": "029419de63dd1974c262f59dc80fc8d9b559004d",
+        "C_R09": null,
+        "A_R21": "029419de63dd1974c262f59dc80fc8d9b559004d",
+        "B_R29": null
+      },
+      "disposition": "ALREADY_I5_A_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-plan-removal-ack.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": "5ec7b7b81b0490329da6ab6412f36e896605f70e",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_C_OWNED_NO_REPLAY_PERMISSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-run-writer.test.ts",
+      "blobs": {
+        "I5": "71aac61f66db4ba9e6c148c7cb6c239cc1ec4ce8",
+        "C_R09": "71aac61f66db4ba9e6c148c7cb6c239cc1ec4ce8",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "SAME_BLOB_I5_C_R09"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-run-writer.ts",
+      "blobs": {
+        "I5": "e48506faf30c17b0e3071a692becd7a5f2fb9e5b",
+        "C_R09": "b53cea6fb2a71c003d7d8baaf501508d0a239eed",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "CONFLICT_C_OWNED_VERSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-sdk-diskfault-r19.test.ts",
+      "blobs": {
+        "I5": "094698f65a93b47a5fa5cba5080132ea5e733547",
+        "C_R09": null,
+        "A_R21": "094698f65a93b47a5fa5cba5080132ea5e733547",
+        "B_R29": null
+      },
+      "disposition": "ALREADY_I5_A_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-sdk-dispatch-crashpid.test.ts",
+      "blobs": {
+        "I5": "48db97ad4e281125f69e65e7ac7cfe0afbf3a618",
+        "C_R09": null,
+        "A_R21": "48db97ad4e281125f69e65e7ac7cfe0afbf3a618",
+        "B_R29": null
+      },
+      "disposition": "ALREADY_I5_A_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-sdk-dispatch-fence.ts",
+      "blobs": {
+        "I5": "d895feaed037260aad9b7502d6909b394678bc26",
+        "C_R09": null,
+        "A_R21": "d895feaed037260aad9b7502d6909b394678bc26",
+        "B_R29": null
+      },
+      "disposition": "ALREADY_I5_A_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-sdk-native-complete-crosspid-r19.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": "83ad013d73feb6400e6bdec802a13db192f2cd93",
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_A_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-sdk-physical-turn-port.test.ts",
+      "blobs": {
+        "I5": "e5ed54f6b07c2a051e4eea173e78ad674113599c",
+        "C_R09": null,
+        "A_R21": "e5ed54f6b07c2a051e4eea173e78ad674113599c",
+        "B_R29": null
+      },
+      "disposition": "ALREADY_I5_A_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-sdk-physical-turn-port.ts",
+      "blobs": {
+        "I5": "49b8d9270570a76f58f04d90c3bdc77ce6230a9b",
+        "C_R09": null,
+        "A_R21": "49b8d9270570a76f58f04d90c3bdc77ce6230a9b",
+        "B_R29": null
+      },
+      "disposition": "ALREADY_I5_A_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-technical-ledger.test.ts",
+      "blobs": {
+        "I5": "e3bfd5f372caaf61d4692f3b2a808d780aa7e2d0",
+        "C_R09": "e3bfd5f372caaf61d4692f3b2a808d780aa7e2d0",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "SAME_BLOB_I5_C_R09"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-technical-ledger.ts",
+      "blobs": {
+        "I5": "a0ed06a05775674143f584b140b1cb36d490a6f2",
+        "C_R09": "a3378792a1e2f3a3b8a5d214a969746054c33d8b",
+        "A_R21": null,
+        "B_R29": null
+      },
+      "disposition": "CONFLICT_C_OWNED_VERSION"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-technical-sequence-driver.test.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": "4befa68e335c8bd98fd03399263da7c4c7046f2f",
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_A_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-technical-sequence-driver.ts",
+      "blobs": {
+        "I5": null,
+        "C_R09": null,
+        "A_R21": "144677d06de8862322ff326035017d0f5bdd46cd",
+        "B_R29": null
+      },
+      "disposition": "MISSING_IN_I5_A_OWNED_NEW_CR_REQUIRED"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-zip-intake-v3-b2.test.ts",
+      "blobs": {
+        "I5": "1aa380afcb83078025f25d2ce1ce15816db0b5e8",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "1aa380afcb83078025f25d2ce1ce15816db0b5e8"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-zip-intake-v3-b2.ts",
+      "blobs": {
+        "I5": "2289f2fb2ca395fb81d93270e3d33116359993c4",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "2289f2fb2ca395fb81d93270e3d33116359993c4"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-zip-staging-v3-b2.test.ts",
+      "blobs": {
+        "I5": "edefc665e0db38313a63bc46298c4c9b8ffe35d1",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "edefc665e0db38313a63bc46298c4c9b8ffe35d1"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-zip-staging-v3-b2.ts",
+      "blobs": {
+        "I5": "38d87196e49b73c62b6019ff2b1dceac3f02b175",
+        "C_R09": null,
+        "A_R21": null,
+        "B_R29": "38d87196e49b73c62b6019ff2b1dceac3f02b175"
+      },
+      "disposition": "ALREADY_I5_B_EQUIVALENT"
+    }
+  ]
+}
