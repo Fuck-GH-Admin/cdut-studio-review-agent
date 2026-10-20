@@ -1,4 +1,101 @@
-# CDUT Studio Review V3｜Local-L04 十线真实集成与产品闭环执行任务书 R01
+
+# CDUT Studio Review V3｜Local-L04 五份续作合并与 A15 真实验收 R02
+
+> 2026-10-21 续作指令，**优先于下方 R01**。**原十条 T01–T10 已合入 main，R01 B1/B2/B3 是历史记录，绝对不要重合旧十线**。本轮仅收五个新 PR #174/#175/#176/#177/#179，并可接入 A15 测试素材 PR #178。读取本文后直接开展工程工作，不再进行全仓历史调查。
+
+## R02-A. 来源、实际能力与接收门槛
+
+核验时 main=4951ca658665d48877d095a0905b1269fdde41db；开工重新 git fetch 及记录真实 origin/main，绝对不要回退它。所有五线源分支从较旧的 main@9840a64f25a 派生，比目前 main 约落后 3 个提交：三方合并保留当前 T09 可信 Main 桥接、A09 修正和现有业务/数据记录；禁止来源文件整目录覆盖。
+
+| 本轮 PR | 来源分支 | 核验固定 SHA | 真实内容 | 最新 CI 核验 |
+| --- | --- | --- | --- | --- |
+| **T01 #176** | feat/v3-full-t01-closure-r01 | 362713730d41c614022eadaa2c8b79911a134669 | 明确需求→可编辑模板草稿，受控模型起草领域端口，六个文件样例包与 UI | PR CI SUCCESS |
+| **T02 #174** | feat/v3-full-t02-visual-material-r02 | b346c1dade91e27ece427b292dcdebee4e0d6935 | PPTX 原始媒体关系与页来源、图像/扫描 PDF 视觉 OCR、B2 staged OCR 和 UI | PR CI / Baseline / D2 Scoped SUCCESS |
+| **T06 #177** | feat/v3-full-t06-physical-intake-r02 | 07ed0a25e192029ba73e68274444e1695100ff52 | 真实 folder/ZIP 分组、预览、新建或绑定案卷、逐原件入库和批次回执 | PR CI / Batch / Baseline / D2 Scoped SUCCESS |
+| **T08 #175** | feat/v3-full-t08-report-pdf-and-suggestion-r02 | 82d543771d27b5f2285542f89107beccc47e7c85 | 真正可打开的 PDF 图片页文件、助手建议人工审阅与确认保存 UI | PR CI SUCCESS |
+| **T05 #179** | feat/v3-t05-stage-supplement-closure-r01 | 49bd6ce5ae82d1d3a8b71b52d737e658822497e5（暂定） | 真 Run 关联的初审→终审领域提案、补件回复/恢复、可信角色面板与 CR-T05-04 | Baseline / D2 Scoped SUCCESS；**此 SHA 的 PR CI 最后检查时仍在运行** |
+| **A15 素材 #178** | feat/v3-a15-cloud-fixtures-r01 | a6d3424055d7a4dfaf44c67ca4346f3e30f38ad4 | 真实 DOCX 生成器、四组预期、虚构 LAB-SIM@1 政策、云端/本地分工 | 测试数据，不是功能或 A15 已 PASS |
+
+**T05 特殊约束**：可以先合并四份通过 CI 的 #174/#176/#177/#175；#179 等 **最新 HEAD 的 PR CI SUCCESS** 再接。T05 Owner 可能继续提交，不允许使用旧成功测试代替新 HEAD；开工以最新 SHA、diff、CI 固定来源。失败或未结束只阻止 T05 自己，其他四项继续工作。PR #178 可随时独立接收，不需要等 T05。
+
+六套 T01 ZIP 包虽然包含可读原件/配置/预期，并不说明六套业务已在 Case/Run 真实操作通过。T01 模型端口有领域 prompt/schema，但尚需本地 L 接可信模型调用。T02 OCR 依赖引擎和 PDF 渲染工具，缺资源只能标 partial。T08 PDF 是真实图片页 PDF，**不是文字可选择/搜索的 PDF**。T08 对现有可信 Main 暂仅允许保存 text 字段；数字/日期等不可取消禁用伪称完成。
+
+## R02-B. 实际合并顺序、停点和接口接线
+
+**准备**：git fetch origin，核对所有源 SHA 和 CI，检查 git worktree list、git status；使用独立 integration worktree 并记录 rollback SHA。若本地已有进展，从现有工作树安全继续，不 reset/clean/force-push。每条独立合并提交与 bridge 提交，成功后记录进入 main 的 SHA；不整批 squash。三方冲突以保留两边真实功能为准，不允许统一取 ours/theirs。
+
+**批次 1（四份绿灯）**：推荐 T02 #174 → T01 #176 → T06 #177 → T08 #175，可按当前依赖微调。
+
+1. T02：保留新旧 document-service 实现，接原有 B2 Main-owned ctx 和来源/DocumentVersion 写入。使用 parseT02VisualMaterialWithOcr、previewT02StagedVisualOcr；Main 提供受信原件地址、OCR 端口、B2 scope，不允许 Renderer 传物理绝对路径。展示 partial/待确认及页级来源。无 pdftoppm/Tesseract 不能声称真实扫描 OCR 已完整验证。
+2. T01：保留已有 TemplateWizardPanel 的发布编辑功能，挂载 ReviewV3T01AuthoringLaunchpad；本地明确要求提取应真实可用。调用真正模型时复用现有 Provider/模型选择与可信 Host，向 draftT01ViaAuthorizedModel 注入授权 invoke，Renderer 不持凭据。不得展示“已调用 AI”但背后只执行本地规则的按钮。
+3. T06：保留已通过的 T07/BatchStore，安装 ReviewV3T06PhysicalImport。Main 最小可信调用 pickT06PhysicalSource({sourceKind:'folder'|'zip'}) 和 commitT06PhysicalImport(request)，复用已有 B2 staging 和 Case/DocumentVersion/Batch writer。真实 OS Picker、entry token、来源指纹/幂等、实际字节入库必须由 Main 校验。原件未全部成功的案卷不得记为 batch 成功成员；保留部分失败回执，不删除已建案卷。
+4. T08：挂载真实 PDF 和 ReviewV3T08SuggestionReview，确认 Run 与 audience 投影正确，2+ 页中文能用独立阅读器打开。现有 UPDATE_FIELDS_V2 的 Main 未传 TemplateVersion，导致非 text 字段被当文本；修复 Main 读取已发布模板、验证 FieldSpec kind/scope/选项及版本后再通知 T08 Owner 解锁 typed 编辑。不新建第二套写入系统。没有共享修复前，非 text 保存必须保持禁用；旧 Run 不应被就地改写，补件不自动批准。
+
+每条都运行受影响定向测试、workspace typecheck、必要的 Main/Preload/Renderer build。不要因一条分支尚缺最终产品 E2E 拒绝已可用模块合并，也不能用 CI 成功代替桥接。验证新功能真实入口可达，无数据损坏/权限绕过后即可分批合入 main。
+
+**批次 2（T05 最新 CI 合格后）**：接 PR #179，保留现有 V2CasePanel、T03/T08/T10 挂载与旧 T05 工作台；新增 planT05LocalStageAction/planT05SupplementReentry 负责纯领域判断，L 负责可信 Main 执行。**必须完整阅读来源文档** docs/design/review-agent/acceptance/v3-t05-stage-closure-r01/T05-HISTORY-SCOPE-AND-CONTRACT-REQUEST.md 的 CR-T05-04。
+
+T05 Main 需要：
+- 只读 T05TrustedStageCapability：可信来源的 actorRole reviewer/teacher、开放任务及 current real Run；Renderer 的 role/runId 不授权。
+- 写入 recordTrustedStageDecision(T05TrustedStageCommand)：Main 核对 published TemplateVersion、expectedRevision、真实任务与有权角色、当前来源版本、当前 Run、必需规则决定准备度（不能把 completed Run 当全部规则通过），再使用已有统一案卷事务提交领域 Proposal。
+- reviewer 初审 stage-pass 只启动 teacher 终审任务；teacher 终审才 final。缺材料可先开补件请求而**不能捏造 Run 或批准**。第一次回复不足不等于 satisfied；第二次补齐并经人工核验后新 DocumentVersion、Run 和阶段恢复。
+- **严禁**沿用 stage-workflow.ts 的合成 run@rev ID 作为真实 Run 证据，不能通过修改 Renderer actor 冒充 teacher。D2 技术预审/学校正式审批禁令必须保留。
+
+**所有五份均合入后先跑自身入口**：T01 能用编辑/模型（如已接）起草；T02 实体图像 OCR 有来源和 partial 说明；T06 ZIP/folder 真实成批建案与原件；T08 能输出 PDF 和确认应用 text 字段；T05 能在可信 Main 下按两级业务任务操作。无法完成某条的桥接，要写清具体 IPC/Writer 缺口和 BLOCKED_BRIDGE，不回头写新架构白皮书。
+
+### A15 最高优先的一个仍未解决的合同
+
+最新 main 现有 T04 evaluateT04Plan 接受真正 CanonicalPlan 和每个 binding 的 RuleSpec，而 T01 发布模板的绑定路径尚**不会自动**生成这种可执行计划。#176 主要是自然语言起草和六样例，并未自动解决这一转换。
+
+- **T01/T04 领域 Owner** 必须明确结构化条件（人数≤20、材料必交、两级阶段）的 RuleSpec/PlanBinding 编译含义及来源版本；不能由 L 猜测纯 requirement 文本或在 Main 特判“实验室”。
+- **L 独占**将成熟 RuleSpec/PlanBinding 绑定到唯一正式 Case/Run，调用实际规则/材料检查并持久化及展示真实 CheckResult/SourceRef。
+- 缺领域规则合同标 BLOCKED_OWNER:T01/T04，并给最小缺字段/函数名；仍推进 T02/T06/T08/T05 的其他独立桥接。**不拿假 CheckResult 代替真实运行**。
+
+## R02-C. 接五份后用 PR #178 的真实 DOCX 分阶段跑 A15
+
+PR #178 中的生成器 work/e2e/a15-fixtures/generate.mjs 可直接以 Node 标准库执行：
+
+~~~bash
+node work/e2e/a15-fixtures/generate.mjs
+~~~
+
+它会产生五份真实 DOCX + 文本对照 + generated/manifest.json；模拟政策在 work/e2e/a15-fixtures/policy-LAB-SIM-v1.md（非学校正式规定）。**安全检出/合入 PR #178，不要再次花大量时间编造样本，也不能拿纯 TXT 解析替代 DOCX 读取。** 不需要先完成 T02 全格式 OCR、T06 全批次极限、T08 可检索 PDF 才能做 A15 单案验证。
+
+| Gate | 从何时可跑 | Electron 中应看到什么 |
+| --- | --- | --- |
+| **S0（已局部 PASS）** | 现有 flow-t01-bind | 仅证明发布/绑案、无学年；旧样例 objectType=document、两个字段、单个手审阶段，**不是完整 A15** |
+| **S1 真正通用模板** | T01 模板系统可编辑/发布 | 用户非写码配置 organization、组织名/负责人/人数/日期/时段/用途、必交计划书、人数≤20、无学年/分数、reviewer 初审→teacher 终审；发布版本、重新打开及复用 |
+| **S2 真实规则** | T01×T04 RuleSpec/PlanBinding 合同 + L Run 桥接准备好 | DOCX 真原件→DocumentVersion/SourceRef→人工确认真实值→真正 CanonicalPlan/RuleSpec→ReviewRun/CheckResult；18 人 compliant、21 人 non-compliant、人数未确认 pending、缺计划书待补件 |
+| **S3 人工补件与终审** | T05 与可信 Main 阶段命令已接 | 无计划书先补件；第一份 lab-12-unclear-reply.docx 已回复但不足；第二份 lab-12-corrected-reply.docx 形成新 DocumentVersion，经人核验并关联新 Run；初审仅推进终审、teacher 可信角色才能本地最终决定、旧版本和 Run 保留 |
+| **S4 真正用户旅程** | S1–S3 都具备 | 从 Electron UI 配置/选择模板、建案、实际选/拖 DOCX、一次开始检查、原件引用、补件、初终审、报告、冷重启恢复；不能只通过 CDP/IPC 构造假后台状态 |
+
+每个 Gate 固定 PASS/PARTIAL/BLOCKED_OWNER/BLOCKED_BRIDGE/NOT_RUN。**只有 S1–S4 真实通过才是 A15 PRODUCT_ACCEPTED**。对 21 人超限，不得由“Run 已 completed”直接 stage-pass；对未知人数，不能把 null 变 0；对缺计划书，不得按模型乐观建议自动批准。校方真实审批未开放可用具名本地模拟角色，但绝不冒充学校授权。
+
+若 S2 因 T01×T04 领域合同无法运行，**不要求 L 自己写规则编译器**：准确交出 Owner 需求，同时继续其它已能做的桥接；S0/S1 和 T02/T06/T08 独立操作仍可推进。S3 若缺可信 Main 审核角色/Run 绑定属 L 的桥接任务，不能全部推回 T05。
+
+最终 S4 需使用已有 work/e2e/v3-e2e.mjs 扩充真实 user journey，已有 flow-t01-bind 仅保留烟测；现有 flow-a09、flow-t07-judging、phase-prepare/phase-verify 不回归。需要真机才能验证的内容不许凭作者 CI 预填 PASS。
+
+## R02-D. 一个现有总账，不要再开多套收口文档
+
+验收证据仅更新主线现有 docs/design/review-agent/acceptance/local-l01/L3-DELIVERY-LEDGER.md；写明 origin/main 和实际 merge/bridge SHA、UI 或可信 Main 消费者、命令和结果、RunId/DocumentVersionId/actor 来源、回滚点。
+
+每批简短回执：
+
+~~~text
+Local-L04-R02：origin/main=<sha>
+接收：PR #<n> 源 HEAD=<sha> → merge/bridge=<sha> → main=<sha>
+模块：MERGED / WIRED / JOURNEY_VERIFIED / BLOCKED_OWNER / BLOCKED_BRIDGE
+真机/测试：具体命令及 PASS/FAIL/NOT_RUN
+A15：S0 / S1 / S2 / S3 / S4 的证据和真实断点
+下一步：可执行的一个接线动作，不重启历史调研
+~~~
+
+**执行优先级：四份绿灯→T05 最新绿灯→集中 A15 S1/S2/S3/S4；#178 验收输入并行纳入。** 禁止为假想风险扩展异常框架；保留现实中的来源真值、正式持久化、受控身份和审批边界。
+
+
+---
+
+# 附录｜Local-L04 原十线集成任务书 R01（历史背景）
 
 **任务编号**：V3-LOCAL-L04-INTEGRATE-T01-T10-R01  
 **执行者**：本地 Local-L Agent，唯一集成者；原 T01–T10 仍各自拥有业务实现。  
@@ -165,6 +262,6 @@ Local-L04 批次：B1 / B2 / B3
 回滚点：<SHA>
 ~~~
 
-**立即开始 B1；B1 合格后自主进入 B2、B3，不等待十线再次人工派发。** 若途中用户要求继续补齐 TXX 自身未开发的业务功能，先在总账说明而不是擅自跨 Owner。只在代码会丢失、正式审批权限改变、无法安全选择两条互斥业务语义等重大问题上请求裁决。
+**已结束的 R01 指令：十线 B1/B2/B3 已合入 main，现执行上文 R02 五份续作与 A15。** 若途中用户要求继续补齐 TXX 自身未开发的业务功能，先在总账说明而不是擅自跨 Owner。只在代码会丢失、正式审批权限改变、无法安全选择两条互斥业务语义等重大问题上请求裁决。
 
 **最终成果不是“十份 PR 全变绿”，而是现在的 V3 main 真正包含十份功能代码、能从同一产品入口走通已实现的业务能力，并且每个未闭环处都有准确、可继续施工的 Owner。**
