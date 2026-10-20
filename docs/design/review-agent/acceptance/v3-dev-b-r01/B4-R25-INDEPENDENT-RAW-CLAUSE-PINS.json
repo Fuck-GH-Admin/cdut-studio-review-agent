@@ -88,7 +88,7 @@
       "ruleId": "R-22",
       "rawSourceSha256": "a6c7131a8b8dbf5e14cfab532d0eaa7db880ef09237c18045bedf7df3325dd8b",
       "headingLine": 452,
-      "rawExcerptSha256": "18df77704dc7fb1bcd7534e7dd2d0a364ba76e3cd0a15cab6d41957745cbc9aa",
+      "rawExcerptSha256": "18df77704dc7fb1bcd7534d7dd2d0a364ba76e3cd0a15cab6d41957745cbc9aa",
       "rawRuleBodyNonBlankLines": 9,
       "r14AdditionalNonRuleContextLines": 0
     },
