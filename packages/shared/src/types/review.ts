@@ -506,12 +506,24 @@ export const REVIEW_IPC_CHANNELS = {
   REORDER_DOCUMENTS: 'review:reorder-documents',
   /** 删除案卷 */
   DELETE_CASE: 'review:delete-case',
+  /** Restore a native archived Case through a Main-trusted, CAS-backed command. */
+  RESTORE_CASE_V3: 'review-v3:restore-case',
+  /** C Main candidate author latest-revision READ ONLY. No implied publication. */
+  AUTHOR_READ_LATEST_V3: 'review-v3:author-read-latest',
+  /** C Main-only current B20 physical candidate preview; never a published Plan. */
+  B20_CANDIDATE_READ_V3: 'review-v3:b20-candidate-read',
+  /** User requests Main to show native ZIP picker for one CURRENT B20 selected archive. */
+  B20_NATIVE_REPICK_V3: 'review-v3:b20-native-repick',
+  /** C Main formal published-Plan upgrade through native Case CAS/Receipt. */
+  UPGRADE_CANONICAL_PLAN_V3: 'review-v3:upgrade-canonical-plan',
   /** 更新案卷设置（领域包 / 标题 / 类型 / 待审主体文档） */
   UPDATE_CASE_SETTINGS: 'review:update-case-settings',
   /** 手动修改从依据文件生成的单条规则摘要。 */
   UPDATE_RULE_OUTLINE: 'review:update-rule-outline',
   /** 人工修正一条 AI 识别的申报事项。 */
   UPDATE_REVIEW_ITEM: 'review:update-review-item',
+  /** Local reviewer declares an item against an already registered exact source version. */
+  CREATE_NATIVE_REVIEW_ITEM_V3: 'review-v3:create-native-review-item',
   /** 安全解析案卷图像块的本地预览路径。 */
   GET_IMAGE_PREVIEW_PATH: 'review:get-image-preview-path',
   /** 获取 V2 案卷已登记原件的只读预览路径。 */
@@ -690,6 +702,25 @@ export interface UpdateRuleOutlineRequest {
 export interface UpdateReviewItemRequest {
   caseId: string
   itemId: string
+  title: string
+  category: string
+  declaredScore: number
+  level?: string
+  activityDate?: string
+  organizer?: string
+}
+
+/**
+ * Source-anchored native HUMAN declaration, not an AI fact or school decision.
+ * requestId is an opaque idempotency key, never an identity credential.
+ */
+export interface CreateNativeReviewItemV3Request {
+  caseId: string
+  requestId: string
+  expectedRevision: number
+  documentVersionId: string
+  /** Existing parsed block identity; when absent, location is explicitly file-level. */
+  sourceBlockId?: string
   title: string
   category: string
   declaredScore: number

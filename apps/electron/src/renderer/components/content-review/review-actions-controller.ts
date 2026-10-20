@@ -94,16 +94,20 @@ export interface ReviewActionsApi {
     applicant: string
     academicYear: string
     domainPackId?: ReviewDomainPackId
-    reviewTemplate?: { templateId: string; version: number }
+    reviewTemplate?: { templateId: string; version: number } | null
   }): Promise<ReviewCase>
   importDocument(input: { caseId: string; role: SourceDocument['role']; requestId?: string }): Promise<ImportDocumentsResult>
   importDocumentFromPath?(input: { caseId: string; sourcePath: string; role: SourceDocument['role']; requestId?: string }): Promise<SourceDocument>
   removeDocuments?(input: { caseId: string; role: SourceDocument['role']; documentIds?: string[] }): Promise<ReviewCase>
   reorderDocuments?(input: { caseId: string; role: SourceDocument['role']; documentIds: string[] }): Promise<ReviewCase>
   deleteCase(caseId: string): Promise<void>
+  /** Native archive discovery is read-only and separate from the V1 compatibility list. */
+  listCasesV2?(): Promise<Array<{ caseId: string; title: string; stage: string; revision: number }>>
+  restoreCaseV3?(input: { caseId: string; expectedRevision: number; reason: string }): Promise<{ ok: boolean }>
   updateCaseSettings(input: UpdateCaseSettingsRequest): Promise<ReviewCase>
   updateRuleOutline?(input: UpdateRuleOutlineRequest): Promise<ReviewCase>
   updateReviewItem?(input: UpdateReviewItemRequest): Promise<ReviewCase>
+  createNativeReviewItemV3?(input: import('@profer/shared').CreateNativeReviewItemV3Request): Promise<ReviewCase>
   confirmRulePack?(input: { caseId: string; rulePackId: string }): Promise<ReviewCase>
   generateRuleOutline(request: { caseId: string; rulePackId?: string }): Promise<RuleOutlineItem[]>
   extractItems(caseId: string): Promise<ReviewItem[]>
@@ -138,7 +142,7 @@ export interface CreateCaseInput {
   applicant: string
   academicYear: string
   domainPackId?: ReviewDomainPackId
-  reviewTemplate?: { templateId: string; version: number }
+  reviewTemplate?: { templateId: string; version: number } | null
 }
 
 function buildFocus(finding: ReviewFinding): ReviewFocus {
@@ -531,7 +535,7 @@ export function createReviewActionsController(
           applicant: input.applicant,
           academicYear: input.academicYear,
           ...(input.domainPackId ? { domainPackId: input.domainPackId } : {}),
-          ...(input.reviewTemplate ? { reviewTemplate: input.reviewTemplate } : {}),
+          ...(input.reviewTemplate !== undefined ? { reviewTemplate: input.reviewTemplate } : {}),
         })
         await refreshWorkspaceV2(created.id).catch((error) => reportError('初始化单案业务记录失败', error))
         await refreshCaseList()
@@ -653,6 +657,45 @@ export function createReviewActionsController(
       }
     },
 
+    async listArchivedCases(): Promise<Array<{ caseId: string; title: string; revision: number }>> {
+      if (!api.listCasesV2) return []
+      try {
+        const cases = await api.listCasesV2()
+        return cases.filter(c => c.stage === 'archived')
+          .map(({ caseId, title, revision }) => ({ caseId, title, revision }))
+      } catch (error) {
+        reportError('读取归档案卷失败', error)
+        return []
+      }
+    },
+
+    async restoreArchivedCase(caseId: string, expectedRevision: number): Promise<boolean> {
+      if (!api.restoreCaseV3) {
+        setError('当前版本尚未支持原生案卷恢复')
+        return false
+      }
+      try {
+        const result = await api.restoreCaseV3({
+          caseId, expectedRevision, reason: '用户在工作台明确确认恢复案卷并重新审核',
+        })
+        if (!result.ok) {
+          setError('案卷恢复未完成，请刷新归档列表后重试')
+          return false
+        }
+        await refreshCaseList()
+        // Restoring the native business ledger never re-approves a previous
+        // ReviewRun/Decision. Legacy migrated cases become selectable again;
+        // native-only cases remain in the V2 aggregate list pending the C1
+        // read-only three-column compatibility projection.
+        if (await api.getCase(caseId)) await selectCaseInternal(caseId)
+        setError(null)
+        return true
+      } catch (error) {
+        reportError('恢复案卷失败', error)
+        return false
+      }
+    },
+
     async deleteCase(caseId: string): Promise<boolean> {
       const isCurrent = currentCaseId() === caseId
       try {
@@ -752,6 +795,48 @@ export function createReviewActionsController(
         return true
       } catch (error) {
         reportError('修正申报事项失败', error, { caseId })
+        return false
+      }
+    },
+
+    /** Human source-anchored declaration; never a model-confirmed fact/decision. */
+    async createNativeReviewItem(input: Omit<import('@profer/shared').CreateNativeReviewItemV3Request,
+      'caseId' | 'requestId' | 'expectedRevision'>, expectedCaseId?: string,
+      retryRequestId?: string): Promise<boolean> {
+      const caseId = currentCaseId()
+      if (expectedCaseId && expectedCaseId !== caseId) {
+        setError('添加人工事项失败：案卷已切换，请重新打开事项登记', { ...(caseId ? { caseId } : {}) })
+        return false
+      }
+      if (!caseId || !api.createNativeReviewItemV3 || !api.getAggregateV2) {
+        setError('添加人工事项失败：请先选择原生案卷并升级客户端')
+        return false
+      }
+      try {
+        const aggregate = await api.getAggregateV2(caseId)
+        // The OS read can await. Do not retarget a captured form after
+        // a user switches the selected Case during that interval.
+        if (currentCaseId() !== caseId) {
+          setError('添加人工事项失败：案卷已切换，请重新打开事项登记', { caseId })
+          return false
+        }
+        if (!aggregate || aggregate.caseV2.id !== caseId ||
+            aggregate.receiptLog[0]?.type !== 'CreateNativeWorkspaceCaseV3') {
+          setError('添加人工事项失败：所选案卷不是受信的原生案卷', { caseId })
+          return false
+        }
+        const updated = await api.createNativeReviewItemV3({
+          caseId, expectedRevision: aggregate.caseV2.revision,
+          requestId: retryRequestId ?? `ui-native-item-${globalThis.crypto.randomUUID()}`, ...input,
+        })
+        store.set(reviewCasesByIdAtom, { ...store.get(reviewCasesByIdAtom), [caseId]: updated })
+        await refreshWorkspaceV2(caseId)
+        await refreshRunValidity(caseId)
+        await refreshCaseList()
+        setError(null, { caseId })
+        return true
+      } catch (error) {
+        reportError('添加人工事项失败', error, { caseId })
         return false
       }
     },

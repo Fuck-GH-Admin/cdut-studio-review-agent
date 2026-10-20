@@ -305,9 +305,38 @@ export interface RatingEntryV2 {
   round: number
 }
 
+/** C1 source-current-validity audit entry. Original values/refs/receipts remain durable. */
+export interface SourceValidityRevocation {
+  documentVersionId: string
+  reason: 'archive' | 'replace'
+  at: string
+  observationIds: string[]
+  previouslyConfirmedObservationIds: string[]
+  evidenceLinkIds: string[]
+  previouslyConfirmedEvidenceLinkIds: string[]
+}
+
+/** C-owned reversible Case archive, separate from destroying historical data. */
+export interface CaseArchiveRecordV3 {
+  previousStage: import('./review-v2').CaseStage
+  archivedAt: string
+  archivedBy: string
+  reason: string
+  /** Restoring never silently reactivates old Run/Decision status. */
+  restoredAt?: string
+  restoredBy?: string
+  restoreReason?: string
+}
+
 export interface CaseAggregateV2 {
   caseV2: ReviewCaseV2
+  /** Latest reversible archive checkpoint. Every transition retains a Receipt. */
+  caseArchive?: CaseArchiveRecordV3
+  /** Prior fully restored archive cycles; never replace historical provenance. */
+  caseArchiveHistory?: CaseArchiveRecordV3[]
   observations: Observation[]
+  /** Current-applicability revocation ledger; absent in legacy aggregates. */
+  sourceValidityRevocations?: SourceValidityRevocation[]
   evidenceLinks: EvidenceLink[]
   dispositions: Array<{
     findingKey: string
@@ -326,8 +355,44 @@ export interface CaseAggregateV2 {
   supplements: SupplementRequest[]
   appeals: Appeal[]
   receiptLog: CommandReceipt[]
+  /**
+   * C2's Main-only technical proposal journal. These records are NOT
+   * ReviewRunV2, formal CheckResult, ReadReceipt, or BusinessDecision.
+   * Authoritative execution remains gated on physical Host/source admission.
+   */
+  v3TechnicalExecution?: {
+    run: import('./review-v3-c0').RunEvidenceIdentity
+    /** Frozen non-journal aggregate input; business mutation invalidates it. */
+    frozenInputDigest: string
+    admittedAtRevision: number
+    events: Array<{
+      sequence: number
+      eventId: string
+      proposal: import('./review-v3-execution').V3ExecutionProposal
+      committedAt: string
+    }>
+    terminalStatus?: import('./review-v3-execution').V3TechnicalTerminal
+  }
+  /**
+   * C-owned irreversible Run-wide PHYSICAL Host admission fences.
+   * Stored in this same Case CAS transaction+Receipt, never in A SDK journal.
+   * Every historical runId remains prohibited across PID/attempt/generation.
+   */
+  v3HostRunFences?: Array<{
+    schemaVersion: 'review-v3-host-run-fence/1'
+    run: import('./review-v3-c0').RunEvidenceIdentity
+    requestId: string
+    operatorPrincipalId: string
+    reason: string
+    fencedAt: string
+  }>
+  /** C2 Main-only, sealed immutable Run evidence (not ReviewRunV2 shadow). */
+  v3ReviewRun?: import('./review-v3-run').ReviewRunRecordV3
   /** 事项最终认定（可选，兼容既有 state.v2.json）。 */
   adjudications?: SubjectAdjudication[]
+  /** Bound immutable Dev-B CanonicalPlan; upgrades preserve earlier plans. */
+  canonicalPlan?: import('./review-v3-c0').CanonicalPlan
+  canonicalPlanHistory?: import('./review-v3-c0').CanonicalPlan[]
   /** D2 技术预审任务固定快照；不授予正式学校发布/审批权限。 */
   d2RuntimePlan?: import('./review-d2').D2RuntimePlan
   /** 独立评分（G06：唯一票，事务内查重） */

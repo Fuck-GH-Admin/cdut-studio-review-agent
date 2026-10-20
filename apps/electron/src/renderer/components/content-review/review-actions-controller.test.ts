@@ -876,3 +876,166 @@ describe('Main 后台审核前台接线', () => {
     expect(store.get(reviewErrorAtom)).toBe('审核未完成：审核渠道或模型未配置')
   })
 })
+
+
+describe('C1 native archive discovery and explicit workbench restore', () => {
+  test('only archived V2 summaries appear; native restore uses revision and does not invent a V1 shadow', async () => {
+    const { api } = makeApi()
+    let received: unknown
+    api.listCasesV2 = async () => [
+      { caseId: 'native-only', title: 'Native original', stage: 'archived', revision: 7 },
+      { caseId: 'migrated', title: 'Migrated original', stage: 'archived', revision: 4 },
+      { caseId: 'active', title: 'Still active', stage: 'draft', revision: 2 },
+    ]
+    api.getCase = async id => id === 'migrated' || id === 'native-only' ? makeCase(id) : undefined
+    api.restoreCaseV3 = async input => { received = input; return { ok: true } }
+    const store = createStore()
+    const actions = createReviewActionsController(store, api)
+    expect(await actions.listArchivedCases()).toEqual([
+      { caseId: 'native-only', title: 'Native original', revision: 7 },
+      { caseId: 'migrated', title: 'Migrated original', revision: 4 },
+    ])
+    expect(await actions.restoreArchivedCase('native-only', 7)).toBe(true)
+    expect(received).toEqual({
+      caseId: 'native-only', expectedRevision: 7,
+      reason: '用户在工作台明确确认恢复案卷并重新审核',
+    })
+    // Main GET_CASE now derives a read-only V2 projection. No shadow file
+    // is created, and restore can safely reselect the same native authority.
+    expect(store.get(selectedCaseIdAtom)).toBe('native-only')
+    expect(await actions.restoreArchivedCase('migrated', 4)).toBe(true)
+    expect(store.get(selectedCaseIdAtom)).toBe('migrated')
+  })
+
+  test('failed native restore cannot report success or change selected case', async () => {
+    const { api } = makeApi()
+    api.restoreCaseV3 = async () => { throw new Error('VERSION_CONFLICT: case changed') }
+    const store = createStore()
+    const actions = createReviewActionsController(store, api)
+    expect(await actions.restoreArchivedCase('stale-case', 1)).toBe(false)
+    expect(store.get(selectedCaseIdAtom)).toBeNull()
+    expect(store.get(reviewErrorAtom)).toContain('VERSION_CONFLICT')
+  })
+})
+
+
+describe('C1 native manual Subject action uses Main V2 source and revision', () => {
+  test('human creation binds the current selected case/revision and refreshes real projection', async () => {
+    const { api } = makeApi()
+    const id = 'native-human-selected-case'
+    api.getAggregateV2 = async caseId => caseId === id ? ({
+      caseV2: { id, revision: 6, stage: 'draft', documents: [], subjects: [] },
+      receiptLog: [{ type: 'CreateNativeWorkspaceCaseV3', revision: 0 }],
+    } as unknown as CaseAggregateV2) : undefined
+    let received: import('@profer/shared').CreateNativeReviewItemV3Request | undefined
+    api.createNativeReviewItemV3 = async input => {
+      received = input
+      return makeCase(input.caseId, { items: [{
+        id: 'manual-from-source', title: input.title, category: input.category,
+        declaredScore: input.declaredScore, anchor: {
+          documentId: 'application', precision: 'document',
+        }, evidenceDocumentIds: [], status: 'identified',
+        identifiedBy: 'manual',
+      }] as ReviewItem[] })
+    }
+    const store = createStore()
+    const actions = createReviewActionsController(store, api)
+    await actions.selectCase(id)
+    expect(await actions.createNativeReviewItem({
+      title: 'Manual claim', category: '科研', declaredScore: 1,
+      documentVersionId: 'real-material-v2', sourceBlockId: 'parse-block-1',
+    })).toBe(true)
+    expect(received).toMatchObject({
+      caseId: id, expectedRevision: 6,
+      title: 'Manual claim', category: '科研', declaredScore: 1,
+      documentVersionId: 'real-material-v2', sourceBlockId: 'parse-block-1',
+    })
+    expect(received?.requestId).toMatch(/^ui-native-item-/)
+    expect(store.get(reviewCasesByIdAtom)[id]?.items[0]?.title).toBe('Manual claim')
+    expect(store.get(reviewErrorAtom)).toBeNull()
+  })
+
+  test('old or absent native Case identity prevents untrusted manual action', async () => {
+    const { api } = makeApi()
+    let called = false
+    api.createNativeReviewItemV3 = async () => {
+      called = true
+      throw new Error('not expected')
+    }
+    api.getAggregateV2 = async caseId => ({
+      caseV2: { id: caseId, revision: 3 },
+      receiptLog: [{ type: 'EnsureReviewWorkspaceAggregate', revision: 0 }],
+    } as CaseAggregateV2)
+    const store = createStore()
+    const actions = createReviewActionsController(store, api)
+    await actions.selectCase('legacy-not-native')
+    expect(await actions.createNativeReviewItem({
+      title: 'Forged', category: '科研', declaredScore: 10,
+      documentVersionId: 'unknown-version',
+    })).toBe(false)
+    expect(called).toBe(false)
+    expect(store.get(reviewErrorAtom)).toContain('不是受信的原生案卷')
+  })
+})
+
+
+describe('C1-R09 switch-race safety for visible manual Subject dialog', () => {
+  test('does not write the old Case when selected Case changes during aggregate read', async () => {
+    const { api } = makeApi()
+    const store = createStore()
+    const actions = createReviewActionsController(store, api)
+    await actions.selectCase('native-human-A')
+    const delayed = new Deferred()
+    let invoked = false
+    api.getAggregateV2 = async caseId => caseId === 'native-human-A'
+      ? delayed.promise as Promise<CaseAggregateV2>
+      : undefined
+    api.createNativeReviewItemV3 = async () => { invoked = true; throw new Error('incorrect write') }
+    const pending = actions.createNativeReviewItem({
+      documentVersionId: 'physical-version-A', title: 'Old form',
+      category: '智育', declaredScore: 2,
+    }, 'native-human-A')
+    await actions.selectCase('native-human-B')
+    delayed.resolve({
+      caseV2: { id: 'native-human-A', revision: 1, stage: 'draft' },
+      receiptLog: [{ type: 'CreateNativeWorkspaceCaseV3' }],
+    })
+    expect(await pending).toBe(false)
+    expect(invoked).toBe(false)
+    expect(store.get(selectedCaseIdAtom)).toBe('native-human-B')
+  })
+})
+
+
+describe('C1-R09 same-intent retry identity survives a lost response', () => {
+  test('controller forwards an unchanged supplied idempotency ID across a transient IPC error', async () => {
+    const { api } = makeApi()
+    const id = 'manual-reply-loss-case'
+    const seen: string[] = []
+    api.getAggregateV2 = async caseId => ({
+      caseV2: { id: caseId, revision: seen.length ? 4 : 3, stage: 'draft' },
+      receiptLog: [{ type: 'CreateNativeWorkspaceCaseV3' }],
+    } as CaseAggregateV2)
+    api.createNativeReviewItemV3 = async input => {
+      seen.push(input.requestId)
+      if (seen.length === 1) throw new Error('IPC reply was lost after persistence')
+      return makeCase(id, { items: [{
+        id: 'manual-replayed', title: input.title, category: input.category,
+        declaredScore: input.declaredScore,
+        anchor: { documentId: 'file', precision: 'document' },
+        evidenceDocumentIds: [], identifiedBy: 'manual', status: 'identified',
+      }] as ReviewItem[] })
+    }
+    const store = createStore()
+    const actions = createReviewActionsController(store, api)
+    await actions.selectCase(id)
+    const intent = {
+      title: 'Human declared source', category: '智育', declaredScore: 3,
+      documentVersionId: 'native-source-v1',
+    }
+    expect(await actions.createNativeReviewItem(intent, id, 'ui-native-item-same-request')).toBe(false)
+    expect(await actions.createNativeReviewItem(intent, id, 'ui-native-item-same-request')).toBe(true)
+    expect(seen).toEqual(['ui-native-item-same-request', 'ui-native-item-same-request'])
+    expect(store.get(reviewCasesByIdAtom)[id]?.items).toHaveLength(1)
+  })
+})

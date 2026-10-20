@@ -3957,7 +3957,7 @@ const reviewAPI = {
     academicYear: string
     /** 审核领域包（可缺省；未知 ID 由主进程 resolveDomainPack 回落缺省包） */
     domainPackId?: import('@profer/shared').ReviewDomainPackId
-    reviewTemplate?: { templateId: string; version: number }
+    reviewTemplate?: { templateId: string; version: number } | null
   }) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CREATE_CASE, input) as Promise<import('@profer/shared').ReviewCase>,
   importDocument: (input: { caseId: string; role: import('@profer/shared').SourceDocument['role']; requestId?: string }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT, input) as Promise<import('@profer/shared').ImportDocumentsResult>,
@@ -3973,12 +3973,16 @@ const reviewAPI = {
   reorderDocuments: (input: { caseId: string; role: import('@profer/shared').SourceDocument['role']; documentIds: string[] }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.REORDER_DOCUMENTS, input) as Promise<import('@profer/shared').ReviewCase>,
   deleteCase: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.DELETE_CASE, caseId) as Promise<void>,
+  restoreCaseV3: (input: { caseId: string; expectedRevision: number; reason: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESTORE_CASE_V3, input) as Promise<import('@profer/shared').ReviewCommandResult>,
   updateCaseSettings: (input: import('@profer/shared').UpdateCaseSettingsRequest) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.UPDATE_CASE_SETTINGS, input) as Promise<import('@profer/shared').ReviewCase>,
   updateRuleOutline: (input: import('@profer/shared').UpdateRuleOutlineRequest) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.UPDATE_RULE_OUTLINE, input) as Promise<import('@profer/shared').ReviewCase>,
   updateReviewItem: (input: import('@profer/shared').UpdateReviewItemRequest) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.UPDATE_REVIEW_ITEM, input) as Promise<import('@profer/shared').ReviewCase>,
+  createNativeReviewItemV3: (input: import('@profer/shared').CreateNativeReviewItemV3Request) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CREATE_NATIVE_REVIEW_ITEM_V3, input) as Promise<import('@profer/shared').ReviewCase>,
   getImagePreviewPath: (input: { caseId: string; documentId: string; blockId: string }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_IMAGE_PREVIEW_PATH, input) as Promise<string | null>,
   getWorkspaceDocumentPreviewPath: (input: { caseId: string; documentVersionId: string }) =>
@@ -4009,6 +4013,38 @@ const reviewAPI = {
   seedFixtureV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SEED_FIXTURE_V2) as Promise<boolean>,
   createCaseV2: (input: { caseId: string; templateId: string; version: number; payload: unknown; /** @deprecated transport-only; Main rebinds Actor */ actor?: import('@profer/shared').Actor; requestId?: string; expectedRevision?: number }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CREATE_CASE_V2, input) as Promise<import('@profer/shared').ReviewCaseV2 | undefined>,
+  /** Real Main-framed candidate read; denies until current privileged B1 authority is installed. */
+  readCurrentAuthorRevisionV3: (input: {templateId:string;expectedRevision?:number}) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.AUTHOR_READ_LATEST_V3,input) as Promise<{
+      schemaVersion:'review-v3-author-current-read/1';templateId:string;revision:number;
+      sourceDigest:string;document:unknown;state:'candidate-held';displayOnly:true
+    }>,
+  /** C Main-only B20 source view; requires separate trusted picker, B vault/ledger and current Owner. */
+  readCurrentB20CandidateV3: (templateId:string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.B20_CANDIDATE_READ_V3,{templateId}) as Promise<{
+      schemaVersion:'review-v3-cmain-b20-candidate-preview/1';
+      templateId:string;caseCandidateId:string;ownerId:string;ownerGeneration:number;
+      authorRevision:number;authorRevisionDigest:string;frozenFingerprint:string;
+      candidateProvenance:unknown;state:'candidate-held';displayOnly:true;candidateOnly:true;
+      publicationAllowed:false;businessWriteAllowed:false;schoolPolicyVerified:false;
+    }>,
+  /** Main validates selected B20 archive, opens a REAL OS picker and re-verifies original bytes.
+   * No Renderer pathname/private key/Principal/Owner is accepted. */
+  repickCurrentB20ArchiveV3: (templateId:string,archiveId:string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.B20_NATIVE_REPICK_V3,{templateId,archiveId}) as
+    Promise<{schemaVersion:'review-v3-main-native-b20-repick/1';
+      status:'picked-for-candidate-only';publicationAllowed:false;
+      businessWriteAllowed:false;schoolPolicyVerified:false}>,
+  /** Read/write separation: this requires a real published school-policy issuer in Main. */
+  upgradeCanonicalPlanV3: (input: {
+    caseId:string;requestId:string;expectedRevision:number;
+    payload:{plan:import('@profer/shared').CanonicalPlan;previousFingerprint:string;
+      acknowledgement:string;removalAck?:{
+        previousFingerprint:string;nextFingerprint:string;
+        acknowledgedRemovedIdentities:readonly string[]
+      }}
+  }) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.UPGRADE_CANONICAL_PLAN_V3,input) as
+    Promise<import('@profer/shared').ReviewCommandResult<import('@profer/shared').CanonicalPlan>>,
   getAggregateV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_AGGREGATE_V2, caseId) as Promise<import('@profer/shared').CaseAggregateV2 | undefined>,
   updateFieldsV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.UPDATE_FIELDS_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,

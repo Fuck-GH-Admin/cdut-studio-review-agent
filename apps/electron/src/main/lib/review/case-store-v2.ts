@@ -10,12 +10,13 @@
  * - 回执与业务变化同一事务落盘（不能先写业务再单独写回执）
  */
 
-import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { join } from 'node:path'
 import type { Actor, Appeal, BusinessDecision, CaseAggregateV2, CommandErrorCode, CommandReceipt, ReviewCommandResult, EvidenceLink, Observation, ReviewCaseV2, SupplementRequest, WorkflowTask } from '@profer/shared'
 import { getConfigDir } from '../config-paths'
 import { assertSafeReviewStorageId } from './review-storage-id'
+import { withC2CaseDiskTransaction, withC2CaseDiskWriteSync, writeC2CaseStateDurably } from './review-v3-case-disk-tx'
 
 // ===== 聚合形态（07 §3.3） =====
 
@@ -62,8 +63,20 @@ export function listAggregatesV2(): AggregateSummary[] {
     try { assertSafeReviewStorageId(entry, 'caseId') } catch { continue }
     const aggregate = readAggregate(entry)
     if (!aggregate) continue
+    // A parseable but malformed native state must not poison the entire Case
+    // selector or expose an unverified cross-directory identity. Do not try
+    // to resurrect a V1 shadow if this guard rejects a record.
+    const state = aggregate.caseV2
+    if (!state || state.id !== entry ||
+        typeof state.title !== 'string' || typeof state.stage !== 'string' ||
+        typeof state.templateId !== 'string' || !Number.isSafeInteger(state.templateVersion) ||
+        !Number.isSafeInteger(state.revision) || state.revision < 0 ||
+        typeof state.updatedAt !== 'string' || !Array.isArray(aggregate.receiptLog)) {
+      console.warn(`[审核V2聚合] 跳过损坏或身份不一致的原生案卷: ${entry}`)
+      continue
+    }
     out.push({
-      caseId: aggregate.caseV2.id,
+      caseId: state.id,
       title: aggregate.caseV2.title,
       stage: aggregate.caseV2.stage,
       revision: aggregate.caseV2.revision,
@@ -78,18 +91,18 @@ export function listAggregatesV2(): AggregateSummary[] {
 /** 原子落盘：唯一临时名 + rename（避免并发覆盖固定 .tmp） */
 export function writeAggregate(aggregate: CaseAggregateV2): void {
   assertSafeReviewStorageId(aggregate?.caseV2?.id, 'caseId')
-  const dir = join(getConfigDir(), 'review-cases', aggregate.caseV2.id)
-  if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
-  const filePath = aggregatePath(aggregate.caseV2.id)
-  const tmp = `${filePath}.${Date.now()}.${Math.random().toString(36).slice(2, 6)}.tmp`
-  writeFileSync(tmp, JSON.stringify(aggregate, null, 2), 'utf-8')
-  renameSync(tmp, filePath)
+  // Direct fixture/migration writers must obtain the SAME OS lock; inside
+  // submitCommand/createAggregate, AsyncLocalStorage carries the held token.
+  withC2CaseDiskWriteSync(aggregate.caseV2.id, () => {
+    writeC2CaseStateDurably(aggregate.caseV2.id, JSON.stringify(aggregate, null, 2))
+  })
 }
 
 /** 逐案串行队列：同案命令严格串行（跨案并发） */
 function enqueueCase<T>(caseId: string, task: () => Promise<T>): Promise<T> {
   const previous = writeQueues.get(caseId) ?? Promise.resolve()
-  const next = previous.then(task, task)
+  const next = previous.then(() => withC2CaseDiskTransaction(caseId, task),
+    () => withC2CaseDiskTransaction(caseId, task))
   writeQueues.set(caseId, next.catch(() => undefined))
   return next
 }
@@ -122,6 +135,13 @@ export async function submitCommand<TPayload, TEntity = TPayload>(
   return enqueueCase(caseId, async (): Promise<ReviewCommandResult<TEntity>> => {
     const aggregate = readAggregate(caseId)
     if (!aggregate) return { ok: false, code: 'NOT_FOUND', message: `案卷聚合不存在: ${caseId}` }
+    // Corrupt-but-parseable JSON must never become a writable pseudo-Case.
+    if (!aggregate.caseV2 || aggregate.caseV2.id !== caseId ||
+        !Number.isSafeInteger(aggregate.caseV2.revision) || aggregate.caseV2.revision < 0 ||
+        !Array.isArray(aggregate.receiptLog)) {
+      return { ok: false, code: 'INVALID_TRANSITION',
+        message: '案卷聚合缺少有效身份/修订号/回执账，已拒绝业务写入' }
+    }
 
     // 幂等：同 requestId + 同载荷 → 原回执
     const hash = payloadHash(command.type, command.payload)
@@ -136,6 +156,12 @@ export async function submitCommand<TPayload, TEntity = TPayload>(
     // 并发：expectedRevision
     if (command.expectedRevision !== aggregate.caseV2.revision) {
       return { ok: false, code: 'VERSION_CONFLICT', message: `案卷已被其他操作更新（当前 revision=${aggregate.caseV2.revision}）`, currentRevision: aggregate.caseV2.revision }
+    }
+    // Archived means no subsequent material/Run/decision mutator may silently
+    // resurrect current business validity. The only transition out is a
+    // C-owned RestoreReviewCaseV3 with CAS, Actor and durable Receipt.
+    if (aggregate.caseV2.stage === 'archived' && command.type !== 'RestoreReviewCaseV3') {
+      return { ok: false, code: 'INVALID_TRANSITION', message: '案卷已归档，请先通过原生恢复命令重新启用', currentRevision: aggregate.caseV2.revision }
     }
 
     // 校验 + 纯变更（handler 内抛错即整体拒绝，不写部分数据）
@@ -167,12 +193,14 @@ export class CommandValidationError extends Error {
 }
 
 /** 创建新案卷聚合（CreateCaseFromTemplate 专用：不走 expectedRevision，revision=0 起） */
-export async function createAggregate(caseId: string, caseV2: ReviewCaseV2, initialReceipt?: CommandReceipt): Promise<void> {
+export async function createAggregate(caseId: string, caseV2: ReviewCaseV2, initialReceipt?: CommandReceipt, authorizeAtCommit?: () => void): Promise<void> {
   assertSafeReviewStorageId(caseId, 'caseId')
   assertSafeReviewStorageId(caseV2?.id, 'caseId')
   if (caseId !== caseV2.id) throw new CommandValidationError('VALIDATION_FAILED', '案卷 ID 与聚合内容不一致')
   await enqueueCase(caseId, async () => {
     if (existsSync(aggregatePath(caseId))) throw new CommandValidationError('INVALID_TRANSITION', `案卷聚合已存在: ${caseId}`)
+    // Main capability must still be alive at the serialized durable write.
+    authorizeAtCommit?.()
     const fresh = emptyAggregate(caseV2)
     // 创建回执与创建动作同事务落盘（08 设计：创建动作可追溯）
     if (initialReceipt) fresh.receiptLog = [initialReceipt]

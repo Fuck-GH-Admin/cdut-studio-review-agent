@@ -1,6 +1,7 @@
 import { bindLocalReviewerCommand } from './review-ipc-actor-guard'
-import { bindC0LocalCaseCommand, bindC0LocalCreateIntent } from './review-c0-authority'
+import { bindC0LocalCaseCommand, bindC0LocalCreateIntent, assertC0ReviewMainSender } from './review-c0-authority'
 import { assertSafeReviewStorageId } from './review-storage-id'
+import { registerCMainV3AuthorPlanIpc } from './review-v3-main-author-plan-ipc'
 /**
  * 内容审核专区 - IPC 处理器注册
  *
@@ -54,10 +55,15 @@ import {
 import { startReviewRun } from './run-service'
 import { exportReport } from './report-service'
 import { getReviewModelGatewayStatus } from './review-model-gateway'
-import { createEmptyCase } from './case-creation'
+import {
+  createNativeWorkspaceCaseV3, isNativeWorkspaceCaseV3, updateNativeWorkspaceSettingsV3,
+  registerNativeWorkspaceMaterialV3, removeNativeWorkspaceDocumentsV3, reorderNativeWorkspaceDocumentsV3,
+  updateNativeWorkspaceReviewItemV3, createNativeReviewItemV3,
+} from './native-workspace-case-v3'
 import { importDocumentFromPath, importDocumentsIntoCase, removeDocumentsFromCase, reorderDocumentsInCase } from './case-import'
 import { invalidateDerivedReviewInputs } from './input-invalidation'
 import { ensureWorkspaceAggregateV2, syncWorkspaceProjectionV2 } from './workspace-service-v2'
+import { readAggregate } from './case-store-v2'
 import { resolveCaseDocumentPreviewPath } from './document-preview-path'
 
 /** 来源角色枚举（IMPORT_DOCUMENT 入参白名单） */
@@ -80,6 +86,10 @@ function requireString(value: unknown, name: string): string {
  * 由 registerIpcHandlers() 在应用启动时调用一次（幂等由外层守卫保证）。
  */
 export function registerReviewIpc(): void {
+  // Dev-C C-MAIN-WIRE: real Main channels, fail closed without independent
+  // B1 current author grant and an authorized published school Plan issuer.
+  registerCMainV3AuthorPlanIpc()
+
   // 启动恢复：上次进程遗留的 queued/running 运行标 interrupted（08 设计 §5）
   try {
     const { markStaleRunsInterrupted } = require('./run-store-v2') as typeof import('./run-store-v2')
@@ -116,23 +126,24 @@ export function registerReviewIpc(): void {
   ipcMain.handle(
     REVIEW_IPC_CHANNELS.CREATE_CASE,
     async (
-      _event,
+      event,
       input: {
         title: string
         type: ReviewCaseType
         applicant: string
         academicYear: string
         domainPackId?: string
-        reviewTemplate?: { templateId: string; version: number }
+        reviewTemplate?: { templateId: string; version: number } | null
       },
     ): Promise<ReviewCase> => {
+      assertC0ReviewMainSender(event)
       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
       if (!CASE_TYPES.has(input.type)) throw new Error(`参数 type 非法：${String(input.type)}`)
-      // 领域包 ID 只做存在性判断：未知 ID 回落缺省包由 resolveDomainPack 负责，不因拼错而拒绝建卷
+      // 明示未知领域由 C native creator 拒绝；不静默安装缺省审核政策
       if (input.domainPackId !== undefined && typeof input.domainPackId !== 'string') {
         throw new Error('参数 domainPackId 类型非法')
       }
-      if (input.reviewTemplate !== undefined) {
+      if (input.reviewTemplate !== undefined && input.reviewTemplate !== null) {
         const { templateId, version } = input.reviewTemplate
         if (typeof templateId !== 'string' || !templateId || !Number.isInteger(version) || version < 1) {
           throw new Error('参数 reviewTemplate 非法')
@@ -141,25 +152,44 @@ export function registerReviewIpc(): void {
         const template = getTemplate(templateId, version)
         if (!template || template.status !== 'published') throw new Error('只能使用已发布的审核模板创建项目')
       }
-      const reviewCase = createEmptyCase({
+      // C-owned native-first V2 writer, single atomic Case + create Receipt.
+      // No legacy case.json is ever written; the V1-shaped result is view-only.
+      const created = await createNativeWorkspaceCaseV3({
         title: requireString(input.title, 'title'),
         type: input.type,
         applicant: requireString(input.applicant, 'applicant'),
         academicYear: requireString(input.academicYear, 'academicYear'),
         ...(input.domainPackId ? { domainPackId: input.domainPackId } : {}),
-        ...(input.reviewTemplate ? { reviewTemplate: input.reviewTemplate } : {}),
-      })
-      await ensureWorkspaceAggregateV2(reviewCase.id)
-      return reviewCase
+        ...(input.reviewTemplate !== undefined ? { reviewTemplate: input.reviewTemplate } : {}),
+      }, undefined, () => assertC0ReviewMainSender(event))
+      return created.view
     },
   )
 
   /** 更新案卷设置（领域包 / 标题 / 类型 / 待审主体文档） */
   ipcMain.handle(
     REVIEW_IPC_CHANNELS.UPDATE_CASE_SETTINGS,
-    async (_event, input: UpdateCaseSettingsRequest): Promise<ReviewCase> => {
+    async (event, input: UpdateCaseSettingsRequest): Promise<ReviewCase> => {
+      assertC0ReviewMainSender(event)
       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
       const caseId = requireString(input.caseId, 'caseId')
+      // A frozen native Plan may only change through a C-owned versioned ACK
+      // command; mutating legacy settings first would leave two contrary
+      // template/source truths if a later projection rejects the write.
+      const aggregate = readAggregate(caseId)
+      if (isNativeWorkspaceCaseV3(aggregate)) {
+        // Native-only business settings never write a V1 shadow.
+        return updateNativeWorkspaceSettingsV3(caseId, input, undefined, () => assertC0ReviewMainSender(event))
+      }
+      if (aggregate && !aggregate.receiptLog?.some(receipt => receipt.type === 'EnsureReviewWorkspaceAggregate')) {
+        throw new Error('原生审核案卷禁止通过旧版案卷写入口修改；请使用可信 V2 业务命令')
+      }
+      if (aggregate?.canonicalPlan || aggregate?.d2RuntimePlan) {
+        if (input.reviewTemplate !== undefined || input.domainPackId !== undefined ||
+          input.manualRules !== undefined || input.subjectDocumentIds !== undefined) {
+          throw new Error('审核计划已冻结；修改模板、规则或材料范围须使用原生 V2 升版与确认命令')
+        }
+      }
       const reviewCase = getCase(caseId)
       if (!reviewCase) throw new Error(`案卷不存在: ${caseId}`)
       if (input.type !== undefined && !CASE_TYPES.has(input.type)) {
@@ -250,6 +280,8 @@ export function registerReviewIpc(): void {
   ipcMain.handle(REVIEW_IPC_CHANNELS.UPDATE_RULE_OUTLINE, async (_event, input: UpdateRuleOutlineRequest): Promise<ReviewCase> => {
     if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
     const caseId = requireString(input.caseId, 'caseId')
+    if (isNativeWorkspaceCaseV3(readAggregate(caseId)))
+      throw new Error('NATIVE_RULE_OUTLINE_SOURCE_REQUIRED: 原生规则摘要必须先与原件版本、来源锚点和正式规则提案建立绑定')
     const rulePackId = requireString(input.rulePackId, 'rulePackId')
     const ruleId = requireString(input.ruleId, 'ruleId')
     if (typeof input.title !== 'string' || !input.title.trim() || input.title.length > 160) throw new Error('规则名称不能为空且不能超过 160 字')
@@ -282,6 +314,10 @@ export function registerReviewIpc(): void {
     ] as const) {
       if (value !== undefined && (typeof value !== 'string' || value.length > maxLength)) throw new Error(`申报事项${field}字段无效`)
     }
+    if (isNativeWorkspaceCaseV3(readAggregate(caseId))) {
+      assertC0ReviewMainSender(_event)
+      return updateNativeWorkspaceReviewItemV3(caseId, input, undefined, () => assertC0ReviewMainSender(_event))
+    }
     const updated = await updateCase(caseId, (fresh) => {
       if (!fresh.items.some((item) => item.id === itemId)) throw new Error('申报事项已不存在，请刷新后重试')
       return {
@@ -303,8 +339,31 @@ export function registerReviewIpc(): void {
     return updated
   })
 
+  /**
+   * Only C's Main grants actor and serialized source-authentication. The
+   * Renderer supplies an opaque requestId (idempotency only), never a
+   * trusted SourceIdentity, Case writer, SchoolPort authority or Actor.
+   */
+  ipcMain.handle(
+    REVIEW_IPC_CHANNELS.CREATE_NATIVE_REVIEW_ITEM_V3,
+    async (event, input: import('@profer/shared').CreateNativeReviewItemV3Request): Promise<ReviewCase> => {
+      assertC0ReviewMainSender(event)
+      if (!input || typeof input !== 'object' || Array.isArray(input))
+        throw new Error('原生人工事项输入非法')
+      if (Object.prototype.hasOwnProperty.call(input, 'actor') ||
+          Object.prototype.hasOwnProperty.call(input, 'principal') ||
+          Object.prototype.hasOwnProperty.call(input, 'sourceIdentity'))
+        throw new Error('ACTOR_UNTRUSTED: Renderer 不得指定 Main 身份或来源证书')
+      requireString(input.caseId, 'caseId')
+      return createNativeReviewItemV3(input, undefined,
+        () => assertC0ReviewMainSender(event))
+    },
+  )
+
   ipcMain.handle(REVIEW_IPC_CHANNELS.CONFIRM_RULE_PACK, async (_event, input: { caseId: string; rulePackId: string }): Promise<ReviewCase> => {
     const caseId = requireString(input?.caseId, 'caseId')
+    if (isNativeWorkspaceCaseV3(readAggregate(caseId)))
+      throw new Error('NATIVE_RULE_CONFIRMATION_REQUIRED: 规则包确认必须使用 C-owned 原件验证和计划发布事务')
     const rulePackId = requireString(input?.rulePackId, 'rulePackId')
     const { confirmRulePackInCase } = require('./case-import') as typeof import('./case-import')
     return confirmRulePackInCase(caseId, rulePackId)
@@ -313,9 +372,34 @@ export function registerReviewIpc(): void {
   /** 导入文件到案卷（系统选择框 → 解析为 SourceDocument 并写回案卷） */
   ipcMain.handle(
     REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT,
-    (_event, input: { caseId: string; role: SourceDocument['role']; requestId?: string }): Promise<ImportDocumentsResult> => {
+    async (_event, input: { caseId: string; role: SourceDocument['role']; requestId?: string }): Promise<ImportDocumentsResult> => {
       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
       if (!SOURCE_ROLES.has(input.role)) throw new Error(`参数 role 非法：${String(input.role)}`)
+      const caseId = requireString(input.caseId, 'caseId')
+      if (isNativeWorkspaceCaseV3(readAggregate(caseId))) {
+        assertC0ReviewMainSender(_event)
+        const { BrowserWindow, dialog } = require('electron') as typeof import('electron')
+        const parent = BrowserWindow.fromWebContents(_event.sender) ?? undefined
+        const options = { properties: ['openFile', 'multiSelections'] as Array<'openFile' | 'multiSelections'> }
+        const picked = parent ? await dialog.showOpenDialog(parent, options) : await dialog.showOpenDialog(options)
+        assertC0ReviewMainSender(_event) // window/Frame may have changed while picker was open
+        if (picked.canceled) return { documents: [], failures: [], canceled: true }
+        const documents: SourceDocument[] = []
+        const failures: ImportDocumentsResult['failures'] = []
+        for (const sourcePath of picked.filePaths) {
+          try {
+            const document = await registerNativeWorkspaceMaterialV3(caseId, sourcePath, input.role, undefined, () => assertC0ReviewMainSender(_event))
+            assertC0ReviewMainSender(_event)
+            documents.push(document)
+          } catch (error) {
+            failures.push({
+              fileName: require('node:path').basename(sourcePath),
+              message: error instanceof Error ? error.message : String(error),
+            })
+          }
+        }
+        return { documents, failures, canceled: false }
+      }
       const { BrowserWindow } = require('electron') as typeof import('electron')
       const sender = _event.sender
       return importDocumentsIntoCase({
@@ -338,6 +422,13 @@ export function registerReviewIpc(): void {
       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
       if (!SOURCE_ROLES.has(input.role)) throw new Error(`参数 role 非法：${String(input.role)}`)
       const sourcePath = requireString(input.sourcePath, 'sourcePath')
+      const caseId = requireString(input.caseId, 'caseId')
+      if (isNativeWorkspaceCaseV3(readAggregate(caseId))) {
+        assertC0ReviewMainSender(_event)
+        const result = await registerNativeWorkspaceMaterialV3(caseId, sourcePath, input.role)
+        assertC0ReviewMainSender(_event)
+        return result
+      }
       const sender = _event.sender
       return importDocumentFromPath({
         caseId: requireString(input.caseId, 'caseId'),
@@ -400,8 +491,13 @@ export function registerReviewIpc(): void {
       if (input.documentIds !== undefined && (!Array.isArray(input.documentIds) || input.documentIds.some((id) => typeof id !== 'string'))) {
         throw new Error('参数 documentIds 类型非法')
       }
+      const caseId = requireString(input.caseId, 'caseId')
+      if (isNativeWorkspaceCaseV3(readAggregate(caseId))) {
+        assertC0ReviewMainSender(_event)
+        return removeNativeWorkspaceDocumentsV3(caseId, input.role, input.documentIds, undefined, () => assertC0ReviewMainSender(_event))
+      }
       return removeDocumentsFromCase({
-        caseId: requireString(input.caseId, 'caseId'),
+        caseId,
         role: input.role,
         ...(input.documentIds !== undefined ? { documentIds: input.documentIds.map((id) => requireString(id, 'documentId')) } : {}),
       })
@@ -417,8 +513,13 @@ export function registerReviewIpc(): void {
       if (!Array.isArray(input.documentIds) || input.documentIds.some((id) => typeof id !== 'string')) {
         throw new Error('参数 documentIds 类型非法')
       }
+      const caseId = requireString(input.caseId, 'caseId')
+      if (isNativeWorkspaceCaseV3(readAggregate(caseId))) {
+        assertC0ReviewMainSender(_event)
+        return reorderNativeWorkspaceDocumentsV3(caseId, input.role, input.documentIds, undefined, () => assertC0ReviewMainSender(_event))
+      }
       return reorderDocumentsInCase({
-        caseId: requireString(input.caseId, 'caseId'),
+        caseId,
         role: input.role,
         documentIds: input.documentIds.map((id) => requireString(id, 'documentId')),
       })
@@ -494,6 +595,10 @@ export function registerReviewIpc(): void {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
     const { getCase } = require('./case-store') as typeof import('./case-store')
     const { migrateCaseToV2 } = require('./migration') as typeof import('./migration')
+    const current = readAggregate(caseId)
+    if (isNativeWorkspaceCaseV3(current) && current) {
+      return { migrated: true, note: '原生 V2 案卷不需要 V1 迁移或旧版影子文件', caseV2: current.caseV2 }
+    }
     const v1 = getCase(caseId)
     if (!v1) throw new Error(`案卷不存在: ${caseId}`)
     const result = migrateCaseToV2(v1)
@@ -793,6 +898,7 @@ export function registerReviewIpc(): void {
 
   // ===== G01：材料登记与提交 =====
   ipcMain.handle(REVIEW_IPC_CHANNELS.PICK_REGISTER_MATERIAL_V2, async (_e, input: { caseId: string; role: 'application' | 'evidence' | 'rule' | 'attachment'; materialSlotId?: string }) => {
+    assertC0ReviewMainSender(_e)
     if (!input?.caseId) throw new Error('参数 caseId 非法')
         const { BrowserWindow, dialog } = require('electron') as typeof import('electron')
     const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
@@ -802,8 +908,11 @@ export function registerReviewIpc(): void {
     const actor = { actorId: 'local-user', actorSource: 'local' as const, role: 'reviewer' as const }
     const { registerMaterial } = require('./material-service') as typeof import('./material-service')
     const options = { properties: ['openFile', 'multiSelections'] as Array<'openFile' | 'multiSelections'> }
-    const win = BrowserWindow.getFocusedWindow() ?? undefined
+    // Picker is scoped to the invoking trusted Main window, not an arbitrary
+    // focused window that might belong to another session.
+    const win = BrowserWindow.fromWebContents(_e.sender) ?? undefined
     const result = win ? await dialog.showOpenDialog(win, options) : await dialog.showOpenDialog(options)
+    assertC0ReviewMainSender(_e)
     if (result.canceled) return []
     const versionIds: string[] = []
     for (const sourcePath of result.filePaths) {
@@ -813,7 +922,7 @@ export function registerReviewIpc(): void {
         actor,
         expectedRevision: fresh.caseV2.revision,
         payload: { sourcePath, role: input.role, materialSlotId: input.materialSlotId },
-      })) as { ok: boolean; message?: string }
+      }, () => assertC0ReviewMainSender(_e))) as { ok: boolean; message?: string }
       if (!outcome.ok) throw new Error(outcome.message ?? '登记失败')
       const updated = getCaseV2Aggregate(input.caseId)!
       versionIds.push(updated.caseV2.documents[updated.caseV2.documents.length - 1]!.versionId)
@@ -822,7 +931,13 @@ export function registerReviewIpc(): void {
   })
   // 拖拽登记：渲染层经 webUtils.getPathForFile 拿到本地路径后逐个登记（同一事务链）
   ipcMain.handle(REVIEW_IPC_CHANNELS.REGISTER_MATERIAL_PATH_V2, async (_e, input: { caseId: string; sourcePath: string; role: 'application' | 'evidence' | 'rule' | 'attachment'; materialSlotId?: string; fileName?: string; replacesVersionIds?: string[] }) => {
+    assertC0ReviewMainSender(_e)
     if (!input || typeof input.sourcePath !== 'string' || !input.sourcePath) throw new Error('参数 sourcePath 非法')
+    // Main-frame provenance is not proof that arbitrary Renderer path text
+    // came from a physical OS file picker/drop. Native-first Cases must not
+    // accept this legacy unsealed path channel without B2 bytes capability.
+    if (isNativeWorkspaceCaseV3(readAggregate(input.caseId)))
+      throw new Error('SOURCE_CAPABILITY_REQUIRED: 原生案卷请使用受信系统文件选择器；拖拽能力签发待接线')
     if (input.fileName !== undefined) {
       const { basename } = require('node:path') as typeof import('node:path')
       if (typeof input.fileName !== 'string' || !input.fileName || basename(input.fileName) !== input.fileName) throw new Error('参数 fileName 非法')
@@ -844,7 +959,7 @@ export function registerReviewIpc(): void {
         ...(input.fileName ? { fileName: input.fileName } : {}),
         ...(input.replacesVersionIds ? { replacesVersionIds: input.replacesVersionIds } : {}),
       },
-    })
+    }, () => assertC0ReviewMainSender(_e))
     if (!outcome.ok) throw new Error(outcome.message ?? '登记失败')
     return outcome.entity?.versionId ?? outcome.aggregate.caseV2.documents.at(-1)?.versionId
   })
@@ -854,9 +969,82 @@ export function registerReviewIpc(): void {
     return submitCaseV2(caseId)
   })
 
-  /** 删除案卷 */
-  ipcMain.handle(REVIEW_IPC_CHANNELS.DELETE_CASE, (_event, caseId: string): void => {
+  /** Legacy UI "remove": never destroy a Case that already owns V2 receipts. */
+  ipcMain.handle(REVIEW_IPC_CHANNELS.DELETE_CASE, async (event, caseId: string): Promise<void> => {
+    assertC0ReviewMainSender(event)
+    assertSafeReviewStorageId(caseId, 'caseId')
+    const existing = readAggregate(caseId)
+    if (existing) {
+      if (!existing.caseV2 || existing.caseV2.id !== caseId ||
+          !Number.isSafeInteger(existing.caseV2.revision) || !Array.isArray(existing.receiptLog)) {
+        throw new Error('案卷 V2 状态损坏，已拒绝移除；请先恢复原生业务账本')
+      }
+      const { archiveReviewCaseV3 } = require('./case-lifecycle-v3') as typeof import('./case-lifecycle-v3')
+      const { createHash } = require('node:crypto') as typeof import('node:crypto')
+      // A stable key *per archive cycle*: replay while archived returns the
+      // same durable Receipt, but an explicit restore starts a new cycle.
+      // History grows on the next archive; restoredAt bridges that transition
+      // so the cycle number stays stable before and after the new archive.
+      // Derive this solely from Main-read business state, never Renderer JSON.
+      const completedCycles = existing.caseArchiveHistory?.length ?? 0
+      if (!Number.isSafeInteger(completedCycles) || completedCycles < 0 ||
+          (existing.caseArchiveHistory !== undefined && !Array.isArray(existing.caseArchiveHistory))) {
+        throw new Error('案卷归档历史损坏，已拒绝移除')
+      }
+      const archiveCycle = completedCycles + (existing.caseArchive?.restoredAt ? 1 : 0)
+      const result = await archiveReviewCaseV3(caseId, {
+        requestId: 'legacy-remove-' + createHash('sha256').update(JSON.stringify([caseId, archiveCycle])).digest('hex'),
+        expectedRevision: existing.caseV2.revision,
+        actor: { actorId: 'local-reviewer', actorSource: 'local', role: 'reviewer' },
+        payload: { reason: '用户在原工作台将案卷移入归档' },
+      })
+      if (!result.ok) throw new Error(`${result.code}: ${result.message}`)
+      return
+    }
+    // V1-only folders may still be removed; an unreadable state.v2.json is
+    // independently fenced by deleteCase() and can never be deleted as V1.
     deleteCase(caseId)
+  })
+
+  /** Explicit native restore. Renderer may express intent, never Actor or requestId. */
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RESTORE_CASE_V3, async (event, input: {
+    caseId: string; expectedRevision: number; reason: string
+  }): Promise<import('@profer/shared').ReviewCommandResult> => {
+    assertC0ReviewMainSender(event)
+    if (!input || typeof input !== 'object' || Array.isArray(input) ||
+        Object.prototype.hasOwnProperty.call(input, 'actor') ||
+        Object.prototype.hasOwnProperty.call(input, 'requestId')) {
+      throw new Error('ACTOR_UNTRUSTED: 恢复请求只能传递用户意图，不能声明 Actor 或幂等凭据')
+    }
+    assertSafeReviewStorageId(input.caseId, 'caseId')
+    if (!Number.isSafeInteger(input.expectedRevision) || input.expectedRevision < 0 ||
+        typeof input.reason !== 'string' || input.reason.trim().length < 2 ||
+        input.reason.length > 1000) {
+      throw new Error('VALIDATION_FAILED: 恢复请求缺少有效修订号或恢复理由')
+    }
+    const existing = readAggregate(input.caseId)
+    if (!existing?.caseV2 || existing.caseV2.id !== input.caseId ||
+        !Number.isSafeInteger(existing.caseV2.revision) ||
+        !Array.isArray(existing.receiptLog) || !existing.caseArchive ||
+        typeof existing.caseArchive.archivedAt !== 'string' ||
+        (existing.caseArchiveHistory !== undefined && !Array.isArray(existing.caseArchiveHistory))) {
+      throw new Error('INVALID_TRANSITION: 案卷不存在可验证的原生归档检查点')
+    }
+    const { createHash } = require('node:crypto') as typeof import('node:crypto')
+    const { restoreReviewCaseV3 } = require('./case-lifecycle-v3') as typeof import('./case-lifecycle-v3')
+    // Stable throughout one restored checkpoint; new archives necessarily
+    // advance history and produce a different Main-derived receipt key.
+    const restoreIdentity = JSON.stringify([
+      input.caseId, existing.caseArchiveHistory?.length ?? 0, existing.caseArchive.archivedAt,
+    ])
+    const outcome = await restoreReviewCaseV3(input.caseId, {
+      requestId: 'native-restore-' + createHash('sha256').update(restoreIdentity).digest('hex'),
+      expectedRevision: input.expectedRevision,
+      actor: { actorId: 'local-reviewer', actorSource: 'local', role: 'reviewer' },
+      payload: { reason: input.reason.trim() },
+    })
+    if (!outcome.ok) throw new Error(`${outcome.code}: ${outcome.message}`)
+    return outcome
   })
 
   // ===== AI 生成（左/中栏）=====
@@ -865,6 +1053,9 @@ export function registerReviewIpc(): void {
   ipcMain.handle(
     REVIEW_IPC_CHANNELS.GENERATE_RULE_OUTLINE,
     async (_event, request: GenerateRuleOutlineRequest): Promise<RuleOutlineItem[]> => {
+      const caseId = requireString(request?.caseId, 'caseId')
+      if (isNativeWorkspaceCaseV3(readAggregate(caseId)))
+        throw new Error('NATIVE_OUTLINE_STAGING_REQUIRED: 原生案卷规则识别必须通过来源锚点绑定的候选区执行')
       const outline = await generateRuleOutline(request)
       await syncWorkspaceProjectionV2(request.caseId)
       return outline
@@ -873,6 +1064,9 @@ export function registerReviewIpc(): void {
 
   /** 识别可审核条目（中栏；无出口时降级返回已有条目） */
   ipcMain.handle(REVIEW_IPC_CHANNELS.EXTRACT_ITEMS, async (_event, caseId: string): Promise<ReviewItem[]> => {
+    caseId = requireString(caseId, 'caseId')
+    if (isNativeWorkspaceCaseV3(readAggregate(caseId)))
+      throw new Error('NATIVE_SUBJECT_STAGING_REQUIRED: 原生事项识别需先通过 V2 来源候选核对后写入')
     const items = await extractItems(caseId)
     await syncWorkspaceProjectionV2(caseId)
     return items
@@ -887,6 +1081,9 @@ export function registerReviewIpc(): void {
    * 网关不可用 → 直接走确定性模拟引擎（决策 D6，保证离线可演示）。
    */
   ipcMain.handle(REVIEW_IPC_CHANNELS.RUN_REVIEW, (_event, caseId: string): Promise<ReviewRun> => {
+    caseId = requireString(caseId, 'caseId')
+    if (isNativeWorkspaceCaseV3(readAggregate(caseId)))
+      throw new Error('NATIVE_C2_RUN_REQUIRED: 原生案卷不得使用旧模拟运行冒充正式 ReviewRun')
     const engine = getReviewModelGatewayStatus().available ? 'ai' : 'mock-engine'
     return startReviewRun(caseId, engine)
   })
@@ -919,6 +1116,9 @@ export function registerReviewIpc(): void {
 
   /** 导出预审报告（JSON + Markdown） */
   ipcMain.handle(REVIEW_IPC_CHANNELS.EXPORT_REPORT, (_event, caseId: string): Promise<ExportReportResult> => {
+    caseId = requireString(caseId, 'caseId')
+    if (isNativeWorkspaceCaseV3(readAggregate(caseId)))
+      throw new Error('NATIVE_C2_REPORT_REQUIRED: 原生案卷不能导出旧模拟运行的正式预审报告')
     return exportReport(caseId)
   })
 

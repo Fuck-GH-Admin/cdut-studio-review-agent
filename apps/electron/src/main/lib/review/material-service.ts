@@ -13,6 +13,7 @@ import { basename, extname, join } from 'node:path'
 import { tmpdir } from 'node:os'
 import type { Actor, DocumentVersion, ReviewCommandResult, ReviewDocumentBlock, TemplateVersion } from '@profer/shared'
 import { CommandValidationError, readAggregate, submitCommand } from './case-store-v2'
+import { revokeCurrentSourceValidity } from './source-current-validity-v3'
 import { getConfigDir } from '../config-paths'
 import { extractDocxReviewContent, extractSpreadsheetReviewContent, extractTextFromFile, type DocxReviewContent, type XlsxReviewContent } from '../document-parser'
 import { extractReviewableTextFile } from './document-service'
@@ -83,7 +84,7 @@ export interface RegisterMaterialPayload {
 }
 
 /** 登记材料（命令事务）：新 DocumentVersion 进聚合；同名再登记产生新版本 */
-export async function registerMaterial(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: RegisterMaterialPayload }): Promise<ReviewCommandResult<DocumentVersion>> {
+export async function registerMaterial(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: RegisterMaterialPayload }, authorizeAtCommit?: () => void): Promise<ReviewCommandResult<DocumentVersion>> {
   if (!readAggregate(caseId)) throw new CommandValidationError('NOT_FOUND', `案卷聚合不存在: ${caseId}`)
   if (!command.payload.sourcePath || !existsSync(command.payload.sourcePath)) throw new CommandValidationError('VALIDATION_FAILED', '材料文件不存在')
   const inputSize = statSync(command.payload.sourcePath).size
@@ -138,11 +139,18 @@ export async function registerMaterial(caseId: string, command: { requestId: str
   }
   try {
     return await submitCommand<RegisterMaterialPayload, DocumentVersion>(caseId, { ...command, type: 'RegisterMaterial' }, (aggregate, payload) => {
+    // Re-check the live Main window after parsing/Host awaits and immediately
+    // inside the serialized command, before any physical asset is copied.
+    authorizeAtCommit?.()
     if (aggregate.caseV2.stage === 'archived') throw new CommandValidationError('INVALID_TRANSITION', '已归档案卷不可登记材料')
     const sourcePath = payload.sourcePath
     if (!sourcePath) throw new CommandValidationError('VALIDATION_FAILED', '缺少源文件路径')
     // 版本链语义（复查 §5.9）：同槽位 + 同文件名 = 同一逻辑材料的新版本；不同槽位各自独立
     const incomingName = command.payload.fileName ?? (sourcePath.split(/[\\/]/).pop() ?? 'material.bin')
+    const requestedReplacements = new Set(payload.replacesVersionIds ?? [])
+    if ([...requestedReplacements].some((versionId) => !aggregate.caseV2.documents.some((doc) => doc.versionId === versionId && doc.active !== false))) {
+      throw new CommandValidationError('VALIDATION_FAILED', '替换目标不存在或不再是当前材料版本')
+    }
     const sameLogic = aggregate.caseV2.documents.filter((doc) => doc.fileName === incomingName && doc.materialSlotId === payload.materialSlotId)
     const versionSeq = sameLogic.length + 1
     const previousVersion = sameLogic.at(-1)
@@ -243,6 +251,11 @@ export async function registerMaterial(caseId: string, command: { requestId: str
         doc.byteHash = byteHash
         doc.active = true
         draft.caseV2.documents = [...docs, doc]
+        const retiredVersions = new Set(aggregate.caseV2.documents.filter((old) =>
+          old.active !== false && (requestedReplacements.has(old.versionId) ||
+            (old.fileName === incomingName && old.materialSlotId === payload.materialSlotId)))
+          .map((old) => old.versionId))
+        revokeCurrentSourceValidity(draft, retiredVersions, 'replace')
         return doc
       },
     }
