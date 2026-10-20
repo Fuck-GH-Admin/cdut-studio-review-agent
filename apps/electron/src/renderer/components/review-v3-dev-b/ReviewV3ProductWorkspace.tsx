@@ -12,6 +12,7 @@ import {
 import type { B26IssueKind } from '../../../main/lib/review/review-v3-b4-bulk-evidence-workbench'
 import type { B3RouteState } from '../../../main/lib/review/review-intake-routing-adapter-v3-b3'
 import type { B1AuthorDocument } from '../../../main/lib/review/review-template-plan-adapter-v3-b1'
+import { prepareB33PristineReopenLookup } from './review-v3-b33-author-reopen'
 
 export interface B32ProductPorts {
  /** C Main read: B30 complete materials + B20 author/Source + B27 + B26. */
@@ -63,6 +64,8 @@ export function ReviewV3ProductWorkspace({
  const [error,setError]=useState('')
  const [notice,setNotice]=useState('')
  const [checkPage,setCheckPage]=useState(0)
+ const [materialPage,setMaterialPage]=useState(0)
+ const [reopenTemplateId,setReopenTemplateId]=useState('')
  const [sourcePage,setSourcePage]=useState(0)
  const [domain,setDomain]=useState('')
  const [issueKind,setIssueKind]=useState('')
@@ -82,7 +85,7 @@ export function ReviewV3ProductWorkspace({
   generation.current+=1
   setTab('materials');setRead(null);setError('');setNotice('')
   setEditor(null);setLocalEvents([]);setSelectedIssue('')
-  setCheckPage(0);setSourcePage(0)
+  setCheckPage(0);setSourcePage(0);setMaterialPage(0)
  },[scope])
  const fetchCurrent=async():Promise<void>=>{
   if(!ports.onReadCurrent){setRead(null);setError('B_PRODUCT_MAIN_READ_NOT_INSTALLED');return}
@@ -95,7 +98,7 @@ export function ReviewV3ProductWorkspace({
    if(result.caseCandidateId!==caseCandidateId)
     throw new Error('B_PRODUCT_READ_DIFFERENT_CASE')
    buildB32ProductView(result)
-   setRead(result);setCheckPage(0);setSourcePage(0)
+   setRead(result);setCheckPage(0);setSourcePage(0);setMaterialPage(0)
    setNotice('当前材料/候选源已重新读取；不表示正式学校审核通过')
   }catch(e){if(startScope===currentScope.current){
    setRead(null);setError(e instanceof Error?e.message:String(e))
@@ -107,6 +110,9 @@ export function ReviewV3ProductWorkspace({
  catch(e){view=null}
  const connected=view?.mainConnected===true
  const checks=pageB32Checks(view?.checks??[],checkPage*25)
+ const materialRows=view?.materials??[]
+ const materialStart=materialPage*25
+ const visibleMaterials=materialRows.slice(materialStart,materialStart+25)
  const issueList=pageB32Issues(read?.historical??null,sourcePage*25,25,{
   domain:domain||undefined,kind:issueKind?issueKind as B26IssueKind:undefined,
  })
@@ -227,12 +233,17 @@ export function ReviewV3ProductWorkspace({
    <p className="text-sm">申请材料 {view?.applications??0} · ZIP 条目 {view?.zipEntries??0} · 未分配用途 {view?.unassigned??0}</p>
    {view?.warnings.map(w=><p key={w} className="rounded border border-border p-2 text-sm" role="status">{w}</p>)}
    <div className="max-h-80 space-y-2 overflow-y-auto">
-    {view?.materials.map(m=><article key={m.candidateId} className="rounded border border-border p-3 text-sm">
+    {visibleMaterials.map(m=><article key={m.candidateId} className="rounded border border-border p-3 text-sm">
      <strong>{m.fileName}</strong> · {visibleRole(m.role)} · {m.sourceType==='ZIP_ENTRY'?'ZIP 原件条目':'直接材料'}
      <p>Subject：{m.subjectId??'尚未确认'} · 版本：{m.documentVersionId}</p>
      <p className="break-all text-xs text-muted-foreground">原字节 SHA256：{m.rawSha256}</p>
      <p className="text-xs">{m.reviewReason}</p>
     </article>)}
+   </div>
+   <div className="flex items-center gap-3 text-sm">
+    <button className={btn} disabled={materialPage===0} onClick={()=>setMaterialPage(p=>p-1)}>上一页</button>
+    原件第 {materialPage+1} 页 · 当前页 {visibleMaterials.length} / 总 {materialRows.length} 项
+    <button className={btn} disabled={materialStart+25>=materialRows.length} onClick={()=>setMaterialPage(p=>p+1)}>下一页</button>
    </div>
    {view?.totalStaged===0&&<p>当前没有可验证的完整暂存集合，不会推断出申请主体。</p>}
   </div>
@@ -241,6 +252,12 @@ export function ReviewV3ProductWorkspace({
   </div>
   <div hidden={tab!=='checks'} className="space-y-3">
    <h3 className="font-semibold">当前 Check × 目标 × 对象 × Subject × Source</h3>
+   {read?.readiness&&<div className="rounded border border-border p-3 space-y-1 text-sm" role="status">
+    <strong>候选处理优先事项（技术候选，不得自动审批）</strong>
+    <p>路由：{read.readiness.technicalRoutingReady?'技术候选已形成':'仍须人工确认'} · 当前来源：{read.readiness.technicalSourcesLinked?'仅技术来源相连':'需复核原件/解析/角色'}</p>
+    {read.readiness.actions.slice(0,20).map((a,i)=><p key={i} className="text-xs">{a.action}: {a.reason} · Check {a.checkKey??'整案'} · Source {a.sourceId??'未知'}</p>)}
+    {read.readiness.actions.length>20&&<p>其余 {read.readiness.actions.length-20} 项仍需独立复核；不能因为视图分页而清零</p>}
+   </div>}
    <p className="text-sm">当前 {checks.total} 个逐对象 Check；其中 UNKNOWN 或物理来源未确认 {view?.checks.filter(x=>x.unresolved).length??0} 个。历史原文的 3,875 项 Check 与当前作者候选不是同一个业务列表。</p>
    {checks.items.map(row=><article key={row.key} className="rounded border border-border p-3 space-y-1 text-sm">
     <p className="font-medium">{row.checkKey} · {row.applicability==='unknown'?'UNKNOWN：待核业务条件':row.applicability+'（仅技术候选）'}</p>
@@ -262,6 +279,9 @@ export function ReviewV3ProductWorkspace({
    <h3 className="font-semibold">历史来源和人工复核工作台</h3>
    <p className="text-sm">冻结原文已核 49/50，G08-T03 原件仍缺；历史 UNKNOWN 来源 4,163、G01 范围 34、高风险规则独立 Gold 未完成。观察材料不会使这些状态自动归零。</p>
    <p className="text-xs">当前工作台有 {read?.historical?.issues.length??0} 项待核记录（无 B26 接入时不假报为空）。</p>
+   {read?.historical&&<div className="flex flex-wrap gap-2 text-xs" role="status">
+    {Object.entries(kindNames).map(([id,label])=><span key={id} className="rounded border border-border p-2">{label}：{read.historical!.issues.filter(x=>x.kind===id).length}</span>)}
+   </div>}
    <div className="flex flex-wrap gap-2">
     <select aria-label="领域过滤" className={field} value={domain} onChange={e=>{setDomain(e.target.value);setSourcePage(0);setSelectedIssue('')}}>
      <option value="">所有领域</option>
@@ -320,6 +340,21 @@ export function ReviewV3ProductWorkspace({
       第 51 套真实 Main/B2 输入适配尚未接线。不能从 Renderer 填写的材料 ID 自行伪造模板来源。
     </p>}
    </div>}
+   <div className="rounded border border-border p-3 space-y-2">
+    <h4 className="font-medium">重开已保存的第 51 套或其它候选修订</h4>
+    <p className="text-xs">仅打开未编辑的候选 ID 查询页。进入后由用户在原 B1 作者界面主动点击读取最新修订，C Main 必须验证持久作者链；不直接导入浏览器旧快照。</p>
+    <label className="block text-sm">候选模板 ID
+     <input className={field} value={reopenTemplateId} onChange={e=>setReopenTemplateId(e.target.value)}/>
+    </label>
+    <button className={btn} type="button" disabled={busy||!connected||!ports.onReadCurrent}
+     onClick={()=>{
+      try{
+       const blank=prepareB33PristineReopenLookup(reopenTemplateId)
+       setEditor({key:'reopen-'+reopenTemplateId,document:blank})
+       setError('');setNotice('仅打开候选修订查询页。请在 B1 作者中主动用 C Main 读取最新修订；没有自动恢复或覆盖。')
+      }catch(e){setError(e instanceof Error?e.message:String(e))}
+     }}>打开可信修订查询（不自动恢复）</button>
+   </div>
    {/* Keep existing B1 wizard mounted across navigation to protect edits. */}
    {editor&&<div className="space-y-2">
     <p className="text-xs">草稿改动须在原 B1 编辑器明确保存、修订和冻结。刷新 Main 源不会悄悄覆盖作者编辑。</p>
