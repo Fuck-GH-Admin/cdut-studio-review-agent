@@ -418,11 +418,11 @@ export function ReviewV3ProductWorkspace({
    </div>
    <div className="rounded border border-border p-3 space-y-2">
     <h4 className="font-medium">重开已保存的第 51 套或其它候选修订</h4>
-    <p className="text-xs">仅打开未编辑的候选 ID 查询页。进入后由用户在原 B1 作者界面主动点击读取最新修订，C Main 必须验证持久作者链；不直接导入浏览器旧快照。</p>
+    <p className="text-xs">只依赖 C Main 已安装的 B1 作者历史读端口；即使 B30 原件工作台未接线，也允许重开不绑定原件的本地候选。载入前须在 B1 作者内再次确认，且不能把它当作已绑定材料的模板。</p>
     <label className="block text-sm">候选模板 ID
      <input className={field} value={reopenTemplateId} onChange={e=>setReopenTemplateId(e.target.value)}/>
     </label>
-    <button className={btn} type="button" disabled={busy||!connected||!ports.onReadCurrent||!canReadLatestAuthor||editor!==null}
+    <button className={btn} type="button" disabled={busy||!canReadLatestAuthor||editor!==null}
      onClick={()=>{
       try{
        if(editor!==null||!canReadLatestAuthor)throw new Error('B_PRODUCT_AUTHOR_REOPEN_NOT_AUTHORIZED_OR_ACTIVE')
