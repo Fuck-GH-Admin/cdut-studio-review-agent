@@ -5,7 +5,7 @@
 
 ## R02-A. 来源、实际能力与接收门槛
 
-核验时 main=4951ca658665d48877d095a0905b1269fdde41db；开工重新 git fetch 及记录真实 origin/main，绝对不要回退它。所有五线源分支从较旧的 main@9840a64f25a 派生，比目前 main 约落后 3 个提交：三方合并保留当前 T09 可信 Main 桥接、A09 修正和现有业务/数据记录；禁止来源文件整目录覆盖。
+核验时 main=2a5a614fc8ac6cb5d324a9c15997bf28e1b87f34；开工重新 git fetch 及记录真实 origin/main，绝对不要回退它。所有五线源分支从较旧的 main@9840a64f25a 派生，比目前 main 约落后 3 个提交：三方合并保留当前 T09 可信 Main 桥接、A09 修正和现有业务/数据记录；禁止来源文件整目录覆盖。
 
 | 本轮 PR | 来源分支 | 核验固定 SHA | 真实内容 | 最新 CI 核验 |
 | --- | --- | --- | --- | --- |
@@ -13,10 +13,10 @@
 | **T02 #174** | feat/v3-full-t02-visual-material-r02 | b346c1dade91e27ece427b292dcdebee4e0d6935 | PPTX 原始媒体关系与页来源、图像/扫描 PDF 视觉 OCR、B2 staged OCR 和 UI | PR CI / Baseline / D2 Scoped SUCCESS |
 | **T06 #177** | feat/v3-full-t06-physical-intake-r02 | 07ed0a25e192029ba73e68274444e1695100ff52 | 真实 folder/ZIP 分组、预览、新建或绑定案卷、逐原件入库和批次回执 | PR CI / Batch / Baseline / D2 Scoped SUCCESS |
 | **T08 #175** | feat/v3-full-t08-report-pdf-and-suggestion-r02 | 82d543771d27b5f2285542f89107beccc47e7c85 | 真正可打开的 PDF 图片页文件、助手建议人工审阅与确认保存 UI | PR CI SUCCESS |
-| **T05 #179** | feat/v3-t05-stage-supplement-closure-r01 | 49bd6ce5ae82d1d3a8b71b52d737e658822497e5（暂定） | 真 Run 关联的初审→终审领域提案、补件回复/恢复、可信角色面板与 CR-T05-04 | Baseline / D2 Scoped SUCCESS；**此 SHA 的 PR CI 最后检查时仍在运行** |
+| **T05 #179** | feat/v3-t05-stage-supplement-closure-r01 | 0c2a382a2ada11711920b20680bde943513b34c7 | 真 Run 关联的初审→终审领域提案、补件回复/恢复、可信角色面板与 CR-T05-04 | **最新 SHA 的 PR CI / Baseline / D2 Scoped 全部 SUCCESS** |
 | **A15 素材 #178** | feat/v3-a15-cloud-fixtures-r01 | a6d3424055d7a4dfaf44c67ca4346f3e30f38ad4 | 真实 DOCX 生成器、四组预期、虚构 LAB-SIM@1 政策、云端/本地分工 | 测试数据，不是功能或 A15 已 PASS |
 
-**T05 特殊约束**：可以先合并四份通过 CI 的 #174/#176/#177/#175；#179 等 **最新 HEAD 的 PR CI SUCCESS** 再接。T05 Owner 可能继续提交，不允许使用旧成功测试代替新 HEAD；开工以最新 SHA、diff、CI 固定来源。失败或未结束只阻止 T05 自己，其他四项继续工作。PR #178 可随时独立接收，不需要等 T05。
+**T05 特殊约束**：#179 最新核验 HEAD 0c2a382a2ada11711920b20680bde943513b34c7 的 PR CI/Baseline/Scoped 已全部 SUCCESS，**现已可接第五份**。T05 Owner 仍可能继续提交，不允许使用旧成功测试代替新 HEAD；开工以最新 SHA、diff、CI 固定来源。失败或未结束只阻止 T05 自己，其他四项继续工作。PR #178 可随时独立接收，不需要等 T05。
 
 六套 T01 ZIP 包虽然包含可读原件/配置/预期，并不说明六套业务已在 Case/Run 真实操作通过。T01 模型端口有领域 prompt/schema，但尚需本地 L 接可信模型调用。T02 OCR 依赖引擎和 PDF 渲染工具，缺资源只能标 partial。T08 PDF 是真实图片页 PDF，**不是文字可选择/搜索的 PDF**。T08 对现有可信 Main 暂仅允许保存 text 字段；数字/日期等不可取消禁用伪称完成。
 
@@ -33,7 +33,7 @@
 
 每条都运行受影响定向测试、workspace typecheck、必要的 Main/Preload/Renderer build。不要因一条分支尚缺最终产品 E2E 拒绝已可用模块合并，也不能用 CI 成功代替桥接。验证新功能真实入口可达，无数据损坏/权限绕过后即可分批合入 main。
 
-**批次 2（T05 最新 CI 合格后）**：接 PR #179，保留现有 V2CasePanel、T03/T08/T10 挂载与旧 T05 工作台；新增 planT05LocalStageAction/planT05SupplementReentry 负责纯领域判断，L 负责可信 Main 执行。**必须完整阅读来源文档** docs/design/review-agent/acceptance/v3-t05-stage-closure-r01/T05-HISTORY-SCOPE-AND-CONTRACT-REQUEST.md 的 CR-T05-04。
+**批次 2（T05 最新 CI 已合格）**：接 PR #179，保留现有 V2CasePanel、T03/T08/T10 挂载与旧 T05 工作台；新增 planT05LocalStageAction/planT05SupplementReentry 负责纯领域判断；新增 applyT05LocalStageProposal 生成阶段任务/补件/决定的追加式状态，**由 Main 提供可信 ID/时间并在同一 CaseAggregate 事务原子写入**，不要再造平行阶段状态机。L 负责可信 Main 执行。**必须完整阅读来源文档** docs/design/review-agent/acceptance/v3-t05-stage-closure-r01/T05-HISTORY-SCOPE-AND-CONTRACT-REQUEST.md 的 CR-T05-04。
 
 T05 Main 需要：
 - 只读 T05TrustedStageCapability：可信来源的 actorRole reviewer/teacher、开放任务及 current real Run；Renderer 的 role/runId 不授权。
@@ -90,7 +90,7 @@ A15：S0 / S1 / S2 / S3 / S4 的证据和真实断点
 下一步：可执行的一个接线动作，不重启历史调研
 ~~~
 
-**执行优先级：四份绿灯→T05 最新绿灯→集中 A15 S1/S2/S3/S4；#178 验收输入并行纳入。** 禁止为假想风险扩展异常框架；保留现实中的来源真值、正式持久化、受控身份和审批边界。
+**执行优先级：四份绿灯→T05 已经通过最新 CI 的 SHA→集中 A15 S1/S2/S3/S4；#178 验收输入并行纳入。** 禁止为假想风险扩展异常框架；保留现实中的来源真值、正式持久化、受控身份和审批边界。
 
 
 ---
