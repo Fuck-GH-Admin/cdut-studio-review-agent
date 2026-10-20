@@ -9,6 +9,7 @@ import type {
 } from '../../../main/lib/review/review-intake-routing-adapter-v3-b3'
 import { buildB3RouteView, requireB3VisibleManualChoice } from './review-v3-route-view'
 import { ReviewV3AuthorWizard, type B1AuthorWizardProps } from './ReviewV3AuthorWizard'
+import { ReviewV3ProductWorkspace, type B32ProductPorts } from './ReviewV3ProductWorkspace'
 
 export interface B3TechnicalChoice {
   proposalOnly: true
@@ -138,11 +139,22 @@ export function ReviewV3RouteReviewPanel(props:B3RoutePanelProps):ReactNode {
 export interface B1B3CandidateWorkspaceProps extends Omit<B3RoutePanelProps,'onOpenCustomAuthor'> {
   /** Must be wired to the Main-authenticated B1 author service before real use. */
   author:B1AuthorWizardProps
+  /** R30–32 optional C Main-backed full input workbench; legacy route UI unchanged if absent. */
+  product?:B32ProductPorts
 }
 export function ReviewV3CandidateIntakeSurface(props:B1B3CandidateWorkspaceProps):ReactNode {
   const [section,setSection]=useState<'route'|'author'>('route')
   const scope=props.sessionKey+'::'+props.caseCandidateId
   useEffect(()=>{setSection('route')},[scope])
+  if(props.product)return <ReviewV3ProductWorkspace
+    key={scope} scope={scope} caseCandidateId={props.caseCandidateId}
+    route={props.route} ports={props.product}
+    renderRoute={(open,liveRoute)=><ReviewV3RouteReviewPanel {...props}
+      route={liveRoute} onOpenCustomAuthor={open}/>}
+    renderAuthor={(draft)=><ReviewV3AuthorWizard key={scope+'::'+(draft?.templateId??'blank')}
+      {...props.author} initialDraft={draft??props.author.initialDraft}
+      initialRevision={draft?0:props.author.initialRevision}/>}
+  />
   if(section==='author')return <div className="space-y-3"
     data-testid="review-v3-b1-b3-author-entry">
     <button type="button" className={action} onClick={()=>setSection('route')}>
