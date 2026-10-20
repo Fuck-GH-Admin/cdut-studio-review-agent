@@ -19,12 +19,13 @@ import {V3ATurnBudget} from './review-v3-execution-turn-budget'
 import {V3AProposalProducer} from './review-v3-execution-proposal-producer'
 import {V3ASDKTurnBridge} from './review-v3-main-sdk-turn-bridge'
 import {V3APhysicalSDKTurnPort} from './review-v3-sdk-physical-turn-port'
+import {observeA20LinuxProcess} from './review-v3-owner-recovery-evidence'
 import {V3APiHttpSingleRequestEngine,
   type V3APiHttpSingleRequestFactory,type V3AHttpRequestTransport,
 } from './review-v3-pi-http-provider-engine'
 
 const [mode,rootArg]=process.argv.slice(2)
-if(!rootArg || !['crash','recover','late','quarantine','postcommit-eio','precommit-enospc','reopen-postcommit','reopen-precommit','complete','recover-complete','replay-receipt','recover-reused','settle-precommit-enospc','settle-postcommit-eio','recover-settle-precommit','recover-settle-postcommit','settle-precommit-sigkill','settle-postcommit-sigkill','budget-precommit-sigkill','budget-postcommit-sigkill','recover-budget-precommit','recover-budget-postcommit'].includes(mode??'')){
+if(!rootArg || !['crash','recover','late','quarantine','postcommit-eio','precommit-enospc','reopen-postcommit','reopen-precommit','complete','recover-complete','replay-receipt','recover-reused','settle-precommit-enospc','settle-postcommit-eio','recover-settle-precommit','recover-settle-postcommit','settle-precommit-sigkill','settle-postcommit-sigkill','budget-precommit-sigkill','budget-postcommit-sigkill','recover-budget-precommit','recover-budget-postcommit','r20-independent'].includes(mode??'')){
   throw new Error('R19 worker requires an explicit crash/recover mode and test root')
 }
 const root=rootArg
@@ -48,8 +49,10 @@ const sealed=(filename:string):{payload:Record<string,unknown>;sha256:string}=>{
   return object
 }
 const durableMarker=(data:unknown)=>{
-  const file=openSync(mode==='replay-receipt'
-    ?join(root,'replayed-physical-fetch-entered.json'):paths.marker,'wx',0o600)
+  const file=openSync(mode==='r20-independent'
+    ?join(root,'r20-independent-physical-fetch-entered.json')
+    :mode==='replay-receipt'
+      ?join(root,'replayed-physical-fetch-entered.json'):paths.marker,'wx',0o600)
   try{
     writeSync(file,JSON.stringify(data))
     fsyncSync(file)
@@ -119,17 +122,47 @@ const dispatcher=(owner:V3ReviewOwnerAdapter)=>
   new V3ASDKDispatchFence(createFileOwnerPersistence(paths.dispatch),owner)
 
 async function crashOrLate():Promise<void>{
-  const fixture=scope('r19-case')
+  const independent=mode==='r20-independent'
+  const fixture=scope(independent?'r20-independent-case':'r19-case')
   const {plan,source,principal}=fixture
   const owner=new V3ReviewOwnerAdapter(ownerStore(),authority)
+  if(independent){
+    const previous=owner.get('r19-old-session')
+    if(!previous||previous.state!=='recovery-required'||
+      previous.processEpoch===owner.processEpoch){
+      throw Error('R20 new Case began without cold Owner quarantine')
+    }
+    const quarantined=owner.quarantineInterrupted()
+    if(!quarantined.includes(previous.sessionId)){
+      throw Error('R20 old Owner not durably quarantined')
+    }
+    const old=scope('r19-case')
+    const forbidden=owner.grant({
+      principal:old.principal,
+      run:{...old.run,runId:'r20-forbidden-run',attemptId:'r20-forbidden-attempt'},
+      plan:old.plan,sources:[old.source],
+      sessionId:'r20-forbidden-session',senderKey:'r20-forbidden-frame',
+      expiresAt:Date.now()+120000,permittedTools:['review_submit_result'],
+    })
+    let blocked=false
+    try{dispatcher(owner).claim(callOf(forbidden,old.principal))}
+    catch(error){
+      if(String(error).includes('Unresolved SDK Provider dispatch on prior Run/Case')){
+        blocked=true
+      }else throw error
+    }
+    if(!blocked||existsSync(paths.events)){
+      throw Error('R20 replayed an unknown same-Case physical dispatch')
+    }
+  }
   const replay=mode==='replay-receipt'
   const run=replay?{
     ...fixture.run,runId:'r19-reused-run',attemptId:'r19-reused-attempt',
   }:fixture.run
   const lease=owner.grant({
     principal,run,plan,sources:[source],
-    sessionId:replay?'r19-reused-session':'r19-old-session',
-    senderKey:replay?'r19-reused-frame':'r19-old-frame',
+    sessionId:independent?'r20-independent-session':replay?'r19-reused-session':'r19-old-session',
+    senderKey:independent?'r20-independent-frame':replay?'r19-reused-frame':'r19-old-frame',
     expiresAt:Date.now()+120000,
     permittedTools:['review_submit_result'],
   })
@@ -191,6 +224,7 @@ async function crashOrLate():Promise<void>{
           dispatchSha256:previousDispatch.sha256,
           ownerSha256:sealed(paths.owner).sha256,
           providerReceiptId:'r19-provider-physical-001',
+          osIdentity:observeA20LinuxProcess(process.pid),
         }))
         fsyncSync(fd)
       }finally{closeSync(fd)}
@@ -373,7 +407,7 @@ async function crashOrLate():Promise<void>{
               controller.close()
               return
             }
-            if(mode==='complete' || mode==='replay-receipt' || settlementFault || settlementKill || budgetKill){
+            if(mode==='complete' || mode==='replay-receipt' || settlementFault || settlementKill || budgetKill || independent){
               controller.enqueue(new TextEncoder().encode(remainingSse))
               controller.close()
               return
@@ -384,7 +418,7 @@ async function crashOrLate():Promise<void>{
         },{highWaterMark:0})
         return new Response(body,{
           status:200,headers:{
-            'x-request-id':'r19-provider-physical-001',
+            'x-request-id':independent?'r20-independent-physical-001':'r19-provider-physical-001',
             'content-type':'text/event-stream',
           },
         })
@@ -415,7 +449,7 @@ async function crashOrLate():Promise<void>{
     })+'\n')
     return
   }
-  if(mode==='complete' || mode==='replay-receipt' || settlementFault || settlementKill || budgetKill){
+  if(mode==='complete' || mode==='replay-receipt' || settlementFault || settlementKill || budgetKill || independent){
     let resultKind='',denial=''
     try{
       const result=await bridge.next(callOf(lease,principal),'direct')
@@ -427,13 +461,26 @@ async function crashOrLate():Promise<void>{
     const all=Object.values(chains).flatMap(c=>c.records)
     const own=all.find(x=>x.id && x.grantId===lease.grantId)
     const snap=turns.snapshot(lease)
-    const previous=replay?owner.get('r19-old-session'):null
+    const previous=(replay||independent)?owner.get('r19-old-session'):null
     const oldUsed=previous?turns.snapshot(previous).usedTurns:null
     if(nativeEvents.join(',')!=='turn_start,turn_end,agent_end,agent_settled' ||
       fetches!==1 || existsSync(paths.events)){
       throw Error('R19-05 Pi actual native settled/one-fetch evidence missing')
     }
-    if(settlementFault){
+    if(independent){
+      const old=all.filter(x=>x.caseId==='r19-case')
+      const other=all.filter(x=>x.caseId==='r20-independent-case')
+      if(denial || resultKind!=='recorded'||snap.usedTurns!==1||
+        own?.state!=='settled'||own.receiptId!=='r20-independent-physical-001'||
+        previous?.state!=='recovery-required'||
+        (oldUsed!==0&&oldUsed!==1)||
+        old.length!==1||old[0]?.state!=='in-flight'||
+        old[0]?.receiptId!==undefined||other.length!==1||
+        other[0]?.state!=='settled'){
+        throw Error('R20 independent native SDK violated prior physical intent isolation: '+
+          JSON.stringify({denial,resultKind,snap,old,other,oldUsed}))
+      }
+    }else if(settlementFault){
       const expected=mode==='settle-postcommit-eio'
         ?'R19-06 EIO after durable SDK settlement'
         :'R19-06 ENOSPC before durable SDK settlement'
@@ -460,7 +507,7 @@ async function crashOrLate():Promise<void>{
           JSON.stringify({denial,resultKind,own,snap}))
       }
     }
-    process.stdout.write((settlementFault?'R19_SETTLEMENT_FAULT ':'R19_NORMAL ')+JSON.stringify({
+    process.stdout.write((independent?'R20_INDEPENDENT ':settlementFault?'R19_SETTLEMENT_FAULT ':'R19_NORMAL ')+JSON.stringify({
       mode,pid:process.pid,processEpoch:owner.processEpoch,
       runId:run.runId,attemptId:run.attemptId,
       grantId:lease.grantId,dispatchId:own?.id,
@@ -947,7 +994,7 @@ function recoverBudget(postcommit:boolean):void{
     proposalExists:existsSync(paths.events),
   })+'\n')
 }
-if(mode==='crash' || mode==='late' || mode==='complete' || mode==='replay-receipt' || mode==='settle-precommit-enospc' || mode==='settle-postcommit-eio' || mode==='settle-precommit-sigkill' || mode==='settle-postcommit-sigkill' || mode==='budget-precommit-sigkill' || mode==='budget-postcommit-sigkill')await crashOrLate()
+if(mode==='crash' || mode==='late' || mode==='complete' || mode==='replay-receipt' || mode==='settle-precommit-enospc' || mode==='settle-postcommit-eio' || mode==='settle-precommit-sigkill' || mode==='settle-postcommit-sigkill' || mode==='budget-precommit-sigkill' || mode==='budget-postcommit-sigkill' || mode==='r20-independent')await crashOrLate()
 else if(mode==='recover-budget-precommit')recoverBudget(false)
 else if(mode==='recover-budget-postcommit')recoverBudget(true)
 else if(mode==='recover-settle-precommit')recoverSettlement(false)
