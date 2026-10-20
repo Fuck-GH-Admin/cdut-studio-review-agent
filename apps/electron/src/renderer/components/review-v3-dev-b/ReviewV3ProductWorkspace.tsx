@@ -259,7 +259,7 @@ export function ReviewV3ProductWorkspace({
   <header className="space-y-2">
    <h2 className="text-lg font-semibold">审核输入与候选工作台 · 本地 50+1</h2>
    <p className="text-sm text-muted-foreground">全量材料 → 业务匹配或临时模板 → Check×Subject×Source → UNKNOWN 处理 → 人工复核候选。所有步骤均非正式建案、审批或校规发布。</p>
-   <p className="text-xs">会话 {caseCandidateId} · {connected?'Main 来源只读数据已返回（仍需 C 在 IPC 响应处复核）':'Main 未接通'} · {read?.readVersion??'无当前读取版本'}</p>
+   <p className="text-xs">会话 {caseCandidateId} · {connected?'B30 原件 Main 已返回当前数据':'B30 原件 Main 未接通'} · {canReadLatestAuthor?'B1 本地修订读取可用':'B1 修订读取未接线'} · {read?.readVersion??'无当前读取版本'}</p>
    <nav className="flex flex-wrap gap-2" aria-label="审核输入工作流">
     {([
       ['materials','1 原件'],['routing','2 匹配'],['checks','3 Check'],
@@ -296,6 +296,9 @@ export function ReviewV3ProductWorkspace({
      <p>Subject：{m.subjectId??'尚未确认'} · 版本：{m.documentVersionId}</p>
      <p className="break-all text-xs text-muted-foreground">原字节 SHA256：{m.rawSha256}</p>
      <p className="text-xs">{m.reviewReason}</p>
+     <button type="button" className={btn} onClick={()=>{
+      setCheckQuery(m.rawSha256);setCheckUnresolvedOnly(false);setCheckPage(0);setTab('checks')
+     }}>按原件 SHA 查找引用它的 Check</button>
     </article>)}
    </div>
    <div className="flex items-center gap-3 text-sm">
@@ -335,6 +338,10 @@ export function ReviewV3ProductWorkspace({
      <p>版本 {s.documentVersionId??'未知'} · Parser {s.parseRevision??'未确认'} · Block {s.parserBlockId??'未确认'}</p>
      <p>定位：{s.locator}</p>
      <p className="break-all">字节：{s.rawSha256??'无当前来源哈希'}</p>
+     <button type="button" className={btn} disabled={!s.rawSha256}
+      onClick={()=>{setMaterialQuery(s.rawSha256??'');setMaterialRole('all');setMaterialPage(0);setTab('materials')}}>
+      定位当前原件（按字节 SHA）
+     </button>
     </div>)}
    </article>)}
    {checks.total===0&&<p className="text-sm">没有符合当前条件的 Check。可修改筛选查看其它来源。</p>}
