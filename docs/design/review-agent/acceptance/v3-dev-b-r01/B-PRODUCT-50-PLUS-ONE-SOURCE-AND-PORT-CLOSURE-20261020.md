@@ -15,7 +15,7 @@
 | 文件（M / U） | B Git blob SHA | 直接本地 imports（相对同目录；跨目录标注 M/U） |
 |---|---|---|
 | U/ReviewV3CandidateIntakeSurface.tsx | `3d13d3abf5b3f3cbd2a27bbd9c7ea514d11a7fe7` | U/review-v3-route-view, U/ReviewV3AuthorWizard, U/ReviewV3ProductWorkspace |
-| U/ReviewV3ProductWorkspace.tsx | `41e570bbae15f1ddb0aea6f355699be64c496031` | U/review-v3-product-workflow, U/review-v3-b33-author-reopen; type: M/B26, M/B3, M/B1 plan |
+| U/ReviewV3ProductWorkspace.tsx | `38f65f134878bb37129781dfefbe3d988dcb33d8` | U/review-v3-product-workflow, U/review-v3-b33-author-reopen; type: M/B26, M/B3, M/B1 plan |
 | U/ReviewV3AuthorWizard.tsx | `49d0d848ddb07a91a0345457e5f23744f3562cc5` | U/B1BufferedIdentityInput, U/review-v3-author-revision-read, -resume, -diff, -import, -trial, -edit; type: M/B1 plan |
 | U/review-v3-route-view.ts | `5828fe5ed54fbe21881b9bf06d864129abb9f299` | type: M/B3 |
 | U/review-v3-product-workflow.ts | `40558b169f3bde85e21af451b87aa8ef4ff40301` | type: M/B20, M/B30, M/B26, M/B27, M/B23, M/B3, M/B29 |
@@ -51,6 +51,12 @@ Optional, **not required for basic 50+1 Main reader**: M/review-v3-b-bulk-remedi
 - C Main candidate-only observation writer → `onProposeRemediation(request):Promise<B32RemediationReceipt|void>`; 回执应包含 `schemaVersion:'review-v3-b32-remediation-receipt/1'`, `issueId`, `currentSnapshot`, `receiptId`, `persisted:true`, `candidateOnly:true`, `publicationAllowed:false`；写权和证据索引归 C，旧返回 void 明示未确认。
 - Main B1 author → `B1AuthorWizardProps.onSaveDraft(doc,expectedRevision)`, `onPreview(doc)`, `onFreezeCandidate(doc,expectedRevision)`, `onReadLatestCandidate(templateId,expectedRevision)`。真 revision CAS、重新打开的 latest 双读由 C，B UI 不凭本地导出认定保存。
 - Main route/catalog → `caseCandidateId`, `sessionKey`, `route`, `manualCatalog`, `onRequestRefresh`, `onInterrupt`, `onManualChoice`，页面挂在 C-owned **实际审核输入/新建案卷前的业务类型确认**位置，不取代现有 C Case/Run。仅用 C-supplied catalog，candidate-held 显示但不自动提交。
+
+### B 本批增量正反例
+
+- `U/review-v3-product-workflow.test.tsx@6d87c81efb8e4b7af987d4e9c5af5e60df56b7f4`：无 Main 时独立空白作者入口、真实三材料/两 ZIP、Source 版本与 Subject 变化、持久 ACK 的正反例。
+- `U/ReviewV3CandidateIntakeSurface.test.tsx@18ee591b9b391bc1b5cd91c314a486b6b8c3b5b9`：50 候选目录未授权项能看见但不可提交。
+- 这两个是 B-owned 测试，不是 C 的真实 Electron 装载证据。最终 GitHub CI 的状态必须另按提交精确标记，不可套用旧 R33 绿灯。
 
 ## Gate 与未完成边界
 
