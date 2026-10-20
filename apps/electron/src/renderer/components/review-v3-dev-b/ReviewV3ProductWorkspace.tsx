@@ -202,6 +202,7 @@ export function ReviewV3ProductWorkspace({
    const candidate=await ports.onPrepareUnmatchedDraft(intent)
    if(startScope!==currentScope.current||epoch!==generation.current)return
    const again=await ports.onReadCurrent()
+   if(startScope!==currentScope.current||epoch!==generation.current)return
    assertB32StillCurrent(fresh,again)
    if(candidate.schemaVersion!=='review-v3-b29-unmatched-author-draft/1'||
       candidate.caseCandidateId!==caseCandidateId||
