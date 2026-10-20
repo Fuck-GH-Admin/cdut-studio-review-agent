@@ -141,7 +141,9 @@ export function auditB4R25OriginalClauseBindings(
     const pin = index.get(id)
     const historicalAnchor = r13.templates.find(x => x.templateId === row.templateId)
       ?.ruleAnchors.find(x => x.ruleId === row.original.ruleId)
-    if (!pin || !historicalAnchor ||
+    if (!pin || !historicalAnchor)
+      throw new Error('B4_R25_RAW_R13_R14_SOURCE_BINDING')
+    if (
         pin.domain !== domain || pin.headingLine !== row.original.headingLine ||
         pin.rawSourceSha256 !== row.rawSha256 ||
         pin.rawSourceSha256 !== raw.rawOriginals[domain]?.sha256 ||
@@ -162,7 +164,8 @@ export function auditB4R25OriginalClauseBindings(
     if (exceptional) spill++
     const clauseParts = parts.slice(0, pin.rawRuleBodyNonBlankLines)
     const trigger = clauseParts.find(line => line.includes('触发条件'))
-    if (!trigger || !trigger.trim()) deny('RAW_TRIGGER_NOT_EVIDENCED')
+    if (!trigger || !trigger.trim())
+      throw new Error('B4_R25_RAW_TRIGGER_NOT_EVIDENCED')
     if (row.technical.sourceEvidence.some(s =>
       s.applicability !== 'unknown' || !s.documentVersionId || !s.locator))
       deny('SOURCE_APPLICABILITY_PROMOTED')
