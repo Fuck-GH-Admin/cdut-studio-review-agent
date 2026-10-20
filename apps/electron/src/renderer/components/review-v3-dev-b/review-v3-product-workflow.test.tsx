@@ -147,6 +147,21 @@ describe('B R30–R32 renderer reads real complete input and blocks untrusted au
   }
   expect(()=>buildB32ProductView(d)).toThrow('B_PRODUCT_CHECK_LINK_TO_MISSING_MATERIAL')
  })
+ test('historical repair search targets template Check SourceRef and reason without altering issue universe',()=>{
+  const rows=[
+   {id:'issue-1',domain:'G01',templateId:'G01-T01',checkId:'check-A',
+    sourceId:'SourceRef-43',ruleId:null,reason:'missing original'},
+   {id:'issue-2',domain:'G08',templateId:'G08-T03',checkId:'check-B',
+    sourceId:null,ruleId:'rule-77',reason:'source must be reviewed'},
+  ]
+  const history={issues:rows} as unknown as NonNullable<Parameters<typeof pageB32Issues>[0]>
+  expect(pageB32Issues(history,0,25,{query:'sourceref-43'}).items.map(x=>x.id))
+    .toEqual(['issue-1'])
+  expect(pageB32Issues(history,0,25,{query:'G08-T03'}).total).toBe(1)
+  expect(pageB32Issues(history,0,25,{query:'check-A',domain:'G08'}).total).toBe(0)
+  expect(pageB32Issues(history,0,25,{query:'missing'}).total).toBe(1)
+  expect(history.issues).toHaveLength(2)
+ })
  test('both large Check/source lists are bounded pages, not 4163 simultaneous cards',()=>{
   const rows=Array.from({length:120},(_,i)=>({key:'k'+i,checkKey:'c',
    targetKey:'t',objectKey:'o',subjectId:'s',
