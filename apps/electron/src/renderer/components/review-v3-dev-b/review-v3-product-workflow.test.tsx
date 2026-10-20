@@ -77,6 +77,9 @@ describe('B R30–R32 renderer reads real complete input and blocks untrusted au
    {key:'two',checkKey:'K02',targetKey:'T',objectKey:'O',subjectId:'S',
     applicability:'applicable' as const,unresolved:false,sources:[]}]
   expect(filterB32Checks(rows,'REF-A')).toHaveLength(1)
+  const withBytes=rows.map(row=>({...row,sources:row.sources.map(source=>({...source,
+   rawSha256:'a'.repeat(64)}))}))
+  expect(filterB32Checks(withBytes,'a'.repeat(64))).toHaveLength(1)
   expect(filterB32Checks(rows,'page 2',true)[0]?.checkKey).toBe('K01')
   expect(filterB32Checks(rows,'',true)).toHaveLength(1)
   expect(filterB32Checks(rows,'K02',true)).toHaveLength(0)
