@@ -31,6 +31,7 @@ export interface ReviewV3ProductWorkspaceProps {
  ports:B32ProductPorts
  renderRoute:(onOpenAuthor:()=>void,route:B3RouteState)=>ReactNode
  renderAuthor:(draft:B1AuthorDocument|undefined)=>ReactNode
+ canReadLatestAuthor?:boolean
 }
 type Tab='materials'|'routing'|'checks'|'sources'|'author'
 const btn='rounded border border-border px-3 py-1.5 text-sm hover:bg-muted disabled:opacity-40'
@@ -56,7 +57,7 @@ const disabled=<p className="rounded border border-amber-500/40 p-3 text-sm" rol
   本界面不会把测试数据、旧快照或候选预览当作生产审核结果。
 </p>
 export function ReviewV3ProductWorkspace({
- scope,caseCandidateId,route,ports,renderRoute,renderAuthor,
+ scope,caseCandidateId,route,ports,renderRoute,renderAuthor,canReadLatestAuthor=false,
 }:ReviewV3ProductWorkspaceProps):ReactNode {
  const [tab,setTab]=useState<Tab>('materials')
  const [read,setRead]=useState<B32ProductRead|null>(null)
@@ -199,6 +200,7 @@ export function ReviewV3ProductWorkspace({
   }finally{operation.current=false;if(startScope===currentScope.current)setBusy(false)}
  }
  const openAuthor=():void=>{
+  if(editor){setTab('author');setError('B_PRODUCT_ACTIVE_AUTHOR_MUST_SAVE_OR_BACKUP_BEFORE_SWITCH');return}
   setError('');setNotice('')
   if(read?.route.status==='unmatched'&&connected){
    setEditor(null);setTab('author')
@@ -346,14 +348,17 @@ export function ReviewV3ProductWorkspace({
     <label className="block text-sm">候选模板 ID
      <input className={field} value={reopenTemplateId} onChange={e=>setReopenTemplateId(e.target.value)}/>
     </label>
-    <button className={btn} type="button" disabled={busy||!connected||!ports.onReadCurrent}
+    <button className={btn} type="button" disabled={busy||!connected||!ports.onReadCurrent||!canReadLatestAuthor||editor!==null}
      onClick={()=>{
       try{
+       if(editor!==null||!canReadLatestAuthor)throw new Error('B_PRODUCT_AUTHOR_REOPEN_NOT_AUTHORIZED_OR_ACTIVE')
        const blank=prepareB33PristineReopenLookup(reopenTemplateId)
        setEditor({key:'reopen-'+reopenTemplateId,document:blank})
        setError('');setNotice('仅打开候选修订查询页。请在 B1 作者中主动用 C Main 读取最新修订；没有自动恢复或覆盖。')
       }catch(e){setError(e instanceof Error?e.message:String(e))}
      }}>打开可信修订查询（不自动恢复）</button>
+    {!canReadLatestAuthor&&<p className="text-xs">C Main 的持久作者修订读取未安装，不允许假恢复。</p>}
+    {editor&&<p className="text-xs">当前作者编辑器已打开。为避免舍弃未保存修改，不能直接切换其它作者候选。</p>}
    </div>
    {/* Keep existing B1 wizard mounted across navigation to protect edits. */}
    {editor&&<div className="space-y-2">

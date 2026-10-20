@@ -148,6 +148,7 @@ export function ReviewV3CandidateIntakeSurface(props:B1B3CandidateWorkspaceProps
   useEffect(()=>{setSection('route')},[scope])
   if(props.product)return <ReviewV3ProductWorkspace
     key={scope} scope={scope} caseCandidateId={props.caseCandidateId}
+    canReadLatestAuthor={Boolean(props.author.onReadLatestCandidate)}
     route={props.route} ports={props.product}
     renderRoute={(open,liveRoute)=><ReviewV3RouteReviewPanel {...props}
       route={liveRoute} onOpenCustomAuthor={open}/>}

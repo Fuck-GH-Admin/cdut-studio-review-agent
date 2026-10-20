@@ -207,6 +207,10 @@ export function assertB32StillCurrent(before:B32ProductRead,after:B32ProductRead
  if(!a.mainConnected||!b.mainConnected||
     a.caseCandidateId!==b.caseCandidateId||
     a.readVersion!==b.readVersion||
+    JSON.stringify(before.route)!==JSON.stringify(after.route)||
+    JSON.stringify(before.readiness)!==JSON.stringify(after.readiness)||
+    JSON.stringify(before.recovery)!==JSON.stringify(after.recovery)||
+    JSON.stringify(before.candidate)!==JSON.stringify(after.candidate)||
     JSON.stringify(before.inventory)!==JSON.stringify(after.inventory)||
     before.candidate?.frozenFingerprint!==after.candidate?.frozenFingerprint||
     before.candidate?.authorRevisionDigest!==after.candidate?.authorRevisionDigest||
