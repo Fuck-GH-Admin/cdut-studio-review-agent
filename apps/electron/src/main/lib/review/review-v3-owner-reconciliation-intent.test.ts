@@ -8,7 +8,8 @@ import {inspectA20OwnerRecovery,observeA20LinuxProcess,
  type A20RecoveryEvidence} from './review-v3-owner-recovery-evidence'
 import {readA20RecoveryIntent,recordA20RecoveryIntent,
  type A20OperatorAttestation} from './review-v3-owner-reconciliation-intent'
-import {spawnSync} from 'node:child_process'
+import {spawn,spawnSync} from 'node:child_process'
+import {fileURLToPath} from 'node:url'
 const sha=(s:string)=>createHash('sha256').update(s).digest('hex')
 const sealed=(p:unknown)=>JSON.stringify({payload:p,sha256:sha(JSON.stringify(p))})
 function deadIdentity(){
@@ -93,4 +94,63 @@ describe('Dev-A R20-02 technical-only durable reconciliation intent',()=>{
       expect(existsSync(x.paths.owner+'.write-lock')).toBe(true)
     }finally{rmSync(next,{recursive:true,force:true})}
   })
+})
+
+
+const competingWorker=fileURLToPath(
+  new URL('./review-v3-owner-reconciliation-r20.worker.ts',import.meta.url),
+)
+function competingPid(root:string,requestId:string):Promise<{
+  pid:number;status:number|null;signal:NodeJS.Signals|null;out:string;err:string
+}>{
+  return new Promise((resolve,reject)=>{
+    const child=spawn(process.execPath,[competingWorker,root,requestId],{
+      stdio:['ignore','pipe','pipe'],
+    })
+    let out='',err=''
+    child.stdout.setEncoding('utf8')
+    child.stderr.setEncoding('utf8')
+    child.stdout.on('data',(chunk:string)=>{out+=chunk})
+    child.stderr.on('data',(chunk:string)=>{err+=chunk})
+    child.once('error',reject)
+    child.once('close',(status,signal)=>{
+      resolve({pid:child.pid??-1,status,signal,out,err})
+    })
+  })
+}
+describe('Dev-A R20-02C real independent-PID review-intent CAS contention',()=>{
+  linux('exactly one persisted reviewed intent; loser cannot replace Owner lock',async()=>{
+    const root=mkdtempSync(join(tmpdir(),'r20-02-concurrent-'))
+    try{
+      const fixture=setup(root)
+      writeFileSync(join(root,'r20-witness.json'),
+        JSON.stringify(fixture.witness))
+      const [first,second]=await Promise.all([
+        competingPid(root,'r20-independent-a'),
+        competingPid(root,'r20-independent-b'),
+      ])
+      expect(first.pid).toBeGreaterThan(0)
+      expect(second.pid).toBeGreaterThan(0)
+      expect(first.pid).not.toBe(second.pid)
+      const results=[first,second]
+      const successes=results.filter(x=>x.status===0)
+      const failures=results.filter(x=>x.status!==0)
+      expect(successes).toHaveLength(1)
+      expect(failures).toHaveLength(1)
+      expect(successes[0]?.out).toContain('R20_INTENT_WIN ')
+      expect(failures[0]?.err).toMatch(
+        /review receipt collision|inter-process lock unavailable/,
+      )
+      const winner=readA20RecoveryIntent(fixture.intent)
+      expect(winner?.requestId).toBe(successes[0]?.out.match(
+        /"requestId":"([^"]+)"/,
+      )?.[1])
+      expect(winner).toMatchObject({
+        state:'REVIEWED_NOT_EXECUTED',noLockTakeover:true,noProviderReplay:true,
+      })
+      expect(existsSync(fixture.paths.owner+'.write-lock')).toBe(true)
+      expect(existsSync(fixture.paths.dispatch)).toBe(true)
+      expect(existsSync(fixture.paths.turns)).toBe(false)
+    }finally{rmSync(root,{recursive:true,force:true})}
+  },90000)
 })
