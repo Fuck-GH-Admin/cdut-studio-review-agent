@@ -1,6 +1,7 @@
 import {describe,test,expect} from 'bun:test'
 import {renderToStaticMarkup} from 'react-dom/server'
 import {ReviewV3CandidateIntakeSurface} from './ReviewV3CandidateIntakeSurface'
+import {assertB32RemediationReceipt} from './ReviewV3ProductWorkspace'
 import {
  buildB32ProductView,pageB32Checks,pageB32Issues,assertB32StillCurrent,
  type B32ProductRead,
@@ -46,6 +47,17 @@ describe('B R30–R32 renderer reads real complete input and blocks untrusted au
   expect(html).toContain('审核输入与候选工作台')
   expect(html).toContain('真实 C Main/B20/B30 读接口尚未安装')
   expect(html).toContain('本界面不会把测试数据')
+  expect(html).toContain('新建不绑定原件的本地作者草稿')
+  expect(html).toContain('不依赖 Main 或校方授权')
+ })
+ test('remediation requires a real C Main persisted receipt, never equates void with saved',()=>{
+  expect(assertB32RemediationReceipt(undefined,'G01:issue','sha-1')).toBe(false)
+  const ack={schemaVersion:'review-v3-b32-remediation-receipt/1' as const,
+   issueId:'G01:issue',currentSnapshot:'sha-1',receiptId:'local-observation-42',
+   persisted:true as const,candidateOnly:true as const,publicationAllowed:false as const}
+  expect(assertB32RemediationReceipt(ack,'G01:issue','sha-1')).toBe(true)
+  expect(()=>assertB32RemediationReceipt(ack,'G01:issue','sha-2')).toThrow('B_PRODUCT_REMEDIATION_ACK_INVALID')
+  expect(()=>assertB32RemediationReceipt({...ack,receiptId:''},'G01:issue','sha-1')).toThrow('B_PRODUCT_REMEDIATION_ACK_INVALID')
  })
  test('three material inventory includes second ZIP and enables human-only unmatched authorship',()=>{
   const v=buildB32ProductView(physical())
