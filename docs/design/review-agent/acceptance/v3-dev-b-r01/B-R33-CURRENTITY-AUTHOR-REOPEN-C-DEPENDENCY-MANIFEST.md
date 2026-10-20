@@ -13,9 +13,9 @@
 
 **新增 R33 主要生产 blobs（本批若有后续修复须以后续最终 SHA 重核）**：
 
-- Main B-owned helper `apps/electron/src/main/lib/review/review-v3-b33-currentity-snapshot.ts@e5c31573c6cd7a2f8a7169f92e3fcaf9ccd72fd8`。
+- Main B-owned helper `apps/electron/src/main/lib/review/review-v3-b33-currentity-snapshot.ts@0aadc435be5d005678628e346e2324ab379cde0f`。
 - Renderer ID reopen helper `apps/electron/src/renderer/components/review-v3-dev-b/review-v3-b33-author-reopen.ts@fde0b281a8df90bd65cd1bfe584957f5fbb05938`。
-- Main new test `review-v3-b33-currentity-snapshot.test.ts@0fa4e402698cc9727a11206fceb80e63b6b05dbe`；reopen test `review-v3-b33-author-reopen.test.ts@42ff1db730c17499789ff2f662b73d89e1a6b972`。
+- Main new test `review-v3-b33-currentity-snapshot.test.ts@991280024c27185b0f1bff092eb52034f9d258e5`；reopen test `review-v3-b33-author-reopen.test.ts@42ff1db730c17499789ff2f662b73d89e1a6b972`。
 - 已改动的 B UI `ReviewV3ProductWorkspace.tsx@2bd9645cfb7ee0baffe55ae63fdff499fd84611d`、入口 `ReviewV3CandidateIntakeSurface.tsx@e0ec266a7c815c43d7b098b65895a91a99cc5c30`、Renderer helper `review-v3-product-workflow.ts@40558b169f3bde85e21af451b87aa8ef4ff40301`。
 
 **此清单不是 C 的已授权重放合同**。上轮 C 准许的 R30–R32 固定六 blob 仍保持原 SHA，不应以新版浮动替换。R33 所需但**尚未获得 C 重放许可**的 B26–R29 深层生产依赖包括：
@@ -34,3 +34,7 @@
 ## 历史缺口和验收要求
 
 八域 50 原候选、3875 Check、49/50 原 frozen 字节（G08-T03 缺）、G01 34 scope 缺口、4163 UNKNOWN SourceRef、32 条高风险条款仅技术 pin 而非独立 Gold；全部按历史原版本不变。R33 不清零、不宣称政策语义通过。集中测试必须覆盖多 ZIP/Subject、版本/Owner/epoch/冻结 Check/Parser/SourceRef 改动、超 500 拒绝、作者重开不覆写、Main 未安装不虚构、分页不丢记录。仅在**最终精确 SHA 同一轮 PR CI + D2 + Baseline 3/3 通过**时签 B Gate O。Gate E NOT_RUN、校方 L BLOCKED_NO_AUTH、P NOT_RUN、Release NO_GO；#142 Draft、回滚上轮 B R32 绿 SHA `3682465902565205a16a88a00324dc42ecf8ccbd`。
+
+### R33 首轮真实工程失败记录
+
+首轮源码父 `57c49c7d4c549fc2a8f84f3cff89b1c9f7287334` 的 PR CI `39383783237` job `118498699919` 在严格 TS 检查中报 TS2322（测试狭窄 `unmatched` 状态）和 TS18048（缺 SourceRef 原始记录未显式 throw）。已在 `382a903b73715c26d78279ecd1a1c7baf8653378` 只修此二处：缺当前原件仍硬拒绝，不用 `any` 或断言压错。后续以**最后的单一 HEAD GitHub PR/D2/Baseline 和完整 Bun 日志为准**，不得把上一版绿灯套给新 SHA。
