@@ -146,17 +146,20 @@ export function ReviewV3ProductWorkspace({
   }
   operation.current=true;setBusy(true);setError('');setNotice('');setRepairStatus('awaiting-main')
   const startScope=currentScope.current,epoch=generation.current
+  let proposalSent=false,confirmedPersisted=false
   try{
    const before=await ports.onReadCurrent()
    if(startScope!==currentScope.current||epoch!==generation.current)return
    assertB32StillCurrent(read,before)
    if(!before.historical||!before.historical.issues.some(x=>x.id===issue.id))
     throw new Error('B_PRODUCT_ISSUE_NO_LONGER_CURRENT')
+   proposalSent=true
    const receipt=await ports.onProposeRemediation({
      issueId:issue.id,currentSnapshot:before.historical.snapshotSha256,
      observation:observation.trim(),candidateOnly:true,businessWriteAllowed:false,
    })
    const persisted=assertB32RemediationReceipt(receipt,issue.id,before.historical.snapshotSha256)
+   confirmedPersisted=persisted
    if(startScope!==currentScope.current||epoch!==generation.current)return
    setRepairStatus(persisted?'persisted':'unconfirmed')
    // Re-read after the proposal; old preview is never marked "fixed".
@@ -171,7 +174,9 @@ export function ReviewV3ProductWorkspace({
    setNotice(persisted?'Main 已确认保存候选技术观察；未改变 UNKNOWN、Gold 或审批状态':
     'Main 未返回持久化回执：提交结果尚未确认，请通过 Main 历史核对后再处理')
   }catch(e){if(startScope===currentScope.current){
-   setRepairStatus('unconfirmed');setError(e instanceof Error?e.message:String(e))
+   setRepairStatus(confirmedPersisted?'persisted':proposalSent?'unconfirmed':'unsubmitted')
+   if(confirmedPersisted)setNotice('Main 已返回持久回执；但重新读取当前来源失败，请手动刷新，不能认为 UNKNOWN 已解决')
+   setError(e instanceof Error?e.message:String(e))
   }}finally{operation.current=false;if(startScope===currentScope.current)setBusy(false)}
  }
  const createTemporary=async():Promise<void>=>{
