@@ -70,6 +70,7 @@ export class A22TechnicalEvidenceHandoff {
     }
     const run=lease.runEvidence
     const plan=lease.planSnapshot
+    if(!run||!plan)reject('Owner immutable Run/Plan unavailable')
     const events=this.producer.replayCandidates()
       .filter(x=>x.run.runId===run.runId&&
         x.run.attemptId===run.attemptId&&

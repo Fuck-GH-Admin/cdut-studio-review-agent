@@ -136,7 +136,9 @@ export class V3ABackgroundTechnicalCoordinator {
     update:(task:A22BackgroundTask)=>A22BackgroundTask):A22BackgroundTask{
     const j=this.update(caseId,current=>{
       const prior=current.tasks.at(-1)
-      if(!prior||prior.requestId!==requestId||
+      if(!prior)throw new C0ContractError('RECOVERY_REQUIRED',
+        'A22_BACKGROUND: no existing task for update')
+      if(prior.requestId!==requestId||
         prior.processEpoch!==this.processEpoch){
         deny('stale background completion or foreign PID')
       }
@@ -227,7 +229,7 @@ export class V3ABackgroundTechnicalCoordinator {
         return result.kind==='terminal-proposal'
           ?{...prev,state:'terminal-technical',
              committedUsedTurns:input.sequence.expectedUsedTurns+result.executed,
-             completedSteps:result.executed,terminalStatus:result.status}
+             completedSteps:result.executed,terminalStatus:result.result.status}
           :{...prev,state:'completed-technical',
              committedUsedTurns:result.budget.usedTurns,
              completedSteps:result.executed}
