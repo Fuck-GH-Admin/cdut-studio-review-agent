@@ -309,7 +309,7 @@ describe('I5 A19 accepted parent × B R23 physical B20 × immutable C B20 offlin
     expect(cached).not.toHaveProperty('caseReceipt')
     expect(cached).not.toHaveProperty('runAck')
   })
-  test('I5-10 real independent PID can read durable author but cannot resurrect an uninstalled B2 Owner/picker',async()=>{
+  test('I5-10 real independent PID can read durable author but cannot inherit any linked physical evidence',async()=>{
     const f=await fixture()
     const worker=fileURLToPath(new URL('./review-v3-integration-i5-coldpid.worker.ts',import.meta.url))
     const cold=spawnSync(process.execPath,[
@@ -321,12 +321,12 @@ describe('I5 A19 accepted parent × B R23 physical B20 × immutable C B20 offlin
     const line=cold.stdout.split('\n').find(s=>s.startsWith('I5_COLD_PROVENANCE '))
     expect(line).toBeDefined()
     const record=JSON.parse(line!.slice('I5_COLD_PROVENANCE '.length)) as {
-      pid:number;persistedAuthor:boolean;oldOwnerDenied:boolean;
+      pid:number;persistedAuthor:boolean;unlinkedColdSource:boolean;
       published:boolean;independentMainIdentity:boolean;
     }
     expect(record.pid).not.toBe(process.pid)
     expect(record).toMatchObject({
-      persistedAuthor:true,oldOwnerDenied:true,
+      persistedAuthor:true,unlinkedColdSource:true,
       published:false,independentMainIdentity:false,
     })
     expect((await f.gate.read(f.templateId)).candidateOnly).toBe(true)

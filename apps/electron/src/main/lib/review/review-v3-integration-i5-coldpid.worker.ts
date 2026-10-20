@@ -32,23 +32,24 @@ const staging = new ReviewB2StagingService()
 const parser = new ReviewB2SourceVersionAdapter(staging)
 const vault = new ReviewB2ArchiveVault(staging,join(process.env.PROFER_CONFIG_DIR,'cold-pid-vault'))
 const ledger = new ReviewB2InputLedger(vault,staging,join(process.env.PROFER_CONFIG_DIR,'cold-pid-ledger'))
-let denied = false
-try {
-  readB20CurrentCandidateBundle(
-    {templateId,revision:revision.revision,revisionDigest,frozenFingerprint},
-    {authority:{
-      currentScope:()=>scope,
-      currentSelections:()=>[],
-      nativeArchiveKey:()=>null,
-    },sources:{staging,parser,vault,ledger}},
-  )
-} catch(error) {
-  if (!(error instanceof Error) || error.message !== 'B2_OWNER_INVALID_OR_REVOKED')
-    throw error
-  denied = true
+const observed = readB20CurrentCandidateBundle(
+  {templateId,revision:revision.revision,revisionDigest,frozenFingerprint},
+  {authority:{
+    currentScope:()=>scope,
+    currentSelections:()=>[],
+    nativeArchiveKey:()=>null,
+  },sources:{staging,parser,vault,ledger}},
+)
+// The B facade is not the Main Principal issuer. It may return unknown
+// candidate evidence from a structurally valid injected scope; it MUST NOT
+// turn an uninstalled cold physical original into linked evidence or a writer.
+if (!observed.candidateProvenance.bindings.every(b=>b.state==='unknown') ||
+    observed.publicationAllowed!==false ||
+    observed.businessWriteAllowed!==false ||
+    observed.schoolPolicyVerified!==false) {
+  throw Error('I5_COLD_UNINSTALLED_ORIGINAL_MINTED_AUTHORITY')
 }
-if (!denied)throw Error('I5_COLD_OLD_AUTH_REUSED')
 console.log('I5_COLD_PROVENANCE '+JSON.stringify({
-  pid:process.pid,persistedAuthor:true,oldOwnerDenied:true,
+  pid:process.pid,persistedAuthor:true,unlinkedColdSource:true,
   published:false,independentMainIdentity:false,
 }))

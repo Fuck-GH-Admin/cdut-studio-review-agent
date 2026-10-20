@@ -247,7 +247,8 @@
     "sourceOwner": "I",
     "status": "NEW",
     "additionalWorker": "apps/electron/src/main/lib/review/review-v3-integration-i5-coldpid.worker.ts",
-    "exactCases": 10
+    "exactCases": 10,
+    "coldPidSemantics": "independent OS PID reads durable B1; without current physical source registry returns UNKNOWN candidate only, never linked/published/business-writable; does not constitute Main auth"
   },
   "scope": {
     "actualElectronMainWired": false,
@@ -273,5 +274,17 @@
     "alreadyIdentical": 4,
     "changedPaths": 21,
     "sourceOnlyHead": "cec7b9a07696e4ec0955ae3aa555a31bb96cb49d"
-  }
+  },
+  "firstFailures": [
+    {
+      "exactSHA": "c25982c22459c5aefe918851bb5cf2c281ee4aab",
+      "workflow": 39351110136,
+      "job": 118395229763,
+      "result": "4438 PASS / 5 SKIP / 1 FAIL",
+      "case": "I5-10",
+      "reason": "I-only worker incorrectly expected B2 read-only scoped input to reject absent historical grant; B2 is not C Main identity issuer. Correct cold process contract is all UNKNOWN physical links and no publish/write.",
+      "fixedPaths": "I-owned test/worker only",
+      "C_or_B_production_hunks": 0
+    }
+  ]
 }
