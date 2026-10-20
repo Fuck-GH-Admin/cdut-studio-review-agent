@@ -1,0 +1,466 @@
+{
+  "schemaVersion": "review-v3-i7-technical-test-replay-contract/1",
+  "I6FrozenSHA": "d4ea818250df93dc00084378e8ab2d8bae0fc42e",
+  "initialCAnchorSHA": "2cb8331b8fdff43da70a894ec597820595cb4d2d",
+  "note": "DATA ONLY. This list is a dependency graph of I-owned test candidates; no source replay permission. Dynamic/transitive imports require new exact CR. Old C Host registry/Run/Plan versions cannot overwrite R10.",
+  "count": 13,
+  "safeCandidateNoMissingDirect": 5,
+  "files": [
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i1-owner-event.test.ts",
+      "I6Blob": "1093f4da880eff1631637589949e9fd8514f2765",
+      "alreadyInC10": null,
+      "directInternalImports": [
+        {
+          "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.ts",
+          "I6": "e911663006cb105aad382a6a107630534e014739",
+          "C10": "e911663006cb105aad382a6a107630534e014739"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts",
+          "I6": "b2101be80e3dce561f6365c3378b2930245dda73",
+          "C10": "b2101be80e3dce561f6365c3378b2930245dda73"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.ts",
+          "I6": "974f0b0d127301ed71ad10df5ae64623ce378882",
+          "C10": "974f0b0d127301ed71ad10df5ae64623ce378882"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-pi-owner-adapter.ts",
+          "I6": "cb80e050c7c8256d002f2c1315b3f3c388d47427",
+          "C10": null
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-execution-event-adapter.ts",
+          "I6": "be2ad9195991ecfef3068f80295d74fdc0bf629f",
+          "C10": null
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-execution-event-adapter-completeness.ts",
+          "I6": "0e15f14d2d1bc145acec8325d43e9e6276ead802",
+          "C10": null
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/source-current-validity-v3.ts",
+          "I6": "b9a8e226b712c91e7e0892e07b8928231632164a",
+          "C10": "b9a8e226b712c91e7e0892e07b8928231632164a"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-integration-i1-technical.ts",
+          "I6": "267e60a0bee072d49abe3c9ff35a7384a78538db",
+          "C10": null
+        }
+      ],
+      "missingC10DirectImports": [
+        "review-pi-owner-adapter.ts",
+        "review-execution-event-adapter.ts",
+        "review-execution-event-adapter-completeness.ts",
+        "review-v3-integration-i1-technical.ts"
+      ],
+      "requiresRebaseline": false
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i1-technical.test.ts",
+      "I6Blob": "8a9a156c5e8a246d62845a338d95f047e8d6cd2f",
+      "alreadyInC10": null,
+      "directInternalImports": [
+        {
+          "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.ts",
+          "I6": "e911663006cb105aad382a6a107630534e014739",
+          "C10": "e911663006cb105aad382a6a107630534e014739"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.ts",
+          "I6": "974f0b0d127301ed71ad10df5ae64623ce378882",
+          "C10": "974f0b0d127301ed71ad10df5ae64623ce378882"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-integration-i1-technical.ts",
+          "I6": "267e60a0bee072d49abe3c9ff35a7384a78538db",
+          "C10": null
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts",
+          "I6": "b2101be80e3dce561f6365c3378b2930245dda73",
+          "C10": "b2101be80e3dce561f6365c3378b2930245dda73"
+        }
+      ],
+      "missingC10DirectImports": [
+        "review-v3-integration-i1-technical.ts"
+      ],
+      "requiresRebaseline": false
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i1-technical.ts",
+      "I6Blob": "267e60a0bee072d49abe3c9ff35a7384a78538db",
+      "alreadyInC10": null,
+      "directInternalImports": [
+        {
+          "path": "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.ts",
+          "I6": "974f0b0d127301ed71ad10df5ae64623ce378882",
+          "C10": "974f0b0d127301ed71ad10df5ae64623ce378882"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.ts",
+          "I6": "e911663006cb105aad382a6a107630534e014739",
+          "C10": "e911663006cb105aad382a6a107630534e014739"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.ts",
+          "I6": "51a0fa003eb444e91ac246f2789b31db149f2456",
+          "C10": null
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-execution-event-adapter-completeness.ts",
+          "I6": "0e15f14d2d1bc145acec8325d43e9e6276ead802",
+          "C10": null
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/source-current-validity-v3.ts",
+          "I6": "b9a8e226b712c91e7e0892e07b8928231632164a",
+          "C10": "b9a8e226b712c91e7e0892e07b8928231632164a"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts",
+          "I6": "b2101be80e3dce561f6365c3378b2930245dda73",
+          "C10": "b2101be80e3dce561f6365c3378b2930245dda73"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-execution-event-adapter.ts",
+          "I6": "be2ad9195991ecfef3068f80295d74fdc0bf629f",
+          "C10": null
+        }
+      ],
+      "missingC10DirectImports": [
+        "review-intake-routing-adapter-v3-b3.ts",
+        "review-execution-event-adapter-completeness.ts",
+        "review-execution-event-adapter.ts"
+      ],
+      "requiresRebaseline": false
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i2-a-proposal.test.ts",
+      "I6Blob": "8d0d41b66fcb21ab63af9aa62a2b7c0e41237b9d",
+      "alreadyInC10": null,
+      "directInternalImports": [
+        {
+          "path": "apps/electron/src/main/lib/review/review-pi-owner-adapter.ts",
+          "I6": "cb80e050c7c8256d002f2c1315b3f3c388d47427",
+          "C10": null
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-execution-proposal-producer.ts",
+          "I6": "c4eb67ff185ecd889864431a898bee77c352fc84",
+          "C10": null
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-execution-contract.ts",
+          "I6": "1b05a8c29c972b8902b2ece742260a0dc019be6b",
+          "C10": "1b05a8c29c972b8902b2ece742260a0dc019be6b"
+        }
+      ],
+      "missingC10DirectImports": [
+        "review-pi-owner-adapter.ts",
+        "review-v3-execution-proposal-producer.ts"
+      ],
+      "requiresRebaseline": false
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i2-b-source.test.ts",
+      "I6Blob": "826619b177e1589cf83573999d71a32f9ada2d5b",
+      "alreadyInC10": null,
+      "directInternalImports": [
+        {
+          "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.ts",
+          "I6": "e911663006cb105aad382a6a107630534e014739",
+          "C10": "e911663006cb105aad382a6a107630534e014739"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.ts",
+          "I6": "974f0b0d127301ed71ad10df5ae64623ce378882",
+          "C10": "974f0b0d127301ed71ad10df5ae64623ce378882"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-b4-original-byte-verifier.ts",
+          "I6": "02565186990a7e67e5e1e37fb83931384be9fffd",
+          "C10": null
+        }
+      ],
+      "missingC10DirectImports": [
+        "review-v3-b4-original-byte-verifier.ts"
+      ],
+      "requiresRebaseline": false
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i3-a-c-provider-boundary.test.ts",
+      "I6Blob": "81a7b486f33f17fe6b817649cf786c512979e99e",
+      "alreadyInC10": null,
+      "directInternalImports": [
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-pi-http-provider-engine.ts",
+          "I6": "029419de63dd1974c262f59dc80fc8d9b559004d",
+          "C10": null
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-sdk-physical-turn-port.ts",
+          "I6": "49b8d9270570a76f58f04d90c3bdc77ce6230a9b",
+          "C10": null
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-main-pi-factory.ts",
+          "I6": "d342ae0e14055ca0f73875782d773afa432aa7fd",
+          "C10": "d342ae0e14055ca0f73875782d773afa432aa7fd"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-main-host-receipt-registry.ts",
+          "I6": "bba17b3c3e01ebf0be643bf00fbf1284028f1e7f",
+          "C10": "26359d4b2f3a10f517bc284d426187d5dd030e54"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-main-trust-port.ts",
+          "I6": "17f78ce719c31311e528ce0092da0df8283f4460",
+          "C10": "17f78ce719c31311e528ce0092da0df8283f4460"
+        }
+      ],
+      "missingC10DirectImports": [
+        "review-v3-pi-http-provider-engine.ts",
+        "review-v3-sdk-physical-turn-port.ts"
+      ],
+      "requiresRebaseline": false
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i3-stage3-sdk-host-technical.test.ts",
+      "I6Blob": "fd1957106bee70590da71d06e8cd0c58ef34dfea",
+      "alreadyInC10": null,
+      "directInternalImports": [
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-pi-http-provider-engine.ts",
+          "I6": "029419de63dd1974c262f59dc80fc8d9b559004d",
+          "C10": null
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-sdk-physical-turn-port.ts",
+          "I6": "49b8d9270570a76f58f04d90c3bdc77ce6230a9b",
+          "C10": null
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-main-host-receipt-registry.ts",
+          "I6": "bba17b3c3e01ebf0be643bf00fbf1284028f1e7f",
+          "C10": "26359d4b2f3a10f517bc284d426187d5dd030e54"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-main-trust-port.ts",
+          "I6": "17f78ce719c31311e528ce0092da0df8283f4460",
+          "C10": "17f78ce719c31311e528ce0092da0df8283f4460"
+        }
+      ],
+      "missingC10DirectImports": [
+        "review-v3-pi-http-provider-engine.ts",
+        "review-v3-sdk-physical-turn-port.ts"
+      ],
+      "requiresRebaseline": false
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i4-a18-sse-host-boundary.test.ts",
+      "I6Blob": "42d69f7ff1df4f4f061b0ef54c8c5de233ee0996",
+      "alreadyInC10": null,
+      "directInternalImports": [
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-pi-http-provider-engine.ts",
+          "I6": "029419de63dd1974c262f59dc80fc8d9b559004d",
+          "C10": null
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-sdk-physical-turn-port.ts",
+          "I6": "49b8d9270570a76f58f04d90c3bdc77ce6230a9b",
+          "C10": null
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-main-host-receipt-registry.ts",
+          "I6": "bba17b3c3e01ebf0be643bf00fbf1284028f1e7f",
+          "C10": "26359d4b2f3a10f517bc284d426187d5dd030e54"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-main-trust-port.ts",
+          "I6": "17f78ce719c31311e528ce0092da0df8283f4460",
+          "C10": "17f78ce719c31311e528ce0092da0df8283f4460"
+        }
+      ],
+      "missingC10DirectImports": [
+        "review-v3-pi-http-provider-engine.ts",
+        "review-v3-sdk-physical-turn-port.ts"
+      ],
+      "requiresRebaseline": false
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i4-b18-version-host-boundary.test.ts",
+      "I6Blob": "bc5bd02e52b674e09187b8de76b7fbb906e64dc3",
+      "alreadyInC10": null,
+      "directInternalImports": [
+        {
+          "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.ts",
+          "I6": "e911663006cb105aad382a6a107630534e014739",
+          "C10": "e911663006cb105aad382a6a107630534e014739"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts",
+          "I6": "b2101be80e3dce561f6365c3378b2930245dda73",
+          "C10": "b2101be80e3dce561f6365c3378b2930245dda73"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-main-host-receipt-registry.ts",
+          "I6": "bba17b3c3e01ebf0be643bf00fbf1284028f1e7f",
+          "C10": "26359d4b2f3a10f517bc284d426187d5dd030e54"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-main-trust-port.ts",
+          "I6": "17f78ce719c31311e528ce0092da0df8283f4460",
+          "C10": "17f78ce719c31311e528ce0092da0df8283f4460"
+        }
+      ],
+      "missingC10DirectImports": [],
+      "requiresRebaseline": true
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i5-b20-cmain-offline.test.ts",
+      "I6Blob": "754a86fbffa12787309090e58b38bffb4ca647a0",
+      "alreadyInC10": null,
+      "directInternalImports": [
+        {
+          "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.ts",
+          "I6": "e911663006cb105aad382a6a107630534e014739",
+          "C10": "e911663006cb105aad382a6a107630534e014739"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts",
+          "I6": "b2101be80e3dce561f6365c3378b2930245dda73",
+          "C10": "b2101be80e3dce561f6365c3378b2930245dda73"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-import-checkpoint-v3-b2.ts",
+          "I6": "35b4d9e757b5b1530c7ca0407c405e8513b5caf7",
+          "C10": "35b4d9e757b5b1530c7ca0407c405e8513b5caf7"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-import-ledger-v3-b2.ts",
+          "I6": "273b8ea71ed739f01238c5bcf1f57be7a39a6502",
+          "C10": "273b8ea71ed739f01238c5bcf1f57be7a39a6502"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-b1-b2-main-read-bundle-v3-b.ts",
+          "I6": "2ff051fc5d18a2c0ef9465188a3611a71a0989ee",
+          "C10": "2ff051fc5d18a2c0ef9465188a3611a71a0989ee"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-b1-b2-candidate-source-bridge.ts",
+          "I6": "e322df7ddc0910f5065d7a887507218cac7a7713",
+          "C10": "e322df7ddc0910f5065d7a887507218cac7a7713"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.ts",
+          "I6": "065251ca843c51e68e225dc688bb7a8caab2fea7",
+          "C10": "065251ca843c51e68e225dc688bb7a8caab2fea7"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.ts",
+          "I6": "974f0b0d127301ed71ad10df5ae64623ce378882",
+          "C10": "974f0b0d127301ed71ad10df5ae64623ce378882"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-main-b20-trusted-candidate-read.ts",
+          "I6": "d0e6ea271e0b20474060131f1f29a74b876463c3",
+          "C10": "d0e6ea271e0b20474060131f1f29a74b876463c3"
+        }
+      ],
+      "missingC10DirectImports": [],
+      "requiresRebaseline": false
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i5-coldpid.worker.ts",
+      "I6Blob": "fb2cc8ef6346acd8117362513b513cb2f28b3fa9",
+      "alreadyInC10": null,
+      "directInternalImports": [
+        {
+          "path": "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.ts",
+          "I6": "065251ca843c51e68e225dc688bb7a8caab2fea7",
+          "C10": "065251ca843c51e68e225dc688bb7a8caab2fea7"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.ts",
+          "I6": "e911663006cb105aad382a6a107630534e014739",
+          "C10": "e911663006cb105aad382a6a107630534e014739"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts",
+          "I6": "b2101be80e3dce561f6365c3378b2930245dda73",
+          "C10": "b2101be80e3dce561f6365c3378b2930245dda73"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-import-checkpoint-v3-b2.ts",
+          "I6": "35b4d9e757b5b1530c7ca0407c405e8513b5caf7",
+          "C10": "35b4d9e757b5b1530c7ca0407c405e8513b5caf7"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-import-ledger-v3-b2.ts",
+          "I6": "273b8ea71ed739f01238c5bcf1f57be7a39a6502",
+          "C10": "273b8ea71ed739f01238c5bcf1f57be7a39a6502"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-b1-b2-main-read-bundle-v3-b.ts",
+          "I6": "2ff051fc5d18a2c0ef9465188a3611a71a0989ee",
+          "C10": "2ff051fc5d18a2c0ef9465188a3611a71a0989ee"
+        }
+      ],
+      "missingC10DirectImports": [],
+      "requiresRebaseline": false
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i6-joint-technical.test.ts",
+      "I6Blob": "4226e286b5fbff8283a711cd67c5e85c950dea66",
+      "alreadyInC10": null,
+      "directInternalImports": [
+        {
+          "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.ts",
+          "I6": "e911663006cb105aad382a6a107630534e014739",
+          "C10": "e911663006cb105aad382a6a107630534e014739"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts",
+          "I6": "b2101be80e3dce561f6365c3378b2930245dda73",
+          "C10": "b2101be80e3dce561f6365c3378b2930245dda73"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-main-host-receipt-registry.ts",
+          "I6": "bba17b3c3e01ebf0be643bf00fbf1284028f1e7f",
+          "C10": "26359d4b2f3a10f517bc284d426187d5dd030e54"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-main-trust-port.ts",
+          "I6": "17f78ce719c31311e528ce0092da0df8283f4460",
+          "C10": "17f78ce719c31311e528ce0092da0df8283f4460"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-main-b20-trusted-candidate-read.ts",
+          "I6": "d0e6ea271e0b20474060131f1f29a74b876463c3",
+          "C10": "d0e6ea271e0b20474060131f1f29a74b876463c3"
+        },
+        {
+          "path": "apps/electron/src/main/lib/review/review-v3-b1-b2-main-read-bundle-v3-b.ts",
+          "I6": "2ff051fc5d18a2c0ef9465188a3611a71a0989ee",
+          "C10": "2ff051fc5d18a2c0ef9465188a3611a71a0989ee"
+        }
+      ],
+      "missingC10DirectImports": [],
+      "requiresRebaseline": true
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-integration-i6-locked-sources.test.ts",
+      "I6Blob": "d68bb749e74b8ebdf6102d0bec5420c26a4eee01",
+      "alreadyInC10": null,
+      "directInternalImports": [],
+      "missingC10DirectImports": [],
+      "requiresRebaseline": true
+    }
+  ]
+}
