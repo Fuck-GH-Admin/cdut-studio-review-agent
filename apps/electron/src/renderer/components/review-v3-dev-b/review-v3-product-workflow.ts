@@ -199,7 +199,8 @@ export function filterB32Checks(
  const needle=query.trim().toLocaleLowerCase()
  return rows.filter(row=>(!onlyUnresolved||row.unresolved)&&(
   !needle||[row.checkKey,row.targetKey,row.objectKey,row.subjectId,
-    ...row.sources.flatMap(source=>[source.sourceId,source.locator,source.reason])].some(
+    ...row.sources.flatMap(source=>[source.sourceId,source.locator,source.reason,
+      source.rawSha256??'',source.documentVersionId??''])].some(
     value=>value.toLocaleLowerCase().includes(needle))))
 }
 export function pageB32Checks(rows:readonly B32CheckRow[],offset:number,limit=25):
