@@ -338,7 +338,7 @@
       "ruleId": "R-29",
       "rawSourceSha256": "77f89ac22112477e472d03cbac2696a1a58760dfec38466fe6bce8ee2db75204",
       "headingLine": 297,
-      "rawExcerptSha256": "bb39c9166099456c8c798a3e5e1cd390c33abd4c57ec76af13575dd25feb17",
+      "rawExcerptSha256": "bb39c9166099456c8f52a70a3f5e1cd390c33abd4c57ec76af13575dd25feb17",
       "rawRuleBodyNonBlankLines": 4,
       "r14AdditionalNonRuleContextLines": 0
     },
