@@ -154,6 +154,9 @@ describe('Dev-A R22 actual owner + durable multi-turn background execution',()=>
       sequence:a.sequence(['direct','hidden','graph'])})).state)
       .toBe('completed-technical')
     expect(a.turns.snapshot(a.lease).usedTurns).toBe(3)
+    await expect(coordinator.run({requestId:'req-a',call:a.call,
+      sequence:a.sequence(['batch','hidden','graph'])}))
+      .rejects.toThrow('requestId replay collision')
     await expect(coordinator.run({requestId:'new-request',call:a.call,
       sequence:a.sequence(['direct'],3)})).rejects.toThrow('different request')
   })

@@ -29,6 +29,8 @@ export interface A22BackgroundTask {
   readonly caseId:string
   readonly run:RunEvidenceIdentity
   readonly sessionId:string
+  readonly senderKey:string
+  readonly ownerGrantId:string
   readonly processEpoch:string
   readonly modes:readonly V3ATechnicalSequence['modes'][number][]
   readonly initialUsedTurns:number
@@ -67,6 +69,7 @@ function decode(raw:string|null):Journal {
   const ids=new Set<string>()
   for(const t of x.payload.tasks){
     if(!t.requestId||ids.has(t.requestId)||!t.sessionId||
+      !t.senderKey||!t.ownerGrantId||
       !t.caseId||!t.processEpoch||
       !['running','stopping','completed-technical',
         'terminal-technical','recovery-required'].includes(t.state)||
@@ -107,6 +110,7 @@ export class V3ABackgroundTechnicalCoordinator {
   }
   private update(caseId:string,apply:(j:Journal)=>Journal):Journal{
     const store=this.store(caseId),old=store.read(),current=decode(old)
+    if(current.tasks.some(t=>t.caseId!==caseId))deny('cross-Case spool collision')
     const next=apply(structuredClone(current))
     if(next.tasks.length>256)deny('technical tombstone capacity exhausted')
     // Rechecked inside atomic compareAndWrite; never rewrite an old snapshot.
@@ -117,6 +121,7 @@ export class V3ABackgroundTechnicalCoordinator {
   }
   private last(caseId:string):A22BackgroundTask|undefined {
     const journal=decode(this.store(caseId).read())
+    if(journal.tasks.some(t=>t.caseId!==caseId))deny('cross-Case spool collision')
     return journal.tasks.at(-1)
   }
   /** Cold PID projection NEVER adopts another process's active task. */
@@ -171,7 +176,11 @@ export class V3ABackgroundTechnicalCoordinator {
         // Do not start a second physical side effect for a duplicate ID.
         if(old.run.runId!==run.runId||
           old.run.attemptId!==run.attemptId||
-          old.sessionId!==input.call.sessionId){
+          old.sessionId!==input.call.sessionId||
+          old.senderKey!==input.call.senderKey||
+          old.ownerGrantId!==input.call.grantId||
+          old.initialUsedTurns!==input.sequence.expectedUsedTurns||
+          JSON.stringify(old.modes)!==JSON.stringify(input.sequence.modes)){
           deny('requestId replay collision')
         }
         return old
@@ -187,7 +196,8 @@ export class V3ABackgroundTechnicalCoordinator {
     const abort=new AbortController()
     const task:A22BackgroundTask={
       requestId:input.requestId,caseId,run:structuredClone(run),
-      sessionId:input.call.sessionId,processEpoch:this.processEpoch,
+      sessionId:input.call.sessionId,senderKey:input.call.senderKey,
+      ownerGrantId:input.call.grantId,processEpoch:this.processEpoch,
       modes:[...input.sequence.modes],
       initialUsedTurns:input.sequence.expectedUsedTurns,
       committedUsedTurns:input.sequence.expectedUsedTurns,completedSteps:0,
