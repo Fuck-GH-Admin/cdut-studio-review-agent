@@ -20,6 +20,19 @@ export interface B32RemediationReceipt {
  issueId:string;currentSnapshot:string;receiptId:string
  persisted:true;candidateOnly:true;publicationAllowed:false
 }
+/** Only a matching, durable C Main acknowledgement can label a proposal persisted. */
+export function assertB32RemediationReceipt(
+ receipt:B32RemediationReceipt|void,issueId:string,snapshot:string,
+):boolean {
+ if(receipt===undefined)return false
+ if(receipt.schemaVersion!=='review-v3-b32-remediation-receipt/1'||
+    receipt.issueId!==issueId||receipt.currentSnapshot!==snapshot||
+    typeof receipt.receiptId!=='string'||!receipt.receiptId.trim()||
+    receipt.persisted!==true||receipt.candidateOnly!==true||
+    receipt.publicationAllowed!==false)
+  throw new Error('B_PRODUCT_REMEDIATION_ACK_INVALID')
+ return true
+}
 export interface B32ProductPorts {
  /** C Main read: B30 complete materials + B20 author/Source + B27 + B26. */
  onReadCurrent?:()=>Promise<B32ProductRead>
@@ -143,25 +156,19 @@ export function ReviewV3ProductWorkspace({
      issueId:issue.id,currentSnapshot:before.historical.snapshotSha256,
      observation:observation.trim(),candidateOnly:true,businessWriteAllowed:false,
    })
-   if(receipt!==undefined && (
-      receipt.schemaVersion!=='review-v3-b32-remediation-receipt/1'||
-      receipt.issueId!==issue.id||
-      receipt.currentSnapshot!==before.historical.snapshotSha256||
-      !receipt.receiptId.trim()||receipt.persisted!==true||
-      receipt.candidateOnly!==true||receipt.publicationAllowed!==false))
-    throw new Error('B_PRODUCT_REMEDIATION_ACK_INVALID')
+   const persisted=assertB32RemediationReceipt(receipt,issue.id,before.historical.snapshotSha256)
    if(startScope!==currentScope.current||epoch!==generation.current)return
-   setRepairStatus(receipt?'persisted':'unconfirmed')
+   setRepairStatus(persisted?'persisted':'unconfirmed')
    // Re-read after the proposal; old preview is never marked "fixed".
    const after=await ports.onReadCurrent()
    if(startScope!==currentScope.current||epoch!==generation.current)return
    buildB32ProductView(after)
    setRead(after);setObservation('');setSelectedIssue('')
    setLocalEvents(prev=>[
-    (receipt?'Main 已持久化技术观察 '+receipt.receiptId:'未取得 Main 持久回执，保存状态待确认')+
+    (persisted&&receipt?'Main 已持久化技术观察 '+receipt.receiptId:'未取得 Main 持久回执，保存状态待确认')+
     ' · '+issue.id+' · UNKNOWN 仍待人工/权威证据核验',
     ...prev].slice(0,50))
-   setNotice(receipt?'Main 已确认保存候选技术观察；未改变 UNKNOWN、Gold 或审批状态':
+   setNotice(persisted?'Main 已确认保存候选技术观察；未改变 UNKNOWN、Gold 或审批状态':
     'Main 未返回持久化回执：提交结果尚未确认，请通过 Main 历史核对后再处理')
   }catch(e){if(startScope===currentScope.current){
    setRepairStatus('unconfirmed');setError(e instanceof Error?e.message:String(e))
