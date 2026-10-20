@@ -128,7 +128,7 @@ export class A25C11LocalExecutionPorts {
         ? new A26NativeReviewPiSessionFactory(input.piMainSelection)
         : undefined)
     if(!piSessions?.create)
-      reject('REAL_PI_SESSION_FACTORY_NOT_CONFIGURED')
+      return reject('REAL_PI_SESSION_FACTORY_NOT_CONFIGURED')
     const turns=new V3ATurnBudget(stores.turns,input.owners)
     const dispatch=new V3ASDKDispatchFence(stores.dispatch,input.owners)
     const host=new A23ObservedHostTechnicalAdapter(
