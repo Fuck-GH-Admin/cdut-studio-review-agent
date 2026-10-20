@@ -9,8 +9,7 @@ import {inspectA20OwnerRecovery,type A20OwnerWitness} from
 import {recordA20RecoveryIntent} from './review-v3-owner-reconciliation-intent'
 const [root,id]=process.argv.slice(2)
 if(!root||!id)throw Error('R20 worker needs fixture and requestId')
-const witness=JSON.parse(readFileSync(join(root,'r20-witness.json'),'utf8'))
-  as A20OwnerWitness
+const witness=JSON.parse(readFileSync(join(root,'r20-witness.json'),'utf8')) as A20OwnerWitness
 const paths={owner:join(root,'owner.json'),dispatch:join(root,'dispatch.json'),
   turns:join(root,'turns.json')}
 const proof=inspectA20OwnerRecovery(paths,witness)
