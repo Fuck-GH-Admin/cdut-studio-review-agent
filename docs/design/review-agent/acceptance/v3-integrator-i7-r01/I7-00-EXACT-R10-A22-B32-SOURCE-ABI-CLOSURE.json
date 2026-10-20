@@ -1,0 +1,388 @@
+{
+  "schemaVersion": "review-v3-integrator-i7-source-closure/1",
+  "immutableI6": "integration/v3-i6-abi-accepted-frozen",
+  "fixedSHA": {
+    "I6": "d4ea818250df93dc00084378e8ab2d8bae0fc42e",
+    "C09": "d7548c3eefedb10f4cc23c12e70712e1e1fd1e3a",
+    "C10": "2cb8331b8fdff43da70a894ec597820595cb4d2d",
+    "A21": "703e2bf8e20a7b598e1eb923d5faf6f7b17ab3a9",
+    "A22": "511cd61071943f7035f37f44342ebda269825fa0",
+    "B29": "4c4f277773c0e20185a7364d0bb66439d51ca7a4",
+    "B32": "3682465902565205a16a88a00324dc42ecf8ccbd",
+    "B23": "d96c3d176159cd12f4befd2a91bfeade44dca216"
+  },
+  "authority": "READ_ONLY_PROVENANCE_C_SOURCE_ELIGIBILITY_NOT_I_REPLAY",
+  "sourceChecks": {
+    "B23_I6_C10_all21Exact": true,
+    "conflictC5Exact": true,
+    "C_R10_7Distinct": true
+  },
+  "counts": {
+    "B23already21": 21,
+    "C_R10_new7": 7,
+    "C_conflict5": 5,
+    "A22delta6": 6,
+    "B32delta7": 7
+  },
+  "alreadyIdenticalB23I6C10": [
+    {
+      "path": "apps/electron/src/main/lib/review/review-import-checkpoint-v3-b2.test.ts",
+      "GitBlobI6": "bd6d6cd21e796f7309e68c3899cff4f22ba12066",
+      "GitBlobB23": "bd6d6cd21e796f7309e68c3899cff4f22ba12066",
+      "GitBlobC10": "bd6d6cd21e796f7309e68c3899cff4f22ba12066",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-import-checkpoint-v3-b2.ts",
+      "GitBlobI6": "35b4d9e757b5b1530c7ca0407c405e8513b5caf7",
+      "GitBlobB23": "35b4d9e757b5b1530c7ca0407c405e8513b5caf7",
+      "GitBlobC10": "35b4d9e757b5b1530c7ca0407c405e8513b5caf7",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-import-handoff-v3-b2.test.ts",
+      "GitBlobI6": "dddf137852aade9fd224c27a1458887467cfd26b",
+      "GitBlobB23": "dddf137852aade9fd224c27a1458887467cfd26b",
+      "GitBlobC10": "dddf137852aade9fd224c27a1458887467cfd26b",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-import-handoff-v3-b2.ts",
+      "GitBlobI6": "b1a8e05ffb49cf26888b5252700eb508cca4e3b4",
+      "GitBlobB23": "b1a8e05ffb49cf26888b5252700eb508cca4e3b4",
+      "GitBlobC10": "b1a8e05ffb49cf26888b5252700eb508cca4e3b4",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-import-ledger-v3-b2.test.ts",
+      "GitBlobI6": "dd9d9f693f1f79d55c994bca0dad4ca111d85cdc",
+      "GitBlobB23": "dd9d9f693f1f79d55c994bca0dad4ca111d85cdc",
+      "GitBlobC10": "dd9d9f693f1f79d55c994bca0dad4ca111d85cdc",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-import-ledger-v3-b2.ts",
+      "GitBlobI6": "273b8ea71ed739f01238c5bcf1f57be7a39a6502",
+      "GitBlobB23": "273b8ea71ed739f01238c5bcf1f57be7a39a6502",
+      "GitBlobC10": "273b8ea71ed739f01238c5bcf1f57be7a39a6502",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.test.ts",
+      "GitBlobI6": "f0d0b442e59ab1dc75089b592a6f449481577383",
+      "GitBlobB23": "f0d0b442e59ab1dc75089b592a6f449481577383",
+      "GitBlobC10": "f0d0b442e59ab1dc75089b592a6f449481577383",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.ts",
+      "GitBlobI6": "e911663006cb105aad382a6a107630534e014739",
+      "GitBlobB23": "e911663006cb105aad382a6a107630534e014739",
+      "GitBlobC10": "e911663006cb105aad382a6a107630534e014739",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.test.ts",
+      "GitBlobI6": "0011844e2a2d6fdd7eb00abdfc1ea697d3700ea0",
+      "GitBlobB23": "0011844e2a2d6fdd7eb00abdfc1ea697d3700ea0",
+      "GitBlobC10": "0011844e2a2d6fdd7eb00abdfc1ea697d3700ea0",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts",
+      "GitBlobI6": "b2101be80e3dce561f6365c3378b2930245dda73",
+      "GitBlobB23": "b2101be80e3dce561f6365c3378b2930245dda73",
+      "GitBlobC10": "b2101be80e3dce561f6365c3378b2930245dda73",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.test.ts",
+      "GitBlobI6": "b6f1c25079e6f54f7953ccb94b71679176fc912e",
+      "GitBlobB23": "b6f1c25079e6f54f7953ccb94b71679176fc912e",
+      "GitBlobC10": "b6f1c25079e6f54f7953ccb94b71679176fc912e",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.ts",
+      "GitBlobI6": "065251ca843c51e68e225dc688bb7a8caab2fea7",
+      "GitBlobB23": "065251ca843c51e68e225dc688bb7a8caab2fea7",
+      "GitBlobC10": "065251ca843c51e68e225dc688bb7a8caab2fea7",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.ts",
+      "GitBlobI6": "974f0b0d127301ed71ad10df5ae64623ce378882",
+      "GitBlobB23": "974f0b0d127301ed71ad10df5ae64623ce378882",
+      "GitBlobC10": "974f0b0d127301ed71ad10df5ae64623ce378882",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b1-b2-candidate-source-bridge.test.ts",
+      "GitBlobI6": "f3039718333ee217b5542b1398bc4c4a8e08e777",
+      "GitBlobB23": "f3039718333ee217b5542b1398bc4c4a8e08e777",
+      "GitBlobC10": "f3039718333ee217b5542b1398bc4c4a8e08e777",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b1-b2-candidate-source-bridge.ts",
+      "GitBlobI6": "e322df7ddc0910f5065d7a887507218cac7a7713",
+      "GitBlobB23": "e322df7ddc0910f5065d7a887507218cac7a7713",
+      "GitBlobC10": "e322df7ddc0910f5065d7a887507218cac7a7713",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b1-b2-main-read-bundle-v3-b.test.ts",
+      "GitBlobI6": "65fc1149b6bd73b2e51f0e0e960541204055128d",
+      "GitBlobB23": "65fc1149b6bd73b2e51f0e0e960541204055128d",
+      "GitBlobC10": "65fc1149b6bd73b2e51f0e0e960541204055128d",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b1-b2-main-read-bundle-v3-b.ts",
+      "GitBlobI6": "2ff051fc5d18a2c0ef9465188a3611a71a0989ee",
+      "GitBlobB23": "2ff051fc5d18a2c0ef9465188a3611a71a0989ee",
+      "GitBlobC10": "2ff051fc5d18a2c0ef9465188a3611a71a0989ee",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-zip-intake-v3-b2.test.ts",
+      "GitBlobI6": "1aa380afcb83078025f25d2ce1ce15816db0b5e8",
+      "GitBlobB23": "1aa380afcb83078025f25d2ce1ce15816db0b5e8",
+      "GitBlobC10": "1aa380afcb83078025f25d2ce1ce15816db0b5e8",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-zip-intake-v3-b2.ts",
+      "GitBlobI6": "2289f2fb2ca395fb81d93270e3d33116359993c4",
+      "GitBlobB23": "2289f2fb2ca395fb81d93270e3d33116359993c4",
+      "GitBlobC10": "2289f2fb2ca395fb81d93270e3d33116359993c4",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-zip-staging-v3-b2.test.ts",
+      "GitBlobI6": "edefc665e0db38313a63bc46298c4c9b8ffe35d1",
+      "GitBlobB23": "edefc665e0db38313a63bc46298c4c9b8ffe35d1",
+      "GitBlobC10": "edefc665e0db38313a63bc46298c4c9b8ffe35d1",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-zip-staging-v3-b2.ts",
+      "GitBlobI6": "38d87196e49b73c62b6019ff2b1dceac3f02b175",
+      "GitBlobB23": "38d87196e49b73c62b6019ff2b1dceac3f02b175",
+      "GitBlobC10": "38d87196e49b73c62b6019ff2b1dceac3f02b175",
+      "disposition": "ALREADY_IDENTICAL_DO_NOT_COPY"
+    }
+  ],
+  "conflictedCOwned": [
+    {
+      "path": "apps/electron/src/main/lib/review/plan-binding-v3.ts",
+      "I6": "8a252806f9d470b4abc3b9896f58509768885f79",
+      "C_R09": "5870588b953def085504874cad61c47438510421",
+      "C_R10": "5870588b953def085504874cad61c47438510421",
+      "disposition": "CONFLICTED_C_OWNED_KEEP_NEW_C"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-host-receipt-registry.test.ts",
+      "I6": "9b0054cb293397620db6b72ff99eb26adef1b185",
+      "C_R09": "a54d71db69b11caa3c0ed827f8c416806bb7d6f9",
+      "C_R10": "a54d71db69b11caa3c0ed827f8c416806bb7d6f9",
+      "disposition": "CONFLICTED_C_OWNED_KEEP_NEW_C"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-host-receipt-registry.ts",
+      "I6": "bba17b3c3e01ebf0be643bf00fbf1284028f1e7f",
+      "C_R09": "26359d4b2f3a10f517bc284d426187d5dd030e54",
+      "C_R10": "26359d4b2f3a10f517bc284d426187d5dd030e54",
+      "disposition": "CONFLICTED_C_OWNED_KEEP_NEW_C"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-run-writer.ts",
+      "I6": "e48506faf30c17b0e3071a692becd7a5f2fb9e5b",
+      "C_R09": "b53cea6fb2a71c003d7d8baaf501508d0a239eed",
+      "C_R10": "b53cea6fb2a71c003d7d8baaf501508d0a239eed",
+      "disposition": "CONFLICTED_C_OWNED_KEEP_NEW_C"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-technical-ledger.ts",
+      "I6": "a0ed06a05775674143f584b140b1cb36d490a6f2",
+      "C_R09": "a3378792a1e2f3a3b8a5d214a969746054c33d8b",
+      "C_R10": "a3378792a1e2f3a3b8a5d214a969746054c33d8b",
+      "disposition": "CONFLICTED_C_OWNED_KEEP_NEW_C"
+    }
+  ],
+  "C_R10_seven": [
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-author-plan-ipc.ts",
+      "status": "modified",
+      "I6": null,
+      "C_R09": "00d77c3fb40562f5ca71c9f48fc7e00e8a19a3a0",
+      "C_R10": "6674944cbb58dd568d414e613363397afe7469b4",
+      "disposition": "C_OWNED_NOT_I7_REPLAYABLE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-b20-current-registry.ts",
+      "status": "added",
+      "I6": null,
+      "C_R09": null,
+      "C_R10": "5ab581e104f89007f18f13ea9dc56327db13bf1e",
+      "disposition": "C_OWNED_NOT_I7_REPLAYABLE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-b20-physical-composition.test.ts",
+      "status": "added",
+      "I6": null,
+      "C_R09": null,
+      "C_R10": "a929b36e6b64313eaf2bdec63179aa93e502f74d",
+      "disposition": "C_OWNED_NOT_I7_REPLAYABLE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-b20-physical-composition.ts",
+      "status": "added",
+      "I6": null,
+      "C_R09": null,
+      "C_R10": "582e106690a8af369d6f5841b66ccad3f0658b32",
+      "disposition": "C_OWNED_NOT_I7_REPLAYABLE"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-main-native-archive-registry.ts",
+      "status": "modified",
+      "I6": null,
+      "C_R09": "9354427a70a3d34ff7d5e7fbf8aa2a501b59ed33",
+      "C_R10": "993de558511767b8b67251de80434f944a51b364",
+      "disposition": "C_OWNED_NOT_I7_REPLAYABLE"
+    },
+    {
+      "path": "apps/electron/src/preload/index.ts",
+      "status": "modified",
+      "I6": "0b492c0b981cdf20aa765eef36ce8f4599cab217",
+      "C_R09": null,
+      "C_R10": "2ddcbcf33234a7d676c413719fe4f58e831d7f1f",
+      "disposition": "C_OWNED_NOT_I7_REPLAYABLE"
+    },
+    {
+      "path": "packages/shared/src/types/review.ts",
+      "status": "modified",
+      "I6": "1fbeec9e0296b5499b270618e83aa7646c6ad8ce",
+      "C_R09": null,
+      "C_R10": "1faaf88e3a681d6ed75c2c44463a9e049c7656e2",
+      "disposition": "C_OWNED_NOT_I7_REPLAYABLE"
+    }
+  ],
+  "A22_delta": [
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-a-host-technical-handoff.ts",
+      "status": "added",
+      "I6": null,
+      "A_R21": null,
+      "A_R22": "9f7c86ea98851b26df95739f212e87e140a7d720",
+      "disposition": "NEW_A_NO_I7_PERMIT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-background-technical-coordinator.ts",
+      "status": "added",
+      "I6": null,
+      "A_R21": null,
+      "A_R22": "5bdb4b0b775c6a5e9db4bbabd9136ab14da7fb0b",
+      "disposition": "NEW_A_NO_I7_PERMIT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-r22-cold-background.worker.ts",
+      "status": "added",
+      "I6": null,
+      "A_R21": null,
+      "A_R22": "21a7455f3c88ed6e4413c16b03800d0ca76d9c88",
+      "disposition": "NEW_A_NO_I7_PERMIT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-r22-concentrated.test.ts",
+      "status": "added",
+      "I6": null,
+      "A_R21": null,
+      "A_R22": "d1f6278532d98af8e904eb48b80fa63c987217b8",
+      "disposition": "NEW_A_NO_I7_PERMIT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-sdk-dispatch-fence.ts",
+      "status": "modified",
+      "I6": "d895feaed037260aad9b7502d6909b394678bc26",
+      "A_R21": "d895feaed037260aad9b7502d6909b394678bc26",
+      "A_R22": "a2a53f3927d29b65c492753fc372e060546b6908",
+      "disposition": "NEW_A_NO_I7_PERMIT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-technical-sequence-driver.ts",
+      "status": "modified",
+      "I6": null,
+      "A_R21": "144677d06de8862322ff326035017d0f5bdd46cd",
+      "A_R22": "3c4bbb8d2071eb5960e27048aa169a4fc8e11274",
+      "disposition": "NEW_A_NO_I7_PERMIT"
+    }
+  ],
+  "B32_delta": [
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b30-current-materials-read.test.ts",
+      "status": "added",
+      "I6": null,
+      "B_R29": null,
+      "B_R32": "c37154de86760952bfde20b0943636d27c2d5c5c",
+      "disposition": "NEW_B_NO_I7_PERMIT"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-b30-current-materials-read.ts",
+      "status": "added",
+      "I6": null,
+      "B_R29": null,
+      "B_R32": "a26143b485b5a6d51622927916d781da25ac0fad",
+      "disposition": "NEW_B_NO_I7_PERMIT"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/review-v3-dev-b/ReviewV3CandidateIntakeSurface.tsx",
+      "status": "modified",
+      "I6": null,
+      "B_R29": null,
+      "B_R32": "f306865ab52a58f24a2b560f531064e3565b2fa5",
+      "disposition": "NEW_B_NO_I7_PERMIT"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/review-v3-dev-b/ReviewV3ProductWorkspace.tsx",
+      "status": "added",
+      "I6": null,
+      "B_R29": null,
+      "B_R32": "bd585aeee72edd06397c4a1ea401f41f877d4972",
+      "disposition": "NEW_B_NO_I7_PERMIT"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/review-v3-dev-b/review-v3-product-workflow.test.tsx",
+      "status": "added",
+      "I6": null,
+      "B_R29": null,
+      "B_R32": "5322a9b7c428dfc7483b6e871cf898279fbbde83",
+      "disposition": "NEW_B_NO_I7_PERMIT"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/review-v3-dev-b/review-v3-product-workflow.ts",
+      "status": "added",
+      "I6": null,
+      "B_R29": null,
+      "B_R32": "0dcf2188c558e5fd7d73958d4a0d9a296f67edbc",
+      "disposition": "NEW_B_NO_I7_PERMIT"
+    },
+    {
+      "path": "docs/design/review-agent/acceptance/v3-dev-b-r01/B-R30-R32-PRODUCT-INPUT-WORKSPACE-UAT-AND-C-MAIN-PORT.md",
+      "status": "added",
+      "I6": null,
+      "B_R29": null,
+      "B_R32": null,
+      "disposition": "NEW_B_NO_I7_PERMIT"
+    }
+  ],
+  "policy": {
+    "I7ProductionSourceReplay": false,
+    "MainLease": "CONDITIONAL_NOT_ACTIVE",
+    "BusinessWriter": "DENIED",
+    "SchoolL": "BLOCKED_NO_AUTH",
+    "GateE": "NOT_RUN",
+    "GateP": "NOT_RUN",
+    "Release": "NO_GO"
+  }
+}
