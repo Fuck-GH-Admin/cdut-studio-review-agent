@@ -160,7 +160,7 @@ export function auditB4R25OriginalClauseBindings(
         parts.length !== pin.rawRuleBodyNonBlankLines +
           pin.r14AdditionalNonRuleContextLines ||
         hash(parts.slice(0, pin.rawRuleBodyNonBlankLines).join('\n')) !==
-          pin.rawExcerptSha256) deny('RAW_CLAUSE_VERBATIM_MISMATCH')
+          pin.rawExcerptSha256) throw new Error('B4_R25_RAW_CLAUSE_VERBATIM_MISMATCH_' + id)
     if (exceptional) spill++
     const clauseParts = parts.slice(0, pin.rawRuleBodyNonBlankLines)
     const trigger = clauseParts.find(line => line.includes('触发条件'))
