@@ -29,6 +29,13 @@ export type V3ATechnicalSequenceResult =
   | {readonly kind:'terminal-proposal';readonly executed:number;
      readonly result:Extract<V3ATurnDriveResult,{kind:'terminal-proposal'}>}
 
+/** Main-local progress hook. Exceptions STOP dispatch; they do not undo a physical turn. */
+export interface V3ATechnicalSequenceHooks {
+  beforeTurn?(step:Readonly<{index:number;mode:V3ASDKMode;usedTurns:number}>):void
+  afterTurn?(step:Readonly<{index:number;mode:V3ASDKMode;usedTurns:number;
+    kind:V3ATurnDriveResult['kind']}>):void
+}
+
 const activeSessions=new Set<string>()
 function refuse(message:string):never{
   throw new C0ContractError('RECOVERY_REQUIRED',message)
@@ -48,7 +55,7 @@ export class V3ATechnicalSequenceDriver {
 
   async execute(
     call:V3ReviewToolCall,plan:V3ATechnicalSequence,
-    signal?:AbortSignal,
+    signal?:AbortSignal,hooks?:V3ATechnicalSequenceHooks,
   ):Promise<V3ATechnicalSequenceResult>{
     if(!call||call.tool!=='review_submit_result'||!call.sessionId||
       plan?.version!=='v3-dev-a-technical-sequence/1'||
@@ -92,6 +99,7 @@ export class V3ATechnicalSequenceDriver {
         if(before.usedTurns!==plan.expectedUsedTurns+executed){
           refuse('Concurrent or stale Turn Budget between SDK sequence steps')
         }
+        hooks?.beforeTurn?.({index:executed,mode,usedTurns:before.usedTurns})
         // All side effects, awaiting, receipt checks, CAS and cancellation
         // safety happen in this separately tested real SDK bridge.
         const outcome=await this.bridge.next(call,mode,signal)
@@ -104,6 +112,8 @@ export class V3ATechnicalSequenceDriver {
             after.usedTurns>before.usedTurns+1){
             refuse('Terminal sequence contradicted durable Turn Budget')
           }
+          hooks?.afterTurn?.({index:executed,mode,usedTurns:after.usedTurns,
+            kind:outcome.kind})
           return {kind:'terminal-proposal',
             executed:executed+(after.usedTurns-before.usedTurns),
             result:outcome}
@@ -115,6 +125,8 @@ export class V3ATechnicalSequenceDriver {
           after.exhausted){
           refuse('SDK sequence result differs from durable Turn Budget')
         }
+        hooks?.afterTurn?.({index:executed,mode,usedTurns:after.usedTurns,
+          kind:outcome.kind})
         executed++
       }
       lease=authorized()
