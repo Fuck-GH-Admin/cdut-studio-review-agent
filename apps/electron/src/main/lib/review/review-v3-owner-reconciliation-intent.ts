@@ -96,7 +96,8 @@ export function recordA20RecoveryIntent(
     sha256:sha(JSON.stringify(candidate))}
   // OS-exclusive file CAS; two independent PIDs may propose but only one
   // can durably win the first intent. Crash ambiguity requires reread.
-  if(!persistence.compareAndWrite)reject('physical CAS unavailable')
-  persistence.compareAndWrite(null,JSON.stringify(payload))
+  const compareAndWrite=persistence.compareAndWrite
+  if(!compareAndWrite)reject('physical CAS unavailable')
+  compareAndWrite(null,JSON.stringify(payload))
   return candidate
 }
