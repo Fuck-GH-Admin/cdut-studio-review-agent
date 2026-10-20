@@ -74,7 +74,8 @@ const deny=(message:string):never=>{
   throw new C0ContractError('RECOVERY_REQUIRED','A23_HOST_HOOK: '+message)
 }
 const valid=(id:string)=>typeof id==='string'&&id.trim().length>0&&id.length<=512
-const checkTuple=(b:Binding,c:ACheckResult)=>b.checkKey===c.checkKey&&
+const checkTuple=(b:Pick<Binding,'checkKey'|'targetKey'|'objectKey'|'subjectId'>,
+  c:Pick<ACheckResult,'checkKey'|'targetKey'|'objectKey'|'subjectId'>)=>b.checkKey===c.checkKey&&
   b.targetKey===c.targetKey&&b.objectKey===c.objectKey&&b.subjectId===c.subjectId
 /** The executor may truthfully report a Check status and physical read extent. */
 function equivalentOutcome(request:Outcome,actual:Outcome):boolean{
@@ -132,7 +133,9 @@ export class A23ObservedHostTechnicalAdapter implements AVerifiedExecutionHost {
     run:RunEvidenceIdentity;plan:CanonicalPlan
   }{
     const run=lease.runEvidence,plan=lease.planSnapshot
-    if(!run||!plan||run.runId!==lease.runId||
+    if(!run||!plan)throw new C0ContractError('RECOVERY_REQUIRED',
+      'Main frozen Run/Plan identity absent')
+    if(run.runId!==lease.runId||
       run.caseId!==lease.caseId||run.attemptId!==lease.attemptId||
       run.ownerGeneration!==lease.generation||
       run.planFingerprint!==lease.planFingerprint||
@@ -172,6 +175,8 @@ export class A23ObservedHostTechnicalAdapter implements AVerifiedExecutionHost {
     try{
       const response=await this.executor.execute(structuredClone(operation))
       const observed=this.observer.observe(operation.operationId)
+      if(!observed)throw new C0ContractError('RECOVERY_REQUIRED',
+        'Independent physical Host observation missing')
       // Do not accept an executor's self-declared receipt without a separate
       // observed hook; do not silently equate either with C's physical receipt.
       if(!response||!observed||!valid(response.technicalReceiptId)||
@@ -219,7 +224,8 @@ export class A23ObservedHostTechnicalAdapter implements AVerifiedExecutionHost {
   async read(source:SourceIdentity):ReturnType<AVerifiedExecutionHost['read']>{
     const {technicalReceiptId,result}=await this.perform({
       kind:'read',source,extent:'block'})
-    if(result.kind!=='read')deny('physical read kind changed')
+    if(result.kind!=='read')throw new C0ContractError('RECOVERY_REQUIRED',
+      'physical read kind changed')
     return {receiptId:technicalReceiptId,actualSource:result.source,
       extent:result.extent,...(result.coveredPhysicalBlocks!==undefined?
       {coveredPhysicalBlocks:result.coveredPhysicalBlocks}:{}),
@@ -231,13 +237,15 @@ export class A23ObservedHostTechnicalAdapter implements AVerifiedExecutionHost {
       checkKey:binding.checkKey,targetKey:binding.targetKey,
       objectKey:binding.objectKey,subjectId:binding.subjectId,status:'unknown'}
     const receipt=await this.perform({kind:'check',check:result})
-    if(receipt.result.kind!=='check')deny('physical Check kind changed')
+    if(receipt.result.kind!=='check')throw new C0ContractError('RECOVERY_REQUIRED',
+      'physical Check kind changed')
     return {receiptId:receipt.technicalReceiptId,actualCheck:receipt.result.check}
   }
   async terminal(status:ATechnicalStatus):
     ReturnType<AVerifiedExecutionHost['terminal']>{
     const result=await this.perform({kind:'terminal',status})
-    if(result.result.kind!=='terminal')deny('physical terminal kind changed')
+    if(result.result.kind!=='terminal')throw new C0ContractError('RECOVERY_REQUIRED',
+      'physical terminal kind changed')
     return {receiptId:result.technicalReceiptId,actualStatus:result.result.status,
       ...(result.result.reason?{reason:result.result.reason}:{})}
   }
