@@ -159,8 +159,8 @@ export function ReviewV3CandidateIntakeSurface(props:B1B3CandidateWorkspaceProps
     renderRoute={(open,liveRoute)=><ReviewV3RouteReviewPanel {...props}
       route={liveRoute} onOpenCustomAuthor={open}/>}
     renderAuthor={(draft)=><ReviewV3AuthorWizard key={scope+'::'+(draft?.templateId??'blank')}
-      {...props.author} initialDraft={draft??props.author.initialDraft}
-      initialRevision={draft?0:props.author.initialRevision}/>}
+      {...props.author} initialDraft={draft}
+      initialRevision={0}/>}
   />
   if(section==='author')return <div className="space-y-3"
     data-testid="review-v3-b1-b3-author-entry">
