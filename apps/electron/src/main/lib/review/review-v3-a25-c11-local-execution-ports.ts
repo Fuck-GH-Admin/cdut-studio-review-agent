@@ -97,11 +97,12 @@ export class A25C11LocalExecutionPorts {
     if(!call||call.tool!=='review_submit_result')
       reject('MAIN_SUBMIT_CAPABILITY_REQUIRED')
     const mainRun=this.currentRun(call)
+    if(!mainRun)return reject('C_MAIN_RUN_NOT_CURRENT')
     const lease=input.owners.assertAuthorized(call.sessionId,call.grantId,
       call.senderKey,call.principal,'review_submit_result')
-    if(!mainRun||!lease.runEvidence||!lease.planSnapshot||
+    if(!lease.runEvidence||!lease.planSnapshot||
        !same(mainRun,lease.runEvidence))
-      reject('C_MAIN_RUN_NOT_EQUAL_TO_A_OWNER')
+      return reject('C_MAIN_RUN_NOT_EQUAL_TO_A_OWNER')
     const previous=this.cases.get(mainRun.caseId)
     if(previous){
       if(same(previous.run,mainRun)&&
