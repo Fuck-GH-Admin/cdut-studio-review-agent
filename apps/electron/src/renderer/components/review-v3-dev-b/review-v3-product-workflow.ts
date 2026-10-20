@@ -142,7 +142,7 @@ export function buildB32ProductView(data:B32ProductRead):B32ProductView {
    const id=source.candidateId
    if(source.state==='linked-candidate'){
     const current=id?materialsById.get(id):undefined
-    if(!current)reject('CHECK_LINK_TO_MISSING_MATERIAL')
+    if(!current)throw new Error('B_PRODUCT_CHECK_LINK_TO_MISSING_MATERIAL')
     if(current.rawSha256!==source.rawSha256||
        current.documentVersionId!==source.documentVersionId||
        current.subjectId!==source.subjectId)
