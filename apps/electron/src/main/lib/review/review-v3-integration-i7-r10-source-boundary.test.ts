@@ -66,6 +66,7 @@ describe('I7 C R10 versus signed I6 immutable readonly closure',()=>{
     expect(m.conflictedCOwned).toHaveLength(5)
     for(const row of m.conflictedCOwned){
       expect(row.disposition).toBe('CONFLICTED_C_OWNED_KEEP_NEW_C')
+      if(row.I6===null)throw Error('I7_SIGNED_CONFLICT_BLOB_MISSING')
       expect(row.I6).not.toBe(row.C_R10)
       expect(gitBlob(readFileSync(at(row.path)))).toBe(row.I6)
       expect(gitBlob(readFileSync(at(row.path)))).not.toBe(row.C_R10)
