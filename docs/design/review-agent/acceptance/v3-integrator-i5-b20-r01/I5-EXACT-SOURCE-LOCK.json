@@ -245,7 +245,9 @@
   "IonlyTest": {
     "path": "apps/electron/src/main/lib/review/review-v3-integration-i5-b20-cmain-offline.test.ts",
     "sourceOwner": "I",
-    "status": "NEW"
+    "status": "NEW",
+    "additionalWorker": "apps/electron/src/main/lib/review/review-v3-integration-i5-coldpid.worker.ts",
+    "exactCases": 10
   },
   "scope": {
     "actualElectronMainWired": false,

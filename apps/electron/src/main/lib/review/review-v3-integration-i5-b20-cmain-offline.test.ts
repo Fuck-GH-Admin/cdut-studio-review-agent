@@ -4,6 +4,8 @@
  * Numeric B20 scope and string C identity are deliberately independent.
  */
 import { afterAll, describe, expect, test } from 'bun:test'
+import { spawnSync } from 'node:child_process'
+import { fileURLToPath } from 'node:url'
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -307,4 +309,27 @@ describe('I5 A19 accepted parent × B R23 physical B20 × immutable C B20 offlin
     expect(cached).not.toHaveProperty('caseReceipt')
     expect(cached).not.toHaveProperty('runAck')
   })
+  test('I5-10 real independent PID can read durable author but cannot resurrect an uninstalled B2 Owner/picker',async()=>{
+    const f=await fixture()
+    const worker=fileURLToPath(new URL('./review-v3-integration-i5-coldpid.worker.ts',import.meta.url))
+    const cold=spawnSync(process.execPath,[
+      worker,f.templateId,f.expected.revisionDigest,
+      f.expected.frozenFingerprint,f.bScope.caseCandidateId,
+    ],{encoding:'utf8',timeout:20000,env:{...process.env,PROFER_CONFIG_DIR:root}})
+    expect(cold.error).toBeUndefined()
+    if(cold.status!==0)throw Error('I5 cold PID B20 fence failed: '+cold.stderr)
+    const line=cold.stdout.split('\n').find(s=>s.startsWith('I5_COLD_PROVENANCE '))
+    expect(line).toBeDefined()
+    const record=JSON.parse(line!.slice('I5_COLD_PROVENANCE '.length)) as {
+      pid:number;persistedAuthor:boolean;oldOwnerDenied:boolean;
+      published:boolean;independentMainIdentity:boolean;
+    }
+    expect(record.pid).not.toBe(process.pid)
+    expect(record).toMatchObject({
+      persistedAuthor:true,oldOwnerDenied:true,
+      published:false,independentMainIdentity:false,
+    })
+    expect((await f.gate.read(f.templateId)).candidateOnly).toBe(true)
+  })
+
 })
