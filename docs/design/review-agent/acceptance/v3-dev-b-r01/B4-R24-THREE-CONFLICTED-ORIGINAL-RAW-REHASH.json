@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "review-v3-b4-conflicted-original-raw-rehash/1",
+  "frozenD4SHA": "b68443b23293b4714e61a3b81383d3d3a56434fc",
+  "method": "Actual unchanged raw_file Markdown bytes materialized from user-authorized Library on 2026-10-20; SHA256 of full original bytes and Git SHA1(\"blob \"+length+NUL+bytes) independently computed. Raw original text not copied to GitHub. Frozen SHA256 is D4 metadata, not recovered frozen bytes.",
+  "observedRawOriginalsNotCommitted": true,
+  "publicationAllowed": false,
+  "schoolPolicyVerified": false,
+  "independentGold": "NOT_AUTHORIZED_OR_NOT_RUN",
+  "conflicts": [
+    {
+      "domain": "G02",
+      "templateId": "g02-t03-review",
+      "observedFile": "G02-T03_正式业务模板_MD_v0.1.md",
+      "observedByteCount": 104521,
+      "observedRawSha256": "b4b3a859d4d85d322347189d253e0e1a7fe4f6003a2a01a4a0c36ea877fe6040",
+      "observedGitBlobSha1": "54d1bca5f2f1923ad25dc87bcea0a40b7b549cd7",
+      "frozenSourceVersion": "C-v0.1.1",
+      "frozenSourceSha256": "e3d1d01555d49564931ac38892567ea23eab5ecd898afc3b67a8e4a26abe7380",
+      "sourceVerdict": "DIFFERENT_VERSION_QUARANTINED"
+    },
+    {
+      "domain": "G04",
+      "templateId": "d4-g04-t06",
+      "observedFile": "G04-T06_正式业务模板_MD_v0.1.md",
+      "observedByteCount": 183268,
+      "observedRawSha256": "1dba3e36f83efe3553ff1103aa199e4d7dc17acf2b196707a43289a981e2a9da",
+      "observedGitBlobSha1": "3773cb3af097e62cb60add6299d2c35d6d34fad6",
+      "frozenSourceVersion": "C-v0.1",
+      "frozenSourceSha256": "d9c459f23bfdae097b6fa2a71700f0c10391bd9ffa63e8b387325db08cece0c2",
+      "sourceVerdict": "DIFFERENT_VERSION_QUARANTINED"
+    },
+    {
+      "domain": "G08",
+      "templateId": "g08-t03",
+      "observedFile": "G08-T03_正式业务模板_MD_v0.1.md",
+      "observedByteCount": 92390,
+      "observedRawSha256": "53ee6a8dd1931ba9fe193289ce1a41b07bb35489325ad19d07dcfb02cccf00af",
+      "observedGitBlobSha1": "1fc46546a6bc81f06cf5f9d7a10c4968f6d5d2cf",
+      "frozenSourceVersion": "C-MD-v0.1.1-r31-r01",
+      "frozenSourceSha256": "f8acf03994262e621d4afac6e608d34d90b114b7103372bef25fc7a4b50f88ec",
+      "sourceVerdict": "DIFFERENT_VERSION_QUARANTINED"
+    }
+  ]
+}

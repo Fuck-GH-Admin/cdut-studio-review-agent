@@ -1,0 +1,3997 @@
+{
+  "schemaVersion": "review-v3-b4-obligation-archive/1",
+  "frozenSourceGitSha": "b68443b23293b4714e61a3b81383d3d3a56434fc",
+  "domain": "G08",
+  "templateCount": 2,
+  "technicalState": "UNREVIEWED_EXTRACT",
+  "publicationAllowed": false,
+  "policyApproval": "NOT_VERIFIED",
+  "independentGold": "NOT_AUTHORIZED_OR_NOT_RUN",
+  "issues": {
+    "unbound": 0,
+    "missingSources": 0,
+    "orphan": 0,
+    "shaMismatch": 0,
+    "other": 0
+  },
+  "templates": [
+    {
+      "templateId": "g08-t02",
+      "templateVersion": 1,
+      "workspacePath": "docs/design/review-agent/acceptance/d4-g08-build/g08-t02/workspace.json",
+      "workspaceGitBlobSha": "ef0e53e176da8181d3d5897d0f8dec513e61a350",
+      "gitBlobObserved": "ef0e53e176da8181d3d5897d0f8dec513e61a350",
+      "sourceVersion": "C-MD-v0.1",
+      "sourceSha256": "7bd277cc24889805102e16d9f2de079434dd8f6ffe90ad00fc5872f169cd2418",
+      "manifestPath": "docs/design/review-agent/acceptance/d4-g08-build/g08-t02/manifest.json",
+      "historicalIntegrationStatus": "NOT_RUN",
+      "publication": "candidate-held",
+      "obligationCount": 57,
+      "workspacesBindings": 57,
+      "expectedTasks": 57,
+      "obligations": [
+        {
+          "checkId": "g08-t02@1:module/use-custody-base/r01",
+          "taskId": "r01",
+          "taskTitle": "R-01｜claim_item->custody · C类",
+          "module": "g08-t02-custody-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r01-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r01-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 275-284",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r01"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-01；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-custody-base/r02",
+          "taskId": "r02",
+          "taskTitle": "R-02｜custodian-routing · C类",
+          "module": "g08-t02-custody-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r02-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r02-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 285-294",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r02"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-02；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-custody-base/r09",
+          "taskId": "r09",
+          "taskTitle": "R-09｜custody_record · O类",
+          "module": "g08-t02-custody-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r09-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r09-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 355-364",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r09"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-09；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-custody-base/r25",
+          "taskId": "r25",
+          "taskTitle": "R-25｜item_identity · H类",
+          "module": "g08-t02-custody-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r25-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r25-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 515-524",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r25"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-25；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-custody-base/r31",
+          "taskId": "r31",
+          "taskTitle": "R-31｜custody_boundary · L类",
+          "module": "g08-t02-custody-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r31-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r31-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 575-584",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r31"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-31；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-custody-base/r32",
+          "taskId": "r32",
+          "taskTitle": "R-32｜official_notice · L类",
+          "module": "g08-t02-custody-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r32-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r32-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 585-594",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r32"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-32；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-custody-base/r38",
+          "taskId": "r38",
+          "taskTitle": "R-38｜custody_scope · C类",
+          "module": "g08-t02-custody-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r38-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r38-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 645-654",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r38"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-38；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-custody-base/r39",
+          "taskId": "r39",
+          "taskTitle": "R-39｜transfer_status · H类",
+          "module": "g08-t02-custody-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r39-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r39-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 655-664",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r39"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-39；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-custody-base/r48",
+          "taskId": "r48",
+          "taskTitle": "R-48｜custody_data_gap · H类",
+          "module": "g08-t02-custody-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r48-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r48-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 745-754",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r48"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-48；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-custody-venue/r24",
+          "taskId": "r24",
+          "taskTitle": "R-24｜custodian_routing · O类",
+          "module": "g08-t02-custody-venue",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r24-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r24-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 505-514",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r24"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-24；条件=venue由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-disputes-dispute/r16",
+          "taskId": "r16",
+          "taskTitle": "R-16｜disputed_item · C类",
+          "module": "g08-t02-disputes-dispute",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r16-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r16-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 425-434",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r16"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-16；条件=dispute由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-disputes-dispute/r26",
+          "taskId": "r26",
+          "taskTitle": "R-26｜duplicate_claim · H类",
+          "module": "g08-t02-disputes-dispute",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r26-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r26-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 525-534",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r26"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-26；条件=dispute由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-disputes-dispute/r41",
+          "taskId": "r41",
+          "taskTitle": "R-41｜crime_dispute · H类",
+          "module": "g08-t02-disputes-dispute",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r41-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r41-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 675-684",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r41"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-41；条件=dispute由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-disputes-dispute/r49",
+          "taskId": "r49",
+          "taskTitle": "R-49｜live_dispute · H类",
+          "module": "g08-t02-disputes-dispute",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r49-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r49-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 755-764",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r49"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-49；条件=dispute由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-exceptions-card/r11",
+          "taskId": "r11",
+          "taskTitle": "R-11｜card_item · O类",
+          "module": "g08-t02-exceptions-card",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r11-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r11-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 375-384",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r11"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-11；条件=card由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-exceptions-venue/r23",
+          "taskId": "r23",
+          "taskTitle": "R-23｜venue_scope · O类",
+          "module": "g08-t02-exceptions-venue",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r23-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r23-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 495-504",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r23"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-23；条件=venue由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-exceptions-venue/r40",
+          "taskId": "r40",
+          "taskTitle": "R-40｜hazard_item · O类",
+          "module": "g08-t02-exceptions-venue",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r40-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r40-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 665-674",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r40"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-40；条件=venue由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-features-base/r03",
+          "taskId": "r03",
+          "taskTitle": "R-03｜claim_item · C类",
+          "module": "g08-t02-features-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r03-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r03-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 295-304",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r03"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-03；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-features-base/r07",
+          "taskId": "r07",
+          "taskTitle": "R-07｜item_claim · H类",
+          "module": "g08-t02-features-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r07-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r07-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 335-344",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r07"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-07；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-features-base/r08",
+          "taskId": "r08",
+          "taskTitle": "R-08｜event_timeline · H类",
+          "module": "g08-t02-features-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r08-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r08-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 345-354",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r08"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-08；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-features-base/r44",
+          "taskId": "r44",
+          "taskTitle": "R-44｜evidence_readability · H类",
+          "module": "g08-t02-features-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r44-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r44-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 705-714",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r44"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-44；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-features-sensitive/r20",
+          "taskId": "r20",
+          "taskTitle": "R-20｜sensitive_device · H类",
+          "module": "g08-t02-features-sensitive",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r20-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r20-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 465-474",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r20"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-20；条件=sensitive由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-handover-handover/r27",
+          "taskId": "r27",
+          "taskTitle": "R-27｜handover_document · C类",
+          "module": "g08-t02-handover-handover",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r27-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r27-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 535-544",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r27"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-27；条件=handover由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-handover-handover/r28",
+          "taskId": "r28",
+          "taskTitle": "R-28｜staff_authority · H类",
+          "module": "g08-t02-handover-handover",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r28-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r28-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 545-554",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r28"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-28；条件=handover由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-handover-handover/r29",
+          "taskId": "r29",
+          "taskTitle": "R-29｜handover_log · H类",
+          "module": "g08-t02-handover-handover",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r29-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r29-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 555-564",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r29"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-29；条件=handover由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-handover-handover/r42",
+          "taskId": "r42",
+          "taskTitle": "R-42｜staff_permission · H类",
+          "module": "g08-t02-handover-handover",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r42-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r42-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 685-694",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r42"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-42；条件=handover由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-handover-handover/r43",
+          "taskId": "r43",
+          "taskTitle": "R-43｜staff_decision · H类",
+          "module": "g08-t02-handover-handover",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r43-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r43-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 695-704",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r43"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-43；条件=handover由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-handover-handover/r51",
+          "taskId": "r51",
+          "taskTitle": "R-51｜release_event · H类",
+          "module": "g08-t02-handover-handover",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r51-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r51-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 775-784",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r51"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-51；条件=handover由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-identity-self/r05",
+          "taskId": "r05",
+          "taskTitle": "R-05｜principal_claimant · O类",
+          "module": "g08-t02-identity-self",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r05-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r05-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 315-324",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r05"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-05；条件=self由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-identity-self/r17",
+          "taskId": "r17",
+          "taskTitle": "R-17｜identity_relation · H类",
+          "module": "g08-t02-identity-self",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r17-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r17-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 435-444",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r17"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-17；条件=self由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-invariant-base/inv-fields",
+          "taskId": "inv-fields",
+          "taskTitle": "跨规则不变量 fields",
+          "module": "g08-t02-invariant-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-inv-fields-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-inv-fields-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§5—8 (7bd277cc2488)",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:inv-fields"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 INV-fields；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-invariant-base/inv-lifecycle",
+          "taskId": "inv-lifecycle",
+          "taskTitle": "跨规则不变量 lifecycle",
+          "module": "g08-t02-invariant-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-inv-lifecycle-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-inv-lifecycle-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§11—13 (7bd277cc2488)",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:inv-lifecycle"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 INV-lifecycle；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-invariant-base/inv-output",
+          "taskId": "inv-output",
+          "taskTitle": "跨规则不变量 output",
+          "module": "g08-t02-invariant-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-inv-output-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-inv-output-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§10 (7bd277cc2488)",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:inv-output"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 INV-output；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-invariant-base/inv-privacy",
+          "taskId": "inv-privacy",
+          "taskTitle": "跨规则不变量 privacy",
+          "module": "g08-t02-invariant-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-inv-privacy-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-inv-privacy-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§12 (7bd277cc2488)",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:inv-privacy"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 INV-privacy；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-invariant-base/inv-scope",
+          "taskId": "inv-scope",
+          "taskTitle": "跨规则不变量 scope",
+          "module": "g08-t02-invariant-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-inv-scope-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-inv-scope-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§1—2 (7bd277cc2488)",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:inv-scope"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 INV-scope；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-invariant-base/inv-timing",
+          "taskId": "inv-timing",
+          "taskTitle": "跨规则不变量 timing",
+          "module": "g08-t02-invariant-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-inv-timing-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-inv-timing-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§3—4 (7bd277cc2488)",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:inv-timing"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 INV-timing；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-ownership-base/r06",
+          "taskId": "r06",
+          "taskTitle": "R-06｜identity_vs_ownership · C类",
+          "module": "g08-t02-ownership-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r06-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r06-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 325-334",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r06"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-06；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-ownership-base/r50",
+          "taskId": "r50",
+          "taskTitle": "R-50｜multi_axis_status · H类",
+          "module": "g08-t02-ownership-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r50-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r50-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 765-774",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r50"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-50；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-ownership-valuable/r04",
+          "taskId": "r04",
+          "taskTitle": "R-04｜valuable_item · O类",
+          "module": "g08-t02-ownership-valuable",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r04-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r04-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 305-314",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r04"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-04；条件=valuable由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-ownership-valuable/r18",
+          "taskId": "r18",
+          "taskTitle": "R-18｜ownership_relation · H类",
+          "module": "g08-t02-ownership-valuable",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r18-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r18-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 445-454",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r18"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-18；条件=valuable由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-ownership-valuable/r19",
+          "taskId": "r19",
+          "taskTitle": "R-19｜ownership_relation · H类",
+          "module": "g08-t02-ownership-valuable",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r19-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r19-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 455-464",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r19"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-19；条件=valuable由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-policy-base/r33",
+          "taskId": "r33",
+          "taskTitle": "R-33｜legal_disposition · L类",
+          "module": "g08-t02-policy-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r33-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r33-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 595-604",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r33"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-33；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-policy-base/r34",
+          "taskId": "r34",
+          "taskTitle": "R-34｜notice_timing · H类",
+          "module": "g08-t02-policy-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r34-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r34-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 605-614",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r34"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-34；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-policy-base/r35",
+          "taskId": "r35",
+          "taskTitle": "R-35｜legal_priority · O类",
+          "module": "g08-t02-policy-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r35-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r35-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 615-624",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r35"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-35；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-policy-base/r36",
+          "taskId": "r36",
+          "taskTitle": "R-36｜policy_binding · H类",
+          "module": "g08-t02-policy-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r36-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r36-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 625-634",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r36"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-36；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-privacy-base/r22",
+          "taskId": "r22",
+          "taskTitle": "R-22｜handover_evidence · O类",
+          "module": "g08-t02-privacy-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r22-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r22-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 485-494",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r22"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-22；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-privacy-base/r45",
+          "taskId": "r45",
+          "taskTitle": "R-45｜source_integrity · H类",
+          "module": "g08-t02-privacy-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r45-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r45-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 715-724",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r45"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-45；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-privacy-base/r47",
+          "taskId": "r47",
+          "taskTitle": "R-47｜special_evidence_requirement · H类",
+          "module": "g08-t02-privacy-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r47-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r47-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 735-744",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r47"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-47；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-privacy-sensitive/r21",
+          "taskId": "r21",
+          "taskTitle": "R-21｜privacy_record · L类",
+          "module": "g08-t02-privacy-sensitive",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r21-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r21-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 475-484",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r21"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-21；条件=sensitive由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-privacy-sensitive/r46",
+          "taskId": "r46",
+          "taskTitle": "R-46｜privacy_scope · H类",
+          "module": "g08-t02-privacy-sensitive",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r46-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r46-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 725-734",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r46"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-46；条件=sensitive由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-proxy-proxy/r12",
+          "taskId": "r12",
+          "taskTitle": "R-12｜proxy_relationship · O类",
+          "module": "g08-t02-proxy-proxy",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r12-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r12-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 385-394",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r12"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-12；条件=proxy由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-proxy-proxy/r13",
+          "taskId": "r13",
+          "taskTitle": "R-13｜proxy_document_format · O类",
+          "module": "g08-t02-proxy-proxy",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r13-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r13-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 395-404",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r13"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-13；条件=proxy由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-proxy-proxy/r14",
+          "taskId": "r14",
+          "taskTitle": "R-14｜proxy->claim_item · H类",
+          "module": "g08-t02-proxy-proxy",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r14-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r14-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 405-414",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r14"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-14；条件=proxy由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-proxy-proxy/r15",
+          "taskId": "r15",
+          "taskTitle": "R-15｜proxy_validity · H类",
+          "module": "g08-t02-proxy-proxy",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r15-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r15-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 415-424",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r15"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-15；条件=proxy由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-proxy-proxy/r37",
+          "taskId": "r37",
+          "taskTitle": "R-37｜proxy_allowed · H类",
+          "module": "g08-t02-proxy-proxy",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r37-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r37-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 635-644",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r37"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-37；条件=proxy由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-scope-base/r10",
+          "taskId": "r10",
+          "taskTitle": "R-10｜claim_unit_scope · C类",
+          "module": "g08-t02-scope-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r10-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r10-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 365-374",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r10"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-10；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t02@1:module/use-scope-base/r30",
+          "taskId": "r30",
+          "taskTitle": "R-30｜claim_items[] · H类",
+          "module": "g08-t02-scope-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t02-r30-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t02-r30-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t02-source-7bd277cc24889805",
+              "locator": "§9 lines 565-574",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-lost-item"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-lost-item:r30"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 R-30；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        }
+      ]
+    },
+    {
+      "templateId": "g08-t03",
+      "templateVersion": 1,
+      "workspacePath": "docs/design/review-agent/acceptance/d4-g08-build/g08-t03/workspace.json",
+      "workspaceGitBlobSha": "355d944791188a87e20f4ed9d7c7d664484328c2",
+      "gitBlobObserved": "355d944791188a87e20f4ed9d7c7d664484328c2",
+      "sourceVersion": "C-MD-v0.1.1-r31-r01",
+      "sourceSha256": "f8acf03994262e621d4afac6e608d34d90b114b7103372bef25fc7a4b50f88ec",
+      "manifestPath": "docs/design/review-agent/acceptance/d4-g08-build/g08-t03/manifest.json",
+      "historicalIntegrationStatus": "NOT_RUN",
+      "publication": "candidate-held",
+      "obligationCount": 59,
+      "workspacesBindings": 59,
+      "expectedTasks": 59,
+      "obligations": [
+        {
+          "checkId": "g08-t03@1:module/use-channel-base/r01",
+          "taskId": "r01",
+          "taskTitle": "T03-R01｜CASE/CHANNEL：新来信/当前渠道",
+          "module": "g08-t03-channel-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r01-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r01-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 248",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r01"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R01；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-channel-base/r02",
+          "taskId": "r02",
+          "taskTitle": "T03-R02｜CASE/CHANNEL：申请者被渠道允许",
+          "module": "g08-t03-channel-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r02-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r02-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 249",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r02"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R02；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-channel-base/r05",
+          "taskId": "r05",
+          "taskTitle": "T03-R05｜CASE/CHANNEL：渠道结构化分类",
+          "module": "g08-t03-channel-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r05-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r05-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 252",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r05"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R05；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-channel-base/r06",
+          "taskId": "r06",
+          "taskTitle": "T03-R06｜CASE/CHANNEL：可自动确认业务部门",
+          "module": "g08-t03-channel-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r06-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r06-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 253",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r06"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R06；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-channel-base/r15",
+          "taskId": "r15",
+          "taskTitle": "T03-R15｜CASE/CHANNEL：联系人缺失",
+          "module": "g08-t03-channel-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r15-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r15-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 262",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r15"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R15；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-channel-base/r21",
+          "taskId": "r21",
+          "taskTitle": "T03-R21｜ISSUE：一信一事渠道",
+          "module": "g08-t03-channel-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r21-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r21-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 268",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r21"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R21；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-channel-base/r41",
+          "taskId": "r41",
+          "taskTitle": "T03-R41｜CASE/CHANNEL：渠道政策未知",
+          "module": "g08-t03-channel-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r41-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r41-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 288",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r41"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R41；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-channel-base/r47",
+          "taskId": "r47",
+          "taskTitle": "T03-R47｜ISSUE：平台允许校外主体来信",
+          "module": "g08-t03-channel-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r47-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r47-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 294",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r47"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R47；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-channel-college/r12",
+          "taskId": "r12",
+          "taskTitle": "T03-R12｜CASE/CHANNEL：特定学院院长邮箱",
+          "module": "g08-t03-channel-college",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r12-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r12-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 259",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r12"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R12；条件=college由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-channel-initial/r16",
+          "taskId": "r16",
+          "taskTitle": "T03-R16｜CASE/CHANNEL：首次邮件不是平台表单",
+          "module": "g08-t03-channel-initial",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r16-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r16-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 263",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r16"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R16；条件=initial由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-channel-school/r11",
+          "taskId": "r11",
+          "taskTitle": "T03-R11｜CASE/CHANNEL：校领导邮箱",
+          "module": "g08-t03-channel-school",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r11-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r11-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 258",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r11"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R11；条件=school由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-channel-shandong/r13",
+          "taskId": "r13",
+          "taskTitle": "T03-R13｜CASE/CHANNEL：山东接诉平台注册",
+          "module": "g08-t03-channel-shandong",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r13-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r13-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 260",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r13"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R13；条件=shandong由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-channel-shandong/r42",
+          "taskId": "r42",
+          "taskTitle": "T03-R42｜CASE/CHANNEL：办结超时",
+          "module": "g08-t03-channel-shandong",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r42-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r42-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 289",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r42"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R42；条件=shandong由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-channel-shandong/r43",
+          "taskId": "r43",
+          "taskTitle": "T03-R43｜CASE/CHANNEL：EX01提醒/默认办结",
+          "module": "g08-t03-channel-shandong",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r43-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r43-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 290",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r43"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R43；条件=shandong由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-feedback-feedback/r29",
+          "taskId": "r29",
+          "taskTitle": "T03-R29｜PARENT_LINK/RESPONSE：满意评价",
+          "module": "g08-t03-feedback-feedback",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r29-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r29-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 276",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r29"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R29；条件=feedback由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-feedback-feedback/r30",
+          "taskId": "r30",
+          "taskTitle": "T03-R30｜PARENT_LINK/RESPONSE：首次一般/不满意",
+          "module": "g08-t03-feedback-feedback",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r30-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r30-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 277",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r30"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R30；条件=feedback由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-feedback-feedback/r31",
+          "taskId": "r31",
+          "taskTitle": "T03-R31｜PARENT_LINK/RESPONSE：山东平台首轮二次上报",
+          "module": "g08-t03-feedback-feedback",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r31-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r31-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 278",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r31"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R31；条件=feedback由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-feedback-feedback/r32",
+          "taskId": "r32",
+          "taskTitle": "T03-R32｜PARENT_LINK/RESPONSE：二次办理后仍不满意",
+          "module": "g08-t03-feedback-feedback",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r32-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r32-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 279",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r32"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R32；条件=feedback由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-feedback-followup/r38",
+          "taskId": "r38",
+          "taskTitle": "T03-R38｜PARENT_LINK/RESPONSE：多次更新附件或补材料",
+          "module": "g08-t03-feedback-followup",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r38-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r38-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 285",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r38"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R38；条件=followup由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-feedback-withdraw/r36",
+          "taskId": "r36",
+          "taskTitle": "T03-R36｜PARENT_LINK/RESPONSE：未完成学校操作前撤回",
+          "module": "g08-t03-feedback-withdraw",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r36-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r36-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 283",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r36"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R36；条件=withdraw由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-feedback-withdraw/r37",
+          "taskId": "r37",
+          "taskTitle": "T03-R37｜PARENT_LINK/RESPONSE：学校已经实际处理后用户要求撤回",
+          "module": "g08-t03-feedback-withdraw",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r37-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r37-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 284",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r37"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R37；条件=withdraw由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-history-followup/r33",
+          "taskId": "r33",
+          "taskTitle": "T03-R33｜PARENT_LINK/RESPONSE：旧问题已办结，完全无新事实",
+          "module": "g08-t03-history-followup",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r33-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r33-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 280",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r33"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R33；条件=followup由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-history-followup/r34",
+          "taskId": "r34",
+          "taskTitle": "T03-R34｜PARENT_LINK/RESPONSE：已有新事实或现场问题再发",
+          "module": "g08-t03-history-followup",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r34-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r34-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 281",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r34"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R34；条件=followup由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-history-followup/r39",
+          "taskId": "r39",
+          "taskTitle": "T03-R39｜PARENT_LINK/RESPONSE：原答复截图与后台冲突",
+          "module": "g08-t03-history-followup",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r39-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r39-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 286",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r39"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R39；条件=followup由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-history-followup/r40",
+          "taskId": "r40",
+          "taskTitle": "T03-R40｜PARENT_LINK/RESPONSE：后台系统不可达",
+          "module": "g08-t03-history-followup",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r40-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r40-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 287",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r40"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R40；条件=followup由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-history-followup/r45",
+          "taskId": "r45",
+          "taskTitle": "T03-R45｜PARENT_LINK/RESPONSE：用户投诉学校未回信",
+          "module": "g08-t03-history-followup",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r45-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r45-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 292",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r45"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R45；条件=followup由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-history-followup/r46",
+          "taskId": "r46",
+          "taskTitle": "T03-R46｜PARENT_LINK/RESPONSE：已办结与物理问题是否解决",
+          "module": "g08-t03-history-followup",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r46-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r46-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 293",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r46"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R46；条件=followup由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-history-query/r25",
+          "taskId": "r25",
+          "taskTitle": "T03-R25｜PARENT_LINK/RESPONSE：再次办理/评价",
+          "module": "g08-t03-history-query",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r25-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r25-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 272",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r25"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R25；条件=query由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-history-query/r26",
+          "taskId": "r26",
+          "taskTitle": "T03-R26｜PARENT_LINK/RESPONSE：原单当事人权限",
+          "module": "g08-t03-history-query",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r26-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r26-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 273",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r26"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R26；条件=query由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-history-query/r27",
+          "taskId": "r27",
+          "taskTitle": "T03-R27｜PARENT_LINK/RESPONSE：原单正在办理",
+          "module": "g08-t03-history-query",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r27-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r27-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 274",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r27"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R27；条件=query由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-history-query/r28",
+          "taskId": "r28",
+          "taskTitle": "T03-R28｜PARENT_LINK/RESPONSE：原单已得到正式答复",
+          "module": "g08-t03-history-query",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r28-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r28-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 275",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r28"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R28；条件=query由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-invariant-base/inv-axes",
+          "taskId": "inv-axes",
+          "taskTitle": "跨规则不变量 axes",
+          "module": "g08-t03-invariant-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-inv-axes-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-inv-axes-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§3 (f8acf0399426)",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:inv-axes"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 INV-axes；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-invariant-base/inv-fields",
+          "taskId": "inv-fields",
+          "taskTitle": "跨规则不变量 fields",
+          "module": "g08-t03-invariant-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-inv-fields-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-inv-fields-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§4—9 (f8acf0399426)",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:inv-fields"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 INV-fields；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-invariant-base/inv-lifecycle",
+          "taskId": "inv-lifecycle",
+          "taskTitle": "跨规则不变量 lifecycle",
+          "module": "g08-t03-invariant-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-inv-lifecycle-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-inv-lifecycle-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§12 (f8acf0399426)",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:inv-lifecycle"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 INV-lifecycle；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-invariant-base/inv-output",
+          "taskId": "inv-output",
+          "taskTitle": "跨规则不变量 output",
+          "module": "g08-t03-invariant-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-inv-output-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-inv-output-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§11 (f8acf0399426)",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:inv-output"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 INV-output；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-invariant-base/inv-privacy",
+          "taskId": "inv-privacy",
+          "taskTitle": "跨规则不变量 privacy",
+          "module": "g08-t03-invariant-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-inv-privacy-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-inv-privacy-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§13 (f8acf0399426)",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:inv-privacy"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 INV-privacy；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-invariant-base/inv-r31",
+          "taskId": "inv-r31",
+          "taskTitle": "跨规则不变量 r31",
+          "module": "g08-t03-invariant-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-inv-r31-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-inv-r31-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 R30—R31 (f8acf0399426)",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:inv-r31"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 INV-r31；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-invariant-base/inv-scope",
+          "taskId": "inv-scope",
+          "taskTitle": "跨规则不变量 scope",
+          "module": "g08-t03-invariant-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-inv-scope-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-inv-scope-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§1—2 (f8acf0399426)",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:inv-scope"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 INV-scope；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-issue-multi/r22",
+          "taskId": "r22",
+          "taskTitle": "T03-R22｜ISSUE：同主题复合问题",
+          "module": "g08-t03-issue-multi",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r22-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r22-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 269",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r22"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R22；条件=multi由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-issue-multi/r35",
+          "taskId": "r35",
+          "taskTitle": "T03-R35｜PARENT_LINK/RESPONSE：一人多案/多次投诉",
+          "module": "g08-t03-issue-multi",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r35-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r35-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 282",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r35"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R35；条件=multi由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-jurisdiction-base/r07",
+          "taskId": "r07",
+          "taskTitle": "T03-R07｜ISSUE：非学校职权",
+          "module": "g08-t03-jurisdiction-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r07-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r07-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 254",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r07"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R07；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-jurisdiction-base/r08",
+          "taskId": "r08",
+          "taskTitle": "T03-R08｜ISSUE：法律救济或正式处分",
+          "module": "g08-t03-jurisdiction-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r08-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r08-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 255",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r08"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R08；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-jurisdiction-base/r23",
+          "taskId": "r23",
+          "taskTitle": "T03-R23｜ISSUE：申请含多个不同权限子议题",
+          "module": "g08-t03-jurisdiction-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r23-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r23-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 270",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r23"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R23；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-jurisdiction-base/r50",
+          "taskId": "r50",
+          "taskTitle": "T03-R50｜ISSUE：接收渠道误投的正式信访复查",
+          "module": "g08-t03-jurisdiction-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r50-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r50-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 297",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r50"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R50；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-jurisdiction-base/r51",
+          "taskId": "r51",
+          "taskTitle": "T03-R51｜ISSUE：引导法定途径或他部门处理",
+          "module": "g08-t03-jurisdiction-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r51-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r51-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 298",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r51"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R51；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-material-evidence/r18",
+          "taskId": "r18",
+          "taskTitle": "T03-R18｜ISSUE：特定事项证据充分性",
+          "module": "g08-t03-material-evidence",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r18-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r18-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 265",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r18"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R18；条件=evidence由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-material-evidence/r19",
+          "taskId": "r19",
+          "taskTitle": "T03-R19｜ISSUE：附件冲突",
+          "module": "g08-t03-material-evidence",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r19-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r19-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 266",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r19"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R19；条件=evidence由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-material-evidence/r20",
+          "taskId": "r20",
+          "taskTitle": "T03-R20｜ISSUE：附件说明/仿冒命令",
+          "module": "g08-t03-material-evidence",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r20-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r20-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 267",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r20"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R20；条件=evidence由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-material-initial/r03",
+          "taskId": "r03",
+          "taskTitle": "T03-R03｜ISSUE：初次普通建议",
+          "module": "g08-t03-material-initial",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r03-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r03-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 250",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r03"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R03；条件=initial由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-material-initial/r04",
+          "taskId": "r04",
+          "taskTitle": "T03-R04｜ISSUE：事件型求助",
+          "module": "g08-t03-material-initial",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r04-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r04-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 251",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r04"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R04；条件=initial由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-material-initial/r17",
+          "taskId": "r17",
+          "taskTitle": "T03-R17｜CASE/CHANNEL：附件可选",
+          "module": "g08-t03-material-initial",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r17-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r17-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 264",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r17"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R17；条件=initial由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-security-base/r24",
+          "taskId": "r24",
+          "taskTitle": "T03-R24｜CASE/CHANNEL：申请人并非被投诉人",
+          "module": "g08-t03-security-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r24-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r24-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 271",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r24"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R24；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-security-base/r48",
+          "taskId": "r48",
+          "taskTitle": "T03-R48｜ISSUE：涉及群体公共建议且无本人权属私密索取",
+          "module": "g08-t03-security-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r48-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r48-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 295",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r48"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R48；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-security-base/r52",
+          "taskId": "r52",
+          "taskTitle": "T03-R52｜CASE/CHANNEL：系统生成正式批准/裁断结果",
+          "module": "g08-t03-security-base",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r52-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r52-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 299",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r52"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R52；逐对象常规语义责任；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-security-query/r49",
+          "taskId": "r49",
+          "taskTitle": "T03-R49｜PARENT_LINK/RESPONSE：越权读取特定他人的私密答复",
+          "module": "g08-t03-security-query",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r49-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r49-src",
+              "sourceKind": "policy-candidate",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 296",
+              "verification": "content-checked",
+              "sourceApplicability": "unknown"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r49"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R49；条件=query由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-security-sensitive/r09",
+          "taskId": "r09",
+          "taskTitle": "T03-R09｜ISSUE：敏感举报",
+          "module": "g08-t03-security-sensitive",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r09-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r09-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 256",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r09"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R09；条件=sensitive由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-security-sensitive/r14",
+          "taskId": "r14",
+          "taskTitle": "T03-R14｜CASE/CHANNEL：公开答复渠道",
+          "module": "g08-t03-security-sensitive",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r14-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r14-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 261",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r14"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R14；条件=sensitive由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-security-sensitive/r44",
+          "taskId": "r44",
+          "taskTitle": "T03-R44｜CASE/CHANNEL：多人涉及或争议承办人",
+          "module": "g08-t03-security-sensitive",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r44-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r44-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 291",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r44"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R44；条件=sensitive由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        },
+        {
+          "checkId": "g08-t03@1:module/use-security-urgent/r10",
+          "taskId": "r10",
+          "taskTitle": "T03-R10｜ISSUE：校园安全紧急信息",
+          "module": "g08-t03-security-urgent",
+          "origin": "module",
+          "bindingState": "WORKSPACE_BOUND",
+          "sourceIds": [
+            "g08-t03-r10-src"
+          ],
+          "sources": [
+            {
+              "sourceId": "g08-t03-r10-src",
+              "sourceKind": "user-request",
+              "documentVersionId": "g08-t03-source-f8acf03994262e62",
+              "locator": "§10 line 257",
+              "verification": "content-checked",
+              "sourceApplicability": "request-scope"
+            }
+          ],
+          "genericScope": {
+            "businessTypes": [
+              "g08-complaint-issue"
+            ],
+            "evidenceFacts": [
+              "d2:object:g08-complaint-issue:r10"
+            ]
+          },
+          "caseScopeJustification": null,
+          "applicabilityNote": "原文 T03-R10；条件=urgent由逐对象受控三态选择；不得产生正式行政结果",
+          "publicationAllowed": false,
+          "policyApproval": "NOT_VERIFIED",
+          "goldStatus": "NOT_AUTHORIZED_OR_NOT_RUN"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2260 @@
+{
+  "schemaVersion": "review-v3-b4-raw-rule-to-check-audit/1",
+  "baseSourceGitSHA": "b68443b23293b4714e61a3b81383d3d3a56434fc",
+  "evidenceMethod": "Original Library raw_file SHA256 independently matched D4; line headings read from same identified original. Check records pinned to D4 archive; title/ID concordance only, never semantic or policy approval. Original Markdown omitted from repo.",
+  "publicationAllowed": false,
+  "policyApproval": "NOT_VERIFIED",
+  "independentGold": "NOT_AUTHORIZED_OR_NOT_RUN",
+  "templates": [
+    {
+      "domain": "G03",
+      "templateId": "g03-t12",
+      "rawOriginalSha256": "a6c7131a8b8dbf5e14cfab532d0eaa7db880ef09237c18045bedf7df3325dd8b",
+      "originalRuleCount": 27,
+      "workspaceCheckCount": 59,
+      "ruleAnchors": [
+        {
+          "ruleId": "R-01",
+          "headingLine": 200,
+          "heading": "### R-01｜提交/路由",
+          "firstBodyLine": 201,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：业务入口；`case`；证据分组`E_ROUTE`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-identity/r01"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r01"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-02",
+          "headingLine": 212,
+          "heading": "### R-02｜主体资格",
+          "firstBodyLine": 213,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：发起主体资格；`case`；证据分组`E_ID_ORG`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-identity/r02"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r02"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-03",
+          "headingLine": 224,
+          "heading": "### R-03｜主表完整",
+          "firstBodyLine": 225,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：申请核心完整性；`case`；证据分组`E_MAIN`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-evidence/r03"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r03"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-04",
+          "headingLine": 236,
+          "heading": "### R-04｜场地标识",
+          "firstBodyLine": 237,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：资源身份精确；`resource`；证据分组`E_RESOURCE`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-resource/r04"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r04"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-05",
+          "headingLine": 248,
+          "heading": "### R-05｜教学/训练占用",
+          "firstBodyLine": 249,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：教学/校队优先；`resource×slot`；证据分组`E_CALENDAR`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-resource/r05"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r05"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-06",
+          "headingLine": 260,
+          "heading": "### R-06｜开放/维修",
+          "firstBodyLine": 261,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：维修暂停/是否开放；`resource×slot`；证据分组`E_OPERATION`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-resource/r06"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r06"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-07",
+          "headingLine": 272,
+          "heading": "### R-07｜时段有效",
+          "firstBodyLine": 273,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：时段合理与完整占用；`slot`；证据分组`E_PERIOD`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-resource/r07"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r07"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-08",
+          "headingLine": 284,
+          "heading": "### R-08｜安全人数容量",
+          "firstBodyLine": 285,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：人数口径和容量；`resource×slot`；证据分组`E_CAPACITY`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-resource/r08"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r08"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-09",
+          "headingLine": 296,
+          "heading": "### R-09｜运动用途适配",
+          "firstBodyLine": 297,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：场馆类型与体育项目匹配；`resource×activity`；证据分组`E_USE`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-resource/r09"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r09"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-10",
+          "headingLine": 308,
+          "heading": "### R-10｜学生组织责任",
+          "firstBodyLine": 309,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：学生团体指导与责任；`organizer`；证据分组`E_SUPERVISOR`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-identity/r10"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r10"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-11",
+          "headingLine": 320,
+          "heading": "### R-11｜活动方案",
+          "firstBodyLine": 321,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：活动方案与日程一致；`activity`；证据分组`E_AGENDA`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-safety/r11"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r11"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-12",
+          "headingLine": 332,
+          "heading": "### R-12｜安全责任承诺",
+          "firstBodyLine": 333,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：安全责任书；`organizer×activity`；证据分组`E_SAFETY_COMMIT`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-safety/r12"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r12"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-13",
+          "headingLine": 344,
+          "heading": "### R-13｜重大风险方案",
+          "firstBodyLine": 345,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：高风险安全方案；`activity`；证据分组`E_EMERGENCY`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-safety/r13"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r13"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-14",
+          "headingLine": 356,
+          "heading": "### R-14｜保卫/外部许可",
+          "firstBodyLine": 357,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：保卫或外部批准；`activity×scope`；证据分组`E_SECURITY_APPROVAL`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-safety/r14"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r14"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-15",
+          "headingLine": 368,
+          "heading": "### R-15｜特殊器材/临设",
+          "firstBodyLine": 369,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：条件设施审批；`resource×scope`；证据分组`E_SPECIAL_FACILITY`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-safety/r15"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r15"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-16",
+          "headingLine": 380,
+          "heading": "### R-16｜合同/付费",
+          "firstBodyLine": 381,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：合同与有偿分支；`activity×payer`；证据分组`E_CONTRACT_FEE`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-safety/r16"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r16"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-17",
+          "headingLine": 392,
+          "heading": "### R-17｜主管与馆方权限",
+          "firstBodyLine": 393,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：单位主管、场馆及终审权限；`approval-node`；证据分组`E_APPROVAL_CHAIN`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-safety/r17"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r17"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-18",
+          "headingLine": 404,
+          "heading": "### R-18｜提交不等于批准",
+          "firstBodyLine": 405,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：预约提交与批准区别；`case×scope`；证据分组`E_FINAL_APPROVAL`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-lifecycle/r18"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r18"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-19",
+          "headingLine": 416,
+          "heading": "### R-19｜改期/撤销",
+          "firstBodyLine": 417,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：修改/退约处理；`scope×version`；证据分组`E_CHANGE`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-lifecycle/r19"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r19"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-20",
+          "headingLine": 428,
+          "heading": "### R-20｜重复/冲突",
+          "firstBodyLine": 429,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：重复申请/单资源重叠；`resource×slot`；证据分组`E_CALENDAR`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-resource/r20"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r20"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-21",
+          "headingLine": 440,
+          "heading": "### R-21｜后置材料",
+          "firstBodyLine": 441,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：活动后材料阶段；`execution`；证据分组`E_POST`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-lifecycle/r21"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r21"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-22",
+          "headingLine": 452,
+          "heading": "### R-22｜分片区分场次",
+          "firstBodyLine": 453,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：多场次、分区核准；`scope`；证据分组`E_SEGMENT`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-resource/r22"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r22"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-23",
+          "headingLine": 464,
+          "heading": "### R-23｜政策版本与参数",
+          "firstBodyLine": 465,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：政策来源不确定；`case×policy`；证据分组`E_POLICY`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-lifecycle/r23"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r23"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-24",
+          "headingLine": 476,
+          "heading": "### R-24｜信息最小化",
+          "firstBodyLine": 477,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：安全规范之外的敏感数据；`person`；证据分组`E_PRIVACY`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-evidence/r24"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r24"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-25",
+          "headingLine": 488,
+          "heading": "### R-25｜电子/纸证等效",
+          "firstBodyLine": 489,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：纸签与电子批替代；`approval-node`；证据分组`E_SIGN`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-evidence/r25"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r25"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-26",
+          "headingLine": 500,
+          "heading": "### R-26｜多文书一致性",
+          "firstBodyLine": 501,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：跨文件可信冲突；`activity×scope`；证据分组`E_CROSSDOC`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-evidence/r26"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r26"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-27",
+          "headingLine": 512,
+          "heading": "### R-27｜正式否决撤销",
+          "firstBodyLine": 513,
+          "firstBodyExcerpt": "- **审核目标 / 被核动作与最小对象**：原审批失效/正式否决；`approval-node×scope`；证据分组`E_LATEST_DECISION`。",
+          "mappedCheckIds": [
+            "g03-t12@1:module/use-lifecycle/r27"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "source-r27"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        }
+      ],
+      "semanticAudit": "PENDING_PER_RULE_CONDITION_OBJECT_AUTHORITY",
+      "publicationAllowed": false
+    },
+    {
+      "domain": "G04",
+      "templateId": "d4-g04-t03",
+      "rawOriginalSha256": "9c889be9151854cbe43e3e94f5389c2a5fa0619e5e90867b14c117cee8e03cee",
+      "originalRuleCount": 46,
+      "workspaceCheckCount": 128,
+      "ruleAnchors": [
+        {
+          "ruleId": "R-01",
+          "headingLine": 273,
+          "heading": "### R-01｜实验人员预培训",
+          "firstBodyLine": 274,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_lab_scope`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-identity-staff/r01",
+            "d4-g04-t03@1:module/use-identity-student/r01"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r01",
+            "src-original",
+            "src-r01",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-02",
+          "headingLine": 285,
+          "heading": "### R-02｜学生当次现场培训",
+          "firstBodyLine": 286,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_session`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r02",
+            "d4-g04-t03@1:module/use-scope-student/r02"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r02",
+            "src-original",
+            "src-r02",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-03",
+          "headingLine": 297,
+          "heading": "### R-03｜人员身份/接收匹配",
+          "firstBodyLine": 298,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_lab_scope`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-identity-staff/r03",
+            "d4-g04-t03@1:module/use-identity-student/r03"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r03",
+            "src-original",
+            "src-r03",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-04",
+          "headingLine": 309,
+          "heading": "### R-04｜CDUT房间风险分级",
+          "firstBodyLine": 310,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`lab_scope`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r04",
+            "d4-g04-t03@1:module/use-scope-student/r04"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r04",
+            "src-original",
+            "src-r04",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-05",
+          "headingLine": 321,
+          "heading": "### R-05｜专业培训条件触发",
+          "firstBodyLine": 322,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_lab_hazard`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r05",
+            "d4-g04-t03@1:module/use-scope-student/r05"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r05",
+            "src-original",
+            "src-r05",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-06",
+          "headingLine": 333,
+          "heading": "### R-06｜考试阈值及等号边界",
+          "firstBodyLine": 334,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_exam_kind`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r06",
+            "d4-g04-t03@1:module/use-scope-student/r06"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r06",
+            "src-original",
+            "src-r06",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-07",
+          "headingLine": 345,
+          "heading": "### R-07｜考试证据权威优先",
+          "firstBodyLine": 346,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_exam_kind`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-material-staff/r07",
+            "d4-g04-t03@1:module/use-material-student/r07"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r07",
+            "src-original",
+            "src-r07",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-08",
+          "headingLine": 357,
+          "heading": "### R-08｜责任承诺按政策分阶段",
+          "firstBodyLine": 358,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_lab_scope`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r08",
+            "d4-g04-t03@1:module/use-scope-student/r08"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r08",
+            "src-original",
+            "src-r08",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-09",
+          "headingLine": 369,
+          "heading": "### R-09｜外来人接收审批",
+          "firstBodyLine": 370,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_receiving_unit`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r09",
+            "d4-g04-t03@1:module/use-scope-student/r09"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r09",
+            "src-original",
+            "src-r09",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-10",
+          "headingLine": 381,
+          "heading": "### R-10｜受限参观的告知陪同",
+          "firstBodyLine": 382,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`visitor_visit_scope`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r10",
+            "d4-g04-t03@1:module/use-scope-student/r10"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r10",
+            "src-original",
+            "src-r10",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-11",
+          "headingLine": 393,
+          "heading": "### R-11｜参观校本政策未知",
+          "firstBodyLine": 394,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`visitor_visit_scope`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r11",
+            "d4-g04-t03@1:module/use-scope-student/r11"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r11",
+            "src-original",
+            "src-r11",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-12",
+          "headingLine": 405,
+          "heading": "### R-12｜特殊风险范围训练",
+          "firstBodyLine": 406,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_hazard_device`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r12",
+            "d4-g04-t03@1:module/use-scope-student/r12"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r12",
+            "src-original",
+            "src-r12",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-13",
+          "headingLine": 417,
+          "heading": "### R-13｜法定岗位证照",
+          "firstBodyLine": 418,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_professional_role`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r13",
+            "d4-g04-t03@1:module/use-scope-student/r13"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r13",
+            "src-original",
+            "src-r13",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-14",
+          "headingLine": 429,
+          "heading": "### R-14｜有权资格签发",
+          "firstBodyLine": 430,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_lab_scope`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-identity-staff/r14",
+            "d4-g04-t03@1:module/use-identity-student/r14"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r14",
+            "src-original",
+            "src-r14",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-15",
+          "headingLine": 441,
+          "heading": "### R-15｜批次人员分别核验",
+          "firstBodyLine": 442,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`each_person_scope`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-identity-staff/r15",
+            "d4-g04-t03@1:module/use-identity-student/r15"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r15",
+            "src-original",
+            "src-r15",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-16",
+          "headingLine": 453,
+          "heading": "### R-16｜跨实验室范围变更",
+          "firstBodyLine": 454,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_each_lab_scope`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r16",
+            "d4-g04-t03@1:module/use-scope-student/r16"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r16",
+            "src-original",
+            "src-r16",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-17",
+          "headingLine": 465,
+          "heading": "### R-17｜资格有效期",
+          "firstBodyLine": 466,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_credential_kind`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-identity-staff/r17",
+            "d4-g04-t03@1:module/use-identity-student/r17"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r17",
+            "src-original",
+            "src-r17",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-18",
+          "headingLine": 477,
+          "heading": "### R-18｜复训与复考",
+          "firstBodyLine": 478,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_qualification_kind`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r18",
+            "d4-g04-t03@1:module/use-scope-student/r18"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r18",
+            "src-original",
+            "src-r18",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-19",
+          "headingLine": 489,
+          "heading": "### R-19｜停用/撤销两类事件",
+          "firstBodyLine": 490,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_and_lab_separately`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-authority-staff/r19",
+            "d4-g04-t03@1:module/use-authority-student/r19"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r19",
+            "src-original",
+            "src-r19",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-20",
+          "headingLine": 501,
+          "heading": "### R-20｜新考试不自动恢复正式停权",
+          "firstBodyLine": 502,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_and_lab_separately`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r20",
+            "d4-g04-t03@1:module/use-scope-student/r20"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r20",
+            "src-original",
+            "src-r20",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-21",
+          "headingLine": 513,
+          "heading": "### R-21｜阶段条件不可倒置",
+          "firstBodyLine": 514,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_scope_stage`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r21",
+            "d4-g04-t03@1:module/use-scope-student/r21"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r21",
+            "src-original",
+            "src-r21",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-22",
+          "headingLine": 525,
+          "heading": "### R-22｜人员资格不等于物理门禁",
+          "firstBodyLine": 526,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_lab_scope`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-identity-staff/r22",
+            "d4-g04-t03@1:module/use-identity-student/r22"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r22",
+            "src-original",
+            "src-r22",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-23",
+          "headingLine": 537,
+          "heading": "### R-23｜人员资格不等于项目审查",
+          "firstBodyLine": 538,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_scope`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-identity-staff/r23",
+            "d4-g04-t03@1:module/use-identity-student/r23"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r23",
+            "src-original",
+            "src-r23",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-24",
+          "headingLine": 549,
+          "heading": "### R-24｜扫描件OCR仅提取候选事实",
+          "firstBodyLine": 550,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_certificate`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r24",
+            "d4-g04-t03@1:module/use-scope-student/r24"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r24",
+            "src-original",
+            "src-r24",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-25",
+          "headingLine": 561,
+          "heading": "### R-25｜代办角色和受益人分离",
+          "firstBodyLine": 562,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`applicant_and_person`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r25",
+            "d4-g04-t03@1:module/use-scope-student/r25"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r25",
+            "src-original",
+            "src-r25",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-26",
+          "headingLine": 573,
+          "heading": "### R-26｜合法考试或培训替代",
+          "firstBodyLine": 574,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_exam_kind`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r26",
+            "d4-g04-t03@1:module/use-scope-student/r26"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r26",
+            "src-original",
+            "src-r26",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-27",
+          "headingLine": 585,
+          "heading": "### R-27｜拟操作日期前的现场训练",
+          "firstBodyLine": 586,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_session`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r27",
+            "d4-g04-t03@1:module/use-scope-student/r27"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r27",
+            "src-original",
+            "src-r27",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-28",
+          "headingLine": 597,
+          "heading": "### R-28｜同人多范围部分结果",
+          "firstBodyLine": 598,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`each_person_lab_scope`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r28",
+            "d4-g04-t03@1:module/use-scope-student/r28"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r28",
+            "src-original",
+            "src-r28",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-29",
+          "headingLine": 609,
+          "heading": "### R-29｜访客码非实验操作凭证",
+          "firstBodyLine": 610,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_lab_scope`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r29",
+            "d4-g04-t03@1:module/use-scope-student/r29"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r29",
+            "src-original",
+            "src-r29",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-30",
+          "headingLine": 621,
+          "heading": "### R-30｜未知校本阈值不得臆造",
+          "firstBodyLine": 622,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_exam_kind`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r30",
+            "d4-g04-t03@1:module/use-scope-student/r30"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r30",
+            "src-original",
+            "src-r30",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-31",
+          "headingLine": 633,
+          "heading": "### R-31｜系统不可达非未通过",
+          "firstBodyLine": 634,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_scope`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r31",
+            "d4-g04-t03@1:module/use-scope-student/r31"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r31",
+            "src-original",
+            "src-r31",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-32",
+          "headingLine": 645,
+          "heading": "### R-32｜证据冲突与正式更正",
+          "firstBodyLine": 646,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_scope_evidence`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-material-staff/r32",
+            "d4-g04-t03@1:module/use-material-student/r32"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r32",
+            "src-original",
+            "src-r32",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-33",
+          "headingLine": 657,
+          "heading": "### R-33｜实验室分级变更复核",
+          "firstBodyLine": 658,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_each_lab_scope`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r33",
+            "d4-g04-t03@1:module/use-scope-student/r33"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r33",
+            "src-original",
+            "src-r33",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-34",
+          "headingLine": 669,
+          "heading": "### R-34｜本科课程实验的许可书例外",
+          "firstBodyLine": 670,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_session`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-authority-staff/r34",
+            "d4-g04-t03@1:module/use-authority-student/r34"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r34",
+            "src-original",
+            "src-r34",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-35",
+          "headingLine": 681,
+          "heading": "### R-35｜纸质证与后台考核记录等效",
+          "firstBodyLine": 682,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_exam_kind`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r35",
+            "d4-g04-t03@1:module/use-scope-student/r35"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r35",
+            "src-original",
+            "src-r35",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-36",
+          "headingLine": 693,
+          "heading": "### R-36｜试点课程模块细化",
+          "firstBodyLine": 694,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_module_lab_scope`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r36",
+            "d4-g04-t03@1:module/use-scope-student/r36"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r36",
+            "src-original",
+            "src-r36",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-37",
+          "headingLine": 705,
+          "heading": "### R-37｜演练签到与个人资格区分",
+          "firstBodyLine": 706,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_special_training`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-identity-staff/r37",
+            "d4-g04-t03@1:module/use-identity-student/r37"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r37",
+            "src-original",
+            "src-r37",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-38",
+          "headingLine": 717,
+          "heading": "### R-38｜外部人员多主体签批",
+          "firstBodyLine": 718,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_external_path`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-authority-staff/r38",
+            "d4-g04-t03@1:module/use-authority-student/r38"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r38",
+            "src-original",
+            "src-r38",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-39",
+          "headingLine": 729,
+          "heading": "### R-39｜外来人条件保险",
+          "firstBodyLine": 730,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_external_path`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r39",
+            "d4-g04-t03@1:module/use-scope-student/r39"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r39",
+            "src-original",
+            "src-r39",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-40",
+          "headingLine": 741,
+          "heading": "### R-40｜批次建档不等于逐人合格",
+          "firstBodyLine": 742,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`each_person_exam_status`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r40",
+            "d4-g04-t03@1:module/use-scope-student/r40"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r40",
+            "src-original",
+            "src-r40",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-41",
+          "headingLine": 753,
+          "heading": "### R-41｜个人资格作废与实验室停用独立",
+          "firstBodyLine": 754,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_and_lab`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-identity-staff/r41",
+            "d4-g04-t03@1:module/use-identity-student/r41"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r41",
+            "src-original",
+            "src-r41",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-42",
+          "headingLine": 765,
+          "heading": "### R-42｜证照期限主体绑定",
+          "firstBodyLine": 766,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_credential_kind`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r42",
+            "d4-g04-t03@1:module/use-scope-student/r42"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r42",
+            "src-original",
+            "src-r42",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-43",
+          "headingLine": 777,
+          "heading": "### R-43｜非本院参观与操作边界",
+          "firstBodyLine": 778,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`visitor_visit_scope`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-scope-staff/r43",
+            "d4-g04-t03@1:module/use-scope-student/r43"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r43",
+            "src-original",
+            "src-r43",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-44",
+          "headingLine": 789,
+          "heading": "### R-44｜基本资格与专项许可分层",
+          "firstBodyLine": 790,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_lab_scope`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-authority-staff/r44",
+            "d4-g04-t03@1:module/use-authority-student/r44"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r44",
+            "src-original",
+            "src-r44",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-45",
+          "headingLine": 801,
+          "heading": "### R-45｜外来人员账号合法开立",
+          "firstBodyLine": 802,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_external_account`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-identity-staff/r45",
+            "d4-g04-t03@1:module/use-identity-student/r45"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r45",
+            "src-original",
+            "src-r45",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-46",
+          "headingLine": 813,
+          "heading": "### R-46｜门禁清单不能作人员资格要件",
+          "firstBodyLine": 814,
+          "firstBodyExcerpt": "- **审核目标 / 作用对象**：`person_lab_scope`，对符合条件的每个unit逐个判断；不能以整批代理。",
+          "mappedCheckIds": [
+            "d4-g04-t03@1:module/use-identity-staff/r46",
+            "d4-g04-t03@1:module/use-identity-student/r46"
+          ],
+          "candidateCheckCount": 2,
+          "sourceIds": [
+            "src-r46",
+            "src-original",
+            "src-r46",
+            "src-original"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        }
+      ],
+      "semanticAudit": "PENDING_PER_RULE_CONDITION_OBJECT_AUTHORITY",
+      "publicationAllowed": false
+    },
+    {
+      "domain": "G06",
+      "templateId": "g06-t06",
+      "rawOriginalSha256": "77f89ac22112477e472d03cbac2696a1a58760dfec38466fe6bce8ee2db75204",
+      "originalRuleCount": 34,
+      "workspaceCheckCount": 64,
+      "ruleAnchors": [
+        {
+          "ruleId": "R-01",
+          "headingLine": 157,
+          "heading": "### R-01｜案件路由",
+          "firstBodyLine": 158,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`基线；所有校媒`。**触发条件**：`拟以官方名义传播`。**生效阶段**：`ST01→03`。**最小目标对象**：`申请case`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r01/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r01"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-02",
+          "headingLine": 162,
+          "heading": "### R-02｜官方渠道关联",
+          "firstBodyLine": 163,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`渠道政策激活`。**触发条件**：`release_actions≥1`。**生效阶段**：`ST02→07`。**最小目标对象**：`action`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r02/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r02"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-03",
+          "headingLine": 167,
+          "heading": "### R-03｜申请人与代办权限",
+          "firstBodyLine": 168,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`渠道政策/角色规则激活`。**触发条件**：`代表单位提交或代理`。**生效阶段**：`ST02→07`。**最小目标对象**：`actor+action`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r03/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r03"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-04",
+          "headingLine": 172,
+          "heading": "### R-04｜新闻线索路径",
+          "firstBodyLine": 173,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`设计规则`。**触发条件**：`仅提供新闻线索`。**生效阶段**：`ST01→02`。**最小目标对象**：`submission`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r04/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r04"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-05",
+          "headingLine": 177,
+          "heading": "### R-05｜送审内容完整",
+          "firstBodyLine": 178,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`设计要求+官方实践`。**触发条件**：`完整稿进入内容审签`。**生效阶段**：`ST02→07`。**最小目标对象**：`version`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r05/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r05"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-06",
+          "headingLine": 182,
+          "heading": "### R-06｜版本快照绑定",
+          "firstBodyLine": 183,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`设计要求+官方流程`。**触发条件**：`任何进入审批的终稿`。**生效阶段**：`ST03→11`。**最小目标对象**：`version+action`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r06/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r06"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-07",
+          "headingLine": 187,
+          "heading": "### R-07｜科研可验证主张拆解",
+          "firstBodyLine": 188,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`建议性检查`。**触发条件**：`正文出现明确科研数字/成果权利/奖项主张`。**生效阶段**：`ST03→07`。**最小目标对象**：`claim`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r07/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r07"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-08",
+          "headingLine": 192,
+          "heading": "### R-08｜成果阶段与措辞",
+          "firstBodyLine": 193,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`基线+来源事实`。**触发条件**：`claim表示受理/授权/发表/结题/获奖等`。**生效阶段**：`ST03→07`。**最小目标对象**：`claim`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r08/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r08"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-09",
+          "headingLine": 197,
+          "heading": "### R-09｜科研责任主体关联",
+          "firstBodyLine": 198,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`校本科研诚信原则`。**触发条件**：`稿件关联学校科研成果/项目`。**生效阶段**：`ST03→07`。**最小目标对象**：`claim+actor`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r09/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r09"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-10",
+          "headingLine": 202,
+          "heading": "### R-10｜真实性与科研不端界限",
+          "firstBodyLine": 203,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`校本已证/设计边界`。**触发条件**：`事实互相冲突或存疑`。**生效阶段**：`ST03→07`。**最小目标对象**：`claim`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r10/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r10"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-11",
+          "headingLine": 207,
+          "heading": "### R-11｜媒体素材登记",
+          "firstBodyLine": 208,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`条件式`。**触发条件**：`存在图片/视频/图表/海报`。**生效阶段**：`ST02→07`。**最小目标对象**：`asset`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r11/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r11"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-12",
+          "headingLine": 212,
+          "heading": "### R-12｜素材许可范围",
+          "firstBodyLine": 213,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`条件式+学校版权配置`。**触发条件**：`非自有/第三方/受限内容且拟对外传播`。**生效阶段**：`ST03→07`。**最小目标对象**：`asset+action`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r12/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r12"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-13",
+          "headingLine": 217,
+          "heading": "### R-13｜创作者与权利人差异",
+          "firstBodyLine": 218,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`条件式`。**触发条件**：`有摄影/插图/视频署名`。**生效阶段**：`ST03→07`。**最小目标对象**：`asset`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r13/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r13"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-14",
+          "headingLine": 222,
+          "heading": "### R-14｜肖像及个人信息",
+          "firstBodyLine": 223,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`法律风险提示+校本待配`。**触发条件**：`传播含可识别个人资料`。**生效阶段**：`ST03→07`。**最小目标对象**：`asset+person`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r14/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r14"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-15",
+          "headingLine": 227,
+          "heading": "### R-15｜合作与项目披露限制",
+          "firstBodyLine": 228,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`条件式`。**触发条件**：`有明确合同/项目披露限制或线索待证`。**生效阶段**：`ST03→07`。**最小目标对象**：`claim+action`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r15/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r15"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-16",
+          "headingLine": 232,
+          "heading": "### R-16｜保密审批或安全路由",
+          "firstBodyLine": 233,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`专业义务/条件式`。**触发条件**：`学校制度明确或材料含涉密线索`。**生效阶段**：`ST03→09`。**最小目标对象**：`version+action`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r16/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r16"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-17",
+          "headingLine": 237,
+          "heading": "### R-17｜科研重大事实专门复核",
+          "firstBodyLine": 238,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`特定学校/渠道 policy_required`。**触发条件**：`频道/科研重大事项触发正式职能部门复审`。**生效阶段**：`ST07`。**最小目标对象**：`claim+action`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r17/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r17"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-18",
+          "headingLine": 242,
+          "heading": "### R-18｜首次申请不得要求终审",
+          "firstBodyLine": 243,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`阶段不变量`。**触发条件**：`申请处于首次/尚未终审`。**生效阶段**：`ST01→03`。**最小目标对象**：`case`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r18/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r18"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-19",
+          "headingLine": 247,
+          "heading": "### R-19｜当前审批决定合法性",
+          "firstBodyLine": 248,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`渠道政策激活`。**触发条件**：`有自称“通过/拒绝”决定`。**生效阶段**：`ST07→10`。**最小目标对象**：`action+version`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r19/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r19"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-20",
+          "headingLine": 252,
+          "heading": "### R-20｜多渠道逐动作授权",
+          "firstBodyLine": 253,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`设计要求`。**触发条件**：`单稿发布渠道≥2`。**生效阶段**：`ST02→11`。**最小目标对象**：`action`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r20/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r20"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-21",
+          "headingLine": 257,
+          "heading": "### R-21｜未经批准不得声称已发布",
+          "firstBodyLine": 258,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`状态不变量`。**触发条件**：`申请者声明已批或已上线`。**生效阶段**：`ST03→11`。**最小目标对象**：`action`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r21/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r21"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-22",
+          "headingLine": 262,
+          "heading": "### R-22｜实质修改后重审判断",
+          "firstBodyLine": 263,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`建议+政策可配`。**触发条件**：`已有批准且送审版本发生实质变化`。**生效阶段**：`ST09→10`。**最小目标对象**：`claim+asset+action`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r22/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r22"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-23",
+          "headingLine": 267,
+          "heading": "### R-23｜非实质编辑容错",
+          "firstBodyLine": 268,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`设计例外`。**触发条件**：`仅排版/标点更改且事实/风险/素材不变`。**生效阶段**：`ST09→10`。**最小目标对象**：`version+action`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r23/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r23"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-24",
+          "headingLine": 272,
+          "heading": "### R-24｜刊后勘误申请",
+          "firstBodyLine": 273,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`正式纠错路径`。**触发条件**：`已发布后请求修正可见稿件`。**生效阶段**：`ST11→12`。**最小目标对象**：`article+claim`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r24/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r24"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-25",
+          "headingLine": 277,
+          "heading": "### R-25｜撤稿和停止传播",
+          "firstBodyLine": 278,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`正式纠错路径`。**触发条件**：`已发布后权利异议/重大事实错误`。**生效阶段**：`ST11→12`。**最小目标对象**：`article+asset`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r25/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r25"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-26",
+          "headingLine": 282,
+          "heading": "### R-26｜新闻纠错与成果库纠错分离",
+          "firstBodyLine": 283,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`业务边界`。**触发条件**：`申请变更已发表新闻中的成果事实`。**生效阶段**：`ST03/12`。**最小目标对象**：`article`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r26/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r26"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-27",
+          "headingLine": 287,
+          "heading": "### R-27｜多素材独立结论",
+          "firstBodyLine": 288,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`逐对象规则`。**触发条件**：`一个动作含多个素材/主张`。**生效阶段**：`ST03→10`。**最小目标对象**：`asset/claim/action`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r27/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r27"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-28",
+          "headingLine": 292,
+          "heading": "### R-28｜证据来源冲突与替代",
+          "firstBodyLine": 293,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`建议性通用`。**触发条件**：`多源证据不一致或存在合法替代`。**生效阶段**：`ST03→07`。**最小目标对象**：`claim+asset`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r28/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r28"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-29",
+          "headingLine": 297,
+          "heading": "### R-29｜可信数据不可达",
+          "firstBodyLine": 298,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`可靠性不变量`。**触发条件**：`权限接口故障/数据不可访问`。**生效阶段**：`ST03→07`。**最小目标对象**：`evidence`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r29/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r29"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-30",
+          "headingLine": 302,
+          "heading": "### R-30｜校本制度未知",
+          "firstBodyLine": 303,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`政策治理不变量`。**触发条件**：`当前校内送审节点/强制表不可确认`。**生效阶段**：`ST01→07`。**最小目标对象**：`policy+action`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r30/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r30"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-31",
+          "headingLine": 307,
+          "heading": "### R-31｜成果要报辅助证据",
+          "firstBodyLine": 308,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`上游校本事实+设计`。**触发条件**：`收到上游研究中心成果要报`。**生效阶段**：`ST03→07`。**最小目标对象**：`claim`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r31/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r31"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-32",
+          "headingLine": 312,
+          "heading": "### R-32｜科研诚信承诺的非默认性",
+          "firstBodyLine": 313,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`校本制度边界`。**触发条件**：`引用科研诚信承诺或学校单独政策明确触发`。**生效阶段**：`ST03→07`。**最小目标对象**：`claim+case`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r32/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r32"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-33",
+          "headingLine": 317,
+          "heading": "### R-33｜发布执行留痕",
+          "firstBodyLine": 318,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`执行边界`。**触发条件**：`有权人已批准且真实执行`。**生效阶段**：`ST09→11`。**最小目标对象**：`action`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r33/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r33"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "NORMAL_SEMANTIC_REVIEW",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        },
+        {
+          "ruleId": "R-34",
+          "headingLine": 322,
+          "heading": "### R-34｜撤回或失效重审",
+          "firstBodyLine": 323,
+          "firstBodyExcerpt": "- **依据等级/适用政策**：`生命周期`。**触发条件**：`主动撤回、主体失权、许可到期或事实被更正`。**生效阶段**：`ST04→13`。**最小目标对象**：`action+asset`。",
+          "mappedCheckIds": [
+            "g06-t06@1:module/use-r34/check"
+          ],
+          "candidateCheckCount": 1,
+          "sourceIds": [
+            "src-r34"
+          ],
+          "sourceApplicability": "UNKNOWN_NOT_APPROVED",
+          "risk": "PRIORITY_SCOPE_CONDITION_AUTHORITY",
+          "status": "RULE_ID_ANCHOR_ONLY_SEMANTICS_NOT_VALIDATED",
+          "semanticValidated": false,
+          "schoolAuthorityVerified": false
+        }
+      ],
+      "semanticAudit": "PENDING_PER_RULE_CONDITION_OBJECT_AUTHORITY",
+      "publicationAllowed": false
+    }
+  ]
+}

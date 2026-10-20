@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "review-v3-b4-original-library-recovery/2",
+  "sourceFrozenD4SHA": "b68443b23293b4714e61a3b81383d3d3a56434fc",
+  "previousEvidence": "B4-50-ORIGINAL-LIBRARY-RECOVERY-R11.json",
+  "method": "Recovered Library original raw_file bytes (not extracted text), sha256sum of exact bytes in isolated runtime, compared byte-for-byte digest to frozen D4 sourceSha256. Repository contains proof metadata, not originals. This is technical identity evidence only.",
+  "newlyVerifiedOriginals": 3,
+  "previousMatched": 43,
+  "totalMatched": 46,
+  "totalCandidates": 50,
+  "remainingHashMismatch": 4,
+  "remainingRawNotFound": 0,
+  "publicationAllowed": false,
+  "policyApproval": "NOT_VERIFIED",
+  "independentGold": "NOT_AUTHORIZED_OR_NOT_RUN",
+  "entries": [
+    {
+      "templateId": "g03-t12",
+      "domain": "G03",
+      "filename": "G03-T12_正式业务模板_MD_v0.1.md",
+      "sizeBytes": 108510,
+      "rawSha256": "a6c7131a8b8dbf5e14cfab532d0eaa7db880ef09237c18045bedf7df3325dd8b",
+      "d4FrozenSha256": "a6c7131a8b8dbf5e14cfab532d0eaa7db880ef09237c18045bedf7df3325dd8b",
+      "r11Status": "RAW_LIBRARY_FILE_NOT_FOUND",
+      "status": "MATCHED_LIBRARY_RAW_BYTES",
+      "archiveTechnicalChecks": 59,
+      "semanticAudit": "REQUIRES_SCOPE_AND_HUMAN_AUTHORITY_DIFF"
+    },
+    {
+      "templateId": "d4-g04-t03",
+      "domain": "G04",
+      "filename": "G04-T03_正式业务模板_MD_v0.1.md",
+      "sizeBytes": 137268,
+      "rawSha256": "9c889be9151854cbe43e3e94f5389c2a5fa0619e5e90867b14c117cee8e03cee",
+      "d4FrozenSha256": "9c889be9151854cbe43e3e94f5389c2a5fa0619e5e90867b14c117cee8e03cee",
+      "r11Status": "RAW_LIBRARY_FILE_NOT_FOUND",
+      "status": "MATCHED_LIBRARY_RAW_BYTES",
+      "archiveTechnicalChecks": 128,
+      "semanticAudit": "REQUIRES_PERSON_LAB_ACTION_VECTOR_DIFF"
+    },
+    {
+      "templateId": "g06-t06",
+      "domain": "G06",
+      "filename": "G06-T06_正式业务模板_MD_v0.1.md",
+      "sizeBytes": 65558,
+      "rawSha256": "77f89ac22112477e472d03cbac2696a1a58760dfec38466fe6bce8ee2db75204",
+      "d4FrozenSha256": "77f89ac22112477e472d03cbac2696a1a58760dfec38466fe6bce8ee2db75204",
+      "r11Status": "RAW_LIBRARY_FILE_NOT_FOUND",
+      "status": "MATCHED_LIBRARY_RAW_BYTES",
+      "archiveTechnicalChecks": 64,
+      "semanticAudit": "REQUIRES_ACTION_CLAIM_ASSET_DIFF"
+    }
+  ]
+}

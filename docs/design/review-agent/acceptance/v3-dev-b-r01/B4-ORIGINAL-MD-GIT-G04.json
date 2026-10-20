@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "review-b4-original-git/2",
+  "domain": "G04",
+  "sourceGitSha": "b68443b23293b4714e61a3b81383d3d3a56434fc",
+  "method": "metadata SHA256 and optional original Git blob pin only; not independent text-SHA256",
+  "publicationAllowed": false,
+  "records": [
+    {
+      "templateId": "d4-g04-t01",
+      "manifestGitBlob": "5d180ee390d102fbd494e66434694448f768a80d",
+      "sourceSection": "fullBusinessMd",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": null,
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    },
+    {
+      "templateId": "d4-g04-t02",
+      "manifestGitBlob": "cf13ef4ec65af7f32e290425969cfa1e5ec74325",
+      "sourceSection": "fullBusinessMd",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": null,
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    },
+    {
+      "templateId": "d4-g04-t03",
+      "manifestGitBlob": "ca54e6d730cc2d654021c605253593ffffdb1173",
+      "sourceSection": "fullBusinessMd",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": null,
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    },
+    {
+      "templateId": "d4-g04-t04",
+      "manifestGitBlob": "f4d3245134e1fcfe9e2128a6cc15bb157c556618",
+      "sourceSection": "fullBusinessMd",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": null,
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    },
+    {
+      "templateId": "d4-g04-t05",
+      "manifestGitBlob": "3fe26dc784deb1130987dbf34f5161c0fd1f59b7",
+      "sourceSection": "fullBusinessMd",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": null,
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    },
+    {
+      "templateId": "d4-g04-t06",
+      "manifestGitBlob": "8aed4c7f16c52e1ae5b2a25aa555c24c24106c9d",
+      "sourceSection": "fullBusinessMd",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": null,
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    },
+    {
+      "templateId": "d4-g04-t07",
+      "manifestGitBlob": "04ab741ba952a771a0e09017d55fdc315d1e6b41",
+      "sourceSection": "fullBusinessMd",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": null,
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    },
+    {
+      "templateId": "d4-g04-t08",
+      "manifestGitBlob": "b3042ac39f44383d871464dcd1741fff4ab00a4d",
+      "sourceSection": "fullBusinessMd",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": null,
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    }
+  ]
+}

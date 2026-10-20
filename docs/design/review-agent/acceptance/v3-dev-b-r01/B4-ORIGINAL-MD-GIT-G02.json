@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "review-b4-original-git/2",
+  "domain": "G02",
+  "sourceGitSha": "b68443b23293b4714e61a3b81383d3d3a56434fc",
+  "method": "compare manifest SHA256 claims with catalog; independent Git blob match where manifest has a pinned object, not independent SHA256 text rehash",
+  "publicationAllowed": false,
+  "records": [
+    {
+      "templateId": "g02-t01-review",
+      "manifestGitBlob": "c33d1dbc4b37ea1169fff56b40021643d198c6a8",
+      "sourceSection": "businessOriginal",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": null,
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    },
+    {
+      "templateId": "g02-t02-review",
+      "manifestGitBlob": "e211c62f94934bb110d25332df3854594995b3bd",
+      "sourceSection": "businessOriginal",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": null,
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    },
+    {
+      "templateId": "g02-t03-review",
+      "manifestGitBlob": "d38dc825d2775a7b148f9624223e84a9b9870123",
+      "sourceSection": "businessOriginal",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": null,
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    }
+  ]
+}

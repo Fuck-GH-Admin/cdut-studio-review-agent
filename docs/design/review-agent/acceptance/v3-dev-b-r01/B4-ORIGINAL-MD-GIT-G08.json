@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "review-b4-original-git/2",
+  "domain": "G08",
+  "sourceGitSha": "b68443b23293b4714e61a3b81383d3d3a56434fc",
+  "method": "manifest metadata and optional Git blob SHA1 pin comparison; not independent SHA256 rehash or policy authority",
+  "publicationAllowed": false,
+  "records": [
+    {
+      "templateId": "g08-t02",
+      "manifestGitBlob": "af537a0fa8f96f80f22485ea3affecbfa141b152",
+      "sourceSection": "root",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": null,
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    },
+    {
+      "templateId": "g08-t03",
+      "manifestGitBlob": "263963a7cc5170078eccf1017ad1c05f1fa78af5",
+      "sourceSection": "root",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": null,
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    }
+  ]
+}

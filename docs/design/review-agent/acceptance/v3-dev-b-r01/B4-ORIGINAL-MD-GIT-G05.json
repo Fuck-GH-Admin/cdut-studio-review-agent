@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "review-b4-original-git/2",
+  "domain": "G05",
+  "sourceGitSha": "b68443b23293b4714e61a3b81383d3d3a56434fc",
+  "method": "manifest SHA256 metadata; optional original Git blob pin; not independent text SHA256 or authority",
+  "publicationAllowed": false,
+  "records": [
+    {
+      "templateId": "g05-t01",
+      "manifestGitBlob": "e4aa40e5583318e59c677eee83c7e6d9d335b82a",
+      "sourceSection": "root",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": null,
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    },
+    {
+      "templateId": "g05-t02",
+      "manifestGitBlob": "7fadd1cc2df69f6bed23b28df7d0ab7cb5509e97",
+      "sourceSection": "root",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": null,
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    },
+    {
+      "templateId": "g05-t03",
+      "manifestGitBlob": "7d2931f14401b8da9dbc3aab4427cc676f0fb25f",
+      "sourceSection": "root",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": null,
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    },
+    {
+      "templateId": "g05-t04",
+      "manifestGitBlob": "58ac73d0045f2465a39b705e3dcf70f7a776438f",
+      "sourceSection": "root",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": null,
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    },
+    {
+      "templateId": "g05-t05",
+      "manifestGitBlob": "dcd7c493bfd141136ddc79c944452ebbb4d51f24",
+      "sourceSection": "root",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": null,
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    },
+    {
+      "templateId": "g05-t06",
+      "manifestGitBlob": "164fb04001a2ad96ed07de69a564ec774db8e474",
+      "sourceSection": "root",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": null,
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    }
+  ]
+}

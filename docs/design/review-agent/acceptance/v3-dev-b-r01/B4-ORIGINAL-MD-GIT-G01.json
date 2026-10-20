@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "review-b4-original-git/2",
+  "domain": "G01",
+  "sourceGitSha": "b68443b23293b4714e61a3b81383d3d3a56434fc",
+  "method": "compare manifest SHA256 claims with catalog; independent Git blob match where manifest has a pinned object, not independent SHA256 text rehash",
+  "publicationAllowed": false,
+  "records": [
+    {
+      "templateId": "g01-archive-utilization",
+      "manifestGitBlob": "bbb47d4a4767c19f8c1ba4eac8ce31acbdcc0cdc",
+      "sourceSection": "businessSource",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": "docs/design/review-agent/business-templates/G01/originals/g01_archive_utilization_template_editor_spec_v1_5.md",
+      "expectedOriginalGitBlob": "2f36f7de8eed196a1483e7410bf25575922117df",
+      "observedOriginalGitBlob": "2f36f7de8eed196a1483e7410bf25575922117df",
+      "originalSha256Recomputed": false,
+      "status": "GIT_BLOB_PINNED_MATCH",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    },
+    {
+      "templateId": "g01-special-campus-card",
+      "manifestGitBlob": "0b8c21f2fc7c08ff242067a7f880f5ba3acb5baf",
+      "sourceSection": "businessSource",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": "docs/design/review-agent/business-templates/G01/originals/special_campus_card_template_v1.4.md",
+      "expectedOriginalGitBlob": "c76427d092e455a5a353ff25aade7ced4de189e5",
+      "observedOriginalGitBlob": "c76427d092e455a5a353ff25aade7ced4de189e5",
+      "originalSha256Recomputed": false,
+      "status": "GIT_BLOB_PINNED_MATCH",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    },
+    {
+      "templateId": "g01-student-identity-correction",
+      "manifestGitBlob": "f559296623c72cf5a897621a3267840397949ad2",
+      "sourceSection": "source",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": "docs/design/review-agent/business-templates/G01/originals/g01_student_identity_complete_template_v1.7.md",
+      "expectedOriginalGitBlob": null,
+      "observedOriginalGitBlob": "aec737f471d4e648ab98a9243dcf4bc9939ce8a5",
+      "originalSha256Recomputed": false,
+      "status": "ORIGINAL_GIT_BLOB_OBSERVED_NOT_INDEPENDENTLY_SHA256_CHECKED",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    },
+    {
+      "templateId": "g01-political-procedure",
+      "manifestGitBlob": "2f63b260f410f48e7eb9e01f2691f5f8dfadc2f0",
+      "sourceSection": "businessSource",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": "5ebc919c6630a3b81aaf6a1e6c28b1d37de3671c",
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    },
+    {
+      "templateId": "g01-special-proof-seal",
+      "manifestGitBlob": "f8fa3399c97ea95b2574e79a1fbeeff2d4f7bdaa",
+      "sourceSection": "businessSource",
+      "sourceSha256MetadataMatchesCatalog": true,
+      "originalPath": null,
+      "expectedOriginalGitBlob": "6b931fb5f7d00482cb551f58d4fbb9349bd33cd2",
+      "observedOriginalGitBlob": null,
+      "originalSha256Recomputed": false,
+      "status": "SHA256_METADATA_MATCH_ORIGINAL_ABSENT",
+      "policy": "NOT_VERIFIED",
+      "gold": "NOT_AUTHORIZED_OR_NOT_RUN"
+    }
+  ]
+}

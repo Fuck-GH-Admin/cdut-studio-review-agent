@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "review-v3-b4-older-original-recovery/1",
+  "sourceFrozenD4SHA": "b68443b23293b4714e61a3b81383d3d3a56434fc",
+  "templateId": "g06-t01",
+  "filename": "G06-T01_正式业务模板_MD_v0.1.md",
+  "sizeBytes": 94183,
+  "method": "User-authorized Library raw_file original bytes rehashed by sha256sum; no Markdown text normalizations. Retain the v0.1.1 raw file and R11 mismatch history separately; this v0.1 is the fixed D4 original.",
+  "observedRawSha256": "e3bb29673e317bf65b00b9b20f5af56a69d8fb2d87f42e2c3aab0473d7e9f727",
+  "frozenD4SourceSha256": "e3bb29673e317bf65b00b9b20f5af56a69d8fb2d87f42e2c3aab0473d7e9f727",
+  "oldR11ObservedSha256": "819ede4d926cfc671b22c19ecb3ec0fea03c75ba2f27f492fad47912a3024230",
+  "oldR11Filename": "G06-T01_正式业务模板_MD_v0.1.1.md",
+  "counts": {
+    "previouslyMatched": 46,
+    "newlyMatched": 1,
+    "nowMatched": 47,
+    "remainingQuarantined": 3
+  },
+  "quarantinedStill": [
+    "g02-t03-review",
+    "d4-g04-t06",
+    "g08-t03"
+  ],
+  "publicationAllowed": false,
+  "policyApproval": "NOT_VERIFIED",
+  "independentGold": "NOT_AUTHORIZED_OR_NOT_RUN"
+}
