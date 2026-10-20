@@ -1,6 +1,7 @@
-# CDUT Studio Review V3｜并行功能开发任务书 R02（开发边界校勘）
+# CDUT Studio Review V3｜十线并行开发与统一交付协议 R03
 
 **基线**：main @ 24603d87570f157d57c4845d897dc04c4cfe19e9（2026-10-20），每个分支均已实际创建于此 SHA。**产品要求、证据与缺口**见同目录 FEATURE-GAP-MATRIX.md。
+**R03 状态**：这是十线唯一共同执行协议，仅修订协作/交付纪律，不擅自变动 R02 的产品功能拆分。规则应尽量轻量，避免为规范本身新增无关开发任务。
 **目标**：线上多个会话交付能被主产品调用的实际功能模块及其业务 UI/adapter；本地总 Agent 专门负责共享合同接线、真实端到端运行、冲突归属、合并、定点测试和产品 UAT。模块可单独完成≠原始 A/U 用户旅程已完成。线上会话只提交自身 feature branch 与固定 SHA，不直接合入 main，不自作主张增加一个案卷/Run/审批系统。
 
 ## 0. 双轨工作定义
@@ -10,6 +11,28 @@
 **本地总 Agent**：唯一负责共享 Main/IPC/Preload 入口协调、来自多个功能分支的冲突处理、联测/人工验收、生产 main 合并与回滚；不重新实现分支 Owner 已做的模块。不同分支的 SourceRef/Case/ReviewRun 以 V3 当前合同为唯一真实对象，不能再开第四套引擎。
 
 **每个云端会话提交**：分支 + commit SHA + 修改路径 + 用户操作/实际 UI/API 入口 + 必需的共享 Main 接口（签名/作用/返回/错误）+ 尚未验证事项。尽量编写可被单独导入的模块，跨线写入留给本地总 Agent。
+
+### 0.1 必须共同遵守的起点（适用于所有由本会话分出的子会话）
+
+1. **先领号，后写代码**。每个子会话收到 T01–T10 之一作为唯一身份；不允许自选/兼任第二条线。十条线分别使用第 1 节列出的精确远端分支名，初始共同祖先为 main@24603d87570f157d57c4845d897dc04c4cfe19e9；开始时执行远端 ref/HEAD 检查，记录实际 HEAD。不因其他会话提交而悄悄重置本分支。
+2. **共同规范唯一来源就是本文件 R03**。所有会话读取 docs/v3-full-product-scope-r01 上的本任务书 R03 + FEATURE-GAP-MATRIX.md R02，再按需查原 02/04/06/07 和源码。本规范在各 feature 分支创建之后才写入文档分支，**不能误以为本文件已存在于 main/自己的 feature branch**。用户指定的更新裁决高于旧版任务书；产品目标始终以原 F/A/U/C 要求为准，矩阵仅表示旧 main 的已核验证据，不是新功能清单的完成状态。
+3. **只写自己分支**。不修改 main，不替其他 T 线提交，不重置或强推远端分支，不整分支合并历史 ABCI 或其他 T 线，不替本地 Agent 执行集成。跨线依赖只能读取其他分支的固定提交（必要时），不得把它的未审代码直接复制或 cherry-pick 到自己的生产提交。
+4. **先复用后补齐**。开始前用不超过一页的简表标注该模块的“现有可用 / 仅有源码未接 / 真缺失 / 当前待验证”；阅读与本领域直接有关的 V1–V3 已有模块。仅对真实差距施工，避免把当前 main 可用功能重写一遍，也不拿“旧服务存在”直接冒充 V3 完整闭环。
+5. **主线权威不变**。遵循 main 已存在的 CaseAggregate / ReviewRun / TemplateVersion / DocumentVersion / SourceRef 和 Actor 合同。单一 Case/Run/证据版本；技术候选不能冒充学校正式决定；人工业务 Actor 来自可信 Main；任何计算都不能把模型猜测当确定结果。
+6. **按用户流程分割职责，不按大文件抢所有权**。各线可提供独立实际可用的 UI 和领域 adapter，不只是纯类型或测试；共享 Main/IPC/Preload/持久写入只能交本地 Agent。缺公共入口先实现能测试的本线模块及明确依赖请求，绝不自己建立平行数据源。
+7. **业务完备优先，安全守住现实边界**。保留现有角色/权限与来源真实性，不为了想象中的恶意输入新增多层防御框架、审计平台或无关治理任务。禁止对未授权的校方接口编造凭据；但不得因此停下本地可完成的合法审核功能。
+8. **不要为等待别线空转**。本线可在现有合同上完成的部分立刻开发、测试、提交。缺 TXX 业务输入或 Main 端口时，使用薄的领域 adapter / 可验证 fixture，列出准确的 WAITING_FOR_* 依赖并继续本线其他能力。Mock/fixture 的通过不能标成真实用户链 PASS。
+9. **不修改共同协调文档**。本轮十线不要在自己的 feature 分支创建一套“统一协议”、修改本任务书、直接修改 Feature-Gap 总表或声称替整个系统更新完成率；发现错误放在交付说明中，由协调/本地集成者裁决更新一个共同口径。
+10. **最小可验证增量**。一次交付应当包含真实行为、可测试入口与一次自测，而不只是接口空壳、TODO、报告或大量测试桩。没有必要为了历史未触及领域的旧 CI 失败中断全部功能开发；但不得隐藏由自己改动引发的错误。
+
+### 0.2 统一目录、文件与接口约定
+
+- **仓库目录以真实 main 为准**。Main 业务服务在 apps/electron/src/main/lib/review/；Renderer 审核 UI 在 apps/electron/src/renderer/components/content-review/；共享 DTO 在 packages/shared/ 相关源码。不要凭文档描述猜文件位置；文件缺失先定位历史代码和实际当前调用者。
+- **新建文件命名**：建议领域源码使用 review-v3-tXX-<purpose>.ts，同层测试用 review-v3-tXX-<purpose>.test.ts；新组件用 ReviewV3TXX<Purpose>.tsx。**已有模块为修复或继承而修改时保留已有名字**，无须机械重命名或包装转发层。
+- **跨线/跨主进程交互**：优先使用 main 已有共享类型和 IPC；不要编辑包级核心 DTO 来适应单线假设。确实需要变更时，在自己模块内先用明确的输入输出边界与适配器，提交一个精确 CONTRACT_REQUEST，由本地 Agent 统一修改共享合同、Main/IPC/Preload。不能用伪造 V3 case/actor/run、随意 any/unknown 强转或在 Renderer 写本地数据库作为“临时可运行”方案。
+- **CONTRACT_REQUEST 最小格式**：需求线 TXX；当前代码文件与调用位置；期望函数/事件名；完整输入字段及现有类型复用；输出和错误语义；身份/数据版本来源；为什么现有 API 不够；具体由本地 Agent 修改的共享文件；本线提供的 adapter/测试 SHA。能直接复用现有函数时**不要**提新接口。
+- **无权修改不等于无权完成业务**：每条线可改本领域算法、独立适配器、本领域界面及局部测试；只将最小共同写入入口交由 L 线。所有业务语义（例如评分口径、模板字段、两级阶段、学生补件）仍由相应 T Owner 提供，L 不能替其发明。
+
 
 ## 1. 十个可并行的模块 Owner（共享合同须协调）
 
@@ -108,6 +131,28 @@
 
 **完成状态分两层**：线上模块只能声明“功能代码与自身 UI/adapter 已交付，待 Main 接入或联合实测”；本地总 Agent 按 A/F/U/C 真实操作签收后才声明“V3 产品能力闭环”。不得以已存在的 V2 函数当作 V3 全链通过，也不得把缺 Main 桥接归咎为该业务从未实现。
 
+
+## 1.6 十线文件所有权清单（允许修改与禁止抢写）
+
+以下是 **Owner 对产品代码的归属**，不是限制合理新增文件的白名单；新文件归相应领域。发现一个旧文件跨域混合功能时，只允许修改本领域独立段落且无其他线并发修改；否则抽出独立组件/adapter，让本地集成者处理公共文件。
+
+| 线 | 优先修改的现有模块或独立新增组件 | 不得替别人修改的范围 |
+| --- | --- | --- |
+| **T01** | TemplateWizardPanel、ReviewV3AuthorWizard、review-template-author-store-v3-b1、review-template-plan-adapter-v3-b1；自身模板作者/编排/试跑 UI | T04 规则执行核心、T05 审批执行、T10 顶层导航；共享 TemplateVersion、主进程安装入口提交需求而非直接改 |
+| **T02** | document-service、document-capability-library、解析/OCR/ZIP staging、review-source-version-adapter-v3-b2；物理来源解析适配 | T03 事实证据归属业务、T08 来源展示/报告、共享 Case material writer |
+| **T03** | evidence-service、ObservationConfirmPanel、review-v3-b4-* 的事实/证据语义、证据纠错与失效独立模块 | T02 文件解析、T08 SourceBlockView/导航、共享观察值落库事务 |
+| **T04** | deterministic-engine、规则计算/有效规则/冲突解析、独立 Plan compiler/测试 | T01 模板作者 UI、T05 阶段执行、核心 CanonicalPlan 全局类型 |
+| **T05** | business-workflow、stage-workflow、局部补件/决定/复审业务动作及独立业务面板 | T10 ContentReviewView、Main 中 workspace-business-service-v2 的正式 writer/权限判定、Actor 核心 |
+| **T06** | BatchPanel、独立分案/队列/批次适配器、batch-automation 的本领域算法 | T07 评委模块、T09 离线 codec、batch-store 的权威写事务 |
+| **T07** | judging-service、rating-service、独立评分/匿名/名额 UI 与适配器 | T06 BatchPanel 总入口、T09 offline-roundtrip codec、共享身份和批次 writer |
+| **T08** | AssistantDrawer、SourceBlockView、report-service-v2、report-export-v2-service、只读来源呈现与报告 UI | T02/T03 来源真值和归属、T10 ContentReviewView 总导航、公共导出 IPC |
+| **T09** | offline-roundtrip、external-ports、本线离线包 codec/版本/冲突适配 | T07 评分业务规则、T05 补件业务决定、Main 导入后正式提交事务 |
+| **T10** | ContentReviewView、CaseManagerBar、CreateCaseDialog、Left/Center/RightPanel 的导航和 ViewModel 组合 | T01 作者表单、T05 审批内核、T02 解析与 T03 证据内核；建案 Main 学年约束交 L |
+
+**L 线独占最终写入 / 生产总装**：apps/electron/src/main/lib/review/review-ipc.ts、apps/electron/src/preload/index.ts、apps/electron/src/main/index.ts、apps/electron/src/main/lib/review/native-workspace-case-v3.ts、case-store-v2.ts、正式案卷/Run/Batch 提交路径、可信 Actor 授权入口、packages/shared 中多线共用的核心业务 DTO，以及 main 合并。T10 负责统一 Renderer 顶层导航的产品设计与代码；L 只负责把 T10 产物与其他组件接进真实运行环境，不另做一套竞争 UI。即使上表某旧模块被两个路径复用，也不因此允许跨 Owner 改写其业务语义。
+
+**旧代码交叠的处理顺序**：①先读本线现有功能是否能直接调用；②可独立修的在本人负责的模块里修；③只能改共享文件时，开发本线 adapter + 精确 CONTRACT_REQUEST；④由 L 定向接线。如果阻碍本线的只有一个公共字段/端口，不要因此停止其他本领域施工。
+
 ## 2. 推荐并行批次（按实现依赖，不要求所有会话齐步走）
 
 **第一组可立即并行：T01、T03、T04、T05、T10**。T02 也可同时独立扩展解析。  
@@ -116,9 +161,40 @@
 
 **易冲突的中心点**：CaseAggregate/ReviewRun/Decision/TemplateVersion 核心类型、review-ipc.ts、preload/index.ts、main/index.ts、case-store-v2.ts、统一业务事务/产品导航整合，**由本地总 Agent 独占最终修改与合并**。各线上传可调用 API/adapter + 需求签名；主 Agent 执行 bridge。T01 与 T10 之间“作者表单 vs 通用导航”由各自负责，T05 不写 T10 的顶层 ContentReviewView，T06/T07 不并发修改同一 BatchPanel 页面：T07 建立评委自己的面板/Adapter。
 
-## 3. 各云端开发会话共同接手提示词（补入自己 T 号）
 
-你是 CDUT Studio Review V3 的云端生产功能开发 Agent。仓库 Fuck-GH-Admin/cdut-studio-review-agent。**只负责本任务书第 1 节对应的 T 号**，当前已存在专属 feat/v3-full-tXX-* 云端分支（创建基线 24603d87570f157d57c4845d897dc04c4cfe19e9）。先完整阅读同目录 FEATURE-GAP-MATRIX.md，原设计 02/04/06/07 中和自己业务有关的精确要求，随后读当前 main 对应源码。你的任务是**开发用户真实可操作的业务功能**，优先继承 V1–V3 的已有正确实现，绝不重新开启无边界调查、只生成 PPT/报告或又造第二套 Case/Run/审批系统。不要碰其他 Owner 的文件和统一主进程写入。遇到接口问题，在你的功能分支留下能运行的自身适配层，精确说明本地总 Agent 要接哪个签名。把代码提交到**你自己的远端 feature branch**；不合 main、不触动其他分支、不做全仓验收。最后只汇报 commit SHA、实际功能、用户可执行路径、仍缺接口及与验收 A/F/U 编号的对应；不把“代码写了/CI 绿了”说成整套产品完成。
+## 2.1 所有 T 线采用相同的实际开发和提交节奏
+
+**领取任务（一次）**：确认本人 T 号、精确 branch 与当前 HEAD；读取 R03、矩阵 R02、原 A/F/U/C 和所负责的旧源码；用 5～10 条简短事实确定真实缺口。检查 main 新进展**只读**，不在本人分支私下同步 main 导致别人依赖的 SHA 改变。
+
+**一轮开发（可重复多轮）**：选择一条本线能够展示价值的纵向切片（例如“材料登记后出现精确来源状态”），优先接已有代码，直接修改领域源码和 UI/adapter；仅编写覆盖变更行为的定向测试。内部可多次 commit，推送时给出这轮最终 SHA；下一轮从自己上轮 SHA 继续。不要把全部功能攒到最后一次大提交，也不要为了“先交一份研究”而停工。
+
+**自测要求**：根据修改选择 bun test --isolate <本线相关测试文件>、bun run typecheck（或指定 workspace typecheck）、bun run check:boundaries 中相关命令；记录真正运行的命令及结果，命令未运行写 NOT_RUN。旧全仓失败必须区分“基线已有”与“本次引入”；本地 L 最终完成 OS Electron/E2E、跨线冲突、整仓编译与真实 Provider/人机操作验收。不能为了 CI 绿而删旧测试/绕过原功能。
+
+**交付方式**：只能 push 自己的 feat/v3-full-tXX-* 远端分支；首次有实际功能代码后可创建一个面向 main 的 **Draft PR** 供 L 读取及分批 cherry-pick/合并，不得自行合并。后续持续向**同一分支和同一 Draft PR** 追加，不因每轮批次新建额外分支/PR。PR 的目标是交付可集成代码而非代替本地产品验收。
+
+**共享依赖**：交付时把所有 CONTRACT_REQUEST 放在同一 Draft PR 描述或最终回复中，**不得附带尚未同意的共享源码变更**。需求可以在一轮内多次修订，L 以明确的 SHA+字段版本为准。需要对 T07/T09 等协议方同步时，写精确字段和含义，使用 PR 交付摘要给对方引用；不共享可写工作树。
+
+**基线变化**：若 L 合入 main 或变更共享类型，本线先记录“原基线、L 提供的新合同 SHA、当前个人 HEAD”；由 L 明确安排同步方式。没有 L 的明确同步指令，**不要自动 merge/rebase main 到个人开发分支**，更不要 force push 覆写既有交付。允许继续做不依赖新基线的独立切片。
+
+**单轮固定汇报字段**（不需要写长报告）：
+- T 号 / 功能范围 / 源分支 / 本轮 commit SHA / 对应 Draft PR（若有）
+- 这轮**新增的真实行为**、实际 UI/API 入口；对应 F/A/U 编号
+- 修改文件（区分新文件和旧模块）及继承的旧实现
+- 自测命令及结论；没有跑的明确 NOT_RUN
+- CONTRACT_REQUEST（没有写 NONE）与 WAITING_FOR_TXX / WAITING_FOR_L（没有写 NONE）
+- 完成级别：**CODED**（写了代码未验证） / **MODULE_VERIFIED**（定向测试或可操作模块） / **INTEGRATED**（L 真正接入 main） / **PRODUCT_ACCEPTED**（L 真实用户流程验收）。**云端会话只能自行宣称前两级**；不得因 Draft PR、单测或 mock 伪装后两级。
+- 下一轮仍属于本人范围内的具体工作（一句话）。
+
+
+## 3. 十份会话的统一启动约定（每份只换 T 号）
+
+新会话必须收到明确的 **T01/T02/.../T10 身份**。如果用户只是复制这份协议却没有标明身份，先确定本会话对应 T 号；不能自主同时领取空闲模块。每条线只查第 1 节对应的那一个分支与任务。
+
+**所有会话共同的开工指令**：
+
+你是 CDUT Studio Review V3 的 TXX 功能 Owner。仓库 Fuck-GH-Admin/cdut-studio-review-agent。请先读取 docs/v3-full-product-scope-r01 分支中的 PARALLEL-IMPLEMENTATION-TASKBOOK.md **R03** 与同目录 FEATURE-GAP-MATRIX.md **R02**；然后阅读原产品 02/04/06/07 中与本 T 号有关的条目和当前 main 的真实代码。使用第 1 节规定的精确 feat/v3-full-tXX-* 分支，在原有分支 HEAD 上开发，不自建新生产分支。按第 0.1、0.2、1.6、2.1 节严格遵守共享数据合同、文件归属、依赖请求、提交与自测格式。**重点是把用户可操作的真实功能补齐**，优先继承 V1/V2/V3 旧实现。不要改核心 Main/IPC/Preload/Case writer，不另造业务引擎，不自己把 PR 合入 main，也不要为了缺共享入口而放弃本线能完成的功能。真正需要 L 接线时提交最小 CONTRACT_REQUEST。实际完成一轮后把代码 push 到自己的远端分支，并按第 2.1 节的固定字段汇报。你负责模块功能，L 负责统一桥接、合并及产品级签收。
+
+**十份会话各自开头只需加一句“本会话身份=TXX，执行第 1 节对应任务”。** 文档链接、分支名、共同规则均不得由各会话自行改写。不要发送同一份没有 T 号的模糊指令给十个分支。
 
 ## 4. 本地总 Agent 的最终唯一签收
 
@@ -127,3 +203,20 @@
 3. 按 04 A01–A18 + 06 U01–U12 + C01–C04 一项项真实用户场景签收，记录 PASS/PARTIAL/FAIL/NOT_RUN；本地单案 Pi 60/60 executed 且 58 pending 不计完整业务案卷通过。
 4. 同一 V3 Case 完成至少三条真实旅程：**A15 通用组织申请全流程**、**A09 补件到本地合法决定及复审**、**A12+A14 批量/评委评分定稿**，以及报告/离线包/重启。各子功能通过后再整体验收剩余边界。
 5. 仅本地 Agent 处理所有冲突、编译错误、旧断言、OS E2E 与最终 main fast-forward/merge；不要 force push。学校实际认证/共享平台 S01–S03 仍受外部条件约束，不阻塞本地版开发。
+
+
+## 4.1 本地 L 的同步边界（防止第十一条开发线）
+
+本地 Agent 按 Local-L01 执行：优先主线与历史执行资产定向核对、主进程通用建案学年合同、当前 V3 可复用读写入口、集成环境；持续接入成熟 TXX 固定 SHA，补共享 Main/IPC/Preload 并作产品联测。**不得自行接管或重写 T01–T10 的模板、材料、事实、规则、工作流、批次、评委、助手、离线与顶层 UX 产品实现。**
+
+L 可在自己集成分支先完成公共基础合同；若改动会影响 TXX 的现成类型，须提供可复用的新合同文件/精确 SHA 与迁移说明，而不是要求十条线猜 main 的临时状态。L 记录：已接收 TXX SHA → 已桥接端口 → 已进入 main SHA → E2E/UAT 是否通过。**L 才有权把状态从 MODULE_VERIFIED 提升为 INTEGRATED/PRODUCT_ACCEPTED。**
+
+## 5. 分支提交前的简短核对（十线共同）
+
+- [ ] 我只负责用户指定的一个 T 号，在精确分支上继续，没有覆盖别人分支或自动改 main。
+- [ ] 我查过本领域当前 main 及历史正确代码；新增的是实际缺口，没把旧能力重新复制一遍。
+- [ ] 这轮提交含真实模块/交互/adapter 与相关验证，不只是文档、空框架或测试假象。
+- [ ] 没改其他 Owner 的领域文件、Main/IPC/Preload、正式 writer、共享核心 DTO；需要的端口已作为具体 CONTRACT_REQUEST 告知 L。
+- [ ] 没改写授权主体、技术预审/学校正式批准的界限；没有重造 Case/Run/Source 数据真值。
+- [ ] 代码已推送到本人远端分支，能报出真实 SHA、修改路径、测试结果、待接线依赖及下一个本职切片。
+- [ ] **仅声明本轮实际完成的层级**，不把代码存在、旧测试通过、PR 建立或 CI 绿色说成完整产品验收。
