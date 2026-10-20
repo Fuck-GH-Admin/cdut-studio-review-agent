@@ -41,7 +41,7 @@ const sourceNotAuthorized: readonly string[] = [
   'review-v3-b-candidate-readiness-workbench.ts',
 ]
 function gitBlob(bytes:Uint8Array):string {
-  const header=Buffer.from('blob '+bytes.byteLength+'\\0'.replace('\\0','\0'))
+  const header=Buffer.from('blob '+bytes.byteLength+'\0')
   return createHash('sha1').update(header).update(bytes).digest('hex')
 }
 describe('I6 exact I5 source lock and no unauthorized I6 replay',()=>{
@@ -52,7 +52,7 @@ describe('I6 exact I5 source lock and no unauthorized I6 replay',()=>{
     const [name,blob]=pinned[0]!
     const bytes=readFileSync(at(name))
     expect(gitBlob(bytes)).toBe(blob)
-    expect(gitBlob(Buffer.concat([bytes,Buffer.from('\\nI6 tamper probe')]))).not.toBe(blob)
+    expect(gitBlob(Buffer.concat([bytes,Buffer.from('\nI6 tamper probe')]))).not.toBe(blob)
     expect(gitBlob(Buffer.from(''))).not.toBe(blob)
   })
   test('I6-LOCK-03 unsigned C R09/A R21/B R29 files stay absent in I6 isolated tree',()=>{
