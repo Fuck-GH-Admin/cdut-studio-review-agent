@@ -417,16 +417,22 @@ export function V2CasePanel({
             <section className="space-y-4 rounded-xl bg-card p-4 shadow-sm">
               <h3 className="font-semibold">待办与人工办理</h3>
               <p className="text-xs text-muted-foreground">先确认审核发现和证据，再办理阶段决定、补件或申诉。AI 运行完成不等于人工审批通过。</p>
+              {!latestRun && <p role="status" className="rounded-md bg-muted px-3 py-2 text-xs">
+                本案尚无可用审核记录。请先进入「执行与结果」完成当前材料审核。
+              </p>}
+              {latestRunStale && latestRun && <p role="alert" className="rounded-md bg-amber-500/10 px-3 py-2 text-xs text-amber-700 dark:text-amber-300">
+                当前材料或事实已变更，旧运行不能直接作为新的人工决定依据，请先重新审核。
+              </p>}
+              <section className="space-y-2">
+                <h4 className="text-sm font-medium">逐条检查与人工认定</h4>
+                <ReviewV3T05RunDecision aggregate={current} onResult={applyResult} />
+              </section>
               <ReviewV3T05HumanWorkflow key={current.caseV2.id}
                 aggregate={current} onResult={applyResult} stageCapability={stageCapability}
                 recordTrustedStageDecision={recordTrustedStageDecision}
                 submitAppeal={input => window.reviewAPI.submitLocalF13Appeal(input)}
                 reviewAppeal={input => window.reviewAPI.reviewLocalF13Appeal(input)}
                 withdrawAppeal={input => window.reviewAPI.withdrawLocalF13Appeal(input)} />
-              <details className="rounded-lg border p-3">
-                <summary className="cursor-pointer text-sm font-medium">逐条检查与旧式人工处置</summary>
-                <ReviewV3T05RunDecision aggregate={current} onResult={applyResult} />
-              </details>
             </section>
             <div className="flex justify-end"><Button onClick={() => onStepChange?.('report')}>查看报告与记录</Button></div>
           </div>}
