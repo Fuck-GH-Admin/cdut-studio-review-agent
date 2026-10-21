@@ -155,7 +155,8 @@ export function ContentReviewView(): React.ReactElement {
   const openBusinessCase = React.useCallback(async (step: ReviewCaseStep = caseStep): Promise<void> => {
     setCaseStep(step)
     if (businessAggregate) {
-      setSection('case-v2')
+      // 从其他工作区返回本案时重读 Main，不拿导航前的旧聚合继续办理。
+      if (await openCase(businessAggregate.caseV2.id)) setCaseStep(step)
       return
     }
     if (reviewCase) {
