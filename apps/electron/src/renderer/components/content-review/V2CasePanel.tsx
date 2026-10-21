@@ -8,6 +8,7 @@
 import { atom, useAtomValue, useStore, useSetAtom } from 'jotai'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { Actor, CaseAggregateV2, FieldSpec, ReviewCommandResult, ReviewRunV2, TemplateVersion } from '@profer/shared'
+import { selectedCaseIdAtom, reviewWorkspaceAggregateAtom, reviewWorkspaceAggregatesByCaseAtom } from '@/atoms/review-atoms'
 import { Button } from '@profer/ui/primitives/button'
 import { toast } from 'sonner'
 import { RunResultPanel } from './RunResultPanel'
@@ -26,7 +27,21 @@ import { ReviewV3UnifiedRun } from './ReviewV3UnifiedRun'
 import { ReviewV3T08ReportPanel } from './ReviewV3T08ReportPanel'
 
 /** 当前案卷聚合 */
-export const reviewV2AggregateAtom = atom<CaseAggregateV2 | null>(null)
+export const reviewV2AggregateAtom = atom(
+  (get) => get(reviewWorkspaceAggregateAtom),
+  (get, set, aggregate: CaseAggregateV2 | null) => {
+    const selectedCaseId = get(selectedCaseIdAtom)
+    if (aggregate) {
+      const caseId = aggregate.caseV2.id
+      set(reviewWorkspaceAggregatesByCaseAtom, (current) => ({ ...current, [caseId]: aggregate }))
+      set(selectedCaseIdAtom, caseId)
+      return
+    }
+    if (selectedCaseId) {
+      set(reviewWorkspaceAggregatesByCaseAtom, (current) => ({ ...current, [selectedCaseId]: null }))
+    }
+  },
+)
 export const reviewV2BusyAtom = atom(false)
 export const reviewV2NoticeAtom = atom<string | null>(null)
 /** 模板发布后通知 V2CasePanel 重载模板列表（面板常驻挂载，tab 切换不触发 effect） */
@@ -67,7 +82,7 @@ function renderTemplateFieldInput(
 }
 
 /** 案卷面板：选择模板 → 创建案卷 → 登记材料 → 开始审核 */
-export function V2CasePanel({ onCaseOpened }: { onCaseOpened?: (caseId: string) => void } = {}): JSX.Element {
+export function V2CasePanel({ onCaseOpened, embedded = false }: { onCaseOpened?: (caseId: string) => void; embedded?: boolean } = {}): JSX.Element {
   const store = useStore()
   const aggregate = useAtomValue(reviewV2AggregateAtom)
   const setNotice = useSetAtom(reviewV2NoticeAtom)
@@ -337,7 +352,7 @@ export function V2CasePanel({ onCaseOpened }: { onCaseOpened?: (caseId: string) 
         {' · '}{current.caseV2.documents.filter((item) => item.active !== false).length} 份原件
         {' · '}{current.caseV2.stage === 'decided' ? '已形成业务决定' : '当前阶段：' + current.caseV2.stage}
       </p>}
-      <details open={!current} className="mb-3 rounded-md border border-border/60 px-3 py-2">
+      {!embedded && (<details open={!current} className="mb-3 rounded-md border border-border/60 px-3 py-2">
         <summary className="cursor-pointer text-xs font-medium">打开其他案卷 / 从已发布模板新建</summary>
         <div className="mt-3">
       <div className="mb-2 space-y-1.5 rounded-lg border-t pt-2">
@@ -423,7 +438,7 @@ export function V2CasePanel({ onCaseOpened }: { onCaseOpened?: (caseId: string) 
         </div>
       )}
         </div>
-      </details>
+      </details>)}
       <div className="space-y-2">
         {!current && (
           <Button size="sm" disabled={store.get(reviewV2BusyAtom)} onClick={seedAndCreate}>
@@ -451,7 +466,7 @@ export function V2CasePanel({ onCaseOpened }: { onCaseOpened?: (caseId: string) 
                 ))}
               </ul>
             )}
-            <MaterialDropZone
+            {!embedded && (<MaterialDropZone
               caseId={current.caseV2.id}
               slotId={slotId}
               hasSlots={!!currentTemplate?.materialSlots?.length}
@@ -461,7 +476,7 @@ export function V2CasePanel({ onCaseOpened }: { onCaseOpened?: (caseId: string) 
                 if (loaded) store.set(reviewV2AggregateAtom, loaded)
                 await refreshList()
               })}
-            />
+            />)}
             <div className="flex flex-wrap gap-1.5">
               {(current.caseV2.stage === 'draft' || (current.caseV2.stage === 'submitted' && current.tasks.length === 0)) && (
                 <Button size="sm" onClick={submitCase}>{current.caseV2.stage === 'draft' ? '提交案卷' : '恢复审核任务'}</Button>
