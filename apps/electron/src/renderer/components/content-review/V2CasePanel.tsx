@@ -26,6 +26,7 @@ import { ReviewV3UnifiedRun } from './ReviewV3UnifiedRun'
 import { ReviewV3T08ReportPanel } from './ReviewV3T08ReportPanel'
 import { ReviewV3TemplateRoutingAssistant } from './ReviewV3TemplateRoutingAssistant'
 import { ReviewV3LocalManualItem } from './ReviewV3LocalManualItem'
+import { ReviewCaseMaterials } from './ReviewCaseMaterials'
 import { reviewWorkspaceAggregateAtom, reviewWorkspaceSectionAtom } from '@/atoms/review-atoms'
 
 /** 当前案卷聚合 */
@@ -354,17 +355,7 @@ export function V2CasePanel({
                 <h3 className="font-semibold">材料与申请事项</h3>
                 <p className="text-xs text-muted-foreground">先核对原件，再确认审核模板。补充材料仍登记在这份案卷，不会创建新案。</p>
               </div>
-              {current.caseV2.documents.length > 0 && <ul className="space-y-1.5">
-                {current.caseV2.documents.map(doc => <li key={doc.versionId}
-                  className="flex items-center justify-between gap-2 rounded-lg bg-muted/40 px-3 py-2 text-sm">
-                  <span className="min-w-0 flex-1 truncate">{doc.fileName}</span>
-                  <span className="shrink-0 text-xs text-muted-foreground">
-                    {doc.role === 'application' ? '申请原件' : doc.role === 'rule' ? '审核依据' : '证明材料'}
-                    {doc.active === false ? ' · 旧版' : ''}
-                    {doc.materialSlotId ? ' · ' + (currentTemplate?.materialSlots.find(slot => slot.id === doc.materialSlotId)?.name ?? doc.materialSlotId) : ''}
-                  </span>
-                </li>)}
-              </ul>}
+              <ReviewCaseMaterials key={current.caseV2.id} aggregate={current} />
               <Button type="button" size="sm" variant="outline" onClick={() => void run(async () => {
                 const result = await window.reviewAPI.importDocument({ caseId: current.caseV2.id, role: 'application' })
                 if (result.failures.length > 0) setNotice('导入异常：' + result.failures.map(x => x.fileName + '：' + x.message).join('；'))
