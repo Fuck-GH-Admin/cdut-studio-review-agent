@@ -3,13 +3,11 @@
  * The saved B1 revision survives app restart; no school publication is implied.
  */
 import * as React from 'react'
-import { useSetAtom } from 'jotai'
-import { reviewWorkspaceSectionAtom } from '@/atoms/review-atoms'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { selectedCaseIdAtom, reviewWorkspaceAggregateAtom } from '@/atoms/review-atoms'
 import { reviewV2AggregateAtom } from './V2CasePanel'
 import { ReviewV3LocalManualItem } from './ReviewV3LocalManualItem'
 import { ReviewV3LocalPiControls } from './ReviewV3LocalPiControls'
-import { ReviewV3UnifiedRun } from './ReviewV3UnifiedRun'
-import { ReviewV3T08ReportPanel } from './ReviewV3T08ReportPanel'
 import { D4CaseSetup } from './D4CaseSetup'
 import { ReviewV3TemplateRoutingAssistant } from './ReviewV3TemplateRoutingAssistant'
 import type { CaseAggregateV2, D4ClientSelection, ReviewRunV2 } from '@profer/shared'
@@ -20,15 +18,24 @@ import type { B1AuthorDocument } from '../../../main/lib/review/review-template-
 import type { B1CandidateReadResponse } from '../review-v3-dev-b/review-v3-author-revision-read'
 
 export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:string}={}):React.ReactElement {
-  const goToCase=useSetAtom(reviewWorkspaceSectionAtom)
   const showCase=useSetAtom(reviewV2AggregateAtom)
+  const selectedCaseId=useAtomValue(selectedCaseIdAtom)
+  const setSelectedCaseId=useSetAtom(selectedCaseIdAtom)
+  const nativeAggregate=useAtomValue(reviewWorkspaceAggregateAtom)
   const [caseTitle,setCaseTitle]=React.useState('本地人工审核')
   const [caseApplicant,setCaseApplicant]=React.useState('本机用户')
   const [caseYear,setCaseYear]=React.useState(String(new Date().getFullYear()))
-  const [localCaseId,setLocalCaseId]=React.useState('')
+  const localCaseId=selectedCaseId ?? ''
+  const [caseIdDraft,setCaseIdDraft]=React.useState('')
   React.useEffect(()=>{
-    if (initialCaseId) setLocalCaseId(initialCaseId)
-  },[initialCaseId])
+    if (initialCaseId) {
+      setSelectedCaseId(initialCaseId)
+      setCaseIdDraft(initialCaseId)
+    }
+  },[initialCaseId,setSelectedCaseId])
+  React.useEffect(()=>{
+    if (selectedCaseId) setCaseIdDraft(selectedCaseId)
+  },[selectedCaseId])
   const [savedCases,setSavedCases]=React.useState<Array<{id:string;title:string}>>([])
   const [d4Selection,setD4Selection]=React.useState<D4ClientSelection|undefined>(undefined)
   const [routedD4TemplateId,setRoutedD4TemplateId]=React.useState<string|undefined>(undefined)
@@ -42,10 +49,6 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
   const [activePlan,setActivePlan]=React.useState<{
     templateId:string;templateVersion:number;checks:number;fingerprint:string
   }|null>(null)
-  const [nativeAggregate,setNativeAggregate]=React.useState<CaseAggregateV2|null>(null)
-  const [nativeRun,setNativeRun]=React.useState<ReviewRunV2|null>(null)
-  const [nativeRunStale,setNativeRunStale]=React.useState(true)
-  const [runEpoch,setRunEpoch]=React.useState(0)
   const [productError,setProductError]=React.useState('')
   React.useEffect(()=>{
     const route=product?.read.route
@@ -65,14 +68,13 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
   },[localCaseId])
   React.useEffect(()=>{
     setProduct(null);setActivePlan(null);setProductError('')
-    setNativeAggregate(null)
     if(!localCaseId)return
     let mounted=true
     void (async()=>{
       try{
         const aggregate=await window.reviewAPI.getAggregateV2(localCaseId)
         if(!mounted)return
-        setNativeAggregate(aggregate??null)
+        if (aggregate && aggregate.caseV2.id===localCaseId) showCase(aggregate)
         if(aggregate?.d2RuntimePlan){
           const plan=aggregate.d2RuntimePlan
           setActivePlan({templateId:plan.templateId,templateVersion:plan.templateVersion,
@@ -84,28 +86,14 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
       }catch(e){if(mounted)setProductError(e instanceof Error?e.message:String(e))}
     })()
     return ()=>{mounted=false}
-  },[localCaseId,materialsEpoch])
-  React.useEffect(()=>{
-    setNativeRun(null);setNativeRunStale(true)
-    if (!localCaseId) return
-    let live=true
-    void (async()=>{
-      const runs=await window.reviewAPI.listRunsV2(localCaseId)
-      const latest=[...runs].sort((a,b)=>b.startedAt.localeCompare(a.startedAt))[0]??null
-      if (!live) return
-      setNativeRun(latest)
-      if (!latest || latest.status==='queued' || latest.status==='running') return
-      const stale=await window.reviewAPI.getWorkspaceRunValidityV2({caseId:localCaseId,runId:latest.id})
-      if (live) setNativeRunStale(stale)
-    })().catch(()=>{if(live)setNativeRunStale(true)})
-    return()=>{live=false}
-  },[localCaseId,materialsEpoch,runEpoch])
+  },[localCaseId,materialsEpoch,showCase])
+
   const refreshNativeAggregate=React.useCallback(async()=>{
     if (!localCaseId)return
     const refreshed=await window.reviewAPI.getAggregateV2(localCaseId)
-    if(refreshed)setNativeAggregate(refreshed)
+    if(refreshed && refreshed.caseV2.id===localCaseId) showCase(refreshed)
     setRunEpoch(epoch=>epoch+1)
-  },[localCaseId])
+  },[localCaseId,showCase])
   const [dropActive,setDropActive]=React.useState(false)
   const [dropRole,setDropRole]=React.useState<'application'|'evidence'>('application')
   const [caseBusy,setCaseBusy]=React.useState(false)
@@ -157,7 +145,7 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
         applicant:caseApplicant.trim(),academicYear:caseYear.trim(),
         reviewTemplate:null,
       })
-      setLocalCaseId(created.id)
+      setSelectedCaseId(created.id);setCaseIdDraft(created.id)
       setSavedCases([])
       setCaseNotice('本机原生案卷已创建：'+created.id+'；未绑定校方模板，请先导入材料并人工审核。')
     }catch(e){setCaseError(e instanceof Error?e.message:String(e))}
@@ -248,20 +236,19 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
     finally{setCaseBusy(false)}
   }
   const openCase=async ():Promise<void>=>{
-    if(caseBusy||!localCaseId)return
-    setCaseBusy(true);setCaseError('')
+    const targetCaseId=caseIdDraft.trim() || localCaseId
+    if(caseBusy||!targetCaseId)return
+    setCaseBusy(true);setCaseError('');setCaseNotice('')
     try{
-      const aggregate=await window.reviewAPI.openAggregateV2(localCaseId)
-      if(!aggregate)throw new Error('未找到该原生案卷；请确认本机案卷 ID。')
+      const aggregate=await window.reviewAPI.openAggregateV2(targetCaseId)
+      if(!aggregate || aggregate.caseV2.id!==targetCaseId)throw new Error('无法打开所选案卷')
       showCase(aggregate)
-      goToCase('case-v2')
+      setCaseIdDraft(targetCaseId)
+      setCaseNotice('已打开案卷；材料、审核结果和办理记录已同步到当前工作页。')
     }catch(e){setCaseError(e instanceof Error?e.message:String(e))}
     finally{setCaseBusy(false)}
   }
-  const start=():void=>{
-    if(loaded && !window.confirm('新建编辑器会舍弃尚未保存的修改，确定继续？'))return
-    setLoaded(null);setKey(k=>k+1);setError('');setMessage('本地未发布候选草稿')
-  }
+
   return <div className="mx-auto max-w-5xl space-y-4 px-4 pb-8">
     <div className="space-y-3 rounded-lg border border-border p-4">
       <h2 className="text-base font-semibold">新建本地审核案卷与原件导入</h2>
@@ -279,7 +266,7 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
       </div>
       <div className="flex flex-wrap items-center gap-2">
         <input aria-label="当前本机案卷 ID" className="min-w-44 flex-1 rounded border border-border bg-background px-2 py-1.5 text-sm"
-          placeholder="本机已有案卷 ID 可直接粘贴重开" value={localCaseId} onChange={e=>setLocalCaseId(e.target.value)}/>
+          placeholder="本机已有案卷 ID 可直接粘贴重开" value={caseIdDraft} onChange={e=>setCaseIdDraft(e.target.value)}/>
         <button type="button" className="rounded border border-border px-3 py-1.5 text-sm disabled:opacity-50"
           disabled={caseBusy} onClick={()=>void listSavedCases()}>列出本机历史案卷</button>
         <button type="button" className="rounded border border-border px-3 py-1.5 text-sm disabled:opacity-50"
@@ -309,8 +296,8 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
           </label>
         </div>
       </div>}
-      {savedCases.length>0&&<select aria-label="从历史案卷重开" value="" 
-        onChange={e=>{setLocalCaseId(e.target.value);setCaseNotice('已选择历史案卷 '+e.target.value) }}
+      {savedCases.length>0&&<select aria-label="从历史案卷重开" value={caseIdDraft || localCaseId} 
+        onChange={e=>{setCaseIdDraft(e.target.value);setCaseNotice('已选择历史案卷 '+e.target.value) }}
         className="w-full rounded border border-border bg-background px-2 py-2 text-sm">
         <option value="">选择一份本机历史案卷</option>
         {savedCases.map(c=><option key={c.id} value={c.id}>{c.title} · {c.id}</option>)}
@@ -416,15 +403,7 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
         }}
       />}
     </div>}
-    <ReviewV3LocalManualItem key={localCaseId+'-'+materialsEpoch} caseId={localCaseId} />
-    {localCaseId&&<ReviewV3UnifiedRun
-      caseId={localCaseId}
-      stage={nativeAggregate?.caseV2.stage??'draft'}
-      documentCount={nativeAggregate?.caseV2.documents.filter(item=>item.active!==false).length??0}
-      technicalPlan={!!nativeAggregate?.d2RuntimePlan}
-      canRun={!!activePlan||!!nativeAggregate?.d2RuntimePlan}
-      onUpdated={refreshNativeAggregate}
-    />}
+    <details className="rounded-lg border border-border px-3 py-2"><summary className="cursor-pointer text-sm font-medium">高级：本地人工事项</summary><div className="pt-3"><ReviewV3LocalManualItem key={localCaseId+'-'+materialsEpoch} caseId={localCaseId} /></div></details>
     {localCaseId&&<div className="space-y-2 rounded-lg border border-border p-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
@@ -432,9 +411,8 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
           <p className="text-xs text-muted-foreground">在原案卷修改证据、处理待办和作出人工决定；报告始终使用真实运行。</p>
         </div>
         <button type="button" className="rounded border border-primary/50 px-3 py-2 text-sm disabled:opacity-50"
-          disabled={caseBusy} onClick={()=>void openCase()}>打开本案复核与人工办理</button>
+          disabled={caseBusy} onClick={()=>void openCase()}>打开本案办理记录</button>
       </div>
-      {nativeRun&&<ReviewV3T08ReportPanel aggregate={nativeAggregate} currentRun={nativeRun} currentStale={nativeRunStale} template={null}/>}
       {!nativeRun&&<p className="text-xs text-muted-foreground">本案尚无真实运行，完成审核后可在这里直接下载报告。</p>}
     </div>}
     <details className="rounded-lg border border-border px-3 py-2">
