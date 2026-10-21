@@ -134,11 +134,6 @@ export function ContentReviewView(): React.ReactElement {
 
   const openBusinessCase = React.useCallback(async (step: ReviewCaseStep = 'review'): Promise<void> => {
     setCaseStep(step)
-    if (reviewCase && businessAggregate?.caseV2.id !== reviewCase.id) {
-      await openCase(reviewCase.id)
-      setCaseStep(step)
-      return
-    }
     if (businessAggregate) {
       setSection('case-v2')
       return
@@ -153,9 +148,9 @@ export function ContentReviewView(): React.ReactElement {
 
   const openPane = React.useCallback((pane: Pane): void => {
     setActivePane(pane)
-    if (reviewCase) setSection('workbench')
+    if (reviewCase && businessAggregate?.caseV2.id === reviewCase.id) setSection('workbench')
     else { setCaseStep(pane === 'right' ? 'decision' : 'materials'); setSection('case-v2') }
-  }, [reviewCase, setActivePane, setSection])
+  }, [businessAggregate?.caseV2.id, reviewCase, setActivePane, setSection])
 
   const handleExport = async (): Promise<void> => {
     setExporting(true)
@@ -284,7 +279,7 @@ export function ContentReviewView(): React.ReactElement {
               className="h-8 px-3 text-xs" onClick={() => setSection('templates')}>模板管理</Button>
           </nav>
 
-          {(section === 'case-v2' || section === 'workbench' || section === 'local-candidates') && reviewCase && (
+          {(section === 'case-v2' || section === 'workbench' || section === 'local-candidates') && reviewCase && reviewCase.id === businessAggregate?.caseV2.id && (
             <div className="flex min-w-0 items-center gap-1.5 rounded-md bg-foreground/[0.04] px-2 py-1 text-xs text-muted-foreground">
               <FileText size={12} className="shrink-0 text-foreground/60" />
               <span className="max-w-[260px] truncate" title={reviewCase.title}>
@@ -292,7 +287,7 @@ export function ContentReviewView(): React.ReactElement {
               </span>
             </div>
           )}
-          {(section === 'case-v2' || section === 'local-candidates') && !reviewCase && businessAggregate && (
+          {(section === 'case-v2' || section === 'local-candidates') && businessAggregate && reviewCase?.id !== businessAggregate.caseV2.id && (
             <div className="max-w-[300px] truncate rounded-md bg-foreground/[0.04] px-2 py-1 text-xs text-muted-foreground" title={businessAggregate.caseV2.title}>
               {businessAggregate.caseV2.title}
             </div>
@@ -306,7 +301,7 @@ export function ContentReviewView(): React.ReactElement {
             <ArrowLeft size={13} />返回首页 / 换案
           </Button>}
           <GatewayBadge status={gatewayStatus} />
-          <Button
+          {(section === 'case-v2' || section === 'workbench') && <Button
             type="button"
             variant="outline"
             size="sm"
@@ -316,7 +311,7 @@ export function ContentReviewView(): React.ReactElement {
           >
             <Download size={12} />
             <span>{businessAggregate ? '查看与导出报告' : '导出报告'}</span>
-          </Button>
+          </Button>}
           <Button
             type="button"
             variant="ghost"
@@ -352,19 +347,6 @@ export function ContentReviewView(): React.ReactElement {
         </nav>
       )}
 
-      {/* ===== 窄屏：顶部三按钮切换栏 ===== */}
-      {narrow && section === 'workbench' && (
-        <nav
-          role="tablist"
-          aria-label="工作台栏目"
-          className="flex shrink-0 items-center gap-1 border-b border-border/60 bg-card/60 px-3 py-1.5 titlebar-no-drag"
-        >
-          <PaneTab label="审核依据" icon={<FileText size={13} />} active={activePane === 'left'} onClick={() => setActivePane('left')} />
-          <PaneTab label="申请与证明" icon={<Layers size={13} />} active={activePane === 'center'} onClick={() => setActivePane('center')} />
-          <PaneTab label="AI 审核员" icon={<Gavel size={13} />} active={activePane === 'right'} onClick={() => setActivePane('right')} />
-        </nav>
-      )}
-
       {/* 首页永远可返回；即使后台已恢复旧案，也允许立即导入新材料。 */}
       <main className={cn('min-h-0 flex-1 overflow-y-auto titlebar-no-drag', section !== 'home' && 'hidden')}>
         <ReviewCaseHome active={section === 'home'} onOpenCase={openCase} />
@@ -377,7 +359,7 @@ export function ContentReviewView(): React.ReactElement {
           <Button size="sm" variant={section === 'case-v2' && caseStep === 'review' ? 'secondary' : 'ghost'}
             onClick={() => { setCaseStep('review'); setSection('case-v2') }}>执行与结果</Button>
           <Button size="sm" variant={section === 'workbench' ? 'secondary' : 'ghost'}
-            disabled={!reviewCase} onClick={() => setSection('workbench')}>原件交叉核验</Button>
+            disabled={!reviewCase || reviewCase.id !== businessAggregate.caseV2.id} onClick={() => setSection('workbench')}>原件交叉核验</Button>
           <Button size="sm" variant={section === 'case-v2' && caseStep === 'decision' ? 'secondary' : 'ghost'}
             onClick={() => { setCaseStep('decision'); setSection('case-v2') }}>待办与办理</Button>
           <Button size="sm" variant={section === 'case-v2' && caseStep === 'report' ? 'secondary' : 'ghost'}
@@ -395,7 +377,7 @@ export function ContentReviewView(): React.ReactElement {
         </nav>
       )}
       <main className={cn('relative flex min-h-0 flex-1 titlebar-no-drag', section !== 'workbench' && 'hidden')}>
-        {reviewCase ? <>
+        {reviewCase && businessAggregate?.caseV2.id === reviewCase.id ? <>
           <PaneWrapper pane="left" className="flex-[3]" narrow={narrow} active={activePane} showSeparator={!narrow}>
             <LeftPanel actions={actions} />
           </PaneWrapper>
