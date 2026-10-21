@@ -13,7 +13,7 @@ import { useAtomValue } from 'jotai'
 import { toast } from 'sonner'
 import { Button } from '@profer/ui/primitives/button'
 import type { CaseAggregateV2 } from '@profer/shared'
-import { reviewV2AggregateAtom } from './V2CasePanel'
+import { reviewV2AggregateAtom } from './review-v2-state'
 import { buildT09OfflineFormHtml } from './review-v3-t09-offline-form'
 
 type PreviewLike = { status: 'ready' | 'conflict' | 'rejected'; details: string[] }
