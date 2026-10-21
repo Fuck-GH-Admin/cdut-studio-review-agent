@@ -47,7 +47,6 @@ import {
   reviewRunStaleAtom,
   reviewRunningAtom,
   reviewWorkspaceSectionAtom,
-  type ReviewWorkspaceSection,
 } from '@/atoms/review-atoms'
 import { channelsAtom } from '@/atoms/conversation-atoms'
 import type { ReviewModelGatewayStatus } from '@profer/shared'
