@@ -452,15 +452,29 @@ export function createReviewActionsController(
     },
     async initialize(): Promise<void> {
       const cases = await refreshCaseList()
-      // 页面重开后 selectedCaseIdAtom 是空的；恢复上次案卷（或首个案卷），
-      // 否则上下文栏里的材料入口会一直处于 disabled 状态。
+      // 初始化只恢复确有依据的上次案卷，不擅自打开列表第一份；
+      // 首页是独立的导入与选择状态，用户可随时主动选择下一份案卷。
       const selectedId = store.get(selectedCaseIdAtom) ?? readLastSelectedCaseId()
-      const target = cases.find((item) => item.id === selectedId) ?? cases[0]
-      const cached = target ? store.get(reviewCasesByIdAtom)[target.id] : null
-      if (target && (!cached || selectedId !== target.id)) await selectCaseInternal(target.id)
-      else if (!target && selectedId) {
-        store.set(selectedCaseIdAtom, null)
-        saveLastSelectedCaseId(null)
+      const target = cases.find((item) => item.id === selectedId)
+      if (target) {
+        const cached = store.get(reviewCasesByIdAtom)[target.id]
+        if (!cached || store.get(selectedCaseIdAtom) !== target.id) await selectCaseInternal(target.id)
+      } else if (selectedId) {
+        // V2-only 原生案卷不在旧版 listCases 中，但它可能仍有真实业务记录；
+        // 不能因为旧投影不存在就错误切回另一份旧案卷。
+        try {
+          const native = await api.getAggregateV2?.(selectedId)
+          if (native?.caseV2.id === selectedId) {
+            store.set(selectedCaseIdAtom, selectedId)
+            await refreshWorkspaceV2(selectedId)
+          } else {
+            store.set(selectedCaseIdAtom, null)
+            saveLastSelectedCaseId(null)
+          }
+        } catch (cause) {
+          console.error('[审核专区] 重新读取原生案卷失败', cause)
+          // 读取失败不是案卷被删除，不在这里丢弃用户的上次选择。
+        }
       }
       try {
         const status = await api.getModelGatewayStatus()
