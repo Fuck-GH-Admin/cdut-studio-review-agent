@@ -1,6 +1,6 @@
 /** 审核首页：新材料导入与历史案卷入口。首页不依赖“当前已选案卷”是否存在。 */
 import * as React from 'react'
-import { ArrowRight, FilePlus2, FolderOpen, RefreshCw, Search } from 'lucide-react'
+import { ArrowRight, FolderOpen, RefreshCw, Search } from 'lucide-react'
 import { Button } from '@profer/ui/primitives/button'
 import { ReviewV3QuickIntake } from './ReviewV3QuickIntake'
 
