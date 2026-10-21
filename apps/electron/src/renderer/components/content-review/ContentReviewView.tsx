@@ -95,6 +95,7 @@ export function ContentReviewView(): React.ReactElement {
   const [quickCaseId, setQuickCaseId] = React.useState<string | null>(null)
   const [caseStep, setCaseStep] = React.useState<ReviewCaseStep>('materials')
   const [caseLoading, setCaseLoading] = React.useState(false)
+  const caseOpenGeneration = React.useRef(0)
   const setCurrentCase = useSetAtom(reviewCaseAtom)
   const setSelectedCaseId = useSetAtom(selectedCaseIdAtom)
 
@@ -103,15 +104,19 @@ export function ContentReviewView(): React.ReactElement {
    * V2-only 原生案卷仍可办理，不能为了三栏兼容而假设它有 V1 投影。
    */
   const openCase = React.useCallback(async (caseId: string): Promise<boolean> => {
+    const generation = ++caseOpenGeneration.current
     setCaseLoading(true)
     try {
       // 先确认是否存在旧三栏兼容案卷；旧版存储迁移依赖 selectCase。
       const legacy = await window.reviewAPI.getCase(caseId)
+      if (generation !== caseOpenGeneration.current) return false
       if (legacy) {
         const selected = await actions.selectCase(caseId)
         if (!selected) throw new Error('案卷切换未成功')
+        if (generation !== caseOpenGeneration.current) return false
       }
       const aggregate = await window.reviewAPI.openAggregateV2(caseId)
+      if (generation !== caseOpenGeneration.current) return false
       if (!aggregate || aggregate.caseV2.id !== caseId) {
         if (!legacy) throw new Error('案卷业务记录不存在')
         // 少量未迁移 V1 案卷仍然可以使用旧审核工作台，不能从首页变成打不开的孤案。
@@ -126,21 +131,24 @@ export function ContentReviewView(): React.ReactElement {
         try { await actions.refreshBackgroundReview(caseId) }
         catch (cause) { console.error('[材料审核] 原生案卷工作区投影暂不可用', cause) }
       }
+      if (generation !== caseOpenGeneration.current) return false
       setV2Aggregate(aggregate)
       setQuickCaseId(caseId)
       setCaseStep('materials')
       setSection('case-v2')
       return true
     } catch (cause) {
-      toast.error('打开审核案卷失败：' + (cause instanceof Error ? cause.message : String(cause)))
+      if (generation === caseOpenGeneration.current) toast.error('打开审核案卷失败：' + (cause instanceof Error ? cause.message : String(cause)))
       return false
     } finally {
-      setCaseLoading(false)
+      if (generation === caseOpenGeneration.current) setCaseLoading(false)
     }
   }, [actions, setCurrentCase, setSelectedCaseId, setSection, setV2Aggregate])
 
   const goHome = React.useCallback((): void => {
-    // 只导航到首页；不删除案卷、不取消 Main 持有的审核运行。
+    // 返首页同时撤销尚未完成的页面开案导航；不取消 Main 中的任务。
+    caseOpenGeneration.current += 1
+    setCaseLoading(false)
     setSection('home')
   }, [setSection])
 
