@@ -35,10 +35,16 @@ export function ReviewCaseHome({
     setError('')
     try {
       // Main 的 V2 案卷列表包括没有 V1 三栏投影的原生案卷。
-      const [native, legacy] = await Promise.all([
+      const [nativeRead, legacyRead] = await Promise.allSettled([
         window.reviewAPI.listCasesV2(),
         window.reviewAPI.listCases(),
       ])
+      if (nativeRead.status === 'rejected' && legacyRead.status === 'rejected')
+        throw new Error('原生与旧案卷目录均暂时不可读取')
+      const native = nativeRead.status === 'fulfilled' ? nativeRead.value : []
+      const legacy = legacyRead.status === 'fulfilled' ? legacyRead.value : []
+      if (nativeRead.status === 'rejected' || legacyRead.status === 'rejected')
+        setError('部分历史案卷目录暂不可用，已显示可以读取的案卷')
       const merged = new Map<string, HomeCase>()
       for (const item of legacy) merged.set(item.id, {
         id: item.id, title: item.title, stage: 'draft',
