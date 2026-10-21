@@ -31,7 +31,7 @@ import { reviewCaseAtom, reviewCaseListAtom, reviewExecutionAtom, reviewWorkspac
 import { cn } from '@/lib/utils'
 import { CreateCaseDialog } from './CreateCaseDialog'
 import { NativeManualItemDialog } from './NativeManualItemDialog'
-import { templatesRefreshAtom } from './V2CasePanel'
+import { templatesRefreshAtom } from './review-v2-state'
 import type { ReviewActions } from './use-review-actions'
 
 /**
