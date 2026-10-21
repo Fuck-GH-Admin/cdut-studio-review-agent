@@ -7,7 +7,6 @@ import { useAtomValue } from 'jotai'
 import { ArrowRight, ClipboardList, FileStack, ListChecks } from 'lucide-react'
 import { Button } from '@profer/ui/primitives/button'
 import {
-  reviewCaseAtom,
   reviewExecutionAtom,
   reviewRunningAtom,
   reviewWorkspaceAggregateAtom,
@@ -15,7 +14,7 @@ import {
   reviewWorkspaceRunAtom,
   reviewWorkspaceRunStaleAtom,
   reviewWorkspaceTemplateAtom,
-  reviewWorkspaceSectionAtom,
+  selectedCaseIdAtom,
 } from '@/atoms/review-atoms'
 import { reviewV2AggregateAtom } from './V2CasePanel'
 import { buildReviewWorkspaceViewModel } from './review-workspace-view-model'
@@ -45,13 +44,10 @@ function StatusItem({ label, value, icon }: { label: string; value: string; icon
 export function ReviewV3T10WorkspaceOverview({
   onOpenReview, onOpenMaterials, onOpenTasks, onOpenTemplates, onOpenBusiness,
 }: Props): React.ReactElement {
-  const legacy = useAtomValue(reviewCaseAtom)
+  const selectedCaseId = useAtomValue(selectedCaseIdAtom)
   const nativeAggregate = useAtomValue(reviewWorkspaceAggregateAtom)
   const businessAggregate = useAtomValue(reviewV2AggregateAtom)
-  const section = useAtomValue(reviewWorkspaceSectionAtom)
-  // 较早版本的案卷可能尚无原生 ReviewCase 投影。业务面板激活时显示它正在办理的真实聚合，
-  // 不把另一份当前选中案卷的 Run 或来源混到旧案卷上。
-  const aggregate = section === 'case-v2' ? (businessAggregate ?? nativeAggregate) : nativeAggregate
+  const aggregate = businessAggregate ?? nativeAggregate
   const nativeRun = useAtomValue(reviewWorkspaceRunAtom)
   const runStale = useAtomValue(reviewWorkspaceRunStaleAtom)
   const extracted = useAtomValue(reviewWorkspaceExtractedObservationsAtom)
@@ -60,17 +56,16 @@ export function ReviewV3T10WorkspaceOverview({
   const running = useAtomValue(reviewRunningAtom)
 
   const caseV2 = aggregate?.caseV2
-  const matchesSelected = !caseV2 || caseV2.id === legacy?.id
+  const matchesSelected = !caseV2 || caseV2.id === selectedCaseId
   const run = matchesSelected ? nativeRun : null
   const view = aggregate ? buildReviewWorkspaceViewModel(aggregate, run, matchesSelected && runStale, matchesSelected ? extracted : [], matchesSelected ? template : null) : null
-  const documents = caseV2?.documents.filter((document) => document.active !== false).length ?? legacy?.documents.length ?? 0
+  const documents = caseV2?.documents.filter((document) => document.active !== false).length ?? 0
   const pending = view?.pendingActions.length ?? 0
   const pendingChecks = view?.pendingActions.filter((action) => action.kind === 'check' || action.kind === 'supplement').length ?? 0
   const templateName = caseV2?.templateId === 'pending-template-v3'
     ? '尚未绑定审核模板'
     : matchesSelected && template ? `${template.name} · v${template.version}`
-      : matchesSelected && legacy?.reviewTemplate ? `${legacy.reviewTemplate.templateId} · v${legacy.reviewTemplate.version}`
-        : caseV2 ? `${caseV2.templateId} · v${caseV2.templateVersion}` : '未选择'
+          : caseV2 ? `${caseV2.templateId} · v${caseV2.templateVersion}` : '未选择'
   const executing = matchesSelected && (running || execution.status === 'running' || execution.status === 'preparing')
   const checkLabel = executing ? '正在运行'
     : runStale && matchesSelected ? '结果已过期，请重审'
@@ -81,7 +76,7 @@ export function ReviewV3T10WorkspaceOverview({
   let nextLabel = '选择或新建案卷'
   let nextDetail = '先打开一个审核项目，材料、检查和办理会跟随同一案卷。'
   let goNext = onOpenReview
-  if (caseV2 || legacy) {
+  if (caseV2) {
     if (caseV2?.stage === 'decided') {
       nextLabel = '查看本案办理记录'
       nextDetail = '查看决定、历史和报告；已完成决定不表示每项 AI 发现均被确认。'
