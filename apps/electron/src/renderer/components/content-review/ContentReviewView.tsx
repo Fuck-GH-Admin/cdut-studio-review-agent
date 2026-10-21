@@ -252,9 +252,9 @@ export function ContentReviewView(): React.ReactElement {
               <Button
                 key={id}
                 size="sm"
-                variant={section === id ? 'secondary' : 'ghost'}
+                variant={section === id || (id === 'templates' && section === 'local-candidates') ? 'secondary' : 'ghost'}
                 className="h-7 px-2.5 text-xs font-medium"
-                aria-pressed={section === id}
+                aria-pressed={section === id || (id === 'templates' && section === 'local-candidates')}
                 onClick={() => id === 'case-v2' ? void openBusinessCase() : setSection(id)}
               >
                 {label}
