@@ -30,9 +30,13 @@ import type {
 
 // ===== 数据状态 =====
 
-/** 审核区工作页：管理入口只挂载一次，切页保留正在填写的表单。 */
-export type ReviewWorkspaceSection = 'workbench' | 'case-v2' | 'templates' | 'batches' | 'local-candidates'
-export const reviewWorkspaceSectionAtom = atom<ReviewWorkspaceSection>('workbench')
+/** 审核产品级路由：入口、单案流程、模板管理和批量工作各自有明确边界。 */
+export type ReviewWorkspaceSection = 'home' | 'workbench' | 'case-v2' | 'templates' | 'batches' | 'local-candidates'
+export const reviewWorkspaceSectionAtom = atom<ReviewWorkspaceSection>('home')
+
+/** 单案工作区内按真实办理顺序切换，不再把材料、审核、办理拆成互不相关的顶层页面。 */
+export type ReviewCaseWorkspaceTab = 'materials' | 'review' | 'processing' | 'history' | 'advanced'
+export const reviewCaseWorkspaceTabAtom = atom<ReviewCaseWorkspaceTab>('review')
 
 /**
  * 案卷内存缓存（M0/H05）：按 caseId 存取，异步回写只动对应案卷。
