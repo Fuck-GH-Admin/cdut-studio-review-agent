@@ -106,18 +106,24 @@ export function ContentReviewView(): React.ReactElement {
   const openCase = React.useCallback(async (caseId: string): Promise<boolean> => {
     setCaseLoading(true)
     try {
-      const aggregate = await window.reviewAPI.openAggregateV2(caseId)
-      if (!aggregate || aggregate.caseV2.id !== caseId) throw new Error('案卷业务记录不存在')
+      // 先确认是否存在旧三栏兼容案卷；旧版存储迁移依赖 selectCase。
       const legacy = await window.reviewAPI.getCase(caseId)
       if (legacy) {
         const selected = await actions.selectCase(caseId)
         if (!selected) throw new Error('案卷切换未成功')
-      } else {
-        // 避免 V2-only 案卷沿用前一个 V1 案卷的三栏/报告/待办状态。
+      }
+      const aggregate = await window.reviewAPI.openAggregateV2(caseId)
+      if (!aggregate || aggregate.caseV2.id !== caseId) {
+        if (!legacy) throw new Error('案卷业务记录不存在')
+        // 少量未迁移 V1 案卷仍然可以使用旧审核工作台，不能从首页变成打不开的孤案。
+        setV2Aggregate(null)
+        setSection('workbench')
+        return true
+      }
+      if (!legacy) {
+        // V2-only 原生案卷没有旧投影，但依旧以 V2 真实案卷为工作上下文。
         setCurrentCase(null)
         setSelectedCaseId(caseId)
-        // V2-only 原生案卷仍应获得统一的工作区投影，供事实/证据处理读取；
-        // 若旧版三栏迁移不支持它，也不能阻止继续办理此案。
         try { await actions.refreshBackgroundReview(caseId) }
         catch (cause) { console.error('[材料审核] 原生案卷工作区投影暂不可用', cause) }
       }
@@ -146,8 +152,7 @@ export function ContentReviewView(): React.ReactElement {
       return
     }
     if (reviewCase) {
-      await openCase(reviewCase.id)
-      setCaseStep(step)
+      if (await openCase(reviewCase.id)) setCaseStep(step)
       return
     }
     setSection('home')
