@@ -268,10 +268,16 @@ export function ContentReviewView(): React.ReactElement {
                 }
                 // 待办必须留在用户正在处理的案卷上下文中。
                 // 业务案卷的人工办理在本案工作区；只有三栏审核工作台才切到 AI 核对栏。
-                if (section === 'case-v2') {
+                if (section === 'case-v2' || section === 'local-candidates') {
                   const panel = document.getElementById('case-human-workflow')
-                  panel?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                  if (!panel) toast.info('当前案卷暂无可定位的人工办理区域')
+                  if (panel) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  } else if (section === 'local-candidates' && businessAggregate) {
+                    setSection('case-v2')
+                    window.setTimeout(() => document.getElementById('case-human-workflow')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 180)
+                  } else {
+                    toast.info('当前案卷暂无可定位的人工办理区域')
+                  }
                   return
                 }
                 if (section === 'batches' || section === 'templates') {
@@ -284,17 +290,21 @@ export function ContentReviewView(): React.ReactElement {
             </Button>
           </nav>
 
-          {reviewCase && (
-            <div className="flex min-w-0 items-center gap-1.5 rounded-md bg-foreground/[0.04] px-2 py-1 text-xs text-muted-foreground">
+          {(reviewCase || businessAggregate) && (
+            <div className="flex min-w-0 flex-wrap items-center gap-1.5 rounded-md bg-foreground/[0.04] px-2 py-1 text-xs text-muted-foreground">
               <FileText size={12} className="shrink-0 text-foreground/60" />
-              <span className="max-w-[260px] truncate" title={reviewCase.title}>
-                {reviewCase.title}{reviewCase.applicant ? ` · ${reviewCase.applicant}` : ''}
+              <span className="max-w-[260px] truncate font-medium text-foreground" title={businessAggregate?.caseV2.title ?? reviewCase?.title ?? ''}>
+                {businessAggregate?.caseV2.title ?? reviewCase?.title}{reviewCase?.applicant ? ` · ${reviewCase.applicant}` : ''}
               </span>
-            </div>
-          )}
-          {!reviewCase && businessAggregate && (
-            <div className="max-w-[300px] truncate rounded-md bg-foreground/[0.04] px-2 py-1 text-xs text-muted-foreground" title={businessAggregate.caseV2.title}>
-              {businessAggregate.caseV2.title}
+              <span className="rounded bg-background/80 px-1.5 py-0.5">
+                {running ? '审核进行中' : runStale ? '审核结果已过期' : businessAggregate ? ({
+                  draft: '草稿', submitted: '已提交', reviewing: '审核中',
+                  'awaiting-supplement': '待补件', 'awaiting-review': '待复审',
+                  decided: '已有决定', archived: '已归档',
+                } as Record<string, string>)[businessAggregate.caseV2.stage] ?? '办理中' : run ? '已有审核记录' : '尚未审核'}
+              </span>
+              {businessAggregate && <span>{businessAggregate.caseV2.documents.filter((document) => document.active !== false).length} 份材料</span>}
+              {run && <span>{run.checks.length} 项检查</span>}
             </div>
           )}
         </div>
