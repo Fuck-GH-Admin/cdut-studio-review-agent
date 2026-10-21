@@ -40,6 +40,7 @@ import {
   reviewActivePaneAtom,
   reviewAssistantOpenAtom,
   reviewCaseAtom,
+  selectedCaseIdAtom,
   reviewErrorAtom,
   reviewGatewayStatusAtom,
   reviewRunAtom,
@@ -96,6 +97,7 @@ export function ContentReviewView(): React.ReactElement {
   const [caseStep, setCaseStep] = React.useState<ReviewCaseStep>('materials')
   const [caseLoading, setCaseLoading] = React.useState(false)
   const setCurrentCase = useSetAtom(reviewCaseAtom)
+  const setSelectedCaseId = useSetAtom(selectedCaseIdAtom)
 
   /**
    * 案卷唯一进入路径：先从 Main 读取真实聚合，再选择 V1 投影（若存在）。
@@ -113,6 +115,11 @@ export function ContentReviewView(): React.ReactElement {
       } else {
         // 避免 V2-only 案卷沿用前一个 V1 案卷的三栏/报告/待办状态。
         setCurrentCase(null)
+        setSelectedCaseId(caseId)
+        // V2-only 原生案卷仍应获得统一的工作区投影，供事实/证据处理读取；
+        // 若旧版三栏迁移不支持它，也不能阻止继续办理此案。
+        try { await actions.refreshBackgroundReview(caseId) }
+        catch (cause) { console.error('[材料审核] 原生案卷工作区投影暂不可用', cause) }
       }
       setV2Aggregate(aggregate)
       setQuickCaseId(caseId)
@@ -125,7 +132,7 @@ export function ContentReviewView(): React.ReactElement {
     } finally {
       setCaseLoading(false)
     }
-  }, [actions, setCurrentCase, setSection, setV2Aggregate])
+  }, [actions, setCurrentCase, setSelectedCaseId, setSection, setV2Aggregate])
 
   const goHome = React.useCallback((): void => {
     // 只导航到首页；不删除案卷、不取消 Main 持有的审核运行。
