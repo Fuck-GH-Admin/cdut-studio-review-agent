@@ -243,11 +243,10 @@ export function ContentReviewView(): React.ReactElement {
         <div className="flex min-w-0 flex-wrap items-center gap-3">
           <nav aria-label="审核工作页" className="flex shrink-0 flex-wrap items-center gap-1">
             {([
-              ['workbench', '导入材料'],
-              ['local-candidates', '当前审核'],
-              ['case-v2', '结果与办理'],
-              ['templates', '审核模板'],
-              ['batches', '批次管理'],
+              ['workbench', '案卷与材料'],
+              ['case-v2', '办理与结果'],
+              ['templates', '审核方案'],
+              ['batches', '批量审核'],
             ] as Array<[ReviewWorkspaceSection, string]>).map(([id, label]) => (
               <Button
                 key={id}
@@ -263,13 +262,24 @@ export function ContentReviewView(): React.ReactElement {
             <Button type="button" size="sm" variant="ghost" className="h-7 px-2.5 text-xs font-medium"
               onClick={() => {
                 if (!reviewCase && !businessAggregate) {
-                  // 没有当前案卷时给出可执行的起点，而不是空白待办面板
                   setSection('workbench')
-                  toast.info('请先在「导入材料」中选择或新建一份案卷')
+                  toast.info('请先选择或新建一份案卷')
+                  return
+                }
+                // 待办必须留在用户正在处理的案卷上下文中。
+                // 业务案卷的人工办理在本案工作区；只有三栏审核工作台才切到 AI 核对栏。
+                if (section === 'case-v2') {
+                  const panel = document.getElementById('case-human-workflow')
+                  panel?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  if (!panel) toast.info('当前案卷暂无可定位的人工办理区域')
+                  return
+                }
+                if (section === 'batches' || section === 'templates') {
+                  toast.info('请先打开当前案卷，再处理该案卷的待办')
                   return
                 }
                 openPane('right')
-              }} title="在当前案卷查看需要核对的检查与人工待办">
+              }} title="查看当前案卷需要核对或办理的事项">
               待办
             </Button>
           </nav>
