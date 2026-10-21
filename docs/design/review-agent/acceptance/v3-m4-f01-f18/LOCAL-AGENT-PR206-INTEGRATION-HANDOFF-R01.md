@@ -1,5 +1,8 @@
 # CDUT Studio Review V3｜M4 PR #206 → 本地 Agent 合并与验收交接 R01
 
+> **更新（2026-10-21）：统一接收任务已升级为 [LOCAL-AGENT-M4-FINAL-CLOSEOUT-R02.md](./LOCAL-AGENT-M4-FINAL-CLOSEOUT-R02.md)。新 R02 同时吸收 PR #206 的工程交付和 PR #186 的 50 套模板/公共兜底调查，并以最新 main S4=PARTIAL 为准。执行请先读 R02；本 R01 保留其原始代码候选与 CI 证据。**
+
+
 > **交付定义：本文件确认“可交付本地 Agent 的集成代码候选”，不宣布第四里程碑完成，也不授权云端 Agent 修改 main。** 主线合并、实际 Electron 回归、A15 S4、第四里程碑验收判断均归本地 Agent 和项目负责人。
 
 ## 0. 固定交付凭据（严禁使用模糊的“最新”替代）
