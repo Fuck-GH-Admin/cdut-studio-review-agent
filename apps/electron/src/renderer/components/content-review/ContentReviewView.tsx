@@ -139,7 +139,7 @@ export function ContentReviewView(): React.ReactElement {
     setSection('home')
   }, [setSection])
 
-  const openBusinessCase = React.useCallback(async (step: ReviewCaseStep = 'review'): Promise<void> => {
+  const openBusinessCase = React.useCallback(async (step: ReviewCaseStep = caseStep): Promise<void> => {
     setCaseStep(step)
     if (businessAggregate) {
       setSection('case-v2')
@@ -151,7 +151,7 @@ export function ContentReviewView(): React.ReactElement {
       return
     }
     setSection('home')
-  }, [businessAggregate, openCase, reviewCase, setSection])
+  }, [businessAggregate, caseStep, openCase, reviewCase, setSection])
 
   const openPane = React.useCallback((pane: Pane): void => {
     setActivePane(pane)
