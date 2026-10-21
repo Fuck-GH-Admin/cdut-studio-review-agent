@@ -102,7 +102,8 @@ export function ContentReviewView(): React.ReactElement {
       }
       setQuickCaseId(caseId)
       setV2Aggregate(null)
-      setSection('local-candidates')
+      // 建案完成后回到普通用户的案卷工作台，不把内部候选作者工具当作主流程下一步。
+      setSection('workbench')
     })()
   }, [actions, setSection, setV2Aggregate])
 
@@ -243,18 +244,17 @@ export function ContentReviewView(): React.ReactElement {
         <div className="flex min-w-0 flex-wrap items-center gap-3">
           <nav aria-label="审核工作页" className="flex shrink-0 flex-wrap items-center gap-1">
             {([
-              ['workbench', '导入材料'],
-              ['local-candidates', '当前审核'],
-              ['case-v2', '结果与办理'],
-              ['templates', '审核模板'],
-              ['batches', '批次管理'],
+              ['workbench', '案卷与材料'],
+              ['case-v2', '办理与结果'],
+              ['templates', '审核方案'],
+              ['batches', '批量审核'],
             ] as Array<[ReviewWorkspaceSection, string]>).map(([id, label]) => (
               <Button
                 key={id}
                 size="sm"
-                variant={section === id ? 'secondary' : 'ghost'}
+                variant={section === id || (id === 'templates' && section === 'local-candidates') ? 'secondary' : 'ghost'}
                 className="h-7 px-2.5 text-xs font-medium"
-                aria-pressed={section === id}
+                aria-pressed={section === id || (id === 'templates' && section === 'local-candidates')}
                 onClick={() => id === 'case-v2' ? void openBusinessCase() : setSection(id)}
               >
                 {label}
@@ -263,28 +263,49 @@ export function ContentReviewView(): React.ReactElement {
             <Button type="button" size="sm" variant="ghost" className="h-7 px-2.5 text-xs font-medium"
               onClick={() => {
                 if (!reviewCase && !businessAggregate) {
-                  // 没有当前案卷时给出可执行的起点，而不是空白待办面板
                   setSection('workbench')
-                  toast.info('请先在「导入材料」中选择或新建一份案卷')
+                  toast.info('请先选择或新建一份案卷')
+                  return
+                }
+                // 待办必须留在用户正在处理的案卷上下文中。
+                // 业务案卷的人工办理在本案工作区；只有三栏审核工作台才切到 AI 核对栏。
+                if (section === 'case-v2' || section === 'local-candidates') {
+                  const panel = document.getElementById('case-human-workflow')
+                  if (panel) {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  } else if (section === 'local-candidates' && businessAggregate) {
+                    setSection('case-v2')
+                    window.setTimeout(() => document.getElementById('case-human-workflow')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 180)
+                  } else {
+                    toast.info('当前案卷暂无可定位的人工办理区域')
+                  }
+                  return
+                }
+                if (section === 'batches' || section === 'templates') {
+                  toast.info('请先打开当前案卷，再处理该案卷的待办')
                   return
                 }
                 openPane('right')
-              }} title="在当前案卷查看需要核对的检查与人工待办">
+              }} title="查看当前案卷需要核对或办理的事项">
               待办
             </Button>
           </nav>
 
-          {reviewCase && (
-            <div className="flex min-w-0 items-center gap-1.5 rounded-md bg-foreground/[0.04] px-2 py-1 text-xs text-muted-foreground">
+          {(reviewCase || businessAggregate) && (
+            <div className="flex min-w-0 flex-wrap items-center gap-1.5 rounded-md bg-foreground/[0.04] px-2 py-1 text-xs text-muted-foreground">
               <FileText size={12} className="shrink-0 text-foreground/60" />
-              <span className="max-w-[260px] truncate" title={reviewCase.title}>
-                {reviewCase.title}{reviewCase.applicant ? ` · ${reviewCase.applicant}` : ''}
+              <span className="max-w-[260px] truncate font-medium text-foreground" title={businessAggregate?.caseV2.title ?? reviewCase?.title ?? ''}>
+                {businessAggregate?.caseV2.title ?? reviewCase?.title}{reviewCase?.applicant ? ` · ${reviewCase.applicant}` : ''}
               </span>
-            </div>
-          )}
-          {!reviewCase && businessAggregate && (
-            <div className="max-w-[300px] truncate rounded-md bg-foreground/[0.04] px-2 py-1 text-xs text-muted-foreground" title={businessAggregate.caseV2.title}>
-              {businessAggregate.caseV2.title}
+              <span className="rounded bg-background/80 px-1.5 py-0.5">
+                {running ? '审核进行中' : runStale ? '审核结果已过期' : businessAggregate ? ({
+                  draft: '草稿', submitted: '已提交', reviewing: '审核中',
+                  'awaiting-supplement': '待补件', 'awaiting-review': '待复审',
+                  decided: '已有决定', archived: '已归档',
+                } as Record<string, string>)[businessAggregate.caseV2.stage] ?? '办理中' : run ? '已有审核记录' : '尚未审核'}
+              </span>
+              {businessAggregate && <span>{businessAggregate.caseV2.documents.filter((document) => document.active !== false).length} 份材料</span>}
+              {run && <span>{run.checks.length} 项检查</span>}
             </div>
           )}
         </div>
@@ -345,7 +366,11 @@ export function ContentReviewView(): React.ReactElement {
             onClick={() => void publishDemoTemplates()}>
             {demoPublishing ? '发布中…' : '发布 50 套模板'}
           </Button>
-          <span className="text-[11px] text-muted-foreground">候选技术方案并非已发布的正式业务模板</span>
+          <Button type="button" size="sm" variant="ghost" className="h-7 text-xs"
+            onClick={() => setSection('local-candidates')}>
+            高级维护：候选方案
+          </Button>
+          <span className="text-[11px] text-muted-foreground">候选技术方案不是正式业务模板；普通审核请使用已发布方案</span>
         </nav>
       )}
 

@@ -530,7 +530,7 @@ export function V2CasePanel({ onCaseOpened, view = 'manage', caseId }: {
             </section>
 
             {/* ===== 人工办理 ===== */}
-            <section aria-label="人工办理" className="space-y-2">
+            <section id="case-human-workflow" aria-label="人工办理" className="scroll-mt-4 space-y-2">
               <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">人工办理</p>
               <ReviewV3T05HumanWorkflow
                 aggregate={current}
