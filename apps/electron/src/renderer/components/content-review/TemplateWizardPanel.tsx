@@ -5,7 +5,7 @@ import type { FieldSpec, MaterialSlotSpec, RubricSpec, TemplateCriterionSpec, Te
 import { Button } from '@profer/ui/primitives/button'
 import { toast } from 'sonner'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { templatesRefreshAtom, reviewV2BusyAtom } from './V2CasePanel'
+import { templatesRefreshAtom, reviewV2BusyAtom } from './review-v2-state'
 import { useStore } from 'jotai'
 import { reviewWorkspaceSectionAtom } from '@/atoms/review-atoms'
 import { T01_SCENARIOS, createT01Scenario, type T01ScenarioId } from './review-v3-t01-business-presets'
