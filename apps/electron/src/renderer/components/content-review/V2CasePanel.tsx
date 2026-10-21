@@ -24,6 +24,10 @@ import { ReviewV3T05RunDecision } from './ReviewV3T05RunDecision'
 import { MaterialDropZone } from './MaterialDropZone'
 import { ReviewV3UnifiedRun } from './ReviewV3UnifiedRun'
 import { ReviewV3T08ReportPanel } from './ReviewV3T08ReportPanel'
+import { ReviewV3TemplateRoutingAssistant } from './ReviewV3TemplateRoutingAssistant'
+import { ReviewV3LocalManualItem } from './ReviewV3LocalManualItem'
+import { ReviewCaseMaterials } from './ReviewCaseMaterials'
+import { reviewWorkspaceAggregateAtom, reviewWorkspaceSectionAtom } from '@/atoms/review-atoms'
 
 /** 当前案卷聚合 */
 export const reviewV2AggregateAtom = atom<CaseAggregateV2 | null>(null)
@@ -66,11 +70,20 @@ function renderTemplateFieldInput(
   return <input className="flex-1 rounded border bg-background px-2 py-1 text-xs" type={field.kind === 'number' ? 'number' : field.kind === 'date' ? 'date' : 'text'} value={value} onChange={(event) => onChange(event.target.value)} />
 }
 
-/** 案卷面板：选择模板 → 创建案卷 → 登记材料 → 开始审核 */
-export function V2CasePanel({ onCaseOpened }: { onCaseOpened?: (caseId: string) => void } = {}): JSX.Element {
+/** 各步骤显示独立，但始终操作同一份 Main-owned 案卷聚合。 */
+export type ReviewCaseStep = 'materials' | 'review' | 'decision' | 'report' | 'advanced'
+export function V2CasePanel({
+  onCaseOpened, step = 'materials', onStepChange,
+}: {
+  onCaseOpened?: (caseId: string) => void
+  step?: ReviewCaseStep
+  onStepChange?: (step: ReviewCaseStep) => void
+} = {}): JSX.Element {
   const store = useStore()
   const aggregate = useAtomValue(reviewV2AggregateAtom)
+  const workspaceAggregate = useAtomValue(reviewWorkspaceAggregateAtom)
   const setNotice = useSetAtom(reviewV2NoticeAtom)
+  const setWorkspaceSection = useSetAtom(reviewWorkspaceSectionAtom)
 
   const [caseList, setCaseList] = useState<CaseListEntry[]>([])
   const [templates, setTemplates] = useState<TemplateVersion[]>([])
@@ -311,32 +324,152 @@ export function V2CasePanel({ onCaseOpened }: { onCaseOpened?: (caseId: string) 
     await refreshList()
     toast.success('案卷已提交，进入审核')
   }), [current, run, store, refreshList])
-  const updateTitle = useCallback(() => {
-    if (!current) return
-    return run(async () => {
-      const result = await window.reviewAPI.updateFieldsV2({
-        caseId: current.caseV2.id,
-        command: {
-          requestId: `upd-${Date.now().toString(36)}`,
-          target: { kind: 'case', id: current.caseV2.id },
-          expectedRevision: current.caseV2.revision,
-          actor: localActor,
-          type: 'UpdateFields',
-          payload: { caseFieldValues: { studentName: `张三-${Math.floor(Math.random() * 90) + 10}` } },
-        },
-      })
-      applyResult(result)
-    })
-  }, [current, run, applyResult])
 
   return (
-    <div className="mx-3 mb-3 rounded-xl border bg-card p-3 shadow-sm">
-      <p className="mb-2 flex items-center gap-2 text-sm font-semibold">案卷办理</p>
-      {current && <p className="mb-3 rounded-md bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
-        当前案卷：<span className="font-medium text-foreground">{current.caseV2.title}</span>
-        {' · '}{current.caseV2.documents.filter((item) => item.active !== false).length} 份原件
-        {' · '}{current.caseV2.stage === 'decided' ? '已形成业务决定' : '当前阶段：' + current.caseV2.stage}
+    <div className="mx-auto max-w-6xl space-y-4 px-4 pb-8">
+      {current ? (
+        <>
+          <header className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-card p-4 shadow-sm">
+            <div className="min-w-0 space-y-1">
+              <h2 className="truncate text-base font-semibold">{current.caseV2.title}</h2>
+              <p className="text-xs text-muted-foreground">
+                当前阶段：{current.caseV2.stage} · 有效材料 {current.caseV2.documents.filter(doc => doc.active !== false).length} 份 ·
+                已保存 {current.receiptLog.length} 条操作记录
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {current.caseV2.templateId === 'pending-template-v3'
+                  ? '审核模板尚未确认'
+                  : '审核方案：' + current.caseV2.templateId + ' v' + current.caseV2.templateVersion}
+                {latestRun && (latestRunStale ? ' · 旧审核记录已过期' : ' · 有审核记录')}
+              </p>
+            </div>
+            <Button type="button" size="sm" variant="outline"
+              onClick={() => void refreshCurrentRun().catch((error) => setNotice(humanizeReviewError(error)))}>
+              刷新本案
+            </Button>
+          </header>
+
+          {step === 'materials' && <div className="space-y-4">
+            <section className="space-y-3 rounded-xl bg-card p-4 shadow-sm">
+              <div>
+                <h3 className="font-semibold">材料与申请事项</h3>
+                <p className="text-xs text-muted-foreground">先核对原件，再确认审核模板。补充材料仍登记在这份案卷，不会创建新案。</p>
+              </div>
+              <ReviewCaseMaterials key={current.caseV2.id} aggregate={current} />
+              <Button type="button" size="sm" variant="outline" onClick={() => void run(async () => {
+                const result = await window.reviewAPI.importDocument({ caseId: current.caseV2.id, role: 'application' })
+                if (result.failures.length > 0) setNotice('导入异常：' + result.failures.map(x => x.fileName + '：' + x.message).join('；'))
+                if (result.documents.length > 0) await refreshCurrentRun()
+              })}>添加申请原件</Button>
+              {currentTemplate?.materialSlots.length ? <label className="flex items-center gap-2 text-xs">
+                证明材料所属类别
+                <select className="max-w-full rounded border bg-background px-2 py-1" value={slotId} onChange={event => setSlotId(event.target.value)}>
+                  <option value="">共用或待确认</option>
+                  {currentTemplate.materialSlots.map(slot => <option key={slot.id} value={slot.id}>{slot.name}</option>)}
+                </select>
+              </label> : null}
+              <MaterialDropZone caseId={current.caseV2.id} slotId={slotId}
+                hasSlots={!!currentTemplate?.materialSlots.length}
+                slotLabel={currentTemplate?.materialSlots.find(slot => slot.id === slotId)?.name}
+                onRegistered={() => void refreshCurrentRun()} />
+              {current.caseV2.stage === 'draft' && !current.d2RuntimePlan && !current.canonicalPlan
+                && current.receiptLog[0]?.type === 'CreateNativeWorkspaceCaseV3'
+                && <ReviewV3LocalManualItem key={current.caseV2.id} caseId={current.caseV2.id} />}
+              {current.caseV2.subjects.length > 0 && <div className="rounded-lg bg-muted/30 p-3">
+                <h4 className="mb-1 text-sm font-medium">已登记事项（{current.caseV2.subjects.length}）</h4>
+                {current.caseV2.subjects.map(subject => <p className="py-0.5 text-xs" key={subject.id}>
+                  {subject.title} · {subject.status}
+                </p>)}
+              </div>}
+            </section>
+            {current.caseV2.templateId === 'pending-template-v3' && !current.d2RuntimePlan && !current.canonicalPlan
+              && <ReviewV3TemplateRoutingAssistant key={current.caseV2.id} caseId={current.caseV2.id}
+                onPlanInstalled={() => { void refreshCurrentRun() }}
+                onTemplateBound={() => { void refreshCurrentRun() }} />}
+            {(current.caseV2.stage === 'draft' || (current.caseV2.stage === 'submitted' && current.tasks.length === 0))
+              && !current.d2RuntimePlan && !current.canonicalPlan && current.caseV2.templateId !== 'pending-template-v3' &&
+              <Button size="sm" onClick={submitCase}>
+                {current.caseV2.stage === 'draft' ? '提交案卷' : '恢复审核任务'}
+              </Button>}
+            <div className="flex justify-end">
+              <Button onClick={() => onStepChange?.('review')}>继续：执行审核</Button>
+            </div>
+          </div>}
+
+          {step === 'review' && <div className="space-y-4">
+            <section className="space-y-3 rounded-xl bg-card p-4 shadow-sm">
+              <h3 className="font-semibold">执行与结果</h3>
+              <ReviewV3UnifiedRun key={current.caseV2.id}
+                caseId={current.caseV2.id} stage={current.caseV2.stage}
+                documentCount={current.caseV2.documents.filter(doc => doc.active !== false).length}
+                technicalPlan={!!current.d2RuntimePlan} onUpdated={refreshCurrentRun}
+                canRun={current.caseV2.templateId !== 'pending-template-v3'} />
+              <RunResultPanel caseId={current.caseV2.id} refreshNonce={runNonce} showActions={false} />
+              <ObservationConfirmPanel caseId={current.caseV2.id}
+                aggregate={current} onResult={applyResult} refreshNonce={runNonce} />
+            </section>
+            <ReviewV3T02CoverageSection caseId={current.caseV2.id} />
+            {workspaceAggregate?.caseV2.id === current.caseV2.id && <ReviewV3T03FactWorkbench />}
+            <div className="flex justify-end"><Button onClick={() => onStepChange?.('decision')}>继续：处理审核结果</Button></div>
+          </div>}
+
+          {step === 'decision' && <div className="space-y-4">
+            <section className="space-y-4 rounded-xl bg-card p-4 shadow-sm">
+              <h3 className="font-semibold">待办与人工办理</h3>
+              <p className="text-xs text-muted-foreground">先确认审核发现和证据，再办理阶段决定、补件或申诉。AI 运行完成不等于人工审批通过。</p>
+              {!latestRun && <p role="status" className="rounded-md bg-muted px-3 py-2 text-xs">
+                本案尚无可用审核记录。请先进入「执行与结果」完成当前材料审核。
+              </p>}
+              {latestRunStale && latestRun && <p role="alert" className="rounded-md bg-amber-500/10 px-3 py-2 text-xs text-amber-700 dark:text-amber-300">
+                当前材料或事实已变更，旧运行不能直接作为新的人工决定依据，请先重新审核。
+              </p>}
+              <section className="space-y-2">
+                <h4 className="text-sm font-medium">逐条检查与人工认定</h4>
+                <ReviewV3T05RunDecision aggregate={current} onResult={applyResult} />
+              </section>
+              <ReviewV3T05HumanWorkflow key={current.caseV2.id}
+                aggregate={current} onResult={applyResult} stageCapability={stageCapability}
+                recordTrustedStageDecision={recordTrustedStageDecision}
+                submitAppeal={input => window.reviewAPI.submitLocalF13Appeal(input)}
+                reviewAppeal={input => window.reviewAPI.reviewLocalF13Appeal(input)}
+                withdrawAppeal={input => window.reviewAPI.withdrawLocalF13Appeal(input)} />
+            </section>
+            <div className="flex justify-end"><Button onClick={() => onStepChange?.('report')}>查看报告与记录</Button></div>
+          </div>}
+
+          {step === 'report' && <div className="space-y-4">
+            <section className="space-y-3 rounded-xl bg-card p-4 shadow-sm">
+              <h3 className="font-semibold">报告与交付</h3>
+              {latestRun
+                ? <ReviewV3T08ReportPanel aggregate={current} currentRun={latestRun} currentStale={latestRunStale} template={currentTemplate ?? null} />
+                : <p className="text-sm text-muted-foreground">尚无可供生成报告的真实运行。请先完成审核。</p>}
+            </section>
+            <section className="space-y-2 rounded-xl bg-card p-4 shadow-sm">
+              <h3 className="font-semibold">操作和决定历史</h3>
+              <CaseTimelinePanel caseId={current.caseV2.id} refreshNonce={runNonce} />
+            </section>
+          </div>}
+        </>
+      ) : <p className="rounded-xl border border-dashed p-6 text-sm text-muted-foreground">
+        当前没有打开案卷。请从首页导入材料或选择历史案卷。
       </p>}
+
+      {step === 'advanced' && <div className="space-y-4">
+        {current && <>
+          <section className="rounded-xl bg-card p-4 shadow-sm">
+            <h3 className="mb-2 font-semibold">高级处理与离线任务</h3>
+            <ReviewV3T09OfflineSection />
+            <ReviewAssignmentCard caseId={current.caseV2.id} />
+            <details className="rounded-lg border p-3 text-xs">
+              <summary className="cursor-pointer font-medium">仅运行模板规则</summary>
+              <ReviewV3TemplateRuleRun caseId={current.caseV2.id} />
+            </details>
+          </section>
+          <Button size="sm" variant="outline"
+            onClick={() => setWorkspaceSection('local-candidates')}>打开候选方案与技术试跑</Button>
+        </>}
+        <section className="rounded-xl bg-card p-4 shadow-sm">
+          <h3 className="mb-2 font-semibold">从已发布模板创建案卷 / 查看完整案卷列表</h3>
       <details open={!current} className="mb-3 rounded-md border border-border/60 px-3 py-2">
         <summary className="cursor-pointer text-xs font-medium">打开其他案卷 / 从已发布模板新建</summary>
         <div className="mt-3">
@@ -424,124 +557,10 @@ export function V2CasePanel({ onCaseOpened }: { onCaseOpened?: (caseId: string) 
       )}
         </div>
       </details>
-      <div className="space-y-2">
-        {!current && (
-          <Button size="sm" disabled={store.get(reviewV2BusyAtom)} onClick={seedAndCreate}>
-            载入示例并创建审核任务
-          </Button>
-        )}
-        {current && (
-          <div className="space-y-1.5 text-xs">
-            {currentTemplate?.materialSlots.length && (
-              <div className="flex items-center gap-1.5">
-                <span className="shrink-0 text-muted-foreground">材料槽：</span>
-                <select className="rounded border bg-background px-1 py-0.5" value={slotId} onChange={(event) => setSlotId(event.target.value)}>
-                  <option value="">未指定</option>
-                  {currentTemplate.materialSlots.map((slot) => {
-                    const sectionName = currentTemplate.sections?.find((section) => section.id === slot.sectionId)?.name
-                    return <option key={slot.id} value={slot.id}>{sectionName ? `${sectionName} · ` : ''}{slot.name}</option>
-                  })}
-                </select>
-              </div>
-            )}
-            {current.caseV2.documents.length > 0 && (
-              <ul className="list-disc space-y-1 pl-4 text-sm text-muted-foreground">
-                {current.caseV2.documents.map((doc) => (
-                  <li key={doc.versionId}>{doc.fileName} · {doc.versionId.slice(-8)}{doc.active === false ? '（旧版）' : ''}{doc.materialSlotId ? ` · ${currentTemplate?.materialSlots.find((slot) => slot.id === doc.materialSlotId)?.name ?? doc.materialSlotId}` : ''}</li>
-                ))}
-              </ul>
-            )}
-            <MaterialDropZone
-              caseId={current.caseV2.id}
-              slotId={slotId}
-              hasSlots={!!currentTemplate?.materialSlots?.length}
-              slotLabel={currentTemplate?.materialSlots.find((slot) => slot.id === slotId)?.name}
-              onRegistered={() => run(async () => {
-                const loaded = await window.reviewAPI.openAggregateV2(current.caseV2.id)
-                if (loaded) store.set(reviewV2AggregateAtom, loaded)
-                await refreshList()
-              })}
-            />
-            <div className="flex flex-wrap gap-1.5">
-              {(current.caseV2.stage === 'draft' || (current.caseV2.stage === 'submitted' && current.tasks.length === 0)) && (
-                <Button size="sm" onClick={submitCase}>{current.caseV2.stage === 'draft' ? '提交案卷' : '恢复审核任务'}</Button>
-              )}
-            </div>
-            <ReviewV3UnifiedRun
-              caseId={current.caseV2.id}
-              stage={current.caseV2.stage}
-              documentCount={current.caseV2.documents.filter((document) => document.active !== false).length}
-              technicalPlan={!!current.d2RuntimePlan}
-              onUpdated={refreshCurrentRun}
-            />
-            {latestRun && <details className="rounded-md border border-border/60 px-3 py-2">
-              <summary className="cursor-pointer text-xs font-semibold">查看与导出本案审核报告</summary>
-              <ReviewV3T08ReportPanel aggregate={current} currentRun={latestRun} currentStale={latestRunStale} template={currentTemplate ?? null} />
-            </details>}
-            <ReviewV3T05HumanWorkflow
-              aggregate={current}
-              onResult={applyResult}
-              stageCapability={stageCapability}
-              recordTrustedStageDecision={recordTrustedStageDecision}
-              submitAppeal={(input) => window.reviewAPI.submitLocalF13Appeal(input)}
-              reviewAppeal={(input) => window.reviewAPI.reviewLocalF13Appeal(input)}
-              withdrawAppeal={(input) => window.reviewAPI.withdrawLocalF13Appeal(input)}
-            />
-            <ReviewV3T05RunDecision aggregate={current} onResult={applyResult} />
-            <RunResultPanel caseId={current.caseV2.id} refreshNonce={runNonce} />
-            <ObservationConfirmPanel caseId={current.caseV2.id} aggregate={current} onResult={applyResult} refreshNonce={runNonce} />
-            <details className="rounded-md border border-border/60 px-3 py-2 text-xs">
-              <summary className="cursor-pointer font-medium">高级：仅执行模板规则（不启动 AI）</summary>
-              <ReviewV3TemplateRuleRun caseId={current.caseV2.id} />
-            </details>
-            {/* T09 离线任务包：签发 / 预览 / 幂等导入 */}
-            <ReviewV3T09OfflineSection />
-            {/* T02 材料来源覆盖（只读暂存预览，不产生原件） */}
-            <ReviewV3T02CoverageSection caseId={current.caseV2.id} />
-            {/* T03 事实确认与证据多对多：与观察项面板同一案卷上下文 */}
-            <ReviewV3T03FactWorkbench />
-            <ReviewAssignmentCard caseId={current.caseV2.id} />
-            <CaseTimelinePanel caseId={current.caseV2.id} refreshNonce={runNonce} />
-            <p className="font-medium">{current.caseV2.title}</p>
-            {current.caseV2.subjects.length > 0 && (
-              <div className="rounded-md bg-muted/30 p-2">
-                <p className="mb-1 font-medium">本案卷申报事项（{current.caseV2.subjects.length}）</p>
-                <ul className="space-y-1">{current.caseV2.subjects.map((subject) => {
-                  const sectionName = currentTemplate?.sections?.find((section) => section.id === subject.sectionId)?.name
-                  return <li key={subject.id} className="flex justify-between gap-2"><span className="truncate">{sectionName ? `${sectionName} · ` : ''}{subject.title}</span><span className="shrink-0 text-muted-foreground">{subject.status}</span></li>
-                })}</ul>
-              </div>
-            )}
-            <p className="text-muted-foreground">
-              阶段 {current.caseV2.stage} · 已记录操作 {current.receiptLog.length} 条
-            </p>
-            {(currentTemplate?.fields.some((field) => field.key === 'studentName') || Object.prototype.hasOwnProperty.call(current.caseV2.caseFields, 'studentName')) && (
-            <div className="flex items-center gap-1.5">
-              <input key={current.caseV2.id} id="v2-student-name" className="h-7 w-32 rounded-md border bg-background px-2 text-xs" placeholder="学生姓名" defaultValue={String((current.caseV2.caseFields.studentName as { value?: string })?.value ?? '')} />
-              <Button size="sm" variant="outline" onClick={() => {
-                const input = document.getElementById('v2-student-name') as HTMLInputElement | null
-                if (!input?.value) return
-                void run(async () => {
-                  const result = await window.reviewAPI.updateFieldsV2({
-                    caseId: current.caseV2.id,
-                    command: {
-                      requestId: `upd-${Date.now().toString(36)}`,
-                      target: { kind: 'case', id: current.caseV2.id },
-                      expectedRevision: current.caseV2.revision,
-                      actor: localActor,
-                      type: 'UpdateFields',
-                      payload: { caseFieldValues: { studentName: input.value } },
-                    },
-                  })
-                  applyResult(result)
-                })
-              }}>保存姓名</Button>
-            </div>
-            )}
-          </div>
-        )}
-      </div>
+
+          {!current && <Button size="sm" variant="outline" onClick={seedAndCreate}>载入示例并创建审核任务</Button>}
+        </section>
+      </div>}
     </div>
   )
 }
-

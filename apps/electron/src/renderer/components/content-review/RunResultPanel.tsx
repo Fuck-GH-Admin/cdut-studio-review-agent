@@ -35,7 +35,7 @@ function describeSource(ref: SourceRef, aggregate: CaseAggregateV2 | null, caseI
   return { label: `${document.fileName} · ${where}`, valid: true }
 }
 
-export function RunResultPanel({ caseId, refreshNonce }: { caseId: string; refreshNonce: number }): JSX.Element {
+export function RunResultPanel({ caseId, refreshNonce, showActions = true }: { caseId: string; refreshNonce: number; showActions?: boolean }): JSX.Element {
   const [runs, setRuns] = useState<ReviewRunV2[]>([])
   const [caseAggregate, setCaseAggregate] = useState<CaseAggregateV2 | null>(null)
   const [ruleLabels, setRuleLabels] = useState<Record<string, string>>({})
@@ -110,8 +110,10 @@ export function RunResultPanel({ caseId, refreshNonce }: { caseId: string; refre
       <div className="flex items-center justify-between">
         <p className="text-xs font-medium">审核结果（{runs.length} 次）</p>
         <div className="flex items-center gap-1">
-          <Button size="sm" variant="outline" disabled={running} onClick={() => void startRun()}>{running ? '审核中…' : '开始审核'}</Button>
-          <Button size="sm" variant="ghost" disabled={runs.length === 0} onClick={() => void exportReport()}>导出报告</Button>
+          {showActions && <>
+            <Button size="sm" variant="outline" disabled={running} onClick={() => void startRun()}>{running ? '审核中…' : '开始审核'}</Button>
+            <Button size="sm" variant="ghost" disabled={runs.length === 0} onClick={() => void exportReport()}>导出报告</Button>
+          </>}
           <Button size="sm" variant="ghost" onClick={() => void load()}>刷新</Button>
         </div>
       </div>
@@ -123,7 +125,7 @@ export function RunResultPanel({ caseId, refreshNonce }: { caseId: string; refre
           {preflight.policyReviewTitles.length > 0 && <p>模板没有关联正式政策；{preflight.policyReviewTitles.join('、')}会留给人工判断，不自动决定额度或资格。</p>}
         </div>
       )}
-      {runs.length === 0 && <p className="text-xs text-muted-foreground">尚未开始审核。点击“开始自动审核”后，系统会读取当前材料和审核依据。</p>}
+      {runs.length === 0 && <p className="text-xs text-muted-foreground">尚未开始审核。请使用上方统一审核入口，系统会读取当前材料和审核依据。</p>}
       {runs.slice(0, 3).map((run) => (
         <div key={run.id} className="rounded-md border p-2 text-xs">
           <button type="button" className="flex w-full items-center justify-between" onClick={() => setExpandedRun(expandedRun === run.id ? null : run.id)}>
