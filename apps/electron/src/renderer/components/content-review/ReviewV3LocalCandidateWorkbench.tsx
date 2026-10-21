@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { useSetAtom } from 'jotai'
 import { reviewWorkspaceSectionAtom } from '@/atoms/review-atoms'
-import { reviewV2AggregateAtom } from './V2CasePanel'
+import { reviewV2AggregateAtom } from './review-v2-state'
 import { ReviewV3LocalManualItem } from './ReviewV3LocalManualItem'
 import { ReviewV3LocalPiControls } from './ReviewV3LocalPiControls'
 import { ReviewV3UnifiedRun } from './ReviewV3UnifiedRun'
