@@ -26,7 +26,7 @@ import { ReviewV3UnifiedRun } from './ReviewV3UnifiedRun'
 import { ReviewV3T08ReportPanel } from './ReviewV3T08ReportPanel'
 import { ReviewV3TemplateRoutingAssistant } from './ReviewV3TemplateRoutingAssistant'
 import { ReviewV3LocalManualItem } from './ReviewV3LocalManualItem'
-import { reviewWorkspaceSectionAtom } from '@/atoms/review-atoms'
+import { reviewWorkspaceAggregateAtom, reviewWorkspaceSectionAtom } from '@/atoms/review-atoms'
 
 /** 当前案卷聚合 */
 export const reviewV2AggregateAtom = atom<CaseAggregateV2 | null>(null)
@@ -80,6 +80,7 @@ export function V2CasePanel({
 } = {}): JSX.Element {
   const store = useStore()
   const aggregate = useAtomValue(reviewV2AggregateAtom)
+  const workspaceAggregate = useAtomValue(reviewWorkspaceAggregateAtom)
   const setNotice = useSetAtom(reviewV2NoticeAtom)
   const setWorkspaceSection = useSetAtom(reviewWorkspaceSectionAtom)
 
@@ -412,12 +413,12 @@ export function V2CasePanel({
                 documentCount={current.caseV2.documents.filter(doc => doc.active !== false).length}
                 technicalPlan={!!current.d2RuntimePlan} onUpdated={refreshCurrentRun}
                 canRun={current.caseV2.templateId !== 'pending-template-v3'} />
-              <RunResultPanel caseId={current.caseV2.id} refreshNonce={runNonce} />
+              <RunResultPanel caseId={current.caseV2.id} refreshNonce={runNonce} showActions={false} />
               <ObservationConfirmPanel caseId={current.caseV2.id}
                 aggregate={current} onResult={applyResult} refreshNonce={runNonce} />
             </section>
             <ReviewV3T02CoverageSection caseId={current.caseV2.id} />
-            <ReviewV3T03FactWorkbench />
+            {workspaceAggregate?.caseV2.id === current.caseV2.id && <ReviewV3T03FactWorkbench />}
             <div className="flex justify-end"><Button onClick={() => onStepChange?.('decision')}>继续：处理审核结果</Button></div>
           </div>}
 
