@@ -60,7 +60,7 @@
 | apps/electron/src/main/lib/review/stage-workflow.ts | 补件判定为 satisfied 且没有其他未结束补件后，调用 requeueCaseAfterSupplement。 | B；E 记录批次回流语义。 |
 | apps/electron/src/main/lib/review/run-async-service.ts | assembleAndRunReview 装配模型渠道、Pi Adapter 与 OCR，提供单案真实审核执行。 | D。 |
 | apps/electron/src/main/lib/review/review-v3-t06-main-service.ts（432 行） | 物理目录/ZIP 入库的 Main 服务；验证来源指纹，创建/绑定案卷、登记原件，并按已成功入库的案卷与模板创建批次。它是第二个批次创建入口，但复用 createBatchV2。 | G/F 的材料入口与 E 的批次 writer 交叉。 |
-| apps/electron/src/main/lib/review/review-v3-t06-main-service.test.ts（157 行） | 物理入库、混合模板分批、部分失败与同请求重复提交测试。 | 6 个 test 调用；当前夹具的 policyRefs 与 policyVersionIds 都为空，未覆盖政策版本大于 1 的批次锁。 |
+| apps/electron/src/main/lib/review/review-v3-t06-main-service.test.ts（157 行） | 物理入库、混合模板分批、部分失败与同请求重复提交测试。 | 7 个 test 调用；当前夹具的 policyRefs 与 policyVersionIds 都为空，未覆盖政策版本大于 1 的批次锁。 |
 | apps/electron/src/main/lib/review/external-ports.ts 与 external-ports.test.ts | 定义 MockSchoolAdapter、LocalPackageAdapter 和 SchoolPort 合同；batch-store 内的 outbox 用于可恢复的外部动作载荷。 | 作为外部系统边界单独记录；当前未证实已接入用户批次流程。 |
 
 ## 4. 实际状态语义
@@ -172,7 +172,7 @@ E 核心直接测试源码包含：
 
 相关交叉测试：
 - review-ipc-path.test.ts：1 个测试场景覆盖恶意 caseId 的批次创建拒绝。
-- review-v3-t06-main-service.test.ts：6 个测试场景覆盖物理入库、混合模板分批、部分失败和同请求重复提交。
+- review-v3-t06-main-service.test.ts：7 个测试场景覆盖物理入库、混合模板分批、部分失败和同请求重复提交。
 - review-v3-t06-physical-intake.test.ts：8 个测试场景覆盖物理分案预览、路径与重复项拒绝、已有案卷绑定及批次成功成员。
 - review-v3-t06-template-route.test.ts：3 个模板预路由测试。
 - batch-ui-feedback.test.ts：3 个 UI 反馈测试。
