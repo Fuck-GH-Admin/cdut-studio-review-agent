@@ -102,7 +102,8 @@ export function ContentReviewView(): React.ReactElement {
       }
       setQuickCaseId(caseId)
       setV2Aggregate(null)
-      setSection('local-candidates')
+      // 建案完成后回到普通用户的案卷工作台，不把内部候选作者工具当作主流程下一步。
+      setSection('workbench')
     })()
   }, [actions, setSection, setV2Aggregate])
 
@@ -365,7 +366,11 @@ export function ContentReviewView(): React.ReactElement {
             onClick={() => void publishDemoTemplates()}>
             {demoPublishing ? '发布中…' : '发布 50 套模板'}
           </Button>
-          <span className="text-[11px] text-muted-foreground">候选技术方案并非已发布的正式业务模板</span>
+          <Button type="button" size="sm" variant="ghost" className="h-7 text-xs"
+            onClick={() => setSection('local-candidates')}>
+            高级维护：候选方案
+          </Button>
+          <span className="text-[11px] text-muted-foreground">候选技术方案不是正式业务模板；普通审核请使用已发布方案</span>
         </nav>
       )}
 
