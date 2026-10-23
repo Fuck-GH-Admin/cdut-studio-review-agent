@@ -261,10 +261,10 @@ function evaluate(s:Session,items:B3ManualCatalogEntry[]):B3RouteState {
     item.autoEligible&&items.some(entry=>entry.templateId===item.templateId&&
       entry.templateVersion===item.templateVersion&&
       entry.availability==='authorized-for-technical-selection'))
-  const suggestions:B3RouteSuggestion[]=scoped?automatic.map(candidate=>({
+  const suggestions:B3RouteSuggestion[]=scoped?automatic.map((candidate,index)=>({
     templateId:candidate.templateId,templateVersion:candidate.templateVersion,
     availability:'authorized-for-technical-selection',
-    confidence:candidate.confidence,caseCandidateId:s.ctx.caseCandidateId,
+    confidence:candidate.confidence,rank:-index,caseCandidateId:s.ctx.caseCandidateId,
     evidence:all.map(x=>({materialCandidateId:x.candidateId,rawSha256:x.rawSha256,
       reason:candidate.evidence||('规则匹配：'+candidate.matchedSignals.join('、'))})),
   })):[]

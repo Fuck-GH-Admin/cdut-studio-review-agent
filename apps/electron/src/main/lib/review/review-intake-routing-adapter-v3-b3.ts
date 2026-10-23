@@ -14,6 +14,8 @@ export interface B3RouteSuggestion {
   /** Not inferred authorization. Trusted catalog must supply status. */
   availability: 'authorized-for-technical-selection' | 'candidate-held'
   confidence: number
+  /** Stable order from the unified matcher when confidence values tie. */
+  rank?: number
   evidence: Array<{ materialCandidateId: string; rawSha256: string; reason: string }>
   /** Supplied by conservative classifier; no role guessing or hidden Subject. */
   caseCandidateId: string
@@ -115,6 +117,7 @@ export function planB3ConservativeRouting(input: B3RoutingInput): B3RouteState {
   }
   const candidates=[...byKey.values()].sort((a,b)=>
     b.confidence-a.confidence ||
+    (b.rank??0)-(a.rank??0) ||
     a.templateId.localeCompare(b.templateId) ||
     a.templateVersion.localeCompare(b.templateVersion)).map(item=>({
       templateId:item.templateId,templateVersion:item.templateVersion,
