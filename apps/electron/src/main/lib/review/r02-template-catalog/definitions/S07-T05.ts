@@ -1415,7 +1415,7 @@ export const r02Metadata: R02Metadata = {
   sourceDocumentPath: "docs/design/review-agent/business-templates/R02/S07-T05.md",
   sourceDocumentSha256: "c742a0df9f2354109a9e316a46eb421de92142272991125e5455ddc39e562952",
   researchOriginalPath: "docs/design/review-agent/business-templates/R02/research-original/S07-T05.md",
-  researchOriginalSha256: "c742a0df9f2354109a9e316a46eb421de92142272991125e5455ddc39e562952",
+  researchOriginalSha256: "41d56364b89b8353552c4cfd2eee022a7e28580a937a7b6f766efd4bdfad7cea",
   officialSchoolTemplate: false,
   researchDate: '2026-10-24',
   policyEvidenceStatus: 'PARTIAL',
