@@ -49,6 +49,13 @@ describe('R02 S03-A template definitions', () => {
       expect(template.stages).toHaveLength(expectedEntry.stages)
     }
   })
+  test('preserves source-explicit requiredness without promoting conditional fields', () => {
+    expect(template1.fields.find(field => field.key === 'f001')?.required).toBe(true)
+    expect(template2.fields.find(field => field.key === 'f001')?.required).toBe(true)
+    expect(template3.fields.find(field => field.key === 'f001')?.required).toBe(true)
+    expect(template5.fields.find(field => field.key === 'f001')?.required).toBe(true)
+    expect(template1.fields.find(field => field.key === 'f005')?.required).toBe(false)
+  })
   test('validateTemplate reports no structural errors and all stages are reachable', () => {
     for (const { template } of entries) {
       const issues = validateTemplate(template)
