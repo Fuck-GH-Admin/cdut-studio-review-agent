@@ -1,17 +1,39 @@
 # 子会话任务｜T06-A｜导师、招生及任课资格
 
-> **权威 GitHub 原件定位（本段优先于本文中任何“本 ZIP 已包含文件”的旧表述）**
-> 仓库：`Fuck-GH-Admin/cdut-studio-review-agent`；权威资料分支：`feat/v3-r02-template-library`。
-> - 本批每个模板的原始 Markdown：`docs/design/review-agent/business-templates/R02/research-original/{TEMPLATE_ID}.md`（将占位符替换为实际 ID）。
-> - V3 实现契约：`docs/design/review-agent/R02-V3-IMPLEMENTATION-CONTRACT-20261023.md`。
-> - 统一审查标准：`docs/design/review-agent/business-templates/R02/dispatch/00_统一审查标准.md`。
-> - 文件所有权：`docs/design/review-agent/business-templates/R02/dispatch/00_集成分工与文件所有权.md`。
-> - 完整 128 项目录：`docs/design/review-agent/business-templates/R02/dispatch/00_模板清单_128.tsv`；缺失 16 项：`docs/design/review-agent/business-templates/R02/dispatch/01_未纳入的16项.md`。
-> - 31 份定向提示词均在 `docs/design/review-agent/business-templates/R02/dispatch/prompts/`。
-> **执行前必须先从 GitHub 读取以上文件和本批所有原始 MD。不要要求用户上传 ZIP。** 若本地工作分支没有原件，先执行 `git fetch origin feat/v3-r02-template-library`，再用 `git show origin/feat/v3-r02-template-library:<仓库路径>` 读取/提取原件，或使用 GitHub 文件浏览/API 按上述分支和路径读取。资料 ZIP 只是备份，不是必需输入。
+> **权威 GitHub 原件定位与读取顺序（ZIP 不是输入前提）**
+> 仓库：`Fuck-GH-Admin/cdut-studio-review-agent`；权威资料/集成分支：`feat/v3-r02-template-library`。开始时读取并记录该分支最新 HEAD SHA；本文中的历史 SHA 或本地旧文件均不得替代当前 HEAD。
+> - 本批提示词：`docs/design/review-agent/business-templates/R02/dispatch/prompts/T06-A_TASK_PROMPT.md`。
+> - 本批原始模板（以下路径已按本批实际 ID 展开，必须逐份完整读取；不得只看摘要或前几节）：
+>   - `docs/design/review-agent/business-templates/R02/research-original/T06-T01.md`
+>   - `docs/design/review-agent/business-templates/R02/research-original/T06-T02.md`
+>   - `docs/design/review-agent/business-templates/R02/research-original/T06-T03.md`
+>   - `docs/design/review-agent/business-templates/R02/research-original/T06-T04.md`
+>   - `docs/design/review-agent/business-templates/R02/research-original/T06-T05.md`
+> - 执行前必须完整读取以下公共要求（均从上述分支当前 HEAD 读取）：
+>   1. `docs/design/review-agent/business-templates/R02/dispatch/README.md`（资料总索引）
+>   2. `docs/design/review-agent/business-templates/R02/dispatch/README_派发说明.md`（派发规则）
+>   3. `docs/design/review-agent/business-templates/R02/dispatch/00_V3实现与提交契约.md`（本轮实施闭环）
+>   4. `docs/design/review-agent/business-templates/R02/dispatch/00_统一审查标准.md`（质量验收标准）
+>   5. `docs/design/review-agent/business-templates/R02/dispatch/00_集成分工与文件所有权.md`（写入范围/所有权）
+>   6. `docs/design/review-agent/business-templates/R02/dispatch/00_模板清单_128.tsv`（128 项正式 ID、名称、来源元数据、字节数与 SHA-256）
+>   7. `docs/design/review-agent/business-templates/R02/dispatch/01_未纳入的16项.md`（明确缺失项，禁止用邻项代替）
+>   8. `docs/design/review-agent/business-templates/R02/dispatch/00_总集成会话提示词.md`（总集成边界与验收）
+>   9. `docs/design/review-agent/R02-V3-IMPLEMENTATION-CONTRACT-20261023.md`（V3 原生实现契约）
+> - 辅助参考（不取代以上权威文件）：`docs/design/review-agent/business-templates/R02/dispatch/README_使用说明.md`、`docs/design/review-agent/business-templates/R02/dispatch/01_预期目录缺口_修正版.md`。
+> **本地克隆读取流程**：先确认 `git remote get-url origin` 指向该仓库，再运行：
+> ```bash
+> git fetch origin refs/heads/feat/v3-r02-template-library:refs/remotes/origin/feat/v3-r02-template-library
+> git rev-parse refs/remotes/origin/feat/v3-r02-template-library
+> git show refs/remotes/origin/feat/v3-r02-template-library:<仓库内相对路径>
+> ```
+> 逐个将 `<仓库内相对路径>` 替换为上列确切路径。若 fetch 因本地远端跟踪分支分叉而失败，不得强制覆盖或重置；改用 `git fetch origin refs/heads/feat/v3-r02-template-library`，随后以 `git show FETCH_HEAD:<仓库内相对路径>` 读取。不要切换或重置正在工作的批次分支。
+> **无本地克隆时**：直接使用 GitHub 文件/API/连接器，指定仓库与 `ref=feat/v3-r02-template-library`，按相同路径读取；不得要求用户上传 ZIP。若某个路径真实返回 404，记录确切路径和错误，继续其余任务，不得用邻项代替或创建空壳原件。
+> **完整性核验**：将每份原件的 `template_id`、正式 `name`、清单 `bytes` 和 `sha256` 逐项比对。计算 SHA-256 必须使用原始字节；若文本展示器去掉末尾换行，不能据展示文本直接判为原件损坏，应从 Git blob/原始字节核验。
+> **ZIP 规则**：任何 ZIP 都只是可选备份/交叉核验材料，不是开始工作的前置条件；如 ZIP 与当前分支 HEAD 不一致，以当前分支 HEAD 为准并记录差异。不得要求用户重新上传原始 ZIP。
 
 
-你是一个全新的独立审查会话。不得依赖旧会话记忆，不得要求用户重新上传原始 128 份总包。本 ZIP 已包含本批次需要的模板、统一审核标准、全量 128 项清单与缺失目录清单。**本轮必须实际完成审查并交付文件，不是只制定计划。**
+
+你是一个全新的独立审查会话。不得依赖旧会话记忆，也不得要求用户上传 ZIP。开始工作前必须按上方 GitHub 资料定位与读取顺序，自行取得本批原件和公共要求。ZIP 仅是可选备份，不能成为执行前提。**本轮必须实际完成审查并交付文件，不是只制定计划。**
 
 ## 你的责任范围
 
@@ -31,7 +53,7 @@
 ## 必须执行的工作
 
 1. 逐份完整读取本批次所有 Markdown，不能只看 YAML、摘要、前几节或搜索片段。先核对身份、版本、结构与引用完整性。
-2. 按 ZIP 内 `00_统一审查标准.md` 的全部维度逐份审查。对可能影响实际规则的点，使用联网检索核查官方来源；优先官方原文、正式通知和法规数据库。记录确切 URL、文号、日期、条款与适用范围。
+2. 按 GitHub 当前分支的 `docs/design/review-agent/business-templates/R02/dispatch/00_统一审查标准.md` 全部维度逐份审查。对可能影响实际规则的点，使用联网检索核查官方来源；优先官方原文、正式通知和法规数据库。记录确切 URL、文号、日期、条款与适用范围。
 3. 检查正文中的政策陈述是否有来源支撑、是否现行、是否适用于相应学生/教师身份、学段和批次。若证据不可访问或学校授权未确认，记录精确缺口并继续；不得把这作为停止交付的理由。
 4. 对本批次模板之间做边界/重复/术语/角色/结果字段交叉检查；利用 `00_模板清单_128.tsv` 标注可能的跨领域邻接模板 ID，但不必替未分配的模板做完整审查。
 5. 不得虚构校级制度、批准权限、阈值、表单、系统入口、流程或已实现的技术能力。把“政策证据不全”与“模板设计质量差”分开记录。
@@ -64,11 +86,11 @@
 
 # 强制追加：本批必须完成 V3 实现并提交仓库（优先级高于“只交审查报告”的旧表述）
 
-你本批负责的 5 份模板：`T06-T01;T06-T02;T06-T03;T06-T04;T06-T05`。**审查后直接实施，不要只输出问题报告或 patches。** 本 ZIP 已包含本批 Markdown，无需要求用户重传 128 份总包。
+你本批负责的 5 份模板：`T06-T01;T06-T02;T06-T03;T06-T04;T06-T05`。**审查后直接实施，不要只输出问题报告或 patches。** 本批原件必须按上方已展开的 GitHub 路径自行读取；ZIP 只作可选交叉校验，不得要求用户上传。
 
 ## A. 先取回统一实现契约
-1. 读取本 ZIP 中的 `00_V3实现与提交契约.md` 与 `00_集成分工与文件所有权.md`。
-2. 读取仓库 `Fuck-GH-Admin/cdut-studio-review-agent` 分支 `feat/v3-r02-template-library` 中的 `docs/design/review-agent/R02-V3-IMPLEMENTATION-CONTRACT-20261023.md`。该契约已提交，SHA `1622a7898d77dce4251acaf32c91bacda24b15a1`。
+1. 读取 GitHub 当前分支中的 `docs/design/review-agent/business-templates/R02/dispatch/00_V3实现与提交契约.md` 与 `docs/design/review-agent/business-templates/R02/dispatch/00_集成分工与文件所有权.md`。
+2. 读取仓库当前集成分支最新 HEAD 中的 `docs/design/review-agent/R02-V3-IMPLEMENTATION-CONTRACT-20261023.md`。不要依赖固定历史 SHA；以当前分支实际读取到的文件为准。
 3. 如 GitHub 连接可用，直接在仓库分支上工作；不得把“无法读取旧会话记忆”当阻塞。
 
 ## B. 必须提交的代码与文档
