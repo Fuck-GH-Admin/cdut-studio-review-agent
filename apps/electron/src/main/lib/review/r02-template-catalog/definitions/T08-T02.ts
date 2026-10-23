@@ -85,7 +85,7 @@ export const T08T02Template: TemplateVersion = {
     {
       "key": "f005",
       "label": "F005 · 公告版本、发布时间、更正关系／LIST／RecruitmentBatch",
-      "kind": "array",
+      "kind": "rows",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -121,7 +121,7 @@ export const T08T02Template: TemplateVersion = {
     {
       "key": "f009",
       "label": "F009 · 报名、面试、测评、公示、报到等有效节点／LIST／RecruitmentBatch",
-      "kind": "array",
+      "kind": "rows",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -184,7 +184,7 @@ export const T08T02Template: TemplateVersion = {
     {
       "key": "f016",
       "label": "F016 · 专业、学历层级、学段与岗位匹配要素／TEXT/LIST／Candidate",
-      "kind": "array",
+      "kind": "rows",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -193,7 +193,7 @@ export const T08T02Template: TemplateVersion = {
     {
       "key": "f017",
       "label": "F017 · 当批要求的额外资格／成果事实／LIST／Application",
-      "kind": "array",
+      "kind": "rows",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -211,7 +211,7 @@ export const T08T02Template: TemplateVersion = {
     {
       "key": "f019",
       "label": "F019 · 报名引用、渠道及材料版本／REF/LIST／Application",
-      "kind": "array",
+      "kind": "rows",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -265,7 +265,7 @@ export const T08T02Template: TemplateVersion = {
     {
       "key": "f025",
       "label": "F025 · 公示发布时间、届满时间、版本／PERIOD/LIST／PublicNotice",
-      "kind": "array",
+      "kind": "rows",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -346,7 +346,7 @@ export const T08T02Template: TemplateVersion = {
     {
       "key": "f034",
       "label": "F034 · 合同用工主体、受雇人身份／REF/LIST／EmploymentContract",
-      "kind": "array",
+      "kind": "rows",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -364,7 +364,7 @@ export const T08T02Template: TemplateVersion = {
     {
       "key": "f036",
       "label": "F036 · 任务、岗位、地点、报酬等关键条款摘要／LIST／EmploymentContract",
-      "kind": "array",
+      "kind": "rows",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -382,7 +382,7 @@ export const T08T02Template: TemplateVersion = {
     {
       "key": "f038",
       "label": "F038 · 合同草案、审签、最终版本链／LIST／EmploymentContract",
-      "kind": "array",
+      "kind": "rows",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -391,7 +391,7 @@ export const T08T02Template: TemplateVersion = {
     {
       "key": "f039",
       "label": "F039 · 双方签字、校方用印或可靠电子签验证／RESULT/LIST／EmploymentContract",
-      "kind": "array",
+      "kind": "rows",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -1837,7 +1837,7 @@ export const r02Metadata: R02TemplateMetadata = {
   "manifestExpectedBytes": 149842,
   "manifestExpectedSha256": "17bd28b28c5599812493f4a4de68de48a62ea040f3e02abb3404c969c8e1ada9",
   "researchSourcePath": "docs/design/review-agent/business-templates/R02/research-original/T08-T02.md",
-  "sourceIntegrityStatus": "REVIEWED_COPY_PATCHED",
+  "sourceIntegrityStatus": "REVIEWED_PATCH_APPLIED",
   "sourceIntegrityNote": "research-original 的当前 Git blob 不含末尾 LF，追加一个 LF 后与清单 SHA-256 匹配；本审阅副本只更正国科发资〔2020〕132号的效力状态，依据科技部2025-08-05失效文件目录，研究原件保持只读。",
   "researchStatus": "RESEARCH_HANDOFF_READY",
   "sourceRecordCount": 20,
