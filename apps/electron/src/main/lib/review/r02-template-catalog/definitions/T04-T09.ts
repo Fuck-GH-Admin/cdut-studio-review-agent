@@ -1168,41 +1168,92 @@ export const template: TemplateVersion = {
   "policyVersionIds": [],
   "stages": [
     {
-      "id": "intake",
-      "name": "材料与版本登记（仅事实校验）",
-      "kind": "auto-check",
-      "executorRole": "system",
-      "nextStageId": "fact-review",
-      "workflowOwner": "local"
-    },
-    {
-      "id": "fact-review",
-      "name": "语义核验与问题定位",
+      "id": "P0",
+      "name": "发现/报修（紧急安全风险转人工）",
       "kind": "manual-review",
       "executorRole": "reviewer",
-      "nextStageId": "policy-gate",
-      "returnToStageId": "intake",
+      "nextStageId": "P1",
       "workflowOwner": "local"
     },
     {
-      "id": "policy-gate",
-      "name": "校本政策/权限确认与人工处理",
+      "id": "P1",
+      "name": "单位需求预备（归属、范围、必要性和估算）",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "nextStageId": "P2",
+      "returnToStageId": "P0",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "P2",
+      "name": "正式申报/受理（仅当前年度规则确认后）",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "nextStageId": "P3",
+      "returnToStageId": "P1",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "P3",
+      "name": "补件/事实核验（只请求当前阶段必需材料）",
+      "kind": "supplement-wait",
+      "executorRole": "reviewer",
+      "nextStageId": "P4",
+      "returnToStageId": "P2",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "P4",
+      "name": "技术与预算/项目库衔接（专业意见只读引用）",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "nextStageId": "P5",
+      "returnToStageId": "P3",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "P5",
+      "name": "有权人工决定/回填（只记录真实决定）",
       "kind": "manual-review",
       "executorRole": "teacher",
-      "returnToStageId": "fact-review",
+      "nextStageId": "P6",
+      "returnToStageId": "P4",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "P6",
+      "name": "后续关联（非立项必备；采购/施工/验收独立）",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "returnToStageId": "P5",
       "workflowOwner": "local"
     }
   ],
   "outputs": [
     {
-      "id": "fact-findings",
+      "id": "review-observations",
       "kind": "item-feedback",
       "audience": "reviewer"
     },
     {
-      "id": "manual-confirmations",
+      "id": "review-issues",
+      "kind": "item-feedback",
+      "audience": "reviewer"
+    },
+    {
+      "id": "review-todos",
       "kind": "supplement-list",
       "audience": "teacher"
+    },
+    {
+      "id": "external-decision-reference",
+      "kind": "item-feedback",
+      "audience": "teacher"
+    },
+    {
+      "id": "change-impact-history",
+      "kind": "item-feedback",
+      "audience": "reviewer"
     }
   ],
   "autoPassPolicy": {
@@ -2046,6 +2097,131 @@ export const r02Metadata = {
       ],
       "evidenceStatus": "PARTIAL",
       "policyDependent": true
+    }
+  ],
+  "sourceStages": [
+    {
+      "id": "P0",
+      "name": "发现/报修",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "P1",
+      "name": "单位需求预备",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "P2",
+      "name": "正式申报/受理",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "P3",
+      "name": "补件/事实核验",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "P4",
+      "name": "技术与预算/项目库衔接",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "P5",
+      "name": "有权人工决定/回填",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "P6",
+      "name": "后续关联（非立项必备）",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "P7",
+      "name": "后置补件/变更/撤回/复核",
+      "sourceSection": "03.1",
+      "mainline": false,
+      "optionalBranch": true
+    }
+  ],
+  "stageModelNote": "TemplateVersion.stages 映射原件 §03.1 P0–P6 主线。P7 是条件触发的后置补件/变更/撤回/复核分支，保存在 r02Metadata.sourceStages；不得把它当作所有项目必经步骤。P5 仅记录真实有权决定；P6 只读关联采购/施工/验收/审计/支付后续证据，不批准立项或开工。紧急安全风险 P0 立即人工分流，不等待年度申报材料。",
+  "resultCodes": [
+    {
+      "code": "PASS_FACT",
+      "meaning": "当前项目/批次/来源版本上的指定事实有权威证据支持且无冲突；绝非学校立项通过。"
+    },
+    {
+      "code": "NOT_APPLICABLE",
+      "meaning": "触发条件明确为假，或材料属于尚未到来的阶段；记录原因。"
+    },
+    {
+      "code": "NEEDS_MATERIAL",
+      "meaning": "当前阶段适用且必需的事实材料缺失。"
+    },
+    {
+      "code": "CONFLICT",
+      "meaning": "同项目、同口径、相容时点上的有效证据存在关键相反值或错误关联。"
+    },
+    {
+      "code": "UNREADABLE",
+      "meaning": "已提交文件可定位，但打不开、缺关键页或扫描模糊，无法可靠提取事实。"
+    },
+    {
+      "code": "SOURCE_UNAVAILABLE",
+      "meaning": "应由校方持有人/权威系统提供的记录暂不可获取。"
+    },
+    {
+      "code": "POLICY_UNCONFIRMED",
+      "meaning": "适用年度、工程类型、权限或期限的现行政策版本不确定。"
+    },
+    {
+      "code": "NEEDS_HUMAN_DECISION",
+      "meaning": "技术必要性、安全处置、权限真伪、审批或变更/复核需要有权人员决定。"
+    }
+  ],
+  "outputContract": [
+    {
+      "id": "review-observations",
+      "sourceType": "ReviewObservation",
+      "sourceSection": "10.2",
+      "runtimeKind": "item-feedback",
+      "audience": "reviewer"
+    },
+    {
+      "id": "review-issues",
+      "sourceType": "ReviewIssue",
+      "sourceSection": "10.2",
+      "runtimeKind": "item-feedback",
+      "audience": "reviewer"
+    },
+    {
+      "id": "review-todos",
+      "sourceType": "ReviewTodo",
+      "sourceSection": "10.2",
+      "runtimeKind": "supplement-list",
+      "audience": "teacher"
+    },
+    {
+      "id": "external-decision-reference",
+      "sourceType": "ExternalDecisionRef",
+      "sourceSection": "10.2",
+      "runtimeKind": "item-feedback",
+      "audience": "teacher",
+      "readOnly": true
+    },
+    {
+      "id": "change-impact-history",
+      "sourceType": "ChangeImpact",
+      "sourceSection": "10.2",
+      "runtimeKind": "item-feedback",
+      "audience": "reviewer",
+      "readOnly": true
     }
   ]
 } as const
