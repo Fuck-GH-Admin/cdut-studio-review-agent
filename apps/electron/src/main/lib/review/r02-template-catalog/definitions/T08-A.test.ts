@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto'
+import { readFile } from 'node:fs/promises'
 import { describe, expect, it } from 'bun:test'
 import { validateTemplate } from '../../template-store'
 import { templateVersion as template1, r02Metadata as metadata1 } from './T08-T01'
@@ -29,7 +31,7 @@ describe('T08-A R02 template definitions', () => {
   it('passes validateTemplate without structural errors', () => {
     for (const { template } of definitions) {
       const errors = validateTemplate(template).filter((issue) => issue.level === 'error')
-      expect(errors, template.templateId).toEqual([])
+      expect({ templateId: template.templateId, errors }).toEqual({ templateId: template.templateId, errors: [] })
     }
   })
 
@@ -53,25 +55,28 @@ describe('T08-A R02 template definitions', () => {
     for (const { template } of definitions) {
       const byId = new Map(template.stages.map((stage) => [stage.id, stage]))
       const seen = new Set<string>()
-      let current = template.stages[0]
-      while (current) {
-        expect(seen.has(current.id), template.templateId).toBe(false)
-        seen.add(current.id)
-        current = current.nextStageId ? byId.get(current.nextStageId) : undefined
+      let currentId: string | undefined = template.stages[0]?.id
+      while (currentId) {
+        expect(seen.has(currentId)).toBe(false)
+        seen.add(currentId)
+        const current = byId.get(currentId)
+        expect(current).toBeDefined()
+        currentId = current?.nextStageId
       }
-      expect(seen.size, template.templateId).toBe(template.stages.length)
-      expect(template.stages.at(-1)?.kind, template.templateId).toBe('handoff')
-      expect(template.stages.at(-1)?.executorRole, template.templateId).toBe('teacher')
-      expect(template.stages.every((stage) => stage.workflowOwner === 'local'), template.templateId).toBe(true)
+      expect(seen.size).toBe(template.stages.length)
+      const terminal = template.stages[template.stages.length - 1]
+      expect(terminal?.kind).toBe('handoff')
+      expect(terminal?.executorRole).toBe('teacher')
+      expect(template.stages.every((stage) => stage.workflowOwner === 'local')).toBe(true)
     }
   })
 
-  it('keeps nonofficial source metadata and exact source SHA records', () => {
+  it('has complete source metadata and matching byte-level SHA-256', async () => {
     for (const { template, metadata } of definitions) {
       expect(template.status).toBe('draft')
       expect(template.catalogKind).toBe('builtin')
       expect(template.sourceNote?.startsWith('R02_RESEARCH_TEMPLATE_NONOFFICIAL:')).toBe(true)
-      expect(template.description).toContain('本地研究模板 · 非校方正式模板')
+      expect(template.description ?? '').toContain('本地研究模板 · 非校方正式模板')
       expect(template.policyVersionIds).toEqual([])
       expect(template.autoPassPolicy?.enabled).toBe(false)
       expect(metadata.officialSchoolTemplate).toBe(false)
@@ -79,19 +84,23 @@ describe('T08-A R02 template definitions', () => {
       expect(metadata.sourceDocumentSha256).toMatch(/^[a-f0-9]{64}$/)
       expect(metadata.manifestExpectedSha256).toMatch(/^[a-f0-9]{64}$/)
       expect(metadata.sourceDocumentPath.endsWith(`/${template.templateId}.md`)).toBe(true)
-      expect(metadata.criteria.length).toBe(metadata.criterionCount)
+      expect(metadata.sourceRecordCount).toBe(metadata.sourceIds.length)
+      expect(metadata.materialSlotCount).toBe(template.materialSlots.length)
+      const bytes = await readFile(metadata.sourceDocumentPath)
+      expect(createHash('sha256').update(bytes).digest('hex')).toBe(metadata.sourceDocumentSha256)
     }
   })
 
-  it('maps every R criterion to metadata without creating policy refs or deterministic rules', () => {
+  it('maps every R criterion to defined research sources without creating policy refs', () => {
     for (const { template, metadata } of definitions) {
       const criteria = (template.sections ?? []).flatMap((section) => section.criteria.map((criterion) => ({ sectionId: section.id, criterionId: criterion.id, execution: criterion.execution })))
-      expect(criteria.length, template.templateId).toBe(metadata.criteria.length)
+      expect(criteria.length).toBe(metadata.criteria.length)
+      const sourceIds = new Set(metadata.sourceIds)
       for (const criterion of criteria) {
         const meta = metadata.criteria.find((item) => item.sectionId === criterion.sectionId && item.criterionId === criterion.criterionId)
-        expect(meta, `${template.templateId}:${criterion.criterionId}`).toBeDefined()
+        expect(meta).toBeDefined()
         expect(meta?.evidenceStatus).toMatch(/^(VERIFIED|PARTIAL|UNCONFIRMED)$/)
-        expect(meta?.srcIds.every((id) => /^SRC-\d{3}$/.test(id))).toBe(true)
+        expect(meta?.srcIds.every((id) => /^SRC-\d{3}$/.test(id) && sourceIds.has(id))).toBe(true)
         expect(['semantic', 'manual']).toContain(criterion.execution)
         expect(criterion.execution).not.toBe('deterministic')
       }
