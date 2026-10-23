@@ -1366,27 +1366,53 @@ export const templateVersion: TemplateVersion = {
   "policyVersionIds": [],
   "stages": [
     {
-      "id": "intake",
-      "name": "材料登记与事实预审（P0/P1）",
+      "id": "p0",
+      "name": "P0 分类与学籍确认",
       "kind": "auto-check",
       "executorRole": "system",
-      "nextStageId": "reviewer-review",
+      "nextStageId": "p1",
       "workflowOwner": "local"
     },
     {
-      "id": "reviewer-review",
-      "name": "人工复核、补件与政策适用确认（P2）",
+      "id": "p1",
+      "name": "P1 本人书面申请/受理",
+      "kind": "manual-review",
+      "executorRole": "student",
+      "nextStageId": "p2",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "p2",
+      "name": "P2 分级签署意见与补件",
       "kind": "manual-review",
       "executorRole": "reviewer",
-      "returnToStageId": "intake",
-      "nextStageId": "teacher-review",
+      "returnToStageId": "p1",
+      "nextStageId": "p3",
       "workflowOwner": "local"
     },
     {
-      "id": "teacher-review",
-      "name": "有权人员最终核验与结论记录（P3+；非自动决定）",
+      "id": "p3",
+      "name": "P3 有权审批与正式发文",
       "kind": "manual-review",
       "executorRole": "teacher",
+      "returnToStageId": "p2",
+      "nextStageId": "p4",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "p4",
+      "name": "P4 生效后学籍退出/离校",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "nextStageId": "p5",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "p5",
+      "name": "P5 横切事件：更正、补件、撤回、异议/复核",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "skippableReason": "横切事件，不是 P4 后必经第六步；仅在更正、补件、撤回、异议或复核实际触发时进入。",
       "workflowOwner": "local"
     }
   ],

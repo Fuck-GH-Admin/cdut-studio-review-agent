@@ -1349,27 +1349,71 @@ export const templateVersion: TemplateVersion = {
   "policyVersionIds": [],
   "stages": [
     {
-      "id": "intake",
-      "name": "材料登记与事实预审（P0/P1）",
+      "id": "p0-policy-routing",
+      "name": "P0_POLICY_ROUTING｜适用政策路由",
       "kind": "auto-check",
       "executorRole": "system",
-      "nextStageId": "reviewer-review",
+      "nextStageId": "p1-draft",
       "workflowOwner": "local"
     },
     {
-      "id": "reviewer-review",
-      "name": "人工复核、补件与政策适用确认（P2）",
+      "id": "p1-draft",
+      "name": "P1_DRAFT｜申请草案",
+      "kind": "manual-review",
+      "executorRole": "student",
+      "nextStageId": "p2-submitted",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "p2-submitted",
+      "name": "P2_SUBMITTED｜正式提交与材料初核",
       "kind": "manual-review",
       "executorRole": "reviewer",
-      "returnToStageId": "intake",
-      "nextStageId": "teacher-review",
+      "returnToStageId": "p1-draft",
+      "nextStageId": "p3-evidence-verified",
       "workflowOwner": "local"
     },
     {
-      "id": "teacher-review",
-      "name": "有权人员最终核验与结论记录（P3+；非自动决定）",
+      "id": "p3-evidence-verified",
+      "name": "P3_EVIDENCE_VERIFIED｜事实核验",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "returnToStageId": "p2-submitted",
+      "nextStageId": "p4-unit-review",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "p4-unit-review",
+      "name": "P4_UNIT_REVIEW｜校内分级核验",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "returnToStageId": "p3-evidence-verified",
+      "nextStageId": "p5-formal-decision",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "p5-formal-decision",
+      "name": "P5_FORMAL_DECISION｜正式人工决定",
       "kind": "manual-review",
       "executorRole": "teacher",
+      "returnToStageId": "p4-unit-review",
+      "nextStageId": "p6-effective-execution",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "p6-effective-execution",
+      "name": "P6_EFFECTIVE_EXECUTION｜决定生效与后续执行",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "nextStageId": "p7-withdraw-review",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "p7-withdraw-review",
+      "name": "P7_WITHDRAW_REVIEW｜撤回、异议/复核",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "skippableReason": "跨阶段事件；仅在撤回、变更、异议或复核实际触发时进入，常规办理可跳过。",
       "workflowOwner": "local"
     }
   ],

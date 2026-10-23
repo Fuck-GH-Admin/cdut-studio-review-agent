@@ -949,27 +949,62 @@ export const templateVersion: TemplateVersion = {
   "policyVersionIds": [],
   "stages": [
     {
-      "id": "intake",
-      "name": "材料登记与事实预审（P0/P1）",
+      "id": "precheck",
+      "name": "受理前识别",
       "kind": "auto-check",
       "executorRole": "system",
-      "nextStageId": "reviewer-review",
+      "nextStageId": "trigger",
       "workflowOwner": "local"
     },
     {
-      "id": "reviewer-review",
-      "name": "人工复核、补件与政策适用确认（P2）",
+      "id": "trigger",
+      "name": "学生申请或校内发起",
       "kind": "manual-review",
       "executorRole": "reviewer",
-      "returnToStageId": "intake",
-      "nextStageId": "teacher-review",
+      "nextStageId": "fact-check",
       "workflowOwner": "local"
     },
     {
-      "id": "teacher-review",
-      "name": "有权人员最终核验与结论记录（P3+；非自动决定）",
+      "id": "fact-check",
+      "name": "事实核验",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "returnToStageId": "trigger",
+      "nextStageId": "unit-review",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "unit-review",
+      "name": "学院前置审核",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "returnToStageId": "fact-check",
+      "nextStageId": "authorized-decision",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "authorized-decision",
+      "name": "有权人工决定",
       "kind": "manual-review",
       "executorRole": "teacher",
+      "returnToStageId": "unit-review",
+      "nextStageId": "effective-implementation",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "effective-implementation",
+      "name": "决定生效及落实",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "nextStageId": "appeal-recheck",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "appeal-recheck",
+      "name": "撤回、复核、申诉与重审",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "skippableReason": "仅在撤回、复核、申诉或重审事件实际触发时进入，常规办理可跳过。",
       "workflowOwner": "local"
     }
   ],
