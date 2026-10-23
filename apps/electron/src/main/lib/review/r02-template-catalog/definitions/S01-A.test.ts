@@ -35,7 +35,7 @@ describe('R02 S01-A templates', () => {
   })
   test('stage graph is unique, reachable, acyclic, and locally owned', () => {
     for (const item of cases) {
-      const stages = item.template.stages, ids = stages.map((stage) => stage.id), byId = new Map(stages.map((stage) => [stage.id, stage]))
+      const stages = item.template.stages, ids = stages.map((stage) => stage.id), byId = new Map(stages.map((stage) => [stage.id, stage] as const))
       expect(new Set(ids).size).toBe(ids.length)
       for (const stage of stages) { expect(stage.workflowOwner).toBe('local'); if (stage.nextStageId) expect(byId.has(stage.nextStageId)).toBe(true); if (stage.returnToStageId) expect(byId.has(stage.returnToStageId)).toBe(true) }
       const visited = new Set<string>(); let current: string | undefined = stages[0]?.id
