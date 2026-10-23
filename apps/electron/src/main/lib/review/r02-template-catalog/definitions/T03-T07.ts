@@ -29,7 +29,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "procedure_stage",
       "label": "procedure_stage",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -47,7 +47,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "program_family",
       "label": "program_family",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -83,7 +83,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "school_participation_role",
       "label": "school_participation_role",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -101,7 +101,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "principal_person_status",
       "label": "principal_person_status",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -209,7 +209,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "target_expected_result",
       "label": "target_expected_result",
-      "kind": "object",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -236,7 +236,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "outcome_type",
       "label": "outcome_type",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -299,7 +299,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "formal_decision_status",
       "label": "formal_decision_status",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -389,7 +389,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "governing_source_currentity",
       "label": "governing_source_currentity",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -398,7 +398,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "confidentiality_class",
       "label": "confidentiality_class",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -434,7 +434,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "funding_variant",
       "label": "funding_variant",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -452,7 +452,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "acceptance_method",
       "label": "acceptance_method",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -470,7 +470,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "province_disposition_type",
       "label": "province_disposition_type",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
