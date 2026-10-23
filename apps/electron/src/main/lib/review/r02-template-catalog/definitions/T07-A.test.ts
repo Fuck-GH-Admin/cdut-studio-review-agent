@@ -12,6 +12,12 @@ const entries = [
   { template: t04, metadata: m04 },
 ] as const
 
+/** 原研究稿用 SRC-001/005 等缩写时，两个来源都必须保留在元数据中。 */
+function sourceIdsInRequirement(requirement: string): string[] {
+  return [...new Set([...requirement.matchAll(/SRC-(\d{3}(?:[\/、,，]\d{3})*)/g)]
+    .flatMap(match => match[1].split(/[\/、,，]/).map(part => `SRC-${part}`)))].sort()
+}
+
 describe('R02 T07-A local template definitions', () => {
   test('IDs and formal names are correct and unique', () => {
     expect(entries.map(x => x.template.templateId)).toEqual(['T07-T01', 'T07-T02', 'T07-T03', 'T07-T04'])
@@ -48,6 +54,7 @@ describe('R02 T07-A local template definitions', () => {
         expect(meta).toBeDefined()
         expect(Array.isArray(meta?.srcIds)).toBe(true)
         expect(meta?.srcIds.every(srcId => (metadata.sourceIds as readonly string[]).includes(srcId))).toBe(true)
+        expect(meta ? [...meta.srcIds].sort() : []).toEqual(sourceIdsInRequirement(criterion.requirement))
         expect(['semantic', 'manual']).toContain(criterion.execution)
         expect(criterion.execution).not.toBe('deterministic')
       }

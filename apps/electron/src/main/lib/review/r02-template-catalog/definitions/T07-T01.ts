@@ -1323,7 +1323,8 @@ export const r02Metadata = {
       "sectionId": "draft-evidence",
       "criterionId": "r001",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-006"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1331,7 +1332,8 @@ export const r02Metadata = {
       "sectionId": "draft-evidence",
       "criterionId": "r002",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-002"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1339,7 +1341,8 @@ export const r02Metadata = {
       "sectionId": "draft-evidence",
       "criterionId": "r003",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-002"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1355,7 +1358,9 @@ export const r02Metadata = {
       "sectionId": "draft-evidence",
       "criterionId": "r005",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-002",
+        "SRC-005"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1363,7 +1368,8 @@ export const r02Metadata = {
       "sectionId": "draft-evidence",
       "criterionId": "r006",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-005"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1371,7 +1377,8 @@ export const r02Metadata = {
       "sectionId": "draft-evidence",
       "criterionId": "r007",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-005"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1379,7 +1386,8 @@ export const r02Metadata = {
       "sectionId": "draft-evidence",
       "criterionId": "r008",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-005"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1387,7 +1395,8 @@ export const r02Metadata = {
       "sectionId": "draft-evidence",
       "criterionId": "r009",
       "srcIds": [
-        "SRC-002"
+        "SRC-002",
+        "SRC-005"
       ],
       "evidenceStatus": "PARTIAL"
     },
@@ -1395,7 +1404,8 @@ export const r02Metadata = {
       "sectionId": "draft-evidence",
       "criterionId": "r010",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-005"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1411,7 +1421,10 @@ export const r02Metadata = {
       "sectionId": "draft-evidence",
       "criterionId": "r012",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-003",
+        "SRC-004",
+        "SRC-005"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1419,7 +1432,9 @@ export const r02Metadata = {
       "sectionId": "draft-evidence",
       "criterionId": "r013",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-002",
+        "SRC-005"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1427,7 +1442,8 @@ export const r02Metadata = {
       "sectionId": "draft-evidence",
       "criterionId": "r014",
       "srcIds": [
-        "SRC-003"
+        "SRC-003",
+        "SRC-004"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1435,7 +1451,8 @@ export const r02Metadata = {
       "sectionId": "review-and-issuance",
       "criterionId": "r015",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-005"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1443,7 +1460,8 @@ export const r02Metadata = {
       "sectionId": "review-and-issuance",
       "criterionId": "r016",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-005"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1451,7 +1469,8 @@ export const r02Metadata = {
       "sectionId": "review-and-issuance",
       "criterionId": "r017",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-002"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1475,7 +1494,8 @@ export const r02Metadata = {
       "sectionId": "review-and-issuance",
       "criterionId": "r020",
       "srcIds": [
-        "SRC-003"
+        "SRC-003",
+        "SRC-004"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1483,7 +1503,8 @@ export const r02Metadata = {
       "sectionId": "review-and-issuance",
       "criterionId": "r021",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-005"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1491,7 +1512,8 @@ export const r02Metadata = {
       "sectionId": "review-and-issuance",
       "criterionId": "r022",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-005"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1499,7 +1521,8 @@ export const r02Metadata = {
       "sectionId": "review-and-issuance",
       "criterionId": "r023",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-008"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1507,7 +1530,8 @@ export const r02Metadata = {
       "sectionId": "review-and-issuance",
       "criterionId": "r024",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-005"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1532,7 +1556,8 @@ export const r02Metadata = {
       "sectionId": "lifecycle-and-recheck",
       "criterionId": "r027",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-005"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1549,6 +1574,7 @@ export const r02Metadata = {
       "criterionId": "r029",
       "srcIds": [
         "SRC-010",
+        "SRC-011",
         "SRC-012"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1558,6 +1584,7 @@ export const r02Metadata = {
       "criterionId": "r030",
       "srcIds": [
         "SRC-001",
+        "SRC-002",
         "SRC-005"
       ],
       "evidenceStatus": "UNCONFIRMED"

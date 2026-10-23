@@ -1259,7 +1259,9 @@ export const r02Metadata = {
       "criterionId": "r018",
       "srcIds": [
         "SRC-001",
-        "SRC-005"
+        "SRC-005",
+        "SRC-012",
+        "SRC-013"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1268,10 +1270,13 @@ export const r02Metadata = {
       "criterionId": "r019",
       "srcIds": [
         "SRC-001",
-        "SRC-007",
-        "SRC-012",
+        "SRC-003",
         "SRC-006",
-        "SRC-009"
+        "SRC-007",
+        "SRC-009",
+        "SRC-011",
+        "SRC-012",
+        "SRC-013"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1280,7 +1285,8 @@ export const r02Metadata = {
       "criterionId": "r020",
       "srcIds": [
         "SRC-001",
-        "SRC-002"
+        "SRC-002",
+        "SRC-010"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
@@ -1306,7 +1312,8 @@ export const r02Metadata = {
       "criterionId": "r023",
       "srcIds": [
         "SRC-001",
-        "SRC-002"
+        "SRC-002",
+        "SRC-009"
       ],
       "evidenceStatus": "UNCONFIRMED"
     },
