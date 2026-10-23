@@ -29,10 +29,13 @@ const hash = (input: Uint8Array) => createHash('sha256').update(input).digest('h
 test('T04-A source bytes, authoritative manifest, and reviewed MD remain traceable', () => {
   const manifestPath = resolve('docs/design/review-agent/business-templates/R02/dispatch/00_模板清单_128.tsv')
   const lines = readFileSync(manifestPath, 'utf8').trimEnd().split('\n')
-  const rows = new Map(lines.slice(1).map(line => {
-    const [templateId, , , , , , , bytes, sha256] = line.split('\t')
-    return [templateId, { bytes: Number(bytes), sha256 }] as const
-  }))
+  const rows = new Map<string, { bytes: number; sha256: string }>()
+  for (const line of lines.slice(1)) {
+    const columns = line.split('\t')
+    const templateId = columns[0]
+    if (!templateId) continue
+    rows.set(templateId, { bytes: Number(columns[7]), sha256: columns[8] ?? '' })
+  }
 
   for (const { template, metadata } of entries) {
     const row = rows.get(template.templateId)
@@ -59,6 +62,7 @@ test('T04-A source bytes, authoritative manifest, and reviewed MD remain traceab
 test('T04-A research tables have full runtime cardinality and nonempty source mappings', () => {
   for (const [index, { template, metadata }] of entries.entries()) {
     const expected = counts[index]
+    if (!expected) throw new Error('Missing expected inventory entry at index ' + index)
     const criteria = template.sections?.flatMap(section => section.criteria) ?? []
     expect(template.fields.length).toBe(expected.fields)
     expect(template.materialSlots.length).toBe(expected.slots)
