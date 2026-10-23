@@ -78,7 +78,7 @@ function uniqueStrings(values: readonly string[]): string[] {
 }
 
 function titleTokens(name: string): string[] {
-  return name.split(/[\s/／|｜,，、:：()（）·—_\-]+/g)
+  return name.split(/[\s\/／|｜,，、:：()（）·—_\-]+/g)
     .map(value => value.trim()).filter(value => value.length >= 2 && !GENERIC_TERMS.has(value))
 }
 
