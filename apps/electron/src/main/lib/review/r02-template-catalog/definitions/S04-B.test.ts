@@ -16,6 +16,9 @@ describe('R02 S04-B template definitions', () => {
     expect(entries.map(x => x.template.templateId)).toEqual(['S04-T05','S04-T06','S04-T07'])
     expect(new Set(entries.map(x => x.template.templateId)).size).toBe(entries.length)
     expect(new Set(entries.map(x => x.template.name)).size).toBe(entries.length)
+    expect(t05.sections?.flatMap(s => s.criteria)).toHaveLength(34)
+    expect(t06.sections?.flatMap(s => s.criteria)).toHaveLength(22)
+    expect(t07.sections?.flatMap(s => s.criteria)).toHaveLength(25)
     for (const { template, metadata } of entries) {
       expect(metadata.templateId).toBe(template.templateId)
       expect(metadata.name).toBe(template.name)
