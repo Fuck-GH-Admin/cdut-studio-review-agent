@@ -133,8 +133,17 @@ export function ReviewV3RouteReviewPanel(props:B3RoutePanelProps):ReactNode {
     </div>}
     {route.status==='countdown' && <div className="space-y-2" role="status"
       aria-label="自动建议倒计时">
-      <p>剩余约 <strong>{view.remainingSeconds} 秒</strong>；此处仅展示 Main 计算的剩余时间</p>
+      <p>剩余约 <strong>{view.remainingSeconds} 秒</strong>；倒计时结束默认进入第一候选</p>
       <progress className="w-full" max={20} value={20-Math.min(20,view.remainingSeconds)}/>
+      {view.rankedCandidates.length>0 && <ol className="space-y-1">
+        {view.rankedCandidates.map((item,index)=><li key={item.templateId+'@'+item.templateVersion}>
+          <button type="button" className={action+' w-full text-left'} disabled={busy}
+            onClick={()=>{setChosenKey(JSON.stringify([item.templateId,item.templateVersion]));setError('');setNotice('')}}>
+            {index+1}. {item.name} · v{item.templateVersion}
+          </button>
+          <p className="pl-2 text-xs text-muted-foreground">候选顺序来自 Main 的证据校验与置信度排序。</p>
+        </li>)}
+      </ol>}
       <button type="button" className={action} disabled={busy} onClick={()=>void interruptRoute()}>
         停止自动选择，改为人工确认
       </button>

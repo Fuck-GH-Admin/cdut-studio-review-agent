@@ -109,3 +109,6 @@ export * from './review-v3-run'
 
 // CDUT Science (CSLab) 相关类型
 export * from './cslab'
+
+// Unified V3 template matching and provider-neutral deep-match contract.
+export * from './review-v3-template-routing'

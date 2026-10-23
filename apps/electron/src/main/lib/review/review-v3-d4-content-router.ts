@@ -71,6 +71,12 @@ const D4_L1_SIGNALS:Readonly<Record<string,Signals>>={
   'g08-t03':[['诉求','意见建议','工单'],['受理','再办理','再次办理','反馈']],
 }
 
+/** Explicit searchable business vocabulary for the unified template catalog. */
+export function getD4TemplateKeywords(templateId:string):string[] {
+  const groups=D4_L1_SIGNALS[templateId]
+  return groups?[...new Set(groups.flatMap(group=>[...group]))]:[]
+}
+
 const normalized=(value:string):string=>value.normalize('NFKC').toLowerCase()
   .replace(/[\s\-—_【】\[\]（）()<>《》,，。;；:：·|｜]/g,'')
 
@@ -105,11 +111,13 @@ export function classifyD4ApplicationDocuments(
   const candidates=templates.flatMap(item=>{
     const groups=D4_L1_SIGNALS[item.templateId]
     if(!groups)return []
-    const matched=groups.map(aliases=>aliases.find(alias=>text.includes(normalized(alias))))
-    if(matched.some(value=>!value))return []
+    const matched=groups.map(aliases=>aliases.filter(alias=>text.includes(normalized(alias))))
+    if(matched.some(values=>!values.length))return []
+    const signals=[...new Set(matched.flat())]
+    const confidence=Math.min(0.99,0.95+Math.max(0,signals.length-2)*0.01)
     return [{templateId:item.templateId,name:item.name,
-      matchedSignals:matched.filter((x):x is string=>Boolean(x)),
-      confidence:0.96,autoEligible:false,evidence:'business-content-l1' as const}]
+      matchedSignals:signals,
+      confidence,autoEligible:false,evidence:'business-content-l1' as const}]
   })
   // 多项都满足对象+动作时必须由人选择；即使唯一L1建议，仍可由人覆盖。
   return candidates.map(item=>({...item,
