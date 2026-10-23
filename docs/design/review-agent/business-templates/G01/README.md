@@ -35,3 +35,11 @@ sha256sum docs/design/review-agent/business-templates/G01/originals/*.md
 - [D3-MD-Q1 Agent B 独立质量金标](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/tree/test/d3-md-independent-gold-archive/docs/design/review-agent/acceptance/d3-md-full/agent-oracle)
 
 **不要将业务设计稿、转换结果、金标预期和正式行政规则混为一谈。**
+
+## D4 前置离线研究与真实模板试点（未启动实施）
+
+- [三轮离线 Agent 盲测 V1–V3：题型、运行结果、失误根因、评测器问题和限度](research/01-offline-v1-v3-independent-agent-study.md)。全部输入、隐藏 Gold、原 Agent 提交和评分结果保存在项目负责人持有的**非公开独立归档**中，不随公开仓库发放。
+- [两阶段 G01-I 首套技术模板试运行方案](research/02-g01-i-two-phase-template-and-synthetic-runtime-pilot.md)：先制作完整原文对应的 D1/D3/D2 模板，再由独立 Gold 通过合成材料与真实技术服务复验；当前仅为计划。
+- [21 个原始证据组件的 SHA-256 锁表](research/03-offline-evidence-locks.json)：仅公开摘要与路径，不公开隐藏答案或会话原始记录。
+
+这些研究产物不变更本目录五份业务 MD 的内容或来源地位，不等同校方正式审批、D4 模板完成或在线模型准确率通过。
