@@ -52,6 +52,8 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
   const [epoch,setEpoch]=React.useState(0)
   const currentCase=React.useRef(caseId)
   currentCase.current=caseId
+  const latestReadRef=React.useRef(read)
+  latestReadRef.current=read
   const onInstall=React.useRef(onPlanInstalled)
   onInstall.current=onPlanInstalled
   const onBound=React.useRef(onTemplateBound)
@@ -194,7 +196,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
           caseEvidence:evidence,
           templates:sourceRead.catalog as TemplateRouteCatalogEntry[],
         })
-        if(currentCase.current!==caseId||read?.sessionKey!==scope)return
+        if(currentCase.current!==caseId||latestReadRef.current?.sessionKey!==scope)return
         if(result.scope==='matched'&&result.matches.length){
           const ranked=result.matches.map(item=>{
             const entry=sourceRead.catalog.find(candidate=>candidate.templateId===item.templateId&&
@@ -219,7 +221,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
             const response=await window.reviewAPI.requestT01ModelDraft(prompt)
             return response.raw
           })
-          if(currentCase.current!==caseId||read?.sessionKey!==scope)return
+          if(currentCase.current!==caseId||latestReadRef.current?.sessionKey!==scope)return
           setProposal(draft);setPrepared(null)
           setRequirements(proposedFallbackChecks(draft,fallbackBrief).join('\n'))
           setModelInfo('由当前已配置通用模型起草；所有规则、材料要求与适用范围仍需逐条确认')
