@@ -68,8 +68,8 @@ describe('T08-A R02 template definitions', () => {
       }
       expect(seen.size).toBe(template.stages.length)
       const terminal = template.stages[template.stages.length - 1]
-      expect(['finalize', 'handoff']).toContain(terminal?.kind)
-      expect(['reviewer', 'teacher']).toContain(terminal?.executorRole)
+      expect(terminal?.kind === 'finalize' || terminal?.kind === 'handoff').toBe(true)
+      expect(terminal?.executorRole === 'reviewer' || terminal?.executorRole === 'teacher').toBe(true)
       expect(template.stages.every((stage) => stage.workflowOwner === 'local')).toBe(true)
     }
   })
