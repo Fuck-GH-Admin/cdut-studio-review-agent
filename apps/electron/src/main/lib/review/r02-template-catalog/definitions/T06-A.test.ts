@@ -44,7 +44,7 @@ describe('R02 T06-A template definitions', () => {
       expect(slotIds.size).toBe(template.materialSlots.length)
       expect(new Set((template.sections ?? []).map(section => section.id)).size).toBe((template.sections ?? []).length)
       expect(new Set(criterionIds).size).toBe(criterionIds.length)
-      expect(metadata.criteria.length).toBe(criteria.length)
+      expect(Number(metadata.criteria.length)).toBe(Number(criteria.length))
       for (const binding of metadata.criteria) {
         expect(sections.has(binding.sectionId)).toBe(true)
         expect(criterionIds).toContain(binding.criterionId)
@@ -71,8 +71,8 @@ describe('R02 T06-A template definitions', () => {
       expect(template.sections?.flatMap(section => section.criteria).every(criterion => criterion.execution !== 'deterministic')).toBe(true)
       expect(template.outputs.some(output => String(output.kind) === 'approval')).toBe(false)
       expect(template.stages.every(stage => stage.workflowOwner === 'local')).toBe(true)
-      expect(['reviewer', 'teacher']).toContain(template.stages[template.stages.length - 1]?.executorRole)
-      expect(template.stages[template.stages.length - 1]?.kind).toBe('handoff')
+      expect(['reviewer', 'teacher']).toContain(String(template.stages[template.stages.length - 1].executorRole))
+      expect(template.stages[template.stages.length - 1].kind).toBe('handoff')
     }
   })
 
