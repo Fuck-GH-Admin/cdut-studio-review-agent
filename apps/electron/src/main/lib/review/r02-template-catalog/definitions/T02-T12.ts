@@ -106,7 +106,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "contract_version",
       "label": "合同·有效版本与签署状态",
-      "kind": "date",
+      "kind": "enum",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -250,7 +250,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "unit_opinion_ref",
       "label": "组织意见·单位事实/拟处理意见",
-      "kind": "boolean",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -331,7 +331,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "withdrawal_ref",
       "label": "撤回/变更·提出及到达时间",
-      "kind": "text",
+      "kind": "date",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -394,7 +394,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "settlement_status",
       "label": "后续结算·是否存在未结事项",
-      "kind": "number",
+      "kind": "enum",
       "required": false,
       "visibility": "internal",
       "scope": "subject",

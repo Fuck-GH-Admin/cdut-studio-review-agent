@@ -61,7 +61,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f006",
       "label": "关系生效区间",
-      "kind": "text",
+      "kind": "object",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -124,7 +124,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f013",
       "label": "拟休假起点",
-      "kind": "text",
+      "kind": "date",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -133,7 +133,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f014",
       "label": "拟休假终点",
-      "kind": "text",
+      "kind": "date",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -142,7 +142,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f015",
       "label": "计算假期量",
-      "kind": "date",
+      "kind": "number",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -151,7 +151,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f016",
       "label": "申请提交时间",
-      "kind": "text",
+      "kind": "date",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -205,7 +205,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f022",
       "label": "医疗建议休息期间",
-      "kind": "text",
+      "kind": "object",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -259,7 +259,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f028",
       "label": "原批准区间",
-      "kind": "text",
+      "kind": "object",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -295,7 +295,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f032",
       "label": "实际返岗时间",
-      "kind": "text",
+      "kind": "date",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -340,7 +340,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f037",
       "label": "复核请求接收时间",
-      "kind": "text",
+      "kind": "date",
       "required": false,
       "visibility": "internal",
       "scope": "subject",

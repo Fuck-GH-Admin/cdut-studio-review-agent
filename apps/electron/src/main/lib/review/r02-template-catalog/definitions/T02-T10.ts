@@ -124,7 +124,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "eligible_population",
       "label": "通知参加人员/选派类别条文",
-      "kind": "number",
+      "kind": "multi",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -133,7 +133,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "application_deadline",
       "label": "报名/材料/网上提交截止原文",
-      "kind": "text",
+      "kind": "date",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -232,7 +232,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "funding_source_opinion",
       "label": "经费主管/财务部门来源意见",
-      "kind": "number",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -376,7 +376,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "induction_training_mode_basis",
       "label": "线上/线下条件、M026:学校认可的特殊线上资格证明",
-      "kind": "boolean",
+      "kind": "enum",
       "required": false,
       "visibility": "internal",
       "scope": "subject",

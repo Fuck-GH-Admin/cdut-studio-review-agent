@@ -43,7 +43,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f004",
       "label": "适用政策版本及核定状态",
-      "kind": "number",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -106,7 +106,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f011",
       "label": "经权威确定法定退休时间",
-      "kind": "number",
+      "kind": "date",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -115,7 +115,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f012",
       "label": "所适用的最低缴费年限对应年份及有权核证状态 （C02=所选退休年份；C03=法定退休年龄年份）",
-      "kind": "number",
+      "kind": "enum",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -142,7 +142,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f015",
       "label": "本人拟选择退休时间",
-      "kind": "text",
+      "kind": "date",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -196,7 +196,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f021",
       "label": "近年岗位年度考核结论",
-      "kind": "number",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
