@@ -10,11 +10,8 @@ import { ReviewV3LocalManualItem } from './ReviewV3LocalManualItem'
 import { ReviewV3LocalPiControls } from './ReviewV3LocalPiControls'
 import { ReviewV3UnifiedRun } from './ReviewV3UnifiedRun'
 import { ReviewV3T08ReportPanel } from './ReviewV3T08ReportPanel'
-import { D4CaseSetup } from './D4CaseSetup'
 import { ReviewV3TemplateRoutingAssistant } from './ReviewV3TemplateRoutingAssistant'
-import type { CaseAggregateV2, D4ClientSelection, ReviewRunV2 } from '@profer/shared'
-import { ReviewV3CandidateIntakeSurface } from '../review-v3-dev-b/ReviewV3CandidateIntakeSurface'
-import type { C11MainLocalProductRead } from '../../../main/lib/review/review-v3-main-local-product-intake'
+import type { CaseAggregateV2, ReviewRunV2 } from '@profer/shared'
 import { ReviewV3AuthorWizard, emptyB1AuthorDocument } from '../review-v3-dev-b/ReviewV3AuthorWizard'
 import type { B1AuthorDocument } from '../../../main/lib/review/review-template-plan-adapter-v3-b1'
 import type { B1CandidateReadResponse } from '../review-v3-dev-b/review-v3-author-revision-read'
@@ -30,15 +27,10 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
     if (initialCaseId) setLocalCaseId(initialCaseId)
   },[initialCaseId])
   const [savedCases,setSavedCases]=React.useState<Array<{id:string;title:string}>>([])
-  const [d4Selection,setD4Selection]=React.useState<D4ClientSelection|undefined>(undefined)
-  const [routedD4TemplateId,setRoutedD4TemplateId]=React.useState<string|undefined>(undefined)
   const [b1Frozen,setB1Frozen]=React.useState<{templateId:string;fingerprint:string}|null>(null)
   const [b1Notice,setB1Notice]=React.useState('')
   const [b1Error,setB1Error]=React.useState('')
-  const [d4Notice,setD4Notice]=React.useState('')
-  const [d4Error,setD4Error]=React.useState('')
   const [materialsEpoch,setMaterialsEpoch]=React.useState(0)
-  const [product,setProduct]=React.useState<C11MainLocalProductRead|null>(null)
   const [activePlan,setActivePlan]=React.useState<{
     templateId:string;templateVersion:number;checks:number;fingerprint:string
   }|null>(null)
@@ -46,26 +38,8 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
   const [nativeRun,setNativeRun]=React.useState<ReviewRunV2|null>(null)
   const [nativeRunStale,setNativeRunStale]=React.useState(true)
   const [runEpoch,setRunEpoch]=React.useState(0)
-  const [productError,setProductError]=React.useState('')
   React.useEffect(()=>{
-    const route=product?.read.route
-    const choice=route?.status==='default-selected'?route.chosen:undefined
-    if(!choice||!product)return
-    if(product.catalog.some(item=>item.templateId===choice.templateId&&
-      item.templateVersion===choice.templateVersion)){
-      setRoutedD4TemplateId(choice.templateId)
-      setD4Notice('倒计时结束，已建议 '+choice.templateId+'。请核对真实审核对象与条件，再固定 Plan。')
-    }
-  },[product])
-  const readProduct=React.useCallback(async()=>{
-    if(!localCaseId)throw new Error('请先创建或选择本机案卷')
-    const data=await window.reviewAPI.readLocalNativeProductV3(localCaseId)
-    setProduct(data);setProductError('')
-    return data.read
-  },[localCaseId])
-  React.useEffect(()=>{
-    setProduct(null);setActivePlan(null);setProductError('')
-    setNativeAggregate(null)
+    setActivePlan(null);setNativeAggregate(null)
     if(!localCaseId)return
     let mounted=true
     void (async()=>{
@@ -77,11 +51,8 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
           const plan=aggregate.d2RuntimePlan
           setActivePlan({templateId:plan.templateId,templateVersion:plan.templateVersion,
             checks:plan.mapping.length,fingerprint:plan.fingerprint})
-          return
         }
-        const data=await window.reviewAPI.readLocalNativeProductV3(localCaseId)
-        if(mounted)setProduct(data)
-      }catch(e){if(mounted)setProductError(e instanceof Error?e.message:String(e))}
+      }catch(e){if(mounted)setCaseError(e instanceof Error?e.message:String(e))}
     })()
     return ()=>{mounted=false}
   },[localCaseId,materialsEpoch])
@@ -161,19 +132,6 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
       setSavedCases([])
       setCaseNotice('本机原生案卷已创建：'+created.id+'；未绑定校方模板，请先导入材料并人工审核。')
     }catch(e){setCaseError(e instanceof Error?e.message:String(e))}
-    finally{setCaseBusy(false)}
-  }
-  const installD4=async():Promise<void>=>{
-    if(caseBusy||!localCaseId||!d4Selection)return
-    setCaseBusy(true);setD4Error('');setD4Notice('')
-    try{
-      const ack=await window.reviewAPI.attachD4TechnicalPlanV3({
-        caseId:localCaseId,d4:d4Selection,
-      })
-      setD4Notice('D4 '+ack.templateId+'@'+ack.templateVersion+
-        ' 已写入同一原生案卷，固定 '+ack.checks+' 项检查。现在可以从下方运行 Pi。')
-      setMaterialsEpoch(x=>x+1)
-    }catch(e){setD4Error(e instanceof Error?e.message:String(e))}
     finally{setCaseBusy(false)}
   }
   const freezeB1=async(document:B1AuthorDocument,expectedRevision:number):Promise<{fingerprint:string}>=>{
@@ -332,18 +290,9 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
       <p className="break-all text-xs text-muted-foreground">任务指纹：{activePlan.fingerprint}</p>
       <p className="text-xs">不必重新选择模板。继续导入材料、在下方启动 Pi，或打开案卷进行人工复核。</p>
     </div>}
-    {localCaseId&&!activePlan&&<div className="space-y-3 rounded-lg border border-border p-4">
-      <h2 className="text-base font-semibold">使用已有 50 套 D4 模板生成本案审核任务</h2>
-      <p className="text-xs text-muted-foreground">选择方案并确认对象/场景后，把检查方案写入当前案卷；不另外创建案卷。已添加人工事项或已固定方案的案卷请另建新案卷。</p>
-      <D4CaseSetup onChange={setD4Selection} suggestedTemplateId={routedD4TemplateId}/>
-      <button type="button" className="rounded border border-border px-3 py-2 text-sm disabled:opacity-50"
-        disabled={caseBusy||!d4Selection} onClick={()=>void installD4()}>
-        在当前案卷编译并固定 D4 技术审核任务
-      </button>
-      {d4Notice&&<p role="status" className="text-xs">{d4Notice}</p>}
-      {d4Error&&<p role="alert" className="text-xs text-red-600">{d4Error}</p>}
-    </div>}
-    <div className="space-y-2 rounded-lg border border-border p-4">
+    <details className="rounded-lg border border-border px-3 py-2">
+      <summary className="cursor-pointer text-sm font-medium">高级：第 51 套候选模板编辑与绑定</summary>
+      <div className="mt-3 space-y-2">
       <h2 className="text-base font-semibold">本地候选审核模板 · 第 51 套</h2>
       <div className="flex flex-wrap items-center gap-2">
         <button type="button" className="rounded border border-border px-3 py-1.5 text-sm disabled:opacity-50"
@@ -364,58 +313,8 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
       </div>
       {message&&<p role="status" className="text-xs">{message}</p>}
       {error&&<p role="alert" className="text-xs text-red-600">{error}</p>}
-    </div>
-    {localCaseId&&!activePlan&&<div className="space-y-2">
-      {productError&&<p role="alert" className="text-xs text-red-600">
-        当前材料 Main 读取失败：{productError}（未返回候选结果）
-      </p>}
-      <button type="button" className="rounded border border-border px-3 py-1.5 text-sm"
-        onClick={()=>void readProduct().catch(e=>setProductError(e instanceof Error?e.message:String(e)))}>
-        从真实原件刷新 50+1 候选工作台
-      </button>
-      {product&&<ReviewV3CandidateIntakeSurface
-        key={localCaseId+'-'+product.sessionKey}
-        caseCandidateId={localCaseId} sessionKey={product.sessionKey}
-        route={product.read.route} manualCatalog={product.catalog}
-        onRequestRefresh={async()=>{await readProduct()}}
-        onInterrupt={async()=>{
-          const data=await window.reviewAPI.interruptLocalNativeProductV3(localCaseId)
-          setProduct(data)
-        }}
-        onManualChoice={async choice=>{
-          const ack=await window.reviewAPI.chooseLocalNativeProductTemplateV3({
-            caseId:localCaseId,templateId:choice.templateId,templateVersion:choice.templateVersion})
-          if(ack.requiresPlanSetup){
-            setRoutedD4TemplateId(choice.templateId)
-            setD4Notice('已从材料路由选中 '+choice.templateId+'，请在上方 D4 编辑器核对实际对象、场景后固定审核任务。')
-          }else setMaterialsEpoch(x=>x+1)
-          await readProduct()
-          return ack
-        }}
-        author={{
-          onSaveDraft:(document,expectedRevision)=>
-            window.reviewAPI.saveLocalCandidateAuthorV3({document,expectedRevision}),
-          onPreview:document=>window.reviewAPI.previewLocalCandidateAuthorV3({document}),
-          onFreezeCandidate:freezeB1,
-          onReadLatestCandidate:async id=>readLatest(id),
-        }}
-        product={{
-          onReadCurrent:readProduct,
-          onPrepareUnmatchedDraft:intent=>window.reviewAPI.prepareLocalNativeUnmatchedV3({
-            caseId:localCaseId,intent,
-          }),
-          // 未匹配业务 → 可编辑业务模板草稿（只保存 draft，不含政策与确定性规则）
-          onCreateBusinessTemplateDraft:async(document,templateId)=>{
-            const created=await window.reviewAPI.createFallbackTemplateDraft({document,templateId})
-            return {
-              templateId:created.template.templateId,
-              version:created.template.version,
-              notes:created.notes,
-            }
-          },
-        }}
-      />}
-    </div>}
+      </div>
+    </details>
     <ReviewV3LocalManualItem key={localCaseId+'-'+materialsEpoch} caseId={localCaseId} />
     {localCaseId&&<ReviewV3UnifiedRun
       caseId={localCaseId}
@@ -441,13 +340,18 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
       <summary className="cursor-pointer text-sm font-medium">高级：Pi 详细账本与停止／续跑</summary>
       <ReviewV3LocalPiControls key={localCaseId+'-'+materialsEpoch} caseId={localCaseId} />
     </details>
-    <ReviewV3AuthorWizard key={key} initialDraft={loaded?.document??emptyB1AuthorDocument()}
-      initialRevision={loaded?.revision??0}
-      onSaveDraft={(document,expectedRevision)=>
-        window.reviewAPI.saveLocalCandidateAuthorV3({document,expectedRevision})}
-      onPreview={document=>window.reviewAPI.previewLocalCandidateAuthorV3({document})}
-      onFreezeCandidate={freezeB1}
-      onReadLatestCandidate={(id)=>readLatest(id)}
-    />
+    <details className="rounded-lg border border-border px-3 py-2">
+      <summary className="cursor-pointer text-sm font-medium">高级：编辑和冻结本机候选模板</summary>
+      <div className="mt-3">
+      <ReviewV3AuthorWizard key={key} initialDraft={loaded?.document??emptyB1AuthorDocument()}
+        initialRevision={loaded?.revision??0}
+        onSaveDraft={(document,expectedRevision)=>
+          window.reviewAPI.saveLocalCandidateAuthorV3({document,expectedRevision})}
+        onPreview={document=>window.reviewAPI.previewLocalCandidateAuthorV3({document})}
+        onFreezeCandidate={freezeB1}
+        onReadLatestCandidate={(id)=>readLatest(id)}
+      />
+      </div>
+    </details>
   </div>
 }
