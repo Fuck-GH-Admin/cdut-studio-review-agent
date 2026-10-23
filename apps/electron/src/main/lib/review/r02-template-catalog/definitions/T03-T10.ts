@@ -38,7 +38,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f003",
       "label": "项目类别/主管计划",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -74,7 +74,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f007",
       "label": "提交/代理资格与授权范围",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -110,7 +110,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f011",
       "label": "校方签约权限核验状态",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -137,7 +137,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f014",
       "label": "节点类别（阶段/最终/分批等）",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -182,7 +182,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f019",
       "label": "适用校本/主管政策配置",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -236,7 +236,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f025",
       "label": "送达渠道及目的地",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -245,7 +245,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f026",
       "label": "送达状态及证明范围",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -281,7 +281,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f030",
       "label": "收件人代表权限状态",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -299,7 +299,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f032",
       "label": "验收意见原文结论",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -326,7 +326,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f035",
       "label": "拒收/异议/争议类型及文本",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -362,7 +362,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f039",
       "label": "变更决定状态与生效时间",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -407,7 +407,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f044",
       "label": "项目/材料保密与披露限制状态",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -425,7 +425,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f046",
       "label": "期限义务类别及起算规则",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
