@@ -137,6 +137,17 @@ describe('UI/服务端统一的最终决定就绪判断', () => {
     expect(result.blockers.some((blocker) => blocker.kind === 'zero-effective-rules')).toBeTrue()
   })
 
+  test('缺少 submission 阶段材料槽可以完成初审，但仍阻断最终决定', () => {
+    const document = { documentId: 'd1', versionId: 'd1-v1', contentHash: '', role: 'application' as const, fileName: '申请书.txt', mimeType: 'text/plain', sizeBytes: 10, assetPath: '', parseRevision: 1, parseStatus: 'parsed' as const, blocks: [{ blockId: 'b1', text: '申请内容', kind: 'text' as const }], usage: 'read' as const }
+    const slot = { id: 'plan', name: '实验计划', purpose: '计划说明', acceptedKinds: ['pdf'], minCount: 1, maxCount: 1, requiredElements: [], allowReuseAcrossSubjects: false, requiredAt: 'submission' }
+    const result = assessDecisionReadiness({
+      aggregate: aggregate({ caseV2: { ...aggregate().caseV2, documents: [document] }, adjudications: [accepted] }),
+      run: run(), runStale: false, template: { materialSlots: [slot] } as unknown as TemplateVersion,
+    })
+    expect(result.blockers).toContainEqual(expect.objectContaining({ kind: 'missing-material-slot', id: 'plan' }))
+    expect(result.ready).toBeFalse()
+  })
+
   test('覆盖账本中缺少计划结果时不能只靠现有检查作决定', () => {
     const result = assessDecisionReadiness({
       aggregate: aggregate({ adjudications: [accepted] }),

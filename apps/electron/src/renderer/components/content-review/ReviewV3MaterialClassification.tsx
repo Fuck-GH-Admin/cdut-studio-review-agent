@@ -114,7 +114,8 @@ export function ReviewV3MaterialClassification({
       if (!Array.isArray(parsed?.items)) throw new Error('模型没有返回 items 分类列表')
       const byVersion = new Map(activeDocuments.map((document) => [document.versionId, document]))
       const seen = new Set<string>()
-      const normalized = parsed.items.map((item: any): ClassificationSuggestion => {
+      const normalized = parsed.items.map((rawItem: unknown): ClassificationSuggestion => {
+        const item = rawItem as Record<string, unknown> | null
         if (!item || typeof item.documentVersionId !== 'string' || !byVersion.has(item.documentVersionId)
           || seen.has(item.documentVersionId) || !isRole(item.role)) {
           throw new Error('模型分类包含未知材料、重复版本或非法角色；未应用任何建议')

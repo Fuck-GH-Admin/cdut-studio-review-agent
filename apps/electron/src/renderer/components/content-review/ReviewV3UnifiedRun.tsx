@@ -47,7 +47,7 @@ export function ReviewV3UnifiedRun({ caseId, stage, documentCount, technicalPlan
     setPiRun(null)
     setMessage('')
     void refresh().catch(() => { /* 尚未运行 Pi 时没有状态，不阻止第一次审核 */ })
-  }, [caseId])
+  }, [caseId, refresh])
 
   React.useEffect(() => {
     if (!running) return

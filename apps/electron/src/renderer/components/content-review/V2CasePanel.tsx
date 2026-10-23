@@ -261,7 +261,7 @@ export function V2CasePanel({ onCaseOpened }: { onCaseOpened?: (caseId: string) 
     void (async () => {
       const runs = await window.reviewAPI.listRunsV2(caseId)
       // 当前 Run 只从持久账本取得，不凭渲染端的运行按钮猜测状态。
-      const newest = [...runs].sort((a,b) => b.startedAt.localeCompare(a.startedAt))[0] ?? null
+      const newest = [...runs].filter((run) => !run.id.startsWith('run-tpl-')).sort((a,b) => b.startedAt.localeCompare(a.startedAt))[0] ?? null
       if (!active) return
       setLatestRun(newest)
       if (!newest || newest.status === 'running' || newest.status === 'queued') { setLatestRunStale(true); return }
@@ -491,7 +491,7 @@ export function V2CasePanel({ onCaseOpened }: { onCaseOpened?: (caseId: string) 
             <RunResultPanel caseId={current.caseV2.id} refreshNonce={runNonce} />
             <ObservationConfirmPanel caseId={current.caseV2.id} aggregate={current} onResult={applyResult} refreshNonce={runNonce} />
             <details className="rounded-md border border-border/60 px-3 py-2 text-xs">
-              <summary className="cursor-pointer font-medium">高级：仅执行模板规则（不启动 AI）</summary>
+              <summary className="cursor-pointer font-medium">高级诊断：单独执行模板规则（不参与最终决定）</summary>
               <ReviewV3TemplateRuleRun caseId={current.caseV2.id} />
             </details>
             {/* T09 离线任务包：签发 / 预览 / 幂等导入 */}
