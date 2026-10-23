@@ -22,7 +22,7 @@ export const templateVersion: TemplateVersion = {
       "key": "f001",
       "label": "F001 · ScholarshipCase.caseId（不透明 ID）",
       "kind": "text",
-      "required": false,
+      "required": true,
       "visibility": "public",
       "scope": "case",
       "extractionHint": "原件字段 F001。ScholarshipCase.caseId（不透明 ID）；各；宿主可信案卷登记/受理日志，非表单 OCR；P1；未建案不进入核验；由宿主建案，避免人为拼接学号充当全局键。字段缺失不自动等于资格不符；需要权威记录或政策判断时转人工复核。"
