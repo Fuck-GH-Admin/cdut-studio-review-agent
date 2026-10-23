@@ -22,6 +22,7 @@ export interface R02Metadata {
   researchStatus: string
   policyEvidenceStatus: 'VERIFIED' | 'PARTIAL' | 'UNCONFIRMED'
   sourceRecordCount: number
+  sourceIds: string[]
   fieldCount: number
   materialSlotCount: number
   criterionCount: number
@@ -332,401 +333,401 @@ export const templateVersion: TemplateVersion = {
     }
   ],
   "materialSlots": [
-    {
-      "id": "M001",
-      "name": "M001 说明本次“什么岗位/谁/哪个房间/为何更换”；经办人持有的结构化变更陈述（申请页或单位实际表单）",
-      "purpose": "说明本次“什么岗位/谁/哪个房间/为何更换”；经办人持有的结构化变更陈述（申请页或单位实际表单）；说明本次“什么岗位/谁/哪个房间/为何更换”；经办人持有的结构化变更陈述（申请页或单位实际表单）；`C@P1`；合法替代为校方已存在的电子业务申请记录，不是强迫上传手写申请书；F005–F013、F018；SRC-001（责任范围）、SRC-010（模板范围未核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F005",
-        "F013",
-        "F018"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M002",
-      "name": "M002 证明经办人真实身份、隶属及经办资格；学校身份/组织权限服务或单位有权核验记录持有",
-      "purpose": "证明经办人真实身份、隶属及经办资格；学校身份/组织权限服务或单位有权核验记录持有；证明经办人真实身份、隶属及经办资格；学校身份/组织权限服务或单位有权核验记录持有；`C@P1`、P3–P6 再验；如校方可查原始记录禁止无故另交身份证复印件；系统断连可以受信人工核验；F002–F003；SRC-001 第 6–7 条（组织责任）、SRC-002（部门职能待时效核）。拟任人身份 F014 由 M006 证明。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F002",
-        "F003",
-        "F014"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M003",
-      "name": "M003 证明代办合法授权；委托人/单位持有的委托/代理原件或可信代理登记",
-      "purpose": "证明代办合法授权；委托人/单位持有的委托/代理原件或可信代理登记；证明代办合法授权；委托人/单位持有的委托/代理原件或可信代理登记；`K@P1` 仅代理提出时；无代理则 `NOT_APPLICABLE`；可用校方经核验的授权登记代替纸质委托；F004、F002–F003；SRC-001（不含代理程序）、SRC-010（表单未核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F004",
-        "F002",
-        "F003"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M004",
-      "name": "M004 证明单位、实验室/团队、房间与风险范围；学校/二级单位权威组织、场所及安全风险台账持有",
-      "purpose": "证明单位、实验室/团队、房间与风险范围；学校/二级单位权威组织、场所及安全风险台账持有；证明单位、实验室/团队、房间与风险范围；学校/二级单位权威组织、场所及安全风险台账持有；`C@P1/P2`；按具体房间/团队读取原始名录或有权单位出具的现状确认；不要求申请人拍全套房间牌；F006–F008、F019；SRC-001 第 2、6、8、16、22 条，SRC-004/005 为实践佐证。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F006",
-        "F008",
-        "F019"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M005",
-      "name": "M005 证明变更前岗位、职责及原责任人；实验室/单位正式责任台账、原指定/任命记录持有",
-      "purpose": "证明变更前岗位、职责及原责任人；实验室/单位正式责任台账、原指定/任命记录持有；证明变更前岗位、职责及原责任人；实验室/单位正式责任台账、原指定/任命记录持有；`C@P1/P2`；原岗位确实空缺可由有权单位提供空缺原始记录；不能填虚构旧责任人；F009–F010、F012、F016–F017；SRC-001 第 6–7、22 条。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F009",
-        "F010",
-        "F012",
-        "F016",
-        "F017"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M006",
-      "name": "M006 证明拟任人身份与在岗/聘用事实；人事/项目用工/博士后或相应权威组织持有的有效状态记录",
-      "purpose": "证明拟任人身份与在岗/聘用事实；人事/项目用工/博士后或相应权威组织持有的有效状态记录；证明拟任人身份与在岗/聘用事实；人事/项目用工/博士后或相应权威组织持有的有效状态记录；`C@P1/P2`（事实核）；从有权系统读取优先；无法读取可使用原机关可验记录。此项不证明“必然任岗合格”；F013–F015；SRC-001 第 11 条（培训身份覆盖）、SRC-010（邻接 T/S 未核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F013",
-        "F015"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M007",
-      "name": "M007 证明已发生的离岗、轮岗、停职等变更缘由；单位或人事/项目用工权威记录持有",
-      "purpose": "证明已发生的离岗、轮岗、停职等变更缘由；单位或人事/项目用工权威记录持有；证明已发生的离岗、轮岗、停职等变更缘由；单位或人事/项目用工权威记录持有；`K@P1/P2` 仅声称既成事实时；纯工作调整理由可先由 M001 描述，未来离岗决定不作为 P1 必交；F011、F015、F026；SRC-001（责任落实）、SRC-010（T08 路由未核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F011",
-        "F015",
-        "F026"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M008",
-      "name": "M008 引用前置人事/聘用/岗位变更已生效结论；T02/T08 人事或项目用工决定保管机关",
-      "purpose": "引用前置人事/聘用/岗位变更已生效结论；T02/T08 人事或项目用工决定保管机关；引用前置人事/聘用/岗位变更已生效结论；T02/T08 人事或项目用工决定保管机关；`K@P2` 仅岗位变更依赖已发生的正式人事/合同调整时；优先绑定原 DecisionRef，不重复上传整卷；F015、F021；SRC-010（邻接路由待核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F015",
-        "F021"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M009",
-      "name": "M009 证明原组织授权存在、范围、期限和撤销条件；原签发组织持有的授权文书/受信登记",
-      "purpose": "证明原组织授权存在、范围、期限和撤销条件；原签发组织持有的授权文书/受信登记；证明原组织授权存在、范围、期限和撤销条件；原签发组织持有的授权文书/受信登记；`K@P1/P2`，D 类既有授权变更；若从无有效原授权，先人工核是否另属“首次授予”；F010、F023、F025；SRC-001 不支持外部代理权，SRC-010/T07 路由待核。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F010",
-        "F023",
-        "F025"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M010",
-      "name": "M010 证明特定操作/进入实验室已取得安全培训、准入或专项资格；G04/安全部门权威记录保管",
-      "purpose": "证明特定操作/进入实验室已取得安全培训、准入或专项资格；G04/安全部门权威记录保管；证明特定操作/进入实验室已取得安全培训、准入或专项资格；G04/安全部门权威记录保管；`K@P2` 仅实际操作/准入权需被核的叠加 F 情形；未产生准入决定时标独立待办，不要求上传将来许可；F019–F020、F022；SRC-001 第 11、18、25 条，SRC-003（现行性未核），SRC-009（G04 对象已核、真实决定接口未核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F019",
-        "F020",
-        "F022"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M011",
-      "name": "M011 证明交接范围的当前事实；原/新责任人、实验室或资产保管方的清单草稿、现状盘点",
-      "purpose": "证明交接范围的当前事实；原/新责任人、实验室或资产保管方的清单草稿、现状盘点；证明交接范围的当前事实；原/新责任人、实验室或资产保管方的清单草稿、现状盘点；`K@P2/P3` 已开展交接或 E、G 类涉及钥匙/设备/危险源时；可引用权威资产/危险源台账，不要求尚未完成的交接签收；F026、F022；SRC-001 第 16、18、22 条、SRC-003（专项时效待核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F026",
-        "F022"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M012",
-      "name": "M012 证明职责交接确已发生；原/新责任人或指定接管人及单位核验的完成记录",
-      "purpose": "证明职责交接确已发生；原/新责任人或指定接管人及单位核验的完成记录；证明职责交接确已发生；原/新责任人或指定接管人及单位核验的完成记录；`L@P5`；若 P1 前已合法完成部分交接，可先作为 M011 的事实附件，但不推定新岗位生效；F026；SRC-001 第 6–7、22 条（责任连续性）、SRC-010（具体交接表未核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F026"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M013",
-      "name": "M013 证明本次有权人的正式指定、任命、撤销、组织授权或其他决定；相应有权机关持有原始决定",
-      "purpose": "证明本次有权人的正式指定、任命、撤销、组织授权或其他决定；相应有权机关持有原始决定；证明本次有权人的正式指定、任命、撤销、组织授权或其他决定；相应有权机关持有原始决定；`L@P4`；没有“可由申请人签个字替代”的合法替代；若电子签发则以受信决定记录代替纸件；F025、F027–F029；SRC-001 第 6–7 条仅支持部分安全责任确定，其他职务/授权待 SRC-010 与校本核。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F025",
-        "F027",
-        "F029"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M014",
-      "name": "M014 证明新责任台账、房间安全信息牌/组织授权登记完成更新；实验室/单位登记机关持有",
-      "purpose": "证明新责任台账、房间安全信息牌/组织授权登记完成更新；实验室/单位登记机关持有；证明新责任台账、房间安全信息牌/组织授权登记完成更新；实验室/单位登记机关持有；`L@P5`；对不涉及房间牌的岗位可 `NOT_APPLICABLE`，有权系统更新回执代替照片；F028–F030；SRC-001 第 22 条、SRC-005（2026 当期台账实践）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F028",
-        "F030"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M015",
-      "name": "M015 证明独立门禁/危险操作、资产/专项许可系统完成后置同步；G04/T04 等各自有权机关持有",
-      "purpose": "证明独立门禁/危险操作、资产/专项许可系统完成后置同步；G04/T04 等各自有权机关持有；证明独立门禁/危险操作、资产/专项许可系统完成后置同步；G04/T04 等各自有权机关持有；`L@P5` 仅触发相应独立业务时；源系统回执代替申请人截图，无决定时保持待办；F020、F022；SRC-001 第 11、16、18 条，SRC-003（专项时效未定），SRC-009/010。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F020",
-        "F022"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M016",
-      "name": "M016 解释补件、材料更正和前后版本差异；提出更正的受信经办人持有",
-      "purpose": "解释补件、材料更正和前后版本差异；提出更正的受信经办人持有；解释补件、材料更正和前后版本差异；提出更正的受信经办人持有；`K@P3`（有补件动作才需）；可用受信表单版本对比和字段审计代替重新提交全套材料；F024、F031；SRC-010（流程待核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F024",
-        "F031"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M017",
-      "name": "M017 证明撤回请求确由有权人提出；申请人/代理人和受信案卷系统持有",
-      "purpose": "证明撤回请求确由有权人提出；申请人/代理人和受信案卷系统持有；证明撤回请求确由有权人提出；申请人/代理人和受信案卷系统持有；`K@P3`（仅请求撤回）；校内电子请求回执可代替纸质申请；不等于撤回批准；F002–F004、F031–F032；SRC-010（校本撤回流程未核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F002",
-        "F004",
-        "F031",
-        "F032"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M018",
-      "name": "M018 证明复核请求指向哪一已存在决定与何种争议；异议申请人及正式受理机关持有",
-      "purpose": "证明复核请求指向哪一已存在决定与何种争议；异议申请人及正式受理机关持有；证明复核请求指向哪一已存在决定与何种争议；异议申请人及正式受理机关持有；`K@P6`（仅发生复核时）；有权系统受理记录、异议说明及原决定引用，毋需重传全部初始材料；F028、F031–F032；SRC-010（复核制度未核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F028",
-        "F031",
-        "F032"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M019",
-      "name": "M019 证明有权复核机关的维持/撤销/变更结论；复核机关持有",
-      "purpose": "证明有权复核机关的维持/撤销/变更结论；复核机关持有；证明有权复核机关的维持/撤销/变更结论；复核机关持有；`L@P6`；电子复核决定可代替纸件；复核申请阶段不得先要求；F028–F031；SRC-010（复核权限待核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F028",
-        "F031"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M020",
-      "name": "M020 证明审批人、签章人、撤回/复核有权主体及适用程序版本；学校职能部门持有的制度/权限矩阵",
-      "purpose": "证明审批人、签章人、撤回/复核有权主体及适用程序版本；学校职能部门持有的制度/权限矩阵；证明审批人、签章人、撤回/复核有权主体及适用程序版本；学校职能部门持有的制度/权限矩阵；`P@P2/P4/P6`，非申请人上传义务；SRC-001 可证明部分指定/明确责任，无法覆盖三类人员全部授权；F025、F027、F032；SRC-001 第 5–7、34–35 条，SRC-002（现行性待核）、SRC-010（未读）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F025",
-        "F027",
-        "F032"
-      ],
-      "allowReuseAcrossSubjects": false
-    }
-  ],
+  {
+    "id": "M001",
+    "name": "M001 说明本次“什么岗位/谁/哪个房间/为何更换”；经办人持有的结构化变更陈述（申请页或单位实际表单）",
+    "purpose": "说明本次“什么岗位/谁/哪个房间/为何更换”；经办人持有的结构化变更陈述（申请页或单位实际表单）；说明本次“什么岗位/谁/哪个房间/为何更换”；经办人持有的结构化变更陈述（申请页或单位实际表单）；`C@P1`；合法替代为校方已存在的电子业务申请记录，不是强迫上传手写申请书；F005–F013、F018；SRC-001（责任范围）、SRC-010（模板范围未核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F005",
+      "F013",
+      "F018"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M002",
+    "name": "M002 证明经办人真实身份、隶属及经办资格；学校身份/组织权限服务或单位有权核验记录持有",
+    "purpose": "证明经办人真实身份、隶属及经办资格；学校身份/组织权限服务或单位有权核验记录持有；证明经办人真实身份、隶属及经办资格；学校身份/组织权限服务或单位有权核验记录持有；`C@P1`、P3–P6 再验；如校方可查原始记录禁止无故另交身份证复印件；系统断连可以受信人工核验；F002–F003；SRC-001 第 6–7 条（组织责任）、SRC-002（部门职能待时效核）。拟任人身份 F014 由 M006 证明。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F002",
+      "F003",
+      "F014"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M003",
+    "name": "M003 证明代办合法授权；委托人/单位持有的委托/代理原件或可信代理登记",
+    "purpose": "证明代办合法授权；委托人/单位持有的委托/代理原件或可信代理登记；证明代办合法授权；委托人/单位持有的委托/代理原件或可信代理登记；`K@P1` 仅代理提出时；无代理则 `NOT_APPLICABLE`；可用校方经核验的授权登记代替纸质委托；F004、F002–F003；SRC-001（不含代理程序）、SRC-010（表单未核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F004",
+      "F002",
+      "F003"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M004",
+    "name": "M004 证明单位、实验室/团队、房间与风险范围；学校/二级单位权威组织、场所及安全风险台账持有",
+    "purpose": "证明单位、实验室/团队、房间与风险范围；学校/二级单位权威组织、场所及安全风险台账持有；证明单位、实验室/团队、房间与风险范围；学校/二级单位权威组织、场所及安全风险台账持有；`C@P1/P2`；按具体房间/团队读取原始名录或有权单位出具的现状确认；不要求申请人拍全套房间牌；F006–F008、F019；SRC-001 第 2、6、8、16、22 条，SRC-004/005 为实践佐证。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F006",
+      "F008",
+      "F019"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M005",
+    "name": "M005 证明变更前岗位、职责及原责任人；实验室/单位正式责任台账、原指定/任命记录持有",
+    "purpose": "证明变更前岗位、职责及原责任人；实验室/单位正式责任台账、原指定/任命记录持有；证明变更前岗位、职责及原责任人；实验室/单位正式责任台账、原指定/任命记录持有；`C@P1/P2`；原岗位确实空缺可由有权单位提供空缺原始记录；不能填虚构旧责任人；F009–F010、F012、F016–F017；SRC-001 第 6–7、22 条。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F009",
+      "F010",
+      "F012",
+      "F016",
+      "F017"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M006",
+    "name": "M006 证明拟任人身份与在岗/聘用事实；人事/项目用工/博士后或相应权威组织持有的有效状态记录",
+    "purpose": "证明拟任人身份与在岗/聘用事实；人事/项目用工/博士后或相应权威组织持有的有效状态记录；证明拟任人身份与在岗/聘用事实；人事/项目用工/博士后或相应权威组织持有的有效状态记录；`C@P1/P2`（事实核）；从有权系统读取优先；无法读取可使用原机关可验记录。此项不证明“必然任岗合格”；F013–F015；SRC-001 第 11 条（培训身份覆盖）、SRC-010（邻接 T/S 未核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F013",
+      "F015"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M007",
+    "name": "M007 证明已发生的离岗、轮岗、停职等变更缘由；单位或人事/项目用工权威记录持有",
+    "purpose": "证明已发生的离岗、轮岗、停职等变更缘由；单位或人事/项目用工权威记录持有；证明已发生的离岗、轮岗、停职等变更缘由；单位或人事/项目用工权威记录持有；`K@P1/P2` 仅声称既成事实时；纯工作调整理由可先由 M001 描述，未来离岗决定不作为 P1 必交；F011、F015、F026；SRC-001（责任落实）、SRC-010（T08 路由未核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F011",
+      "F015",
+      "F026"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M008",
+    "name": "M008 引用前置人事/聘用/岗位变更已生效结论；T02/T08 人事或项目用工决定保管机关",
+    "purpose": "引用前置人事/聘用/岗位变更已生效结论；T02/T08 人事或项目用工决定保管机关；引用前置人事/聘用/岗位变更已生效结论；T02/T08 人事或项目用工决定保管机关；`K@P2` 仅岗位变更依赖已发生的正式人事/合同调整时；优先绑定原 DecisionRef，不重复上传整卷；F015、F021；SRC-010（邻接路由待核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F015",
+      "F021"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M009",
+    "name": "M009 证明原组织授权存在、范围、期限和撤销条件；原签发组织持有的授权文书/受信登记",
+    "purpose": "证明原组织授权存在、范围、期限和撤销条件；原签发组织持有的授权文书/受信登记；证明原组织授权存在、范围、期限和撤销条件；原签发组织持有的授权文书/受信登记；`K@P1/P2`，D 类既有授权变更；若从无有效原授权，先人工核是否另属“首次授予”；F010、F023、F025；SRC-001 不支持外部代理权，SRC-010/T07 路由待核。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F010",
+      "F023",
+      "F025"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M010",
+    "name": "M010 证明特定操作/进入实验室已取得安全培训、准入或专项资格；G04/安全部门权威记录保管",
+    "purpose": "证明特定操作/进入实验室已取得安全培训、准入或专项资格；G04/安全部门权威记录保管；证明特定操作/进入实验室已取得安全培训、准入或专项资格；G04/安全部门权威记录保管；`K@P2` 仅实际操作/准入权需被核的叠加 F 情形；未产生准入决定时标独立待办，不要求上传将来许可；F019–F020、F022；SRC-001 第 11、18、25 条，SRC-003（现行性未核），SRC-009（G04 对象已核、真实决定接口未核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F019",
+      "F020",
+      "F022"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M011",
+    "name": "M011 证明交接范围的当前事实；原/新责任人、实验室或资产保管方的清单草稿、现状盘点",
+    "purpose": "证明交接范围的当前事实；原/新责任人、实验室或资产保管方的清单草稿、现状盘点；证明交接范围的当前事实；原/新责任人、实验室或资产保管方的清单草稿、现状盘点；`K@P2/P3` 已开展交接或 E、G 类涉及钥匙/设备/危险源时；可引用权威资产/危险源台账，不要求尚未完成的交接签收；F026、F022；SRC-001 第 16、18、22 条、SRC-003（专项时效待核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F026",
+      "F022"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M012",
+    "name": "M012 证明职责交接确已发生；原/新责任人或指定接管人及单位核验的完成记录",
+    "purpose": "证明职责交接确已发生；原/新责任人或指定接管人及单位核验的完成记录；证明职责交接确已发生；原/新责任人或指定接管人及单位核验的完成记录；`L@P5`；若 P1 前已合法完成部分交接，可先作为 M011 的事实附件，但不推定新岗位生效；F026；SRC-001 第 6–7、22 条（责任连续性）、SRC-010（具体交接表未核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F026"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M013",
+    "name": "M013 证明本次有权人的正式指定、任命、撤销、组织授权或其他决定；相应有权机关持有原始决定",
+    "purpose": "证明本次有权人的正式指定、任命、撤销、组织授权或其他决定；相应有权机关持有原始决定；证明本次有权人的正式指定、任命、撤销、组织授权或其他决定；相应有权机关持有原始决定；`L@P4`；没有“可由申请人签个字替代”的合法替代；若电子签发则以受信决定记录代替纸件；F025、F027–F029；SRC-001 第 6–7 条仅支持部分安全责任确定，其他职务/授权待 SRC-010 与校本核。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F025",
+      "F027",
+      "F029"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M014",
+    "name": "M014 证明新责任台账、房间安全信息牌/组织授权登记完成更新；实验室/单位登记机关持有",
+    "purpose": "证明新责任台账、房间安全信息牌/组织授权登记完成更新；实验室/单位登记机关持有；证明新责任台账、房间安全信息牌/组织授权登记完成更新；实验室/单位登记机关持有；`L@P5`；对不涉及房间牌的岗位可 `NOT_APPLICABLE`，有权系统更新回执代替照片；F028–F030；SRC-001 第 22 条、SRC-005（2026 当期台账实践）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F028",
+      "F030"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M015",
+    "name": "M015 证明独立门禁/危险操作、资产/专项许可系统完成后置同步；G04/T04 等各自有权机关持有",
+    "purpose": "证明独立门禁/危险操作、资产/专项许可系统完成后置同步；G04/T04 等各自有权机关持有；证明独立门禁/危险操作、资产/专项许可系统完成后置同步；G04/T04 等各自有权机关持有；`L@P5` 仅触发相应独立业务时；源系统回执代替申请人截图，无决定时保持待办；F020、F022；SRC-001 第 11、16、18 条，SRC-003（专项时效未定），SRC-009/010。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F020",
+      "F022"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M016",
+    "name": "M016 解释补件、材料更正和前后版本差异；提出更正的受信经办人持有",
+    "purpose": "解释补件、材料更正和前后版本差异；提出更正的受信经办人持有；解释补件、材料更正和前后版本差异；提出更正的受信经办人持有；`K@P3`（有补件动作才需）；可用受信表单版本对比和字段审计代替重新提交全套材料；F024、F031；SRC-010（流程待核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F024",
+      "F031"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M017",
+    "name": "M017 证明撤回请求确由有权人提出；申请人/代理人和受信案卷系统持有",
+    "purpose": "证明撤回请求确由有权人提出；申请人/代理人和受信案卷系统持有；证明撤回请求确由有权人提出；申请人/代理人和受信案卷系统持有；`K@P3`（仅请求撤回）；校内电子请求回执可代替纸质申请；不等于撤回批准；F002–F004、F031–F032；SRC-010（校本撤回流程未核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F002",
+      "F004",
+      "F031",
+      "F032"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M018",
+    "name": "M018 证明复核请求指向哪一已存在决定与何种争议；异议申请人及正式受理机关持有",
+    "purpose": "证明复核请求指向哪一已存在决定与何种争议；异议申请人及正式受理机关持有；证明复核请求指向哪一已存在决定与何种争议；异议申请人及正式受理机关持有；`K@P6`（仅发生复核时）；有权系统受理记录、异议说明及原决定引用，毋需重传全部初始材料；F028、F031–F032；SRC-010（复核制度未核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F028",
+      "F031",
+      "F032"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M019",
+    "name": "M019 证明有权复核机关的维持/撤销/变更结论；复核机关持有",
+    "purpose": "证明有权复核机关的维持/撤销/变更结论；复核机关持有；证明有权复核机关的维持/撤销/变更结论；复核机关持有；`L@P6`；电子复核决定可代替纸件；复核申请阶段不得先要求；F028–F031；SRC-010（复核权限待核）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F028",
+      "F031"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M020",
+    "name": "M020 证明审批人、签章人、撤回/复核有权主体及适用程序版本；学校职能部门持有的制度/权限矩阵",
+    "purpose": "证明审批人、签章人、撤回/复核有权主体及适用程序版本；学校职能部门持有的制度/权限矩阵；证明审批人、签章人、撤回/复核有权主体及适用程序版本；学校职能部门持有的制度/权限矩阵；`P@P2/P4/P6`，非申请人上传义务；SRC-001 可证明部分指定/明确责任，无法覆盖三类人员全部授权；F025、F027、F032；SRC-001 第 5–7、34–35 条，SRC-002（现行性待核）、SRC-010（未读）。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F025",
+      "F027",
+      "F032"
+    ],
+    "allowReuseAcrossSubjects": false
+  }
+],
   "sections": [
     {
       "id": "R02_RESEARCH_RULES",
@@ -1234,5 +1235,17 @@ export const r02Metadata: R02Metadata = {
       ],
       "evidenceStatus": "UNCONFIRMED"
     }
+  ],
+  "sourceIds": [
+    "SRC-001",
+    "SRC-002",
+    "SRC-003",
+    "SRC-004",
+    "SRC-005",
+    "SRC-006",
+    "SRC-007",
+    "SRC-008",
+    "SRC-009",
+    "SRC-010"
   ]
 }
