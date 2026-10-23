@@ -965,11 +965,11 @@ export const templateVersion: TemplateVersion = {
   sections: [{ id: 'rules', name: '原件规则核验项', description: '逐项对应研究原件第08节规则 ID；研究标准不等于校方正式政策，政策与权限未确认时必须人工复核。', order: 0, required: true, criteria }],
   policyVersionIds: [],
   stages: [
-    { id: 'intake', name: "结业记录与申请主体核验", kind: 'manual-review', executorRole: 'reviewer', nextStageId: 'evidence-review', workflowOwner: 'local' },
-    { id: 'evidence-review', name: "补考/重修/论文/答辩证据核验", kind: 'manual-review', executorRole: 'reviewer', nextStageId: 'policy-confirmation', returnToStageId: 'intake', workflowOwner: 'local' },
-    { id: 'policy-confirmation', name: "学段、批次、期限及制度版本待确认", kind: 'manual-review', executorRole: 'teacher', nextStageId: 'local-review', returnToStageId: 'evidence-review', workflowOwner: 'local' },
-    { id: 'local-review', name: "本地复核意见记录（非校方颁证）", kind: 'manual-review', executorRole: 'teacher', nextStageId: 'local-summary', returnToStageId: 'policy-confirmation', workflowOwner: 'local' },
-    { id: 'local-summary', name: "输出事实核验问题与待办", kind: 'finalize', executorRole: 'teacher', workflowOwner: 'local' }
+    { id: 'intake', name: "L0 结业/学籍权威记录与申请主体核验", kind: 'manual-review', executorRole: 'reviewer', nextStageId: 'evidence-review', workflowOwner: 'local' },
+    { id: 'evidence-review', name: "L1 本人申请与补件事实", kind: 'manual-review', executorRole: 'reviewer', nextStageId: 'policy-confirmation', returnToStageId: 'intake', workflowOwner: 'local' },
+    { id: 'policy-confirmation', name: "L2 现行制度、培养方案、最长修业年限适用性确认", kind: 'manual-review', executorRole: 'teacher', nextStageId: 'local-review', returnToStageId: 'evidence-review', workflowOwner: 'local' },
+    { id: 'local-review', name: "L3/L4 重修/论文/答辩结果与毕业资格正式决定（只读）", kind: 'manual-review', executorRole: 'teacher', nextStageId: 'local-summary', returnToStageId: 'policy-confirmation', workflowOwner: 'local' },
+    { id: 'local-summary', name: "L5/L6/L7 校方换证决定与证书/学历登记回执（只读；LX仅路由待办）", kind: 'finalize', executorRole: 'teacher', workflowOwner: 'local' }
   ],
   outputs: [{ id: 'fact-review-feedback', kind: 'item-feedback', audience: 'reviewer' }, { id: 'supplement-and-confirmation-todo', kind: 'supplement-list', audience: 'teacher' }],
   autoPassPolicy: { enabled: false },
