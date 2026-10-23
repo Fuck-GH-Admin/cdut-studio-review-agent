@@ -1,0 +1,135 @@
+name: P06 L02 U0 candidate install and clean-tree gate
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/p06-l02-u0-candidate.yml'
+      - 'scripts/qa/p06-l02-u0-candidate-gate.sh'
+      - 'apps/cli/src/index.ts'
+      - 'apps/electron/src/main/lib/review/review-retired-source-ref.l02-u1.test.ts'
+      - 'apps/electron/src/main/lib/review/review-office-v2-sourceref-boundary.l02.test.ts'
+      - 'scripts/qa/p06-l02-office-index-identity-repro.ts'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  u0-candidate:
+    name: U0 isolated candidate / installation and regression
+    runs-on: [self-hosted, Linux, X64]
+    timeout-minutes: 45
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run isolated worktree with immutable failure logs
+        shell: bash
+        run: |
+          set -u -o pipefail
+          candidate="$RUNNER_TEMP/p06-l02-u0-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          out="$GITHUB_WORKSPACE/p06-l02-u0-evidence"
+          mkdir -p "$out"
+          trap 'if [ -d "$candidate" ]; then git worktree remove --force "$candidate" || true; fi' EXIT
+          if ! git worktree add --detach "$candidate" HEAD > "$out/bootstrap.log" 2>&1; then
+            printf 'label=worktree-bootstrap\nexit_code=1\n' > "$out/first-failure.txt"
+            exit 1
+          fi
+          (cd "$candidate" && P06_U0_EVIDENCE_DIR="$out" bash scripts/qa/p06-l02-u0-candidate-gate.sh)
+          exit $?
+      - name: Preserve candidate evidence on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p06-l02-u0-candidate-evidence
+          path: p06-l02-u0-evidence/
+          if-no-files-found: warn
+          retention-days: 30
+
+  u1-controlled:
+    name: U1 controlled SourceRef and Office index repro - NOT E2E
+    needs: [u0-candidate]
+    if: needs.u0-candidate.result == 'success'
+    runs-on: [self-hosted, Linux, X64]
+    timeout-minutes: 15
+    env:
+      ELECTRON_SKIP_BINARY_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run U1 source-derived isolated checks
+        shell: bash
+        run: |
+          set +e -u -o pipefail
+          out="$GITHUB_WORKSPACE/p06-l02-u1-controlled-evidence"
+          candidate="$RUNNER_TEMP/p06-l02-u1-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          mkdir -p "$out/logs"
+          : > "$out/commands.tsv"
+          trap 'if [ -d "$candidate" ]; then git worktree remove --force "$candidate" || true; fi' EXIT
+          git worktree add --detach "$candidate" HEAD > "$out/logs/worktree.log" 2>&1
+          boot_rc=$?
+          printf 'worktree\t%s\n' "$boot_rc" >> "$out/commands.tsv"
+          if [ "$boot_rc" -ne 0 ]; then exit 1; fi
+          cd "$candidate" || exit 1
+          git rev-parse HEAD > "$out/candidate-sha.txt"
+          git rev-parse HEAD^{tree} > "$out/candidate-tree.txt"
+          bun install --frozen-lockfile > "$out/logs/install.log" 2>&1
+          install_rc=$?
+          printf 'install\t%s\n' "$install_rc" >> "$out/commands.tsv"
+          test_rc=99
+          repro_rc=99
+          if [ "$install_rc" -eq 0 ]; then
+            bun test --isolate --timeout 30000 \
+              apps/electron/src/main/lib/review/review-office-v2-sourceref-boundary.l02.test.ts \
+              apps/electron/src/main/lib/review/review-retired-source-ref.l02-u1.test.ts > "$out/logs/source-ref.log" 2>&1
+            test_rc=$?
+            printf 'source-ref\t%s\n' "$test_rc" >> "$out/commands.tsv"
+            bun scripts/qa/p06-l02-office-index-identity-repro.ts > "$out/logs/office-repro.json" 2> "$out/logs/office-repro.stderr"
+            repro_rc=$?
+            printf 'office-repro\t%s\n' "$repro_rc" >> "$out/commands.tsv"
+          fi
+          git status --porcelain=v1 > "$out/logs/worktree-after.log"
+          python3 - "$out" <<'PY'
+          import hashlib,json,pathlib,sys
+          p=pathlib.Path(sys.argv[1])
+          rows=[]
+          for line in (p/'commands.tsv').read_text().splitlines():
+              parts=line.split('\t')
+              if len(parts)==2: rows.append({'stage':parts[0],'exitCode':int(parts[1])})
+          digests={}
+          for f in sorted(p.rglob('*')):
+              if f.is_file() and f.name not in ('manifest.json','SHA256SUMS'):
+                  digests[str(f.relative_to(p))]=hashlib.sha256(f.read_bytes()).hexdigest()
+          info={'candidateSHA':(p/'candidate-sha.txt').read_text().strip() if (p/'candidate-sha.txt').exists() else None,'candidateTree':(p/'candidate-tree.txt').read_text().strip() if (p/'candidate-tree.txt').exists() else None,'steps':rows,'sha256':digests,'evidenceLevel':'CONTROLLED_ONLY','office71':'KNOWN_BLOCKER_IF_REPRODUCED'}
+          (p/'manifest.json').write_text(json.dumps(info,ensure_ascii=False,indent=2)+'\n')
+          (p/'SHA256SUMS').write_text(''.join(f'{digest}  {f}\n' for f,digest in sorted(digests.items())))
+          PY
+          if [ "$install_rc" -ne 0 ] || [ "$test_rc" -ne 0 ] || [ "$repro_rc" -ne 0 ] || [ -s "$out/logs/worktree-after.log" ]; then exit 1; fi
+          echo "::warning::Office #71 observed collision is a U1 release BLOCKER, not success; this job is source-derived, not live E2E."
+      - name: Upload controlled U1 evidence on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: p06-l02-u1-controlled-evidence
+          path: p06-l02-u1-controlled-evidence/
+          retention-days: 30
+          if-no-files-found: warn
