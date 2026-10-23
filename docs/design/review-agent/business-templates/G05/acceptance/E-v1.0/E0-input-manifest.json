@@ -1,0 +1,231 @@
+{
+  "schema": "g05-e0-freeze-v1",
+  "audit": "G05-E-v1-r01",
+  "checkedAt": "2026-10-14",
+  "repository": {
+    "fullName": "Fuck-GH-Admin/cdut-studio-review-agent",
+    "public": true,
+    "defaultBranch": "main",
+    "baseCommit": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+    "auditBranch": "audit/g05-e-v1-r01",
+    "g05PresentOnBase": false
+  },
+  "scope": {
+    "domain": "G05 对外交流与学术活动",
+    "stageA": "v0.1",
+    "items": [
+      "G05-T01",
+      "G05-T02",
+      "G05-T03",
+      "G05-T04",
+      "G05-T05",
+      "G05-T06"
+    ],
+    "latestUnifiedTree": "UNVERIFIED"
+  },
+  "inputCoordinates": {
+    "A": [
+      {
+        "name": "G05_00_领域总论.md",
+        "libraryFileId": "file_000000005614820683b4a05f5f3b20f0",
+        "libraryVersion": "1",
+        "sha256": "NOT_CALCULATED",
+        "status": "READ_IN_LIBRARY"
+      },
+      {
+        "name": "G05_06_领域审计与阶段结论.md",
+        "libraryFileId": "file_00000000adec82069fa993729c80d51c",
+        "libraryVersion": "1",
+        "sha256": "NOT_CALCULATED",
+        "status": "READ_IN_LIBRARY"
+      }
+    ],
+    "B": [
+      {
+        "templateId": "G05-T01",
+        "name": "G05-T01_00_独立业务深调研.md",
+        "libraryFileId": "file_00000000f1b48206b832919040717d03",
+        "libraryVersion": "1",
+        "sha256": "NOT_CALCULATED",
+        "status": "DISCOVERED_NOT_FULLY_AUDITED"
+      },
+      {
+        "templateId": "G05-T02",
+        "name": "G05-T02_00_独立业务深调研.md",
+        "libraryFileId": "file_0000000095408206882ac62f60d8bc7d",
+        "libraryVersion": "1",
+        "sha256": "NOT_CALCULATED",
+        "status": "DISCOVERED_NOT_FULLY_AUDITED"
+      },
+      {
+        "templateId": "G05-T03",
+        "name": "G05-T03_00_独立业务深调研.md",
+        "libraryFileId": "file_00000000211482068ea80dc9ee8952a9",
+        "libraryVersion": "1",
+        "sha256": "NOT_CALCULATED",
+        "status": "DISCOVERED_NOT_FULLY_AUDITED"
+      },
+      {
+        "templateId": "G05-T04",
+        "name": "G05-T04_00_独立业务深调研.md",
+        "libraryFileId": "file_0000000082dc8206be4ae36ba4afc0ea",
+        "libraryVersion": "1",
+        "sha256": "NOT_CALCULATED",
+        "status": "DISCOVERED_NOT_FULLY_AUDITED"
+      },
+      {
+        "templateId": "G05-T05",
+        "name": "G05-T05_00_独立业务深调研.md",
+        "libraryFileId": "file_00000000e3dc82118653e437af03e631",
+        "libraryVersion": "1",
+        "sha256": "NOT_CALCULATED",
+        "status": "DISCOVERED_NOT_FULLY_AUDITED"
+      },
+      {
+        "templateId": "G05-T06",
+        "name": "G05-T06_00_独立业务深调研.md",
+        "libraryFileId": "file_000000006940820694eaea1e9f41c679",
+        "libraryVersion": "1",
+        "sha256": "NOT_CALCULATED",
+        "status": "DISCOVERED_NOT_FULLY_AUDITED"
+      }
+    ],
+    "C": [
+      {
+        "templateId": "G05-T01",
+        "name": "G05-T01_正式业务模板_MD_v0.1.md",
+        "libraryFileId": "file_00000000d004820690bd8a2b347ec392",
+        "libraryVersion": "1",
+        "sizeBytes": 185344,
+        "sha256": "e96890784840f542b72e907885945a9488ce18fda4c5058585994dc0a12446bb",
+        "hashVerification": "RECOMPUTED_ON_RAW_FILE_WITHOUT_OPENING_BUSINESS_BODY",
+        "gitCommit": null,
+        "gitBlobSha": null,
+        "authorVersion": "v0.1",
+        "access": "LIBRARY"
+      },
+      {
+        "templateId": "G05-T02",
+        "name": "G05-T02_正式业务模板_MD_v0.1.md",
+        "libraryFileId": "file_000000001af48206b3126d6ec6eb41b8",
+        "libraryVersion": "1",
+        "sizeBytes": 142343,
+        "sha256": "502e40a96c247d3d80df791534a416c070c5a5a2f54d6538b7b2864863ebd802",
+        "hashVerification": "RECOMPUTED_ON_RAW_FILE_WITHOUT_OPENING_BUSINESS_BODY",
+        "gitCommit": null,
+        "gitBlobSha": null,
+        "authorVersion": "v0.1",
+        "access": "LIBRARY"
+      },
+      {
+        "templateId": "G05-T03",
+        "name": "G05-T03_正式业务模板_MD_v0.1.md",
+        "libraryFileId": "file_0000000015848206ad4b1de58cf36425",
+        "libraryVersion": "1",
+        "sizeBytes": 167413,
+        "sha256": "ef7f6e8e60fe032c39ea5d6e228977b33cf1c871b2d8a8669a43bb168274452f",
+        "hashVerification": "RECOMPUTED_ON_RAW_FILE_WITHOUT_OPENING_BUSINESS_BODY",
+        "gitCommit": null,
+        "gitBlobSha": null,
+        "authorVersion": "v0.1",
+        "access": "LIBRARY"
+      },
+      {
+        "templateId": "G05-T04",
+        "name": "G05-T04_正式业务模板_MD_v0.1.md",
+        "libraryFileId": "file_000000008af88206a85266888a4c851d",
+        "libraryVersion": "1",
+        "sizeBytes": 106994,
+        "sha256": "7af449ccd825a514c9e5454c2ce481481323821324bd4765ea462c46811eb54d",
+        "hashVerification": "RECOMPUTED_ON_RAW_FILE_WITHOUT_OPENING_BUSINESS_BODY",
+        "gitCommit": null,
+        "gitBlobSha": null,
+        "authorVersion": "v0.1",
+        "access": "LIBRARY"
+      },
+      {
+        "templateId": "G05-T05",
+        "name": "G05-T05_正式业务模板_MD_v0.1.md",
+        "libraryFileId": "file_0000000003288206b56aea82644d8f36",
+        "libraryVersion": "1",
+        "sizeBytes": 177927,
+        "sha256": "4459b4a3c34dae26545c12546368156e1c6b5864a155bb0f36987992e36f18e3",
+        "hashVerification": "RECOMPUTED_ON_RAW_FILE_WITHOUT_OPENING_BUSINESS_BODY",
+        "gitCommit": null,
+        "gitBlobSha": null,
+        "authorVersion": "v0.1",
+        "access": "LIBRARY"
+      },
+      {
+        "templateId": "G05-T06",
+        "name": "G05-T06_正式业务模板_MD_v0.1.md",
+        "libraryFileId": "file_00000000bb54820697094c301e2e7d21",
+        "libraryVersion": "1",
+        "sizeBytes": 163387,
+        "sha256": "0775e73d1ce248b735fc963e93583e765d89eb4e810d27b48c1d803f784b7bcb",
+        "hashVerification": "RECOMPUTED_ON_RAW_FILE_WITHOUT_OPENING_BUSINESS_BODY",
+        "gitCommit": null,
+        "gitBlobSha": null,
+        "authorVersion": "v0.1",
+        "access": "LIBRARY"
+      }
+    ],
+    "D": [
+      {
+        "templateId": "G05-T02",
+        "metadataFile": "G05-T02_D_交付索引.md",
+        "inputZipSha256": "08e3fc3c36248f314aac451c1e23bdb268c60166d6c10a6f268a478ddf94dfc7",
+        "restrictedEvaluationZipSha256": "a5c4af6868cc7fe63c39ead6f2dac4c6d5a425830fe4284ffbe08e4e8d510ad6",
+        "physicalZipAccess": "NOT_VERIFIED",
+        "independence": "PRODUCER_DISCLOSED_PRIOR_C_SEMANTIC_EXPOSURE"
+      },
+      {
+        "templateId": "G05-T04",
+        "metadataFile": "04_交接给GXX独立验收E(1).md",
+        "inputZipSha256": "b2f0dbc3daf9de573fe24ba71e51d4fec274b5d5bab40f26f22427a24c8cd5e1",
+        "restrictedEvaluationZipSha256": "e9fa8f75e714fb6d946a19bd0fde247e583e1cac8ac1456ec40be8d97a9388ff",
+        "goldFileSha256": "5745b8635d743754751a3c9e07d83116f941e10209614b4921a82a454dee51f9",
+        "physicalZipAccess": "NOT_VERIFIED",
+        "independence": "PRODUCER_DISCLOSED_INCIDENTAL_C_SEARCH_EXPOSURE"
+      },
+      {
+        "templateId": "G05-T01",
+        "status": "GOLD_INPUTS_NOT_LOCATED_OR_VERIFIED"
+      },
+      {
+        "templateId": "G05-T03",
+        "status": "GOLD_INPUTS_NOT_LOCATED_OR_VERIFIED"
+      },
+      {
+        "templateId": "G05-T05",
+        "status": "GOLD_INPUTS_NOT_LOCATED_OR_VERIFIED"
+      },
+      {
+        "templateId": "G05-T06",
+        "status": "GOLD_INPUTS_NOT_LOCATED_OR_VERIFIED"
+      }
+    ]
+  },
+  "hazards": [
+    {
+      "id": "E0-ISO-01",
+      "scope": "G05-T04",
+      "classification": "BLINDING_COMPROMISED_POTENTIAL",
+      "note": "E0 reviewer inadvertently viewed aggregate Gold outcome labels/counts in a library frozen_manifest.json. No individual case-to-answer mapping was read. Fresh unexposed E1 reviewer required for affected facts."
+    },
+    {
+      "id": "E0-ISO-02",
+      "scope": "G05-T02",
+      "classification": "D_INDEPENDENCE_QUALIFIED",
+      "note": "D author explicitly reported prior exposure to C substantive content."
+    },
+    {
+      "id": "E0-REP-01",
+      "scope": "G05",
+      "classification": "NON_GIT_AUTHOR_INPUTS",
+      "note": "Original G05 A/B/C/D outputs were not found in the fixed main commit. Library file versions are not equivalent to Git commits."
+    }
+  ],
+  "decision": "BLOCKED_INPUT_FOR_COMPLETE_G05_E",
+  "notes": "A/B original full pack and controlled D Gold packages must be fixed and made verifiably accessible. E1 blind review for T04 needs fresh unexposed adjudicator. No C business text or per-case Gold answer was intentionally read."
+}
