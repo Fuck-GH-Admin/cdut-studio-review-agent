@@ -1,0 +1,42 @@
+{
+  "acl_status": "ACL_UNVERIFIED",
+  "audit_frozen_head": "fc2ace5c874454ddbcfca731be7aa093416dab12",
+  "author_original_git_commit": "NOT_AVAILABLE",
+  "business_id": "G04-T04",
+  "gold_semantics_changed": false,
+  "gold_version": "FROZEN_GOLD_v1",
+  "independence_status": "AUTHOR_SELF_REPORTED_NO_C; THIRD_PARTY_NOT_ATTESTED",
+  "leak_status": "NOT_ESTABLISHED",
+  "new_public_evidence": {
+    "D_r01_original_assets_and_change_log.md": {
+      "sha256": "fd3f81675f629f8984e297b5d9d74b23818b6e0bc5610ed07c873dc9ef8b5a2a"
+    },
+    "E_r02_recheck_handoff.md": {
+      "sha256": "54ab77f2b4c6d0f2790136093e2e23bb605ebd9fcbb12535d632d095eaae01f0"
+    },
+    "gold_provenance_and_acl_status.md": {
+      "sha256": "8927a5fc009fc0200dd208d3251260d33437148848f0a612c0477d92e5bb5f35"
+    },
+    "verify_original_d_assets.py": {
+      "sha256": "c14245a1b1e0938a9c7261cb2cbb2693838ff2fbf9d9aa2ebe9226cbda9b7262"
+    }
+  },
+  "original_assets": {
+    "G04-T04_D_REPORTS.zip": {
+      "changed": false,
+      "sha256": "806a2fd037a16b96cac043811ed196804a3511c97fd6e9f9fea47d8be503fe4b"
+    },
+    "G04-T04_EVALUATION_ONLY.zip": {
+      "changed": false,
+      "sha256": "bcb195006e89d77d4fd2481afd28f43ad77510580fef23092e9438a1e486bc95"
+    },
+    "G04-T04_INPUT_ONLY.zip": {
+      "changed": false,
+      "sha256": "4dd6444d725e9abca750b871fe34355e3f2527de5c33c73179dea17a6773a71d"
+    }
+  },
+  "public_manifest_does_not_contain_case_gold_mappings": true,
+  "public_repository_contains_private_gold": false,
+  "purpose": "Original D asset identity and remediation metadata only; no case-level Gold or private-fixture paths",
+  "schema": "G04-T04-D-E-r01-public-provenance-v1"
+}
