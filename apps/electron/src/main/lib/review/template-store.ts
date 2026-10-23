@@ -226,6 +226,14 @@ function saveDraftControlled(template: TemplateVersion, forceCandidate: boolean)
  * D2 读取候选身份必须来自服务层控制记录，不能把可编辑 sourceNote 当成发布/运行资格。
  * 资格记录缺失、版本错误或损坏即拒止；不创建新资格、不更改模板。
  */
+/** Main routing must not promote a held authoring candidate into a selectable published template. */
+export function isTemplateCandidateHeld(templateId: string, version: number): boolean {
+  if (!isSafeTemplateId(templateId) || !Number.isSafeInteger(version) || version < 1) return true
+  const template = getTemplate(templateId, version)
+  if (!template) return true
+  return readPublicationControl(templateId, version)?.classification === 'candidate-held' || isCandidateDraft(template)
+}
+
 export function isAuthoringCandidateDraft(templateId: string, version: number): boolean {
   if (!isSafeTemplateId(templateId) || !Number.isSafeInteger(version) || version < 1) return false
   const control = readPublicationControl(templateId, version)

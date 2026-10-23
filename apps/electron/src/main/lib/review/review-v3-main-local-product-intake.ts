@@ -20,7 +20,7 @@ import {ReviewB2StagingService,type B2MainContext,type B2MaterialCandidate} from
 import {decodeReviewB2Zip} from './review-zip-intake-v3-b2'
 import {readB30AllCurrentMaterials} from './review-v3-b30-current-materials-read'
 import {ReviewB3OwnerBoundRouteSession,type B3ManualCatalogEntry,type B3RouteState,type B3RouteSuggestion} from './review-intake-routing-adapter-v3-b3'
-import {listTemplateVersions} from './template-store'
+import {isTemplateCandidateHeld,listTemplateVersions} from './template-store'
 import {loadD4UnifiedCatalog,loadD4UnifiedWorkspace} from './review-d4-catalog'
 import {prepareB29UnmatchedAuthorDraft,type B29HumanAuthorIntent,
   type B29UnmatchedAuthorDraft} from './review-v3-b3-unmatched-author-bootstrap'
@@ -205,7 +205,8 @@ function catalog():B3ManualCatalogEntry[] {
     const d4Keywords=getD4TemplateKeywords(x.templateId)
     return {
       templateId:x.templateId,templateVersion:String(x.version),name:x.name,
-      availability:'authorized-for-technical-selection' as const,
+      availability:(isTemplateCandidateHeld(x.templateId,x.version)
+        ?'candidate-held':'authorized-for-technical-selection') as const,
       keywords:[...metadata.keywords,...d4Keywords],
       aliases:metadata.aliases,description:metadata.description,
     }

@@ -374,8 +374,11 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
               <p className="truncate text-sm">{item.name}</p>
               <p className="truncate text-xs text-muted-foreground">{item.templateId} · v{item.templateVersion}</p>
             </div>
-            <button type="button" className={secondary} disabled={busy}
-              onClick={()=>applyTemplateChoice(item.templateId,item.templateVersion,'全模板搜索人工选择')}>选择</button>
+            <button type="button" className={secondary}
+              disabled={busy||item.availability!=='authorized-for-technical-selection'}
+              onClick={()=>applyTemplateChoice(item.templateId,item.templateVersion,'全模板搜索人工选择')}>
+              {item.availability==='authorized-for-technical-selection'?'选择':'候选未授权'}
+            </button>
           </div>)}
           {visibleCatalog.length===0&&<p className="p-2 text-xs text-muted-foreground">没有命中；清空关键词查看全部模板。</p>}
           {visibleCatalog.length>80&&<p className="text-xs text-muted-foreground">显示前 80 项，请继续输入关键词缩小范围。</p>}
