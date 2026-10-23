@@ -71,6 +71,12 @@ const D4_L1_SIGNALS:Readonly<Record<string,Signals>>={
   'g08-t03':[['诉求','意见建议','工单'],['受理','再办理','再次办理','反馈']],
 }
 
+/** Explicit searchable business vocabulary for the unified template catalog. */
+export function getD4TemplateKeywords(templateId:string):string[] {
+  const groups=D4_L1_SIGNALS[templateId]
+  return groups?[...new Set(groups.flatMap(group=>[...group]))]:[]
+}
+
 const normalized=(value:string):string=>value.normalize('NFKC').toLowerCase()
   .replace(/[\s\-—_【】\[\]（）()<>《》,，。;；:：·|｜]/g,'')
 
