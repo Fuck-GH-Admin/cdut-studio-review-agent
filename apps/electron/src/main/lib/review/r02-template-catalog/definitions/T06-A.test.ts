@@ -71,8 +71,9 @@ describe('R02 T06-A template definitions', () => {
       expect(template.sections?.flatMap(section => section.criteria).every(criterion => criterion.execution !== 'deterministic')).toBe(true)
       expect(template.outputs.some(output => String(output.kind) === 'approval')).toBe(false)
       expect(template.stages.every(stage => stage.workflowOwner === 'local')).toBe(true)
-      expect(['reviewer', 'teacher']).toContain(String(template.stages[template.stages.length - 1].executorRole))
-      expect(template.stages[template.stages.length - 1].kind).toBe('handoff')
+      const finalStage = template.stages.at(-1)!
+      expect(['reviewer', 'teacher']).toContain(finalStage.executorRole)
+      expect(finalStage.kind).toBe('handoff')
     }
   })
 
