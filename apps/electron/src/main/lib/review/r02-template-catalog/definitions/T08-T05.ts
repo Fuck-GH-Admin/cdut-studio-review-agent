@@ -1008,7 +1008,7 @@ export const r02Metadata: R02Metadata = {
   "name": "团队实验室管理员、岗位负责人及组织授权人变更审核",
   "sourceDocumentPath": "docs/design/review-agent/business-templates/R02/T08-T05.md",
   "researchSourcePath": "docs/design/review-agent/business-templates/R02/research-original/T08-T05.md",
-  "sourceDocumentSha256": "efed36ffb286427acc56b6cf050b0e26749b7fddab99956e418323012ed6de62",
+  "sourceDocumentSha256": "2bcf4ea9d7b4970b1fc8d6cefc6d63640c1ee5334b4f3a61e28b8b5ab77fe583",
   "sourceDocumentBytes": 129754,
   "manifestExpectedBytes": 129755,
   "manifestExpectedSha256": "d328ede5f607aabefdf19168ea4f2efe24a27a12357a9eb4dfeb26cc4c73ac11",
