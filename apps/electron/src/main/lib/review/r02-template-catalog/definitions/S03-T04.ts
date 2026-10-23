@@ -1,5 +1,5 @@
 import type { TemplateVersion } from '@profer/shared'
-export type { TemplateVersion } from '@profer/shared'
+export type { TemplateVersion }
 
 export type R02EvidenceStatus = 'verified' | 'partial' | 'unconfirmed'
 export interface R02CriterionMetadata { sectionId: string; criterionId: string; sourceIds: string[]; evidenceStatus: R02EvidenceStatus; fieldIds: string[]; materialIds: string[] }
