@@ -205,8 +205,8 @@ function catalog():B3ManualCatalogEntry[] {
     const d4Keywords=getD4TemplateKeywords(x.templateId)
     return {
       templateId:x.templateId,templateVersion:String(x.version),name:x.name,
-      availability:(isTemplateCandidateHeld(x.templateId,x.version)
-        ?'candidate-held':'authorized-for-technical-selection') as const,
+      availability:isTemplateCandidateHeld(x.templateId,x.version)
+        ?'candidate-held' as const:'authorized-for-technical-selection' as const,
       keywords:[...metadata.keywords,...d4Keywords],
       aliases:metadata.aliases,description:metadata.description,
     }
