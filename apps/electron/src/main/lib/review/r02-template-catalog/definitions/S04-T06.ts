@@ -862,12 +862,12 @@ export const template: TemplateVersion = {
   ],
   "outputs": [
     {
-      "id": "fact-review-feedback",
+      "id": "result-code-findings",
       "kind": "item-feedback",
       "audience": "reviewer"
     },
     {
-      "id": "supplement-suggestions",
+      "id": "issue-and-todo-list",
       "kind": "supplement-list",
       "audience": "reviewer"
     }
@@ -1082,6 +1082,56 @@ export const r02Metadata = {
         "SRC-003"
       ],
       "evidenceStatus": "PARTIAL"
+    }
+  ],
+  "resultCodes": [
+    {
+      "code": "PASS_FACT",
+      "meaning": "当前事实与可信证据匹配；只代表该项事实可核，不代表正式受理、批准或申诉获准。",
+      "nextAction": "保留该项事实和来源引用，交下一阶段人工审查。",
+      "notEquivalentTo": "不代表正式受理、处分/住宿批准、申诉获准、解除或撤销等学校决定。"
+    },
+    {
+      "code": "NOT_APPLICABLE",
+      "meaning": "条件确实不触发或当前阶段尚未到达；未知不能当作不适用。",
+      "nextAction": "记录不触发理由；必要时提示邻接模板路由。",
+      "notEquivalentTo": "不代表正式受理、处分/住宿批准、申诉获准、解除或撤销等学校决定。"
+    },
+    {
+      "code": "NEEDS_MATERIAL",
+      "meaning": "已触发且到达使用阶段、允许提交的必要事实材料缺失；不得要求后续才形成的决定书。",
+      "nextAction": "列明材料槽、证据目的、合法替代和提交角色。",
+      "notEquivalentTo": "不代表正式受理、处分/住宿批准、申诉获准、解除或撤销等学校决定。"
+    },
+    {
+      "code": "CONFLICT",
+      "meaning": "不同可信来源、主体键或版本链对同一事实存在不可自动消解的矛盾。",
+      "nextAction": "锁定争议字段、双方来源引用与权属核对人。",
+      "notEquivalentTo": "不代表正式受理、处分/住宿批准、申诉获准、解除或撤销等学校决定。"
+    },
+    {
+      "code": "UNREADABLE",
+      "meaning": "已有材料因扫描、损坏、加密或 OCR 不可靠而无法读出关键事实。",
+      "nextAction": "标注文件、页码/区域，交材料持有人重传或人工视觉核验。",
+      "notEquivalentTo": "不代表正式受理、处分/住宿批准、申诉获准、解除或撤销等学校决定。"
+    },
+    {
+      "code": "SOURCE_UNAVAILABLE",
+      "meaning": "权威系统/校内数据源不可访问、权限不足或无可核原件。",
+      "nextAction": "转校内数据 Owner 或线下正式核实，不转嫁为申请人缺件。",
+      "notEquivalentTo": "不代表正式受理、处分/住宿批准、申诉获准、解除或撤销等学校决定。"
+    },
+    {
+      "code": "POLICY_UNCONFIRMED",
+      "meaning": "当前适用制度版本、效力、期限、授权或过渡规则缺少权威依据。",
+      "nextAction": "交制度解释/业务 Owner 补现行依据；不得输出硬性资格结论。",
+      "notEquivalentTo": "不代表正式受理、处分/住宿批准、申诉获准、解除或撤销等学校决定。"
+    },
+    {
+      "code": "NEEDS_HUMAN_DECISION",
+      "meaning": "事实需要裁量、权利效力判断或有权机关正式决定。",
+      "nextAction": "交真实授权人形成正式结果；模型/Renderer 不得签发。",
+      "notEquivalentTo": "不代表正式受理、处分/住宿批准、申诉获准、解除或撤销等学校决定。"
     }
   ]
 } as const
