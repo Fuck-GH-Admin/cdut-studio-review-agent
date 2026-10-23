@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { afterAll, describe, expect, test } from 'bun:test'
+import { describe, expect, test } from 'bun:test'
 import type { TemplateVersion } from '@profer/shared'
 import { validateTemplate } from '../../template-store'
 import { templateVersion as t05t05, r02Metadata as m05t05 } from './T05-T05'
