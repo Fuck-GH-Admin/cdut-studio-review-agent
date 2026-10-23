@@ -67,7 +67,7 @@ describe('R02 T07-A local template definitions', () => {
         if (stage.returnToStageId) expect(stageIds).toContain(stage.returnToStageId)
         expect(stage.workflowOwner).toBe('local')
       }
-      const byId = new Map(stages.map(stage => [stage.id, stage]))
+      const byId = new Map(stages.map(stage => [stage.id, stage] as const))
       const reached = new Set<string>()
       let current: string | undefined = stages[0]?.id
       while (current) {
