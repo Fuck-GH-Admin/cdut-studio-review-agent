@@ -43,7 +43,7 @@ describe('T04-B R02 template definitions', () => {
       expect(item.template.templateId).toBe(item.metadata.templateId)
       expect(item.template.name).toBe(item.metadata.name)
       expect(item.metadata.officialSchoolTemplate).toBe(false)
-      expect(item.metadata.sourceDocumentSha256).toBe(item.sha256)
+      expect(String(item.metadata.sourceDocumentSha256)).toBe(String(item.sha256))
       expect(item.template.schemaVersion).toBe(2)
       expect(item.template.status).toBe('draft')
       expect(item.template.catalogKind).toBe('builtin')
@@ -66,9 +66,9 @@ describe('T04-B R02 template definitions', () => {
       expect(item.metadata.materials).toHaveLength(item.template.materialSlots.length)
       expect(item.metadata.criteria).toHaveLength(criteria.length)
 
-      const fieldIds = new Set(item.metadata.fields.map((field) => field.fieldId))
-      const slotIds = new Set(item.template.materialSlots.map((slot) => slot.id))
-      const sourceIds = new Set(item.metadata.sources.map((source) => source.srcId))
+      const fieldIds = new Set<string>(item.metadata.fields.map((field) => String(field.fieldId)))
+      const slotIds = new Set<string>(item.template.materialSlots.map((slot) => String(slot.id)))
+      const sourceIds = new Set<string>(item.metadata.sources.map((source) => String(source.srcId)))
       for (const criterion of criteria) {
         const mapping = item.metadata.criteria.find((entry) => entry.criterionId === criterion.id)
         expect(mapping).toBeDefined()
@@ -76,7 +76,7 @@ describe('T04-B R02 template definitions', () => {
         for (const ref of referencedIds(criterion.requirement, 'M')) expect(slotIds.has(ref)).toBe(true)
         for (const ref of referencedIds(criterion.requirement, 'SRC')) expect(sourceIds.has(ref)).toBe(true)
         for (const ref of mapping?.srcIds ?? []) expect(sourceIds.has(ref)).toBe(true)
-        expect(['VERIFIED', 'PARTIAL', 'UNCONFIRMED']).toContain(mapping?.evidenceStatus)
+        expect(['VERIFIED', 'PARTIAL', 'UNCONFIRMED'].includes(String(mapping?.evidenceStatus))).toBe(true)
       }
     }
   })
