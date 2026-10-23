@@ -1,16 +1,5 @@
 # 子会话任务｜S07-B｜毕业、就业与离校
 
-> **权威 GitHub 原件定位（本段优先于本文中任何“本 ZIP 已包含文件”的旧表述）**
-> 仓库：`Fuck-GH-Admin/cdut-studio-review-agent`；权威资料分支：`feat/v3-r02-template-library`。
-> - 本批每个模板的原始 Markdown：`docs/design/review-agent/business-templates/R02/research-original/{TEMPLATE_ID}.md`。
-> - V3 实现契约：`docs/design/review-agent/R02-V3-IMPLEMENTATION-CONTRACT-20261023.md`。
-> - 统一审查标准：`docs/design/review-agent/business-templates/R02/dispatch/00_统一审查标准.md`。
-> - 文件所有权：`docs/design/review-agent/business-templates/R02/dispatch/00_集成分工与文件所有权.md`。
-> - 完整 128 项目录：`docs/design/review-agent/business-templates/R02/dispatch/00_模板清单_128.tsv`；缺失 16 项：`docs/design/review-agent/business-templates/R02/dispatch/01_未纳入的16项.md`。
-> - 31 份定向提示词位于 `docs/design/review-agent/business-templates/R02/dispatch/prompts/`。
-> **执行前必须先从 GitHub 读取以上文件和本批所有原始 MD。不要要求用户上传 ZIP。** 若本地工作分支没有原件，先执行 `git fetch origin feat/v3-r02-template-library`，再用 `git show origin/feat/v3-r02-template-library:<仓库路径>` 读取/提取原件，或使用 GitHub 文件浏览/API 按上述分支和路径读取。资料 ZIP 只是备份，不是必需输入。
-
-
 你是一个全新的独立审查会话。不得依赖旧会话记忆，不得要求用户重新上传原始 128 份总包。本 ZIP 已包含本批次需要的模板、统一审核标准、全量 128 项清单与缺失目录清单。**本轮必须实际完成审查并交付文件，不是只制定计划。**
 
 ## 你的责任范围

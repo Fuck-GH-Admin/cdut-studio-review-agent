@@ -35,7 +35,7 @@
 
 1. 打开自己批次的 `prompts/{BATCH_ID}_TASK_PROMPT.md`。
 2. 先读取实现契约、统一审查标准、文件所有权和本批每个模板 ID 对应的原始 MD。
-3. 若当前分支没有原件，读取 `feat/v3-r02-template-library` 上的指定路径；本地 Git 可用时先 `git fetch origin feat/v3-r02-template-library`，再用 `git show origin/feat/v3-r02-template-library:<path>`。
+3. 若当前分支没有原件，读取 `feat/v3-r02-template-library` 上的指定路径；本地 Git 可用时先 `git fetch origin +refs/heads/feat/v3-r02-template-library:refs/remotes/origin/feat/v3-r02-template-library`，再用 `git show origin/feat/v3-r02-template-library:<path>`。
 4. 按提示词要求在 `feat/v3-r02/templates-{BATCH_ID}` 独立分支提交审阅后的 Markdown、V3 原生模板定义、专项测试、审查报告与问题台账。
 5. 创建 PR，base 必须是 `feat/v3-r02-template-library`，不得直接合并到 `main`。
 6. 校本制度/授权未确认不是停止工作的理由；未知规则标记待确认/人工复核，禁止虚构政策、签批人或自动正式决定。
