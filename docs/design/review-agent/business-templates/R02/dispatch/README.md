@@ -6,7 +6,7 @@
 
 - 仓库：`Fuck-GH-Admin/cdut-studio-review-agent`
 - 资料/集成分支：`feat/v3-r02-template-library`
-- 当前原件与提示词提交：`9a07a9d61f71deafcc779af0992c0e5226872e04`
+- 提交定位：请以 `feat/v3-r02-template-library` 的最新 HEAD 为准，不依赖固定 SHA；后续更新会继续补充提示词和派发说明。
 - 实现契约：[`R02-V3-IMPLEMENTATION-CONTRACT-20261023.md`](../../../R02-V3-IMPLEMENTATION-CONTRACT-20261023.md)
 
 ## 权威资料路径

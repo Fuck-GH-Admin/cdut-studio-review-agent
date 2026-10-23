@@ -12,8 +12,8 @@
 
 ## 怎么派发
 1. 先将 `00_V3实现与提交契约.md` 和 `00_集成分工与文件所有权.md` 作为所有会话的共同规则。
-2. 每个子会话只领取 `01_子会话批次包/` 下一个 ZIP。ZIP 已包含本批所有 MD、全量目录、审查标准和专属 `TASK_PROMPT.md`。
-3. 任务第一步先读仓库中的 `docs/design/review-agent/R02-V3-IMPLEMENTATION-CONTRACT-20261023.md`，再按本批 prompt 执行。不要要求用户重新上传 128 份总包；本批 ZIP 已包含分配文件。
+2. 每个子会话只领取 `dispatch/prompts/{BATCH_ID}_TASK_PROMPT.md`。提示词开头包含 GitHub 原件定位；ZIP 只是可选备份，不是执行前提。
+3. 任务第一步从 `feat/v3-r02-template-library` 读取实现契约、统一标准、所有权、128 项清单、缺失项清单和本批所有原始 MD。若本地分支没有这些文件，先 fetch 集成分支并按提示词中的确切路径读取；不要要求用户重新上传 ZIP。
 4. 每批必须输出审查报告/问题 TSV、审阅后源 MD、运行时模块、专项测试，并提交代码 PR。
 5. 集成 Owner 独占共享注册器、V3 criterion→Plan 编译、Main/IPC/UI 接线和最终集成 PR。
 
