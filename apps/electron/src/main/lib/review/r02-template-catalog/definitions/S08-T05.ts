@@ -422,7 +422,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F046",
-      "label": "`publicationPostIssueStatus:object?`（正式更正/撤稿/勘误、发布主体、时间与查询快照）",
+      "label": "publicationPostIssueStatus（正式更正/撤稿/勘误、发布主体、时间与查询快照）",
       "kind": "object",
       "required": false,
       "visibility": "internal",
