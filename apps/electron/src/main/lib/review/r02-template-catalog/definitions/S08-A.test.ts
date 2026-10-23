@@ -33,6 +33,36 @@ const expectedStageIds: Record<string, string[]> = {
   'S08-T05': ['l0','l1','l2','l3','l4','l5'],
   'S08-T06': ['phase-1','phase-2','phase-3','phase-4','phase-5','phase-6','phase-7','phase-8'],
 }
-test('stage graphs are reachable, unique, acyclic and local',()=>{for(const {template} of batch){const ss=template.stages,ids=ss.map(s=>s.id),byId=new Map(ss.map(s=>[s.id,s]));expect(ids.length).toBeGreaterThan(1);expect(new Set(ids).size).toBe(ids.length);expect(ids).toEqual(expectedStageIds[template.templateId]);for(const s of ss){if(s.nextStageId)expect(byId.has(s.nextStageId)).toBe(true);if(s.returnToStageId)expect(byId.has(s.returnToStageId)).toBe(true);expect(s.workflowOwner).toBe('local');expect(['reviewer','teacher']).toContain(s.executorRole);expect(s.kind).not.toBe('auto-check')}const seen=new Set<string>();let cur:string|undefined=ss[0].id;while(cur){expect(seen.has(cur),template.templateId+' cycle at '+cur).toBe(false);seen.add(cur);cur=byId.get(cur)?.nextStageId}expect(seen.size).toBe(ss.length);expect(ss[ss.length-1].kind).toBe('handoff')}})
+test('stage graphs are reachable, unique, acyclic and local', () => {
+  for (const { template } of batch) {
+    const ss = template.stages
+    const ids = ss.map((stage) => stage.id)
+    const byId = new Map(ss.map((stage) => [stage.id, stage]))
+    const expectedIds = expectedStageIds[template.templateId]
+    const first = ss[0]
+    const last = ss.at(-1)
+    if (!expectedIds) throw new Error('Missing expected stage inventory for ' + template.templateId)
+    if (!first || !last) throw new Error('Template has no start/final stage: ' + template.templateId)
+    expect(ids.length).toBeGreaterThan(1)
+    expect(new Set(ids).size).toBe(ids.length)
+    expect(ids).toEqual(expectedIds)
+    for (const stage of ss) {
+      if (stage.nextStageId) expect(byId.has(stage.nextStageId)).toBe(true)
+      if (stage.returnToStageId) expect(byId.has(stage.returnToStageId)).toBe(true)
+      expect(stage.workflowOwner).toBe('local')
+      expect(['reviewer', 'teacher']).toContain(stage.executorRole)
+      expect(stage.kind).not.toBe('auto-check')
+    }
+    const seen = new Set<string>()
+    let current: string | undefined = first.id
+    while (current) {
+      expect(seen.has(current), template.templateId + ' cycle at ' + current).toBe(false)
+      seen.add(current)
+      current = byId.get(current)?.nextStageId
+    }
+    expect(seen.size).toBe(ss.length)
+    expect(last.kind).toBe('handoff')
+  }
+})
 test('enum fields always declare explicit options before using enum kind',()=>{for(const {template} of batch){for(const field of template.fields){if(field.kind==='enum')expect(field.options?.length).toBeGreaterThan(0)}}})
 test('non-official and uncertain policies cannot auto-pass or impersonate PolicyVersion',()=>{for(const {template,metadata} of batch){expect(template.description).toContain('本地研究模板 · 非校方正式模板');expect(template.sourceNote?.startsWith('R02_RESEARCH_TEMPLATE_NONOFFICIAL:')).toBe(true);expect(metadata.officialSchoolTemplate).toBe(false);expect(metadata.policyEvidenceStatus).toBe('PARTIAL');expect(metadata.sourceDocumentPath).toContain('/R02/'+template.templateId+'.md');expect(metadata.sourceDocumentSha256).toMatch(/^[0-9a-f]{64}$/);expect(metadata.originalSourceSha256).toBe(metadata.manifestSha256);expect(metadata.manifestHashCheck).toBe(true);expect(template.policyVersionIds).toEqual([]);expect(template.autoPassPolicy?.enabled).toBe(false);expect(template.status).toBe('draft');expect((template.sections??[]).flatMap(s=>s.criteria).every(c=>c.execution!=='deterministic')).toBe(true);expect(template.outputs.some(o=>o.kind==='approval')).toBe(false)}})
