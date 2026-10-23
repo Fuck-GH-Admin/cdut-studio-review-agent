@@ -129,6 +129,27 @@ function reconcileCheckLedger(
       record(rule.id, rule.targetScope, [`${rule.id}::case`], '案卷级计划检查未产生结果记录')
     }
   }
+  // Main-owned supplemental checks (material slots and plan-compilation blockers)
+  // are real planned checks, but deliberately are not fabricated RuleSpecs.
+  // Keep them in the same coverage denominator so a pending slot cannot vanish
+  // as an "unexpected" result or be ignored by the decision gate.
+  for (const [index, result] of results.entries()) {
+    if (!result.ruleId?.startsWith('system:')) continue
+    const targetKey = result.checkId?.trim() || result.ruleId
+    const validTarget = result.target?.scope === 'case' && Array.isArray(result.target.subjectIds)
+    const validIdentity = !!result.checkId?.trim() && checkIdCounts.get(result.checkId) === 1
+    const validStatus = CHECK_STATUSES.has(result.status)
+    matched.add(index)
+    entries.push({
+      ruleId: result.ruleId,
+      targetKey,
+      status: validTarget && validIdentity && validStatus ? result.status : 'not-executed',
+      reason: !validTarget ? '系统检查目标无效'
+        : !validIdentity ? '系统检查身份缺失或重复'
+          : !validStatus ? '系统检查状态无效'
+            : result.reason,
+    })
+  }
   return { entries, unexpectedResults: results.length - matched.size }
 }
 

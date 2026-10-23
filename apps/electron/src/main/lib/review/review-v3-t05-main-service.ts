@@ -145,9 +145,12 @@ export function isLocalBusinessCase(aggregate: CaseAggregateV2): boolean {
  * （真实字段是 `documentVersions`），导致选择结果不可信。
  */
 export function currentT05Run(aggregate: CaseAggregateV2): ReviewRunV2 | undefined {
+  // listRunsV2 is already newest-first. Diagnostic template-only Runs must
+  // never become the basis for a business stage decision.
   const runs = listRunsV2(aggregate.caseV2.id)
-  for (let index = runs.length - 1; index >= 0; index -= 1) {
+  for (let index = 0; index < runs.length; index += 1) {
     const run = runs[index]!
+    if (run.id.startsWith('run-tpl-')) continue
     if (run.status !== 'completed' && run.status !== 'partially-completed') continue
     if (run.caseId !== aggregate.caseV2.id) continue
     if (run.templateId !== aggregate.caseV2.templateId) continue
