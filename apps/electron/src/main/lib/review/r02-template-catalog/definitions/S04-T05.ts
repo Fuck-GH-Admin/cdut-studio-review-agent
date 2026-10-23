@@ -1284,12 +1284,12 @@ export const template: TemplateVersion = {
   ],
   "outputs": [
     {
-      "id": "fact-review-feedback",
+      "id": "result-code-findings",
       "kind": "item-feedback",
       "audience": "reviewer"
     },
     {
-      "id": "supplement-suggestions",
+      "id": "issue-and-todo-list",
       "kind": "supplement-list",
       "audience": "reviewer"
     }
@@ -1636,6 +1636,56 @@ export const r02Metadata = {
         "SRC-001"
       ],
       "evidenceStatus": "PARTIAL"
+    }
+  ],
+  "resultCodes": [
+    {
+      "code": "PASS_FACT",
+      "meaning": "已具备与该目标、校区、时段一致的可核事实证据。不等于批准延住、不等于可入住、不等于退宿手续全部完成、不等于资格终止或退款",
+      "nextAction": "需要下一业务步骤时由当前经授权角色继续；单项可归档",
+      "notEquivalentTo": ""
+    },
+    {
+      "code": "NOT_APPLICABLE",
+      "meaning": "情形确实不触发，或后续阶段尚未到达（如 P1 不要求退寝室单）。不得用于不知道是否适用的情况",
+      "nextAction": "无补件；可附邻接模板路由",
+      "notEquivalentTo": ""
+    },
+    {
+      "code": "NEEDS_MATERIAL",
+      "meaning": "本阶段应由申请人/学院/现场人员形成且允许补交的证据缺失；政策要求必须已证实",
+      "nextAction": "精确列出材料槽、目的、可合法替代和提交角色；不可要求后续才形成的批准书",
+      "notEquivalentTo": ""
+    },
+    {
+      "code": "CONFLICT",
+      "meaning": "两条已定位证据对于同一目标事实不一致，如旧房单据对应新房、财务到账与自述冲突",
+      "nextAction": "两端证据引用、冲突字段、时间和对照记录交权威数据 Owner",
+      "notEquivalentTo": ""
+    },
+    {
+      "code": "UNREADABLE",
+      "meaning": "现有文件可获取却因加密、损坏、扫描模糊、页缺失、OCR 不可靠无法辨读关键内容",
+      "nextAction": "指向损坏页/区域由材料持有者重传或人工视觉读证；不能判材料虚假",
+      "notEquivalentTo": ""
+    },
+    {
+      "code": "SOURCE_UNAVAILABLE",
+      "meaning": "权威底账、政策原件服务、授权验证接口不可连接/权限不足/无可核原件",
+      "nextAction": "技术/校内数据接口 Owner 恢复或线下正式核实；不能转嫁为学生上传假截图",
+      "notEquivalentTo": ""
+    },
+    {
+      "code": "POLICY_UNCONFIRMED",
+      "meaning": "找不到现行校本条款、授权、适用届别/时限、过渡规则；旧 2017 试行条文不足以决定本案",
+      "nextAction": "后勤/学生处/校区制度 Owner 补确认；不要输出截止/不资格等硬结论",
+      "notEquivalentTo": ""
+    },
+    {
+      "code": "NEEDS_HUMAN_DECISION",
+      "meaning": "事实可供研判但涉及例外、书面批复、终止、处分、正式撤回或复核等有权裁量",
+      "nextAction": "推送有真实授权的学校决定人及审查材料；不可由模型签发",
+      "notEquivalentTo": ""
     }
   ]
 } as const
