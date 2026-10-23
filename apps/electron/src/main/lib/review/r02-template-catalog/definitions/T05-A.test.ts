@@ -43,7 +43,7 @@ describe('R02 T05-A native template definitions', () => {
       const criterionKeys = criteria.map(item => `${item.sectionId}/${item.criterion.id}`)
       expect(new Set(criterionKeys).size).toBe(criterionKeys.length)
       const indexedSourceIds = new Set(entry.metadata.sources.map(source => source.id))
-      expect(entry.metadata.criteria.length).toBe(criteria.length)
+      expect(Number(entry.metadata.criteria.length)).toBe(criteria.length)
 
       for (const { sectionId, criterion } of criteria) {
         for (const match of criterion.requirement.matchAll(/\bF\d{3}\b/g)) expect(fieldIds.has(match[0])).toBe(true)
@@ -68,7 +68,7 @@ describe('R02 T05-A native template definitions', () => {
         expect(stage.workflowOwner).toBe('local')
       }
       const reachable = new Set<string>()
-      let current = stages[0]
+      let current: TemplateVersion['stages'][number] | undefined = stages[0]
       while (current) {
         expect(reachable.has(current.id)).toBe(false)
         reachable.add(current.id)
