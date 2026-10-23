@@ -468,6 +468,12 @@ export async function reclassifyNativeWorkspaceMaterialV3(
     const target = snapshot.caseV2.documents.find((document) =>
       document.versionId === payload.documentVersionId && document.active !== false)
     if (!target) throw new CommandValidationError('STALE_INPUT', '材料版本已变化或不再有效')
+    const remainingApplicationCount = snapshot.caseV2.documents.filter((document) =>
+      document.active !== false && document.role === 'application'
+      && document.versionId !== payload.documentVersionId).length
+    if (payload.role !== 'application' && target.role === 'application' && remainingApplicationCount === 0) {
+      throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '不能把本案唯一的申报材料改为其他类别；请先确认另一份真实申报原件')
+    }
     if (payload.materialSlotId !== null) {
       const template = getTemplate(snapshot.caseV2.templateId, snapshot.caseV2.templateVersion)
       if (!template?.materialSlots.some((slot) => slot.id === payload.materialSlotId)) {

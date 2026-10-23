@@ -1,4 +1,4 @@
-import type { CaseAggregateV2, ConditionAST, DocumentVersion, FieldValue, MaterialSlotSpec } from '../types'
+import type { CaseAggregateV2, ConditionAST, DocumentVersion, MaterialSlotSpec } from '../types'
 
 export type MaterialSlotStatusV2 = 'compliant' | 'awaiting-supplement' | 'awaiting-confirmation' | 'not-applicable'
 export interface MaterialSlotAssessmentV2 {
@@ -13,8 +13,8 @@ type TriState = 'true' | 'false' | 'unknown'
 
 function rawField(value: unknown): unknown {
   if (!value || typeof value !== 'object') return undefined
-  const candidate = value as Partial<FieldValue>
-  if (candidate.kind === 'attachment' && 'documentVersionId' in candidate) return candidate.documentVersionId
+  const candidate = value as Record<string, unknown>
+  if (candidate.kind === 'attachment' && typeof candidate.documentVersionId === 'string') return candidate.documentVersionId
   if ('value' in candidate) return candidate.value
   return undefined
 }
