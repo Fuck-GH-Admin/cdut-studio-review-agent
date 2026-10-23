@@ -22,6 +22,7 @@ type R02Metadata = {
   sourceDocumentSha256: string
   sourceIntegrityVerifiedAgainstManifest: boolean
   policyEvidenceStatus: string
+  auxiliaryStageNotes?: ReadonlyArray<{ id: string; runtimeRepresentation: string; reason: string }>
   criteria: ReadonlyArray<{
     sectionId: string
     criterionId: string
@@ -55,6 +56,9 @@ describe('R02 T02-C template definitions', () => {
       expect(metadata.sourceDocumentSha256).toMatch(/^[a-f0-9]{64}$/)
       expect(metadata.sourceIntegrityVerifiedAgainstManifest).toBe(true)
       expect(metadata.policyEvidenceStatus).toBe('PARTIAL')
+      if (template.templateId === 'T02-T10') {
+        expect(metadata.auxiliaryStageNotes?.some(note => note.id === 'LX' && note.runtimeRepresentation === 'metadata-only')).toBe(true)
+      }
       expect(metadata.criteria.length).toBe(Number(template.sections?.flatMap(section => section.criteria).length))
       expect(metadata.criteria.every(item => item.sectionId === 'fact-review' && /^R\d{3}$/.test(item.criterionId))).toBe(true)
       expect(metadata.criteria.every(item => new Set<string>(['verified', 'partial', 'unconfirmed']).has(item.evidenceStatus))).toBe(true)

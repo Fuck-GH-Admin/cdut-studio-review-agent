@@ -2089,5 +2089,16 @@ export const r02Metadata = {
     "finalDecision": "manual-authorized-person-only",
     "sourceIndexIdsAreNotCaseSourceRefs": true,
     "unknownPolicyEffect": "needs-confirmation"
-  }
+  },
+  "auxiliaryStageNotes": [
+    {
+      "id": "LX",
+      "name": "撤回、补件、复核",
+      "sourceSection": "03.1 / 03.2 H2",
+      "behavior": "side-route-available-from-current-stage",
+      "runtimeRepresentation": "metadata-only",
+      "reason": "原件将 LX 定义为可从多个生命周期阶段发生的侧向事件；当前 WorkflowStageSpec 仅提供单一 nextStageId/returnToStageId，不能无损表达多入口分支。不得把 LX 错误串联为 L6 之后的线性阶段。",
+      "integrationAction": "在单独获准的共享 schema/runner 变更中增加分支/转移表达后再接线。"
+    }
+  ]
 } as const
