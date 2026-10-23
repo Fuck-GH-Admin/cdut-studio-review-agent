@@ -429,7 +429,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "当期校本正式公告、院系实施通知、受理规则",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -449,7 +449,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "本专科生国家励志奖学金申请表或省系统有效填报记录",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -469,7 +469,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "学籍/身份/学段/院系权威快照",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -489,7 +489,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "参评学年成绩单与学业排名",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -509,7 +509,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "参评学年综合素质测评正式结果",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -529,7 +529,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "对应学年家庭经济困难认定的有效结果",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -549,7 +549,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "国家助学金既有申请/决定",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -569,7 +569,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "本专科国家奖学金正式决定/结果台账",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -589,7 +589,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "校级及以上表彰证据",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -609,7 +609,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "特殊培养、定向/乡村振兴类学费全免的正式身份及资助决定",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -629,7 +629,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "学籍异动、复学、转专业、年级编入、延期等正式通知",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -649,7 +649,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "院级评议、初审意见/签章台账",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -669,7 +669,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "学院拟推荐清单/名额执行版",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -689,7 +689,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "院内公示证据",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -709,7 +709,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "异议/复核申请与关联证据",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -729,7 +729,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "正式异议处理/复核结论",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -749,7 +749,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "学校评审领导小组审议意见与报送回执",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -769,7 +769,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "更正、补件与重发凭据",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -789,7 +789,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "撤回请求及受理/生效记录",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -809,7 +809,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "实际资金发放和银行/社保卡支付回执",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -829,7 +829,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "排名群组及计算口径的正式说明",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -849,7 +849,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "参评期间纪律处分/合法可核法律处罚的有效状态摘要",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -869,7 +869,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "上级主管部门审核批复",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -889,7 +889,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "校级全校公示原件",
         "签发方、对象、适用时点与来源版本（如适用）"
