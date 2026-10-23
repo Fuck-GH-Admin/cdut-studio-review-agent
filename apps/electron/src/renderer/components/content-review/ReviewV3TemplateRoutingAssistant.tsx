@@ -315,7 +315,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
     tick()
     const timer=setInterval(tick,250)
     return ()=>clearInterval(timer)
-  },[modelMatchState,modelCandidates,modelDeadline,read?.sessionKey])
+  },[modelMatchState,modelCandidates,modelDeadline,read?.sessionKey,read?.routeCandidates])
   React.useEffect(()=>{
     const choice=read?.read.route.status==='default-selected'?read.read.route.chosen:undefined
     if(!choice||!read||installed)return
