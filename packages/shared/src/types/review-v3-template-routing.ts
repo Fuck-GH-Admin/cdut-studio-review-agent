@@ -120,7 +120,7 @@ export function rankTemplateCandidates(
     const exact = templates.filter(entry =>
       normalizeTemplateRouteText(entry.name) === declared ||
       normalizeTemplateRouteText(entry.templateId) === declared ||
-      (entry.aliases ?? []).some(alias => normalizeTemplateRouteText(alias) === declared))
+      (entry.aliases ?? []).some((alias:string) => normalizeTemplateRouteText(alias) === declared))
     return exact.slice(0, limit).map(entry => ({
       templateId: entry.templateId, templateVersion: entry.templateVersion, name: entry.name,
       tier: 'exact', score: 1000, confidence: 1, matchedSignals: [declarations[0]!],
@@ -140,7 +140,7 @@ export function rankTemplateCandidates(
       exactMatches.push({ entry, signal: entry.name, specificity: name.length })
       continue
     }
-    const alias = (entry.aliases ?? []).find(value => {
+    const alias = (entry.aliases ?? []).find((value:string) => {
       const normalized = normalizeTemplateRouteText(value)
       return normalized.length >= 4 && normalizedText.includes(normalized)
     })
