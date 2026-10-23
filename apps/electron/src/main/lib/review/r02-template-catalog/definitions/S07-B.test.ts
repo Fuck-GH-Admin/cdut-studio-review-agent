@@ -40,8 +40,8 @@ describe('R02 S07-B templates', () => {
         const mapped = metadata.criteria.find(item => item.criterionId === criterion.id)
         expect(mapped).toBeDefined()
         expect(mapped?.sectionId).toBe('rules')
-        for (const [, ref] of criterion.requirement.matchAll(/\\b(F\\d{3})\\b/g)) expect(fieldIds.has(ref)).toBeTrue()
-        for (const [, ref] of criterion.requirement.matchAll(/\\b(M\\d{3})\\b/g)) expect(slotIds.has(ref)).toBeTrue()
+        for (const [, ref] of criterion.requirement.matchAll(/\b(F\d{3})\b/g)) expect(fieldIds.has(ref)).toBeTrue()
+        for (const [, ref] of criterion.requirement.matchAll(/\b(M\d{3})\b/g)) expect(slotIds.has(ref)).toBeTrue()
         for (const sourceId of mapped?.sourceIds ?? []) expect(metadata.sourceStatus[sourceId]).toBeDefined()
         expect(['semantic', 'manual']).toContain(criterion.execution)
       }
