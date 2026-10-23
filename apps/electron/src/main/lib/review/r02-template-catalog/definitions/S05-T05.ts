@@ -1089,11 +1089,6 @@ export const templateVersion: TemplateVersion = {
       "id": "supplement-list",
       "kind": "supplement-list",
       "audience": "organizer"
-    },
-    {
-      "id": "audit-trail",
-      "kind": "audit-log",
-      "audience": "reviewer"
     }
   ],
   "autoPassPolicy": {

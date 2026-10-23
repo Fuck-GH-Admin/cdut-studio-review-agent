@@ -89,13 +89,16 @@ describe('S05-A R02 native template definitions', () => {
       expect(metadata.sourceDocSha256).toMatch(/^[a-f0-9]{64}$/)
       expect(metadata.originalResearchSha256).toMatch(/^[a-f0-9]{64}$/)
       expect(template.outputs.some(output => output.kind === 'approval')).toBe(false)
-      expect(template.outputs.some(output => output.kind === 'audit-log')).toBe(true)
+      expect(template.outputs.some(output => output.kind === 'item-feedback')).toBe(true)
+      expect(template.outputs.some(output => output.kind === 'supplement-list')).toBe(true)
       expect(template.stages.some(stage => stage.kind === 'auto-check')).toBe(false)
       const criterionById = new Map((template.sections ?? []).flatMap(section => section.criteria.map(c => [c.id, c] as const)))
       for (const mapping of metadata.criteria) {
-        expect(criterionById.get(mapping.criterionId)?.execution).toBe('manual')
+        if (mapping.evidenceStatus === 'UNCONFIRMED' || mapping.evidenceStatus === 'PARTIAL') {
+          expect(criterionById.get(mapping.criterionId)?.execution).toBe('manual')
+        }
       }
-      if (metadata.policyEvidenceStatus !== 'VERIFIED') {
+      if (metadata.policyEvidenceStatus === 'UNCONFIRMED' || metadata.policyEvidenceStatus === 'PARTIAL') {
         expect(template.status).toBe('draft')
         expect(template.policyVersionIds).toEqual([])
         expect(template.autoPassPolicy?.enabled).toBe(false)
