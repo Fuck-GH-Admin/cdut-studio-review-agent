@@ -3,7 +3,7 @@ import type { TemplateVersion } from '@profer/shared'
 export interface R02CriterionMetadata {
   sectionId: string
   criterionId: string
-  srcIds: string[]
+  sourceIds: string[]
   evidenceStatus: 'VERIFIED' | 'PARTIAL' | 'UNCONFIRMED'
 }
 
@@ -1024,7 +1024,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R001",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1032,7 +1032,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R002",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1040,7 +1040,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R003",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1048,7 +1048,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R004",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001",
         "SRC-004",
         "SRC-005"
@@ -1058,7 +1058,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R005",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1066,7 +1066,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R006",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1074,7 +1074,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R007",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1082,7 +1082,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R008",
-      "srcIds": [
+      "sourceIds": [
         "SRC-010"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1090,7 +1090,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R009",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1098,7 +1098,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R010",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1106,7 +1106,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R011",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1114,7 +1114,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R012",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1122,7 +1122,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R013",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1130,7 +1130,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R014",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1138,7 +1138,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R015",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1146,7 +1146,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R016",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1154,7 +1154,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R017",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1162,7 +1162,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R018",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001",
         "SRC-005"
       ],
@@ -1171,7 +1171,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R019",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1179,7 +1179,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R020",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001"
       ],
       "evidenceStatus": "PARTIAL"
@@ -1187,7 +1187,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R021",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1195,7 +1195,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R022",
-      "srcIds": [
+      "sourceIds": [
         "SRC-009"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1203,7 +1203,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R023",
-      "srcIds": [
+      "sourceIds": [
         "SRC-010"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1211,7 +1211,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R024",
-      "srcIds": [
+      "sourceIds": [
         "SRC-010"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1219,7 +1219,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R025",
-      "srcIds": [
+      "sourceIds": [
         "SRC-010"
       ],
       "evidenceStatus": "UNCONFIRMED"
@@ -1227,7 +1227,7 @@ export const r02Metadata: R02Metadata = {
     {
       "sectionId": "R02_RESEARCH_RULES",
       "criterionId": "R026",
-      "srcIds": [
+      "sourceIds": [
         "SRC-001",
         "SRC-002",
         "SRC-003",
