@@ -63,7 +63,7 @@ describe("R02 T01-B native template definitions", () => {
       expect(metadata.sourceDocumentBytes).toBeGreaterThan(0)
       expect(metadata.policyEvidenceStatus).toBe("PARTIAL")
       const templateCriteria = new Set((entry.template.sections ?? []).flatMap(section => section.criteria.map(criterion => `${section.id}:${criterion.id}`)))
-      expect(metadata.criteria.length).toBe(templateCriteria.size)
+      expect(Number(metadata.criteria.length)).toBe(templateCriteria.size)
       for (const mapped of metadata.criteria) {
         expect(templateCriteria.has(`${mapped.sectionId}:${mapped.criterionId}`)).toBe(true)
         expect(["VERIFIED", "PARTIAL", "UNCONFIRMED"]).toContain(mapped.evidenceStatus)
