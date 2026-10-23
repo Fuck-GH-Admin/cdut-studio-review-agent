@@ -89,6 +89,7 @@ describe('S05-A R02 native template definitions', () => {
       expect(metadata.sourceDocSha256).toMatch(/^[a-f0-9]{64}$/)
       expect(metadata.originalResearchSha256).toMatch(/^[a-f0-9]{64}$/)
       expect(template.outputs.some(output => output.kind === 'approval')).toBe(false)
+      expect(template.outputs.some(output => output.kind === 'audit-log')).toBe(true)
       expect(template.stages.some(stage => stage.kind === 'auto-check')).toBe(false)
       const criterionById = new Map((template.sections ?? []).flatMap(section => section.criteria.map(c => [c.id, c] as const)))
       for (const mapping of metadata.criteria) {
