@@ -5,6 +5,17 @@ import { templateVersion as t02, r02Metadata as m02 } from './S01-T02'
 import { templateVersion as t03, r02Metadata as m03 } from './S01-T03'
 import { templateVersion as t05, r02Metadata as m05 } from './S01-T05'
 
+function sourceRefsFromText(text: string): string[] {
+  const out = new Set<string>()
+  const re = /SRC-(\d{3})(?:\s*[-–—]\s*(?:SRC-)?(\d{3}))?((?:\s*\/\s*(?:SRC-)?\d{3})*)/g
+  for (const match of text.matchAll(re)) {
+    const first = Number(match[1]), last = match[2] ? Number(match[2]) : first
+    for (let n = first; n <= last; n++) out.add(`SRC-${String(n).padStart(3, '0')}`)
+    for (const suffix of (match[3] ?? '').matchAll(/\/\s*(?:SRC-)?(\d{3})/g)) out.add(`SRC-${suffix[1]}`)
+  }
+  return [...out]
+}
+
 const cases = [
   { template: t01, metadata: m01, id: 'S01-T01', name: '学生休学资格与材料审核' },
   { template: t02, metadata: m02, id: 'S01-T02', name: '学生复学及退役复学资格审核' },
@@ -27,10 +38,12 @@ describe('R02 S01-A templates', () => {
       const sectionIds = new Set((template.sections ?? []).map((section) => section.id))
       const criteria = (template.sections ?? []).flatMap((section) => section.criteria.map((criterion) => ({ ...criterion, sectionId: section.id })))
       const sourceIds = new Set(metadata.sources.map((source) => source.srcId)), criterionIds = criteria.map((criterion) => criterion.id)
+      const mappingByKey = new Map(metadata.criteria.map((mapping) => [`${mapping.sectionId}:${mapping.criterionId}`, mapping] as const))
       expect(new Set(criterionIds).size).toBe(criteria.length); expect(new Set((template.sections ?? []).map((section) => section.id)).size).toBe((template.sections ?? []).length)
       for (const criterion of criteria) { for (const ref of criterion.requirement.matchAll(/\bF\d{3}\b/g)) expect(fieldIds.has(ref[0])).toBe(true); for (const ref of criterion.requirement.matchAll(/\bM\d{3}\b/g)) expect(materialIds.has(ref[0])).toBe(true) }
       expect(metadata.criteria.length).toBe(criteria.length); expect(new Set(metadata.criteria.map((x) => `${x.sectionId}:${x.criterionId}`)).size).toBe(criteria.length)
       for (const mapping of metadata.criteria) { expect(sectionIds.has(mapping.sectionId)).toBe(true); expect(criterionIds.includes(mapping.criterionId)).toBe(true); for (const sourceId of mapping.srcIds) expect(sourceIds.has(sourceId)).toBe(true); expect(['VERIFIED', 'PARTIAL', 'UNCONFIRMED']).toContain(mapping.evidenceStatus) }
+      for (const criterion of criteria) { const mapping = mappingByKey.get(`${criterion.sectionId}:${criterion.id}`); expect(mapping?.srcIds).toEqual(sourceRefsFromText(criterion.requirement)) }
     }
   })
   test('stage graph is unique, reachable, acyclic, and locally owned', () => {
