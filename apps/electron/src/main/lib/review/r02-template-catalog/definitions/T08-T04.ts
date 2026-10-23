@@ -1421,7 +1421,7 @@ export const r02Metadata: R02Metadata = {
   "name": "项目用工解除、离岗与责任交接审核",
   "sourceDocumentPath": "docs/design/review-agent/business-templates/R02/T08-T04.md",
   "researchSourcePath": "docs/design/review-agent/business-templates/R02/research-original/T08-T04.md",
-  "sourceDocumentSha256": "0d1c11f20049c64ad3d267cae83291ac15abbf94026e894e2398045a53e72724",
+  "sourceDocumentSha256": "c0d167d169ae808be966a14eecc126b4c73ec453bd5bafd630409658456dcec6",
   "sourceDocumentBytes": 146241,
   "manifestExpectedBytes": 146242,
   "manifestExpectedSha256": "ef4847f5e08744cacb311b383c99eabd79f812619905baf64822edcd86adde65",
