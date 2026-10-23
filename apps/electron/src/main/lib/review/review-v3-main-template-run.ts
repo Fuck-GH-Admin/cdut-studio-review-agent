@@ -33,6 +33,7 @@ export interface TemplateRuleRunResult {
   checks: CheckResult[]
   status: 'completed' | 'partially-completed'
   ruleIds: string[]
+  diagnostics?: string[]
 }
 
 /** 由当前有效原件构造可核对的来源引用（缺原件就是空，绝不虚构）。 */
@@ -63,6 +64,10 @@ export function runTemplateRuleReview(input: {
   caseId: string
   phase?: 'submission' | 'decision'
   initiatedBy?: Actor
+  /** Embed the checks into the Pi-owned Run instead of persisting a second Run. */
+  persist?: boolean
+  /** Unified Run mode: unresolved T04 constraints become a pending system check. */
+  allowEmpty?: boolean
 }): TemplateRuleRunResult {
   const aggregate = readAggregate(input.caseId)
   if (!aggregate) throw new CommandValidationError('NOT_FOUND', '案卷不存在')
@@ -80,12 +85,48 @@ export function runTemplateRuleReview(input: {
   const phase = input.phase ?? 'submission'
   const bridge = compileTemplatePlanForCase({ aggregate, template, phase })
   if (!bridge.compiled) {
-    throw new CommandValidationError('DEPENDENCY_UNRESOLVED',
-      `模板规则尚不能编译为可执行计划：${bridge.unresolved.map((item) => `${item.ruleId}（${item.reason}）`).join('；')}`)
+    const message = `模板规则尚不能编译为可执行计划：${bridge.unresolved.map((item) => `${item.ruleId}（${item.reason}）`).join('；')}`
+    if (!input.allowEmpty) throw new CommandValidationError('DEPENDENCY_UNRESOLVED', message)
+    const at = new Date().toISOString()
+    return {
+      runId: '',
+      planFingerprint: '',
+      inputHash: computeRunInputHash(
+        aggregate.caseV2,
+        (aggregate.observations ?? []) as unknown as Array<Record<string, unknown>>,
+        (aggregate.evidenceLinks ?? []) as unknown as Array<Record<string, unknown>>,
+      ),
+      checks: [{
+        checkId: 'system:template-plan',
+        ruleId: 'system:template-plan',
+        target: { scope: 'case', subjectIds: [] },
+        status: 'awaiting-confirmation',
+        reason: message,
+        sourceRefs: [],
+        executedBy: 'deterministic',
+        executedAt: at,
+      }],
+      status: 'partially-completed',
+      ruleIds: [],
+      diagnostics: [message],
+    }
   }
   const { plan, checks, bindings } = bridge.compiled
   if (bindings.length === 0) {
-    throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '已发布模板尚无可执行检查，不能记录空运行')
+    if (!input.allowEmpty) throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '已发布模板尚无可执行检查，不能记录空运行')
+    return {
+      runId: '',
+      planFingerprint: plan.fingerprint,
+      inputHash: computeRunInputHash(
+        aggregate.caseV2,
+        (aggregate.observations ?? []) as unknown as Array<Record<string, unknown>>,
+        (aggregate.evidenceLinks ?? []) as unknown as Array<Record<string, unknown>>,
+      ),
+      checks: [],
+      status: 'completed',
+      ruleIds: [],
+      diagnostics: ['当前模板阶段没有适用的 T04 确定性检查；继续执行同一 Pi Run 中的其他有效检查。'],
+    }
   }
   const ruleIds = bindings.map((item) => item.rule.id)
 
@@ -153,15 +194,17 @@ export function runTemplateRuleReview(input: {
     completedAt: executedAt,
     initiatedBy: input.initiatedBy ?? MAIN_ACTOR,
   }
-  saveRunV2(run)
+  if (input.persist !== false) saveRunV2(run)
   return {
-    runId: run.id, planFingerprint, inputHash: run.inputManifest.hash,
+    runId: input.persist === false ? '' : run.id,
+    planFingerprint, inputHash: run.inputManifest.hash,
     checks: results, status: run.status as 'completed' | 'partially-completed', ruleIds,
+    diagnostics: run.diagnostics,
   }
 }
 
 /** 读取某案卷最近一次模板规则运行（供界面与台账核对）。 */
 export function latestTemplateRuleRun(caseId: string): ReviewRunV2 | undefined {
   const runs = listRunsV2(caseId).filter((run) => run.id.startsWith('run-tpl-'))
-  return runs.at(-1)
+  return runs[0]
 }
