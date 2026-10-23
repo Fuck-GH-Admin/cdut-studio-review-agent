@@ -409,7 +409,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
             value={catalogQuery} onChange={event=>setCatalogQuery(event.target.value)}/>
         </label>
         <div className="max-h-64 space-y-1 overflow-y-auto rounded-lg border border-border p-2">
-          {visibleCatalog.slice(0,80).map(item=><div key={item.templateId+'@'+item.templateVersion} className="flex items-center gap-2">
+          {visibleCatalog.map(item=><div key={item.templateId+'@'+item.templateVersion} className="flex items-center gap-2">
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm">{item.name}</p>
               <p className="truncate text-xs text-muted-foreground">{item.templateId} · v{item.templateVersion}</p>
@@ -421,7 +421,6 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
             </button>
           </div>)}
           {visibleCatalog.length===0&&<p className="p-2 text-xs text-muted-foreground">没有命中；清空关键词查看全部模板。</p>}
-          {visibleCatalog.length>80&&<p className="text-xs text-muted-foreground">显示前 80 项，请继续输入关键词缩小范围。</p>}
         </div>
         {preferred&&<div className="space-y-2 rounded-lg border border-primary/30 p-3">
           <p className="text-sm font-semibold">模板下一步配置</p>
