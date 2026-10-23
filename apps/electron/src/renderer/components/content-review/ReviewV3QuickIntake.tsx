@@ -1,9 +1,11 @@
-/** 材料优先：先建立同一原生案卷，再交给现有 Main 路由与审核操作。 */
+/** Material-first intake. The user can correct the provisional application/supporting roles before Main stores originals. */
 import * as React from 'react'
-import { Upload } from 'lucide-react'
+import { Upload, X } from 'lucide-react'
 import { Button } from '@profer/ui/primitives/button'
 import { toast } from 'sonner'
 
+type IntakeRole = 'application' | 'evidence'
+interface PendingPath { path:string; name:string; role:IntakeRole }
 interface Props { onCreated: (caseId: string) => void }
 
 export function ReviewV3QuickIntake({ onCreated }: Props): JSX.Element {
@@ -11,11 +13,12 @@ export function ReviewV3QuickIntake({ onCreated }: Props): JSX.Element {
   const [dragging, setDragging] = React.useState(false)
   const [title, setTitle] = React.useState('')
   const [applicant, setApplicant] = React.useState('')
+  const [pendingPaths, setPendingPaths] = React.useState<PendingPath[]>([])
   const [error, setError] = React.useState('')
   const [notice, setNotice] = React.useState('')
+  const fileInputRef = React.useRef<HTMLInputElement>(null)
 
   const createCase = React.useCallback(async (fallbackTitle: string): Promise<string> => {
-    // 这些仅是本地草稿的初始字段，不对申请主体做任何 AI 猜测或自动证据归属。
     const created = await window.reviewAPI.createCase({
       title: title.trim() || fallbackTitle,
       type: '自定义审核',
@@ -27,101 +30,144 @@ export function ReviewV3QuickIntake({ onCreated }: Props): JSX.Element {
     return created.id
   }, [applicant, title])
 
-  const startWithPaths = React.useCallback(async (paths: Array<{path: string;name: string}>): Promise<void> => {
-    if (busy || paths.length === 0) return
-    setBusy(true); setError(''); setNotice('正在保存材料到本机案卷…')
+  const queueFiles = (files: File[]): void => {
+    if (!files.length) return
+    const paths: Array<{path:string;name:string}> = []
+    const missing: string[] = []
+    const seen = new Set<string>()
+    for (const file of files) {
+      try {
+        const path = window.electronAPI.getPathForFile(file)
+        if (!path) { missing.push(file.name); continue }
+        if (seen.has(path)) continue
+        seen.add(path)
+        paths.push({ path, name: file.name })
+      } catch { missing.push(file.name) }
+    }
+    if (missing.length) {
+      setError('这些文件没有可读取的本机路径：' + missing.join('、') + '。请改用系统文件选择器。')
+      if (!paths.length) return
+    } else setError('')
+    if (!paths.length) return
+    setPendingPaths(paths.map((item,index)=>({...item,role:index===0?'application':'evidence'})))
+    setNotice('已读取 ' + paths.length + ' 份文件。请核对哪一份是申请主件，其余作为附件；原件尚未入库。')
+  }
+
+  const startWithPaths = React.useCallback(async (): Promise<void> => {
+    if (busy || pendingPaths.length === 0) return
+    const applications = pendingPaths.filter(file => file.role === 'application')
+    if (applications.length !== 1) {
+      setError('一个快速审核案卷必须明确一份申请主件。若这些文件属于多个独立事项，请先通过文件夹/ZIP批量分案入口分别归组，不能把多个事项合并成一个案卷。')
+      return
+    }
+    setBusy(true); setError(''); setNotice('正在保存原件并建立本地案卷…')
     let caseId = ''
     try {
-      caseId = await createCase(paths[0]!.name.replace(/\.[^.]+$/, '') || '本地材料审核')
+      const application = applications[0]!
+      caseId = await createCase(application.name.replace(/\.[^.]+$/, '') || '本地材料审核')
       const failures: string[] = []
       let accepted = 0
-      for (const file of paths) {
+      for (const file of pendingPaths) {
         try {
           const registered = await window.reviewAPI.registerMaterialPathV2({
-            caseId, sourcePath: file.path, role: 'application', fileName: file.name,
+            caseId, sourcePath: file.path, role: file.role, fileName: file.name,
           })
           if (!registered) throw new Error('Main 未确认文件版本')
           accepted++
         } catch (cause) {
-          failures.push(`${file.name}：${cause instanceof Error ? cause.message : String(cause)}`)
+          failures.push(file.name + '：' + (cause instanceof Error ? cause.message : String(cause)))
         }
       }
-      if (!accepted) throw new Error(`没有成功导入的材料。${failures.join('；')}`)
-      setNotice(`已导入 ${accepted}/${paths.length} 份材料，开始根据原件匹配审核模板。`)
+      if (!accepted) throw new Error('没有成功导入的材料。' + failures.join('；'))
+      setNotice('已导入 ' + accepted + '/' + pendingPaths.length + ' 份原件，开始根据申请主件和附件内容匹配审核模板。')
+      setPendingPaths([])
       if (failures.length) {
-        setError(`部分材料未导入，需要补充：${failures.join('；')}`)
-        toast.error(`有 ${failures.length} 份材料未导入，请补充`, {description:failures.join('；').slice(0,220)})
+        setError('部分材料未导入，需要补充：' + failures.join('；'))
+        toast.error('有 ' + failures.length + ' 份材料未导入', {description:failures.join('；').slice(0,220)})
       }
       onCreated(caseId)
     } catch (cause) {
-      setError(`材料导入未完成${caseId ? `（已建立草稿 ${caseId}）` : ''}：${cause instanceof Error ? cause.message : String(cause)}`)
-      setNotice('')
-    } finally {
-      setBusy(false)
-    }
-  }, [busy, createCase, onCreated])
-
-  const onDrop = async (event: React.DragEvent<HTMLDivElement>): Promise<void> => {
-    event.preventDefault(); setDragging(false)
-    const files = Array.from(event.dataTransfer.files ?? [])
-    if (!files.length) return
-    const paths: Array<{path:string;name:string}> = []
-    const missing: string[] = []
-    for (const file of files) {
-      try {
-        const path = window.electronAPI.getPathForFile(file)
-        if (path) paths.push({ path, name: file.name })
-        else missing.push(file.name)
-      } catch { missing.push(file.name) }
-    }
-    if (missing.length) {
-      setError(`这些文件没有可读取的本机路径：${missing.join('、')}。为避免漏件，已取消本次导入；请改用系统文件选择器。`)
-      return
-    }
-    if (paths.length) await startWithPaths(paths)
-  }
-
-  const pickFiles = async (): Promise<void> => {
-    if (busy) return
-    setBusy(true); setError(''); setNotice('正在打开系统文件选择器…')
-    let caseId = ''
-    try {
-      // 使用审核本身的原件导入事务，避免把聊天附件的 base64 副本当成审核原件。
-      caseId = await createCase(title.trim() || '新建材料审核')
-      const result = await window.reviewAPI.importDocument({ caseId, role: 'application' })
-      if (result.canceled) { setNotice('已取消选择；空白草稿保留在本机案卷列表'); return }
-      if (!result.documents.length) throw new Error('未导入有效文件')
-      const failed = result.failures.map((item) => `${item.fileName}：${item.message}`)
-      if (failed.length) {
-        setError(`以下文件失败：${failed.join('；')}`)
-        toast.error(`有 ${failed.length} 份材料未导入`, {description:failed.join('；').slice(0,220)})
-      }
-      setNotice(`已导入 ${result.documents.length} 份原件；开始匹配审核业务。`)
-      onCreated(caseId)
-    } catch (cause) {
-      setError(`导入失败${caseId ? `（草稿 ${caseId} 已保存）` : ''}：${cause instanceof Error ? cause.message : String(cause)}`)
+      setError('材料导入未完成' + (caseId ? '（已建立草稿 ' + caseId + '）' : '') + '：' +
+        (cause instanceof Error ? cause.message : String(cause)))
       setNotice('')
     } finally { setBusy(false) }
+  }, [busy, createCase, onCreated, pendingPaths])
+
+  const onDrop = (event: React.DragEvent<HTMLDivElement>): void => {
+    event.preventDefault(); setDragging(false)
+    queueFiles(Array.from(event.dataTransfer.files ?? []))
   }
+  const pickFiles = (): void => {
+    if (busy) return
+    fileInputRef.current?.click()
+  }
+  const applicationCount = pendingPaths.filter(file => file.role === 'application').length
 
   return <section aria-label="从材料开始审核" className="mx-auto w-full max-w-3xl space-y-3 rounded-xl border border-primary/30 bg-card p-5 shadow-sm">
+    <input ref={fileInputRef} type="file" multiple className="hidden" aria-label="选择审核材料"
+      onChange={event => {
+        queueFiles(Array.from(event.currentTarget.files ?? []))
+        event.currentTarget.value = ''
+      }} />
     <div>
       <h2 className="text-base font-semibold">从材料开始审核</h2>
-      <p className="mt-1 text-sm text-muted-foreground">拖入申请书、证明或其它原件。软件先保存真实材料，然后根据内容匹配审核方案；不必先学习模板分类。</p>
+      <p className="mt-1 text-sm text-muted-foreground">先导入真实原件，再根据事项匹配模板。模板决定本事项需要哪些材料，不会统一套用综测案卷的要求。</p>
     </div>
     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-      <label className="space-y-1 text-xs">案卷名称（可留空）<input className="w-full rounded border bg-background px-2 py-2 text-sm" value={title} onChange={(event) => setTitle(event.target.value)} placeholder="默认取第一份文件名称" /></label>
-      <label className="space-y-1 text-xs">申请人（可稍后核实）<input className="w-full rounded border bg-background px-2 py-2 text-sm" value={applicant} onChange={(event) => setApplicant(event.target.value)} placeholder="不知道时标记为待核实" /></label>
+      <label className="space-y-1 text-xs">案卷名称（可留空）
+        <input className="w-full rounded border bg-background px-2 py-2 text-sm" value={title}
+          onChange={event => setTitle(event.target.value)} placeholder="默认取申请主件文件名" />
+      </label>
+      <label className="space-y-1 text-xs">申请人（可稍后核实）
+        <input className="w-full rounded border bg-background px-2 py-2 text-sm" value={applicant}
+          onChange={event => setApplicant(event.target.value)} placeholder="不知道时标记为待核实" />
+      </label>
     </div>
-    <div role="button" tabIndex={0} aria-label="拖入文件开始材料审核" onDragOver={(event) => {event.preventDefault();setDragging(true)}} onDragLeave={(event) => {event.preventDefault();setDragging(false)}} onDrop={(event) => void onDrop(event)}
-      onClick={() => void pickFiles()} onKeyDown={(event) => {if (event.key==='Enter' || event.key===' ') void pickFiles()}}
-      className={`flex cursor-pointer flex-col items-center gap-2 rounded-lg border-2 border-dashed px-5 py-8 text-center ${dragging ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/60'} ${busy ? 'pointer-events-none opacity-60' : ''}`}>
+    <div role="button" tabIndex={0} aria-label="拖入文件开始材料审核"
+      onDragOver={event => {event.preventDefault();setDragging(true)}}
+      onDragLeave={event => {event.preventDefault();setDragging(false)}}
+      onDrop={onDrop} onClick={pickFiles}
+      onKeyDown={event => {if (event.key==='Enter' || event.key===' ') pickFiles()}}
+      className={'flex cursor-pointer flex-col items-center gap-2 rounded-lg border-2 border-dashed px-5 py-7 text-center '+
+        (dragging?'border-primary bg-primary/10':'border-border hover:border-primary/60')+
+        (busy?' pointer-events-none opacity-60':'')}>
       <Upload size={24} className="text-primary" />
-      <p className="font-medium">{busy ? '正在准备审核材料…' : '把材料拖到这里，或点击选择文件'}</p>
-      <p className="text-xs text-muted-foreground">支持多文件；原件只保存在当前本机案卷，失败文件会逐一提示</p>
+      <p className="font-medium">{busy?'正在准备审核材料…':'把材料拖到这里，或点击选择文件'}</p>
+      <p className="text-xs text-muted-foreground">支持多文件。默认首份作为申请主件，其余作为附件；可在导入前调整。</p>
     </div>
+    {pendingPaths.length>0&&<div className="space-y-2 rounded-lg border border-border p-3">
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-sm font-medium">待导入原件 · {pendingPaths.length} 份</p>
+        <button type="button" className="text-xs text-muted-foreground hover:text-foreground"
+          disabled={busy} onClick={()=>{setPendingPaths([]);setNotice('');setError('')}}>清空</button>
+      </div>
+      <div className="max-h-56 space-y-1 overflow-y-auto">
+        {pendingPaths.map((file,index)=><div key={file.path} className="flex items-center gap-2 rounded border border-border/70 px-2 py-1.5">
+          <span className="min-w-0 flex-1 truncate text-xs" title={file.path}>{file.name}</span>
+          <select aria-label={file.name+' 材料角色'} className="rounded border bg-background px-1.5 py-1 text-xs"
+            disabled={busy} value={file.role}
+            onChange={event=>setPendingPaths(current=>current.map((item,i)=>i===index
+              ?{...item,role:event.target.value as IntakeRole}:item))}>
+            <option value="application">申请主件</option>
+            <option value="evidence">附件/证明</option>
+          </select>
+          <button type="button" aria-label={'移除 '+file.name} disabled={busy}
+            className="rounded p-1 text-muted-foreground hover:bg-muted" onClick={()=>setPendingPaths(current=>current.filter((_,i)=>i!==index))}>
+            <X size={14}/>
+          </button>
+        </div>)}
+      </div>
+      <p className={'text-xs '+(applicationCount===1?'text-muted-foreground':'text-amber-700 dark:text-amber-300')}>
+        {applicationCount===1?'已指定一份申请主件。':'请选择且只选择一份申请主件。'}
+      </p>
+      {applicationCount>1&&<p className="text-xs text-amber-700 dark:text-amber-300">多份独立申请书不能合并成一份案卷；请按文件夹/ZIP批量分案入口分别归组。</p>}
+      <Button size="sm" disabled={busy||applicationCount!==1||pendingPaths.length===0}
+        onClick={event=>{event.stopPropagation();void startWithPaths()}}>
+        {busy?'正在导入…':'确认材料并匹配模板'}
+      </Button>
+    </div>}
     {notice && <p role="status" className="text-xs text-muted-foreground">{notice}</p>}
     {error && <p role="alert" className="text-xs text-red-600">{error}</p>}
-    <Button size="sm" variant="outline" disabled={busy} onClick={() => void pickFiles()}>选择材料开始审核</Button>
+    <Button size="sm" variant="outline" disabled={busy} onClick={pickFiles}>选择材料开始审核</Button>
   </section>
 }
