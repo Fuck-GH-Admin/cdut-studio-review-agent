@@ -22,7 +22,7 @@ export const templateVersion: TemplateVersion = {
       "key": "f001",
       "label": "F001 · string；Case：不可变申请/案件键",
       "kind": "text",
-      "required": false,
+      "required": true,
       "visibility": "public",
       "scope": "case",
       "extractionHint": "原件字段 F001。string；Case：不可变申请/案件键；B–H；可信主业务服务生成；案件记录键，不由上传文件名生成；P1；缺则无法关联，需服务修复；SRC-012（技术线索非实现证明）。字段缺失不自动等于资格不符；需要权威记录或政策判断时转人工复核。"
