@@ -18,8 +18,8 @@ describe('R02 T07-A local template definitions', () => {
     expect(new Set(entries.map(x => x.template.templateId)).size).toBe(entries.length)
     expect(new Set(entries.map(x => x.template.name)).size).toBe(entries.length)
     for (const { template, metadata } of entries) {
-      expect(metadata.templateId).toBe(template.templateId)
-      expect(metadata.name).toBe(template.name)
+      expect(String(metadata.templateId)).toBe(template.templateId)
+      expect(String(metadata.name)).toBe(template.name)
       expect(template.schemaVersion).toBe(2)
       expect(template.catalogKind).toBe('builtin')
       expect(template.status).toBe('draft')
@@ -42,17 +42,17 @@ describe('R02 T07-A local template definitions', () => {
       const criteria = (template.sections ?? []).flatMap(section => section.criteria.map(criterion => ({ sectionId: section.id, criterion })))
       const criterionIds = criteria.map(x => x.criterion.id)
       expect(new Set(criterionIds).size).toBe(criterionIds.length)
-      expect(metadata.criteria.length).toBe(criteria.length)
+      expect(Number(metadata.criteria.length)).toBe(criteria.length)
       for (const { sectionId, criterion } of criteria) {
         const meta = metadata.criteria.find(x => x.sectionId === sectionId && x.criterionId === criterion.id)
         expect(meta).toBeDefined()
         expect(Array.isArray(meta?.srcIds)).toBe(true)
-        expect(meta?.srcIds.every(srcId => metadata.sourceIds.includes(srcId))).toBe(true)
+        expect(meta?.srcIds.every(srcId => (metadata.sourceIds as readonly string[]).includes(srcId))).toBe(true)
         expect(['semantic', 'manual']).toContain(criterion.execution)
         expect(criterion.execution).not.toBe('deterministic')
       }
-      expect(metadata.fieldIds.length).toBe(fieldKeys.length)
-      expect(metadata.materialSlotIds.length).toBe(slotIds.length)
+      expect(Number(metadata.fieldIds.length)).toBe(fieldKeys.length)
+      expect(Number(metadata.materialSlotIds.length)).toBe(slotIds.length)
     }
   })
 
@@ -76,8 +76,8 @@ describe('R02 T07-A local template definitions', () => {
         current = byId.get(current)?.nextStageId
       }
       expect(reached.size).toBe(stages.length)
-      expect(['finalize', 'handoff']).toContain(stages[stages.length - 1]?.kind)
-      expect(['reviewer', 'teacher']).toContain(stages[stages.length - 1]?.executorRole)
+      expect(String(stages[stages.length - 1]?.kind)).toBe('finalize')
+      expect(String(stages[stages.length - 1]?.executorRole)).toBe('teacher')
     }
   })
 
