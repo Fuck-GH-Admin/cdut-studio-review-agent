@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "G03-E-v1.0-r02-audit-final-manifest",
+  "date": "2026-10-15",
+  "auditor": "independent-g03-e-r02",
+  "repo": "Fuck-GH-Admin/cdut-studio-review-agent",
+  "branch": "audit/g03-e-v1-r02",
+  "originalFrozenAudit": {
+    "branch": "audit/g03-e-v1-r01",
+    "commit": "1be43d8bacc015e1fd21949796defcdd3ecb96fc",
+    "draftPR": 24,
+    "originalFileInventoryCount": 51,
+    "inputManifestPath": "docs/design/review-agent/business-templates/G03/acceptance/E-v1.0/E0-input-manifest.json"
+  },
+  "r02AuthorIncrementalEvidenceManifest": "E0-r02-delta-input-manifest.json",
+  "newAuthorEvidenceBranchCount": 9,
+  "newPublicArchiveSHA256Checks": 9,
+  "t03NonGoldOldNewInputReportSHAAndCrcRetested": true,
+  "privateGoldContentOpened": false,
+  "cBusinessRuleBodyOpened": false,
+  "status": {
+    "E0": "PARTIAL_DELTA_VERIFIED/BLOCKED_INPUT",
+    "E1": "PARTIAL_PRIOR_LOCK_PLUS_NEW_SOURCE_ONLY/BLOCKED_SOURCE",
+    "E2": "NOT_STARTED",
+    "E3": "NOT_STARTED_PRE_SCREEN_ONLY",
+    "E4": "NOT_STARTED_ISSUE_TRIAGE_ONLY",
+    "E_DESIGN_ACCEPTANCE": "BLOCKED_INPUT_AND_BLOCKED_SOURCE",
+    "D4_EXECUTION_ACCEPTANCE": "NOT_RUN",
+    "PRODUCT_END_TO_END_ACCEPTANCE": "NOT_RUN",
+    "UNIVERSITY_ADMINISTRATIVE_AUTHORIZATION": "NOT_VERIFIED"
+  },
+  "issueSummary": {
+    "r01IssueIds": [
+      "E-G03-DEP-001",
+      "E-G03-DEP-002",
+      "E-G03-DEP-003",
+      "E-G03-DEP-004",
+      "E-G03-DEP-005",
+      "E-G03-OBS-006",
+      "E-G03-OBS-007"
+    ],
+    "r01Closed": 0,
+    "newP0": [
+      "E-G03-T06-R02-001"
+    ],
+    "newProvisionalP1": [
+      "E-G03-T10-R02-002"
+    ],
+    "newObservations": [
+      "E-G03-R02-OBS-003",
+      "E-G03-R02-OBS-004"
+    ]
+  },
+  "auditFiles": [
+    {
+      "path": "docs/design/review-agent/business-templates/G03/acceptance/E-v1.0/r02/README.md",
+      "sha256": "9eab655ed090515590e39caa447a3bf4b46e9cc65b87ffc34a8f512d746583d4",
+      "gitBlobSHA1": "f5ce0dcbb30706825b79c2928268c67bc96c316a"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G03/acceptance/E-v1.0/r02/E0-r02-delta-input-manifest.json",
+      "sha256": "9fa56e86a791500b4378cd9a314585adcf8edda68883ed43a399ad4ca4191830",
+      "gitBlobSHA1": "b7b8a95f7da5be4ce24a3364ce962190a35b9a33"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G03/acceptance/E-v1.0/r02/E0-r02-delta-and-isolation.md",
+      "sha256": "1e914e792304e67bc4efd91e268e0fdac0e225c249e48d30e2c8566a6958832b",
+      "gitBlobSHA1": "a50336a626df8dc17491d0e6a2b19e711f781d8a"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G03/acceptance/E-v1.0/r02/E1-r02-independent-source-delta.md",
+      "sha256": "9d3123cabd48d0f5d01430a63bbd28c282d14f5202d96bec0f27ae7e9d5dd938",
+      "gitBlobSHA1": "83ac5313be53a4a0976a0d6c7efe00332340d954"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G03/acceptance/E-v1.0/r02/E3-r02-impact-screening-PRE_E3.md",
+      "sha256": "d3ecac8840df40169292f00d6c76e6d37218fdb241c9a2a6ca7d18a33b399235",
+      "gitBlobSHA1": "35741ff8066e82bd583a6ce34345f17257ae5105"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G03/acceptance/E-v1.0/r02/E-r02-differential-issue-ledger.md",
+      "sha256": "7a62b1adc00b7c86a0295b9631a37795d89f1efecfb5b1b254776f989152a07e",
+      "gitBlobSHA1": "5c4a1051e3317e712bb10d74725c4af592cab9a3"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G03/acceptance/E-v1.0/r02/E-r02-TXX-dimensional-verdict.md",
+      "sha256": "c52d83002c1e820b8580665a4014bc3a027d6fee84998ecb7ebcbfe0381223b6",
+      "gitBlobSHA1": "ccbc2013984c20918722fe1913d2784072232038"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G03/acceptance/E-v1.0/r02/E-r02-final-verdict.md",
+      "sha256": "4bebf97de348ff951a691a0b51a611e079e64af56abf62dd126f1f7d29513049",
+      "gitBlobSHA1": "00bd839dd1de661e2c1b343661bb77999f52542b"
+    }
+  ],
+  "manifestSelfHash": "not included to avoid self-referential cycle",
+  "noGoldOrFixturesCommitted": true
+}
