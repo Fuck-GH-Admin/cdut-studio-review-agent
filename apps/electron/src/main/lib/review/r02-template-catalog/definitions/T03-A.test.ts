@@ -65,19 +65,19 @@ describe('R02 T03-A template definitions', () => {
       expect(criteria.length).toBeGreaterThan(0)
       expect(criteria.every((criterion) => criterion.execution === 'semantic' || criterion.execution === 'manual')).toBe(true)
       expect(new Set(criteria.map((criterion) => criterion.id)).size).toBe(criteria.length)
-      expect(metadata.templateId).toBe(expectedId)
-      expect(metadata.name).toBe(template.name)
+      expect(String(metadata.templateId)).toBe(expectedId)
+      expect(String(metadata.name)).toBe(template.name)
       expect(metadata.officialSchoolTemplate).toBe(false)
       expect(metadata.policyEvidenceStatus).toBe('PARTIAL')
       expect(metadata.sourceDocumentPath).toContain(`/R02/${expectedId}.md`)
       expect(metadata.sourceDocumentSha256).toMatch(/^[a-f0-9]{64}$/)
-      expect(metadata.criteria.length).toBe(criteria.length)
+      expect(Number(metadata.criteria.length)).toBe(criteria.length)
       for (const criterion of criteria) {
         const evidence = metadata.criteria.find((entry) => entry.criterionId === criterion.id)
         expect(evidence).toBeDefined()
         expect(evidence?.sectionId).toBe('review-rules')
         expect(evidence?.srcIds.every((srcId) => /^SRC-\d{3}$/.test(srcId))).toBe(true)
-        expect(['VERIFIED', 'PARTIAL', 'UNCONFIRMED']).toContain(evidence?.evidenceStatus)
+        expect(['VERIFIED', 'PARTIAL', 'UNCONFIRMED']).toContain(String(evidence?.evidenceStatus))
       }
     })
   }
