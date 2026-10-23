@@ -8,7 +8,7 @@ export const r02Metadata = {
   "sourceDocumentPath": "docs/design/review-agent/business-templates/R02/T02-T14.md",
   "sourceDocumentSha256": "6c4b2c366d639da91fa26584025885a876087ca3446069ab768b9db8af168297",
   "originalSourceDocumentPath": "docs/design/review-agent/business-templates/R02/research-original/T02-T14.md",
-  "originalSourceSha256": "6c4b2c366d639da91fa26584025885a876087ca3446069ab768b9db8af168297",
+  "originalSourceSha256": "8338ac05b6ce4442ed0ff484c80fd5250efb58544afdfbee432a9026233ca4eb",
   "officialSchoolTemplate": false,
   "researchDate": "2026-10-24",
   "policyEvidenceStatus": "PARTIAL",
