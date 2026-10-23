@@ -93,6 +93,8 @@ describe('R02 S04-B template definitions', () => {
       expect(template.outputs.every(output => output.kind !== 'approval')).toBe(true)
       expect((template.sections ?? []).flatMap(section => section.criteria).every(c => c.execution !== 'deterministic')).toBe(true)
       expect(metadata.policyEvidenceStatus).toBe('PARTIAL')
+      expect(metadata.resultCodes.map(item => item.code).join(',')).toBe('PASS_FACT,NOT_APPLICABLE,NEEDS_MATERIAL,CONFLICT,UNREADABLE,SOURCE_UNAVAILABLE,POLICY_UNCONFIRMED,NEEDS_HUMAN_DECISION')
+      expect(metadata.resultCodes.every(item => item.meaning.length > 0 && item.nextAction.length > 0)).toBe(true)
     }
   })
 })
