@@ -1,4 +1,6 @@
 import { describe, expect, test } from 'bun:test'
+import { createHash } from 'node:crypto'
+import { readFileSync } from 'node:fs'
 import { validateTemplate } from '../../template-store'
 import { templateVersion as t01, r02Metadata as m01 } from './T06-T01'
 import { templateVersion as t02, r02Metadata as m02 } from './T06-T02'
@@ -56,6 +58,15 @@ describe('R02 T06-A template definitions', () => {
       expect(metadata.sourceDocumentPath).toContain('/research-original/')
       expect(metadata.sourceDocumentSha256).toMatch(/^[a-f0-9]{64}$/)
       expect(metadata.sources.length).toBeGreaterThan(0)
+    }
+  })
+
+  test('source metadata hashes the exact Git blob bytes, not the one-LF manifest variant', () => {
+    const repoRoot = new URL('../../../../../../../../', import.meta.url)
+    for (const { metadata } of batch) {
+      const bytes = readFileSync(new URL(metadata.sourceDocumentPath, repoRoot))
+      expect(bytes.byteLength).toBe(metadata.sourceDocumentBytes)
+      expect(createHash('sha256').update(bytes).digest('hex')).toBe(metadata.sourceDocumentSha256)
     }
   })
 
