@@ -48,7 +48,7 @@ describe('T04-B R02 template definitions', () => {
       expect(item.template.status).toBe('draft')
       expect(item.template.catalogKind).toBe('builtin')
       expect(item.template.description).toContain('本地研究模板 · 非校方正式模板')
-      expect(item.template.sourceNote.startsWith('R02_RESEARCH_TEMPLATE_NONOFFICIAL:')).toBe(true)
+      expect(item.template.sourceNote?.startsWith('R02_RESEARCH_TEMPLATE_NONOFFICIAL:')).toBe(true)
     }
   })
 
@@ -94,13 +94,13 @@ describe('T04-B R02 template definitions', () => {
       }
       for (const start of template.stages) {
         const visited = new Set<string>()
-        let current = start
-        while (current) {
-          expect(visited.has(current.id)).toBe(false)
-          visited.add(current.id)
-          const nextId = current.nextStageId
-          current = nextId ? template.stages.find((stage) => stage.id === nextId)! : undefined as never
-          if (!current) break
+        let currentId: string | undefined = start.id
+        while (currentId) {
+          expect(visited.has(currentId)).toBe(false)
+          visited.add(currentId)
+          const current = template.stages.find((stage) => stage.id === currentId)
+          expect(current).toBeDefined()
+          currentId = current?.nextStageId
         }
       }
     }
