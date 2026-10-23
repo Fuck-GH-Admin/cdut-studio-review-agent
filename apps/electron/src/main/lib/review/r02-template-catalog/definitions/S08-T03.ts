@@ -4,7 +4,7 @@ import { validateTemplate } from '../../template-store'
 export interface R02CriterionEvidenceMetadata { sectionId: string; criterionId: string; srcIds: string[]; evidenceStatus: 'VERIFIED' | 'PARTIAL' | 'UNCONFIRMED' }
 export interface R02Metadata {
   templateId: string; name: string; sourceDocumentPath: string; sourceDocumentSha256: string
-  originalSourceDocumentPath: string; originalBlobSha256: string; manifestSha256: string; manifestHashCheck: boolean
+  originalSourceDocumentPath: string; originalSourceSha256: string; manifestSha256: string; manifestHashCheck: boolean
   officialSchoolTemplate: false; researchDate: string; policyEvidenceStatus: 'VERIFIED' | 'PARTIAL' | 'UNCONFIRMED'
   sourceEvidence: Array<{ srcId: string; evidenceStatus: 'VERIFIED' | 'PARTIAL' | 'UNCONFIRMED'; title: string }>
   criteria: R02CriterionEvidenceMetadata[]
@@ -13,7 +13,7 @@ export interface R02Metadata {
 export const templateVersion: TemplateVersion = {
   templateId: "S08-T03", version: 1, schemaVersion: 2, name: "硕博研究生学位论文开题资格和报告审核",
   description: "本地研究模板 · 非校方正式模板。硕博研究生学位论文开题资格和报告审核；仅供本地材料核验、证据覆盖检查和人工审阅建议，不构成学校正式审批。政策证据状态：PARTIAL。",
-  catalogKind: 'builtin', sourceNote: "R02_RESEARCH_TEMPLATE_NONOFFICIAL: 非校方正式模板；研究原件 docs/design/review-agent/business-templates/R02/research-original/S08-T03.md（Git blob SHA-256=13a37c9eafa97fb71694aad93b0095da79ac948466c7f69269b07902edd725da）；审阅后来源文档 docs/design/review-agent/business-templates/R02/S08-T03.md（SHA-256=c0adc04b868793000b1ab0e996ca4a1b29fe1059a11c5d4e0500bf131c1db284）；政策证据 PARTIAL，禁止将模板 criterion 视为 PolicyVersion 或学校授权。", objectType: 'person', displayName: { template: "硕博研究生学位论文开题资格和报告审核" },
+  catalogKind: 'builtin', sourceNote: "R02_RESEARCH_TEMPLATE_NONOFFICIAL: 非校方正式模板；研究原件 docs/design/review-agent/business-templates/R02/research-original/S08-T03.md（原件文件 SHA-256=c0adc04b868793000b1ab0e996ca4a1b29fe1059a11c5d4e0500bf131c1db284）；审阅后来源文档 docs/design/review-agent/business-templates/R02/S08-T03.md（SHA-256=c0adc04b868793000b1ab0e996ca4a1b29fe1059a11c5d4e0500bf131c1db284）；政策证据 PARTIAL，禁止将模板 criterion 视为 PolicyVersion 或学校授权。", objectType: 'person', displayName: { template: "硕博研究生学位论文开题资格和报告审核" },
   fields:     [
     {
       "key": "F001",
@@ -1333,7 +1333,7 @@ export const templateVersion: TemplateVersion = {
 export const templateValidationIssues = validateTemplate(templateVersion)
 export const r02Metadata: R02Metadata = {
   templateId: "S08-T03", name: "硕博研究生学位论文开题资格和报告审核", sourceDocumentPath: "docs/design/review-agent/business-templates/R02/S08-T03.md", sourceDocumentSha256: "c0adc04b868793000b1ab0e996ca4a1b29fe1059a11c5d4e0500bf131c1db284",
-  originalSourceDocumentPath: "docs/design/review-agent/business-templates/R02/research-original/S08-T03.md", originalBlobSha256: "13a37c9eafa97fb71694aad93b0095da79ac948466c7f69269b07902edd725da", manifestSha256: "c0adc04b868793000b1ab0e996ca4a1b29fe1059a11c5d4e0500bf131c1db284", manifestHashCheck: true,
+  originalSourceDocumentPath: "docs/design/review-agent/business-templates/R02/research-original/S08-T03.md", originalSourceSha256: "c0adc04b868793000b1ab0e996ca4a1b29fe1059a11c5d4e0500bf131c1db284", manifestSha256: "c0adc04b868793000b1ab0e996ca4a1b29fe1059a11c5d4e0500bf131c1db284", manifestHashCheck: true,
   officialSchoolTemplate: false, researchDate: '2026-10-24', policyEvidenceStatus: 'PARTIAL',
   sourceEvidence:   [
     {

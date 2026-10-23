@@ -4,7 +4,7 @@ import { validateTemplate } from '../../template-store'
 export interface R02CriterionEvidenceMetadata { sectionId: string; criterionId: string; srcIds: string[]; evidenceStatus: 'VERIFIED' | 'PARTIAL' | 'UNCONFIRMED' }
 export interface R02Metadata {
   templateId: string; name: string; sourceDocumentPath: string; sourceDocumentSha256: string
-  originalSourceDocumentPath: string; originalBlobSha256: string; manifestSha256: string; manifestHashCheck: boolean
+  originalSourceDocumentPath: string; originalSourceSha256: string; manifestSha256: string; manifestHashCheck: boolean
   officialSchoolTemplate: false; researchDate: string; policyEvidenceStatus: 'VERIFIED' | 'PARTIAL' | 'UNCONFIRMED'
   sourceEvidence: Array<{ srcId: string; evidenceStatus: 'VERIFIED' | 'PARTIAL' | 'UNCONFIRMED'; title: string }>
   criteria: R02CriterionEvidenceMetadata[]
@@ -13,7 +13,7 @@ export interface R02Metadata {
 export const templateVersion: TemplateVersion = {
   templateId: "S08-T04", version: 1, schemaVersion: 2, name: "研究生中期考核与培养进展审核",
   description: "本地研究模板 · 非校方正式模板。研究生中期考核与培养进展审核；仅供本地材料核验、证据覆盖检查和人工审阅建议，不构成学校正式审批。政策证据状态：PARTIAL。",
-  catalogKind: 'builtin', sourceNote: "R02_RESEARCH_TEMPLATE_NONOFFICIAL: 非校方正式模板；研究原件 docs/design/review-agent/business-templates/R02/research-original/S08-T04.md（Git blob SHA-256=92e39c9f5673b5884c762f922c440727c99515595d69bd83e928ffdd5d0f5a91）；审阅后来源文档 docs/design/review-agent/business-templates/R02/S08-T04.md（SHA-256=df0265569e6213739b24a35496410566faadd822a89a26f43972b38f5f9af275）；政策证据 PARTIAL，禁止将模板 criterion 视为 PolicyVersion 或学校授权。", objectType: 'person', displayName: { template: "研究生中期考核与培养进展审核" },
+  catalogKind: 'builtin', sourceNote: "R02_RESEARCH_TEMPLATE_NONOFFICIAL: 非校方正式模板；研究原件 docs/design/review-agent/business-templates/R02/research-original/S08-T04.md（原件文件 SHA-256=0c16b9bf4cbf3c8e38c896d22c4bc64ecb5a3e8921c38665810e4679526ce9e1）；审阅后来源文档 docs/design/review-agent/business-templates/R02/S08-T04.md（SHA-256=df0265569e6213739b24a35496410566faadd822a89a26f43972b38f5f9af275）；政策证据 PARTIAL，禁止将模板 criterion 视为 PolicyVersion 或学校授权。", objectType: 'person', displayName: { template: "研究生中期考核与培养进展审核" },
   fields:     [
     {
       "key": "F001",
@@ -1030,7 +1030,7 @@ export const templateVersion: TemplateVersion = {
 export const templateValidationIssues = validateTemplate(templateVersion)
 export const r02Metadata: R02Metadata = {
   templateId: "S08-T04", name: "研究生中期考核与培养进展审核", sourceDocumentPath: "docs/design/review-agent/business-templates/R02/S08-T04.md", sourceDocumentSha256: "df0265569e6213739b24a35496410566faadd822a89a26f43972b38f5f9af275",
-  originalSourceDocumentPath: "docs/design/review-agent/business-templates/R02/research-original/S08-T04.md", originalBlobSha256: "92e39c9f5673b5884c762f922c440727c99515595d69bd83e928ffdd5d0f5a91", manifestSha256: "0c16b9bf4cbf3c8e38c896d22c4bc64ecb5a3e8921c38665810e4679526ce9e1", manifestHashCheck: true,
+  originalSourceDocumentPath: "docs/design/review-agent/business-templates/R02/research-original/S08-T04.md", originalSourceSha256: "0c16b9bf4cbf3c8e38c896d22c4bc64ecb5a3e8921c38665810e4679526ce9e1", manifestSha256: "0c16b9bf4cbf3c8e38c896d22c4bc64ecb5a3e8921c38665810e4679526ce9e1", manifestHashCheck: true,
   officialSchoolTemplate: false, researchDate: '2026-10-24', policyEvidenceStatus: 'PARTIAL',
   sourceEvidence:   [
     {
