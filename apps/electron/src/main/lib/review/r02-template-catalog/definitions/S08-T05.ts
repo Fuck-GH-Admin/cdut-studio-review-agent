@@ -17,7 +17,7 @@ export const templateVersion: TemplateVersion = {
   fields:   [
     {
       "key": "F001",
-      "label": "`caseId:uuid`",
+      "label": "caseId",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -26,7 +26,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F002",
-      "label": "`studentId:string`",
+      "label": "studentId",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -35,7 +35,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F003",
-      "label": "`legalName:string`",
+      "label": "legalName",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -44,7 +44,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F004",
-      "label": "`enrollmentState:enum`",
+      "label": "enrollmentState",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -53,7 +53,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F005",
-      "label": "`degreeLevel:enum`",
+      "label": "degreeLevel",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -62,7 +62,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F006",
-      "label": "`degreeCategory:enum`",
+      "label": "degreeCategory",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -71,7 +71,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F007",
-      "label": "`studyMode:enum`",
+      "label": "studyMode",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -80,7 +80,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F008",
-      "label": "`entryCohort:year`",
+      "label": "entryCohort",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -89,7 +89,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F009",
-      "label": "`collegeId:string`",
+      "label": "collegeId",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -98,7 +98,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F010",
-      "label": "`degreePointCode:string`",
+      "label": "degreePointCode",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -107,7 +107,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F011",
-      "label": "`trainingPlanVersion:ref`",
+      "label": "trainingPlanVersion",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -116,7 +116,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F012",
-      "label": "`mentorAssignment:ref`",
+      "label": "mentorAssignment",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -125,7 +125,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F013",
-      "label": "`policyIdVersion:ref`",
+      "label": "policyIdVersion",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -134,7 +134,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F014",
-      "label": "`policyScopeEffective:object`",
+      "label": "policyScopeEffective",
       "kind": "object",
       "required": false,
       "visibility": "internal",
@@ -143,7 +143,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F015",
-      "label": "`activityId:uuid`",
+      "label": "activityId",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -152,7 +152,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F016",
-      "label": "`activityKind:enum`",
+      "label": "activityKind",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -161,7 +161,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F017",
-      "label": "`activityTitle:string`",
+      "label": "activityTitle",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -170,7 +170,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F018",
-      "label": "`activityDateRange:dateRange`",
+      "label": "activityDateRange",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -179,7 +179,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F019",
-      "label": "`organizer:ref`",
+      "label": "organizer",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -188,7 +188,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F020",
-      "label": "`participationFact:enum`",
+      "label": "participationFact",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -197,7 +197,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F021",
-      "label": "`presentationNature:enum`",
+      "label": "presentationNature",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -206,7 +206,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F022",
-      "label": "`activityRecordFiledAt:datetime?`",
+      "label": "activityRecordFiledAt",
       "kind": "date",
       "required": false,
       "visibility": "public",
@@ -215,7 +215,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F023",
-      "label": "`mentorActivityGrade:enum?`",
+      "label": "mentorActivityGrade",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -224,7 +224,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F024",
-      "label": "`activityCreditState:enum?`",
+      "label": "activityCreditState",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -233,7 +233,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F025",
-      "label": "`achievementId:uuid`",
+      "label": "achievementId",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -242,7 +242,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F026",
-      "label": "`achievementType:enum`",
+      "label": "achievementType",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -251,7 +251,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F027",
-      "label": "`achievementTitle:string`",
+      "label": "achievementTitle",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -260,7 +260,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F028",
-      "label": "`creatorsAndOrder:array`",
+      "label": "creatorsAndOrder:array",
       "kind": "multi",
       "required": false,
       "visibility": "internal",
@@ -269,7 +269,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F029",
-      "label": "`affiliations:array`",
+      "label": "affiliations:array",
       "kind": "multi",
       "required": false,
       "visibility": "internal",
@@ -278,7 +278,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F030",
-      "label": "`degreeResearchRelevance:ref`",
+      "label": "degreeResearchRelevance",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -287,7 +287,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F031",
-      "label": "`lifecycleState:enum`",
+      "label": "lifecycleState",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -296,7 +296,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F032",
-      "label": "`lifecycleDates:object`",
+      "label": "lifecycleDates",
       "kind": "object",
       "required": false,
       "visibility": "internal",
@@ -305,7 +305,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F033",
-      "label": "`externalIdentifier:array`",
+      "label": "externalIdentifier:array",
       "kind": "multi",
       "required": false,
       "visibility": "internal",
@@ -314,7 +314,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F034",
-      "label": "`journalOrTierVersion:ref?`",
+      "label": "journalOrTierVersion",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -323,7 +323,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F035",
-      "label": "`officialVerification:object?`",
+      "label": "officialVerification",
       "kind": "object",
       "required": false,
       "visibility": "internal",
@@ -332,7 +332,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F036",
-      "label": "`authorityDecision:ref?`",
+      "label": "authorityDecision",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -341,7 +341,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F037",
-      "label": "`requestEvent:object`",
+      "label": "requestEvent",
       "kind": "object",
       "required": false,
       "visibility": "internal",
@@ -350,7 +350,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F038",
-      "label": "`evidenceLocator:ref`",
+      "label": "evidenceLocator",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -359,7 +359,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F039",
-      "label": "`externalDecisionRef:ref?`",
+      "label": "externalDecisionRef",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -368,7 +368,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F040",
-      "label": "`conflictCode:enum[]`",
+      "label": "conflictCode:enum[]",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -377,7 +377,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F041",
-      "label": "`evidenceVersion:object`",
+      "label": "evidenceVersion",
       "kind": "object",
       "required": false,
       "visibility": "internal",
@@ -386,7 +386,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F042",
-      "label": "`reviewValidity:enum`",
+      "label": "reviewValidity",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -395,7 +395,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F043",
-      "label": "`exceptionApprovalRef:ref?`",
+      "label": "exceptionApprovalRef",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -404,7 +404,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F044",
-      "label": "`appealOutcomeRef:ref?`",
+      "label": "appealOutcomeRef",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -413,7 +413,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "F045",
-      "label": "`degreeApplicationPeriod:ref?`",
+      "label": "degreeApplicationPeriod",
       "kind": "text",
       "required": false,
       "visibility": "internal",
