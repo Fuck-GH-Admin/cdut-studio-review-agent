@@ -5,9 +5,9 @@ import { template as t02, r02Metadata as m02 } from './S06-T02'
 import { template as t05, r02Metadata as m05 } from './S06-T05'
 
 const cases = [
-  { template: t01, metadata: m01, id: 'S06-T01', name: '大学生创新训练计划立项、中期、结项全过程审核', expectedCriteria: 28 },
-  { template: t02, metadata: m02, id: 'S06-T02', name: '学科竞赛报名、校内推荐与参赛资格审核', expectedCriteria: 20 },
-  { template: t05, metadata: m05, id: 'S06-T05', name: '学生社会实践立项、成果与实践时长认定审核', expectedCriteria: 26 },
+  { template: t01, metadata: m01, id: 'S06-T01', name: '大学生创新训练计划立项、中期、结项全过程审核', expectedCriteria: 28, expectedStages: ['A', 'B', 'C', 'D', 'E', 'F', 'G'] },
+  { template: t02, metadata: m02, id: 'S06-T02', name: '学科竞赛报名、校内推荐与参赛资格审核', expectedCriteria: 20, expectedStages: ['A', 'B', 'C', 'D', 'E', 'F', 'G'] },
+  { template: t05, metadata: m05, id: 'S06-T05', name: '学生社会实践立项、成果与实践时长认定审核', expectedCriteria: 26, expectedStages: ['A', 'B', 'C', 'D', 'E', 'F', 'G'] },
 ] as const
 
 describe('R02 S06-A native template definitions', () => {
@@ -58,6 +58,8 @@ describe('R02 S06-A native template definitions', () => {
         cursor = template.stages.find(stage => stage.id === cursor)?.nextStageId
       }
       expect(reachable.size).toBe(template.stages.length)
+      expect(template.stages.map(stage => stage.id)).toEqual(item.expectedStages)
+      expect(template.stages.every(stage => stage.kind === 'manual-review' && stage.workflowOwner === 'local')).toBe(true)
     }
   })
 

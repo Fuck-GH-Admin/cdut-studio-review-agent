@@ -1409,43 +1409,77 @@ export const template: TemplateVersion = {
   "policyVersionIds": [],
   "stages": [
     {
-      "id": "intake",
-      "name": "材料登记与适用范围核对",
+      "id": "A",
+      "name": "申报准备",
       "kind": "manual-review",
       "executorRole": "reviewer",
-      "nextStageId": "fact-review",
-      "workflowOwner": "local"
+      "workflowOwner": "local",
+      "nextStageId": "B"
     },
     {
-      "id": "fact-review",
-      "name": "事实核验与补件建议",
+      "id": "B",
+      "name": "学院受理与初审",
       "kind": "manual-review",
       "executorRole": "reviewer",
-      "returnToStageId": "intake",
-      "nextStageId": "authorized-review",
-      "workflowOwner": "local"
+      "workflowOwner": "local",
+      "nextStageId": "C"
     },
     {
-      "id": "authorized-review",
-      "name": "本地人工复核与正式决定引用",
+      "id": "C",
+      "name": "校级立项/备案",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "workflowOwner": "local",
+      "nextStageId": "D",
+      "skippableReason": "仅适用于当批确有校级立项/备案路径的事项；不能因缺校级记录推断活动不存在。"
+    },
+    {
+      "id": "D",
+      "name": "实施/过程更新",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "workflowOwner": "local",
+      "nextStageId": "E"
+    },
+    {
+      "id": "E",
+      "name": "总结和结项材料核验",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "workflowOwner": "local",
+      "nextStageId": "F"
+    },
+    {
+      "id": "F",
+      "name": "实践时长认定申请",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "workflowOwner": "local",
+      "nextStageId": "G",
+      "skippableReason": "仅在当事人申请实践时长/学分等认定时进入；本阶段不自动计算或签发。"
+    },
+    {
+      "id": "G",
+      "name": "评优/引用/复核",
       "kind": "manual-review",
       "executorRole": "teacher",
-      "workflowOwner": "local"
+      "workflowOwner": "local",
+      "skippableReason": "仅在评优、引用、异议/复核触发时办理；评优不得替代结项或时长认定。"
     }
   ],
   "outputs": [
     {
-      "id": "fact-review-record",
+      "id": "raw-practice-fact-record",
       "kind": "item-feedback",
       "audience": "reviewer"
     },
     {
-      "id": "current-stage-supplements",
+      "id": "current-stage-supplement-list",
       "kind": "supplement-list",
       "audience": "student"
     },
     {
-      "id": "human-decision-queue",
+      "id": "duration-or-review-decision-referral",
       "kind": "item-feedback",
       "audience": "teacher"
     }

@@ -821,43 +821,77 @@ export const template: TemplateVersion = {
   "policyVersionIds": [],
   "stages": [
     {
-      "id": "intake",
-      "name": "材料登记与适用范围核对",
+      "id": "A",
+      "name": "当期赛事配置",
       "kind": "manual-review",
       "executorRole": "reviewer",
-      "nextStageId": "fact-review",
-      "workflowOwner": "local"
+      "workflowOwner": "local",
+      "nextStageId": "B"
     },
     {
-      "id": "fact-review",
-      "name": "事实核验与补件建议",
+      "id": "B",
+      "name": "意向/报名提交",
       "kind": "manual-review",
       "executorRole": "reviewer",
-      "returnToStageId": "intake",
-      "nextStageId": "authorized-review",
-      "workflowOwner": "local"
+      "workflowOwner": "local",
+      "nextStageId": "C"
     },
     {
-      "id": "authorized-review",
-      "name": "本地人工复核与正式决定引用",
+      "id": "C",
+      "name": "事实预审/补件",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "workflowOwner": "local",
+      "nextStageId": "D"
+    },
+    {
+      "id": "D",
+      "name": "校内选拔/推荐候选",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "workflowOwner": "local",
+      "nextStageId": "E"
+    },
+    {
+      "id": "E",
+      "name": "正式人工决定/公示（适用时）",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "workflowOwner": "local",
+      "nextStageId": "F",
+      "skippableReason": "仅当该届赛事存在正式推荐/公示步骤时进入；是否适用须绑定当届规程。"
+    },
+    {
+      "id": "F",
+      "name": "对外报名/交接",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "workflowOwner": "local",
+      "nextStageId": "G",
+      "skippableReason": "仅当当届赛事需要对外报名/交接时进入；本地不得模拟外部平台受理。"
+    },
+    {
+      "id": "G",
+      "name": "变更、撤回、复核、归档",
       "kind": "manual-review",
       "executorRole": "teacher",
-      "workflowOwner": "local"
+      "workflowOwner": "local",
+      "skippableReason": "仅有变更、撤回、异议/复核或归档事件时进入；不得自动撤销或释放名额。"
     }
   ],
   "outputs": [
     {
-      "id": "fact-review-record",
+      "id": "fact-result-and-source-comparison",
       "kind": "item-feedback",
       "audience": "reviewer"
     },
     {
-      "id": "current-stage-supplements",
+      "id": "current-stage-supplement-list",
       "kind": "supplement-list",
       "audience": "student"
     },
     {
-      "id": "human-decision-queue",
+      "id": "authorized-recommendation-decision-referral",
       "kind": "item-feedback",
       "audience": "teacher"
     }

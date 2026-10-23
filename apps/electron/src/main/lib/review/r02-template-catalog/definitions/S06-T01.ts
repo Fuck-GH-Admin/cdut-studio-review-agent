@@ -1411,33 +1411,66 @@ export const template: TemplateVersion = {
   "policyVersionIds": [],
   "stages": [
     {
-      "id": "intake",
-      "name": "材料登记与适用范围核对",
+      "id": "A",
+      "name": "申请准备",
       "kind": "manual-review",
       "executorRole": "reviewer",
-      "nextStageId": "fact-review",
-      "workflowOwner": "local"
+      "workflowOwner": "local",
+      "nextStageId": "B"
     },
     {
-      "id": "fact-review",
-      "name": "事实核验与补件建议",
+      "id": "B",
+      "name": "学院初审及评审推荐",
       "kind": "manual-review",
       "executorRole": "reviewer",
-      "returnToStageId": "intake",
-      "nextStageId": "authorized-review",
-      "workflowOwner": "local"
+      "workflowOwner": "local",
+      "nextStageId": "C"
     },
     {
-      "id": "authorized-review",
-      "name": "本地人工复核与正式决定引用",
+      "id": "C",
+      "name": "学校复核与上级立项链",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "workflowOwner": "local",
+      "nextStageId": "D"
+    },
+    {
+      "id": "D",
+      "name": "获准后执行及中期",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "workflowOwner": "local",
+      "nextStageId": "E"
+    },
+    {
+      "id": "E",
+      "name": "项目变更/延期/终止（条件支线）",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "workflowOwner": "local",
+      "nextStageId": "F",
+      "skippableReason": "仅发生变更/延期/终止时进入；未发生时记录本阶段不适用。"
+    },
+    {
+      "id": "F",
+      "name": "结题申请与验收",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "workflowOwner": "local",
+      "nextStageId": "G"
+    },
+    {
+      "id": "G",
+      "name": "学校决定、异议/复核与归档",
       "kind": "manual-review",
       "executorRole": "teacher",
-      "workflowOwner": "local"
+      "workflowOwner": "local",
+      "skippableReason": "仅存在正式决定、异议/复核或归档触发时办理；不得自动形成终局决定。"
     }
   ],
   "outputs": [
     {
-      "id": "fact-review-record",
+      "id": "fact-check-record",
       "kind": "item-feedback",
       "audience": "reviewer"
     },
@@ -1447,7 +1480,7 @@ export const template: TemplateVersion = {
       "audience": "student"
     },
     {
-      "id": "human-decision-queue",
+      "id": "authorized-decision-referral",
       "kind": "item-feedback",
       "audience": "teacher"
     }
