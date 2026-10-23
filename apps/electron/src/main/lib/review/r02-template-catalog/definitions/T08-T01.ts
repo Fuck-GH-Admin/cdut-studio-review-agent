@@ -22,6 +22,7 @@ export interface R02Metadata {
   researchStatus: string
   policyEvidenceStatus: 'VERIFIED' | 'PARTIAL' | 'UNCONFIRMED'
   sourceRecordCount: number
+  sourceIds: string[]
   fieldCount: number
   materialSlotCount: number
   criterionCount: number
@@ -422,460 +423,460 @@ export const templateVersion: TemplateVersion = {
     }
   ],
   "materialSlots": [
-    {
-      "id": "M001",
-      "name": "M001 岗位需求及职责说明：证明“申请的是什么岗位”",
-      "purpose": "岗位需求及职责说明：证明“申请的是什么岗位”；提出需求者/用人单位；岗位需求表或结构化申请；当前必需，L1；经校方确认的内部在线岗位申报记录；本轮未取得统一表单。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F002",
-        "F009",
-        "F015",
-        "F022",
-        "F025",
-        "F029"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M002",
-      "name": "M002 当期征集/岗位政策：确定受理范围与时效",
-      "purpose": "当期征集/岗位政策：确定受理范围与时效；科发院/学院/上级主管；正式通知、补充通知、批次公告；条件必需，有批次或政策门槛时 L0—L2；公开官方网站可核版本/学校归档原文，原则不令申请人重复上传。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F004",
-        "F005",
-        "F010",
-        "F030"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M003",
-      "name": "M003 用人单位权威归属：证实单位和提出人任职/关系",
-      "purpose": "用人单位权威归属：证实单位和提出人任职/关系；学校组织人事或科研管理；单位编码/任职归属/机构证明；当前必需，L0；后台可信组织名录查询及带时间戳结果。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F006",
-        "F009",
-        "F010",
-        "F021"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M004",
-      "name": "M004 提交/代理权限：确认谁能提出、代填、代签",
-      "purpose": "提交/代理权限：确认谁能提出、代填、代签；学校可信身份机构或授权单位；登录授权/代理书/岗位职务；当前必需的 Actor 验证；代理证明仅条件必需；后台可信身份权限令牌、学校正式代理登记。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F007",
-        "F008",
-        "F020",
-        "F021",
-        "F041"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M005",
-      "name": "M005 项目任务/立项有效事实：核岗位依托",
-      "purpose": "项目任务/立项有效事实：核岗位依托；科研管理部门；批准项目、任务书、负责人/期限记录；条件必需，项目岗 L1—L3；已认证项目源系统、带签发版本的任务书/正式项目决定。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F012",
-        "F014",
-        "F021",
-        "F027",
-        "F040"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M006",
-      "name": "M006 岗位经费测算/出资声明：说明资金需求",
-      "purpose": "岗位经费测算/出资声明：说明资金需求；项目负责人/单位；岗位成本方案、周期与资金来源表；当前必需，L1；学校固定表式待核；M001 已含明细测算可免单独附件。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F014",
-        "F015",
-        "F022",
-        "F023",
-        "F025"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M007",
-      "name": "M007 经费来源与可用性权威确认：核实账户和限制",
-      "purpose": "经费来源与可用性权威确认：核实账户和限制；财务处及有权项目主管；预算核定、资金可用性/科目限制结果；条件必需，涉及财务可用性结论、L2—L5；权威账套系统只读快照或财务部门正式核验记录，免申请人上传截图。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F022",
-        "F028",
-        "F034"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M008",
-      "name": "M008 用工指标/名额核定证据：核岗位数来源",
-      "purpose": "用工指标/名额核定证据：核岗位数来源；有权岗位/用工主管机构（未知）；指标台账或正式意见；条件必需，指标受控时、L2—L5；经机构验证的岗位额度源记录。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F013",
-        "F035"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M009",
-      "name": "M009 单位初核意见：核归属与责任确认",
-      "purpose": "单位初核意见：核归属与责任确认；二级单位有权人员；单位意见/校本送审记录；条件必需，如现行制度要求 L2；学校内部正式流程中的有权电子确认。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F006",
-        "F021",
-        "F033",
-        "F041"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M010",
-      "name": "M010 联合项目成本与职责分摊：核重复承担",
-      "purpose": "联合项目成本与职责分摊：核重复承担；各项目负责人及涉及单位；多方分担书/经费计划；条件必需，C05；各项目权威预算记录+已授权电子确认。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F016",
-        "F028"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M011",
-      "name": "M011 特定项目科研助理配备条件：核项目类别触发",
-      "purpose": "特定项目科研助理配备条件：核项目类别触发；上级计划/科发院；申报指南及有效校内通知；条件必需，C06；可核官方通知及最新补充，不要求申请人自制复印。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F004",
-        "F005",
-        "F017"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M012",
-      "name": "M012 既有岗位/决定引用：识别是否重复或变更",
-      "purpose": "既有岗位/决定引用：识别是否重复或变更；岗位决定保管部门；原岗位台账或正式批准文件；条件必需，C07/C08/C11；本案历史正式有效决定只读引用。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F029",
-        "F031",
-        "F036",
-        "F039"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M013",
-      "name": "M013 新旧岗位差异说明：核调整范围",
-      "purpose": "新旧岗位差异说明：核调整范围；原有权需求提出主体；变更申请及差异版本；条件必需，C07/C08/C11；系统自动差异+提出主体确认，不必重复交旧文件。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F012",
-        "F028",
-        "F029",
-        "F031",
-        "F032"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M014",
-      "name": "M014 撤回申请和身份事件：核撤回意思表示",
-      "purpose": "撤回申请和身份事件：核撤回意思表示；原提出者/有权继任者；可信撤回操作/正式撤回说明；条件必需，L6 撤回；认证的系统撤回事件、学校有效纸质文书核验。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F003",
-        "F007",
-        "F031",
-        "F037",
-        "F041"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M015",
-      "name": "M015 事实复核请求与争议证据：核异议内容",
-      "purpose": "事实复核请求与争议证据：核异议内容；被核验岗位的有权主体；复核申请、争议证据；条件必需，C10；系统带事实定位的异议事件；相关权威记录复查。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F031",
-        "F038",
-        "F042"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M016",
-      "name": "M016 正式岗位决定/批复：证实有效行政/校内决定",
-      "purpose": "正式岗位决定/批复：证实有效行政/校内决定；现行授权机构；有权批复、签发记录；后续才产生，L7；可信校内审批源系统的决定引用。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F031",
-        "F035",
-        "F036",
-        "F041"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M017",
-      "name": "M017 正式招聘公告/岗位计划：只核发布后事实",
-      "purpose": "正式招聘公告/岗位计划：只核发布后事实；科发院/学院官网；公告及补充/更正文；后续才产生，L8；C11 变更后核查；官方发布网页或机构公文归档。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F004",
-        "F030",
-        "F039"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M018",
-      "name": "M018 个人报名、资格、面试、公示、体检、准入和聘用资料",
-      "purpose": "个人报名、资格、面试、公示、体检、准入和聘用资料；应聘者、招聘单位、人事处；个人档案；后续才产生，且本 ID 不收集/不审；下游录用模板按必要性和授权自行获取。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M019",
-      "name": "M019 涉密/专用经费渠道确认：避免越权解析",
-      "purpose": "涉密/专用经费渠道确认：避免越权解析；项目保密/资金管理授权部门；可公开的保密级别与受理路径元数据；条件必需，C12；经许可的密级/受限标记和线下处理回执，不传涉密正文。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F027",
-        "F040"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M020",
-      "name": "M020 证据清单及版本链：证实材料版本/归属",
-      "purpose": "证据清单及版本链：证实材料版本/归属；审核后台；源文件索引、哈希、OCR 页码/表格单元格与替换历史；当前必需，凡有材料/权威记录；系统自动生成，不由申请人上传。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F001",
-        "F029",
-        "F030",
-        "F042"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M021",
-      "name": "M021 既有岗位/经费承诺占用台账：排除重报",
-      "purpose": "既有岗位/经费承诺占用台账：排除重报；有权岗位台账/财务处；按项目/期次的占用记录；条件必需，疑重复或联合出资；学校系统的只读唯一键和有效记录。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F013",
-        "F024",
-        "F028",
-        "F031"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M022",
-      "name": "M022 针对缺口的补充说明/更正件：闭环具体问题",
-      "purpose": "针对缺口的补充说明/更正件：闭环具体问题；原需求提出者/单位或真正权威签发人；有目标的补件、纠错证明；条件必需，L4；校方系统修正后的最新事实，或有权签发更正证明。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F029",
-        "F032",
-        "F042"
-      ],
-      "allowReuseAcrossSubjects": false
-    }
-  ],
+  {
+    "id": "M001",
+    "name": "M001 岗位需求及职责说明：证明“申请的是什么岗位”",
+    "purpose": "岗位需求及职责说明：证明“申请的是什么岗位”；提出需求者/用人单位；岗位需求表或结构化申请；当前必需，L1；经校方确认的内部在线岗位申报记录；本轮未取得统一表单。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F002",
+      "F009",
+      "F015",
+      "F022",
+      "F025",
+      "F029"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M002",
+    "name": "M002 当期征集/岗位政策：确定受理范围与时效",
+    "purpose": "当期征集/岗位政策：确定受理范围与时效；科发院/学院/上级主管；正式通知、补充通知、批次公告；条件必需，有批次或政策门槛时 L0—L2；公开官方网站可核版本/学校归档原文，原则不令申请人重复上传。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F004",
+      "F005",
+      "F010",
+      "F030"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M003",
+    "name": "M003 用人单位权威归属：证实单位和提出人任职/关系",
+    "purpose": "用人单位权威归属：证实单位和提出人任职/关系；学校组织人事或科研管理；单位编码/任职归属/机构证明；当前必需，L0；后台可信组织名录查询及带时间戳结果。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F006",
+      "F009",
+      "F010",
+      "F021"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M004",
+    "name": "M004 提交/代理权限：确认谁能提出、代填、代签",
+    "purpose": "提交/代理权限：确认谁能提出、代填、代签；学校可信身份机构或授权单位；登录授权/代理书/岗位职务；当前必需的 Actor 验证；代理证明仅条件必需；后台可信身份权限令牌、学校正式代理登记。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F007",
+      "F008",
+      "F020",
+      "F021",
+      "F041"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M005",
+    "name": "M005 项目任务/立项有效事实：核岗位依托",
+    "purpose": "项目任务/立项有效事实：核岗位依托；科研管理部门；批准项目、任务书、负责人/期限记录；条件必需，项目岗 L1—L3；已认证项目源系统、带签发版本的任务书/正式项目决定。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F012",
+      "F014",
+      "F021",
+      "F027",
+      "F040"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M006",
+    "name": "M006 岗位经费测算/出资声明：说明资金需求",
+    "purpose": "岗位经费测算/出资声明：说明资金需求；项目负责人/单位；岗位成本方案、周期与资金来源表；当前必需，L1；学校固定表式待核；M001 已含明细测算可免单独附件。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F014",
+      "F015",
+      "F022",
+      "F023",
+      "F025"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M007",
+    "name": "M007 经费来源与可用性权威确认：核实账户和限制",
+    "purpose": "经费来源与可用性权威确认：核实账户和限制；财务处及有权项目主管；预算核定、资金可用性/科目限制结果；条件必需，涉及财务可用性结论、L2—L5；权威账套系统只读快照或财务部门正式核验记录，免申请人上传截图。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F022",
+      "F028",
+      "F034"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M008",
+    "name": "M008 用工指标/名额核定证据：核岗位数来源",
+    "purpose": "用工指标/名额核定证据：核岗位数来源；有权岗位/用工主管机构（未知）；指标台账或正式意见；条件必需，指标受控时、L2—L5；经机构验证的岗位额度源记录。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F013",
+      "F035"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M009",
+    "name": "M009 单位初核意见：核归属与责任确认",
+    "purpose": "单位初核意见：核归属与责任确认；二级单位有权人员；单位意见/校本送审记录；条件必需，如现行制度要求 L2；学校内部正式流程中的有权电子确认。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F006",
+      "F021",
+      "F033",
+      "F041"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M010",
+    "name": "M010 联合项目成本与职责分摊：核重复承担",
+    "purpose": "联合项目成本与职责分摊：核重复承担；各项目负责人及涉及单位；多方分担书/经费计划；条件必需，C05；各项目权威预算记录+已授权电子确认。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F016",
+      "F028"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M011",
+    "name": "M011 特定项目科研助理配备条件：核项目类别触发",
+    "purpose": "特定项目科研助理配备条件：核项目类别触发；上级计划/科发院；申报指南及有效校内通知；条件必需，C06；可核官方通知及最新补充，不要求申请人自制复印。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F004",
+      "F005",
+      "F017"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M012",
+    "name": "M012 既有岗位/决定引用：识别是否重复或变更",
+    "purpose": "既有岗位/决定引用：识别是否重复或变更；岗位决定保管部门；原岗位台账或正式批准文件；条件必需，C07/C08/C11；本案历史正式有效决定只读引用。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F029",
+      "F031",
+      "F036",
+      "F039"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M013",
+    "name": "M013 新旧岗位差异说明：核调整范围",
+    "purpose": "新旧岗位差异说明：核调整范围；原有权需求提出主体；变更申请及差异版本；条件必需，C07/C08/C11；系统自动差异+提出主体确认，不必重复交旧文件。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F012",
+      "F028",
+      "F029",
+      "F031",
+      "F032"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M014",
+    "name": "M014 撤回申请和身份事件：核撤回意思表示",
+    "purpose": "撤回申请和身份事件：核撤回意思表示；原提出者/有权继任者；可信撤回操作/正式撤回说明；条件必需，L6 撤回；认证的系统撤回事件、学校有效纸质文书核验。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F003",
+      "F007",
+      "F031",
+      "F037",
+      "F041"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M015",
+    "name": "M015 事实复核请求与争议证据：核异议内容",
+    "purpose": "事实复核请求与争议证据：核异议内容；被核验岗位的有权主体；复核申请、争议证据；条件必需，C10；系统带事实定位的异议事件；相关权威记录复查。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F031",
+      "F038",
+      "F042"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M016",
+    "name": "M016 正式岗位决定/批复：证实有效行政/校内决定",
+    "purpose": "正式岗位决定/批复：证实有效行政/校内决定；现行授权机构；有权批复、签发记录；后续才产生，L7；可信校内审批源系统的决定引用。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F031",
+      "F035",
+      "F036",
+      "F041"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M017",
+    "name": "M017 正式招聘公告/岗位计划：只核发布后事实",
+    "purpose": "正式招聘公告/岗位计划：只核发布后事实；科发院/学院官网；公告及补充/更正文；后续才产生，L8；C11 变更后核查；官方发布网页或机构公文归档。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F004",
+      "F030",
+      "F039"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M018",
+    "name": "M018 个人报名、资格、面试、公示、体检、准入和聘用资料",
+    "purpose": "个人报名、资格、面试、公示、体检、准入和聘用资料；应聘者、招聘单位、人事处；个人档案；后续才产生，且本 ID 不收集/不审；下游录用模板按必要性和授权自行获取。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M019",
+    "name": "M019 涉密/专用经费渠道确认：避免越权解析",
+    "purpose": "涉密/专用经费渠道确认：避免越权解析；项目保密/资金管理授权部门；可公开的保密级别与受理路径元数据；条件必需，C12；经许可的密级/受限标记和线下处理回执，不传涉密正文。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F027",
+      "F040"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M020",
+    "name": "M020 证据清单及版本链：证实材料版本/归属",
+    "purpose": "证据清单及版本链：证实材料版本/归属；审核后台；源文件索引、哈希、OCR 页码/表格单元格与替换历史；当前必需，凡有材料/权威记录；系统自动生成，不由申请人上传。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F001",
+      "F029",
+      "F030",
+      "F042"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M021",
+    "name": "M021 既有岗位/经费承诺占用台账：排除重报",
+    "purpose": "既有岗位/经费承诺占用台账：排除重报；有权岗位台账/财务处；按项目/期次的占用记录；条件必需，疑重复或联合出资；学校系统的只读唯一键和有效记录。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F013",
+      "F024",
+      "F028",
+      "F031"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M022",
+    "name": "M022 针对缺口的补充说明/更正件：闭环具体问题",
+    "purpose": "针对缺口的补充说明/更正件：闭环具体问题；原需求提出者/单位或真正权威签发人；有目标的补件、纠错证明；条件必需，L4；校方系统修正后的最新事实，或有权签发更正证明。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F029",
+      "F032",
+      "F042"
+    ],
+    "allowReuseAcrossSubjects": false
+  }
+],
   "sections": [
     {
       "id": "R02_RESEARCH_RULES",
@@ -1570,5 +1571,27 @@ export const r02Metadata: R02Metadata = {
       ],
       "evidenceStatus": "UNCONFIRMED"
     }
+  ],
+  "sourceIds": [
+    "SRC-001",
+    "SRC-002",
+    "SRC-003",
+    "SRC-004",
+    "SRC-005",
+    "SRC-006",
+    "SRC-007",
+    "SRC-008",
+    "SRC-009",
+    "SRC-010",
+    "SRC-011",
+    "SRC-012",
+    "SRC-013",
+    "SRC-014",
+    "SRC-015",
+    "SRC-016",
+    "SRC-017",
+    "SRC-018",
+    "SRC-019",
+    "SRC-020"
   ]
 }
