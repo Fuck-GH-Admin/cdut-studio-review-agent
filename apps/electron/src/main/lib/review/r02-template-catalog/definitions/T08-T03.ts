@@ -1300,7 +1300,7 @@ export const r02Metadata: R02Metadata = {
   "name": "项目聘用人员续聘、期限、岗位和薪酬调整审核",
   "sourceDocumentPath": "docs/design/review-agent/business-templates/R02/T08-T03.md",
   "researchSourcePath": "docs/design/review-agent/business-templates/R02/research-original/T08-T03.md",
-  "sourceDocumentSha256": "7b89a2ed0630faf4d66fb9c3a81bdd266e1b780be26f31ac75c21f61b42944bd",
+  "sourceDocumentSha256": "2b92483e7e92d909fc7d2b60a3ce3172b0474bedb44cf9d8558deb0023899d7b",
   "sourceDocumentBytes": 132712,
   "manifestExpectedBytes": 132713,
   "manifestExpectedSha256": "fddcd21930f18284a8810d3c8cce0f0d7ff0c982b56219b62522df7acb555d39",
