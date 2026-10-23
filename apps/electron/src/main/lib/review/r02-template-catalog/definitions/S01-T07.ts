@@ -16,7 +16,7 @@ export const templateVersion: TemplateVersion = {
   "fields": [
     {
       "key": "f001",
-      "label": "F001 · Case",
+      "label": "F001 · 唯一案卷号及学校业务关联号",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -25,7 +25,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f002",
-      "label": "F002 · Case",
+      "label": "F002 · 情形 A–J、当前阶段、建立/阶段更新时间",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -34,7 +34,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f003",
-      "label": "F003 · Case",
+      "label": "F003 · 经核验的操作者身份、发起岗位及代表关系",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -43,7 +43,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f004",
-      "label": "F004 · Student",
+      "label": "F004 · 校方唯一学号/在籍主键",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -52,7 +52,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f005",
-      "label": "F005 · Student",
+      "label": "F005 · 学籍登记姓名及历史变更引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -61,7 +61,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f006",
-      "label": "F006 · Enrollment",
+      "label": "F006 · 在籍状态、学历教育学段/类型",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -70,7 +70,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f007",
-      "label": "F007 · Policy",
+      "label": "F007 · 普通本科/来华留学本科/中外合作/研究生等制度身份",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -79,7 +79,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f008",
-      "label": "F008 · Enrollment",
+      "label": "F008 · 所属学院、校区及业务归口",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -88,7 +88,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f009",
-      "label": "F009 · AcademicSnapshot",
+      "label": "F009 · 当前专业、培养方案 ID 与版本",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -97,7 +97,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f010",
-      "label": "F010 · Enrollment",
+      "label": "F010 · 申请/触发时正式在册年级及班级",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -106,7 +106,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f011",
-      "label": "F011 · AcademicSnapshot",
+      "label": "F011 · 考核学年、统计截点及所属批次",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -115,7 +115,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f012",
-      "label": "F012 · Request",
+      "label": "F012 · 学生降级申请/学校晋级限制/相邻决定协同/疑似留级等触发类型",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -124,7 +124,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f013",
-      "label": "F013 · Request",
+      "label": "F013 · 申请理由、本人意思表示、提交时间",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -133,7 +133,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f014",
-      "label": "F014 · Request",
+      "label": "F014 · 代办者及有效授权证明（如允许）",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -142,7 +142,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f015",
-      "label": "F015 · Policy",
+      "label": "F015 · 适用校本规章版本、发布/生效/废止及解释机关",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -151,7 +151,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f016",
-      "label": "F016 · Enrollment",
+      "label": "F016 · 首次入学日、学制、制度最长修业期限",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -160,7 +160,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f017",
-      "label": "F017 · Enrollment",
+      "label": "F017 · 按校本口径计入修业年限的期间及余量",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -169,7 +169,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f018",
-      "label": "F018 · AcademicSnapshot",
+      "label": "F018 · 核验学年应获学分基数",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -178,7 +178,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f019",
-      "label": "F019 · AcademicSnapshot",
+      "label": "F019 · 同学年实获有效学分",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -187,7 +187,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f020",
-      "label": "F020 · AcademicSnapshot",
+      "label": "F020 · F019/F018 的可复核比率",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -196,7 +196,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f021",
-      "label": "F021 · AcademicSnapshot",
+      "label": "F021 · 截至核验日累计合格学分",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -205,7 +205,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f022",
-      "label": "F022 · AcademicSnapshot",
+      "label": "F022 · 适用毕业要求总学分",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -214,7 +214,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f023",
-      "label": "F023 · AcademicSnapshot",
+      "label": "F023 · F021/F022 毕业学分占比",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -223,7 +223,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f024",
-      "label": "F024 · Enrollment",
+      "label": "F024 · 既有试读次数/起止及历史版本",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -232,7 +232,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f025",
-      "label": "F025 · Enrollment",
+      "label": "F025 · 学业预警、试读、拟退学/退学的正式状态",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -241,7 +241,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f026",
-      "label": "F026 · Request",
+      "label": "F026 · 申请人意向目标年级或校方拟编入方案",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -250,7 +250,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f027",
-      "label": "F027 · Enrollment",
+      "label": "F027 · 目标培养方案与已修课程映射草案/确认结果",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -259,7 +259,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f028",
-      "label": "F028 · Decision",
+      "label": "F028 · 学院审核意见、签发岗位、时间及范围",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -268,7 +268,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f029",
-      "label": "F029 · Decision",
+      "label": "F029 · 最终审批岗位、权限期间和业务范围",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -277,7 +277,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f030",
-      "label": "F030 · Decision",
+      "label": "F030 · 正式准驳文书、文号、签发/生效时间及结论",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -286,7 +286,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f031",
-      "label": "F031 · Enrollment",
+      "label": "F031 · 生效后正式目标年级/班级及适用学年",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -295,7 +295,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f032",
-      "label": "F032 · Enrollment",
+      "label": "F032 · 正式学籍记载变更号/生效流水",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -304,7 +304,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f033",
-      "label": "F033 · Case",
+      "label": "F033 · 复学、转专业、转学等相邻事项已生效决定引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -322,7 +322,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f035",
-      "label": "F035 · Case",
+      "label": "F035 · 提交、补件通知、送达、决定、异议及期限节点",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -331,7 +331,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f036",
-      "label": "F036 · Evidence",
+      "label": "F036 · 材料哈希、持有人、签发者、来源记录版本/归属案卷",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -340,7 +340,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f037",
-      "label": "F037 · Evidence",
+      "label": "F037 · 事实冲突、旧版本失效关联和人工处置结果",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -349,7 +349,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f038",
-      "label": "F038 · Student",
+      "label": "F038 · 特殊身份/校区适用例外及现行性确认状态",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -360,7 +360,7 @@ export const templateVersion: TemplateVersion = {
   "materialSlots": [
     {
       "id": "m001",
-      "name": "认证申请/办理人及学生身份分类；学校认证服务、学籍主管部门持有的学号、姓名、身份、学院、学段记录",
+      "name": "；核 P0",
       "purpose": "认证申请/办理人及学生身份分类；学校认证服务、学籍主管部门持有的学号、姓名、身份、学院、学段记录；有权部门核签的学籍证明可供人工核查，普通自述不替代服务端登录；F003–F008、SRC-001/002；按学号+案卷隔离、附认证时点；来源失联SOURCE_UNAVAILABLE，身份冲突CONFLICT，图像不可读UNREADABLE",
       "requiredElements": [
         "认证申请/办理人及学生身份分类；学校认证服务、学籍主管部门持有的学号、姓名、身份、学院、学段记录",
@@ -382,7 +382,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "m002",
-      "name": "降级试读的学生本人申请意思表示；本人或经确认的合法代理持有，现用签署申请表/可信电子提交记录",
+      "name": "；申 P1，仅 A/D/E",
       "purpose": "降级试读的学生本人申请意思表示；本人或经确认的合法代理持有，现用签署申请表/可信电子提交记录；若校方接受，已验证电子业务申请可替代纸质扫描；未核实允许何种代办/签名；F012–F014/F026/F035、SRC-001/002/005；绑定提交人、时间、案卷版本，申请修订保留旧版；适用但未交NEEDS_MATERIAL，模糊签名UNREADABLE，来源身份不匹配CONFLICT",
       "requiredElements": [
         "降级试读的学生本人申请意思表示；本人或经确认的合法代理持有，现用签署申请表/可信电子提交记录",
@@ -404,7 +404,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "m003",
-      "name": "原在籍状态、专业、年级、学年与培养方案基础关联；学校学籍/教务主档持有",
+      "name": "；核 P0",
       "purpose": "原在籍状态、专业、年级、学年与培养方案基础关联；学校学籍/教务主档持有；校方盖章或可核验电子学籍证明可供人工核对；非个人自制成绩表；F006/F008–F011/F016、SRC-001/002；固定读取截点及主档版本；失联SOURCE_UNAVAILABLE，跨版不一CONFLICT，截图不清UNREADABLE",
       "requiredElements": [
         "原在籍状态、专业、年级、学年与培养方案基础关联；学校学籍/教务主档持有",
@@ -426,7 +426,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "m004",
-      "name": "学年应修/实获学分、累计学分及统计时点；教务部门成绩/学分权威快照",
+      "name": "；核 P1（B/C 可在校内触发时）",
       "purpose": "学年应修/实获学分、累计学分及统计时点；教务部门成绩/学分权威快照；带真伪核验及版本的学校成绩单可作人工核对，但学生截图不足以覆盖权威记录；F011/F018–F023、SRC-001 第 43 条、SRC-002 第 40 条；绑定学年、方案、学分算法与成绩版本；失联SOURCE_UNAVAILABLE，扫描不清UNREADABLE，数值矛盾CONFLICT",
       "requiredElements": [
         "学年应修/实获学分、累计学分及统计时点；教务部门成绩/学分权威快照",
@@ -448,7 +448,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "m005",
-      "name": "既往试读、学业警示、拟处理状态及试读期间；学院/学籍主管部门所持正式决定台账",
+      "name": "；核 P1 A/D/E/B；C 视事件",
       "purpose": "既往试读、学业警示、拟处理状态及试读期间；学院/学籍主管部门所持正式决定台账；权威归档公文与有效状态台账交叉核验；不能由模型通过分数推导已有试读；F024/F025、SRC-001/002；按决定号+生效/撤销记录复核；不可得SOURCE_UNAVAILABLE，重复冲突CONFLICT，影印不清UNREADABLE",
       "requiredElements": [
         "既往试读、学业警示、拟处理状态及试读期间；学院/学籍主管部门所持正式决定台账",
@@ -470,7 +470,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "m006",
-      "name": "支撑身份分支、触发与权限的正式政策文本/现行版本；学校正式发文与法规管理部门持有",
+      "name": "；内 P0",
       "purpose": "支撑身份分支、触发与权限的正式政策文本/现行版本；学校正式发文与法规管理部门持有；带签发/生效信息的官方全文、主管部门正式确认可互证；搜索摘要不可替代正文；F015/F020/F038、SRC-001/002/003/009；固定政策哈希、适用日期及失效依据；无法核时POLICY_UNCONFIRMED，网址失联兼记SOURCE_UNAVAILABLE",
       "requiredElements": [
         "支撑身份分支、触发与权限的正式政策文本/现行版本；学校正式发文与法规管理部门持有",
@@ -492,7 +492,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "m007",
-      "name": "学制、最长修业年限、异动起止及计入期间；学籍主管部门所持年限记录",
+      "name": "；核 P1 A/D/E、F 条件",
       "purpose": "学制、最长修业年限、异动起止及计入期间；学籍主管部门所持年限记录；经核验的校方异动时间轴可替代学生上传的历史证明，具体计时公式须校方核定；F016/F017、SRC-001 第 8–9、43 条；与 M003 同学生及时间轴版本；中断历史不全SOURCE_UNAVAILABLE，计算口径未定POLICY_UNCONFIRMED",
       "requiredElements": [
         "学制、最长修业年限、异动起止及计入期间；学籍主管部门所持年限记录",
@@ -514,7 +514,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "m008",
-      "name": "证明复学、转学、转专业、保留资格等其他授权目的的有效决定；相邻业务 Owner/公文系统持有",
+      "name": "；条 P1/F；E 只对已作出的专业决定",
       "purpose": "证明复学、转学、转专业、保留资格等其他授权目的的有效决定；相邻业务 Owner/公文系统持有；可验证的原业务决定记录+状态比对；仅意向申请或待批草稿不能替代；F033、SRC-001 第 5、34–40 条及邻接业务 SRC 待补；引用原决定号、业务 Owner、有效/撤销版本，不跨案拷贝结论；缺现成决定SOURCE_UNAVAILABLE 或暂停协同，签发冲突CONFLICT",
       "requiredElements": [
         "证明复学、转学、转专业、保留资格等其他授权目的的有效决定；相邻业务 Owner/公文系统持有",
@@ -536,7 +536,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "m009",
-      "name": "目标年级/班级建议、课程衔接草案；学院教务/教学管理岗位形成，非学生必须预交",
+      "name": "；条 P2（若真实涉及年级/课程调整）",
       "purpose": "目标年级/班级建议、课程衔接草案；学院教务/教学管理岗位形成，非学生必须预交；可由校内系统编班草案及培养方案映射替代纸质表；F026/F027、SRC-001 第 18 条、SRC-002 第 20 条；标“草案”，绑定方案版本及提议人；尚未形成候，无授权安排NEEDS_HUMAN_DECISION，冲突CONFLICT",
       "requiredElements": [
         "目标年级/班级建议、课程衔接草案；学院教务/教学管理岗位形成，非学生必须预交",
@@ -558,7 +558,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "m010",
-      "name": "学院正式核验/审核意见及签发真实性；学院具授权的业务人员产生",
+      "name": "；后 P2",
       "purpose": "学院正式核验/审核意见及签发真实性；学院具授权的业务人员产生；校方可信流转意见/盖章核验件，不能用学生代写意见替代；F028、SRC-001 第 43 条、SRC-002 第 40 条；按受理号、学院角色、意见签发时间/版本；P1 缺失正常，P2 未取SOURCE_UNAVAILABLE，假冒/矛盾CONFLICT",
       "requiredElements": [
         "学院正式核验/审核意见及签发真实性；学院具授权的业务人员产生",
@@ -580,7 +580,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "m011",
-      "name": "审批岗位授权及正式准驳文书；普通本科教务处或来华留学本科国际交流与合作处授权岗位/公文系统产生",
+      "name": "；后 P3",
       "purpose": "审批岗位授权及正式准驳文书；普通本科教务处或来华留学本科国际交流与合作处授权岗位/公文系统产生；可核验带文号的官方电子公文或正式纸质原件核签；AI 输出或学院意见不替代；F029/F030、SRC-001 第 43 条、SRC-002 第 40 条；绑定政策版本、签发岗、文号、生效日、撤销状态；P1/P2 缺失正常；越权CONFLICT，P3 不能核实SOURCE_UNAVAILABLE",
       "requiredElements": [
         "审批岗位授权及正式准驳文书；普通本科教务处或来华留学本科国际交流与合作处授权岗位/公文系统产生",
@@ -602,7 +602,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "m012",
-      "name": "生效后年级、班级、学籍异动实际落库记录；学籍管理权威数据库持有",
+      "name": "；后 P4",
       "purpose": "生效后年级、班级、学籍异动实际落库记录；学籍管理权威数据库持有；经教务处/归口部门认证的异动办理证明，可作人工对账；F031/F032、SRC-001 第 57 条；关联 M011 决定号及异动版本；决定未作出前正常空值，决定后登记不符CONFLICT，未完成标执行待办",
       "requiredElements": [
         "生效后年级、班级、学籍异动实际落库记录；学籍管理权威数据库持有",
@@ -624,7 +624,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "m013",
-      "name": "因年级/专业调整引出的培养方案变更、课程学分认定结果；专业/学院及成绩主管部门持有",
+      "name": "；条/后 P2 草案、P4 生效",
       "purpose": "因年级/专业调整引出的培养方案变更、课程学分认定结果；专业/学院及成绩主管部门持有；已授权的成绩认定决定及方案版本，不接受学生私制课程对照；F009/F022/F027、SRC-001 第 18 条、SRC-002 第 20 条；有草案与正式版两层，按原课程+新方案版本追溯；未触发则NOT_APPLICABLE，已触发未定NEEDS_HUMAN_DECISION",
       "requiredElements": [
         "因年级/专业调整引出的培养方案变更、课程学分认定结果；专业/学院及成绩主管部门持有",
@@ -646,7 +646,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "m014",
-      "name": "申请撤回、事实复核、正式申诉的真实意思表示与受理状态；当事人与有权受理机构各存记录",
+      "name": "；条 P1–P5 发生救济事件时",
       "purpose": "申请撤回、事实复核、正式申诉的真实意思表示与受理状态；当事人与有权受理机构各存记录；校方认证电子提交/受理回执可代纸件，前提是现行程序允许；F034/F035、SRC-001 第 59 条、SRC-002 第 70 条；绑定原决定/申请与送达事件；无提出不缺；已提出无法读UNREADABLE，期限规则未知POLICY_UNCONFIRMED",
       "requiredElements": [
         "申请撤回、事实复核、正式申诉的真实意思表示与受理状态；当事人与有权受理机构各存记录",
@@ -668,7 +668,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "m015",
-      "name": "通知、送达、异议受理回执和实际通知时间；正式通知机构持有",
+      "name": "；后 P4/P5",
       "purpose": "通知、送达、异议受理回执和实际通知时间；正式通知机构持有；校方公文送达系统记录、纸质签收凭证互核，不能用聊天截图断言法定送达；F034/F035、SRC-001/002；与决定号、受送达人及送达渠道绑定；无通知节点不得推定逾期，受理机构失联SOURCE_UNAVAILABLE",
       "requiredElements": [
         "通知、送达、异议受理回执和实际通知时间；正式通知机构持有",
@@ -690,7 +690,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "m016",
-      "name": "案卷、证据版本/哈希/来源、冲突处置、撤销链与审计事件；可信 Main/Case/Evidence 服务持有",
+      "name": "；内 P0，贯穿",
       "purpose": "案卷、证据版本/哈希/来源、冲突处置、撤销链与审计事件；可信 Main/Case/Evidence 服务持有；不允许以客户端自由文本替代；可由可信审计事件导出供核查；F001/F002/F003/F012/F035–F037；每项材料归属单一案卷与主体、可追溯取代关系；缺关联暂停结论，异常CONFLICT，取不到SOURCE_UNAVAILABLE",
       "requiredElements": [
         "案卷、证据版本/哈希/来源、冲突处置、撤销链与审计事件；可信 Main/Case/Evidence 服务持有",
@@ -712,7 +712,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "m017",
-      "name": "证明适用特殊学段、合作办学新规、宜宾校区授权的正式政策归属与适用意见；主管部门/法规库持有",
+      "name": "；条/内 P0 G/H/J 或特殊校区",
       "purpose": "证明适用特殊学段、合作办学新规、宜宾校区授权的正式政策归属与适用意见；主管部门/法规库持有；学校发布的专门办法全文+签发/有效期或归口部门正式书面回复；不得要求学生自行获取内部政策；F007/F015/F038、SRC-006/007/009/010；按身份、校区、时间、政策版本核对；无规章 POLICY_UNCONFIRMED，页面失联SOURCE_UNAVAILABLE，相互冲突CONFLICT",
       "requiredElements": [
         "证明适用特殊学段、合作办学新规、宜宾校区授权的正式政策归属与适用意见；主管部门/法规库持有",

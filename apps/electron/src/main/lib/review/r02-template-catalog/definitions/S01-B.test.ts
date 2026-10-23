@@ -84,7 +84,7 @@ describe('R02 S01-B native template definitions', () => {
       })))
       expect(metadata.criteria.length).toBe(criteria.length)
       for (const mapping of metadata.criteria) {
-        expect(mapping.sourceRuleId).toMatch(/^R\\d{3}$/)
+        expect(mapping.sourceRuleId).toMatch(/^R\d{3}$/)
         expect(Array.isArray(mapping.srcIds)).toBe(true)
         expect(['VERIFIED', 'PARTIAL', 'UNCONFIRMED']).toContain(mapping.evidenceStatus)
         const section = (template.sections ?? []).find(s => s.id === mapping.sectionId)
