@@ -76,7 +76,7 @@ describe('R02 S07-A template definitions', () => {
       }
       expect(visited.size).toBe(template.stages.length)
       const finalStage = template.stages.at(-1)
-      expect(['reviewer', 'teacher']).toContain(finalStage?.executorRole)
+      expect(finalStage?.executorRole === 'reviewer' || finalStage?.executorRole === 'teacher').toBe(true)
       expect(finalStage?.workflowOwner).toBe('local')
     }
   })
