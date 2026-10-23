@@ -420,7 +420,7 @@ export const template: TemplateVersion = {
       ],
       "minCount": 0,
       "maxCount": 9999,
-      "requiredAt": "submission",
+      "requiredAt": "decision",
       "allowReuseAcrossSubjects": false
     },
     {
@@ -440,7 +440,7 @@ export const template: TemplateVersion = {
       ],
       "minCount": 0,
       "maxCount": 9999,
-      "requiredAt": "submission",
+      "requiredAt": "decision",
       "allowReuseAcrossSubjects": false
     },
     {
@@ -460,7 +460,7 @@ export const template: TemplateVersion = {
       ],
       "minCount": 0,
       "maxCount": 9999,
-      "requiredAt": "submission",
+      "requiredAt": "decision",
       "allowReuseAcrossSubjects": false
     },
     {
@@ -480,7 +480,7 @@ export const template: TemplateVersion = {
       ],
       "minCount": 0,
       "maxCount": 9999,
-      "requiredAt": "submission",
+      "requiredAt": "decision",
       "allowReuseAcrossSubjects": false
     },
     {
@@ -500,7 +500,7 @@ export const template: TemplateVersion = {
       ],
       "minCount": 0,
       "maxCount": 9999,
-      "requiredAt": "submission",
+      "requiredAt": "decision",
       "allowReuseAcrossSubjects": false
     },
     {
