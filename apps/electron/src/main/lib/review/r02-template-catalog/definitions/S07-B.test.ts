@@ -34,16 +34,16 @@ describe('R02 S07-B templates', () => {
       const criteria = template.sections?.flatMap(section => section.criteria) ?? []
       expect(new Set(template.fields.map(field => field.key)).size).toBe(template.fields.length)
       expect(new Set(template.materialSlots.map(slot => slot.id)).size).toBe(template.materialSlots.length)
-      expect(template.fields.every(field => field.label.split('·')[1]?.trim().length > 0)).toBeTrue()
-      expect(template.materialSlots.every(slot => slot.name.split('·')[1]?.trim().length > 0 && slot.purpose.trim().length > 0)).toBeTrue()
+      expect(template.fields.every(field => field.label.split('·')[1]?.trim().length > 0)).toBe(true)
+      expect(template.materialSlots.every(slot => slot.name.split('·')[1]?.trim().length > 0 && slot.purpose.trim().length > 0)).toBe(true)
       expect(new Set(criteria.map(criterion => criterion.id)).size).toBe(criteria.length)
       expect(metadata.criteria).toHaveLength(criteria.length)
       for (const criterion of criteria) {
         const mapped = metadata.criteria.find(item => item.criterionId === criterion.id)
         expect(mapped).toBeDefined()
         expect(mapped?.sectionId).toBe('rules')
-        for (const match of criterion.requirement.matchAll(/\b(F\d{3})\b/g)) { const ref = match[1]; if (ref !== undefined) expect(fieldIds.has(ref)).toBeTrue() }
-        for (const match of criterion.requirement.matchAll(/\b(M\d{3})\b/g)) { const ref = match[1]; if (ref !== undefined) expect(slotIds.has(ref)).toBeTrue() }
+        for (const match of criterion.requirement.matchAll(/\b(F\d{3})\b/g)) { const ref = match[1]; if (ref !== undefined) expect(fieldIds.has(ref)).toBe(true) }
+        for (const match of criterion.requirement.matchAll(/\b(M\d{3})\b/g)) { const ref = match[1]; if (ref !== undefined) expect(slotIds.has(ref)).toBe(true) }
         for (const sourceId of mapped?.sourceIds ?? []) expect(metadata.sourceStatus[sourceId]).toBeDefined()
         expect(['semantic', 'manual']).toContain(criterion.execution)
       }
@@ -56,8 +56,8 @@ describe('R02 S07-B templates', () => {
       const ids = new Set(stages.map(stage => stage.id))
       expect(ids.size).toBe(stages.length)
       for (const stage of stages) {
-        if (stage.nextStageId) expect(ids.has(stage.nextStageId)).toBeTrue()
-        if (stage.returnToStageId) expect(ids.has(stage.returnToStageId)).toBeTrue()
+        if (stage.nextStageId) expect(ids.has(stage.nextStageId)).toBe(true)
+        if (stage.returnToStageId) expect(ids.has(stage.returnToStageId)).toBe(true)
         expect(stage.workflowOwner).toBe('local')
         expect(['reviewer', 'teacher']).toContain(stage.executorRole)
       }
@@ -77,17 +77,17 @@ describe('R02 S07-B templates', () => {
       expect(template.catalogKind).toBe('builtin')
       expect(template.status).toBe('draft')
       expect(template.policyVersionIds).toEqual([])
-      expect(template.autoPassPolicy?.enabled).toBeFalse()
-      expect(template.sourceNote?.startsWith('R02_RESEARCH_TEMPLATE_NONOFFICIAL:')).toBeTrue()
+      expect(template.autoPassPolicy?.enabled).toBe(false)
+      expect(template.sourceNote?.startsWith('R02_RESEARCH_TEMPLATE_NONOFFICIAL:')).toBe(true)
       expect(template.description).toContain('本地研究模板 · 非校方正式模板')
-      expect(metadata.officialSchoolTemplate).toBeFalse()
+      expect(metadata.officialSchoolTemplate).toBe(false)
       expect(metadata.sourceDocumentSha256).toMatch(/^[0-9a-f]{64}$/)
       expect(metadata.researchOriginalSha256).toMatch(/^[0-9a-f]{64}$/)
       expect(metadata.policyEvidenceStatus).toBe('PARTIAL')
-      expect(template.outputs.every(output => output.kind !== 'approval')).toBeTrue()
+      expect(template.outputs.every(output => output.kind !== 'approval')).toBe(true)
       const criteria = template.sections?.flatMap(section => section.criteria) ?? []
-      expect(criteria.every(criterion => criterion.execution !== 'deterministic')).toBeTrue()
-      expect(metadata.criteria.every(item => item.evidenceStatus === 'VERIFIED' || item.evidenceStatus === 'PARTIAL' || item.evidenceStatus === 'UNCONFIRMED' || item.evidenceStatus === 'HISTORICAL' || item.evidenceStatus === 'CROSS_SCHOOL_ONLY')).toBeTrue()
+      expect(criteria.every(criterion => criterion.execution !== 'deterministic')).toBe(true)
+      expect(metadata.criteria.every(item => item.evidenceStatus === 'VERIFIED' || item.evidenceStatus === 'PARTIAL' || item.evidenceStatus === 'UNCONFIRMED' || item.evidenceStatus === 'HISTORICAL' || item.evidenceStatus === 'CROSS_SCHOOL_ONLY')).toBe(true)
     }
   })
 })
