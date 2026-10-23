@@ -22,6 +22,7 @@ export interface R02Metadata {
   researchStatus: string
   policyEvidenceStatus: 'VERIFIED' | 'PARTIAL' | 'UNCONFIRMED'
   sourceRecordCount: number
+  sourceIds: string[]
   fieldCount: number
   materialSlotCount: number
   criterionCount: number
@@ -440,857 +441,617 @@ export const templateVersion: TemplateVersion = {
     }
   ],
   "materialSlots": [
-    {
-      "id": "M001",
-      "name": "M001 当批招聘存在、范围、时间与权责；发文单位的官网公告／原文",
-      "purpose": "当批招聘存在、范围、时间与权责；发文单位的官网公告／原文；当批招聘存在、范围、时间与权责；发文单位的官网公告／原文；L0 `C`；学校权威盖章公告或可验证官方发布记录可替代网页，非第三方转载不自动替代；F002–F005,F007,F009,F015,F043；SRC-001/002/003/004/016/017/019；按发布 URL+批次+时间留原版；官方正文失联→`SOURCE_UNAVAILABLE`，仅有搜索摘要无法核强制细节→`POLICY_UNCONFIRMED`，已给件不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F002",
-        "F005",
-        "F007",
-        "F009",
-        "F015",
-        "F043"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M002",
-      "name": "M002 具体岗位、名额、项目条件；发文单位／岗位主管附件表或公告正文岗位段",
-      "purpose": "具体岗位、名额、项目条件；发文单位／岗位主管附件表或公告正文岗位段；具体岗位、名额、项目条件；发文单位／岗位主管附件表或公告正文岗位段；L0 `T`（公告明确引用附件或独立岗位表时）；正文足以完全确定岗位时可用原文替代；F006–F008,F016,F017；SRC-001/002/004/017；绑定岗位附件版次与公告；缺→`NEEDS_MATERIAL`/校方调取，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F006",
-        "F008",
-        "F016",
-        "F017"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M003",
-      "name": "M003 公告更正、日期和条件效力；原发文机构补充公告／撤销更正通知",
-      "purpose": "公告更正、日期和条件效力；原发文机构补充公告／撤销更正通知；公告更正、日期和条件效力；原发文机构补充公告／撤销更正通知；更正发生时 `T`；没有变更为 `NOT_APPLICABLE`；权威更正原件可代网站显示；F005,F009,F015,F043,F044；SRC-014（示例）；关联原 `M001` 生效链；缺→`SOURCE_UNAVAILABLE`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F005",
-        "F009",
-        "F015",
-        "F043",
-        "F044"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M004",
-      "name": "M004 证明线上报名事件；校人才招聘系统／本人回执及可核后台报名记录",
-      "purpose": "证明线上报名事件；校人才招聘系统／本人回执及可核后台报名记录；证明线上报名事件；校人才招聘系统／本人回执及可核后台报名记录；采用线上渠道的 L1 `T`；有获授权系统记录优先，上传截图仅待核替代；不假设实际接口已开放；F001,F010,F018,F019；SRC-001；回执版本+申请时间+账号去标识；缺→`NEEDS_MATERIAL` 或学校查询，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F001",
-        "F010",
-        "F018",
-        "F019"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M005",
-      "name": "M005 证明纸质／邮件报名及岗位意向；申请人和招聘接收单位科研助理报名表（表名已公开）",
-      "purpose": "证明纸质／邮件报名及岗位意向；申请人和招聘接收单位科研助理报名表（表名已公开）；证明纸质／邮件报名及岗位意向；申请人和招聘接收单位科研助理报名表（表名已公开）；纸表或邮件报名 L1 `T`；当批认可的邮箱受理记录／网报回执为合法替代时才可互替；F001,F010,F011,F018,F019；SRC-002/004/016；绑定接收时间+批次岗位+表版本；缺→`NEEDS_MATERIAL`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F001",
-        "F010",
-        "F011",
-        "F018",
-        "F019"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M006",
-      "name": "M006 联系方式、人员信息、简历补充；本人《应聘者个人信息表》或当批要求的简历",
-      "purpose": "联系方式、人员信息、简历补充；本人《应聘者个人信息表》或当批要求的简历；联系方式、人员信息、简历补充；本人《应聘者个人信息表》或当批要求的简历；当批明确要求时 L1 `T`；同渠道表单已具备等效字段且学校接受时可不重传；F010,F011,F013,F016,F019；SRC-004/017；每份本人归属、表版本独立，电话等受限；缺→`NEEDS_MATERIAL`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F010",
-        "F011",
-        "F013",
-        "F016",
-        "F019"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M007",
-      "name": "M007 验证同一人并参加报考；本人／签发机关身份证件扫描或原件核验回执",
-      "purpose": "验证同一人并参加报考；本人／签发机关身份证件扫描或原件核验回执；验证同一人并参加报考；本人／签发机关身份证件扫描或原件核验回执；L1 `C`（所核实招录公告要求）；具有同等证明力的证件替代须校方依法确认；到场原件另见 `M021`；F010–F012,F034；SRC-001/002/004/017；仅受限保存证件引用及掩码，绑定姓名证号；缺→`NEEDS_MATERIAL`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F010",
-        "F012",
-        "F034"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M008",
-      "name": "M008 已取得学历事实；本人／学籍学历主管机构毕业证／核验凭证",
-      "purpose": "已取得学历事实；本人／学籍学历主管机构毕业证／核验凭证；已取得学历事实；本人／学籍学历主管机构毕业证／核验凭证；L1 已毕业分支 `T`，未毕业可用 `M010` 当前暂代；报到双证时点依 `M001/M016` 可能成为 `C`；F013–F016,F030；SRC-001/002/005/017；证书身份、发证时间及后续原件核验版本；缺→条件性 `NEEDS_MATERIAL`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F013",
-        "F016",
-        "F030"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M009",
-      "name": "M009 已取得学位事实；本人／学位授予单位学位证／核验结果",
-      "purpose": "已取得学位事实；本人／学位授予单位学位证／核验结果；已取得学位事实；本人／学位授予单位学位证／核验结果；已毕业 L1 `T`，在读经当批允许可由 `M010` 暂代；合同前是否必须双证以批次及权威复核；F014–F016,F030；SRC-001/002/005/017；证号与同人校验；缺→条件性 `NEEDS_MATERIAL`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F014",
-        "F016",
-        "F030"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M010",
-      "name": "M010 未毕业的当前在读／学籍身份；学校学籍部门／教育部学籍系统／本人提交凭证",
-      "purpose": "未毕业的当前在读／学籍身份；学校学籍部门／教育部学籍系统／本人提交凭证；未毕业的当前在读／学籍身份；学校学籍部门／教育部学籍系统／本人提交凭证；在读且当批明示允许 L1 `T`；教务处／研究生院在读证明与有效学籍在线验证报告可替代（SRC-001/017）；不替代后续双证原件；F013–F016；SRC-001/002/017；有效期、同人、学段、预计毕业时间；缺→`NEEDS_MATERIAL`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F013",
-        "F016"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M011",
-      "name": "M011 国（境）外学历学位真实性；教育部留学服务中心／本人认证",
-      "purpose": "国（境）外学历学位真实性；教育部留学服务中心／本人认证；国（境）外学历学位真实性；教育部留学服务中心／本人认证；境外学历且当批要求时 L1 `T`；其他国家／地区文件或尚在认证状态能否替代由当批主管确认，不能自行认可；F013,F014,F016；SRC-001/017；认证编号、持有人及有效版本；缺→`NEEDS_MATERIAL`/特殊时点 `POLICY_UNCONFIRMED`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F013",
-        "F014",
-        "F016"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M012",
-      "name": "M012 岗位独有技能、专业经历、成果或当批明确简历材料；本人／授予机构证明附件",
-      "purpose": "岗位独有技能、专业经历、成果或当批明确简历材料；本人／授予机构证明附件；岗位独有技能、专业经历、成果或当批明确简历材料；本人／授予机构证明附件；当批列明要求才 L1 `T`；学校认可的正式记录或证明可替代复印件；公告未列材料不得自动增加；F016,F017；SRC-002/004/016/017；每项证明对应岗位条款、持有人、原件版本；缺→`NEEDS_MATERIAL`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F016",
-        "F017"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M013",
-      "name": "M013 校方对候选人资格的审查结论；科发院／项目组／院办公室审查记录、入围通知",
-      "purpose": "校方对候选人资格的审查结论；科发院／项目组／院办公室审查记录、入围通知；校方对候选人资格的审查结论；科发院／项目组／院办公室审查记录、入围通知；L1 审查完成后转 `C`；具有签发记录的官方系统结论可代纸表，自述／邀请短信只作线索；F020–F022；SRC-001/002/004/016；审查机构、人员、时点及关联原报名版本；尚未产生→`NOT_APPLICABLE`，应有失联→`SOURCE_UNAVAILABLE`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F020",
-        "F022"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M014",
-      "name": "M014 面试行为及有权小组结论；面试小组／项目组记录、评议确认表",
-      "purpose": "面试行为及有权小组结论；面试小组／项目组记录、评议确认表；面试行为及有权小组结论；面试小组／项目组记录、评议确认表；L2 面试完成后 `C`；校方认证成绩记录可替代纸签，AI 不补评分；F022,F023,F024；SRC-001/002/004/016；记录小组、笔录/成绩版次、对应人员岗位；未面试→`NOT_APPLICABLE`，已面试缺→`SOURCE_UNAVAILABLE`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F022",
-        "F023",
-        "F024"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M015",
-      "name": "M015 项目或单位拟聘推荐／汇总关系；项目组／二级单位拟聘清单、签发名单",
-      "purpose": "项目或单位拟聘推荐／汇总关系；项目组／二级单位拟聘清单、签发名单；项目或单位拟聘推荐／汇总关系；项目组／二级单位拟聘清单、签发名单；当批程序要求汇总时 L2 `T`；校方有权系统签发的同效名单可替代，校级直接公示批次未必需独立清单；F024,F031；SRC-004/016；清单名义、批次、顺位与更改版次；缺→`SOURCE_UNAVAILABLE`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F024",
-        "F031"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M016",
-      "name": "M016 正式拟聘／面试结果公示及期限；校方／学院发文主体官网公示、可信签发公告",
-      "purpose": "正式拟聘／面试结果公示及期限；校方／学院发文主体官网公示、可信签发公告；正式拟聘／面试结果公示及期限；校方／学院发文主体官网公示、可信签发公告；实际进入公示且发布后 L3 `C`；校方公示原件可替网页；未来尚未公示时是 `L`；F024–F026,F009,F015；SRC-001/004/005/016/017；公告日期、名单附件仅取获授权同人匹配，不批量采集个人表；发布后失联→`SOURCE_UNAVAILABLE`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F024",
-        "F026",
-        "F009",
-        "F015"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M017",
-      "name": "M017 异议受理、事实核查及处理结论；公告指定承办机关／复核主体登记与答复",
-      "purpose": "异议受理、事实核查及处理结论；公告指定承办机关／复核主体登记与答复；异议受理、事实核查及处理结论；公告指定承办机关／复核主体登记与答复；实有异议／更正 L3 `T`；由有权承办方签发的答复可替流水截图；不存在异议时不能强制造“无异议证明”；F026,F032,F044；SRC-005/013；受理号、决定版本和访问控制、只传必要结论；发生但缺→`SOURCE_UNAVAILABLE`/人工，读取失败→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F026",
-        "F032",
-        "F044"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M018",
-      "name": "M018 体检完成及有权健康资格结论；指定／当批允许医疗机构和校内接收机构的结果",
-      "purpose": "体检完成及有权健康资格结论；指定／当批允许医疗机构和校内接收机构的结果；体检完成及有权健康资格结论；指定／当批允许医疗机构和校内接收机构的结果；当批体检阶段 L3/L4 `T`，某数学学院仅指定公立二甲及以上属该批；不可从原始病历自动计算；F027,F031；SRC-002/004/005/017/013；保留结论、出具日和人员归属，健康原件限制阅览；到期无结论→`NEEDS_HUMAN_DECISION`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F027",
-        "F031"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M019",
-      "name": "M019 心理测评完成与处理结论；学校测评主管部门受限状态／回执",
-      "purpose": "心理测评完成与处理结论；学校测评主管部门受限状态／回执；心理测评完成与处理结论；学校测评主管部门受限状态／回执；按当批阶段 L1a 或 L3 `T`；学校授权结果优先，无法律依据不收量表原始答案（SRC-013）；不因 2024 先测而认定所有批次先测；F028,F031；SRC-001/002/005/016；不复制公开公告中登录凭据，限结论、时点、批次；结果缺→`SOURCE_UNAVAILABLE`/人工，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F028",
-        "F031"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M020",
-      "name": "M020 教职工准入审查结论；成都理工大学人事处有权查询或签发回执",
-      "purpose": "教职工准入审查结论；成都理工大学人事处有权查询或签发回执；教职工准入审查结论；成都理工大学人事处有权查询或签发回执；当批明确要求后置核验时 L3/L4 `T`；学校正式查询记录可代纸质结论；对公告遗漏此步骤的批次先 `POLICY_UNCONFIRMED`；F029,F031；SRC-001/003/004/016；严格限制查看依据细节，仅业务结论；有要求但无结果→`SOURCE_UNAVAILABLE`/人工，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F029",
-        "F031"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M021",
-      "name": "M021 报到时证件原件与身份核验；有权接收办公室／候选人原件核对表",
-      "purpose": "报到时证件原件与身份核验；有权接收办公室／候选人原件核对表；报到时证件原件与身份核验；有权接收办公室／候选人原件核对表；L4 实际报到时 `C`；可信窗口原件验真记录可替再次上传扫描件；报告本身在 L1 不存在；F011,F012,F014,F030；SRC-001/002/005/017；经办人、时间、对应原件版本；应有缺→`SOURCE_UNAVAILABLE`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F011",
-        "F012",
-        "F014",
-        "F030"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M022",
-      "name": "M022 学校／单位最终聘用确认事实；当批有权聘用决定者的决定事件或可查的正式状态（不预设必有单独“录用通知书”）",
-      "purpose": "学校／单位最终聘用确认事实；当批有权聘用决定者的决定事件或可查的正式状态（不预设必有单独“录用通知书”）；学校／单位最终聘用确认事实；当批有权聘用决定者的决定事件或可查的正式状态（不预设必有单独“录用通知书”）；到了当批应确认的节点才成为当前 `C/T`；可由有授权的校内决定记录、聘用手续确认回执等依当批被归口认可的载体证明，拟聘公告本身不能替代；F007,F031,F034；SRC-001/002/004；要求签发主体、具体人与岗位、授权和生效/撤销时间。当前尚未到节点→`NOT_APPLICABLE`；该批是否存在独立决定载体未知→`POLICY_UNCONFIRMED`；应有权威状态但不可查→`SOURCE_UNAVAILABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F007",
-        "F031",
-        "F034"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M023",
-      "name": "M023 撤回、自动放弃认定、取消、递补及答复；本人声明＋有权受理单位登记和后续决定",
-      "purpose": "撤回、自动放弃认定、取消、递补及答复；本人声明＋有权受理单位登记和后续决定；撤回、自动放弃认定、取消、递补及答复；本人声明＋有权受理单位登记和后续决定；发生事件时 L1–L4 `T`；本人申请不能替代校方已确认的取消／递补；以真实受理回执和决定为准；F019,F026,F031,F032,F044；SRC-001/005/014；保留事件时间、旧决定、替换结论、责任人；发生却无答复→`NEEDS_HUMAN_DECISION`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F019",
-        "F026",
-        "F031",
-        "F032",
-        "F044"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M024",
-      "name": "M024 合同拟稿、岗位、薪酬与约定条款；拟订单位／候选人有标识的合同草案",
-      "purpose": "合同拟稿、岗位、薪酬与约定条款；拟订单位／候选人有标识的合同草案；合同拟稿、岗位、薪酬与约定条款；拟订单位／候选人有标识的合同草案；进入 L5 才 `C`；单位正式合同拟稿记录可代文件；尚未发生签约流程不可前置；F007,F033–F036,F038；SRC-002/010/011/012；草案版本、对象、当批岗位与修改人；应有无稿→`NEEDS_MATERIAL`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F007",
-        "F033",
-        "F036",
-        "F038"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M025",
-      "name": "M025 核定真实合同甲方及签署人权限；党政办公室、人事／法务等有权部门对签约日有效的授权原件、校内确认及变更链",
-      "purpose": "核定真实合同甲方及签署人权限；党政办公室、人事／法务等有权部门对签约日有效的授权原件、校内确认及变更链；核定真实合同甲方及签署人权限；党政办公室、人事／法务等有权部门对签约日有效的授权原件、校内确认及变更链；进入 L5，签约权限审查关键 `T`；依法由法定代表人亲签、部门主管签、受托人签、第三方人力公司签是不同证明路径；一般合同授权公告是否适用于劳动/聘用关系须法务确认；F007,F034,F037,F039,F043；SRC-006/008/012；逐一匹配实际甲方、姓名、权限内容、授权期限、签约日及撤销；未得正文→`POLICY_UNCONFIRMED`/人工，不可读→`UNREADABLE`，不得假设学校印章即可免核授权。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F007",
-        "F034",
-        "F037",
-        "F039",
-        "F043"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M026",
-      "name": "M026 按校内适用制度完成合同审查、批准及用印前置；学校合同归口真实审批流水",
-      "purpose": "按校内适用制度完成合同审查、批准及用印前置；学校合同归口真实审批流水；按校内适用制度完成合同审查、批准及用印前置；学校合同归口真实审批流水；仅经证实适用此类型劳动／聘用合同的制度时 L5 `T`；不凭 2024 一般合同办法解读直接设为所有人硬件，可信原审签记录可代 PDF；F033,F037–F039；SRC-006/008/012；审批意见指向准确草案 hash、节点和操作者；适用性未知→`POLICY_UNCONFIRMED`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F033",
-        "F037",
-        "F039"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M027",
-      "name": "M027 双方真实签署合同或协议；实际用工主体／候选人纸质签署原件或可靠电子签验签",
-      "purpose": "双方真实签署合同或协议；实际用工主体／候选人纸质签署原件或可靠电子签验签；双方真实签署合同或协议；实际用工主体／候选人纸质签署原件或可靠电子签验签；只在宣称已经签署后才为当前 `C`，拟稿阶段为 `L`；纸质/电子签接受机制须合法且被校内归口确认；F033–F039,F044；SRC-002/010/011/012；合同唯一编号、双方意思表示证据、签章时点、最终 hash、交付记录；声称已签而原件由机构保存但不可查→`SOURCE_UNAVAILABLE`，申请人应有一方副本可补→`NEEDS_MATERIAL`，签章真实性争议→`NEEDS_HUMAN_DECISION`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F033",
-        "F039",
-        "F044"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M028",
-      "name": "M028 已签合同交付与归档；学校有权档案或人事部门档案索引／回执",
-      "purpose": "已签合同交付与归档；学校有权档案或人事部门档案索引／回执；已签合同交付与归档；学校有权档案或人事部门档案索引／回执；签完后 L6 `C`；可信归档系统记录可代回执，但接口存在性未知；F038,F040；SRC-006/012/013；绑定 `M027` 最终 hash 和存取权限；应归档未见→`SOURCE_UNAVAILABLE`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F038",
-        "F040"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M029",
-      "name": "M029 引用上游岗位批准／经费许可；T08-T01 决定机关真实立项决定引用",
-      "purpose": "引用上游岗位批准／经费许可；T08-T01 决定机关真实立项决定引用；引用上游岗位批准／经费许可；T08-T01 决定机关真实立项决定引用；仅有对应独立岗位立项决定且需核来源时 L0 `T`；经学校授权对已有案例只读关联，不以候选人自填证明；F006–F008,F041；SRC-011/015（仅范围／技术背景，没有校本审批条款）；权威案号及版本，缺→`SOURCE_UNAVAILABLE`/人工，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F006",
-        "F008",
-        "F041"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M030",
-      "name": "M030 引用合同调整、离岗、授权人变更等下游决定；T08-T03/04/05 等原决定机关正式结论",
-      "purpose": "引用合同调整、离岗、授权人变更等下游决定；T08-T03/04/05 等原决定机关正式结论；引用合同调整、离岗、授权人变更等下游决定；T08-T03/04/05 等原决定机关正式结论；L6 真正发生后续独立决定时 `T`；原签发系统只读引用优先，未发生为 `L/X`；F032,F042,F044；SRC-015（仅技术关联，校本政策待补）；带原案、决定有效期及撤销指针；缺→`SOURCE_UNAVAILABLE`/人工，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [
-        "F032",
-        "F042",
-        "F044"
-      ],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M001",
-      "name": "M001 R001/R002/R003/R004/R006/R007/R008/R009/R010/R011/R012/R015/R018/R019/R020/R023/R024",
-      "purpose": "R001/R002/R003/R004/R006/R007/R008/R009/R010/R011/R012/R015/R018/R019/R020/R023/R024；R001/R002/R003/R004/R006/R007/R008/R009/R010/R011/R012/R015/R018/R019/R020/R023/R024；M016；R014/R015/R016/R017/R018/R019/R022。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M002",
-      "name": "M002 R001/R003/R010/R024",
-      "purpose": "R001/R003/R010/R024；R001/R003/R010/R024；M017；R016/R030。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M003",
-      "name": "M003 R002/R004/R006/R030",
-      "purpose": "R002/R004/R006/R030；R002/R004/R006/R030；M018；R018/R022。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M004",
-      "name": "M004 R004/R005/R006/R017",
-      "purpose": "R004/R005/R006/R017；R004/R005/R006/R017；M019；R012/R019/R022。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M005",
-      "name": "M005 R004/R005/R006/R017",
-      "purpose": "R004/R005/R006/R017；R004/R005/R006/R017；M020；R020/R022。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M006",
-      "name": "M006 R006",
-      "purpose": "R006；R006；M021；R008/R021。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M007",
-      "name": "M007 R005/R009/R021/R024/R030",
-      "purpose": "R005/R009/R021/R024/R030；R005/R009/R021/R024/R030；M022；R022/R024。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M008",
-      "name": "M008 R007/R008/R021",
-      "purpose": "R007/R008/R021；R007/R008/R021；M023；R017/R022/R030。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M009",
-      "name": "M009 R007/R008/R021",
-      "purpose": "R007/R008/R021；R007/R008/R021；M024；R001/R023/R024/R025/R026/R027。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M010",
-      "name": "M010 R007/R008/R021",
-      "purpose": "R007/R008/R021；R007/R008/R021；M025；R023/R025/R026/R027。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M011",
-      "name": "M011 R009",
-      "purpose": "R009；R009；M026；R026/R027。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M012",
-      "name": "M012 R010",
-      "purpose": "R010；R010；M027；R024/R025/R027/R028/R030。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M013",
-      "name": "M013 R011/R012/R013",
-      "purpose": "R011/R012/R013；R011/R012/R013；M028；R028/R030。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M014",
-      "name": "M014 R013/R014",
-      "purpose": "R013/R014；R013/R014；M029；R003/R029。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [],
-      "allowReuseAcrossSubjects": false
-    },
-    {
-      "id": "M015",
-      "name": "M015 R014/R022",
-      "purpose": "R014/R022；R014/R022；M030；R029/R030。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
-      "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
-        "sheet",
-        "text"
-      ],
-      "minCount": 0,
-      "maxCount": 2147483647,
-      "requiredElements": [],
-      "allowReuseAcrossSubjects": false
-    }
-  ],
+  {
+    "id": "M001",
+    "name": "M001 当批招聘存在、范围、时间与权责；发文单位的官网公告／原文",
+    "purpose": "当批招聘存在、范围、时间与权责；发文单位的官网公告／原文；当批招聘存在、范围、时间与权责；发文单位的官网公告／原文；L0 `C`；学校权威盖章公告或可验证官方发布记录可替代网页，非第三方转载不自动替代；F002–F005,F007,F009,F015,F043；SRC-001/002/003/004/016/017/019；按发布 URL+批次+时间留原版；官方正文失联→`SOURCE_UNAVAILABLE`，仅有搜索摘要无法核强制细节→`POLICY_UNCONFIRMED`，已给件不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F002",
+      "F005",
+      "F007",
+      "F009",
+      "F015",
+      "F043"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M002",
+    "name": "M002 具体岗位、名额、项目条件；发文单位／岗位主管附件表或公告正文岗位段",
+    "purpose": "具体岗位、名额、项目条件；发文单位／岗位主管附件表或公告正文岗位段；具体岗位、名额、项目条件；发文单位／岗位主管附件表或公告正文岗位段；L0 `T`（公告明确引用附件或独立岗位表时）；正文足以完全确定岗位时可用原文替代；F006–F008,F016,F017；SRC-001/002/004/017；绑定岗位附件版次与公告；缺→`NEEDS_MATERIAL`/校方调取，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F006",
+      "F008",
+      "F016",
+      "F017"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M003",
+    "name": "M003 公告更正、日期和条件效力；原发文机构补充公告／撤销更正通知",
+    "purpose": "公告更正、日期和条件效力；原发文机构补充公告／撤销更正通知；公告更正、日期和条件效力；原发文机构补充公告／撤销更正通知；更正发生时 `T`；没有变更为 `NOT_APPLICABLE`；权威更正原件可代网站显示；F005,F009,F015,F043,F044；SRC-014（示例）；关联原 `M001` 生效链；缺→`SOURCE_UNAVAILABLE`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F005",
+      "F009",
+      "F015",
+      "F043",
+      "F044"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M004",
+    "name": "M004 证明线上报名事件；校人才招聘系统／本人回执及可核后台报名记录",
+    "purpose": "证明线上报名事件；校人才招聘系统／本人回执及可核后台报名记录；证明线上报名事件；校人才招聘系统／本人回执及可核后台报名记录；采用线上渠道的 L1 `T`；有获授权系统记录优先，上传截图仅待核替代；不假设实际接口已开放；F001,F010,F018,F019；SRC-001；回执版本+申请时间+账号去标识；缺→`NEEDS_MATERIAL` 或学校查询，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F001",
+      "F010",
+      "F018",
+      "F019"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M005",
+    "name": "M005 证明纸质／邮件报名及岗位意向；申请人和招聘接收单位科研助理报名表（表名已公开）",
+    "purpose": "证明纸质／邮件报名及岗位意向；申请人和招聘接收单位科研助理报名表（表名已公开）；证明纸质／邮件报名及岗位意向；申请人和招聘接收单位科研助理报名表（表名已公开）；纸表或邮件报名 L1 `T`；当批认可的邮箱受理记录／网报回执为合法替代时才可互替；F001,F010,F011,F018,F019；SRC-002/004/016；绑定接收时间+批次岗位+表版本；缺→`NEEDS_MATERIAL`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F001",
+      "F010",
+      "F011",
+      "F018",
+      "F019"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M006",
+    "name": "M006 联系方式、人员信息、简历补充；本人《应聘者个人信息表》或当批要求的简历",
+    "purpose": "联系方式、人员信息、简历补充；本人《应聘者个人信息表》或当批要求的简历；联系方式、人员信息、简历补充；本人《应聘者个人信息表》或当批要求的简历；当批明确要求时 L1 `T`；同渠道表单已具备等效字段且学校接受时可不重传；F010,F011,F013,F016,F019；SRC-004/017；每份本人归属、表版本独立，电话等受限；缺→`NEEDS_MATERIAL`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F010",
+      "F011",
+      "F013",
+      "F016",
+      "F019"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M007",
+    "name": "M007 验证同一人并参加报考；本人／签发机关身份证件扫描或原件核验回执",
+    "purpose": "验证同一人并参加报考；本人／签发机关身份证件扫描或原件核验回执；验证同一人并参加报考；本人／签发机关身份证件扫描或原件核验回执；L1 `C`（所核实招录公告要求）；具有同等证明力的证件替代须校方依法确认；到场原件另见 `M021`；F010–F012,F034；SRC-001/002/004/017；仅受限保存证件引用及掩码，绑定姓名证号；缺→`NEEDS_MATERIAL`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F010",
+      "F012",
+      "F034"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M008",
+    "name": "M008 已取得学历事实；本人／学籍学历主管机构毕业证／核验凭证",
+    "purpose": "已取得学历事实；本人／学籍学历主管机构毕业证／核验凭证；已取得学历事实；本人／学籍学历主管机构毕业证／核验凭证；L1 已毕业分支 `T`，未毕业可用 `M010` 当前暂代；报到双证时点依 `M001/M016` 可能成为 `C`；F013–F016,F030；SRC-001/002/005/017；证书身份、发证时间及后续原件核验版本；缺→条件性 `NEEDS_MATERIAL`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F013",
+      "F016",
+      "F030"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M009",
+    "name": "M009 已取得学位事实；本人／学位授予单位学位证／核验结果",
+    "purpose": "已取得学位事实；本人／学位授予单位学位证／核验结果；已取得学位事实；本人／学位授予单位学位证／核验结果；已毕业 L1 `T`，在读经当批允许可由 `M010` 暂代；合同前是否必须双证以批次及权威复核；F014–F016,F030；SRC-001/002/005/017；证号与同人校验；缺→条件性 `NEEDS_MATERIAL`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F014",
+      "F016",
+      "F030"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M010",
+    "name": "M010 未毕业的当前在读／学籍身份；学校学籍部门／教育部学籍系统／本人提交凭证",
+    "purpose": "未毕业的当前在读／学籍身份；学校学籍部门／教育部学籍系统／本人提交凭证；未毕业的当前在读／学籍身份；学校学籍部门／教育部学籍系统／本人提交凭证；在读且当批明示允许 L1 `T`；教务处／研究生院在读证明与有效学籍在线验证报告可替代（SRC-001/017）；不替代后续双证原件；F013–F016；SRC-001/002/017；有效期、同人、学段、预计毕业时间；缺→`NEEDS_MATERIAL`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F013",
+      "F016"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M011",
+    "name": "M011 国（境）外学历学位真实性；教育部留学服务中心／本人认证",
+    "purpose": "国（境）外学历学位真实性；教育部留学服务中心／本人认证；国（境）外学历学位真实性；教育部留学服务中心／本人认证；境外学历且当批要求时 L1 `T`；其他国家／地区文件或尚在认证状态能否替代由当批主管确认，不能自行认可；F013,F014,F016；SRC-001/017；认证编号、持有人及有效版本；缺→`NEEDS_MATERIAL`/特殊时点 `POLICY_UNCONFIRMED`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F013",
+      "F014",
+      "F016"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M012",
+    "name": "M012 岗位独有技能、专业经历、成果或当批明确简历材料；本人／授予机构证明附件",
+    "purpose": "岗位独有技能、专业经历、成果或当批明确简历材料；本人／授予机构证明附件；岗位独有技能、专业经历、成果或当批明确简历材料；本人／授予机构证明附件；当批列明要求才 L1 `T`；学校认可的正式记录或证明可替代复印件；公告未列材料不得自动增加；F016,F017；SRC-002/004/016/017；每项证明对应岗位条款、持有人、原件版本；缺→`NEEDS_MATERIAL`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F016",
+      "F017"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M013",
+    "name": "M013 校方对候选人资格的审查结论；科发院／项目组／院办公室审查记录、入围通知",
+    "purpose": "校方对候选人资格的审查结论；科发院／项目组／院办公室审查记录、入围通知；校方对候选人资格的审查结论；科发院／项目组／院办公室审查记录、入围通知；L1 审查完成后转 `C`；具有签发记录的官方系统结论可代纸表，自述／邀请短信只作线索；F020–F022；SRC-001/002/004/016；审查机构、人员、时点及关联原报名版本；尚未产生→`NOT_APPLICABLE`，应有失联→`SOURCE_UNAVAILABLE`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F020",
+      "F022"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M014",
+    "name": "M014 面试行为及有权小组结论；面试小组／项目组记录、评议确认表",
+    "purpose": "面试行为及有权小组结论；面试小组／项目组记录、评议确认表；面试行为及有权小组结论；面试小组／项目组记录、评议确认表；L2 面试完成后 `C`；校方认证成绩记录可替代纸签，AI 不补评分；F022,F023,F024；SRC-001/002/004/016；记录小组、笔录/成绩版次、对应人员岗位；未面试→`NOT_APPLICABLE`，已面试缺→`SOURCE_UNAVAILABLE`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F022",
+      "F023",
+      "F024"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M015",
+    "name": "M015 项目或单位拟聘推荐／汇总关系；项目组／二级单位拟聘清单、签发名单",
+    "purpose": "项目或单位拟聘推荐／汇总关系；项目组／二级单位拟聘清单、签发名单；项目或单位拟聘推荐／汇总关系；项目组／二级单位拟聘清单、签发名单；当批程序要求汇总时 L2 `T`；校方有权系统签发的同效名单可替代，校级直接公示批次未必需独立清单；F024,F031；SRC-004/016；清单名义、批次、顺位与更改版次；缺→`SOURCE_UNAVAILABLE`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F024",
+      "F031"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M016",
+    "name": "M016 正式拟聘／面试结果公示及期限；校方／学院发文主体官网公示、可信签发公告",
+    "purpose": "正式拟聘／面试结果公示及期限；校方／学院发文主体官网公示、可信签发公告；正式拟聘／面试结果公示及期限；校方／学院发文主体官网公示、可信签发公告；实际进入公示且发布后 L3 `C`；校方公示原件可替网页；未来尚未公示时是 `L`；F024–F026,F009,F015；SRC-001/004/005/016/017；公告日期、名单附件仅取获授权同人匹配，不批量采集个人表；发布后失联→`SOURCE_UNAVAILABLE`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F024",
+      "F026",
+      "F009",
+      "F015"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M017",
+    "name": "M017 异议受理、事实核查及处理结论；公告指定承办机关／复核主体登记与答复",
+    "purpose": "异议受理、事实核查及处理结论；公告指定承办机关／复核主体登记与答复；异议受理、事实核查及处理结论；公告指定承办机关／复核主体登记与答复；实有异议／更正 L3 `T`；由有权承办方签发的答复可替流水截图；不存在异议时不能强制造“无异议证明”；F026,F032,F044；SRC-005/013；受理号、决定版本和访问控制、只传必要结论；发生但缺→`SOURCE_UNAVAILABLE`/人工，读取失败→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F026",
+      "F032",
+      "F044"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M018",
+    "name": "M018 体检完成及有权健康资格结论；指定／当批允许医疗机构和校内接收机构的结果",
+    "purpose": "体检完成及有权健康资格结论；指定／当批允许医疗机构和校内接收机构的结果；体检完成及有权健康资格结论；指定／当批允许医疗机构和校内接收机构的结果；当批体检阶段 L3/L4 `T`，某数学学院仅指定公立二甲及以上属该批；不可从原始病历自动计算；F027,F031；SRC-002/004/005/017/013；保留结论、出具日和人员归属，健康原件限制阅览；到期无结论→`NEEDS_HUMAN_DECISION`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F027",
+      "F031"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M019",
+    "name": "M019 心理测评完成与处理结论；学校测评主管部门受限状态／回执",
+    "purpose": "心理测评完成与处理结论；学校测评主管部门受限状态／回执；心理测评完成与处理结论；学校测评主管部门受限状态／回执；按当批阶段 L1a 或 L3 `T`；学校授权结果优先，无法律依据不收量表原始答案（SRC-013）；不因 2024 先测而认定所有批次先测；F028,F031；SRC-001/002/005/016；不复制公开公告中登录凭据，限结论、时点、批次；结果缺→`SOURCE_UNAVAILABLE`/人工，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F028",
+      "F031"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M020",
+    "name": "M020 教职工准入审查结论；成都理工大学人事处有权查询或签发回执",
+    "purpose": "教职工准入审查结论；成都理工大学人事处有权查询或签发回执；教职工准入审查结论；成都理工大学人事处有权查询或签发回执；当批明确要求后置核验时 L3/L4 `T`；学校正式查询记录可代纸质结论；对公告遗漏此步骤的批次先 `POLICY_UNCONFIRMED`；F029,F031；SRC-001/003/004/016；严格限制查看依据细节，仅业务结论；有要求但无结果→`SOURCE_UNAVAILABLE`/人工，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F029",
+      "F031"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M021",
+    "name": "M021 报到时证件原件与身份核验；有权接收办公室／候选人原件核对表",
+    "purpose": "报到时证件原件与身份核验；有权接收办公室／候选人原件核对表；报到时证件原件与身份核验；有权接收办公室／候选人原件核对表；L4 实际报到时 `C`；可信窗口原件验真记录可替再次上传扫描件；报告本身在 L1 不存在；F011,F012,F014,F030；SRC-001/002/005/017；经办人、时间、对应原件版本；应有缺→`SOURCE_UNAVAILABLE`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F011",
+      "F012",
+      "F014",
+      "F030"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M022",
+    "name": "M022 学校／单位最终聘用确认事实；当批有权聘用决定者的决定事件或可查的正式状态（不预设必有单独“录用通知书”）",
+    "purpose": "学校／单位最终聘用确认事实；当批有权聘用决定者的决定事件或可查的正式状态（不预设必有单独“录用通知书”）；学校／单位最终聘用确认事实；当批有权聘用决定者的决定事件或可查的正式状态（不预设必有单独“录用通知书”）；到了当批应确认的节点才成为当前 `C/T`；可由有授权的校内决定记录、聘用手续确认回执等依当批被归口认可的载体证明，拟聘公告本身不能替代；F007,F031,F034；SRC-001/002/004；要求签发主体、具体人与岗位、授权和生效/撤销时间。当前尚未到节点→`NOT_APPLICABLE`；该批是否存在独立决定载体未知→`POLICY_UNCONFIRMED`；应有权威状态但不可查→`SOURCE_UNAVAILABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F007",
+      "F031",
+      "F034"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M023",
+    "name": "M023 撤回、自动放弃认定、取消、递补及答复；本人声明＋有权受理单位登记和后续决定",
+    "purpose": "撤回、自动放弃认定、取消、递补及答复；本人声明＋有权受理单位登记和后续决定；撤回、自动放弃认定、取消、递补及答复；本人声明＋有权受理单位登记和后续决定；发生事件时 L1–L4 `T`；本人申请不能替代校方已确认的取消／递补；以真实受理回执和决定为准；F019,F026,F031,F032,F044；SRC-001/005/014；保留事件时间、旧决定、替换结论、责任人；发生却无答复→`NEEDS_HUMAN_DECISION`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F019",
+      "F026",
+      "F031",
+      "F032",
+      "F044"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M024",
+    "name": "M024 合同拟稿、岗位、薪酬与约定条款；拟订单位／候选人有标识的合同草案",
+    "purpose": "合同拟稿、岗位、薪酬与约定条款；拟订单位／候选人有标识的合同草案；合同拟稿、岗位、薪酬与约定条款；拟订单位／候选人有标识的合同草案；进入 L5 才 `C`；单位正式合同拟稿记录可代文件；尚未发生签约流程不可前置；F007,F033–F036,F038；SRC-002/010/011/012；草案版本、对象、当批岗位与修改人；应有无稿→`NEEDS_MATERIAL`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F007",
+      "F033",
+      "F036",
+      "F038"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M025",
+    "name": "M025 核定真实合同甲方及签署人权限；党政办公室、人事／法务等有权部门对签约日有效的授权原件、校内确认及变更链",
+    "purpose": "核定真实合同甲方及签署人权限；党政办公室、人事／法务等有权部门对签约日有效的授权原件、校内确认及变更链；核定真实合同甲方及签署人权限；党政办公室、人事／法务等有权部门对签约日有效的授权原件、校内确认及变更链；进入 L5，签约权限审查关键 `T`；依法由法定代表人亲签、部门主管签、受托人签、第三方人力公司签是不同证明路径；一般合同授权公告是否适用于劳动/聘用关系须法务确认；F007,F034,F037,F039,F043；SRC-006/008/012；逐一匹配实际甲方、姓名、权限内容、授权期限、签约日及撤销；未得正文→`POLICY_UNCONFIRMED`/人工，不可读→`UNREADABLE`，不得假设学校印章即可免核授权。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F007",
+      "F034",
+      "F037",
+      "F039",
+      "F043"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M026",
+    "name": "M026 按校内适用制度完成合同审查、批准及用印前置；学校合同归口真实审批流水",
+    "purpose": "按校内适用制度完成合同审查、批准及用印前置；学校合同归口真实审批流水；按校内适用制度完成合同审查、批准及用印前置；学校合同归口真实审批流水；仅经证实适用此类型劳动／聘用合同的制度时 L5 `T`；不凭 2024 一般合同办法解读直接设为所有人硬件，可信原审签记录可代 PDF；F033,F037–F039；SRC-006/008/012；审批意见指向准确草案 hash、节点和操作者；适用性未知→`POLICY_UNCONFIRMED`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F033",
+      "F037",
+      "F039"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M027",
+    "name": "M027 双方真实签署合同或协议；实际用工主体／候选人纸质签署原件或可靠电子签验签",
+    "purpose": "双方真实签署合同或协议；实际用工主体／候选人纸质签署原件或可靠电子签验签；双方真实签署合同或协议；实际用工主体／候选人纸质签署原件或可靠电子签验签；只在宣称已经签署后才为当前 `C`，拟稿阶段为 `L`；纸质/电子签接受机制须合法且被校内归口确认；F033–F039,F044；SRC-002/010/011/012；合同唯一编号、双方意思表示证据、签章时点、最终 hash、交付记录；声称已签而原件由机构保存但不可查→`SOURCE_UNAVAILABLE`，申请人应有一方副本可补→`NEEDS_MATERIAL`，签章真实性争议→`NEEDS_HUMAN_DECISION`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F033",
+      "F039",
+      "F044"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M028",
+    "name": "M028 已签合同交付与归档；学校有权档案或人事部门档案索引／回执",
+    "purpose": "已签合同交付与归档；学校有权档案或人事部门档案索引／回执；已签合同交付与归档；学校有权档案或人事部门档案索引／回执；签完后 L6 `C`；可信归档系统记录可代回执，但接口存在性未知；F038,F040；SRC-006/012/013；绑定 `M027` 最终 hash 和存取权限；应归档未见→`SOURCE_UNAVAILABLE`，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F038",
+      "F040"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M029",
+    "name": "M029 引用上游岗位批准／经费许可；T08-T01 决定机关真实立项决定引用",
+    "purpose": "引用上游岗位批准／经费许可；T08-T01 决定机关真实立项决定引用；引用上游岗位批准／经费许可；T08-T01 决定机关真实立项决定引用；仅有对应独立岗位立项决定且需核来源时 L0 `T`；经学校授权对已有案例只读关联，不以候选人自填证明；F006–F008,F041；SRC-011/015（仅范围／技术背景，没有校本审批条款）；权威案号及版本，缺→`SOURCE_UNAVAILABLE`/人工，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F006",
+      "F008",
+      "F041"
+    ],
+    "allowReuseAcrossSubjects": false
+  },
+  {
+    "id": "M030",
+    "name": "M030 引用合同调整、离岗、授权人变更等下游决定；T08-T03/04/05 等原决定机关正式结论",
+    "purpose": "引用合同调整、离岗、授权人变更等下游决定；T08-T03/04/05 等原决定机关正式结论；引用合同调整、离岗、授权人变更等下游决定；T08-T03/04/05 等原决定机关正式结论；L6 真正发生后续独立决定时 `T`；原签发系统只读引用优先，未发生为 `L/X`；F032,F042,F044；SRC-015（仅技术关联，校本政策待补）；带原案、决定有效期及撤销指针；缺→`SOURCE_UNAVAILABLE`/人工，不可读→`UNREADABLE`。原件未规定业务数量上限；槽位 maxCount 使用宽松技术上限，不构成政策阈值。SRC 仅为研究索引，不作为案卷附件或 SourceRef。",
+    "acceptedKinds": [
+      "pdf",
+      "image",
+      "office",
+      "sheet",
+      "text"
+    ],
+    "minCount": 0,
+    "maxCount": 2147483647,
+    "requiredElements": [
+      "F032",
+      "F042",
+      "F044"
+    ],
+    "allowReuseAcrossSubjects": false
+  }
+],
   "sections": [
     {
       "id": "R02_RESEARCH_RULES",
@@ -1607,9 +1368,9 @@ export const r02Metadata: R02Metadata = {
   "officialSchoolTemplate": false,
   "researchStatus": "RESEARCH_HANDOFF_READY",
   "policyEvidenceStatus": "PARTIAL",
-  "sourceRecordCount": 40,
+  "sourceRecordCount": 20,
   "fieldCount": 44,
-  "materialSlotCount": 45,
+  "materialSlotCount": 30,
   "criterionCount": 30,
   "criteria": [
     {
@@ -1950,5 +1711,27 @@ export const r02Metadata: R02Metadata = {
       ],
       "evidenceStatus": "UNCONFIRMED"
     }
+  ],
+  "sourceIds": [
+    "SRC-001",
+    "SRC-002",
+    "SRC-003",
+    "SRC-004",
+    "SRC-005",
+    "SRC-006",
+    "SRC-007",
+    "SRC-008",
+    "SRC-009",
+    "SRC-010",
+    "SRC-011",
+    "SRC-012",
+    "SRC-013",
+    "SRC-014",
+    "SRC-015",
+    "SRC-016",
+    "SRC-017",
+    "SRC-018",
+    "SRC-019",
+    "SRC-020"
   ]
 }
