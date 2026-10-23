@@ -16,6 +16,22 @@ process.env.PROFER_CONFIG_DIR = CONFIG_DIR
 afterAll(() => rmSync(CONFIG_DIR, { recursive: true, force: true }))
 
 describe('审核模板目录（M1）', () => {
+
+  test('R02 非官方研究模板即使保存为草稿也不得发布', () => {
+    const templateId = 'r02-nonofficial-publication-gate-test'
+    const candidate = {
+      ...BUILTIN_TEMPLATES_V2[0]!,
+      templateId,
+      version: 1,
+      name: 'R02 非官方发布门禁测试',
+      status: 'draft' as const,
+      sourceNote: 'R02_RESEARCH_TEMPLATE_NONOFFICIAL: 本地研究模板，不代表校方正式模板。',
+    }
+
+    saveDraft(candidate)
+    expect(() => publishTemplate(templateId, 1)).toThrow('模板发布资格未获允许')
+    expect(getTemplate(templateId, 1)?.status).toBe('draft')
+  })
   test('模板 ID 支持中文名称并拒绝路径穿越字符', () => {
     expect(isSafeTemplateId('wizard-学生综合素质测评-muuq80nv')).toBeTrue()
     expect(isSafeTemplateId('../outside')).toBeFalse()
