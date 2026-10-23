@@ -298,7 +298,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
     identifyWithModel(true,read)
   },[read?.sessionKey,read?.read.route.status,read?.routeCandidates,installed?.caseId,caseId])
   React.useEffect(()=>{
-    if(modelMatchState!=='matched'||!modelCandidates.length||modelDeadline===null)return
+    if(mode!=='catalog'||modelMatchState!=='matched'||!modelCandidates.length||modelDeadline===null)return
     const tick=()=>{
       const remaining=Math.max(0,modelDeadline-Date.now())
       setModelRemainingMs(remaining)
@@ -315,10 +315,10 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
     tick()
     const timer=setInterval(tick,250)
     return ()=>clearInterval(timer)
-  },[modelMatchState,modelCandidates,modelDeadline,read?.sessionKey,read?.routeCandidates])
+  },[mode,modelMatchState,modelCandidates,modelDeadline,read?.sessionKey,read?.routeCandidates])
   React.useEffect(()=>{
     const choice=read?.read.route.status==='default-selected'?read.read.route.chosen:undefined
-    if(!choice||!read||installed)return
+    if(mode!=='catalog'||!choice||!read||installed)return
     const candidate=read.routeCandidates.find(item=>item.templateId===choice.templateId&&
       item.templateVersion===choice.templateVersion&&item.evidence!=='current-native-template-binding')
     if(!candidate)return
@@ -327,7 +327,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
     routeAutoChoiceRef.current=key
     applyChoiceRef.current(choice.templateId,choice.templateVersion,'规则匹配倒计时默认候选')
   },[read?.sessionKey,read?.read.route.status,read?.read.route.chosen?.templateId,
-    read?.read.route.chosen?.templateVersion,installed?.caseId])
+    read?.read.route.chosen?.templateVersion,installed?.caseId,mode])
   const route=read?.read.route
   const eligible=read?.catalog.filter(item=>!item.templateId.startsWith('fallback-'))??[]
   const visibleCatalog=filterTemplateCatalog(eligible,catalogQuery)
@@ -362,7 +362,11 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
         <p className="text-xs text-amber-700 dark:text-amber-300">材料可能缺少申请原件、存在多个业务对象或角色未归属。请先在案卷中补齐或确认材料归属，再刷新；不能把不明材料自动归到某个人。</p>}
       <div className="flex gap-2">
         <button type="button" className={mode==='catalog'?action:secondary} onClick={()=>setMode('catalog')}>全部模板目录</button>
-        <button type="button" className={mode==='fallback'?action:secondary} onClick={()=>setMode('fallback')}>公共兜底 / 自动起草</button>
+        <button type="button" className={mode==='fallback'?action:secondary} onClick={()=>{
+          setMode('fallback');setModelCandidates([]);setModelDeadline(null);setModelMatchState('idle')
+          if(route?.status==='countdown')void window.reviewAPI.interruptLocalNativeProductV3(caseId)
+            .then(setRead).catch(reason=>setError(reason instanceof Error?reason.message:String(reason)))
+        }}>公共兜底 / 自动起草</button>
       </div>
       {mode==='catalog'&&<div className="space-y-2">
         {read.routeCandidates.length>0&&modelMatchState!=='matched'&&<div className="rounded-lg bg-primary/5 p-3 text-xs">
