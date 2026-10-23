@@ -21,16 +21,36 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F001；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：string／申请主体；P0—P7；学校可信认证或人工核验；治理约束；M001；L2；未核身份不得进行个人信息访问；string／申请主体；P0—P7；学校可信认证或人工核验；治理约束；M001；L2；未核身份不得进行个人信息访问。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F001；原稿字段合同：string／申请主体；P0—P7；学校可信认证或人工核验；治理约束；M001；L2；未核身份不得进行个人信息访问；string／申请主体；P0—P7；学校可信认证或人工核验；治理约束；M001；L2；未核身份不得进行个人信息访问；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F002",
       "label": "操作人与学生关系",
-      "kind": "text",
+      "kind": "enum",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F002；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "options": [
+        {
+          "value": "本人",
+          "label": "本人"
+        },
+        {
+          "value": "代理",
+          "label": "代理"
+        },
+        {
+          "value": "学校工作人员",
+          "label": "学校工作人员"
+        },
+        {
+          "value": "未知",
+          "label": "未知"
+        }
+      ],
+      "extractionHint": "原稿类型/对象与证据定位：enum（本人／代理／学校工作人员／未知）／申请主体；P0—P1；可信权限记录、申请陈述核对；M001,M003；L2；未知不授予代办权限；enum（本人／代理／学校工作人员／未知）／申请主体；P0—P1；可信权限记录、申请陈述核对；M001,M003；L2；未知不授予代办权限。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F002；原稿字段合同：enum（本人／代理／学校工作人员／未知）／申请主体；P0—P1；可信权限记录、申请陈述核对；M001,M003；L2；未知不授予代办权限；enum（本人／代理／学校工作人员／未知）／申请主体；P0—P1；可信权限记录、申请陈述核对；M001,M003；L2；未知不授予代办权限；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F003",
@@ -39,7 +59,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F003；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：reference／授权；P0—P1、P7；有权部门核验；校本代理细则未知 SRC-008；M003；L3；本人申请不适用；代理缺失暂停代理办理；reference／授权；P0—P1、P7；有权部门核验；校本代理细则未知 SRC-008；M003；L3；本人申请不适用；代理缺失暂停代理办理。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F003；原稿字段合同：reference／授权；P0—P1、P7；有权部门核验；校本代理细则未知 SRC-008；M003；L3；本人申请不适用；代理缺失暂停代理办理；reference／授权；P0—P1、P7；有权部门核验；校本代理细则未知 SRC-008；M003；L3；本人申请不适用；代理缺失暂停代理办理；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F004",
@@ -48,7 +69,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F004；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：string／被处分学生；P0—P7；可信学籍／留学生记录，SRC-001,003；M002；L2；不能以 OCR 学号独立确认；string／被处分学生；P0—P7；可信学籍／留学生记录，SRC-001,003；M002；L2；不能以 OCR 学号独立确认。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F004；原稿字段合同：string／被处分学生；P0—P7；可信学籍／留学生记录，SRC-001,003；M002；L2；不能以 OCR 学号独立确认；string／被处分学生；P0—P7；可信学籍／留学生记录，SRC-001,003；M002；L2；不能以 OCR 学号独立确认；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F005",
@@ -57,25 +79,88 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F005；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：string／被处分学生；P0—P7；学校身份记录与必要变更证明；M002；L2；同名/曾用名待人工核，禁止模糊强配；string／被处分学生；P0—P7；学校身份记录与必要变更证明；M002；L2；同名/曾用名待人工核，禁止模糊强配。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F005；原稿字段合同：string／被处分学生；P0—P7；学校身份记录与必要变更证明；M002；L2；同名/曾用名待人工核，禁止模糊强配；string／被处分学生；P0—P7；学校身份记录与必要变更证明；M002；L2；同名/曾用名待人工核，禁止模糊强配；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F006",
       "label": "身份制度类别",
-      "kind": "text",
+      "kind": "enum",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F006；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "options": [
+        {
+          "value": "普通学历",
+          "label": "普通学历"
+        },
+        {
+          "value": "来华留学生",
+          "label": "来华留学生"
+        },
+        {
+          "value": "港澳台侨",
+          "label": "港澳台侨"
+        },
+        {
+          "value": "离校",
+          "label": "离校"
+        },
+        {
+          "value": "不明",
+          "label": "不明"
+        }
+      ],
+      "extractionHint": "原稿类型/对象与证据定位：enum（普通学历／来华留学生／港澳台侨／离校／不明）／学生；P0；校方学籍及注册类型；SRC-001,003,004；M002；L2；不明即 POLICY_UNCONFIRMED；enum（普通学历／来华留学生／港澳台侨／离校／不明）／学生；P0；校方学籍及注册类型；SRC-001,003,004；M002；L2；不明即 POLICY_UNCONFIRMED。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F006；原稿字段合同：enum（普通学历／来华留学生／港澳台侨／离校／不明）／学生；P0；校方学籍及注册类型；SRC-001,003,004；M002；L2；不明即 POLICY_UNCONFIRMED；enum（普通学历／来华留学生／港澳台侨／离校／不明）／学生；P0；校方学籍及注册类型；SRC-001,003,004；M002；L2；不明即 POLICY_UNCONFIRMED；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F007",
       "label": "学段／培养类别",
-      "kind": "text",
+      "kind": "enum",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F007；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "options": [
+        {
+          "value": "专科",
+          "label": "专科"
+        },
+        {
+          "value": "本科",
+          "label": "本科"
+        },
+        {
+          "value": "硕士",
+          "label": "硕士"
+        },
+        {
+          "value": "博士",
+          "label": "博士"
+        },
+        {
+          "value": "预科",
+          "label": "预科"
+        },
+        {
+          "value": "语言",
+          "label": "语言"
+        },
+        {
+          "value": "进修",
+          "label": "进修"
+        },
+        {
+          "value": "交换",
+          "label": "交换"
+        },
+        {
+          "value": "其它",
+          "label": "其它"
+        }
+      ],
+      "extractionHint": "原稿类型/对象与证据定位：enum（专科／本科／硕士／博士／预科／语言／进修／交换／其它）／学生；P0；校方记录；SRC-001,003；M002；L2；无法识别不得套用普通生期限；enum（专科／本科／硕士／博士／预科／语言／进修／交换／其它）／学生；P0；校方记录；SRC-001,003；M002；L2；无法识别不得套用普通生期限。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F007；原稿字段合同：enum（专科／本科／硕士／博士／预科／语言／进修／交换／其它）／学生；P0；校方记录；SRC-001,003；M002；L2；无法识别不得套用普通生期限；enum（专科／本科／硕士／博士／预科／语言／进修／交换／其它）／学生；P0；校方记录；SRC-001,003；M002；L2；无法识别不得套用普通生期限；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F008",
@@ -84,7 +169,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F008；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：string+unit_id／学生；P0—P4；校方在案所属关系与变更史；M002；L2；学院变更需确认当前考察责任主体；string+unit_id／学生；P0—P4；校方在案所属关系与变更史；M002；L2；学院变更需确认当前考察责任主体。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F008；原稿字段合同：string+unit_id／学生；P0—P4；校方在案所属关系与变更史；M002；L2；学院变更需确认当前考察责任主体；string+unit_id／学生；P0—P4；校方在案所属关系与变更史；M002；L2；学院变更需确认当前考察责任主体；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F009",
@@ -93,7 +179,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F009；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：enum+date_range／学生；P0,P2,P7；学籍／留学生部门有权记录；M002,M008；L2；状态不明人工核对是否受理；enum+date_range／学生；P0,P2,P7；学籍／留学生部门有权记录；M002,M008；L2；状态不明人工核对是否受理。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F009；原稿字段合同：enum+date_range／学生；P0,P2,P7；学籍／留学生部门有权记录；M002,M008；L2；状态不明人工核对是否受理；enum+date_range／学生；P0,P2,P7；学籍／留学生部门有权记录；M002,M008；L2；状态不明人工核对是否受理；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F010",
@@ -102,7 +189,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F010；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：string／原处分；P1—P7；学校原处分台账或正式文书；SRC-001,003；M004,M005；L3；无匹配时先调档，不凭申请新造处分；string／原处分；P1—P7；学校原处分台账或正式文书；SRC-001,003；M004,M005；L3；无匹配时先调档，不凭申请新造处分。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F010；原稿字段合同：string／原处分；P1—P7；学校原处分台账或正式文书；SRC-001,003；M004,M005；L3；无匹配时先调档，不凭申请新造处分；string／原处分；P1—P7；学校原处分台账或正式文书；SRC-001,003；M004,M005；L3；无匹配时先调档，不凭申请新造处分；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F011",
@@ -111,7 +199,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F011；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：string／原处分；P1—P7；正式处分决定书；SRC-001 第 36 条；M004；L3；文号缺可用权威记录定位，不能凭文号猜测；string／原处分；P1—P7；正式处分决定书；SRC-001 第 36 条；M004；L3；文号缺可用权威记录定位，不能凭文号猜测。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F011；原稿字段合同：string／原处分；P1—P7；正式处分决定书；SRC-001 第 36 条；M004；L3；文号缺可用权威记录定位，不能凭文号猜测；string／原处分；P1—P7；正式处分决定书；SRC-001 第 36 条；M004；L3；文号缺可用权威记录定位，不能凭文号猜测；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F012",
@@ -120,16 +209,40 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F012；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：string／原处分；P1—P7；正式文书与可信校方关联；M004；L3；与 F004 不同则 CONFLICT；string／原处分；P1—P7；正式文书与可信校方关联；M004；L3；与 F004 不同则 CONFLICT。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F012；原稿字段合同：string／原处分；P1—P7；正式文书与可信校方关联；M004；L3；与 F004 不同则 CONFLICT；string／原处分；P1—P7；正式文书与可信校方关联；M004；L3；与 F004 不同则 CONFLICT；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F013",
       "label": "处分种类",
-      "kind": "text",
+      "kind": "enum",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F013；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "options": [
+        {
+          "value": "警告",
+          "label": "警告"
+        },
+        {
+          "value": "严重警告",
+          "label": "严重警告"
+        },
+        {
+          "value": "记过",
+          "label": "记过"
+        },
+        {
+          "value": "留校察看",
+          "label": "留校察看"
+        },
+        {
+          "value": "开除学籍",
+          "label": "开除学籍"
+        }
+      ],
+      "extractionHint": "原稿类型/对象与证据定位：enum（警告／严重警告／记过／留校察看／开除学籍）／原处分；P1—P7；处分决定书，SRC-001,003,005；M004,M005；L3；不能按上传者描述自行定级；enum（警告／严重警告／记过／留校察看／开除学籍）／原处分；P1—P7；处分决定书，SRC-001,003,005；M004,M005；L3；不能按上传者描述自行定级。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F013；原稿字段合同：enum（警告／严重警告／记过／留校察看／开除学籍）／原处分；P1—P7；处分决定书，SRC-001,003,005；M004,M005；L3；不能按上传者描述自行定级；enum（警告／严重警告／记过／留校察看／开除学籍）／原处分；P1—P7；处分决定书，SRC-001,003,005；M004,M005；L3；不能按上传者描述自行定级；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F014",
@@ -138,7 +251,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F014；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：date／原处分；P2—P7；正式决定书 SRC-001,003；M004；L3；缺日期只提示，不推算时限；date／原处分；P2—P7；正式决定书 SRC-001,003；M004；L3；缺日期只提示，不推算时限。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F014；原稿字段合同：date／原处分；P2—P7；正式决定书 SRC-001,003；M004；L3；缺日期只提示，不推算时限；date／原处分；P2—P7；正式决定书 SRC-001,003；M004；L3；缺日期只提示，不推算时限；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F015",
@@ -147,7 +261,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F015；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：date+ref／原处分；P2—P7；送达记录，SRC-001 第 37 条；M004,M005；L3；起算与救济关联不明，暂停时间结论；date+ref／原处分；P2—P7；送达记录，SRC-001 第 37 条；M004,M005；L3；起算与救济关联不明，暂停时间结论。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F015；原稿字段合同：date+ref／原处分；P2—P7；送达记录，SRC-001 第 37 条；M004,M005；L3；起算与救济关联不明，暂停时间结论；date+ref／原处分；P2—P7；送达记录，SRC-001 第 37 条；M004,M005；L3；起算与救济关联不明，暂停时间结论；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F016",
@@ -156,7 +271,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F016；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：date+policy_basis／原处分；P2—P7；决定载明及现行有效校规 SRC-007；M004,M019；L3；与落款／送达不强行画等号；date+policy_basis／原处分；P2—P7；决定载明及现行有效校规 SRC-007；M004,M019；L3；与落款／送达不强行画等号。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F016；原稿字段合同：date+policy_basis／原处分；P2—P7；决定载明及现行有效校规 SRC-007；M004,M019；L3；与落款／送达不强行画等号；date+policy_basis／原处分；P2—P7；决定载明及现行有效校规 SRC-007；M004,M019；L3；与落款／送达不强行画等号；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F017",
@@ -165,7 +281,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F017；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：unit_id+ref／原处分；P1—P7；校级正式决定、归口核验 SRC-001,003；M004；L1；出文身份未核时不能认定文书有效；unit_id+ref／原处分；P1—P7；校级正式决定、归口核验 SRC-001,003；M004；L1；出文身份未核时不能认定文书有效。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F017；原稿字段合同：unit_id+ref／原处分；P1—P7；校级正式决定、归口核验 SRC-001,003；M004；L1；出文身份未核时不能认定文书有效；unit_id+ref／原处分；P1—P7；校级正式决定、归口核验 SRC-001,003；M004；L1；出文身份未核时不能认定文书有效；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F018",
@@ -174,7 +291,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F018；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：enum+as_of／处分状态；P2—P7；校方处分记录／档案核对；M005；L3；不以 OCR 或学院列表覆盖；enum+as_of／处分状态；P2—P7；校方处分记录／档案核对；M005；L3；不以 OCR 或学院列表覆盖。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F018；原稿字段合同：enum+as_of／处分状态；P2—P7；校方处分记录／档案核对；M005；L3；不以 OCR 或学院列表覆盖；enum+as_of／处分状态；P2—P7；校方处分记录／档案核对；M005；L3；不以 OCR 或学院列表覆盖；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F019",
@@ -183,7 +301,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F019；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：policy_ref／政策；P0,P2—P5；正式发文及过渡规则 SRC-001,002,003,007；M019；L0；普通生未知为 POLICY_UNCONFIRMED；policy_ref／政策；P0,P2—P5；正式发文及过渡规则 SRC-001,002,003,007；M019；L0；普通生未知为 POLICY_UNCONFIRMED。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F019；原稿字段合同：policy_ref／政策；P0,P2—P5；正式发文及过渡规则 SRC-001,002,003,007；M019；L0；普通生未知为 POLICY_UNCONFIRMED；policy_ref／政策；P0,P2—P5；正式发文及过渡规则 SRC-001,002,003,007；M019；L0；普通生未知为 POLICY_UNCONFIRMED；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F020",
@@ -192,7 +311,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F020；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：interval[]／处分期间；P2,P4；学籍决定，不是病假说明 SRC-001,003；M008；L2；仅有休学线索时按条件待核，不能推延长日数；interval[]／处分期间；P2,P4；学籍决定，不是病假说明 SRC-001,003；M008；L2；仅有休学线索时按条件待核，不能推延长日数。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F020；原稿字段合同：interval[]／处分期间；P2,P4；学籍决定，不是病假说明 SRC-001,003；M008；L2；仅有休学线索时按条件待核，不能推延长日数；interval[]／处分期间；P2,P4；学籍决定，不是病假说明 SRC-001,003；M008；L2；仅有休学线索时按条件待核，不能推延长日数；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F021",
@@ -201,7 +321,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F021；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：reference[]／处分链；P2—P7；各原处分权威决定；M005,M009；L3；发现冲突按不同处分分别定位；reference[]／处分链；P2—P7；各原处分权威决定；M005,M009；L3；发现冲突按不同处分分别定位。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F021；原稿字段合同：reference[]／处分链；P2—P7；各原处分权威决定；M005,M009；L3；发现冲突按不同处分分别定位；reference[]／处分链；P2—P7；各原处分权威决定；M005,M009；L3；发现冲突按不同处分分别定位；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F022",
@@ -210,25 +331,46 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F022；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：reference[]／处分链；P2—P7；学校更正、变更、延长正式文书；M005,M010；L3；自述存在但无权威件时待核；reference[]／处分链；P2—P7；学校更正、变更、延长正式文书；M005,M010；L3；自述存在但无权威件时待核。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F022；原稿字段合同：reference[]／处分链；P2—P7；学校更正、变更、延长正式文书；M005,M010；L3；自述存在但无权威件时待核；reference[]／处分链；P2—P7；学校更正、变更、延长正式文书；M005,M010；L3；自述存在但无权威件时待核；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F023",
       "label": "解释性候选届满日",
-      "kind": "text",
+      "kind": "date",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F023；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：date；null／时限计算派生值；P2,P4；F013,F016,F019—F022；不是正式期限判定；M004,M008—M010,M019；L3；政策不明输出 null，不将日期当学校批准；date；null／时限计算派生值；P2,P4；F013,F016,F019—F022；不是正式期限判定；M004,M008—M010,M019；L3；政策不明输出 null，不将日期当学校批准。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F023；原稿字段合同：date；null／时限计算派生值；P2,P4；F013,F016,F019—F022；不是正式期限判定；M004,M008—M010,M019；L3；政策不明输出 null，不将日期当学校批准；date；null／时限计算派生值；P2,P4；F013,F016,F019—F022；不是正式期限判定；M004,M008—M010,M019；L3；政策不明输出 null，不将日期当学校批准；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F024",
       "label": "请求类型",
-      "kind": "text",
+      "kind": "enum",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F024；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "options": [
+        {
+          "value": "期满",
+          "label": "期满"
+        },
+        {
+          "value": "提前",
+          "label": "提前"
+        },
+        {
+          "value": "状态核对",
+          "label": "状态核对"
+        },
+        {
+          "value": "申诉转介",
+          "label": "申诉转介"
+        }
+      ],
+      "extractionHint": "原稿类型/对象与证据定位：enum（期满／提前／状态核对／申诉转介）／申请；P1—P7；本人申请陈述；校本表单 SRC-008 待核；M006,M015；L2；无法区分则请申请人明确目的；enum（期满／提前／状态核对／申诉转介）／申请；P1—P7；本人申请陈述；校本表单 SRC-008 待核；M006,M015；L2；无法区分则请申请人明确目的。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F024；原稿字段合同：enum（期满／提前／状态核对／申诉转介）／申请；P1—P7；本人申请陈述；校本表单 SRC-008 待核；M006,M015；L2；无法区分则请申请人明确目的；enum（期满／提前／状态核对／申诉转介）／申请；P1—P7；本人申请陈述；校本表单 SRC-008 待核；M006,M015；L2；无法区分则请申请人明确目的；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F025",
@@ -237,7 +379,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F025；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：datetime／申请；P1；实际受理记录，不假设线上系统；M006；L1；未知不作逾期判断；datetime／申请；P1；实际受理记录，不假设线上系统；M006；L1；未知不作逾期判断。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F025；原稿字段合同：datetime／申请；P1；实际受理记录，不假设线上系统；M006；L1；未知不作逾期判断；datetime／申请；P1；实际受理记录，不假设线上系统；M006；L1；未知不作逾期判断；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F026",
@@ -246,7 +389,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F026；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：text／申请；P1,P3；申请本人陈述；SRC-001,003；M006；L3；缺则询问目的，不代写悔过事实；text／申请；P1,P3；申请本人陈述；SRC-001,003；M006；L3；缺则询问目的，不代写悔过事实。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F026；原稿字段合同：text／申请；P1,P3；申请本人陈述；SRC-001,003；M006；L3；缺则询问目的，不代写悔过事实；text／申请；P1,P3；申请本人陈述；SRC-001,003；M006；L3；缺则询问目的，不代写悔过事实；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F027",
@@ -255,7 +399,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F027；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：reference[]／提前解除；P1—P4；原始奖项／志愿服务／学院记录等，标准未证；M007；L3；B 情形缺则 NEEDS_MATERIAL 或人工核实；reference[]／提前解除；P1—P4；原始奖项／志愿服务／学院记录等，标准未证；M007；L3；B 情形缺则 NEEDS_MATERIAL 或人工核实。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F027；原稿字段合同：reference[]／提前解除；P1—P4；原始奖项／志愿服务／学院记录等，标准未证；M007；L3；B 情形缺则 NEEDS_MATERIAL 或人工核实；reference[]／提前解除；P1—P4；原始奖项／志愿服务／学院记录等，标准未证；M007；L3；B 情形缺则 NEEDS_MATERIAL 或人工核实；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F028",
@@ -264,7 +409,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F028；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：datetime+state／申请状态；P1—P5；当事人请求、校方是否接受尚未核 SRC-008；M006；L2；未经有权受理不得推定申请已撤销；datetime+state／申请状态；P1—P5；当事人请求、校方是否接受尚未核 SRC-008；M006；L2；未经有权受理不得推定申请已撤销。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F028；原稿字段合同：datetime+state／申请状态；P1—P5；当事人请求、校方是否接受尚未核 SRC-008；M006；L2；未经有权受理不得推定申请已撤销；datetime+state／申请状态；P1—P5；当事人请求、校方是否接受尚未核 SRC-008；M006；L2；未经有权受理不得推定申请已撤销；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F029",
@@ -273,7 +419,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F029；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：record+author／学院考察；P3—P5；学院有权记录；SRC-001,003 第 7 条；M011；L3；P1 不必需；到 P3 无记录时交学院；record+author／学院考察；P3—P5；学院有权记录；SRC-001,003 第 7 条；M011；L3；P1 不必需；到 P3 无记录时交学院。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F029；原稿字段合同：record+author／学院考察；P3—P5；学院有权记录；SRC-001,003 第 7 条；M011；L3；P1 不必需；到 P3 无记录时交学院；record+author／学院考察；P3—P5；学院有权记录；SRC-001,003 第 7 条；M011；L3；P1 不必需；到 P3 无记录时交学院；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F030",
@@ -282,7 +429,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F030；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：enum+reason／学院审核；P4—P5；学院签署的审核记录 SRC-001,003；M012；L3；P1 后置，不据材料缺失否决；enum+reason／学院审核；P4—P5；学院签署的审核记录 SRC-001,003；M012；L3；P1 后置，不据材料缺失否决。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F030；原稿字段合同：enum+reason／学院审核；P4—P5；学院签署的审核记录 SRC-001,003；M012；L3；P1 后置，不据材料缺失否决；enum+reason／学院审核；P4—P5；学院签署的审核记录 SRC-001,003；M012；L3；P1 后置，不据材料缺失否决；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F031",
@@ -291,7 +439,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F031；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：actor_ref／学院审核；P4—P5；校方组织授权会话，不取 Renderer 字段；M012；L2；未核授权不承认正式学院意见；actor_ref／学院审核；P4—P5；校方组织授权会话，不取 Renderer 字段；M012；L2；未核授权不承认正式学院意见。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F031；原稿字段合同：actor_ref／学院审核；P4—P5；校方组织授权会话，不取 Renderer 字段；M012；L2；未核授权不承认正式学院意见；actor_ref／学院审核；P4—P5；校方组织授权会话，不取 Renderer 字段；M012；L2；未核授权不承认正式学院意见；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F032",
@@ -300,7 +449,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F032；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：document_ref／学校决定；P5—P7；学校有权机关签发 SRC-001,003；M013；L3；P1 后置；没有则只能说“尚无解除决定证据”；document_ref／学校决定；P5—P7；学校有权机关签发 SRC-001,003；M013；L3；P1 后置；没有则只能说“尚无解除决定证据”。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F032；原稿字段合同：document_ref／学校决定；P5—P7；学校有权机关签发 SRC-001,003；M013；L3；P1 后置；没有则只能说“尚无解除决定证据”；document_ref／学校决定；P5—P7；学校有权机关签发 SRC-001,003；M013；L3；P1 后置；没有则只能说“尚无解除决定证据”；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F033",
@@ -309,16 +459,18 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F033；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：unit+actor_ref／学校决定；P5—P7；权威签发／授权链 SRC-007,008 待核；M013；L2；仅印章图片不足以验证；unit+actor_ref／学校决定；P5—P7；权威签发／授权链 SRC-007,008 待核；M013；L2；仅印章图片不足以验证。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F033；原稿字段合同：unit+actor_ref／学校决定；P5—P7；权威签发／授权链 SRC-007,008 待核；M013；L2；仅印章图片不足以验证；unit+actor_ref／学校决定；P5—P7；权威签发／授权链 SRC-007,008 待核；M013；L2；仅印章图片不足以验证；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F034",
       "label": "解除决定载明生效日",
-      "kind": "text",
+      "kind": "date",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F034；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：date；null／学校决定；P5—P7；正式解除文书、规则待核；M013；L3；不取上传文件时间代替生效日；date；null／学校决定；P5—P7；正式解除文书、规则待核；M013；L3；不取上传文件时间代替生效日。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F034；原稿字段合同：date；null／学校决定；P5—P7；正式解除文书、规则待核；M013；L3；不取上传文件时间代替生效日；date；null／学校决定；P5—P7；正式解除文书、规则待核；M013；L3；不取上传文件时间代替生效日；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F035",
@@ -327,7 +479,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F035；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：reference／送达；P6—P7；学校实际送达或归档记录；M014；L3；P1 后置，缺时查校方，不擅改决定效力；reference／送达；P6—P7；学校实际送达或归档记录；M014；L3；P1 后置，缺时查校方，不擅改决定效力。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F035；原稿字段合同：reference／送达；P6—P7；学校实际送达或归档记录；M014；L3；P1 后置，缺时查校方，不擅改决定效力；reference／送达；P6—P7；学校实际送达或归档记录；M014；L3；P1 后置，缺时查校方，不擅改决定效力；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F036",
@@ -336,7 +489,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F036；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：archive_ref+version／档案；P6—P7；学校档案 Owner，SRC-004,005；M018；L3；P1 后置，不因未归档证明推定决定无效；archive_ref+version／档案；P6—P7；学校档案 Owner，SRC-004,005；M018；L3；P1 后置，不因未归档证明推定决定无效。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F036；原稿字段合同：archive_ref+version／档案；P6—P7；学校档案 Owner，SRC-004,005；M018；L3；P1 后置，不因未归档证明推定决定无效；archive_ref+version／档案；P6—P7；学校档案 Owner，SRC-004,005；M018；L3；P1 后置，不因未归档证明推定决定无效；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F037",
@@ -345,7 +499,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F037；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：appeal_ref／独立申诉；P1,P7；学生申诉书及有权受理记录 SRC-005,006；M015；L3；未核校本时限人工转介，不当作解除申请；appeal_ref／独立申诉；P1,P7；学生申诉书及有权受理记录 SRC-005,006；M015；L3；未核校本时限人工转介，不当作解除申请。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F037；原稿字段合同：appeal_ref／独立申诉；P1,P7；学生申诉书及有权受理记录 SRC-005,006；M015；L3；未核校本时限人工转介，不当作解除申请；appeal_ref／独立申诉；P1,P7；学生申诉书及有权受理记录 SRC-005,006；M015；L3；未核校本时限人工转介，不当作解除申请；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F038",
@@ -354,7 +509,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F038；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：document_ref／独立申诉；P5—P7；申诉处理机关意见，SRC-005,006；M016；L3；意见并非正式撤销决定，不覆盖 F018；document_ref／独立申诉；P5—P7；申诉处理机关意见，SRC-005,006；M016；L3；意见并非正式撤销决定，不覆盖 F018。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F038；原稿字段合同：document_ref／独立申诉；P5—P7；申诉处理机关意见，SRC-005,006；M016；L3；意见并非正式撤销决定，不覆盖 F018；document_ref／独立申诉；P5—P7；申诉处理机关意见，SRC-005,006；M016；L3；意见并非正式撤销决定，不覆盖 F018；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F039",
@@ -363,7 +519,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F039；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：document_ref／救济结果；P5—P7；学校有权重新决定或主管机关文书 SRC-005；M017；L3；未找到有效文书不得宣告原处分撤销；document_ref／救济结果；P5—P7；学校有权重新决定或主管机关文书 SRC-005；M017；L3；未找到有效文书不得宣告原处分撤销。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F039；原稿字段合同：document_ref／救济结果；P5—P7；学校有权重新决定或主管机关文书 SRC-005；M017；L3；未找到有效文书不得宣告原处分撤销；document_ref／救济结果；P5—P7；学校有权重新决定或主管机关文书 SRC-005；M017；L3；未找到有效文书不得宣告原处分撤销；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F040",
@@ -372,7 +529,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F040；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：date+authority／救济结果；P5—P7；F039 所指正式文书与相应规则；M017；L3；不按申诉受理日推定生效；date+authority／救济结果；P5—P7；F039 所指正式文书与相应规则；M017；L3；不按申诉受理日推定生效。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F040；原稿字段合同：date+authority／救济结果；P5—P7；F039 所指正式文书与相应规则；M017；L3；不按申诉受理日推定生效；date+authority／救济结果；P5—P7；F039 所指正式文书与相应规则；M017；L3；不按申诉受理日推定生效；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F041",
@@ -381,7 +539,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F041；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：record+owner／状态核验；P7；处分／档案权属部门后置处理；M005,M020；L3；无权更正时只给冲突待办；record+owner／状态核验；P7；处分／档案权属部门后置处理；M005,M020；L3；无权更正时只给冲突待办。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F041；原稿字段合同：record+owner／状态核验；P7；处分／档案权属部门后置处理；M005,M020；L3；无权更正时只给冲突待办；record+owner／状态核验；P7；处分／档案权属部门后置处理；M005,M020；L3；无权更正时只给冲突待办；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F042",
@@ -390,7 +549,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F042；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：material_ref[]／证据链；P1—P7；材料接收及权威档案的来源记录；M001—M020；L3；版本或归属断链则相关核验失效；material_ref[]／证据链；P1—P7；材料接收及权威档案的来源记录；M001—M020；L3；版本或归属断链则相关核验失效。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F042；原稿字段合同：material_ref[]／证据链；P1—P7；材料接收及权威档案的来源记录；M001—M020；L3；版本或归属断链则相关核验失效；material_ref[]／证据链；P1—P7；材料接收及权威档案的来源记录；M001—M020；L3；版本或归属断链则相关核验失效；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F043",
@@ -399,7 +559,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F043；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：version_id+as_of／政策；P0—P7；正式校本发文、过渡信息 SRC-002,007；M019；L0；缺则政策门禁阻断硬阈值计算；version_id+as_of／政策；P0—P7；正式校本发文、过渡信息 SRC-002,007；M019；L0；缺则政策门禁阻断硬阈值计算。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F043；原稿字段合同：version_id+as_of／政策；P0—P7；正式校本发文、过渡信息 SRC-002,007；M019；L0；缺则政策门禁阻断硬阈值计算；version_id+as_of／政策；P0—P7；正式校本发文、过渡信息 SRC-002,007；M019；L0；缺则政策门禁阻断硬阈值计算；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F044",
@@ -408,7 +569,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F044；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：issue_ref[]／核验问题；P2—P7；原始证据比对与人工核对；M004,M005,M020；L3；未闭环前不能写入肯定的权威状态；issue_ref[]／核验问题；P2—P7；原始证据比对与人工核对；M004,M005,M020；L3；未闭环前不能写入肯定的权威状态。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F044；原稿字段合同：issue_ref[]／核验问题；P2—P7；原始证据比对与人工核对；M004,M005,M020；L3；未闭环前不能写入肯定的权威状态；issue_ref[]／核验问题；P2—P7；原始证据比对与人工核对；M004,M005,M020；L3；未闭环前不能写入肯定的权威状态；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F045",
@@ -417,7 +579,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F045；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：enum+timestamp／证据来源；P0—P7；原始文件／权威取数过程；M001—M020；L1；不可读=UNREADABLE；源失联=SOURCE_UNAVAILABLE；enum+timestamp／证据来源；P0—P7；原始文件／权威取数过程；M001—M020；L1；不可读=UNREADABLE；源失联=SOURCE_UNAVAILABLE。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F045；原稿字段合同：enum+timestamp／证据来源；P0—P7；原始文件／权威取数过程；M001—M020；L1；不可读=UNREADABLE；源失联=SOURCE_UNAVAILABLE；enum+timestamp／证据来源；P0—P7；原始文件／权威取数过程；M001—M020；L1；不可读=UNREADABLE；源失联=SOURCE_UNAVAILABLE；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     }
   ],
   "materialSlots": [
