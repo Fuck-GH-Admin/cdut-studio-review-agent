@@ -26,7 +26,7 @@ describe('R02 T02-B runtime template definitions', () => {
     expect(new Set(batch.map(({ template }) => template.name)).size).toBe(4)
     for (const { template, metadata } of batch) {
       expect(template.name).toBe(metadata.name)
-      expect(metadata.templateId).toBe(template.templateId)
+      expect(template.templateId).toBe(metadata.templateId)
       expect(metadata.officialSchoolTemplate).toBe(false)
     }
   })
@@ -35,12 +35,12 @@ describe('R02 T02-B runtime template definitions', () => {
     for (const { template, metadata } of batch) {
       expect(metadata.sourceDocumentPath).toContain(`/${template.templateId}.md`)
       expect(metadata.sourceDocumentSha256).toMatch(/^[a-f0-9]{64}$/)
-      expect(metadata.criteria.length).toBe(template.sections?.reduce((n, section) => n + section.criteria.length, 0))
+      expect(template.sections?.reduce<number>((n, section) => n + section.criteria.length, 0) ?? 0).toBe(metadata.criteria.length)
       const sectionIds = new Set((template.sections ?? []).map(section => section.id))
       const criteria = new Set((template.sections ?? []).flatMap(section => section.criteria.map(criterion => `${section.id}:${criterion.id}`)))
-      const fieldIds = new Set(metadata.fieldIds.map(item => item.sourceId))
-      const materialIds = new Set(metadata.materialSlotIds.map(item => item.sourceId))
-      const sourceIds = new Set(metadata.sourceIndexIds)
+      const fieldIds = new Set<string>(metadata.fieldIds.map(item => item.sourceId))
+      const materialIds = new Set<string>(metadata.materialSlotIds.map(item => item.sourceId))
+      const sourceIds = new Set<string>(metadata.sourceIndexIds)
       for (const item of metadata.criteria) {
         expect(sectionIds.has(item.sectionId)).toBe(true)
         expect(criteria.has(`${item.sectionId}:${item.criterionId}`)).toBe(true)
@@ -54,8 +54,8 @@ describe('R02 T02-B runtime template definitions', () => {
           for (const materialId of referencedIds(criterion.requirement, 'M')) expect(materialIds.has(materialId)).toBe(true)
         }
       }
-      expect(metadata.fieldIds.length).toBe(template.fields.length)
-      expect(metadata.materialSlotIds.length).toBe(template.materialSlots.length)
+      expect(template.fields.length).toBe(metadata.fieldIds.length)
+      expect(template.materialSlots.length).toBe(metadata.materialSlotIds.length)
       expect(new Set(metadata.fieldIds.map(item => item.sourceId)).size).toBe(metadata.fieldIds.length)
       expect(new Set(metadata.materialSlotIds.map(item => item.sourceId)).size).toBe(metadata.materialSlotIds.length)
     }
@@ -113,10 +113,8 @@ describe('R02 T02-B runtime template definitions', () => {
       expect(template.stages.every(stage => stage.workflowOwner === 'local')).toBe(true)
       expect(template.stages.at(-1)?.executorRole).toBe('teacher')
       expect(template.outputs.some(output => output.kind === 'approval')).toBe(false)
-      if (metadata.policyEvidenceStatus !== 'VERIFIED') {
-        expect(template.autoPassPolicy?.enabled).toBe(false)
-        expect(template.status).toBe('draft')
-      }
+      expect(template.autoPassPolicy?.enabled).toBe(false)
+      expect(template.status).toBe('draft')
     }
   })
 })
