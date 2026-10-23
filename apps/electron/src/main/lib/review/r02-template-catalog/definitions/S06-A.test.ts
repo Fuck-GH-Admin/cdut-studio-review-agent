@@ -34,7 +34,7 @@ describe('R02 S06-A native template definitions', () => {
       const template = item.template
       expect(new Set(template.fields.map(field => field.key)).size).toBe(template.fields.length)
       expect(new Set(template.materialSlots.map(slot => slot.id)).size).toBe(template.materialSlots.length)
-      expect(new Set(template.sections?.map(section => section.id) ?? []).size).toBe(template.sections?.length)
+      expect(new Set(template.sections?.map(section => section.id) ?? []).size).toBe(template.sections?.length ?? 0)
       const sectionIds = new Set(template.sections?.map(section => section.id) ?? [])
       const criteria = (template.sections ?? []).flatMap(section => section.criteria.map(criterion => ({ sectionId: section.id, ...criterion })))
       expect(criteria.length).toBe(item.expectedCriteria)
@@ -58,7 +58,7 @@ describe('R02 S06-A native template definitions', () => {
         cursor = template.stages.find(stage => stage.id === cursor)?.nextStageId
       }
       expect(reachable.size).toBe(template.stages.length)
-      expect(template.stages.map(stage => stage.id)).toEqual(item.expectedStages)
+      expect(template.stages.map(stage => stage.id)).toEqual([...item.expectedStages])
       expect(template.stages.every(stage => stage.kind === 'manual-review' && stage.workflowOwner === 'local')).toBe(true)
     }
   })
@@ -70,7 +70,7 @@ describe('R02 S06-A native template definitions', () => {
       for (const criterion of criteria) {
         const mapped = item.metadata.criteria.find(entry => entry.criterionId === criterion.id && entry.sectionId === criterion.sectionId)
         expect(mapped).toBeDefined()
-        expect(['VERIFIED', 'PARTIAL', 'UNCONFIRMED']).toContain(mapped?.evidenceStatus)
+        expect(['VERIFIED', 'PARTIAL', 'UNCONFIRMED'].includes(mapped?.evidenceStatus ?? '')).toBe(true)
         expect(Array.isArray(mapped?.srcIds)).toBe(true)
         for (const srcId of mapped?.srcIds ?? []) expect(srcId).toMatch(/^SRC-\d{3}$/)
       }
