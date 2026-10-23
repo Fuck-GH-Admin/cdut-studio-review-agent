@@ -1,0 +1,108 @@
+{
+  "testId": "L1-01",
+  "snapshot": "P06-R03",
+  "repoSha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+  "fixtureKind": "synthetic-only",
+  "revision": {
+    "before": 5,
+    "after": 6
+  },
+  "aggregateSha256": {
+    "before": "0f2ccab5004c625cd4a202c4c592dc7bc1b4886170bac049df0603099672f214",
+    "after": "e884594807a8cdd4e7d929af61d01dd9c51039e3fc2b8b838fae82df5b0b83d7"
+  },
+  "frozenPlanBaseline": {
+    "fingerprint": "fbb6f4b28920f7f58dc8b371292bcbef96650470c617e6b842c308e88ae27981",
+    "subjectIds": [
+      "frozen-subject-read",
+      "frozen-subject-copy"
+    ],
+    "ruleIds": [
+      "frozen-check-1",
+      "frozen-check-2"
+    ]
+  },
+  "planAtReplacement": {
+    "fingerprint": "fbb6f4b28920f7f58dc8b371292bcbef96650470c617e6b842c308e88ae27981",
+    "subjectIds": [
+      "item-001",
+      "item-002",
+      "item-003",
+      "item-004",
+      "item-005",
+      "item-006"
+    ],
+    "ruleIds": [
+      "workspace:rulepack-demo-001:outline-001",
+      "workspace:rulepack-demo-001:outline-002",
+      "workspace:rulepack-demo-001:outline-003",
+      "workspace:rulepack-demo-001:outline-004",
+      "workspace:rulepack-demo-001:outline-005",
+      "workspace:rulepack-demo-001:outline-006",
+      "workspace:rulepack-demo-001:outline-007"
+    ]
+  },
+  "planAfterArchive": {
+    "fingerprint": "fbb6f4b28920f7f58dc8b371292bcbef96650470c617e6b842c308e88ae27981",
+    "subjectIds": [
+      "item-001",
+      "item-002",
+      "item-003",
+      "item-004",
+      "item-005",
+      "item-006"
+    ],
+    "ruleIds": [
+      "workspace:rulepack-demo-001:outline-001",
+      "workspace:rulepack-demo-001:outline-002",
+      "workspace:rulepack-demo-001:outline-003",
+      "workspace:rulepack-demo-001:outline-004",
+      "workspace:rulepack-demo-001:outline-005",
+      "workspace:rulepack-demo-001:outline-006",
+      "workspace:rulepack-demo-001:outline-007"
+    ]
+  },
+  "observationAfterArchive": {
+    "value": {
+      "kind": "number",
+      "value": 4
+    },
+    "confirmed": true,
+    "sourceVersionIds": [
+      "doc-ev-001-v1"
+    ]
+  },
+  "evidenceLinkAfterArchive": {
+    "status": "rejected",
+    "documentVersionId": "doc-ev-001-v1"
+  },
+  "receiptCount": 7,
+  "coverage": {
+    "pendingChecks": 42,
+    "allClearVerdictAllowed": false,
+    "blockerCount": 2
+  },
+  "formalDecisionProbe": {
+    "ok": true,
+    "decisionId": "dec-1792393760481-7yzy",
+    "runId": "v3-postarchive-business-run",
+    "finalScores": [
+      {
+        "subjectId": "item-001",
+        "value": "4",
+        "basisRunId": "v3-postarchive-business-run"
+      }
+    ]
+  },
+  "status": "REPRODUCED_FAIL",
+  "formalDecisionProbeSetup": {
+    "testOnlyAggregateMutation": true,
+    "deletesFrozenD2RuntimePlan": true,
+    "retainsArchivedObservationAndSourceRef": true,
+    "manuallySavedCompletedRun": true,
+    "syntheticRunCompletedChecks": 1,
+    "runInputHashIncludesObservation": true,
+    "acceptedAdjudication": true,
+    "normalRendererPathToSetupProven": false
+  }
+}

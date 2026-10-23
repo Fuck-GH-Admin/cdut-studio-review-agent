@@ -1,0 +1,25 @@
+< b68443b2 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 3b368722 docs(d4): record real unified CI success, initial false green, limits, and exact evidence
+< 3e351ab5 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< c8e87418 ci(d4): fail closed on bun test and verify through tee using pipefail
+< 1c082f5a test(d4): case-scoped rules need no target; enforce paired subject/object when scoped
+< 1b372132 fix(d4): preserve legitimate case-scoped Check mappings without objectKey
+< 620f091d test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 9b3e5bfe docs(d4): reproducible Bun worktree, held-template import, D2 smoke and failure handoff
+< be563807 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 10cd12ce ci(d4): frozen Bun full regression and fifty held-draft imports
+< 1242daee test(d4): regression for 50-source catalog, candidate import and cross-domain scope
+< 2c620194 fix(d4): use static Node fs import for Bun ESM runner
+< 70635dd0 feat(d4): expose explicit 50-candidate import and D1/D3/D2 verification CLI
+< d19b8a24 feat(d4): add fixed-source 50-template machine-readable catalog
+< e03539cb feat(d4): integrate all eight domain candidate assets at fixed heads
+> 5edb9bdf docs(review-g02): lock 13/13 green D1-D3-D2-Pi evidence, actual Plan fingerprints and honest partial statuses
+> 8ca98ed5 artifact(review-g02): pin T02/T03 compiled plans and all three verified synthetic Pi receipts
+> 9fa91e9c artifact(review-g02): commit actual T01 compiled D2 schema3 runtime Plan from green CI
+> bf869d2e docs(review-g02): record source, policy, external, human and test gaps without Gold exposure
+> 181d9255 docs(review-g02): explain three runnable D1/D3/D2 candidates and strict authority limits
+> 290f2b9e fix(review-g02): preserve T03 full section 14 policy provenance and applicability
+> eb1ca0fc fix(review-g02): submit case-scoped semantic checks with complete fixed subject set
+> cc22700c ci(review-g02): validate authored JSON, D1/D3/D2 and Pi with frozen COMMON baseline
+> f1515b07 test(review-g02): exercise D1/D3/D2 generic-object plans and isolated synthetic Pi for all three templates
+> 343e61c1 feat(review-g02): author three complete MD-derived D1/D3 generic-object candidates and coverage ledgers

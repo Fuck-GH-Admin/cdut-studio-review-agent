@@ -1,0 +1,30 @@
++ b568c246312cc1438d862e7cfd9575c75e3d7f19 feat(G03 D4): pin ten business sources and module/condition catalog
++ 0f43db73b9d1718ac9879c111211c91e6eec0f34 feat(G03 D4): implement deterministic full-Markdown D1/D2 generator
++ ac33f622bba3036bacd336ef4f06e8ba50bc2ba9 feat(G03 D4): generate modular authoring workspaces G03-T01 G03-T02
++ b2962a4f261774c632f36951d576ad7d9abe01fd feat(G03 D4): generate modular authoring workspaces G03-T03 G03-T12
++ 4f5e9086604e7777bac92a7e425876639c603129 feat(G03 D4): generate modular authoring workspaces G03-T06 G03-T07
++ 28d994890d681845bd2daf2bf7001ed28761131b feat(G03 D4): generate modular workspaces G03-T08 G03-T09
++ ffaaddf1981e199a57a1ad2ab743ae49fdd9e77c feat(G03 D4): generate modular workspaces G03-T10 G03-T11
++ 35f86806c3e6455fb90d528dba714ca0b6cb66f6 test(G03 D4): ten full-source D1/D3/D2 and synthetic Pi integration cases
++ e98ba39a46e2891bbdb98796c7dc2614fd0e57a0 build(G03): add immutable SHA-checked local source regenerator
++ a1c13ae302110963efe7e65b49f39379ebc239d6 docs(G03): explain real modular assets, reproducibility and authority bounds
++ 3ee246e1247fc2831e441f9847e2a4c2928b9aa3 ci(G03): produce verifiable plans, Pi receipts and conditional archive
++ d0ce47ce98a72783b3ed58fe427942b742e36547 test(G03 T06): retain draft stage gate and isolate evidence on ungated R02
++ 46324e599339463b284c4fc9a6944cb819afff17 test(G03 D4): archive verified D2 Plans and Pi receipts [skip ci]
++ b1877ba46eeb44a4cae2daf1326f5def574ccac8 fix(G03 D4): preserve C source front matter and shared R envelope in active modules
++ 98195270163c71f71943c20ace1892c91a274017 fix(G03): recognize boldface Markdown rule IDs in shared rule envelope
++ 015542f4003d2640033962bd6adf53cf543f90cd fix(G03 D4): preserve complete front matter and rule envelopes G03-T01,G03-T02
++ 60e70e2987f0be23ca19f9239c5144315d957b1a fix(G03 D4): preserve complete front matter and rule envelopes G03-T03,G03-T12
++ 9edf63150cdfd5079255546c99680e8a0cf2bdee fix(G03 D4): source-preserving D1 module regeneration G03-T06,G03-T07
++ d4140315eda72b376008d7e1076b87a49e9a4b5d fix(G03 D4): source-preserving D1 module regeneration G03-T08,G03-T09
++ 59f2ceba0920703d54b7ee31fe7cf223b9cdc4df fix(G03 D4): source-preserving D1 module regeneration G03-T10,G03-T11
++ abed040e958a341a500c0ffd0f9b3128ee30477b test(G03): require executable C front matter and common R rule envelope for all ten
++ a33a42d1a7aa03e08a2c674c2c5943191f3c4674 test(G03 D4): archive verified D2 Plans and Pi receipts [skip ci]
++ 74c7d346f91e7663c0bcf39e491c670ec8b021a0 fix(G03 D4): do not invent stage/material gates from ordinal R IDs
++ 4c09a91b4766503f161f87ef515373883477b1e8 fix(G03 D4): regenerate safe authoring source gates G03-T01,G03-T02
++ 16dddeafc2eb0ebcef304df17ed3146ca560f507 fix(G03 D4): regenerate safe authoring source gates G03-T03,G03-T12
++ b47f7a1fcdd6e36912f646b851f967fada42096f fix(G03 D4): remove unsupported stage assumptions G03-T06,G03-T07
++ 3e5c79836cc5d7c5d2607fbb600d65b774b2c777 fix(G03 D4): remove unsupported stage assumptions G03-T08,G03-T09
++ 9af9a53a279a361541be6ac618f30fe7bc38a680 fix(G03 D4): remove unsupported stage assumptions G03-T10,G03-T11
++ c2c76622b2fc7079ad3f70af0c819e8983b3a8a2 test(G03): ensure no unverified case-stage or material gate is invented
++ c2f49f937b9768057e6e6b6975a832f9a11dfa03 docs(G03): separate preserved material duties from unsupported school-stage gate mappings

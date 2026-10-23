@@ -1,0 +1,503 @@
+> c2f965d2 test(d4-w1): real dual-active resolution retains originals and rejects stale or tampered source
+> 5a72d797 fix(d4-w1): make Main material-resolution IPC TypeScript require assertion parseable
+> f4af9840 feat(d4-w1): reviewer-controlled dual-active source resolution in material history
+> 8a087f2c feat(d4-w1): explicit Main-validated material version resolution without deleting originals
+> 08590c5a test(d4-w1): exercise actual two-page PDF source positions and scan-only page gaps
+> 4d73d672 fix(d4-w1): close pending mandatory field JSX conditional
+> aedcda17 fix(d4-w1): narrow V2 error result type and surface unconfirmed required reviewer fields
+> 418830d7 test(d4-w1): enforce Main-side source and evidence identity with cross-case negatives
+> f77441ce fix(d4-w1): enforce current SourceRef and per-Subject EvidenceLink identity at Main V2 commands
+> 0b1e1b73 test(d4-w1): use legacy revision=0 and V2 rejection-result contract in form negatives
+> c7951ad4 feat(d4-w1): editable per-Subject typed review forms and safe presentation overlay
+> ec353d71 test(d4-w1): enforce reviewer field types in authoritative V2 corrections and retain snapshots
+> a8440948 feat(d4-w1): validated reviewer-defined typed forms scoped to frozen D2 fields
+> 409b2c66 fix(d4-w1): preserve scanned-PDF partial warning contract with true page extraction
+> 25830a80 feat(d4-w1): retain true PDF page and spreadsheet cell coordinates through V2 sources
+> f1ef0304 feat(d4-w1): resume UI and end-to-end hash guarded durable batch journal regression
+> 28e2e8f3 feat(d4-w1): durable batch journal and verified restaging resume in Main
+> 2c63696e docs(d4-w1): freeze CI-green code SHA, full test counts and remaining product gates
+> c0704d11 fix(d4-w1): show pre-W1 archived originals in revision reconciliation
+> 3321f0a1 feat(d4-w1): preview live and archived originals via existing Main path policy
+> 5ab225e7 docs(d4-w1): record executed C1-C4 scope, code snapshots, gates and remaining work
+> b1c9c5dc fix(d4-w1): unconfirm retired-source observations while retaining evidence history
+> fd4ea978 feat(d4-w1): expose frozen per-Subject author responsibilities without inventing form fields
+> 5ec4d6c0 fix(d4-w1): reject foreign and stale SourceRefs, enforce per-Subject evidence scope
+> f1a637fc fix(d4-w1): restore strict TypeScript CI for progress subscription and source test
+> a5abf42a feat(d4-w1): surface per-file import progress and crash-aware version reconciliation
+> 10c66a65 fix(d4-w1): persist per-file provenance and guard version retirement after verified parse
+> ff9c249b docs(d4-w1): actionable next Agent engineering taskbook for remaining W1 features and deferred batched GUI acceptance
+> 6db1264a docs(d4-w1): formal verified HEAD, CI, product progress, remaining scope and independent acceptance handoff
+> a095e8aa fix(d4-w1): no automatic retirement for empty-text pseudo-parse or concurrent case edit during retry
+> 38a679d4 test(d4-w1): ZIP payload from actual file-drop bytes follows shared Main extraction and skip ledger
+> 605dd0ee docs(d4-w1): document in-case SHA-verified parser retry, direct-byte drop and remaining W1 gates
+> 2e7c169f test(d4-w1): genuine bytes-backed drag, SHA dedup, skip consent, owner, replay and traversal/cap attacks
+> 14629ebb fix(d4-w1): disable legacy path-based drag lane for D4; use pathless byte-backed native pipeline
+> 002f7095 feat(d4-w1): genuine pathless user-gesture file drag into existing case assessment workflow
+> f07c659d feat(d4-w1): typed drag-byte IPC bridge through preload
+> dd4473a8 feat(d4-w1): Main-frame owner-gated byte-backed drag entry, no path input
+> 8812dcdb feat(d4-w1): expose explicit user-drop bytes staging channel
+> 58b76147 fix(d4-w1): portable filename guard checks one backslash and Windows device names
+> 0c9ece53 feat(d4-w1): trusted byte-backed drag staging with Main ZIP pipeline, caps and no renderer host paths
+> 19551ae9 test(d4-w1): real D2 original replay repaired/partial/tampered cases and immutable version history
+> 5384fb2a feat(d4-w1): real per-file remediation entry in application and evidence workbench lanes
+> a5a5ed6b feat(d4-w1): per-material safe parser retry UI in existing case with explicit partial/failed warnings
+> 9262a107 feat(d4-w1): typed preload API for Main-owned reparse retry
+> e6c85f56 feat(d4-w1): Main frame-gated IPC for safe original-only parser retry
+> 6bd34e50 feat(d4-w1): verified original-file in-case parser retry with revision guard, hash check and safe version archival
+> 0b79934a feat(d4-w1): define Main-only original replay result and typed IPC channel
+> 8aaa0996 refactor(d4-w1): share Main-only per-case mutation guard between append and parse replay
+> a30b7ff6 fix(d4-w1): correctly reject single backslash in replay filename
+> 79155399 fix(d4-w1): explicit safe-basename guard for internal original-file replay
+> f8ee8042 feat(d4-w1): internal replay import retains original display filename and rejects unsafe basename
+> 6cadfc19 fix(test): short 2-character snippet must honestly remain file-level instead of fabricated block precision
+> df3abb2b docs(d4-w1): retain typed fact corrections, Main observation receipt test and cross-case field guard
+> 2d673e4f test(d4-w1): numeric units, boolean, date, enum and multi-value fact correction negatives
+> 1a954639 feat(d4-w1): preserve numeric/date/boolean/enum/multi types during human fact edits
+> 0b94897c feat(d4-w1): preserve typed V2 field values in human fact correction
+> c4b56b43 test(d4-w1): real D2 Subject fact correction with original-version SourceRef and receipt persistence
+> bb7a31ba feat(d4-w1): visible fact submission errors and out-of-scope candidate protection per D2 Subject
+> 1819f3df fix(d4-w1): reject cross-case Subject and out-of-frozen-scope field during human fact submission
+> 5624ace1 docs(d4-w1): record real Subject observation review, scoped facts and trustworthy source positioning
+> d249b275 feat(d4-w1): display current subject field values and distinct author-scoped fact labels without generic placeholder collisions
+> 69d812f0 test(d4-w1): preserve exact current V2 SourceRef and degrade stale or invented coordinates
+> 5437570a fix(d4-w1): preserve verified existing V2 precise SourceRef without trusting stale or fabricated coordinates
+> f8a92e41 test(d4-w1): nested per-subject D2 observation gates become reviewable candidate facts
+> 6dcd1258 feat(d4-w1): include nested author-declared confirmed-observation gate keys in scoped fact UI
+> 58f6452c fix(d4-w1): forward reviewer-selected source version and block to canonical correction action
+> 1571f071 feat(d4-w1): source-linked candidate confirmation, manual source selection and verified source navigation
+> e4facdd5 feat(d4-w1): constrain manual facts to active source versions, user-selected original blocks and scoped field definitions
+> 7a5bf902 feat(d4-w1): expose real per-D2-subject fact review, human correction and evidence summary in workspace
+> 9b1f8d23 test(d4-w1): exact SourceRef, subject scope and stale/forged source negatives
+> 0a0b433f fix(d4-w1): never infer precise source coordinates from loose snippets or inactive material
+> a44ac44d feat(d4-w1): validated explicit source locations and per-subject D2 fact choices
+> 02711053 fix(d4-w1): reset batch decisions on case switch and reject stale cross-case UI apply
+> 2d320ae7 test(d4-w1): retired application source cannot leave dangling V1 extracted items
+> ff083819 fix(d4-w1): remove orphaned V1 application items when retiring replaced source document
+> aa4a4f44 docs(d4-w1): record implemented post-case conflict assessment, controlled replacement and remaining acceptance gaps
+> fe6d9ee5 fix(d4-w1): discard late native picker assessment on case switch or unmount
+> 324e1889 test(d4-w1): real Main D2 post-case append/duplicate/stale-version/archive-on-success and skip-consent regressions
+> bcfb87b3 feat(d4-w1): expose batch append and conflict resolution in actual application/evidence lanes
+> 2fa44c24 feat(d4-w1): real post-case batch conflict preview UI and reviewer-approved append/replace controls
+> 12766875 feat(d4-w1): expose typed native post-create batch assessment and execution to Renderer
+> c70d5f56 feat(d4-w1): Main IPC gate for owner-bound batch preflight and assessed append/replace
+> 580d7bf6 feat(d4-w1): owner-bound post-create native batch preflight, conflict decisions, safe append and archive-on-success replacement
+> 9b56c224 feat(d4-w1): public typed post-create batch conflict assessment, user choices and result
+> d37d3568 feat(d4-w1): allow owner-bound read-only native staging preflight before post-case append
+> 1277e71d fix(d4-w1): label persisted import warnings as historical, not unconditionally unresolved
+> 8b61352b test(d4-w1): portable staging-root assertion across OS path separators
+> 415d8e8e fix(d4-w1): bound native picker roots before recursive expansion
+> ee6a5147 docs(d4-w1): record folder/ZIP, bounded dedup, explicit skips, durable provenance and remaining W1 scope
+> 6b0a6c51 fix(test): assert ZIP material stays inside staging root, not absence of substring in temp parent path
+> b9f2651c feat(d4-w1): expose persisted archive provenance and hash in actual case materials UI
+> b4124159 test(d4-w1): update new 100-file boundary regression
+> 472f47ef fix(d4-w1): retain native source order, prefer root files before nested duplicate files
+> 2ad1116b test(d4-w1): verify persisted origin-document mapping and original-byte SHA256
+> 1763bb78 feat(d4-w1): record source hashes and folder/ZIP provenance against persisted document IDs
+> ba52e7a8 feat(d4-w1): persist ZIP member provenance and staged-byte SHA256 per imported document
+> 9a4cff62 feat(d4-w1): carry Main-only hash and ZIP/folder origin through claimed intake
+> 94c8fac0 feat(d4-w1): preserve content SHA256 and source origin for archive member provenance
+> 4d1672d5 fix(d4-w1): cap global nested folder/ZIP traversal work to prevent unbounded scans
+> a13d404b feat(d4-w1): display persistently skipped/failed batch items after reopening case
+> 3f149fea fix(d4-w1): correct literal regex escaping in portable filename guard
+> d765f906 fix(d4-w1): reject Windows-reserved and unsafe archive entry basenames
+> 81f69ddf fix(d4-w1): adapt JSZip Node readable declaration to Node pipeline typed stream
+> 3991433e test(d4-w1): Main D2 folder skip consent, token retry, persisted omissions and replay refusal
+> 014a1d88 test(d4-w1): native folder/ZIP, symlink, traversal, SHA dedup, corruption isolation and 100-file cap
+> 252c8699 feat(d4-w1): require explicit skipped-file acknowledgement before D2 case creation
+> 8aae3323 feat(d4-w1): folder/ZIP picker plus explicit skipped-file ledger and acknowledgement UI
+> 44a95212 feat(d4-w1): expose bounded folder selector through Review preload
+> 9d2f7e4a feat(d4-w1): validate native folder selector mode at Main sender IPC
+> 3720656a feat(d4-w1): require explicit skip acknowledgement and persist all omitted/failed material reasons
+> 1779b212 feat(d4-w1): retain skipped or failed folder/ZIP material audit ledger on case
+> acba85fe feat(d4-w1): allow bounded 100-file native batch role plans
+> e51ade7a feat(d4-w1): define reviewer acknowledgement for omitted archive material
+> eb0adf9d feat(d4-w1): expose folder/ZIP origin and skip ledger in Main stage preview
+> 8e934e3e feat(d4-w1): connect Main picker to native folder/ZIP staging, dedup and bounded skipped-file manifest
+> 58179638 fix(d4-w1): propagate disk/ZIP errors with bounded transform pipeline
+> 85816e4b feat(d4-w1): Main-only bounded recursive folder and streaming ZIP expansion, SHA-256 dedup and per-file skip ledger
+> e49e2ca5 docs(d4-w1): preserve complete product scope, actual increments and one future batched GUI acceptance
+> 56c037d3 fix(d4-w1): preserve original OS file names using isolated per-index staging directories
+> abb4f760 fix(d4-w1): freeze object selection and native intake while create-case is pending
+> a280d8c9 fix(d4-w1): freeze picker while creating and discard stale OS dialog completions
+> ceb2d514 fix(d4-w1): discard unused native staged originals on parent-driven dialog close
+> 499b9691 fix(test): match mutable role array in Bun expect type contract
+> 016bb8d9 test(d4-w1): batch object identity, unknown applicability, no fabricated confirmation
+> 780a097f feat(d4-w1): add bounded multiline object entry in real D4 creation form
+> e870307b feat(d4-w1): user-authored bulk object builder with bounded unknown-by-default conditions
+> 5552d0b2 test(d4-w1): 50-catalog conservative route, split-matter and PDF negative cases
+> 3a5c1e52 test(d4-w1): role-plan positive and fail-closed negative coverage
+> 7fbb634d test(d4-w1): real D2 Main create imports per-file role and rejects forged plans without consuming token
+> 51973c7b feat(d4-w1): conservatively route by full frozen candidate names across G01-G08
+> 6d8ee7c0 feat(d4-w1): submit reviewer-confirmed per-file classifications with intake token
+> 313d68bd feat(d4-w1): add per-file application/evidence classification at native intake review
+> 80c356d1 feat(d4-w1): import OS-picked documents into explicitly chosen application/evidence lanes
+> 1d8190c9 feat(d4-w1): fail-closed Main file-role plan validation
+> f2dc4c6e feat(d4-w1): define bounded per-file reviewer intake-role contract
+> 412e1520 docs(d4-c10-r03): write precise native input and Main replay acceptance contract after R02 audit
+> e357fb60 fix(test): correct apostrophe quoting in R03 token regression names
+> 2d99d465 test(d4-c10-r03): add timestamped native CDP mouse and Enter+click driver without false 40ms claims
+> 363425e8 test(d4-c10-r03): exercise owner-bound staged-token replay, concurrency and retry through actual Main intake
+> fc5100b3 docs(d4-c10): account for controlled parent close hardening
+> 468b18d6 fix(d4-c10): invalidate pending submission on externally controlled close
+> 9b2a8959 docs(d4-c10): record RED/GREEN CI and independent executable C10 GUI retest
+> dca91678 fix(d4-c10): drive dialog submit from lifecycle latch and invalidate stale responses
+> d5724e24 fix(d4-c10): latch successful submission until a genuinely new dialog session
+> 5352ef29 test(d4-c10): add RED lifecycle regression for success-before-dialog-close
+> 026cfe0f docs(d4): single independent batched P1-C GUI and P2 offline/provider acceptance taskbook
+> 60a17e10 chore(d4-p2c): patch release note for additive submit repair feedback
+> dd22d720 chore(d4-p2c): patch release note for additive submit repair feedback
+> 94d8b42b docs(d4-p2c): freeze bounded rejection feedback invariants and batched acceptance handoff
+> 2f339793 test(d4-p2c): real G08 unconfirmed-rule Main gate remains fail-closed with repair guidance
+> 8cf3562e test(d4-p2c): Main rejection remains running, typed repair hints, valid same-Run retry completes
+> 6dd5a57a test(d4-p2c): classify observed rejection families and bound untrusted retry guidance
+> 0fa748a8 feat(d4-p2c): return bounded repair guidance without weakening Main result gates or run persistence
+> 3083f913 feat(d4-p2c): bounded non-authoritative Pi rejection classes and repair hints
+> f5477180 docs(d4-p2b): document actual no-provider Pi metrics and fail-closed paired analysis workflow
+> 277427ae chore(d4-p2b): add offline fixed-template prompt measurement CLI
+> f231b80b test(d4-p2b): actual G08 D2 case and Pi prepare integration without Provider
+> 7e67fb41 test(d4-p2b): reject unpaired metric claims on changed rule, selection or Check sets
+> 065e659c feat(d4-p2b): run real preparePiReviewRunV2 in disposable G08 D2 profile without model
+> 2b956146 feat(d4-p2b): actual Pi prompt metrics and fail-closed paired comparison schema
+> 0c2d4644 docs(d4): freeze sequential offline P2-B/P2-C engineering and one batched GUI/model acceptance policy
+> ff1aa016 docs(d4-p2): correct lossless mapping measurements and preserve first CI regression
+> 3859ed77 test(d4-p2): use actual lossless mapping compression bound, retain all 107 Check IDs
+> 813cfbd4 docs(d4-p2): record lossless 107-rule to 70-requirement dictionary and measured bounds
+> 34cb052f test(d4-p2): prove 107 Rule IDs map losslessly to 70 full requirements and small rules stay expanded
+> 7c8e67d2 feat(d4-p2): send exact unique requirement text once while keeping every D2 rule ID
+> adcf9336 feat(d4-p2): lossless repeated-requirement dictionary with one entry per RuleSpec
+> ac991f11 docs(d4-p2): fix baseline costs, bounded P2-A scope, and P2-B paired comparison gate
+> d57c402e docs(d4-p2): record prompt-only optimization patch
+> 5418c8f0 chore(d4-p2): bump Electron patch version for Pi prompt contract
+> ad67c7de test(d4-p2): prove all 107 Check IDs, rule texts and constraints survive prompt compacting
+> f93a0750 feat(d4-p2): replace duplicate D2 subject/map prose with complete compact map and strict Pi schema
+> fe834a31 feat(d4-p2): explicit Pi observation/check contract and compact complete D2 mapping
+> 2e24e0c9 docs(d4): preserve PR111 C10 fail and define isolated GUI retest contract
+> 8e01e648 docs(d4): record P1-C C10 UI correctness patch
+> 84a75299 chore(d4): bump Electron patch for P1-C duplicate-submit correction
+> ac1c3af9 test(d4): reproduce same-turn duplicate and verify single-flight reset
+> 60daaa9d fix(d4): reject rapid double-submit before starting second create request
+> ef61c354 fix(d4): synchronous single-flight guard for case submit events
+> 4dce31f4 docs(d4): independent P1-C real Electron/Xvfb GUI acceptance and evidence task
+> 3cf1b11e fix(d4): bound lifecycle of staged originals by TTL sweep and normal process exit
+> 3e36be47 docs(d4): P1-C native-intake routing workflow, acceptance cases, and declared boundaries
+> c3c4a204 docs(d4): describe P1-C native intake and routing patch release
+> 641e02f6 chore(d4): P1-C affected package patch versions
+> 1fcbc5f3 chore(d4): P1-C affected package patch versions
+> b296f3ba fix(d4): cap text sampling to 16 KiB and remove circular runtime import
+> 0e5f259a test(d4): P1-C deterministic recommendation, unknown, and mixed-task negative cases
+> ea4028e2 feat(d4): integrate staged intake → 20s recommendation → confirmed D2 case wizard
+> c4a345d4 feat(d4): accept route suggestion without overriding later human template choice
+> 80e303bf feat(d4): 20-second suggestion countdown with explicit manual override and native picker
+> 3fa591bd feat(d4): preload native intake choice without exposing filesystem paths
+> d871341f feat(d4): expose Main-only native picker and sender-bound create token
+> 3ec84dc2 feat(d4): declare bounded P1-C picker and discard IPC channels
+> 7f465e8c feat(d4): consume native-picker token during case creation and import staged application originals
+> f3188ed0 feat(d4): typed Main-owned intake preview and one-use case token
+> 3f12db54 feat(d4): native-picker bounded intake stage with Main-owned expiring tokens
+> 9d382dd3 feat(d4): deterministic bounded routing with ambiguity and multi-task refusal
+> 26a482c0 docs(d4): correct Markdown code formatting in P1-A/B GUI acceptance task
+> 402ef722 docs(d4): add P1-A/B isolated Electron Xvfb GUI acceptance procedure and evidence contract
+> 639dd5ea test(d4): align third-object unknown fixture with assertion
+> 05c96a8d test(d4): assert unknown is preserved in fixed selection and new source guard error
+> 4cdc8068 docs(d4): add patch changelog for P1-A/B form and input fence
+> cd93fe4d chore(d4): increment affected package patch version
+> 32d5bb4d chore(d4): increment affected package patch version
+> 6ed6becf test(d4): cover 3-object real form plan and negative source/confirmation gates
+> 3ce3982f feat(d4): replace synthetic JSON editor with real user object form
+> cc362d7c feat(d4): editable per-object generic case form with unknown-first conditions
+> c268e10b feat(d4): enforce bounded user confirmation before immutable D2 case creation
+> e6d155e2 feat(d4): add main-side bounded object and condition validation
+> 8202bd23 feat(d4): expose frozen business object types and scenario source choices
+> ce327e58 feat(d4): expose bounded authoring choices and user selection acknowledgement
+> 18b5acf6 docs(d4): freeze P1 A/B → C → P2 delivery sequence and P06 boundary
+> b5a1bde6 fix(review): synchronize D4 patch changelog and retain CI failure evidence
+> ab3716f1 feat(review): wire D4 client plans, scoped evidence and verified Pi loop
+> b68443b2 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+> 3b368722 docs(d4): record real unified CI success, initial false green, limits, and exact evidence
+> 3e351ab5 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+> c8e87418 ci(d4): fail closed on bun test and verify through tee using pipefail
+> 1c082f5a test(d4): case-scoped rules need no target; enforce paired subject/object when scoped
+> 1b372132 fix(d4): preserve legitimate case-scoped Check mappings without objectKey
+> 620f091d test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+> 9b3e5bfe docs(d4): reproducible Bun worktree, held-template import, D2 smoke and failure handoff
+> be563807 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+> 10cd12ce ci(d4): frozen Bun full regression and fifty held-draft imports
+> 1242daee test(d4): regression for 50-source catalog, candidate import and cross-domain scope
+> 2c620194 fix(d4): use static Node fs import for Bun ESM runner
+> 70635dd0 feat(d4): expose explicit 50-candidate import and D1/D3/D2 verification CLI
+> d19b8a24 feat(d4): add fixed-source 50-template machine-readable catalog
+> e03539cb feat(d4): integrate all eight domain candidate assets at fixed heads
+> a7a6a11d docs(d4): sign COMMON-01/02 technical authoring handoff from measured CI evidence
+> fb661851 docs(d4): record measured CI green gates, exact fingerprints and raw evidence artifacts
+> 3a54052d test(d4): register real synthetic material and reject cross-object EvidenceLink inheritance
+> f13f7dd4 test(d4): freeze actual Plan, Pi receipt and checked-in runnable examples as CI artifacts
+> b231992d fix(d4): use actual Pi, material and run-store service exports in integration tests
+> 4dd0606b docs(d4): add baseline, runnable authoring examples and eight-domain migration handoff
+> de8f0b87 test(d4): add G03/G08 object isolation, tri-state, CLI and Pi probes
+> cb712108 feat(d4): add per-object generic D2 compiler and fact-scoped Pi guard
+> c200efea feat(d4): add bounded generic-object and versioned scenario authoring contracts
+> 94d5ec32 docs(d3-r1): freeze measured 13/104 regressions, typed Pi/CLI artifacts and scope limitations
+> 0add1895 ci(d3-r1): enforce monorepo boundary check and capture evidence
+> 6fe3c3bc test(d3-r1): publish actual D2/Pi/CLI artifacts and fixed A/C0 compatibility diff
+> 0e065056 fix(d3-r1): single-item scenarios array selects exact branch in D2 preview
+> 5378e0c8 docs(d3-r1): reproducible migration contract, real CI ledger, source-test traceability and gap manifest
+> 9810402c test(d3-r1): entire authoring portable D2 CLI chain with isolated registry
+> a8dd3a49 feat(d3-r1): multi-axis student scenarios and explicit fail-closed check scope
+> 8a62fbe1 fix(d3-r1): keep unknown intent pending, short-circuit verified N/A and exercise real evidence commands
+> 58ebdd74 test(d3-r1): exercise field scope, trusted fixture, versioned claims and real Pi service
+> 1c5f992c feat(d3-r1): scoped student-field Pi checks and synthetic trusted registry boundary
+> a0044b34 test(d3-r1): freeze R0 red typed-student repro and startup audit
+< 8989941b test: align desktop identity assertion with upstream English prompt
+< 6ff93be7 chore: integrate latest upstream and review development into main
+< dd5a553c docs(review): propose background sessions and document staged delivery
+< 29fc141a Merge upstream f2c7347d and verify review dev workflow
+> 4b191c72 ci(d3): require D3-R0 frozen module digest verification on release changes
+> a29b8734 ci(d3): replay review-d3-md-dynamic.yml whenever D3-R0 source/module locks change
+> 4ecc8e91 ci(d3): replay review-ci-baseline.yml whenever D3-R0 source/module locks change
+> 9bbfacd8 ci(d3): replay review-d2-tests.yml whenever D3-R0 source/module locks change
+> a51b029e ci(d3): replay review-d1-tests.yml whenever D3-R0 source/module locks change
+> 7f106e2c docs(d3): publish D3-R0 handoff operating manual and D4 admission contract
+> 4057590c test(d3): add read-only D3-R0 release and original-MD fingerprint verifier
+> 0654c7d1 docs(d3): pin D3-R0 shared-module and five original-MD source digests
+< f2c7347d A major update is coming soon.
+< ed002ae7 Privacy-safe CDUT photo toggle and Pi compaction
+> 7ff28892 ci(d3): record exact-head release replay on isolated verification PR
+> 6607c161 docs(d3): record scoped PR18 integration and require post-merge release CI
+> 5a722ffc feat(d3): scoped archive instantiation and D2/Pi execution guards
+< a3305d4c Merge upstream 8126059c with review modules for continued fork development
+< 8126059c Merge pull request #17 from Nya-Angle/Refine
+< ffe7ea94 Add high-precision PDF parsing pipeline
+< 0b9bf9bf docs(review): index and checksum G01 original Markdown templates
+< aa7cb2fb docs(review): index and checksum G01 original Markdown templates
+< 03297652 docs(review): archive G01 original template G01_political_review_template_v0.3.md
+< df980042 docs(review): archive G01 original template G01_special_proof_seal_review_template_v1.4.md
+< de927494 docs(review): archive G01 original template special_campus_card_template_v1.4.md
+< bf8abfe4 docs(review): archive G01 original template g01_archive_utilization_template_editor_spec_v1_5.md
+< 9e617abf docs(review): archive G01 original template g01_student_identity_complete_template_v1.7.md
+< 450ba989 Merge batch review A+B+C after independent Electron acceptance
+< 8f4452e9 fix(batch): close independent Electron acceptance and prepare main merge
+< 8f2fed6e docs(batch): pin six-case Electron acceptance evidence and final merge gates
+< e3f49b81 ci(batch): install CJK fonts for legible Electron QA screenshots
+< 869bd88e test(batch): normalize markdown code-format demo credentials before offline UI login
+< f801dabf test(batch): create isolated config directory before seeding settings
+< 36676b8b test(batch): wait for hydrated main window before navigation
+< 4e7341af test(batch): bypass first-run onboarding only in isolated synthetic QA profile
+< 8b37194a ci(batch): probe Vite using the configured localhost host
+< 596050bb test(batch): drive actual CDUT demo login button in Electron UI replay
+< fde86150 test(batch): source demo QA credentials from existing documented fixture
+< cb3c3059 ci(batch): add isolated real Electron acceptance replay
+< d58f6ece test(batch): add real Electron renderer acceptance replay via CDP
+< a4865250 test(batch): add isolated synthetic Electron QA fixtures
+> 6747de44 feat(d3): gate Markdown-to-modular review coverage before D4 handoff
+> 5c940602 docs(d3): sign D3-10 after independently replayed Agent A/B evidence
+> d16f047a docs(d3): record red-green CLI regression and independent acceptance blockers
+> ad772f71 test(d3): verify report-gap cannot forge provenance, status or run claims
+> 2ec2cb86 fix(d3): allow multiline gap descriptions while rejecting unsafe identifiers
+> 1ff1ed7b fix(d3): accept numeric impact versions and harden gap verdict projection
+> 151a9987 test(d3): reproduce numeric version rejection through real impact CLI
+> 60ce8c88 docs(review-d3): create independent Agent A/B executable first-use and upgrade handoff acceptance protocol
+> 5fd57a36 docs(review-d3): add complete next-session state, verified CI, risks, exact files and D3 admission checklist
+> d3522a1f docs(review-d3): record W3 green baseline and W4 source-to-runtime structured gap mapping contract
+> e8c22e59 test(review-d3): enforce machine-readable source requirement and impacted template/instance/run mapping in gap CLI
+> 4356a9f3 test(review-d3): attach source requirement and affected template/instance maps to unsupported evidence gap
+> 5802d1c4 feat(review-d3): require source-to-template/instance/check/run impact links in D3 gap ticket CLI
+> f260e35e test(review-d3): assert actual D1 candidate-held publication denial message
+> 744e6507 fix(review-d3): emit actual JSON newline rather than escaped backslash-n in CLI import output
+> 3fb2b157 docs(review-d3): W3 Pi service evidence, untrusted-source security, immutable test links and independent Agent signoff protocol
+> 8e783c3c test(review-d3): failed CLI import destination collision cannot silently partially install frozen registry
+> 38f9cfe2 fix(review-d3): reserve portable import output before any shared registry mutation and remove failed output
+> 49a4a96c test(review-d3): frozen test asset links are immutable and import cannot swap them under same semantic digest
+> b980ae57 fix(review-d3): freeze example asset links alongside module and dependency identities across reuse and import
+> b94ac20e test(ci): include D3-08 malicious source authority and Pi receipt fail-closed assertions
+> 70266fe0 test(review-d3): use actual Pi run manifest hash for adversarial formal-decision denial
+> 5a08f5a3 test(review-d3): adversarial untrusted policy prompt-injection cannot elevate Pi receipt or authorization and cannot escape module path
+> ed501ed1 fix(review-d3): mark authored rules and imported source text as untrusted data in D2 Pi review prompt
+> 9dbfb73d fix(test): narrow known per-operation subject identity in D3 Pi integration assertion
+> a3a9c1ad test(ci): require real Pi receipt and authorization boundary verification for shared B01/B02 C/A case bundles
+> 7888ecff test(review-d3): drive shared B01/B02 C/A authoring through real Pi material, evidence, report and administrative-denial APIs
+> b48db05f test(review-d3): assert B02's explicit no-approval limit using exact fixture terminology
+> c6279614 fix(test): handle optional Bun subprocess buffers for minimal Agent CLI test
+> 1ed5496f test(ci): require first-Agent zero-module text authoring and technical-case CLI regression
+> 158efcd5 test(review-d3): executable first-Agent clean minimal text build and D2 technical-case CLI roundtrip
+> 3cb3a107 test(review-d3): supply standalone plain-text zero-module authoring inputs for clean Agent onboarding
+> 5bc6e9f8 test(review-d3): supply standalone plain-text zero-module authoring inputs for clean Agent onboarding
+> 087b4dea test(review-d3): supply standalone plain-text zero-module authoring inputs for clean Agent onboarding
+> 98cee166 docs(review-d3): publish runnable B01/B02 cross-business handoff guide and candid D3-01..12 evidence matrix
+> 92305bc2 test(ci): require complete portable B01/B02 and D2 preview roundtrip via independent CLI process
+> 8b7530ed test(review-d3): exercise complete B01/B02 technical handoff from separate CLI processes and D2 JSON recompile
+< 37185439 docs(review): reconcile QA fix report with D2 baseline merge and version 0.15.150
+> 0c77050a fix(review-d3): resolve synthetic fixtures relative to electron/scripts rather than source tree
+> 5c78b009 feat(review-d3): self-contained clean-config Agent handoff demo for B01/B02 and C/A D2 compilation with portable artifacts
+< 6df7cbd8 chore(review): reconcile green D2 main baseline with B+C security QA branch
+> 956087b4 test(ci): make cross-business B01/B02 and portable Pi scenario handoff a required D3 gate
+> f89af2ec test(review-d3): cross-business B01/B02 module reuse, policy non-elevation, archive operation scopes, portable D2 compile, explicit gap regressions
+> ad38e09c test(review-d3): add portable synthetic B01/B02 modules and explicit unsupported-evidence gap
+> 6054d400 test(review-d3): add portable synthetic B01/B02 modules and explicit unsupported-evidence gap
+> 2c589bd6 test(review-d3): add portable synthetic B01/B02 modules and explicit unsupported-evidence gap
+> 066748de test(review-d3): add portable synthetic B01/B02 modules and explicit unsupported-evidence gap
+< fa49f8d5 fix(review): statically import safe V2 storage ID assertion for TypeScript narrowing
+> af723795 test(review-d3): assert earlier fail-closed undeclared-lock guard during bundle export
+> d9b5d6a6 docs(review-d3): record W1 persistent locks, reverse consumer impact and explicit upgrade workflow
+> 4a9f903d feat(review-d3): expose shared module lock additions and upgrades in D1 revision diff
+> c00a3ed0 fix(review-d3): avoid config directory side effects and stdout logging in D1/D2 candidate validation
+> b4f8fe5a feat(review-d3): expose explicit upgrade and reverse impact discovery through Agent-first CLI
+> 975967e6 test(review-d3): audit reverse impact, explicit upgrade and removal acknowledgement without changing saved history
+> a534d42b feat(review-d3): reverse consumer impact scan and revision-safe explicit frozen module upgrade
+> 3491edbc fix(review-d3): deny running a local module as unlocked when it shadows an installed frozen version
+> ef6d0cf6 test(review-d3): enforce persistent locks in D1/D2 and reject forged portability manifest even after recomputing envelope hash
+> 3501f7d5 fix(review-d3): persist explicit locks at reuse, export exact locks, reject ambiguous/import mismatch
+> a04f6b49 fix(review-d3): enforce installed module locks before D2 Pi technical preview and binding
+> 729c3f51 fix(review-d3): enforce workspace frozen lock provenance in D1 candidate compile and authoring validation
+> 13f91a47 feat(review-d3): validate explicit workspace locks and installed frozen dependency chain before authoring execution
+> 45654092 feat(review-d3): persist explicit immutable module locks within authoring workspace
+> bea2f753 docs(review-d3): record W0 real API, limitations and W1 handoff blockers against 23/24 contract
+> 284686d6 fix(test): assert known frozen lock digest without optional undefined branch
+> dc04d85b chore(review-d3): patch version and changelog for shared frozen module implementation
+> 8b1cfb55 chore(review-d3): patch version and changelog for shared frozen module implementation
+> 5f293b6c docs(review-d3): align five-G01 v0.3 scope with D3/D4 handoff contract
+> 5af583bf test(ci): add D3 frozen module and portable-bundle BDD with D1/D2 regressions
+> bf3d5c20 test(review-d3): BDD for immutable locks, cross-workspace reuse, export/reimport, corruption, upgrade and CLI
+> eee6d9dc chore(review-d3): remove unused demo preview imports from frozen module library
+> 9d603e02 feat(review-d3): deliver CLI for frozen registry, locked reuse, validation, portable export and gap reports
+> bd14e7ae feat(review-d3): immutable shared module registry, digest-locked reuse and portable bundle import/export
+> 854b686e feat(review-d3): expose frozen module and transport bundle contract
+> 9ff28388 feat(review-d3): define immutable shared module lock and portable authoring bundle types
+> 805082c5 docs(review-d3): carry forward authored D3/D4 formal handoff contract
+> 65f7a366 docs(review-d3): carry forward authored D3/D4 formal handoff contract
+< f92985d0 docs(review): record 19–21 QA findings, V2 path remediation and accurate desktop retest boundary
+< c3b01a01 test(review-ui): ensure requeued supplement does not display historic auto-return as current decision
+< 5a9411dc refactor(review-ui): render current suggestion and historical automation receipts separately
+< 17d470c7 refactor(review-ui): make current-versus-historic automation label a testable pure function
+< 8c51ed13 test(review): ensure Pi source-docs and report export paths share V2 traversal guard
+< c1b89743 fix(review): validate V2 case ID before report export directory creation
+< ddda9450 fix(review): apply V2 case ID guard to direct Pi document directory resolution
+< 8269752a docs(release): describe V2 path traversal fix and batch UI feedback in 0.15.149 changelog
+< 87405cb5 chore(release): bump Electron patch version for review V2 path-security and batch UI fixes
+< bcd1f20d fix(test): explicitly type V2 artifact read expectation
+< f5e8bedd fix(test): type captured IPC handler map locally without changing existing global test hooks contract
+< 7bfd5daa ci(review): include real registered V2 create-case IPC path traversal PoC regression
+< b704ad24 test(review): reproduce malicious CREATE_CASE_V2 via registered IPC handler and assert no outside-root writes
+< fd63ec87 test(review): capture mocked ipcMain handlers so V2 renderer entrypoints can be security-tested
+< 07793e00 ci(review): execute storage traversal and UI feedback tests in focused workflow
+< 956f24db test(review): empty batch should be rejected at creation instead of leaving an invalid draft
+< 58a58237 ci(review): cover V2 path traversal and desktop QA copy regressions
+< f89181d6 test(review-ui): regression for IPC error cause and honest mixed batch completion statistics
+< e8cd7bdb fix(review-ui): show authorization refusal reason without Electron IPC transport wrapper
+< 855e0231 fix(review-ui): separate historic auto actions, show batch failure/human counts and clean transport error prefixes
+< fcde202a fix(review-ui): centralize user-readable IPC errors and truthful batch completion statistics
+< 81b16fa3 ci(review): include V2 path escape regression suite in batch review gate
+< 7b4170b2 fix(review): validate requested run recovery case ID before checking disk existence
+< c03126bc test(review): cover reported V2 traversal PoC across creation, aggregate, run, artifact, batch, and outside-root effects
+< 8012ea0d fix(review): reject unsafe V2 case/run IDs at public renderer IPC boundaries
+< ad148be4 fix(review): reject unsafe V2 case IDs before application creation or template processing
+< ab9340ef fix(review): reject unsafe V2 member case IDs before batch persistence, retries and restore
+< f3377fc5 fix(review): validate case/run/node IDs before all V2 run and artifact I/O, and keep reads side-effect free
+< 5477c755 fix(review): enforce V2 case ID safety at aggregate paths and transaction boundaries
+< f219f85c fix(review): centralize fail-closed V2 case/run/node filesystem ID validation
+< c1b62662 docs(review): verify offline demo batch UI and correct login prerequisite
+< 71d2dfba docs(review): record batch review round-three QA blocker
+< 9c069b94 docs(review): narrow prior path ID acceptance scope
+< 1032ef0e docs(review): record round-2 outbox reliability, baseline sync and honest UI acceptance scope
+< 3a7b0e10 test(review): end-to-end batch queue to system decisions, audited finalization and no replay
+< 872fe665 test(review): recover indeterminate awaiting-receipt without changing action ID or inventing success
+< eb795864 fix(review): keep awaiting-receipt external responses pending instead of claiming final outbox success
+< b1fd6d1b chore(review): sync current green main baseline into batch-review branch
+< 3990e228 chore(build): align OOXML dependency discovery with green main baseline
+< abf5ba9f test(review): verify original outbox replay, legacy manual recovery, tamper detection and concurrency
+< 61918263 fix(review): persist hash-verified outbox payload and replay original action idempotently after crash
+< cd2a047e ci(review): run complete role-correct single-case journey alongside P0 batch security regressions
+< b437e472 test(review): follow system auto-check, reviewer first-review and teacher final-review in integration journey
+< 687e8a3a fix(review-ui): hide unauthorized stage and judge controls from local-reviewer workspace
+< eda73869 test(review): verify reviewer cannot resolve teacher-owned supplements or sign appeal adjudications
+< 0f810199 fix(review): prevent cross-role supplement resolution and local reviewer appeal finalization
+< 2d39cb58 fix(review): preserve actionable finalization errors for unresolved supplement and missing formal decision
+< 4be4b359 test(review): seed formally decided cases before asserting finalized batch cannot rerun
+< fe93eb1a fix(review): disable unverified free-form finalization snapshots from renderer IPC
+< dac14059 ci(review): include local reviewer IPC identity and stage guard regression suite
+< 5854ecd7 fix(review): prevent reopened-batch collisions and skip unsafe disk directory names
+< 19c9b938 fix(review): share final decision projection and core finalization gate in C-stage completion
+< ec2f3f96 test(review): reject done-only finalization, pending appeals, path traversal and unsafe reopen IDs
+< 8e5f3622 test(review): prove renderer IPC cannot forge school, teacher, system or agent reviewer identities
+< 32fab50d test(review): reject cross-role stage approvals and template substitution
+< 861fdf62 fix(review): accept untrusted IPC record envelope in actor normalization
+< d2accb03 fix(review): reject privileged renderer actor claims across all decision IPC handlers
+< b1738472 fix(review): introduce trusted local-reviewer boundary for privileged IPC review actions
+< 0961f173 fix(review): enforce task-stage template and assignee-role binding on every stage decision
+< abf3dcc7 fix(review): enforce safe batch IDs and business-finality gate on every finalization path
+< 1a5eb7e0 docs(review): add quality acceptance report for batch review branch
+< 8a138c3e docs(review): add current batch review handoff
+< 38acb1d0 ci(review): expand B+C regression to workflow, business transactions, case store and template authorization
+< 50134785 test(review): mixed four-case automation and multi-supplement recovery end-to-end
+< 393aa6e5 fix(review): base supplement requeue on committed aggregate, not absent command entity
+< 44caff93 test(review): verify direct supplement service auto-requeues without IPC and is idempotent
+< 615e9535 refactor(review): let supplement workflow service own batch requeue transition
+< 53f54f94 fix(review): requeue approved supplement responses from core workflow regardless of IPC caller
+< 1df1591f test(review): prevent auto approvals with unread active docs or missing effective-rule verdicts
+< 79e66c6d fix(review): require every active document and effective rule to be represented in automatic batch checks
+< 3d83c226 Fix README with new features and details
+< 572e68e3 Merge pull request #16 from Nya-Angle/Better
+< a29d9c9f Fix benchmark
+< 135639f9 Fix
+< 8d6acf1d docs(review): provide complete B+C automation acceptance matrix and local test commands
+< e4a35e74 fix(build): support Bun workspace-hoisted OOXML dist without stubbing wasm
+< 66199ee2 test(review): catch forged evidence, stale inputs and revoked automation grants
+< 208f7077 fix(review): validate provenance targets for every automated rule check
+< bcf03c70 test(review): set batch fixture to completed queued state before C processing
+< e37d89cd ci(review): include C-stage automatic decision and supplement-loop integration tests
+< 93328e04 test(review): end-to-end batch C policy gating, auto decisions, supplement loop and finalization
+< 0832275b feat(review): connect opt-in strategy, automated execution, real receipts and guarded finalization to UI
+< 1f601429 feat(review): add explicit per-batch automation authorization dialog
+< 9350e755 fix(review): correctly parse revision-bound batch automation identities
+< e157927c feat(review): expose batch automation configuration and processing in preload
+< bed4f44d feat(review): connect auto batch process, policy configuration and supplement requeue via IPC
+< 092e3b97 feat(review): register batch auto processing IPC channel
+< 5c38dfdc feat(review): execute opted-in batch auto pass/return through V2 transactions and strict finalization
+< c5a6f26b feat(review): recheck system-originated batch automation authorization inside serialized decision transaction
+< ddf2c10b feat(review): implement strict per-batch auto-action policy and evidence gates
+< 59d75564 feat(review): persist explicit per-batch automation mode and supplement requeue
+< aea3ad63 feat(review): declare per-batch automation policy and transactional receipt contracts
+< 57b0b3c8 公布第一次 RAG 权威测评成绩+测评模块开源
+< cc4a7ac4 Enjoy~
+< a31d0b5b test(review): distinguish valid queued case from explicitly retryable incomplete done
+< 7b3179af docs(review): add stage B manual acceptance plan and C-stage boundary
+< 8d867347 fix(test): use valid FieldValue text discriminator
+< 537e6af7 fix(review): persist bulk operation completion flag for all steps
+< 34bf6a05 test(review): explicit retry for technical exceptions but protect valid completed runs
+< 9dc3a9de fix(review): show true execution statuses and retry incomplete completed runs
+< d13cf047 fix(review): allow explicit retry of completed runs with technical-exception triage
+< d43ac2a0 test(review): exercise human formal pass/return and reject cross-role bulk decisions
+< fd3ee05c refactor(review): route group actions via shared IPC constants
+< a1402855 refactor(review): route group actions via shared IPC constants
+< 343fdc51 refactor(review): register typed batch group IPC channel names
+< 9b582ece fix(review): lock final-stage bulk decisions and expose interrupted operation receipts safely
+< 2d9b0f18 fix(review): keep bulk operation receipt visible after refreshing issue groups
+< ecc7e927 ci(review): include batch-group transaction integration tests in focused workflow
+< 499bae0d test(review): integration coverage for confirmed per-case group transactions, exclusions and stale previews
+< 2a1a4c7d feat(review): connect human group confirmation dialog to batch issue cards
+< 864043ad feat(review): build scoped manual batch group action dialog with preview and per-case receipts
+< fea9632b feat(review): expose batch group preview and confirmed apply through IPC/preload
+< cbfbe78f feat(review): expose batch group preview and confirmed apply through IPC/preload
+< 64d6d1d5 feat(review): add human-confirmed batch group preview and transactional per-case apply
+< e0befbee feat(review): define preview and confirmed batch-group action contracts
+< c874ad75 feat(review): wire targeted retry, interrupted recovery and per-case draft previews into batch UI
+< ca1f5fe7 test(review): ensure issue-group action drafts remain per-case and gated
+< 1f033b05 feat(review): prepare per-case auditable issue-group action drafts
+< 02a0e249 test(review): cover interrupted recovery and selective batch retry
+< 71afefbd feat(review): expose batch recovery and targeted retry through existing IPC
+< f5467e0f feat(review): expose batch recovery and targeted retry through existing IPC
+< 6c394fda feat(review): explicit interrupted-batch recovery and targeted retries
+< d6bad0bb test(review): regression for manifest mismatch and incomplete-run group exclusion
+< 348f1626 fix(review): share effective-run gate between triage and issue groups
+< 14cd6879 ci(review): keep focused check as reusable PR-only workflow
+< 06385ef8 ci(review): ensure focused tests trigger on feature branch
+< df246373 ci(review): add focused batch regression workflow independent of renderer packaging
+< 7a9ea9db test(review): fail closed on unknown case stages
+< c1c23fbc fix(review): safely accept string case-index stages in batch triage
+< bc1aa4ad test(review): verify batch queue concurrency and failure state
+< e515ae30 fix(review): reject concurrent batch runs and avoid stuck running state
+< a01258ee feat(review): run batch queue and show triage candidates and issue groups
+< d35d727f test(review): cover batch triage fail-closed and issue grouping
+< 42ea817c feat(review): export batch triage for UI
+< 1bc424e8 refactor(review): remove misplaced main-only triage module
+< 63af0b0a refactor(review): share batch triage with renderer and tests
+< 99c6ff7c feat(review): add read-only batch triage and conservative issue grouping

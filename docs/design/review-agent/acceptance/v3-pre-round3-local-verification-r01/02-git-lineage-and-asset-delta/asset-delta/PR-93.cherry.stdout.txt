@@ -1,0 +1,10 @@
++ de455745366bc6a7f120a17ca0d3a61d5c09cbb0 docs(G04): seed D4 source-locked modular build directory
++ c8e3df275f3bd239c14d9fe7bbdd7b60a6acab22 feat(G04): eight full-source modular workspaces, per-check bindings, synthetic selections and trace ledgers
++ 52ea06d89016e050ae9a05e659761c293366df3a test(G04): eight-template COMMON D1/D3/D2/Pi integration and evidence CI
++ ea0d764d033f2f629ccec9214d3fa8ccb1b625f5 test(G04): record measured D2 plans and Pi synthetic receipts [skip ci]
++ 5d7f8f8ac8c0e25c2bec07a3a90f988b79f6f6a1 test(G04): verify actual material registration and per-subject reviewer EvidenceLink for all 8 templates
++ a5eedbacfda8225dffd1a79cd6d1856bc6ff99ac fix(G04): use explicit stable R01 Check ID substring for real evidence tests
++ 69dced1f393b38a6778d299b71ba9a6ccff0f0cf test(G04): fix typed evidence fact, verify D1 immutable revisions and semantic edit diffs
++ 2fb38598254aa792f31397f92980f59aaa36ed01 test(G04): record measured D2 plans and Pi synthetic receipts [skip ci]
++ 0c12aba7ff60cf17964f6be58232ef8b3473312b docs(G04): reconcile eight template manifests with actual D1/D3/D2/Pi and synthetic evidence CI; mark authoring gaps PARTIAL
++ 9349cfe666d7f3be6dcaf92c163c0890469b7f3b test(G04): record measured D2 plans and Pi synthetic receipts [skip ci]

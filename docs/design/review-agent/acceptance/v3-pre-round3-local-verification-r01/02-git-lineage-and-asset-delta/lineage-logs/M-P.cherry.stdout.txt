@@ -1,0 +1,113 @@
++ faa06777d8bfa1f8064e0c0497386936471f7c19 fix(cli): track Bun bin entrypoint as executable for frozen installs
++ 5d382749b3f56d4a086606d12a81a535636331d2 test(p06): add strict candidate-bound U0 evidence gate
++ d89ba72af6df6a4237d8815c9bf26ffe9ac31a5e ci(p06): run U0 clean worktree gate against PR head on self-hosted runner
++ b67f46a09f2c3a14a0f018a1e01fe0d0484c187a docs(p06): record U0 candidate, historical first failure and non-release gate
++ 069e4cef8d7678f892110d200804c8fb69a3fb27 docs(p06): establish U1 differential safety cases and evidence classifications without pre-signing
++ 4474291c118193d6645b746df1bfc9112bb80083 test(p06-u1): first-failure guard for retired material source references
++ 4bcf857589eaba55eb372bc95e4299c967341c59 fix(review): reject inactive versions in evidence references and post-vision checks
++ ef6a483816845dc72ce05d548348ac1c5495a256 test(p06-u1): replay PR72 Office-v2 / strict SourceRef contract on fixed candidate
++ bb697401f38eb3011b80fee653c6e312e6b28fbb test(p06-u1): add source-derived Office v2 real index collision replay for deferred #71
++ 75d49fe50be311e8609f1c035788a9b02735f5c4 ci(p06): run U1 controlled SourceRef/Office repro only after U0 passes
++ 2d9e93f3a637e8325862769f80fe4b4e884c51a1 docs(p06): formal U0 pass per exact candidate, U1 fail-then-fix and blocked live handoff
++ efba1e49facb659ab2113f6ae15a1ae5ad3fc6c3 docs(p06-l02-00): begin evidence-only A/B/C failure attribution preflight
++ 18b78c856942921963a501638d48a571d1cea180 test(p06-l02-00): archive A/B/C provenance audit against frozen source
++ 5bfa339eaacc16705e6f2693ca39b1e81e5a60d5 docs(p06-l02-00): publish code-proven failure attribution and bounded CI evidence
++ 66dc3f099e4711b8889d24fabb893973896c71ee docs(p06): freeze L02-00 cross-session handoff and independent rerun contract
++ 9c99ce0d8541aea8bfb7d70d47a894c246efbe42 test(p06): independently reconstruct nine archived cases and separate command exit causes
++ e6fd9a11f7f90a811991f2245a38f56a0b22f738 ci(p06): run new independent archival and scoped Bun regression with immutable logs
++ 6081abded4f0cfef62e60357fd6c753f5576c4cd docs(p06): record R02 first-failure distinctions and per-case provenance limits
++ 0524604cac13794af5f43cff7771160f98f176d9 docs(p06): close R02 archived and controlled evidence with exact CI, keep LIVE blocked
++ b8e707699c1d37e3da39148231181d6c9de7672c fix(p06-u1): deny ordinary Pi fallback for review-owned session without active binding
++ 0ab823be9fcf265dbc522506bd237b972932d797 test(p06-u1): verify owner binding and preset drift fail closed at orchestrator
++ 72c646fb58f95e240dad2d6c8e228db038b4b8f7 ci(p06-u1): independently run remote safety controls and archive Office #71 known failure
++ c7dd49e7c2f36d29db2bc2c8c6db73b3f5739ad4 docs(p06-u1): separate remote controlled work from real local Electron/provider evidence
++ feff1c403a6ba266e0825f858f61f7d2b6d3523a docs(p06-u1): executable local Electron/Pi/Office/Owner/IO acceptance task and evidence contract
++ 4b241846886bc571f885e0602ac96c7410fc84a0 ci(p06-u1): preserve failure exits and keep evidence outside source tree
++ 73cb485b3c7cfcca6fdec0662d9e7f66da6bbae4 docs(p06-u1): provide standalone local agent execution prompt
++ b21b3ce5ff8aafd85f4d7aa8d751e923279ac6b0 test(p06-u1): use actual built-in default preset ID for drift scenario
++ 1c6deadfc0d51644aed6152463f78fdae662cdb6 ci(p06-u1): cancel superseded candidate validations after new commits
++ 44c7dc9fefdfd7693f1b6d1de00cf348af7abf3f audit(p06-u1): 本机实机证据、P02 迟到 lookup 首败与 Office #71 阻断
++ f18787dedec2183cbb28344a573b9da9d1670e81 fix(p02): publish ordinary session deletion only after persistent delete succeeds
++ 17e04f105f344c558db7ff693dd35e22c5e23f29 fix(p02): notify all windows after ordinary and workspace cascade deletes
++ ea776bb86697f02b1bdf07eca7d4b8d129b7ef68 fix(p02): revoke deleted session ID and clear stale session/preview state atomically
++ 7706991d7f20dd89a5b1afa7296fb483c11cbfc8 fix(p02): revalidate early preview lookup against fresh Main metadata before UI hydration
++ 8ccee7e1703d8f281f4fc8e161f3c15e897e45af test(p02): verify durable ordinary delete emits one revisioned Main projection, never internal owners
++ 1fd48dc1b79b89c3a5ac500c8125a0dc7e66b94f test(p02): negative late lookup, revocation preview cleanup and valid revisioned ordinary fallback
++ 42ef366440161a4c0ae7c8881408745bb2bdbe63 docs(p02): record real first failure, exact fix contract and remote/local acceptance boundaries
++ 6b96dbda8258c64033c0d9158f4fae578f7f66a1 docs(p02): define focused real Electron deletion/race recheck and immutable evidence gates
++ 64c01e57d1e3e1a587a639ae59f9f62ed878924e test(review): add P02 local Electron recheck evidence
++ 352392c80f573c5edb1df14d73de821304373925 fix(office71): isolate Office file IDs/artifacts and reject ambiguous names
++ bfde1bd6269011b20ca6ef5a317e820fac13ebd7 fix(office71): prioritize exact source paths over ambiguous basename matches
++ 06a4f7bf021934e8dc9f3466a2bdb619d2946a00 test(office71): real materialization identity regression for same-name Office and backward cache
++ f387c2eb4ce71fc68775f3673a69c18a3f5733d2 docs(office71): record source identity fix, upstream 403 and realistic release gates
++ 6c8ee997da1f0fd781e3bd11cbc7fcc97867e918 docs(office71): formal local Electron real-file acceptance matrix and upstream gate
++ 3c9d1b63593816b066a0986dcb2b638d2df673eb test(qa): record Office #71 local Electron acceptance
++ de0e9b87c5588a93144bbadbe3a075cda097dc94 test(p06-u1): wire actual V2 assignment into Main Orchestrator review-only Pi admission and revocation
++ c3bfbdab8ad927fcc20e9e91c5b40710b7cda4d6 docs(p06-u1): freeze Pi review five-tool controlled contract and evidence tiers
++ 5c4108b84e9f8ba0505afa1ba9bebce665320079 docs(p06-u1): executable real Electron SDK/provider safety gate and conditional A-B-C local acceptance
++ cf8c5f36cebf1f22362eabd58d28275412f6f9f8 test(p06-u1): match actual Pi ToolDefinition execute signature and typed error channel
++ 74298aceb516999022d41b930a966b439cc163d4 docs: record P06 U1 Pi provider local acceptance R01
++ f163f470ed1e915f5ba1fa33c63d6e74570516bf test(p06-u1): exercise true Linux ENOSPC on run recovery and assignment revocation without disk mounts
++ 52837b24d531ec3bc01dd1e82b14f9bbb6fd246d docs(p06-u1): source-bound Linux ENOSPC controlled gate and non-equivalence to real disk recovery
++ 8caa5c59ad10f035a15e1463a33b6df09d93e178 docs(p06-u1): formal safe isolated full-volume Electron restart and IO recovery local acceptance
++ afe3fd4133fa203611190a066c6247125fd13632 test(p06-u1): assert ENOSPC errno from kernel fixture and actual revocation write failure
++ 3f3d1f79b50ee4d4960ce95aa226bfe7547e7a29 docs(p06-u1): consolidate remaining local acceptance into one gated campaign and evidence bundle
++ 9601bd2181ee1e25f599b1dd44d39bf23b1a924f docs(p06-u1): route former IO-only local task into single unified acceptance run
++ 6f3af267e9afd5594b648bb079cccd675942a04e docs(p06-u1): record unified local acceptance R01
++ 3baf1fc2ccf27607f948923dbf5aff26d984729e docs(p06-u1): add authenticated review UI gate evidence
++ f36bff88b31efd90a48105740b9890552ee549b0 test(p06-l02-01): reproduce duplicate supplement resolution side-effect after batch progressed
++ c576fe7a0d7a38a48e06ffa0aa6c8e5fadfa3deb fix(p06-l02-01): do not requeue batch on idempotent supplement resolution replay
++ 9d09cb6a0fbafb99d2da71aa174a0f61aee88b49 docs(p06): close U1 acceptance campaign as scoped partial and begin L02-01 offline engineering
++ 72dad6b00f6d413003f1d2c8e7ed5f546e4a9817 fix(p06-l02-01): return applied supplement entity from transaction mutate so new vs replay is distinguishable
++ 18b920731a5b4712094fd6b55bc3b4c2548f98f2 test(p06-l02-01): distinguish newly applied supplement result entity from replay receipt
++ 3b3e52c01e38667d1bbc98f90b6ffa0abda5d722 docs(p06): preserve both red rounds and clarify submitCommand mutate return contract
++ 17f1f74b4c99c979262b52878c7bad5b60ae9479 docs(p06): freeze overall P06 progress, verified E01 CI, and staged offline-to-live roadmap
++ f99196860ca0be07a6bbf6e485a55241f04b72e9 docs(p06): complete next-session handoff with two RED causes, fixed E01 CI, and E02-E04 ownership
++ 095a00f6214d23774ab0a70421e5fe78aed8459c docs(p06): provide executable E02-E04 next-agent task and copyable handoff prompt
++ 0a2a318e41690291c8bb32027ea920d5a6275928 test(p06-e02): reproduce direct decision authorization bypasses
++ 8e290cf13388c5a56dfbb59f19d1f9718abf8a41 fix(p06-e02): forbid direct agent and unauthorized role decisions, honor open tasks
++ 4291a349022df6ce41a1716053495e02ef224b54 fix(p06-e02): preserve readiness-first denial while enforcing final authorization
++ fb463363c9219df0bd4b423e42645470a0115627 test(p06-e03): reproduce fabricated supplement versions and equal-time stale run
++ 54540e8d38b299bc73d5ea9cb111870db73ecfd3 fix(p06-e03): reject forged document versions in supplement response
++ 2308308615df15d0a16602edabf1ea47d13c49cf fix(p06-e03): fail closed on same-millisecond supplement response and run
++ 9534724551c69081c3487abb0a70f104e3c15884 test(p06-e02): prove stage decision cannot use generic agent global toggle
++ 18f741a64c5999950ef1c6424f9732b83c53709c fix(p06-e02): prevent generic machine identities from stage, appeal and supplement authorization
++ 874b07d559233c0af9bb7cc089875067381429f3 test(p06-e03): ambiguous old batch must not be silently requeued
++ 4ae2ec96148f33c7e7773f431ecf5c1e009c3a28 fix(p06-e03): fail closed when a supplement spans multiple historical batches
++ 9a9e54c237034a447ee91e46841f05614bd7ca91 fix(p06-e02): allow only verified system auto-check handoff, never machine final decision
++ 2ca0f37ade153f307b2b72077c7a3f9bfaf1c2d9 test(p06-e02): require verified system handoff before real reviewer partial approval
++ a70b07db6d2db571caee451425a2555963573217 docs(p06-l02-01): archive E02-E04 offline fixes, scoped gaps and immutable first failures
++ 24777e5046cbc9e19b1cf77f53fa3df3df798b71 feat(p06-l02-01): provide audited single-target supplement batch requeue primitive
++ 737ae9e319cd0f7e16ecc66c619674eda6aa0407 feat(p06): bind selected supplement batch requeue to local reviewer Main IPC
++ 4c274b1aba76d52a573b76f951d26bf7330fa325 fix(p06-l02-01): bind new formal stage finals to real current V2 runs
++ a879fd9418d525c4669e2def589af81f2b027669 fix(p06-l02-01): share final readiness gate and persist supplement requeue replay protection
++ c372d4bc653b0832c31435dd1c3a18130369415f test(p06-l02-01): fix duplicate test local in supplement replay assertion
++ ac20088cb5404e8599b77781b006a89b02418dc9 test(p06): seed a nonempty successful check for valid final-pass idempotency fixture
++ 4f8a68e26e5276e61883fa53c21447a703bbf94d docs(p06-l02-01): record E02/E03 follow-up patches, CI first failure and E05 matrix
++ 698aff46900b7d6ddcbaea36fbaedad9cd169a40 test(p06-e06): harden isolated Pi live QA evidence and add fail-closed matrix contract
++ 056e24d2626fb9299b6ba581db737055f8ff599e docs(p06-e06): formalize isolated live acceptance and verify actual source SHA before CDP
++ bc2c93678e1958caa7a324210a424039f6fb0d1e test(p06-e06): bind SDK and preview evidence to unique per-run marker
++ d170d4a6522817a5c4107b21966f532f212e2c38 test(p06-e06): stop costly live QA immediately after first failed witness
++ 6af70e2136666d42385836fc111a9cff24b4031d docs(p06): prepare one combined E05/E06 local acceptance campaign with independent verdicts and evidence contracts
++ 3e076b5e11ed7b4c8c0d12ae6c32f19adda99609 docs(p06): add 29-row unexecuted machine checklist and concrete local handoff references
++ bc228f64750714e70c73cbd115d2f169c610a517 docs(p06): make unified local agent handoff paths fully resolvable
++ ec9c0e728f13970c53f0ced30c29a5005ee88c97 feat(p06): add explicit one-batch supplement requeue UI with fresh Main validation
++ d6d6afc12f826c19c59bd400264566d93d50141e fix(p06): align explicit batch requeue UI with Main-bound local reviewer actor
++ b603c604e3e59662db6b564ab3bd925181b2205d fix(p06): deny mismatched case/Run frozen template before or after paid batch execution
++ 356a9eb1406b079ead19a1fea236d628e21baf0b feat(p06): surface max-turn technical failure without treating missing checks as noncompliance
++ 268a291230fc74b550bedb605f5d4be8fbdf16c9 docs(p06): record R02 product implementation, unresolved evidence attribution and batch acceptance gates
++ e400068b493b42dad9601fcdd0814d42ad0aa6db fix(p06): avoid duplicate batch state reader declaration in Main IPC
++ 560c8f5015cd664d80f0cc3dc7cf48fb9f01fdeb fix(p06): classify Pi max-turn exhaustion as technical and guide bounded evidence-first submission
++ 4499df42fb948c170946aea1360e2f3b7a8714e6 test(p06): cover local insufficient→resubmission→satisfied and single-batch requeue lifecycle
++ 937f0079fa879535dfd35c7a0d2c1bb8e1194072 fix(p06): forbid partial Pi tool acceptance from being misreported as successful on SDK failure
++ a13cf8f22f106f5475450e47d55be2356b2c4ea8 fix(p06): enforce Run case identity and input-manifest template, reject execution-failed batch done
++ 7a3c5b90136bbd5dbb2e9cb68436bd36e867793c docs(p06): record second L02-01 R02 reliability engineering batch and deferred LIVE gates
++ 176cd73e726da7d7021e40d62cc243eafb264606 test(p06): correct TS strict cast for partial synthetic failed Run fixture
++ 6253fa695ee8aa74916b9dab3116061eff19c2c6 fix(p06): prevent unrelated latest Run from appearing as selected batch evidence
++ fdc50fb75203486b1b4655776f75d9111f1113d1 docs(p06): add batch-panel Run provenance and remaining same-template cross-batch limitation
++ 85fdc1038751114a38a4cc396840d28f0032ba35 fix(p06): recognize max-turn SDK subtype even when provider error text omits turn detail
++ ef3010990e94ca7ae5d720d31060e7e4a03311e1 feat(p06): bind each batch entry to its own persisted Run and isolate automatic/group actions
++ de22b96b23bbc2c3462dc39f40b05fae79d4afbe feat(p06): display only batch-bound run evidence and reject legacy unbound case runs
++ b57c5c8e89100e55f3edd58ddc2c138f82c69a82 test(p06): cover durable batch Run binding and protect legacy unbound retry
++ db71fea3371fa327222868dd27c3c3e52228b81a fix(p06): block stale automation case and Run bindings at transaction time
++ db0284879f75ce123b5d83cb6577a3cc7ad057da docs(p06): document R03 batch run attribution safety, offline regression and deferred LIVE gates

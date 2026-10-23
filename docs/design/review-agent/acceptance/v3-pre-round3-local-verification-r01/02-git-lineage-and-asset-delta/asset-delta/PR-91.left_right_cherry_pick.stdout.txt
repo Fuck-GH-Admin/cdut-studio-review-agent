@@ -1,0 +1,41 @@
+< b68443b2 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 3b368722 docs(d4): record real unified CI success, initial false green, limits, and exact evidence
+< 3e351ab5 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< c8e87418 ci(d4): fail closed on bun test and verify through tee using pipefail
+< 1c082f5a test(d4): case-scoped rules need no target; enforce paired subject/object when scoped
+< 1b372132 fix(d4): preserve legitimate case-scoped Check mappings without objectKey
+< 620f091d test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 9b3e5bfe docs(d4): reproducible Bun worktree, held-template import, D2 smoke and failure handoff
+< be563807 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 10cd12ce ci(d4): frozen Bun full regression and fifty held-draft imports
+< 1242daee test(d4): regression for 50-source catalog, candidate import and cross-domain scope
+< 2c620194 fix(d4): use static Node fs import for Bun ESM runner
+< 70635dd0 feat(d4): expose explicit 50-candidate import and D1/D3/D2 verification CLI
+< d19b8a24 feat(d4): add fixed-source 50-template machine-readable catalog
+< e03539cb feat(d4): integrate all eight domain candidate assets at fixed heads
+> b7618958 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+> 0b79daa3 docs(g05): machine-readable owner-specific engine/source/policy/test gap ledger
+> 3635ba8c test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+> 67d72f1e docs(g05): full engineering handoff with real six-template CI, traceability and PARTIAL limits
+> 7a60ee13 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+> 17078877 docs(g05): reconcile six manifests and ledgers to verified pending-only CI and partial status
+> 191fb9e2 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+> 0e6dc51c test(g05): verify D1 save/read/diff, portable D3 CLI and D2 preview for all six
+> a33a133a test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+> 3ddd0591 feat(g05): preserve detailed BR condition axes T05-T06
+> 79a49239 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+> 4ea4f4a8 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+> 5acdc778 feat(g05): preserve detailed BR condition axes T03-T04
+> 0464d761 feat(g05): preserve detailed BR condition axes T01-T02
+> 445a4738 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+> f512dbf1 test(g05): align Check preview identifiers and case-level Pi target coverage
+> 7fb35c89 ci(g05): fetch full ancestry to check immutable COMMON parent
+> 11fd15fd ci(g05): six-template D1/D3/D2/Pi synthetic verification
+> c6161248 test(g05): run six C templates through D1/D3/D2/Pi and isolate target evidence
+> 5a6a077b feat(g05): convert six byte-verified C templates into D1/D3 generic-object workspaces
+> bc7a3797 docs(g05): preserve byte-verified C v0.1 source T06
+> 2dd94cc4 docs(g05): preserve byte-verified C v0.1 source T05
+> 5faff543 docs(g05): preserve byte-verified C v0.1 source T04
+> a6def3e7 docs(g05): preserve byte-verified C v0.1 source T03
+> 1af67282 docs(g05): preserve byte-verified C v0.1 source T02
+> 273b5f50 docs(g05): preserve byte-verified C v0.1 source T01

@@ -1,0 +1,25 @@
+< b68443b2 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 3b368722 docs(d4): record real unified CI success, initial false green, limits, and exact evidence
+< 3e351ab5 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< c8e87418 ci(d4): fail closed on bun test and verify through tee using pipefail
+< 1c082f5a test(d4): case-scoped rules need no target; enforce paired subject/object when scoped
+< 1b372132 fix(d4): preserve legitimate case-scoped Check mappings without objectKey
+< 620f091d test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 9b3e5bfe docs(d4): reproducible Bun worktree, held-template import, D2 smoke and failure handoff
+< be563807 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 10cd12ce ci(d4): frozen Bun full regression and fifty held-draft imports
+< 1242daee test(d4): regression for 50-source catalog, candidate import and cross-domain scope
+< 2c620194 fix(d4): use static Node fs import for Bun ESM runner
+< 70635dd0 feat(d4): expose explicit 50-candidate import and D1/D3/D2 verification CLI
+< d19b8a24 feat(d4): add fixed-source 50-template machine-readable catalog
+< e03539cb feat(d4): integrate all eight domain candidate assets at fixed heads
+> 1b19a03c docs(d4-g06): freeze domain integration handoff and categorized residual issues
+> c1849a1a docs(d4-g06): mark T07-T09 scoped synthetic executions while retaining business PARTIAL
+> e0aa1e72 docs(d4-g06): mark T04-T06 scoped synthetic executions while retaining business PARTIAL
+> dfddd0b0 docs(d4-g06): mark T01-T03 scoped synthetic executions while retaining business PARTIAL
+> 23c4e632 ci(d4-g06): attach successfully verified actual runtime JSON and per-template statuses to PR head
+> 0f24d0a0 test(d4-g06): store actual nine-template D2/Pi runtime snapshots
+> 37e0a7cd ci(d4-g06): use a valid path filter on push workflow
+> 4d3e1cea ci(d4-g06): validate nine module workspaces and capture actual D2/Pi artifacts
+> 4570f5ae test(d4-g06): replay nine authored templates through D1 D3 D2 and real Pi, with scoped negative checks
+> 7757067e feat(d4-g06): materialize nine full-source modular authoring workspaces and traced scopes

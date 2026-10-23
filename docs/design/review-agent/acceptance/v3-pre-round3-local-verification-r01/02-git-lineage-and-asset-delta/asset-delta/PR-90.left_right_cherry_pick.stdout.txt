@@ -1,0 +1,33 @@
+< b68443b2 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 3b368722 docs(d4): record real unified CI success, initial false green, limits, and exact evidence
+< 3e351ab5 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< c8e87418 ci(d4): fail closed on bun test and verify through tee using pipefail
+< 1c082f5a test(d4): case-scoped rules need no target; enforce paired subject/object when scoped
+< 1b372132 fix(d4): preserve legitimate case-scoped Check mappings without objectKey
+< 620f091d test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 9b3e5bfe docs(d4): reproducible Bun worktree, held-template import, D2 smoke and failure handoff
+< be563807 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 10cd12ce ci(d4): frozen Bun full regression and fifty held-draft imports
+< 1242daee test(d4): regression for 50-source catalog, candidate import and cross-domain scope
+< 2c620194 fix(d4): use static Node fs import for Bun ESM runner
+< 70635dd0 feat(d4): expose explicit 50-candidate import and D1/D3/D2 verification CLI
+< d19b8a24 feat(d4): add fixed-source 50-template machine-readable catalog
+< e03539cb feat(d4): integrate all eight domain candidate assets at fixed heads
+> 891f4a2d docs(d4-g07): synchronize source index with tested complete section modules
+> 337638c1 test(d4-g07): freeze D3/D2/Pi actual technical evidence
+> 2d6063a2 docs(d4-g07): freeze seven truthful PARTIAL manifests, CI provenance and integration gap ledger
+> 5127e045 test(d4-g07): freeze D3/D2/Pi actual technical evidence
+> a4614f66 test(d4-g07): verify persisted D1 revisions and diff for each business template
+> 29d2842c test(d4-g07): freeze D3/D2/Pi actual technical evidence
+> bd039a37 feat(d4-g07-t07): preserve full non-numbered debt and offset review responsibilities
+> bef39fc8 test(d4-g07): freeze D3/D2/Pi actual technical evidence
+> 70be37e2 feat(d4-g07-t06): preserve full non-numbered meetings and training responsibilities
+> cbda99aa feat(d4-g07-t05): preserve full non-numbered payroll review responsibilities
+> e77bb9a9 test(d4-g07): freeze D3/D2/Pi actual technical evidence
+> 14c5b713 feat(d4-g07-t04): trace complete non-numbered settlement responsibilities
+> c287e316 test(d4-g07): freeze D3/D2/Pi actual technical evidence
+> bb48cc07 feat(d4-g07): materialize full non-R source sections for T01-T03
+> f4cece6b test(d4-g07): freeze D3/D2/Pi actual technical evidence
+> 0b982556 ci(d4-g07): run frozen seven-template engineering acceptance and persist runtime artifacts
+> b3d2438f test(d4-g07): real seven-template D1/D3/D2/Pi synthetic scope probes
+> 2c5eb277 feat(d4-g07): materialize seven frozen C business mothers and D1 modular workspaces

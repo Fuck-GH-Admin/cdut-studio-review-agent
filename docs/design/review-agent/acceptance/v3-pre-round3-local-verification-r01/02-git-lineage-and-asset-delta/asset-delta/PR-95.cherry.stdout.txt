@@ -1,0 +1,61 @@
++ 26964eb38bc1d63ee04290eb31b8892c8554da7a docs(d4-g01): restore immutable G01 source README.md
++ 12f7dd5846021d9b90e435ed0ed81133226e6faf docs(d4-g01): restore immutable G01 source source-manifest.json
++ 25084c44ed9ee129b7148b247186635e950576c9 docs(d4-g01): restore immutable G01 source originals/g01_student_identity_complete_template_v1.7.md
++ 2e7ef4575102d19060149d86b88db63bf393aa69 docs(d4-g01): restore immutable G01 source originals/g01_archive_utilization_template_editor_spec_v1_5.md
++ b84585aa271d5745c305cff158256ae66890500e docs(d4-g01): restore immutable G01 source originals/special_campus_card_template_v1.4.md
++ c1c5cec563a4b1d3b0899b37ddf7dd61c3246457 docs(d4-g01): restore immutable G01 source originals/G01_special_proof_seal_review_template_v1.4.md
++ 5d4aada923b3e8261ea632cfc0e5449b1afa33fc docs(d4-g01): restore immutable G01 source originals/G01_political_review_template_v0.3.md
++ eda4b2f4ad7b3b334b9148a79c3e6b874f358f7d feat(d4-g01): migrate frozen I A-prime asset workspace/workspace.json
++ 5197d5b047d5f1aee73eeccd3908821411690c42 feat(d4-g01): migrate frozen I A-prime asset source-catalog.json
++ 095124e233d687f1991537b1419401ec1c7d91be feat(d4-g01): migrate frozen I A-prime asset coverage/ledger-85.json
++ 61b8c1fbabcec45c5886048fdc1c2263df8ff1e6 feat(d4-g01): migrate frozen I A-prime asset migration-map.json
++ 07ca67d10bd6e9a0b63c35531153bbcceba9cbc2 feat(d4-g01): migrate frozen I A-prime asset fixtures/selections.json
++ ccd27e1dcdd1d765b9c734572a51dee41437dd99 feat(d4-g01): migrate frozen I A-prime asset fixtures/controlled-registry.json
++ 638dd67fb0242efd1632072b23dfe340f48fb53a feat(d4-g01): migrate frozen I A-prime asset runtime/actual-runtime-index.json
++ 5400c718a2b846d6bf9ca6d7eff890145717eaf1 feat(d4-g01): migrate frozen I A-prime asset issues/unmet.md
++ b6577da93bab25c8934f3c61e4d665b72374cd65 feat(d4-g01): migrate frozen I A-prime asset report.md
++ 65356794bb1d4eae82ef08af0a2c58d03bb60614 feat(d4-g01): author A workspace.json from immutable MD
++ 240434e2c67fb3fe8a8f3dd4ed366faefa00ce8c feat(d4-g01): author A source-catalog.json from immutable MD
++ 99a7dcd4911bba0996593aeb87aa25a92996cf1f feat(d4-g01): author A coverage-ledger.json from immutable MD
++ 72faa644f03499281d3521a4eface0f6b5085d24 feat(d4-g01): author A selection.json from immutable MD
++ 371a5e41441a6e7f97357eae56c2502f0e651d20 feat(d4-g01): author A synthetic-case.json from immutable MD
++ 5184cf36cf5d75cf4faa730a4fc623e3640f76b0 feat(d4-g01): author A manifest.json from immutable MD
++ 5d27db481b2459d17a9acff5fcef32aeb18aed1b feat(d4-g01): author A README.md from immutable MD
++ 7b92502eff028790c054d485b308bf2f4f0a0ce6 feat(d4-g01): author C workspace.json from immutable MD
++ ac01f04e38e904efc1453e2c2ce091a1713afc20 feat(d4-g01): author C source-catalog.json from immutable MD
++ 47652bbb9e6e49442d7f30dbb8ca0152f3c6b3f6 feat(d4-g01): author C coverage-ledger.json from immutable MD
++ ddf46ec10ed52cf86f245517cd3721d0d8bd7664 feat(d4-g01): author C selection.json from immutable MD
++ ea3b7a62b9c16f597f820a9e281033cab90618bb feat(d4-g01): author C synthetic-case.json from immutable MD
++ a3346cad5cfa04f2ea57d296fb83a796715cd0dc feat(d4-g01): author C manifest.json from immutable MD
++ 7fbd9cea43f1b79ba0ac70b6d3d484b468567c85 feat(d4-g01): author C README.md from immutable MD
++ 164da313148994940ac29cbacd73e9e912edd065 feat(d4-g01): author S workspace.json from immutable MD
++ 5adb696b0a3d5cc0059497071b2e7b757365b931 feat(d4-g01): complete S source-catalog.json
++ 9b93d083c65158514988d5bb92d7b62046eabcce feat(d4-g01): complete S coverage-ledger.json
++ bd11487df0aa2acf3f37a9810ddebb238f956a11 feat(d4-g01): complete S selection.json
++ bdcf0cca0f56f10fb874d5ddffa194fe3195d28c feat(d4-g01): complete S synthetic-case.json
++ e778ab402c008593db70973b67af08631af5b434 feat(d4-g01): complete S manifest.json
++ 77b636bc7902a6c7233dfb5c8e8a797cbe39940e feat(d4-g01): complete S README.md
++ a055a1081dcb1f07a3f2aa681626f4638d3e1c32 feat(d4-g01): create P workspace.json from fixed v0.3 original
++ 2929ae080ef70c25305832b2d8f301d87c7eeb4c feat(d4-g01): create P source-catalog.json from fixed v0.3 original
++ edfff9980812c418ae9c4478df97e3e31f4bc2f0 feat(d4-g01): create P coverage-ledger.json from fixed v0.3 original
++ 7dabf7cf4d449c40e96b294286445ab6d0fc1d93 feat(d4-g01): create P selection.json from fixed v0.3 original
++ 2a8a59f71861b4e20b7f1028eadb7fc953a0a2d2 feat(d4-g01): create P synthetic-case.json from fixed v0.3 original
++ b6fb0e7d5d7c72008e878bf72724c72ca1664099 feat(d4-g01): create P manifest.json from fixed v0.3 original
++ 471ddd7b9ad1a61f895e2e4d014d34aeafed670a feat(d4-g01): create P README.md from fixed v0.3 original
++ 40b43473108c1e699985a973276b13deaca86259 fix(d4-g01): retain full C/F/T named-rule tables in workspace.json
++ 040b0717fcb046ff4b98757430fadafaedaf5949 fix(d4-g01): retain full C/F/T named-rule tables in source-catalog.json
++ c622446c1d2b5c6fcd28159784529fa77814ecb6 fix(d4-g01): retain full C/F/T named-rule tables in coverage-ledger.json
++ a8b3bbd7069db4ed2cb7b23218783f30c68be101 fix(d4-g01): retain full C/F/T named-rule tables in manifest.json
++ 0ff215f3cb75066bc89a41851ee2f9a16df8ba18 test(d4-g01): execute full-domain D1 D3 D2 Pi synthetic handoff with independent evidence scope
++ de2af0fb3887c4cce5662c5324e7ecca3f9450bd fix(d4-g01): resolve repo root from existing Electron scripts directory
++ 2b92323432e8f0f2d74c56e9f4c7b9811bbcd502 ci(d4-g01): run five-template typecheck and D2 Pi technical cases from COMMON fixed parent
++ 7e212fbb1b0d3ba6ce7a64da7bec7f804347488c fix(ci): use allowed job env context for isolated G01 D4 config
++ 92a7f22d13e09c81808167991cedcee07cef9caa fix(ci): fetch fixed COMMON ancestor before enforcing baseline topology
++ e3229df537586e7afcdbeafb7c9db502f942c7db fix(d4-g01): submit case-scoped Pi Check against full expected subject set
++ 2d69eb768d224b8a8b0d9312e5f11f3bb287426f docs(d4-g01): add independent I delivery manifest pinned to COMMON SHA
++ ff6b8d3d079924eddb6d6b277d605345db5c3ef3 fix(ci): rebase G01 runtime evidence commit over concurrent documentation-only changes
++ 01ffd901eb8bb2ed7fff17fdbdf72e34b2a97f1d fix(ci): discard runner-only unstaged changes before evidence rebase and safe push
++ 2f5d84e1abf12023f2cd22ddc0a596e9b445c957 test(d4-g01): capture actual five-template D2 Pi candidate receipts
++ 596d7229305465ccc5c1e67b4c0a8a85eb34ac19 docs(d4-g01): hand off five real modular authoring packs and scoped technical runtime evidence
++ 53b57ab68ea25cca259b7210fe9af473e670cf39 docs(d4-g01): hand off five real modular authoring packs and scoped technical runtime evidence
++ 258ffdc8b8b68015a65783d798d9f422986d2c3b docs(d4-g01): hand off five real modular authoring packs and scoped technical runtime evidence

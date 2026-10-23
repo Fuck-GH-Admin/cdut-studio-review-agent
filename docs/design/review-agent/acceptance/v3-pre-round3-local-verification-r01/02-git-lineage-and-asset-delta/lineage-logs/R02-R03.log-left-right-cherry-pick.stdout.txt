@@ -1,0 +1,9 @@
+< c2378988 docs(p06): hand off R03 remaining business engineering and L02-02 onward
+< d2849411 test(p06): import persisted batch-state writer in bound-Run fixture
+< 5895bc62 fix(p06): guard finalization against wrong-batch Run and preserve provenance tests and handoff
+< 0fbe542a feat(p06): bind exact Run and input hash to batch attempts across UI, automation and human group actions
+> db028487 docs(p06): document R03 batch run attribution safety, offline regression and deferred LIVE gates
+> db71fea3 fix(p06): block stale automation case and Run bindings at transaction time
+> b57c5c8e test(p06): cover durable batch Run binding and protect legacy unbound retry
+> de22b96b feat(p06): display only batch-bound run evidence and reject legacy unbound case runs
+> ef301099 feat(p06): bind each batch entry to its own persisted Run and isolate automatic/group actions

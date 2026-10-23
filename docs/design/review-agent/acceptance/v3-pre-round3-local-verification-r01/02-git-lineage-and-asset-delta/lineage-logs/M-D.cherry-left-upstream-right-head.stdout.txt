@@ -1,0 +1,193 @@
++ 3ec84dc20681a3dfeedab45fb39a9b0ac74d9551 feat(d4): declare bounded P1-C picker and discard IPC channels
++ d871341f6730b5cda6b2b792f6f30ee5fa8af75e feat(d4): expose Main-only native picker and sender-bound create token
++ 3fa591bd4721e25594be108ebae6a88c5b956e25 feat(d4): preload native intake choice without exposing filesystem paths
++ 80e303bfb7c9496890a6586f1af8ef21d8da2522 feat(d4): 20-second suggestion countdown with explicit manual override and native picker
++ c4a345d488438141acf1f8b289af400847e5de1b feat(d4): accept route suggestion without overriding later human template choice
++ ea4028e20cf2e8ac4b00e6b053d62e5bfc1ca288 feat(d4): integrate staged intake → 20s recommendation → confirmed D2 case wizard
++ 0e5f259a600952019509b41c423ef7fcf686a50d test(d4): P1-C deterministic recommendation, unknown, and mixed-task negative cases
++ b296f3ba8d274c96ebe2edede64f4a883c599373 fix(d4): cap text sampling to 16 KiB and remove circular runtime import
++ 1fcbc5f31f8563cdecdfd0123aa996453e9f522d chore(d4): P1-C affected package patch versions
++ 641e02f6f0d34d402d6ad223cc6c09ec0510be98 chore(d4): P1-C affected package patch versions
++ c3c4a204514afd7704655582acf231eb1864db99 docs(d4): describe P1-C native intake and routing patch release
++ 3e36be474e5f4ba2d8e098ad4d72e603f9ff72a6 docs(d4): P1-C native-intake routing workflow, acceptance cases, and declared boundaries
++ 3cf1b11eb1d4f92e3a5a89576b479b5b22312445 fix(d4): bound lifecycle of staged originals by TTL sweep and normal process exit
++ 4dce31f4792a188e969c0bdbedd844620a82aaf6 docs(d4): independent P1-C real Electron/Xvfb GUI acceptance and evidence task
++ ef61c354135896eb16996478d095136e0a99f15d fix(d4): synchronous single-flight guard for case submit events
++ 60daaa9d71474412842efed207f9b15af71923fb fix(d4): reject rapid double-submit before starting second create request
++ ac1c3af91da628d14215d2a5c22ed9c28e5e3e72 test(d4): reproduce same-turn duplicate and verify single-flight reset
++ 84a75299e796c0e22f6e6faa9092b17f4f3a4838 chore(d4): bump Electron patch for P1-C duplicate-submit correction
++ 8e01e648e19e94ae0fb6c3f31a76e34524f50a32 docs(d4): record P1-C C10 UI correctness patch
++ 2e24e0c9a24d378a5b7f2e160c81c03041a2859c docs(d4): preserve PR111 C10 fail and define isolated GUI retest contract
++ fe834a3176997b80708394d8c83503785eadea3b feat(d4-p2): explicit Pi observation/check contract and compact complete D2 mapping
++ f93a0750ec3e0f5454aef47c0a034f82bc5e1d60 feat(d4-p2): replace duplicate D2 subject/map prose with complete compact map and strict Pi schema
++ ad67c7de529cc8c18fba71993d289e55e2331907 test(d4-p2): prove all 107 Check IDs, rule texts and constraints survive prompt compacting
++ 5418c8f0f5b0b4012a9600aaae3b4c8c9dc04301 chore(d4-p2): bump Electron patch version for Pi prompt contract
++ d57c402ee92cd9907bb3d9aaae0cba782a9da52d docs(d4-p2): record prompt-only optimization patch
++ ac991f11f40ca31efe9db9f90dc0f20f4936c8ca docs(d4-p2): fix baseline costs, bounded P2-A scope, and P2-B paired comparison gate
++ adcf9336b151456363912aec7c61b84334fe6d81 feat(d4-p2): lossless repeated-requirement dictionary with one entry per RuleSpec
++ 7c8e67d2e01d8ee4715f506d8123201bef6e1813 feat(d4-p2): send exact unique requirement text once while keeping every D2 rule ID
++ 34cb052fc41bacaac97914b15bd2609948b45ee1 test(d4-p2): prove 107 Rule IDs map losslessly to 70 full requirements and small rules stay expanded
++ 813cfbd43f52ed710c99718afebd855cfa8ba0c8 docs(d4-p2): record lossless 107-rule to 70-requirement dictionary and measured bounds
++ 3859ed7732978777a672aef29d4fcd38356b8297 test(d4-p2): use actual lossless mapping compression bound, retain all 107 Check IDs
++ ff1aa01670bbeeeba33aa0f01efdf4d8da87bb9e docs(d4-p2): correct lossless mapping measurements and preserve first CI regression
++ 0c2d46445c6e52b8f6caded75c78aa85c8a937f9 docs(d4): freeze sequential offline P2-B/P2-C engineering and one batched GUI/model acceptance policy
++ 2b9561466a008722adf368387f4f474eef8bedb2 feat(d4-p2b): actual Pi prompt metrics and fail-closed paired comparison schema
++ 065e659c00a6ac176ba4184038ba444da725c8f8 feat(d4-p2b): run real preparePiReviewRunV2 in disposable G08 D2 profile without model
++ 7e67fb417347f06eabc505a5c295fecdd314dab6 test(d4-p2b): reject unpaired metric claims on changed rule, selection or Check sets
++ f231b80b74dd0aaca7edc8428d18e52ea87b51cc test(d4-p2b): actual G08 D2 case and Pi prepare integration without Provider
++ 277427ae79fb8ede4970dba9e297014ca3ccb8fe chore(d4-p2b): add offline fixed-template prompt measurement CLI
++ f54771806da2dc4e9942dbc038a0ebbc101b3b68 docs(d4-p2b): document actual no-provider Pi metrics and fail-closed paired analysis workflow
++ 3083f91380bd6364912b8b5bf01caccdcca9d155 feat(d4-p2c): bounded non-authoritative Pi rejection classes and repair hints
++ 0fa748a82616e32a422d19f0f91c3cfd30933a4f feat(d4-p2c): return bounded repair guidance without weakening Main result gates or run persistence
++ 6dd5a57a1750f93c0167ae6cb018dd68a1478873 test(d4-p2c): classify observed rejection families and bound untrusted retry guidance
++ 8cf3562eb0c0de50207d779b9748dca5ecc2da3f test(d4-p2c): Main rejection remains running, typed repair hints, valid same-Run retry completes
++ 2f3397930d39424ff166b2ea8efa66b376809221 test(d4-p2c): real G08 unconfirmed-rule Main gate remains fail-closed with repair guidance
++ 94d8b42b20f59bb7368e63cd20a403bf21ec771f docs(d4-p2c): freeze bounded rejection feedback invariants and batched acceptance handoff
++ dd22d7202a4549dab4cf93196566f4a66abf279a chore(d4-p2c): patch release note for additive submit repair feedback
++ 60a17e103f97f386c9332fce7ef6b714efad1156 chore(d4-p2c): patch release note for additive submit repair feedback
++ 026cfe0f4905bf10f46291bdd7451788c60df5f9 docs(d4): single independent batched P1-C GUI and P2 offline/provider acceptance taskbook
++ 5352ef29155a27357ea10092764a726028c72fd1 test(d4-c10): add RED lifecycle regression for success-before-dialog-close
++ d5724e2450bc2667bfa5a60dbd82c2a17550487b fix(d4-c10): latch successful submission until a genuinely new dialog session
++ dca91678c2b46231a99599e586637b1b3e6fca16 fix(d4-c10): drive dialog submit from lifecycle latch and invalidate stale responses
++ 9b2a89591861b5f62bcc45c48c3365980630e8ca docs(d4-c10): record RED/GREEN CI and independent executable C10 GUI retest
++ 468b18d63c2b753e37a43e5b4a297a76e42700f1 fix(d4-c10): invalidate pending submission on externally controlled close
++ fc5100b339d1f097aea4ee60bd2d912276bf8429 docs(d4-c10): account for controlled parent close hardening
++ 363425e8cbe5ffa1195905e5ef27fa2e3382268c test(d4-c10-r03): exercise owner-bound staged-token replay, concurrency and retry through actual Main intake
++ 2d99d46564f6944934f0ed3572895c9ecd203f95 test(d4-c10-r03): add timestamped native CDP mouse and Enter+click driver without false 40ms claims
++ e357fb608313c8cbda68d111eae46dae428534e2 fix(test): correct apostrophe quoting in R03 token regression names
++ 412e1520b22591818463dff3e6658cfa09fe124d docs(d4-c10-r03): write precise native input and Main replay acceptance contract after R02 audit
++ f2dc4c6ebc06dcf2231b1c93261198caea4c9daa feat(d4-w1): define bounded per-file reviewer intake-role contract
++ 1d8190c98260699686541234d0dc767d9bcb1561 feat(d4-w1): fail-closed Main file-role plan validation
++ 80c356d16551d7657277e49889c84e56ccd71377 feat(d4-w1): import OS-picked documents into explicitly chosen application/evidence lanes
++ 313d68bd2631e0653a59a7ce9a706361c4819624 feat(d4-w1): add per-file application/evidence classification at native intake review
++ 6d8ee7c07bbeaa3a8ffe506c31649be1f7b68198 feat(d4-w1): submit reviewer-confirmed per-file classifications with intake token
++ 51973c7bedf2d3a0380f31dea3222c233b10f630 feat(d4-w1): conservatively route by full frozen candidate names across G01-G08
++ 7fbb634df2e0fcf2242c75e832f55dda38a13b4b test(d4-w1): real D2 Main create imports per-file role and rejects forged plans without consuming token
++ 3a5c1e524911ec216de52445fd8cb5e2b1ee6bd1 test(d4-w1): role-plan positive and fail-closed negative coverage
++ 5552d0b29d2439cf262358c3f3703c18f8f36144 test(d4-w1): 50-catalog conservative route, split-matter and PDF negative cases
++ e870307bf62f95d0717320934e5ebb17475dbc8b feat(d4-w1): user-authored bulk object builder with bounded unknown-by-default conditions
++ 780a097fb73d37482cff5c8110326dd5e31c2844 feat(d4-w1): add bounded multiline object entry in real D4 creation form
++ 016bb8d9b1f0899ce2a4c23a03568096adfcc5b0 test(d4-w1): batch object identity, unknown applicability, no fabricated confirmation
++ 499b96916fa92c24c98da571710d727c1951901b fix(test): match mutable role array in Bun expect type contract
++ ceb2d514728e5a3e024290ce04beeedbbffcd8c7 fix(d4-w1): discard unused native staged originals on parent-driven dialog close
++ a280d8c98740292caca81182fedfb16bef8e4aa0 fix(d4-w1): freeze picker while creating and discard stale OS dialog completions
++ abb4f760dd7f7292d3d492da2a239de99c7fd29a fix(d4-w1): freeze object selection and native intake while create-case is pending
++ 56c037d39cb487b7e89b9a4fc00105e78c55e5f7 fix(d4-w1): preserve original OS file names using isolated per-index staging directories
++ e49e2ca5f22a37304f70bd77efc588acfe71d4d9 docs(d4-w1): preserve complete product scope, actual increments and one future batched GUI acceptance
++ 85816e4b3517cdd3fd06dc5f3624092845087bde feat(d4-w1): Main-only bounded recursive folder and streaming ZIP expansion, SHA-256 dedup and per-file skip ledger
++ 58179638726a77398dac94375ba5fcb8c6baebe7 fix(d4-w1): propagate disk/ZIP errors with bounded transform pipeline
++ 8e934e3ea4a5d033d9b8560f9038228db9ed9f30 feat(d4-w1): connect Main picker to native folder/ZIP staging, dedup and bounded skipped-file manifest
++ eb0adf9dd28258d39892db256e6b2a2b6201a230 feat(d4-w1): expose folder/ZIP origin and skip ledger in Main stage preview
++ e51ade7a432f8d72eb17d3d9ed6453ee1af4d32a feat(d4-w1): define reviewer acknowledgement for omitted archive material
++ acba85fea4e366a7cd62dc2132f5738f0f2842f1 feat(d4-w1): allow bounded 100-file native batch role plans
++ 1779b21279295ebc28f14ed61de64acfc4faf265 feat(d4-w1): retain skipped or failed folder/ZIP material audit ledger on case
++ 3720656ace0ab4d50779ec62827599299e1f61ad feat(d4-w1): require explicit skip acknowledgement and persist all omitted/failed material reasons
++ 9d2f7e4a36add3e91805a474eda3ae6b3b649503 feat(d4-w1): validate native folder selector mode at Main sender IPC
++ 44a95212c51c59838ae59a9d026f6e4663724261 feat(d4-w1): expose bounded folder selector through Review preload
++ 8aae3323bdba7545fb469aedfd16c90a1dbf372a feat(d4-w1): folder/ZIP picker plus explicit skipped-file ledger and acknowledgement UI
++ 252c8699e885b46c3c3ee93c8ca54b15011c2cd1 feat(d4-w1): require explicit skipped-file acknowledgement before D2 case creation
++ 014a1d88e313368fe3078a165d66efdfc1e5c8bd test(d4-w1): native folder/ZIP, symlink, traversal, SHA dedup, corruption isolation and 100-file cap
++ 3991433e6da7c7e2b709648e1e0f1a6d069affb6 test(d4-w1): Main D2 folder skip consent, token retry, persisted omissions and replay refusal
++ 81f69ddfe824fb49ef9b627684f5d1a5582a2344 fix(d4-w1): adapt JSZip Node readable declaration to Node pipeline typed stream
++ d765f90622a6a0650845a750098a4b030c9e3541 fix(d4-w1): reject Windows-reserved and unsafe archive entry basenames
++ 3f149feac547a30b26db03dcf0cc660aeb3e0340 fix(d4-w1): correct literal regex escaping in portable filename guard
++ a13d404b10c57bd5122947134967ada42563ed98 feat(d4-w1): display persistently skipped/failed batch items after reopening case
++ 4d1672d58a025f54accfc4efc72c2b287da55a79 fix(d4-w1): cap global nested folder/ZIP traversal work to prevent unbounded scans
++ 94c8fac0802929bd05147d2a308eaad3c5b3dcfe feat(d4-w1): preserve content SHA256 and source origin for archive member provenance
++ 9a4cff62ab98ba29a59dfb64d3fba980c4d04e80 feat(d4-w1): carry Main-only hash and ZIP/folder origin through claimed intake
++ ba52e7a8183c48607f8b7c137c82c7f9e51173e2 feat(d4-w1): persist ZIP member provenance and staged-byte SHA256 per imported document
++ 1763bb78c6bd05ebefdc3ee6776658770f1bf17c feat(d4-w1): record source hashes and folder/ZIP provenance against persisted document IDs
++ 2ad1116be887bf4f97cec9950456642311bbfde1 test(d4-w1): verify persisted origin-document mapping and original-byte SHA256
++ 472f47efc6540e6d6f4c7372e53dac1e61e9c67c fix(d4-w1): retain native source order, prefer root files before nested duplicate files
++ b412415930c8299618c4c0dac5661cadddcb0570 test(d4-w1): update new 100-file boundary regression
++ b9f2651ca76beba6b2c3df5d63e8ded78076143a feat(d4-w1): expose persisted archive provenance and hash in actual case materials UI
++ 6b0a6c51ea2f87093780fc6d157f54a4788070e4 fix(test): assert ZIP material stays inside staging root, not absence of substring in temp parent path
++ ee6a51473642f7c9ddc5ef0b7a0854a74d6fd080 docs(d4-w1): record folder/ZIP, bounded dedup, explicit skips, durable provenance and remaining W1 scope
++ 415d8e8edb9139d18fad3f636e26553e25ede0a2 fix(d4-w1): bound native picker roots before recursive expansion
++ 8b61352b144d1db108bf2c6da7755612cadfa24d test(d4-w1): portable staging-root assertion across OS path separators
++ 1277e71d46a9e6b0226594fb98ac7bcc655a4e02 fix(d4-w1): label persisted import warnings as historical, not unconditionally unresolved
++ d37d3568a7f342793192a4161bb8e9f6f075b5a7 feat(d4-w1): allow owner-bound read-only native staging preflight before post-case append
++ 9b56c22467e0159b81dfb0d6edc1e001aa8cceac feat(d4-w1): public typed post-create batch conflict assessment, user choices and result
++ 580d7bf609bfff85f93cfca056b75e55c7d9abee feat(d4-w1): owner-bound post-create native batch preflight, conflict decisions, safe append and archive-on-success replacement
++ c70d5f5649949764e8b0e56765f0339743d88d36 feat(d4-w1): Main IPC gate for owner-bound batch preflight and assessed append/replace
++ 12766875ee9b41784837b76ca50b325e17556ad3 feat(d4-w1): expose typed native post-create batch assessment and execution to Renderer
++ 2fa44c240de6db81ed7973cb98c7922044fa786d feat(d4-w1): real post-case batch conflict preview UI and reviewer-approved append/replace controls
++ bcfb87b33195ed3c7ec8b8131624021c6af0ea13 feat(d4-w1): expose batch append and conflict resolution in actual application/evidence lanes
++ 324e1889e94cddccc3d1a96303517a35d2b1eb23 test(d4-w1): real Main D2 post-case append/duplicate/stale-version/archive-on-success and skip-consent regressions
++ fe6d9ee5f17c86521ba053346f1b181e24fb0458 fix(d4-w1): discard late native picker assessment on case switch or unmount
++ aa4a4f44b8b815a0ed4cb6a142f366ae4734384d docs(d4-w1): record implemented post-case conflict assessment, controlled replacement and remaining acceptance gaps
++ ff083819dcec4bc45a15f153b3c7a5d9cbfaafef fix(d4-w1): remove orphaned V1 application items when retiring replaced source document
++ 2d320ae7e98f1dc4fb30f9aab09603e8ff0e788c test(d4-w1): retired application source cannot leave dangling V1 extracted items
++ 02711053edb4f30db908ca9a3b5de49134cf6c21 fix(d4-w1): reset batch decisions on case switch and reject stale cross-case UI apply
++ a44ac44de18965996e495cdf2d374bfe9e8f67ad feat(d4-w1): validated explicit source locations and per-subject D2 fact choices
++ 0a0b433f98e0ded07b2aae75c7813aca97772896 fix(d4-w1): never infer precise source coordinates from loose snippets or inactive material
++ 9b1f8d231a0080305d541d3a7cee98357b2d362d test(d4-w1): exact SourceRef, subject scope and stale/forged source negatives
++ 7a5bf902f389257f47eff7964b4c86f04b2067f7 feat(d4-w1): expose real per-D2-subject fact review, human correction and evidence summary in workspace
++ e4facdd547ce6a78cec4aeaa2fc87f20e39e24d3 feat(d4-w1): constrain manual facts to active source versions, user-selected original blocks and scoped field definitions
++ 1571f0714addbd2a7cf11f6978774543051d2acf feat(d4-w1): source-linked candidate confirmation, manual source selection and verified source navigation
++ 58f6452c01b5cc49df112b21bce0e540478aaefe fix(d4-w1): forward reviewer-selected source version and block to canonical correction action
++ 6dcd12588522a3f56b753561492f4e3912482bec feat(d4-w1): include nested author-declared confirmed-observation gate keys in scoped fact UI
++ f8a92e414173f28352bc8a3b0038d60affe7c135 test(d4-w1): nested per-subject D2 observation gates become reviewable candidate facts
++ 5437570a4c7ec7a7e39a1897edf24b0889b6bd7b fix(d4-w1): preserve verified existing V2 precise SourceRef without trusting stale or fabricated coordinates
++ 69d812f0c6fb8f9e633ba01ae05cb064c1894b4c test(d4-w1): preserve exact current V2 SourceRef and degrade stale or invented coordinates
++ d249b275eb7c7d446c89eb0c70584472904ebe5d feat(d4-w1): display current subject field values and distinct author-scoped fact labels without generic placeholder collisions
++ 5624ace10e94f6f657e428b646a26909400eb8f3 docs(d4-w1): record real Subject observation review, scoped facts and trustworthy source positioning
++ 1819f3df732fe2f06e19d46616dc93f0ceb52ba8 fix(d4-w1): reject cross-case Subject and out-of-frozen-scope field during human fact submission
++ bb7a31bab54259ade8ba8a788bc9eaaf74db444f feat(d4-w1): visible fact submission errors and out-of-scope candidate protection per D2 Subject
++ c4b56b43ccc6b8d5723f343f745b673aa9ba2265 test(d4-w1): real D2 Subject fact correction with original-version SourceRef and receipt persistence
++ 0b94897c7bdb9926e9faf19249dfa6142c3accfc feat(d4-w1): preserve typed V2 field values in human fact correction
++ 1a9546399c650edff5e083b8ee33fd9f79c43702 feat(d4-w1): preserve numeric/date/boolean/enum/multi types during human fact edits
++ 2d673e4f43ade25b0264ce94bfaa4327ba088c18 test(d4-w1): numeric units, boolean, date, enum and multi-value fact correction negatives
++ df3abb2b3690f52f2d59688c5768aca410bec106 docs(d4-w1): retain typed fact corrections, Main observation receipt test and cross-case field guard
++ 6cadfc194353673f20b045047a9c59a79f129044 fix(test): short 2-character snippet must honestly remain file-level instead of fabricated block precision
++ f8ee80424ac829e8be1c1490b52763829dbd72c9 feat(d4-w1): internal replay import retains original display filename and rejects unsafe basename
++ 79155399c73985808f9d4d566025555318fd6e1b fix(d4-w1): explicit safe-basename guard for internal original-file replay
++ a30b7ff618784db55a6a7d70c6a37e063e3956fa fix(d4-w1): correctly reject single backslash in replay filename
++ 8aaa0996edad985225e1e33423fa182c41a6c5de refactor(d4-w1): share Main-only per-case mutation guard between append and parse replay
++ 0b79934a6509be032ad3b4722302ca3c6316ffd8 feat(d4-w1): define Main-only original replay result and typed IPC channel
++ 6bd34e50294c62cb9cfadbc23cdb9e20dff46d45 feat(d4-w1): verified original-file in-case parser retry with revision guard, hash check and safe version archival
++ e6c85f5617a89c1361570deb7726318a40fb4f83 feat(d4-w1): Main frame-gated IPC for safe original-only parser retry
++ 9262a10766febd2a0842e7b0383cb17d6fd200ec feat(d4-w1): typed preload API for Main-owned reparse retry
++ a5a5ed6ba06ec00215896065c3a9c3012022ac05 feat(d4-w1): per-material safe parser retry UI in existing case with explicit partial/failed warnings
++ 5384fb2aa2d6a1a02b22015367741dd59de5052d feat(d4-w1): real per-file remediation entry in application and evidence workbench lanes
++ 19551ae956a14cbe042642fc628f3053bacca8af test(d4-w1): real D2 original replay repaired/partial/tampered cases and immutable version history
++ 0c9ece5327a255a4568c7f6f6502cfc449beee58 feat(d4-w1): trusted byte-backed drag staging with Main ZIP pipeline, caps and no renderer host paths
++ 58b76147d7d96377f216e473ab2076e4449adf05 fix(d4-w1): portable filename guard checks one backslash and Windows device names
++ 8812dcdb31a7fe3f69f0f26d1293fbbcaad8dbaf feat(d4-w1): expose explicit user-drop bytes staging channel
++ dd4473a82901bbe40b404f3a6b0f0491224ea1a0 feat(d4-w1): Main-frame owner-gated byte-backed drag entry, no path input
++ f07c659d62b69b16d142759b6fcf7f7f5070f9ed feat(d4-w1): typed drag-byte IPC bridge through preload
++ 002f709567736f96f6028a1efc68d1d081770c1a feat(d4-w1): genuine pathless user-gesture file drag into existing case assessment workflow
++ 14629ebba00e887427ff3acc534af484c478da9c fix(d4-w1): disable legacy path-based drag lane for D4; use pathless byte-backed native pipeline
++ 2e7c169fe3b96f835eaaad173b038eb44346ca04 test(d4-w1): genuine bytes-backed drag, SHA dedup, skip consent, owner, replay and traversal/cap attacks
++ 605dd0ee2b6de526714d18c5aecfe60a076b89d8 docs(d4-w1): document in-case SHA-verified parser retry, direct-byte drop and remaining W1 gates
++ 38a679d4985ccad86be51cf944951243565db51f test(d4-w1): ZIP payload from actual file-drop bytes follows shared Main extraction and skip ledger
++ a095e8aad606c5132af5569365f7a4312abb1e00 fix(d4-w1): no automatic retirement for empty-text pseudo-parse or concurrent case edit during retry
++ 6db1264aa1876d0258e01e139193ef3e69261a38 docs(d4-w1): formal verified HEAD, CI, product progress, remaining scope and independent acceptance handoff
++ ff9c249bec8cc5105f0363abe7c0b80343526422 docs(d4-w1): actionable next Agent engineering taskbook for remaining W1 features and deferred batched GUI acceptance
++ 10c66a65b3c5314203fade751fabc896ba5c4338 fix(d4-w1): persist per-file provenance and guard version retirement after verified parse
++ a5abf42a11c90400d8906cbb2e378304647f49ef feat(d4-w1): surface per-file import progress and crash-aware version reconciliation
++ f1a637fceb7d858a947b1e12ff52bf2ad13c7568 fix(d4-w1): restore strict TypeScript CI for progress subscription and source test
++ 5ec4d6c04112524a8e18a48dd68369801ae46ea8 fix(d4-w1): reject foreign and stale SourceRefs, enforce per-Subject evidence scope
++ fd4ea9783c1fe34cf307ec28a79846801aff7bb5 feat(d4-w1): expose frozen per-Subject author responsibilities without inventing form fields
++ b1c9c5dc78333004c5ae671c1662773e2359f8ec fix(d4-w1): unconfirm retired-source observations while retaining evidence history
++ 5ab225e7e8dbf2780ee4fdb1b2054ba30378a756 docs(d4-w1): record executed C1-C4 scope, code snapshots, gates and remaining work
++ 3321f0a1b194a16764da5146d0770f70998b782b feat(d4-w1): preview live and archived originals via existing Main path policy
++ c0704d11a8bb0ac342e13b565960ddd8a25a1f5f fix(d4-w1): show pre-W1 archived originals in revision reconciliation
++ 2c63696eb00455afd4daeed1477035fb678e5c1a docs(d4-w1): freeze CI-green code SHA, full test counts and remaining product gates
++ 28e2e8f37523d3e7df9c771c44113c80a9a5ff2b feat(d4-w1): durable batch journal and verified restaging resume in Main
++ f1ef0304e941f800f4d07150d645f6d6af35380e feat(d4-w1): resume UI and end-to-end hash guarded durable batch journal regression
++ 25830a8038c4cf436a465bd5834da0561e8a6305 feat(d4-w1): retain true PDF page and spreadsheet cell coordinates through V2 sources
++ 409b2c669d873d398d8589e326d814ba95c82029 fix(d4-w1): preserve scanned-PDF partial warning contract with true page extraction
++ a84409489e0935722c2f8dfa664fdee194960afc feat(d4-w1): validated reviewer-defined typed forms scoped to frozen D2 fields
++ ec353d71b6dfaffbf37d2e6ec45cf8dcade798e8 test(d4-w1): enforce reviewer field types in authoritative V2 corrections and retain snapshots
++ c7951ad448e503ac9c5990e352b0ed7e305836f1 feat(d4-w1): editable per-Subject typed review forms and safe presentation overlay
++ 0b1e1b735c1d1859cce637c807e2de53cae15fd1 test(d4-w1): use legacy revision=0 and V2 rejection-result contract in form negatives
++ f77441cee6771090c0fac05a7643372922975157 fix(d4-w1): enforce current SourceRef and per-Subject EvidenceLink identity at Main V2 commands
++ 418830d7d5274a16367329e97f14c8b7a7930093 test(d4-w1): enforce Main-side source and evidence identity with cross-case negatives
++ aedcda17b7e2a693ec42a554abc3d18e6f254a6a fix(d4-w1): narrow V2 error result type and surface unconfirmed required reviewer fields
++ 4d73d6729ff8d4461d046f344b50f5583d740481 fix(d4-w1): close pending mandatory field JSX conditional
++ 08590c5a4a27312e7e7ab87ac4f5c79068d50959 test(d4-w1): exercise actual two-page PDF source positions and scan-only page gaps
++ 8a087f2c5f28dd687283cfe03e8241812ed55474 feat(d4-w1): explicit Main-validated material version resolution without deleting originals
++ f4af98406c0b34d1239e2621b64dc32a1054b4da feat(d4-w1): reviewer-controlled dual-active source resolution in material history
++ 5a72d7977dff074c439a89170ce1cfd25c3a6d0a fix(d4-w1): make Main material-resolution IPC TypeScript require assertion parseable
++ c2f965d29022a42b3c32d6a4cb73aa8fd542329b test(d4-w1): real dual-active resolution retains originals and rejects stale or tampered source

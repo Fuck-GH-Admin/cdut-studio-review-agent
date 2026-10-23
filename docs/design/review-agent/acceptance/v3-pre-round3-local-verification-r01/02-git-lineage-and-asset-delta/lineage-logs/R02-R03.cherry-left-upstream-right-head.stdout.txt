@@ -1,0 +1,5 @@
++ ef3010990e94ca7ae5d720d31060e7e4a03311e1 feat(p06): bind each batch entry to its own persisted Run and isolate automatic/group actions
++ de22b96b23bbc2c3462dc39f40b05fae79d4afbe feat(p06): display only batch-bound run evidence and reject legacy unbound case runs
++ b57c5c8e89100e55f3edd58ddc2c138f82c69a82 test(p06): cover durable batch Run binding and protect legacy unbound retry
++ db71fea3371fa327222868dd27c3c3e52228b81a fix(p06): block stale automation case and Run bindings at transaction time
++ db0284879f75ce123b5d83cb6577a3cc7ad057da docs(p06): document R03 batch run attribution safety, offline regression and deferred LIVE gates

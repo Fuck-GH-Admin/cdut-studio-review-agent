@@ -1,0 +1,76 @@
+< b68443b2 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 3b368722 docs(d4): record real unified CI success, initial false green, limits, and exact evidence
+< 3e351ab5 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< c8e87418 ci(d4): fail closed on bun test and verify through tee using pipefail
+< 1c082f5a test(d4): case-scoped rules need no target; enforce paired subject/object when scoped
+< 1b372132 fix(d4): preserve legitimate case-scoped Check mappings without objectKey
+< 620f091d test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 9b3e5bfe docs(d4): reproducible Bun worktree, held-template import, D2 smoke and failure handoff
+< be563807 test(g05): retain real six-template plans and synthetic Pi receipts [skip ci]
+< 10cd12ce ci(d4): frozen Bun full regression and fifty held-draft imports
+< 1242daee test(d4): regression for 50-source catalog, candidate import and cross-domain scope
+< 2c620194 fix(d4): use static Node fs import for Bun ESM runner
+< 70635dd0 feat(d4): expose explicit 50-candidate import and D1/D3/D2 verification CLI
+< d19b8a24 feat(d4): add fixed-source 50-template machine-readable catalog
+< e03539cb feat(d4): integrate all eight domain candidate assets at fixed heads
+> 258ffdc8 docs(d4-g01): hand off five real modular authoring packs and scoped technical runtime evidence
+> 53b57ab6 docs(d4-g01): hand off five real modular authoring packs and scoped technical runtime evidence
+> 596d7229 docs(d4-g01): hand off five real modular authoring packs and scoped technical runtime evidence
+> 2f5d84e1 test(d4-g01): capture actual five-template D2 Pi candidate receipts
+> 01ffd901 fix(ci): discard runner-only unstaged changes before evidence rebase and safe push
+> ff6b8d3d fix(ci): rebase G01 runtime evidence commit over concurrent documentation-only changes
+> 2d69eb76 docs(d4-g01): add independent I delivery manifest pinned to COMMON SHA
+> e3229df5 fix(d4-g01): submit case-scoped Pi Check against full expected subject set
+> 92a7f22d fix(ci): fetch fixed COMMON ancestor before enforcing baseline topology
+> 7e212fbb fix(ci): use allowed job env context for isolated G01 D4 config
+> 2b923234 ci(d4-g01): run five-template typecheck and D2 Pi technical cases from COMMON fixed parent
+> de2af0fb fix(d4-g01): resolve repo root from existing Electron scripts directory
+> 0ff215f3 test(d4-g01): execute full-domain D1 D3 D2 Pi synthetic handoff with independent evidence scope
+> a8b3bbd7 fix(d4-g01): retain full C/F/T named-rule tables in manifest.json
+> c622446c fix(d4-g01): retain full C/F/T named-rule tables in coverage-ledger.json
+> 040b0717 fix(d4-g01): retain full C/F/T named-rule tables in source-catalog.json
+> 40b43473 fix(d4-g01): retain full C/F/T named-rule tables in workspace.json
+> 471ddd7b feat(d4-g01): create P README.md from fixed v0.3 original
+> b6fb0e7d feat(d4-g01): create P manifest.json from fixed v0.3 original
+> 2a8a59f7 feat(d4-g01): create P synthetic-case.json from fixed v0.3 original
+> 7dabf7cf feat(d4-g01): create P selection.json from fixed v0.3 original
+> edfff998 feat(d4-g01): create P coverage-ledger.json from fixed v0.3 original
+> 2929ae08 feat(d4-g01): create P source-catalog.json from fixed v0.3 original
+> a055a108 feat(d4-g01): create P workspace.json from fixed v0.3 original
+> 77b636bc feat(d4-g01): complete S README.md
+> e778ab40 feat(d4-g01): complete S manifest.json
+> bdcf0cca feat(d4-g01): complete S synthetic-case.json
+> bd11487d feat(d4-g01): complete S selection.json
+> 9b93d083 feat(d4-g01): complete S coverage-ledger.json
+> 5adb696b feat(d4-g01): complete S source-catalog.json
+> 164da313 feat(d4-g01): author S workspace.json from immutable MD
+> 7fbd9cea feat(d4-g01): author C README.md from immutable MD
+> a3346cad feat(d4-g01): author C manifest.json from immutable MD
+> ea3b7a62 feat(d4-g01): author C synthetic-case.json from immutable MD
+> ddf46ec1 feat(d4-g01): author C selection.json from immutable MD
+> 47652bbb feat(d4-g01): author C coverage-ledger.json from immutable MD
+> ac01f04e feat(d4-g01): author C source-catalog.json from immutable MD
+> 7b92502e feat(d4-g01): author C workspace.json from immutable MD
+> 5d27db48 feat(d4-g01): author A README.md from immutable MD
+> 5184cf36 feat(d4-g01): author A manifest.json from immutable MD
+> 371a5e41 feat(d4-g01): author A synthetic-case.json from immutable MD
+> 72faa644 feat(d4-g01): author A selection.json from immutable MD
+> 99a7dcd4 feat(d4-g01): author A coverage-ledger.json from immutable MD
+> 240434e2 feat(d4-g01): author A source-catalog.json from immutable MD
+> 65356794 feat(d4-g01): author A workspace.json from immutable MD
+> b6577da9 feat(d4-g01): migrate frozen I A-prime asset report.md
+> 5400c718 feat(d4-g01): migrate frozen I A-prime asset issues/unmet.md
+> 638dd67f feat(d4-g01): migrate frozen I A-prime asset runtime/actual-runtime-index.json
+> ccd27e1d feat(d4-g01): migrate frozen I A-prime asset fixtures/controlled-registry.json
+> 07ca67d1 feat(d4-g01): migrate frozen I A-prime asset fixtures/selections.json
+> 61b8c1fb feat(d4-g01): migrate frozen I A-prime asset migration-map.json
+> 095124e2 feat(d4-g01): migrate frozen I A-prime asset coverage/ledger-85.json
+> 5197d5b0 feat(d4-g01): migrate frozen I A-prime asset source-catalog.json
+> eda4b2f4 feat(d4-g01): migrate frozen I A-prime asset workspace/workspace.json
+> 5d4aada9 docs(d4-g01): restore immutable G01 source originals/G01_political_review_template_v0.3.md
+> c1c5cec5 docs(d4-g01): restore immutable G01 source originals/G01_special_proof_seal_review_template_v1.4.md
+> b84585aa docs(d4-g01): restore immutable G01 source originals/special_campus_card_template_v1.4.md
+> 2e7ef457 docs(d4-g01): restore immutable G01 source originals/g01_archive_utilization_template_editor_spec_v1_5.md
+> 25084c44 docs(d4-g01): restore immutable G01 source originals/g01_student_identity_complete_template_v1.7.md
+> 12f7dd58 docs(d4-g01): restore immutable G01 source source-manifest.json
+> 26964eb3 docs(d4-g01): restore immutable G01 source README.md

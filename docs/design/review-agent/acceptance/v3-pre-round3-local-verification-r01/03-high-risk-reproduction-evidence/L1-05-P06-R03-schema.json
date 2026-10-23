@@ -1,0 +1,9 @@
+{
+  "testId": "L1-05-SCHEMA",
+  "repoSha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+  "fixtureKind": "synthetic-only",
+  "attemptedTargetKind": "generic-object",
+  "attemptedConditionApplicability": "unknown",
+  "rejection": "D2_TARGET_INVALID: 未知目标种类",
+  "status": "BLOCKED_SCHEMA"
+}

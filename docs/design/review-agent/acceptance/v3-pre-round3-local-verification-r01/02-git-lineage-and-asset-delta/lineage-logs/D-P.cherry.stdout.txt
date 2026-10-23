@@ -1,0 +1,274 @@
++ 99c6ff7c00952f9e34f09ff944be52513463bbda feat(review): add read-only batch triage and conservative issue grouping
++ 63af0b0a0ac3c591e5449c8cb85efb1bda287080 refactor(review): share batch triage with renderer and tests
++ 1bc424e80b02e727eb8e4d1429fd6f7db60679f9 refactor(review): remove misplaced main-only triage module
++ 42ea817ca9403811ac4b89021f36f2b397bd5baf feat(review): export batch triage for UI
++ d35d727f2f84a65a848bdbd55a5b00700d20d064 test(review): cover batch triage fail-closed and issue grouping
++ a01258eeae2d66caf37d9b505517604dd4ba84f7 feat(review): run batch queue and show triage candidates and issue groups
++ e515ae30013e38e36150c4e73016abd3cc8f0f33 fix(review): reject concurrent batch runs and avoid stuck running state
++ bc1aa4adcf1680f1f001d176b91b029826597332 test(review): verify batch queue concurrency and failure state
++ c1c23fbcae6d910dba17bc1e5560088f2d98b200 fix(review): safely accept string case-index stages in batch triage
++ 7a9ea9db8d521d8d710e6bd1cd4954520c6ebcf0 test(review): fail closed on unknown case stages
++ df246373290e85b93b296d58445a2e6d9ef5e951 ci(review): add focused batch regression workflow independent of renderer packaging
++ 06385ef8377fcf8611bf5f10c2487b933cad6f07 ci(review): ensure focused tests trigger on feature branch
++ 14cd68792adc8272ace252ed888f2468a58a4905 ci(review): keep focused check as reusable PR-only workflow
++ 348f162690e4b74649f3f294988fd84c51a63778 fix(review): share effective-run gate between triage and issue groups
++ d6bad0bb0c75fbe4cd6d9bcdbf19bc4375cd30b5 test(review): regression for manifest mismatch and incomplete-run group exclusion
++ 6c394fda567400fb30736655738aac4ff0f8bce7 feat(review): explicit interrupted-batch recovery and targeted retries
++ f5467e0fbb32102eeb107289c6311dde6d9232a6 feat(review): expose batch recovery and targeted retry through existing IPC
++ 71afefbdc41f30995f39cde704024aa3fe3aa089 feat(review): expose batch recovery and targeted retry through existing IPC
++ 02a0e2492658fb181ac357a0eb57e209ea07b9f4 test(review): cover interrupted recovery and selective batch retry
++ 1f033b0520abfd28539e6c9d6f632f30a2babc4b feat(review): prepare per-case auditable issue-group action drafts
++ ca1f5fe7f54707ec67a24d358b4a56138e2a33b9 test(review): ensure issue-group action drafts remain per-case and gated
++ c874ad750cb0ee4a052c526a8d6617a01124d6a6 feat(review): wire targeted retry, interrupted recovery and per-case draft previews into batch UI
++ e0befbeef5581ddbb9db6991855cb6815e11de49 feat(review): define preview and confirmed batch-group action contracts
++ 64d6d1d583ed3e186602f0bad26c58c989952461 feat(review): add human-confirmed batch group preview and transactional per-case apply
++ cbfbe78fb5733d8ee88c9224d6145a8ea5275402 feat(review): expose batch group preview and confirmed apply through IPC/preload
++ fea9632bf3e9f3dd038d3389fa2faa14f2f50053 feat(review): expose batch group preview and confirmed apply through IPC/preload
++ 864043ad12da9a63486e1f49b4b6af64ef447979 feat(review): build scoped manual batch group action dialog with preview and per-case receipts
++ 2a1a4c7d66acaa077e02dfa9b93b8098db165744 feat(review): connect human group confirmation dialog to batch issue cards
++ 499bae0d12655a5ec7ececd147f7865e8d215e39 test(review): integration coverage for confirmed per-case group transactions, exclusions and stale previews
++ ecc7e92771d29a0d7120be5e93e75575585b2322 ci(review): include batch-group transaction integration tests in focused workflow
++ 2d9b0f18a7a0e67205b8ab022e5e00165e332bea fix(review): keep bulk operation receipt visible after refreshing issue groups
++ 9b582ece7dd50676903cd7938e4c9f2e77f02527 fix(review): lock final-stage bulk decisions and expose interrupted operation receipts safely
++ 343fdc51e387df97f40d21d03dba8168ac5e3c4b refactor(review): register typed batch group IPC channel names
++ a1402855fbcdca21220132060c14d715edd003c6 refactor(review): route group actions via shared IPC constants
++ fd3ee05c39a21380a57c70b5950602e30afe05d3 refactor(review): route group actions via shared IPC constants
++ d43ac2a0f632c210c6357a8be9273ce6a334d65b test(review): exercise human formal pass/return and reject cross-role bulk decisions
++ d13cf047ae8477e65e0d274da86d5230accf3233 fix(review): allow explicit retry of completed runs with technical-exception triage
++ 9dc3a9de7c8be9ac2959f11aca43a67189b78642 fix(review): show true execution statuses and retry incomplete completed runs
++ 34bf6a05e05c6b82e3146137843afbb326cb6f71 test(review): explicit retry for technical exceptions but protect valid completed runs
++ 537e6af7dfe5e4f5dcb10324d9a02a9f874e878a fix(review): persist bulk operation completion flag for all steps
++ 8d8673476a83d97b9ac82a26295162f2c0198141 fix(test): use valid FieldValue text discriminator
++ 7b3179af1f8bc376e27c56ecd5f04da13f2ec362 docs(review): add stage B manual acceptance plan and C-stage boundary
++ a31d0b5b3447a82b87923f14bfca5187837449a3 test(review): distinguish valid queued case from explicitly retryable incomplete done
++ cc4a7ac4f23fbd8d518802b1c396cfff2eb999aa Enjoy~
++ aea3ad63e30a439077419089d8ef118e3d2a37ce feat(review): declare per-batch automation policy and transactional receipt contracts
++ 59d75564c97ae43d9aef1d55528acd0f635bd916 feat(review): persist explicit per-batch automation mode and supplement requeue
++ ddf2c10b760baa829ccea4dbc3d47d17bef394a7 feat(review): implement strict per-batch auto-action policy and evidence gates
++ c5a6f26b79478216495825e9daaace155d80e55f feat(review): recheck system-originated batch automation authorization inside serialized decision transaction
++ 5c38dfdc5e42cd6f4040a36c6cd7d61595d21d2a feat(review): execute opted-in batch auto pass/return through V2 transactions and strict finalization
++ 092e3b977a46ee126b063b476e55e9af1869817f feat(review): register batch auto processing IPC channel
++ bed4f44d5303ce3f5cf1e8b505afe69ad3e68fb8 feat(review): connect auto batch process, policy configuration and supplement requeue via IPC
++ e157927c387bf4f4bc2c3ea9f066c11f140868ab feat(review): expose batch automation configuration and processing in preload
++ 9350e7552510595c426e6d7b57acf31212231768 fix(review): correctly parse revision-bound batch automation identities
++ 1f60142977ecab7e82f9bb9c3bf917f8a276452d feat(review): add explicit per-batch automation authorization dialog
++ 0832275b3cbd1b68844408c06de9e21598c7af20 feat(review): connect opt-in strategy, automated execution, real receipts and guarded finalization to UI
++ 93328e04a70baf967a4542d4847bf9c0718c4241 test(review): end-to-end batch C policy gating, auto decisions, supplement loop and finalization
++ e37d89cd631d03b97d7ba2cc6884629debc0dd18 ci(review): include C-stage automatic decision and supplement-loop integration tests
++ bcf03c7035dc97337921a9894a6c499c3b295503 test(review): set batch fixture to completed queued state before C processing
++ 208f70774bc7e7db9143cad7ba0500931cf3c3d7 fix(review): validate provenance targets for every automated rule check
++ 66199ee23437b8ff35ae5f25f9017dd2b7f44751 test(review): catch forged evidence, stale inputs and revoked automation grants
++ e4a35e749c980f636277a61b820a142a1d3e8d5d fix(build): support Bun workspace-hoisted OOXML dist without stubbing wasm
++ 8d6acf1df4ca30b924314c2ff6d6c8eebb6556db docs(review): provide complete B+C automation acceptance matrix and local test commands
++ 135639f93c5955d79b0ac0bf96b80385f712f3c0 Fix
++ a29d9c9f68c3dea39d839c1a07f47b7606f1a416 Fix benchmark
++ 3d83c22641b0f8e1ddaedf8223790a4b70bcb064 Fix README with new features and details
++ 79e66c6d7c9aca0e76ac3c04e0459eb4a7de3800 fix(review): require every active document and effective rule to be represented in automatic batch checks
++ 1df1591f3263607c007569baafcbfd53d3a8cc3a test(review): prevent auto approvals with unread active docs or missing effective-rule verdicts
++ 53f54f945ffb6957c41cc0ab399d824590237aa2 fix(review): requeue approved supplement responses from core workflow regardless of IPC caller
++ 615e9535c4abb473e00122f9709f7f3664a2db66 refactor(review): let supplement workflow service own batch requeue transition
++ 44caff9343a95fb49ae7c342d3f25eba78a149ca test(review): verify direct supplement service auto-requeues without IPC and is idempotent
++ 393aa6e51d2d120318442f65ba2d921dec07d994 fix(review): base supplement requeue on committed aggregate, not absent command entity
++ 50134785dcd7af7766c59832d7083cb246fb11f6 test(review): mixed four-case automation and multi-supplement recovery end-to-end
++ 38acb1d0348e74651978cd942584ba7b1cb4fe73 ci(review): expand B+C regression to workflow, business transactions, case store and template authorization
++ 8a138c3e382af0724972d5dfc45dc847e9106411 docs(review): add current batch review handoff
++ 1a5eb7e0c71981874c795b3eb45c0284a7602f3b docs(review): add quality acceptance report for batch review branch
++ abf3dcc7d98a5aea9ec579260650aefeef5d2192 fix(review): enforce safe batch IDs and business-finality gate on every finalization path
++ 0961f173330c665ccf8703f91e254fcd83a2982a fix(review): enforce task-stage template and assignee-role binding on every stage decision
++ b173847200e79df667b09d4c9cf8c56b6adb386b fix(review): introduce trusted local-reviewer boundary for privileged IPC review actions
++ d2accb03ae8b6a29146e6a569b9f4f132a1682fa fix(review): reject privileged renderer actor claims across all decision IPC handlers
++ 861fdf620b2d907a56b3733ad8d7ec308bc9a570 fix(review): accept untrusted IPC record envelope in actor normalization
++ 32fab50df393bad8057e718e40a12ebd7ba0979e test(review): reject cross-role stage approvals and template substitution
++ 8e5f3622f22853820961cec605101c4671be1aab test(review): prove renderer IPC cannot forge school, teacher, system or agent reviewer identities
++ ec2f3f968faf887cf7325eedcf73cf676783c20a test(review): reject done-only finalization, pending appeals, path traversal and unsafe reopen IDs
++ 19c9b938a3a6c1427294929f886a937a1a56f0e4 fix(review): share final decision projection and core finalization gate in C-stage completion
++ 5854ecd78de82aecf7fdd8cd2db1e6118355f382 fix(review): prevent reopened-batch collisions and skip unsafe disk directory names
++ dac1405934fded9cd0242dadc3d0bfe216891625 ci(review): include local reviewer IPC identity and stage guard regression suite
++ fe93eb1a2454d7188c9b7499af00fb8f19963b6a fix(review): disable unverified free-form finalization snapshots from renderer IPC
++ 4be4b359effb203246c785ee3296cabb31a4844a test(review): seed formally decided cases before asserting finalized batch cannot rerun
++ 2d39cb58358801819b7fdf2473ff82eb431412dd fix(review): preserve actionable finalization errors for unresolved supplement and missing formal decision
++ 0f81019964b1c01bf3fdea8d5a9936c84afa2825 fix(review): prevent cross-role supplement resolution and local reviewer appeal finalization
++ eda73869416442a0b125d94bbc5a90cb4a854cbc test(review): verify reviewer cannot resolve teacher-owned supplements or sign appeal adjudications
++ 687e8a3a00cc07430b0716f4e362d26214ecf764 fix(review-ui): hide unauthorized stage and judge controls from local-reviewer workspace
++ b437e4728589cb4bfc7b1835c5346498051ff09d test(review): follow system auto-check, reviewer first-review and teacher final-review in integration journey
++ cd2a047ecf2e0e6a1ee50f427d87819655cf567e ci(review): run complete role-correct single-case journey alongside P0 batch security regressions
++ 61918263e7ee210f2b07b9c3715d77e516490e5a fix(review): persist hash-verified outbox payload and replay original action idempotently after crash
++ abf5ba9ff45ece6d6d610745be44e76a1ffdbff0 test(review): verify original outbox replay, legacy manual recovery, tamper detection and concurrency
++ 3990e2281ee332f2f17ff648a6753bb063c15dc1 chore(build): align OOXML dependency discovery with green main baseline
++ eb7958643c1d9623f159d0de359a8afe7023ec13 fix(review): keep awaiting-receipt external responses pending instead of claiming final outbox success
++ 872fe665f87f95416ce0e1e64d31813fdeeb951a test(review): recover indeterminate awaiting-receipt without changing action ID or inventing success
++ 3a7b0e1067dca06db2ba85e6a38b5a2830317248 test(review): end-to-end batch queue to system decisions, audited finalization and no replay
++ 1032ef0e99541b9dbfe3790248ccd85fdabf517d docs(review): record round-2 outbox reliability, baseline sync and honest UI acceptance scope
++ 9c069b9494bd43d3cd5001ee57f01b3a9d6e590a docs(review): narrow prior path ID acceptance scope
++ 71d2dfba75ae0bde0a05909c31479e662006df70 docs(review): record batch review round-three QA blocker
++ c1b62662ed45e8111509dcd131b9a0edf02cd41b docs(review): verify offline demo batch UI and correct login prerequisite
++ f219f85c8f847871a477cd97be442c71579b0a14 fix(review): centralize fail-closed V2 case/run/node filesystem ID validation
++ 5477c755c5a3e17db80c6ddabccf1abc1b1a032f fix(review): enforce V2 case ID safety at aggregate paths and transaction boundaries
++ f3377fc58f732d3d83ae5d29d7e034f71f9d251d fix(review): validate case/run/node IDs before all V2 run and artifact I/O, and keep reads side-effect free
++ ab9340efe1feacbb56155ff94e002d4f6ed58a55 fix(review): reject unsafe V2 member case IDs before batch persistence, retries and restore
++ ad148be4148e01ccda42a413908b83193e20b23a fix(review): reject unsafe V2 case IDs before application creation or template processing
++ 8012ea0d02ca9f69da54c486dc1c8ed4d35c81f6 fix(review): reject unsafe V2 case/run IDs at public renderer IPC boundaries
++ c03126bca7e94e0b74c307b57fed49222f378441 test(review): cover reported V2 traversal PoC across creation, aggregate, run, artifact, batch, and outside-root effects
++ 7b4170b285bcba1d515dfdb0c6389fb39978781d fix(review): validate requested run recovery case ID before checking disk existence
++ 81b16fa36846069b65757dd68ef989350d2c0226 ci(review): include V2 path escape regression suite in batch review gate
++ fcde202a071044f0af590690376acdba83f3645b fix(review-ui): centralize user-readable IPC errors and truthful batch completion statistics
++ 855e02311f2b348b72b6cc8f7d147589ff614b6a fix(review-ui): separate historic auto actions, show batch failure/human counts and clean transport error prefixes
++ e8cd7bdbc9a8b5c4a4a7169a59516892bd152257 fix(review-ui): show authorization refusal reason without Electron IPC transport wrapper
++ f89181d699452ae02d2c1ebb1551b0d92c26d669 test(review-ui): regression for IPC error cause and honest mixed batch completion statistics
++ 58a58237e9f6026f718bc5ebec61f94331292ad0 ci(review): cover V2 path traversal and desktop QA copy regressions
++ 956f24dbf55466c02d4bdb02067fa0fed0494642 test(review): empty batch should be rejected at creation instead of leaving an invalid draft
++ 07793e00d9dd9e5bec404f1ca4c152a65ddb2e47 ci(review): execute storage traversal and UI feedback tests in focused workflow
++ fd63ec87c513e64c5c5abba8843bdb069281e258 test(review): capture mocked ipcMain handlers so V2 renderer entrypoints can be security-tested
++ b704ad2472f0be3b9f7850036b9bc1818a3506d7 test(review): reproduce malicious CREATE_CASE_V2 via registered IPC handler and assert no outside-root writes
++ 7bfd5daaa3a1fee3d9745cf1e6dc646ddd2f8c39 ci(review): include real registered V2 create-case IPC path traversal PoC regression
++ f5e8bedd73066e4f1fac3aad8062821ccf34472a fix(test): type captured IPC handler map locally without changing existing global test hooks contract
++ bcd1f20d03a2d3ef4e1dcf2b692a058de008a820 fix(test): explicitly type V2 artifact read expectation
++ 87405cb52e0ee1db4eac34376d5660e1de48ecf5 chore(release): bump Electron patch version for review V2 path-security and batch UI fixes
++ 8269752a6dd37bc75444255f89db662208453f84 docs(release): describe V2 path traversal fix and batch UI feedback in 0.15.149 changelog
++ ddda94507afcb2f2cd0a6435f89de7f68827cd55 fix(review): apply V2 case ID guard to direct Pi document directory resolution
++ c1b89743002089a58a0a8c6d2fcaa837a70b5274 fix(review): validate V2 case ID before report export directory creation
++ 8c51ed132b0e86b03e3a5656b793f8016ac9766f test(review): ensure Pi source-docs and report export paths share V2 traversal guard
++ 17d470c75c3232e57aed193ebb88dadb07a55528 refactor(review-ui): make current-versus-historic automation label a testable pure function
++ 5a9411dcaea45e86d331c89c88d46d53391cde2a refactor(review-ui): render current suggestion and historical automation receipts separately
++ c3b01a0167d1f2f36476f6422f6a23737a13b974 test(review-ui): ensure requeued supplement does not display historic auto-return as current decision
++ f92985d0e768240a8e5458f481e0ab0a97a450f1 docs(review): record 19–21 QA findings, V2 path remediation and accurate desktop retest boundary
++ fa49f8d5c430a02f31703bb8f3bfe92385b7da93 fix(review): statically import safe V2 storage ID assertion for TypeScript narrowing
++ 371854397013911603c5d29915385820d8d40a72 docs(review): reconcile QA fix report with D2 baseline merge and version 0.15.150
++ a4865250e5704fde01f5bebc48f148a9446a4f5a test(batch): add isolated synthetic Electron QA fixtures
++ d58f6ecebef6032de106cf2922343c634ef216c8 test(batch): add real Electron renderer acceptance replay via CDP
++ cb3c3059bdadb0330933dd5e4a62b9534d10edc0 ci(batch): add isolated real Electron acceptance replay
++ fde86150d6f32acd554e96e802484e4a0e87751d test(batch): source demo QA credentials from existing documented fixture
++ 596050bb488450d0bf80ed6bcfb96b6412085a21 test(batch): drive actual CDUT demo login button in Electron UI replay
++ 8b37194a5cb1d24291749e0bd13ed2af0a63cf83 ci(batch): probe Vite using the configured localhost host
++ 4e7341afe4c167bb8e7f31866d1ba881028053a9 test(batch): bypass first-run onboarding only in isolated synthetic QA profile
++ 36676b8b9d05825b473c623e61e42f66e85990a5 test(batch): wait for hydrated main window before navigation
++ f801dabff381f286ab3c3e67734811c0c8813bdb test(batch): create isolated config directory before seeding settings
++ 869bd88ec5fa442e60cbf242edac393db612fe5a test(batch): normalize markdown code-format demo credentials before offline UI login
++ e3f49b81fd9ba08432fda6e5b8736173f98749ba ci(batch): install CJK fonts for legible Electron QA screenshots
++ 8f2fed6e8692fda8ac1d14c928df2a0cbba3261f docs(batch): pin six-case Electron acceptance evidence and final merge gates
++ 8f4452e9f76db1c54d4c890a3085dce2e1a2e0d1 fix(batch): close independent Electron acceptance and prepare main merge
++ 9e617abf88a8ce9babd801d8732b1ae17dc7169c docs(review): archive G01 original template g01_student_identity_complete_template_v1.7.md
++ bf8abfe41dcbaea2777c4c67e79cfb05ba86734e docs(review): archive G01 original template g01_archive_utilization_template_editor_spec_v1_5.md
++ de927494712106614ddcacd0800b30d5229832f9 docs(review): archive G01 original template special_campus_card_template_v1.4.md
++ df98004297c5fe8ece3d21d414e46614491b39ea docs(review): archive G01 original template G01_special_proof_seal_review_template_v1.4.md
++ 0329765226b4c5fd9c4b4a5f19e5fc3996224c00 docs(review): archive G01 original template G01_political_review_template_v0.3.md
++ aa7cb2fb47e524a45ea2cdf5ff1cba99cde2e9c6 docs(review): index and checksum G01 original Markdown templates
++ 0b9bf9bfe58300aa0860d1ebf10c782f7b4ab641 docs(review): index and checksum G01 original Markdown templates
++ ffe7ea943f56158ab8384f78b39e8149b5825dda Add high-precision PDF parsing pipeline
++ ed002ae78e4a71572503e38dce9c82c36dc67da9 Privacy-safe CDUT photo toggle and Pi compaction
++ dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e docs(review): propose background sessions and document staged delivery
++ 6ff93be71399683fb21c9b5e36cedce05d1945b8 chore: integrate latest upstream and review development into main
++ 8989941b6fb5651564e32d11c4215b6a6d5a5209 test: align desktop identity assertion with upstream English prompt
++ faa06777d8bfa1f8064e0c0497386936471f7c19 fix(cli): track Bun bin entrypoint as executable for frozen installs
++ 5d382749b3f56d4a086606d12a81a535636331d2 test(p06): add strict candidate-bound U0 evidence gate
++ d89ba72af6df6a4237d8815c9bf26ffe9ac31a5e ci(p06): run U0 clean worktree gate against PR head on self-hosted runner
++ b67f46a09f2c3a14a0f018a1e01fe0d0484c187a docs(p06): record U0 candidate, historical first failure and non-release gate
++ 069e4cef8d7678f892110d200804c8fb69a3fb27 docs(p06): establish U1 differential safety cases and evidence classifications without pre-signing
++ 4474291c118193d6645b746df1bfc9112bb80083 test(p06-u1): first-failure guard for retired material source references
++ 4bcf857589eaba55eb372bc95e4299c967341c59 fix(review): reject inactive versions in evidence references and post-vision checks
++ ef6a483816845dc72ce05d548348ac1c5495a256 test(p06-u1): replay PR72 Office-v2 / strict SourceRef contract on fixed candidate
++ bb697401f38eb3011b80fee653c6e312e6b28fbb test(p06-u1): add source-derived Office v2 real index collision replay for deferred #71
++ 75d49fe50be311e8609f1c035788a9b02735f5c4 ci(p06): run U1 controlled SourceRef/Office repro only after U0 passes
++ 2d9e93f3a637e8325862769f80fe4b4e884c51a1 docs(p06): formal U0 pass per exact candidate, U1 fail-then-fix and blocked live handoff
++ efba1e49facb659ab2113f6ae15a1ae5ad3fc6c3 docs(p06-l02-00): begin evidence-only A/B/C failure attribution preflight
++ 18b78c856942921963a501638d48a571d1cea180 test(p06-l02-00): archive A/B/C provenance audit against frozen source
++ 5bfa339eaacc16705e6f2693ca39b1e81e5a60d5 docs(p06-l02-00): publish code-proven failure attribution and bounded CI evidence
++ 66dc3f099e4711b8889d24fabb893973896c71ee docs(p06): freeze L02-00 cross-session handoff and independent rerun contract
++ 9c99ce0d8541aea8bfb7d70d47a894c246efbe42 test(p06): independently reconstruct nine archived cases and separate command exit causes
++ e6fd9a11f7f90a811991f2245a38f56a0b22f738 ci(p06): run new independent archival and scoped Bun regression with immutable logs
++ 6081abded4f0cfef62e60357fd6c753f5576c4cd docs(p06): record R02 first-failure distinctions and per-case provenance limits
++ 0524604cac13794af5f43cff7771160f98f176d9 docs(p06): close R02 archived and controlled evidence with exact CI, keep LIVE blocked
++ b8e707699c1d37e3da39148231181d6c9de7672c fix(p06-u1): deny ordinary Pi fallback for review-owned session without active binding
++ 0ab823be9fcf265dbc522506bd237b972932d797 test(p06-u1): verify owner binding and preset drift fail closed at orchestrator
++ 72c646fb58f95e240dad2d6c8e228db038b4b8f7 ci(p06-u1): independently run remote safety controls and archive Office #71 known failure
++ c7dd49e7c2f36d29db2bc2c8c6db73b3f5739ad4 docs(p06-u1): separate remote controlled work from real local Electron/provider evidence
++ feff1c403a6ba266e0825f858f61f7d2b6d3523a docs(p06-u1): executable local Electron/Pi/Office/Owner/IO acceptance task and evidence contract
++ 4b241846886bc571f885e0602ac96c7410fc84a0 ci(p06-u1): preserve failure exits and keep evidence outside source tree
++ 73cb485b3c7cfcca6fdec0662d9e7f66da6bbae4 docs(p06-u1): provide standalone local agent execution prompt
++ b21b3ce5ff8aafd85f4d7aa8d751e923279ac6b0 test(p06-u1): use actual built-in default preset ID for drift scenario
++ 1c6deadfc0d51644aed6152463f78fdae662cdb6 ci(p06-u1): cancel superseded candidate validations after new commits
++ 44c7dc9fefdfd7693f1b6d1de00cf348af7abf3f audit(p06-u1): 本机实机证据、P02 迟到 lookup 首败与 Office #71 阻断
++ f18787dedec2183cbb28344a573b9da9d1670e81 fix(p02): publish ordinary session deletion only after persistent delete succeeds
++ 17e04f105f344c558db7ff693dd35e22c5e23f29 fix(p02): notify all windows after ordinary and workspace cascade deletes
++ ea776bb86697f02b1bdf07eca7d4b8d129b7ef68 fix(p02): revoke deleted session ID and clear stale session/preview state atomically
++ 7706991d7f20dd89a5b1afa7296fb483c11cbfc8 fix(p02): revalidate early preview lookup against fresh Main metadata before UI hydration
++ 8ccee7e1703d8f281f4fc8e161f3c15e897e45af test(p02): verify durable ordinary delete emits one revisioned Main projection, never internal owners
++ 1fd48dc1b79b89c3a5ac500c8125a0dc7e66b94f test(p02): negative late lookup, revocation preview cleanup and valid revisioned ordinary fallback
++ 42ef366440161a4c0ae7c8881408745bb2bdbe63 docs(p02): record real first failure, exact fix contract and remote/local acceptance boundaries
++ 6b96dbda8258c64033c0d9158f4fae578f7f66a1 docs(p02): define focused real Electron deletion/race recheck and immutable evidence gates
++ 64c01e57d1e3e1a587a639ae59f9f62ed878924e test(review): add P02 local Electron recheck evidence
++ 352392c80f573c5edb1df14d73de821304373925 fix(office71): isolate Office file IDs/artifacts and reject ambiguous names
++ bfde1bd6269011b20ca6ef5a317e820fac13ebd7 fix(office71): prioritize exact source paths over ambiguous basename matches
++ 06a4f7bf021934e8dc9f3466a2bdb619d2946a00 test(office71): real materialization identity regression for same-name Office and backward cache
++ f387c2eb4ce71fc68775f3673a69c18a3f5733d2 docs(office71): record source identity fix, upstream 403 and realistic release gates
++ 6c8ee997da1f0fd781e3bd11cbc7fcc97867e918 docs(office71): formal local Electron real-file acceptance matrix and upstream gate
++ 3c9d1b63593816b066a0986dcb2b638d2df673eb test(qa): record Office #71 local Electron acceptance
++ de0e9b87c5588a93144bbadbe3a075cda097dc94 test(p06-u1): wire actual V2 assignment into Main Orchestrator review-only Pi admission and revocation
++ c3bfbdab8ad927fcc20e9e91c5b40710b7cda4d6 docs(p06-u1): freeze Pi review five-tool controlled contract and evidence tiers
++ 5c4108b84e9f8ba0505afa1ba9bebce665320079 docs(p06-u1): executable real Electron SDK/provider safety gate and conditional A-B-C local acceptance
++ cf8c5f36cebf1f22362eabd58d28275412f6f9f8 test(p06-u1): match actual Pi ToolDefinition execute signature and typed error channel
++ 74298aceb516999022d41b930a966b439cc163d4 docs: record P06 U1 Pi provider local acceptance R01
++ f163f470ed1e915f5ba1fa33c63d6e74570516bf test(p06-u1): exercise true Linux ENOSPC on run recovery and assignment revocation without disk mounts
++ 52837b24d531ec3bc01dd1e82b14f9bbb6fd246d docs(p06-u1): source-bound Linux ENOSPC controlled gate and non-equivalence to real disk recovery
++ 8caa5c59ad10f035a15e1463a33b6df09d93e178 docs(p06-u1): formal safe isolated full-volume Electron restart and IO recovery local acceptance
++ afe3fd4133fa203611190a066c6247125fd13632 test(p06-u1): assert ENOSPC errno from kernel fixture and actual revocation write failure
++ 3f3d1f79b50ee4d4960ce95aa226bfe7547e7a29 docs(p06-u1): consolidate remaining local acceptance into one gated campaign and evidence bundle
++ 9601bd2181ee1e25f599b1dd44d39bf23b1a924f docs(p06-u1): route former IO-only local task into single unified acceptance run
++ 6f3af267e9afd5594b648bb079cccd675942a04e docs(p06-u1): record unified local acceptance R01
++ 3baf1fc2ccf27607f948923dbf5aff26d984729e docs(p06-u1): add authenticated review UI gate evidence
++ f36bff88b31efd90a48105740b9890552ee549b0 test(p06-l02-01): reproduce duplicate supplement resolution side-effect after batch progressed
++ c576fe7a0d7a38a48e06ffa0aa6c8e5fadfa3deb fix(p06-l02-01): do not requeue batch on idempotent supplement resolution replay
++ 9d09cb6a0fbafb99d2da71aa174a0f61aee88b49 docs(p06): close U1 acceptance campaign as scoped partial and begin L02-01 offline engineering
++ 72dad6b00f6d413003f1d2c8e7ed5f546e4a9817 fix(p06-l02-01): return applied supplement entity from transaction mutate so new vs replay is distinguishable
++ 18b920731a5b4712094fd6b55bc3b4c2548f98f2 test(p06-l02-01): distinguish newly applied supplement result entity from replay receipt
++ 3b3e52c01e38667d1bbc98f90b6ffa0abda5d722 docs(p06): preserve both red rounds and clarify submitCommand mutate return contract
++ 17f1f74b4c99c979262b52878c7bad5b60ae9479 docs(p06): freeze overall P06 progress, verified E01 CI, and staged offline-to-live roadmap
++ f99196860ca0be07a6bbf6e485a55241f04b72e9 docs(p06): complete next-session handoff with two RED causes, fixed E01 CI, and E02-E04 ownership
++ 095a00f6214d23774ab0a70421e5fe78aed8459c docs(p06): provide executable E02-E04 next-agent task and copyable handoff prompt
++ 0a2a318e41690291c8bb32027ea920d5a6275928 test(p06-e02): reproduce direct decision authorization bypasses
++ 8e290cf13388c5a56dfbb59f19d1f9718abf8a41 fix(p06-e02): forbid direct agent and unauthorized role decisions, honor open tasks
++ 4291a349022df6ce41a1716053495e02ef224b54 fix(p06-e02): preserve readiness-first denial while enforcing final authorization
++ fb463363c9219df0bd4b423e42645470a0115627 test(p06-e03): reproduce fabricated supplement versions and equal-time stale run
++ 54540e8d38b299bc73d5ea9cb111870db73ecfd3 fix(p06-e03): reject forged document versions in supplement response
++ 2308308615df15d0a16602edabf1ea47d13c49cf fix(p06-e03): fail closed on same-millisecond supplement response and run
++ 9534724551c69081c3487abb0a70f104e3c15884 test(p06-e02): prove stage decision cannot use generic agent global toggle
++ 18f741a64c5999950ef1c6424f9732b83c53709c fix(p06-e02): prevent generic machine identities from stage, appeal and supplement authorization
++ 874b07d559233c0af9bb7cc089875067381429f3 test(p06-e03): ambiguous old batch must not be silently requeued
++ 4ae2ec96148f33c7e7773f431ecf5c1e009c3a28 fix(p06-e03): fail closed when a supplement spans multiple historical batches
++ 9a9e54c237034a447ee91e46841f05614bd7ca91 fix(p06-e02): allow only verified system auto-check handoff, never machine final decision
++ 2ca0f37ade153f307b2b72077c7a3f9bfaf1c2d9 test(p06-e02): require verified system handoff before real reviewer partial approval
++ a70b07db6d2db571caee451425a2555963573217 docs(p06-l02-01): archive E02-E04 offline fixes, scoped gaps and immutable first failures
++ 24777e5046cbc9e19b1cf77f53fa3df3df798b71 feat(p06-l02-01): provide audited single-target supplement batch requeue primitive
++ 737ae9e319cd0f7e16ecc66c619674eda6aa0407 feat(p06): bind selected supplement batch requeue to local reviewer Main IPC
++ 4c274b1aba76d52a573b76f951d26bf7330fa325 fix(p06-l02-01): bind new formal stage finals to real current V2 runs
++ a879fd9418d525c4669e2def589af81f2b027669 fix(p06-l02-01): share final readiness gate and persist supplement requeue replay protection
++ c372d4bc653b0832c31435dd1c3a18130369415f test(p06-l02-01): fix duplicate test local in supplement replay assertion
++ ac20088cb5404e8599b77781b006a89b02418dc9 test(p06): seed a nonempty successful check for valid final-pass idempotency fixture
++ 4f8a68e26e5276e61883fa53c21447a703bbf94d docs(p06-l02-01): record E02/E03 follow-up patches, CI first failure and E05 matrix
++ 698aff46900b7d6ddcbaea36fbaedad9cd169a40 test(p06-e06): harden isolated Pi live QA evidence and add fail-closed matrix contract
++ 056e24d2626fb9299b6ba581db737055f8ff599e docs(p06-e06): formalize isolated live acceptance and verify actual source SHA before CDP
++ bc2c93678e1958caa7a324210a424039f6fb0d1e test(p06-e06): bind SDK and preview evidence to unique per-run marker
++ d170d4a6522817a5c4107b21966f532f212e2c38 test(p06-e06): stop costly live QA immediately after first failed witness
++ 6af70e2136666d42385836fc111a9cff24b4031d docs(p06): prepare one combined E05/E06 local acceptance campaign with independent verdicts and evidence contracts
++ 3e076b5e11ed7b4c8c0d12ae6c32f19adda99609 docs(p06): add 29-row unexecuted machine checklist and concrete local handoff references
++ bc228f64750714e70c73cbd115d2f169c610a517 docs(p06): make unified local agent handoff paths fully resolvable
++ ec9c0e728f13970c53f0ced30c29a5005ee88c97 feat(p06): add explicit one-batch supplement requeue UI with fresh Main validation
++ d6d6afc12f826c19c59bd400264566d93d50141e fix(p06): align explicit batch requeue UI with Main-bound local reviewer actor
++ b603c604e3e59662db6b564ab3bd925181b2205d fix(p06): deny mismatched case/Run frozen template before or after paid batch execution
++ 356a9eb1406b079ead19a1fea236d628e21baf0b feat(p06): surface max-turn technical failure without treating missing checks as noncompliance
++ 268a291230fc74b550bedb605f5d4be8fbdf16c9 docs(p06): record R02 product implementation, unresolved evidence attribution and batch acceptance gates
++ e400068b493b42dad9601fcdd0814d42ad0aa6db fix(p06): avoid duplicate batch state reader declaration in Main IPC
++ 560c8f5015cd664d80f0cc3dc7cf48fb9f01fdeb fix(p06): classify Pi max-turn exhaustion as technical and guide bounded evidence-first submission
++ 4499df42fb948c170946aea1360e2f3b7a8714e6 test(p06): cover local insufficient→resubmission→satisfied and single-batch requeue lifecycle
++ 937f0079fa879535dfd35c7a0d2c1bb8e1194072 fix(p06): forbid partial Pi tool acceptance from being misreported as successful on SDK failure
++ a13cf8f22f106f5475450e47d55be2356b2c4ea8 fix(p06): enforce Run case identity and input-manifest template, reject execution-failed batch done
++ 7a3c5b90136bbd5dbb2e9cb68436bd36e867793c docs(p06): record second L02-01 R02 reliability engineering batch and deferred LIVE gates
++ 176cd73e726da7d7021e40d62cc243eafb264606 test(p06): correct TS strict cast for partial synthetic failed Run fixture
++ 6253fa695ee8aa74916b9dab3116061eff19c2c6 fix(p06): prevent unrelated latest Run from appearing as selected batch evidence
++ fdc50fb75203486b1b4655776f75d9111f1113d1 docs(p06): add batch-panel Run provenance and remaining same-template cross-batch limitation
++ 85fdc1038751114a38a4cc396840d28f0032ba35 fix(p06): recognize max-turn SDK subtype even when provider error text omits turn detail
++ ef3010990e94ca7ae5d720d31060e7e4a03311e1 feat(p06): bind each batch entry to its own persisted Run and isolate automatic/group actions
++ de22b96b23bbc2c3462dc39f40b05fae79d4afbe feat(p06): display only batch-bound run evidence and reject legacy unbound case runs
++ b57c5c8e89100e55f3edd58ddc2c138f82c69a82 test(p06): cover durable batch Run binding and protect legacy unbound retry
++ db71fea3371fa327222868dd27c3c3e52228b81a fix(p06): block stale automation case and Run bindings at transaction time
++ db0284879f75ce123b5d83cb6577a3cc7ad057da docs(p06): document R03 batch run attribution safety, offline regression and deferred LIVE gates

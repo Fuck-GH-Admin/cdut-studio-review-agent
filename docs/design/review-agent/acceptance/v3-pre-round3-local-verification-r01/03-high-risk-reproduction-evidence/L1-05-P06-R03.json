@@ -1,0 +1,45 @@
+{
+  "testId": "L1-05",
+  "repoSha": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+  "fixtureKind": "synthetic-only",
+  "targets": [
+    {
+      "objectKey": "item-1/read",
+      "subjectId": "synthetic-archive-read"
+    },
+    {
+      "objectKey": "item-1/copy",
+      "subjectId": "synthetic-archive-copy"
+    },
+    {
+      "objectKey": "item-1",
+      "subjectId": "synthetic-archive-open"
+    }
+  ],
+  "mappedChecks": [
+    {
+      "checkId": "module/item-1-read/authorization",
+      "ruleId": "d2-09b7948a3a74e27100ee",
+      "objectKey": "item-1/read",
+      "subjectId": "synthetic-archive-read"
+    },
+    {
+      "checkId": "module/item-1-copy/authorization",
+      "ruleId": "d2-2cf6d714fbe349fc29df",
+      "objectKey": "item-1/copy",
+      "subjectId": "synthetic-archive-copy"
+    },
+    {
+      "checkId": "module/item-1-open/open-state",
+      "ruleId": "d2-3eb30a800377614dbb59",
+      "objectKey": "item-1",
+      "subjectId": "synthetic-archive-open"
+    }
+  ],
+  "unknownConditions": 0,
+  "promptContainsFullTargetContract": false,
+  "promptContainsMappedChecks": true,
+  "plannedChecks": 3,
+  "pendingChecks": 3,
+  "status": "PROMPT_CONTRACT_PARTIAL"
+}

@@ -1,0 +1,20 @@
+{
+  "purpose": "V3 pre-round3 local verification R01",
+  "fixedSourceSnapshots": {
+    "M": "8989941b6fb5651564e32d11c4215b6a6d5a5209",
+    "D4_W1": "c2f965d29022a42b3c32d6a4cb73aa8fd542329b",
+    "P06_R03": "db0284879f75ce123b5d83cb6577a3cc7ad057da",
+    "P06_R02": "c23789882aabf18689c314c77c270ac4a8ae4729",
+    "G01_G08_integration": "b68443b23293b4714e61a3b81383d3d3a56434fc"
+  },
+  "fixedAuditDocuments": {
+    "PR133": "ff5e1068b99dc2aa41f53c692cd0e44a2e7ca071",
+    "PR134": "54b906dc7f4dcd06d8ca14ae39798bf18336e7d6",
+    "PR135": "9147b0c6240fc866ea98b489c37c8738714d5e9f",
+    "PR136": "87e1d2636403f8f0ccceb4fd786ee4b7097bbfb6",
+    "PR137": "082fafb3f1df7d19af25bf52cc93135190ff102c",
+    "PR138": "e2ee1d738c43ee193bb8812389a148fd2d3ad479"
+  },
+  "generatedData": "synthetic-only",
+  "productSourceModified": false
+}
