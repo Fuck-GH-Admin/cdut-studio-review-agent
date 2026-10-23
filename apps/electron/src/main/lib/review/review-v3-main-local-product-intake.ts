@@ -243,45 +243,8 @@ function evaluate(s:Session,items:B3ManualCatalogEntry[]):B3RouteState {
         confidence:1,reason:'当前原生案卷已持久绑定该模板版本'}],
       reason:'当前案卷已持久绑定模板；不重新启动20秒默认选择'}
   }
-  let routeCandidates:C11RouteCandidate[]=[]
-  if(scoped&&applications.length===1){
-    const d4Matches=classifyD4ApplicationDocuments(items,activeDocs)
-    if(d4Matches.length){
-      routeCandidates=d4Matches.flatMap(match=>{
-        const entry=items.find(item=>item.templateId===match.templateId&&
-          item.availability==='authorized-for-technical-selection')
-        if(!entry)return []
-        return [{
-          templateId:entry.templateId,templateVersion:entry.templateVersion,name:entry.name,
-          matchedSignals:match.matchedSignals,confidence:match.confidence,
-          autoEligible:match.confidence>=0.95&&applications[0]!.parseStatus==='parsed',
-          evidence:match.evidence,
-          tier:match.evidence==='application-declaration'?'exact' as const:'business-content-l1' as const,
-        }]
-      })
-    }else{
-      const app=applications[0]!
-      const strongBlocks=app.blocks.filter(block=>block.kind==='text'&&
-        block.format!=='ocr-text'&&block.format!=='vision-text')
-      const allTextBlocks=app.blocks.filter(block=>block.kind==='text')
-      const reliable=strongBlocks.length>0&&app.parseStatus==='parsed'
-      const evidenceText=(reliable?strongBlocks:allTextBlocks)
-        .map(block=>block.text.slice(0,6000)).join('\n').slice(0,30000)
-      const matches=rankTemplateCandidates(evidenceText,items as TemplateRouteCatalogEntry[])
-      routeCandidates=matches.flatMap(match=>{
-        const entry=items.find(item=>item.templateId===match.templateId&&
-          item.templateVersion===match.templateVersion&&
-          item.availability==='authorized-for-technical-selection')
-        if(!entry)return []
-        const confidence=reliable?match.confidence:Math.min(0.89,match.confidence)
-        return [{
-          templateId:entry.templateId,templateVersion:entry.templateVersion,name:entry.name,
-          matchedSignals:match.matchedSignals,confidence,autoEligible:confidence>=0.95,
-          evidence:match.reason,tier:match.tier,
-        }]
-      })
-    }
-  }
+  const routeCandidates:C11RouteCandidate[]=scoped
+    ?buildRouteCandidatesForRead(items,activeDocs):[]
   // A current, already-authorized template binding is stronger than text classification.
   const selectedCandidate=selected&&scoped?{
     templateId:selected.templateId,templateVersion:selected.templateVersion,
@@ -316,28 +279,34 @@ function buildRouteCandidatesForRead(items:B3ManualCatalogEntry[],documents:Snap
   const active=documents.filter(doc=>doc.active!==false)
   const applications=active.filter(doc=>doc.role==='application')
   if(applications.length!==1)return []
-  const d4Matches=classifyD4ApplicationDocuments(items,active)
-  if(d4Matches.length)return d4Matches.flatMap(match=>{
-    const entry=items.find(item=>item.templateId===match.templateId&&
-      item.availability==='authorized-for-technical-selection')
-    if(!entry)return []
-    return [{
-      templateId:entry.templateId,templateVersion:entry.templateVersion,name:entry.name,
-      matchedSignals:match.matchedSignals,confidence:match.confidence,
-      autoEligible:match.confidence>=0.95&&applications[0]!.parseStatus==='parsed',
-      evidence:match.evidence,
-      tier:match.evidence==='application-declaration'?'exact' as const:'business-content-l1' as const,
-    }]
-  }).sort((a,b)=>b.confidence-a.confidence||
-    a.templateId.localeCompare(b.templateId)||a.templateVersion.localeCompare(b.templateVersion))
   const app=applications[0]!
+  const d4Matches=classifyD4ApplicationDocuments(items,active)
   const strongBlocks=app.blocks.filter(block=>block.kind==='text'&&
     block.format!=='ocr-text'&&block.format!=='vision-text')
   const allTextBlocks=app.blocks.filter(block=>block.kind==='text')
   const reliable=strongBlocks.length>0&&app.parseStatus==='parsed'
   const evidenceText=(reliable?strongBlocks:allTextBlocks)
     .map(block=>block.text.slice(0,6000)).join('\n').slice(0,30000)
-  return rankTemplateCandidates(evidenceText,items as TemplateRouteCatalogEntry[]).flatMap(match=>{
+  const genericMatches=rankTemplateCandidates(evidenceText,items as TemplateRouteCatalogEntry[])
+  // An explicit declaration is the strongest signal. Otherwise, exact names/IDs
+  // beat keyword candidates, while D4's object+action rules join the keyword tier.
+  const explicitD4=d4Matches.filter(match=>match.evidence==='application-declaration')
+  if(explicitD4.length){
+    return explicitD4.flatMap(match=>{
+      const entry=items.find(item=>item.templateId===match.templateId&&
+        item.availability==='authorized-for-technical-selection')
+      if(!entry)return []
+      return [{
+        templateId:entry.templateId,templateVersion:entry.templateVersion,name:entry.name,
+        matchedSignals:match.matchedSignals,confidence:match.confidence,
+        autoEligible:match.confidence>=0.95&&reliable,
+        evidence:match.evidence,tier:'exact' as const,
+      }]
+    })
+  }
+  const genericExact=genericMatches.filter(match=>match.tier==='exact')
+  const genericKeyword=genericMatches.filter(match=>match.tier==='keyword')
+  const exactMatches=genericExact.flatMap(match=>{
     const entry=items.find(item=>item.templateId===match.templateId&&
       item.templateVersion===match.templateVersion&&
       item.availability==='authorized-for-technical-selection')
@@ -346,9 +315,45 @@ function buildRouteCandidatesForRead(items:B3ManualCatalogEntry[],documents:Snap
     return [{
       templateId:entry.templateId,templateVersion:entry.templateVersion,name:entry.name,
       matchedSignals:match.matchedSignals,confidence,autoEligible:confidence>=0.95,
-      evidence:match.reason,tier:match.tier,
+      evidence:match.reason,tier:'exact' as const,
     }]
-  }).sort((a,b)=>b.confidence-a.confidence||
+  })
+  if(exactMatches.length)return exactMatches
+  const combined=new Map<string,C11RouteCandidate>()
+  for(const match of d4Matches){
+    const entry=items.find(item=>item.templateId===match.templateId&&
+      item.availability==='authorized-for-technical-selection')
+    if(!entry)continue
+    const confidence=reliable?match.confidence:Math.min(0.89,match.confidence)
+    const key=entry.templateId+'@'+entry.templateVersion
+    combined.set(key,{
+      templateId:entry.templateId,templateVersion:entry.templateVersion,name:entry.name,
+      matchedSignals:match.matchedSignals,confidence,autoEligible:confidence>=0.95,
+      evidence:match.evidence,tier:'business-content-l1',
+    })
+  }
+  for(const match of genericKeyword){
+    const entry=items.find(item=>item.templateId===match.templateId&&
+      item.templateVersion===match.templateVersion&&
+      item.availability==='authorized-for-technical-selection')
+    if(!entry)continue
+    const confidence=reliable?match.confidence:Math.min(0.89,match.confidence)
+    const key=entry.templateId+'@'+entry.templateVersion
+    const prior=combined.get(key)
+    if(prior){
+      const signals=[...new Set([...prior.matchedSignals,...match.matchedSignals])]
+      combined.set(key,{...prior,matchedSignals:signals,
+        confidence:Math.max(prior.confidence,confidence),
+        autoEligible:Math.max(prior.confidence,confidence)>=0.95,
+        evidence:prior.evidence+'；'+match.reason})
+    }else combined.set(key,{
+      templateId:entry.templateId,templateVersion:entry.templateVersion,name:entry.name,
+      matchedSignals:match.matchedSignals,confidence,autoEligible:confidence>=0.95,
+      evidence:match.reason,tier:'keyword',
+    })
+  }
+  return [...combined.values()].sort((a,b)=>b.confidence-a.confidence||
+    b.matchedSignals.length-a.matchedSignals.length||
     a.templateId.localeCompare(b.templateId)||a.templateVersion.localeCompare(b.templateVersion))
 }
 function read(event:IpcMainInvokeEvent,caseId:string):C11MainLocalProductRead {
