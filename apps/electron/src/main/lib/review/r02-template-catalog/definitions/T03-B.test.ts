@@ -63,6 +63,7 @@ describe('T03-B R02 native template definitions', () => {
         expect(criterionKeys.has(item.criterionId)).toBeTrue()
         expect(['VERIFIED', 'PARTIAL', 'UNCONFIRMED']).toContain(item.evidenceStatus)
         expect(Array.isArray(item.srcIds)).toBeTrue()
+        for (const srcId of item.srcIds) expect(srcId).toMatch(/^SRC-\\d{3}$/)
       }
     }
   })
@@ -84,7 +85,7 @@ describe('T03-B R02 native template definitions', () => {
       expect(template.policyVersionIds).toEqual([])
       expect(template.autoPassPolicy?.enabled).toBeFalse()
       expect(template.stages.every(stage => stage.workflowOwner === 'local')).toBeTrue()
-      expect(template.stages.at(-1)?.executorRole).toBe('teacher')
+      expect(template.stages[template.stages.length - 1]?.executorRole).toBe('teacher')
       expect((template.sections ?? []).flatMap(section => section.criteria).every(criterion => criterion.execution !== 'deterministic')).toBeTrue()
     }
   })
