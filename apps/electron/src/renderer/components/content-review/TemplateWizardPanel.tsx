@@ -115,7 +115,8 @@ function validateEditor(template: TemplateVersion, forPublish = false): string[]
       typeof value !== 'string' || !value.trim() || value.length > 100))) {
       issues.push('模板' + label + '需为非空短词，每类最多100项且每项不超过100字符')
     }
-    if (values && new Set(values.map(value=>value.trim().normalize('NFKC').toLocaleLowerCase())).size !== values.length) {
+    if (values && values.every(value=>typeof value==='string'&&Boolean(value.trim())) &&
+        new Set(values.map(value=>value.trim().normalize('NFKC').toLocaleLowerCase())).size !== values.length) {
       issues.push('模板' + label + '不能重复')
     }
   }
