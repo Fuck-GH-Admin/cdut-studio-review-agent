@@ -107,11 +107,11 @@ describe('T08-A R02 template definitions', () => {
       const criteria = (template.sections ?? []).flatMap((section) => section.criteria.map((criterion) => ({ sectionId: section.id, criterionId: criterion.id, execution: criterion.execution })))
       expect(criteria.length).toBe(metadata.criteria.length)
       const sourceIds = new Set(metadata.sourceIds)
-      const fieldCodes = new Set(template.fields.map((field) => field.extractionHint?.match(/\\bF\\d{3}\\b/)?.[0] ?? field.label.match(/\\bF\\d{3}\\b/)?.[0]).filter((id): id is string => Boolean(id)))
-      const materialCodes = new Set(template.materialSlots.map((slot) => slot.name.match(/\\bM\\d{3}\\b/)?.[0] ?? slot.id.toUpperCase()))
+      const fieldCodes = new Set(template.fields.map((field) => field.extractionHint?.match(/\bF\d{3}\b/)?.[0] ?? field.label.match(/\bF\d{3}\b/)?.[0]).filter((id): id is string => Boolean(id)))
+      const materialCodes = new Set(template.materialSlots.map((slot) => slot.name.match(/\bM\d{3}\b/)?.[0] ?? slot.id.toUpperCase()))
       for (const section of template.sections ?? []) for (const criterion of section.criteria) {
-        for (const fieldId of criterion.requirement.match(/\\bF\\d{3}\\b/g) ?? []) expect(fieldCodes.has(fieldId)).toBe(true)
-        for (const materialId of criterion.requirement.match(/\\bM\\d{3}\\b/g) ?? []) expect(materialCodes.has(materialId)).toBe(true)
+        for (const fieldId of criterion.requirement.match(/\bF\d{3}\b/g) ?? []) expect(fieldCodes.has(fieldId)).toBe(true)
+        for (const materialId of criterion.requirement.match(/\bM\d{3}\b/g) ?? []) expect(materialCodes.has(materialId)).toBe(true)
       }
       for (const criterion of criteria) {
         const meta = metadata.criteria.find((item) => item.sectionId === criterion.sectionId && item.criterionId === criterion.criterionId)
