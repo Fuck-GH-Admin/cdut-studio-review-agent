@@ -23,7 +23,8 @@ function referencedSourceIds(text: string): Set<string> {
   const found = new Set<string>()
   const expression = /\bSRC-(\d{3}(?:(?:[\/／,，、]\s*)\d{3})*(?:[–-]\s*\d{3})?)/g
   for (const match of text.matchAll(expression)) {
-    for (const raw of match[1].split(/[\/／,，、]/)) {
+    const sourceGroup = match[1] ?? ''
+    for (const raw of sourceGroup.split(/[\/／,，、]/)) {
       const part = raw.trim()
       const range = part.match(/^(\d{3})[–-]\s*(\d{3})$/)
       if (range) {
@@ -67,7 +68,8 @@ describe('R02 T02-B runtime template definitions', () => {
         expect(['PARTIAL', 'UNCONFIRMED', 'VERIFIED']).toContain(item.evidenceStatus)
         for (const srcId of item.srcIds) expect(sourceIds.has(srcId)).toBe(true)
         const mappedCriterion = (template.sections ?? []).flatMap(section => section.criteria.map(criterion => ({ section, criterion }))).find(entry => entry.section.id === item.sectionId && entry.criterion.id === item.criterionId)?.criterion
-        const expectedSourceIds = referencedSourceIds((mappedCriterion?.requirement ?? '').split("\n\n安全门禁")[0])
+        const sourceRuleText = (mappedCriterion?.requirement ?? '').split("\n\n安全门禁")[0] ?? ''
+        const expectedSourceIds = referencedSourceIds(sourceRuleText)
         for (const srcId of expectedSourceIds) expect(new Set<string>(item.srcIds).has(srcId)).toBe(true)
         expect(new Set<string>(item.srcIds).size).toBe(expectedSourceIds.size)
       }
