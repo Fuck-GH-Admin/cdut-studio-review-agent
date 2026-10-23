@@ -20,8 +20,8 @@ describe('R02 S04-B template definitions', () => {
     expect(t06.sections?.flatMap(s => s.criteria)).toHaveLength(22)
     expect(t07.sections?.flatMap(s => s.criteria)).toHaveLength(25)
     for (const { template, metadata } of entries) {
-      expect(metadata.templateId).toBe(template.templateId)
-      expect(metadata.name).toBe(template.name)
+      expect(template.templateId).toBe(metadata.templateId)
+      expect(template.name).toBe(metadata.name)
     }
   })
 
@@ -47,7 +47,7 @@ describe('R02 S04-B template definitions', () => {
       }
       expect(fieldKeys.size).toBe(template.fields.length)
       expect(validateTemplate(template).filter(issue => issue.level === 'error')).toEqual([])
-      expect(metadata.criteria.length).toBe(criteria.length)
+      expect(criteria.length).toBe(metadata.criteria.length)
       for (const item of metadata.criteria) {
         expect((template.sections ?? []).some(section => section.id === item.sectionId && section.criteria.some(c => c.id === item.criterionId))).toBe(true)
         expect(item.srcIds.every(id => /^SRC-\d{3}$/.test(id))).toBe(true)
