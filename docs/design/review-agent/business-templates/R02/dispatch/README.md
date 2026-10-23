@@ -35,11 +35,11 @@
 
 1. 打开自己批次的 `prompts/{BATCH_ID}_TASK_PROMPT.md`。
 2. 先读取实现契约、统一审查标准、文件所有权和本批每个模板 ID 对应的原始 MD。
-3. 若当前分支没有原件，读取 `feat/v3-r02-template-library` 上的指定路径；本地 Git 可用时先 `git fetch origin +refs/heads/feat/v3-r02-template-library:refs/remotes/origin/feat/v3-r02-template-library`，再用 `git show origin/feat/v3-r02-template-library:<path>`。
+3. 若当前工作分支没有原件，读取 `feat/v3-r02-template-library` 上的指定路径；本地 Git 可用时先执行 `git fetch origin refs/heads/feat/v3-r02-template-library:refs/remotes/origin/feat/v3-r02-template-library`，再用 `git show refs/remotes/origin/feat/v3-r02-template-library:<path>`。若因远端跟踪分支分叉而失败，不得强制覆盖；改用 `git fetch origin refs/heads/feat/v3-r02-template-library`，随后以 `git show FETCH_HEAD:<path>` 读取。
 4. 按提示词要求在 `feat/v3-r02/templates-{BATCH_ID}` 独立分支提交审阅后的 Markdown、V3 原生模板定义、专项测试、审查报告与问题台账。
 5. 创建 PR，base 必须是 `feat/v3-r02-template-library`，不得直接合并到 `main`。
 6. 校本制度/授权未确认不是停止工作的理由；未知规则标记待确认/人工复核，禁止虚构政策、签批人或自动正式决定。
 
 ## 注意
 
-部分旧提示词仍保留“本 ZIP 已包含文件”的历史措辞。提示词开头的「权威 GitHub 原件定位」段优先于这些历史表述。ZIP 仅为备用副本，GitHub 上本索引列出的文件才是本轮可供新会话直接读取的持久原件。
+全部 31 份提示词已统一为 GitHub 自助读取流程，不再依赖 ZIP 作为输入。ZIP 仅是可选备份或交付附件；当前分支最新 HEAD 的原件和公共要求为权威来源。
