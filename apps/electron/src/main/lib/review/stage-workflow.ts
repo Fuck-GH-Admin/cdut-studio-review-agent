@@ -378,14 +378,9 @@ export async function submitCaseV2(caseId: string, actor?: Actor, source?: Comma
       !aggregate.caseV2.subjects.some((subject) => subject.status !== 'ignored' && subject.title.trim())) {
     throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '当前模板要求按申报事项逐项审核，但案卷尚未登记可识别的申报事项；请先补充或确认事项')
   }
-  const requiredSections = (template.sections ?? []).filter((section) => section.required)
-  const missingSections = requiredSections.filter((section) =>
-    !aggregate.caseV2.subjects.some((subject) => subject.sectionId === section.id
-      && subject.status !== 'ignored' && subject.title.trim()))
-  if (!aggregate.d2RuntimePlan && missingSections.length > 0) {
-    throw new CommandValidationError('DEPENDENCY_UNRESOLVED',
-      `缺少模板要求的申报事项：${missingSections.map((section) => section.name).join('、')}；请先登记事项，不能由模型代填。`)
-  }
+  // Do not treat every template section marked "required" as a mandatory user-entered
+  // Subject. Sections can be non-applicable to this case and may be inferred from the
+  // application. Only rules whose targetScope is subject require a concrete Subject here.
   // 少量材料缺件不阻断初审。按模板适用条件、文件类型和数量生成待补项，
   // 由统一 Run 记录；最终决定仍会再次检查所有必需槽位。
   const missingSlots = (template.materialSlots ?? [])
