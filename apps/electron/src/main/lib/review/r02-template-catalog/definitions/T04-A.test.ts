@@ -46,8 +46,8 @@ test('T04-A source bytes, authoritative manifest, and reviewed MD remain traceab
     const manifestBytes = Buffer.concat([original, Buffer.from('\n')])
     expect(manifestBytes.length).toBe(row!.bytes)
     expect(hash(manifestBytes)).toBe(row!.sha256)
-    expect(metadata.originalSourceSha256).toBe(row!.sha256)
-    expect(metadata.sourceDocumentSha256).toBe(hash(reviewed))
+    expect(String(metadata.originalSourceSha256)).toBe(row!.sha256)
+    expect(String(metadata.sourceDocumentSha256)).toBe(hash(reviewed))
     // T04-T03 uses `key=value` metadata rather than YAML front matter.
     const reviewedText = reviewed.toString('utf8')
     expect(reviewedText.includes(`template_id: ${template.templateId}`) ||
@@ -70,8 +70,8 @@ test('T04-A research tables have full runtime cardinality and nonempty source ma
     expect(metadata.criteria.length).toBe(expected.criteria)
     expect(metadata.sources.length).toBe(expected.sources)
     expect(template.stages.length).toBe(expected.stages)
-    expect(metadata.templateId).toBe(template.templateId)
-    expect(metadata.name).toBe(template.name)
+    expect(String(metadata.templateId)).toBe(String(template.templateId))
+    expect(String(metadata.name)).toBe(String(template.name))
     expect(metadata.policyEvidenceStatus).toBe('PARTIAL')
     expect(metadata.criteria.every(c => c.sourceIds.length > 0)).toBe(true)
     expect(metadata.sources.every(s => /^SRC-\d{3}$/.test(s.id))).toBe(true)
