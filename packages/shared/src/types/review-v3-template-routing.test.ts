@@ -18,7 +18,7 @@ describe('Review V3 template matching and deep-match contract', () => {
   })
 
   test('keyword layer returns ranked candidates with explainable signals', () => {
-    const matches = rankTemplateCandidates('公共邮箱需要开通，并申请部门邮箱授权。', catalog)
+    const matches = rankTemplateCandidates('公共邮箱开通需要为新部门申请账号授权。', catalog)
     expect(matches[0]?.templateId).toBe('campus-mail')
     expect(matches[0]?.tier).toBe('keyword')
     expect(matches[0]?.matchedSignals.length).toBeGreaterThanOrEqual(2)
