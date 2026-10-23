@@ -56,6 +56,9 @@ const GENERIC_TERMS = new Set([
   '申请', '审核', '材料', '文件', '学校', '大学', '学生', '教师', '办理',
   '事项', '提交', '证明', '表格', '申请书', '申请表', '相关', '业务',
   '使用', '确认', '信息', '资料', '本人', '单位', '情况', '是否',
+  '姓名', '学号', '工号', '班级', '学院', '专业', '年级', '电话', '联系电话',
+  '邮箱', '地址', '日期', '时间', '附件', '签名', '签字', '盖章', '备注',
+  '联系人', '负责人', '申请人', '职务', '职称', '身份证号', '金额', '合计',
 ])
 
 export function normalizeTemplateRouteText(value: string): string {
@@ -77,6 +80,10 @@ function uniqueStrings(values: readonly string[]): string[] {
   return output
 }
 
+function isGenericFieldTerm(value:string):boolean {
+  return /^(?:(?:学生|教师|申请人|负责人|联系人|经办人)?(?:姓名|学号|工号|班级|学院|专业|年级|电话|联系电话|邮箱|地址|日期|时间|签名|签字|盖章|备注|附件|身份证号|证件号码))$/.test(value)
+}
+
 function titleTokens(name: string): string[] {
   return name.split(/[\s\/／|｜,，、:：()（）·—_\-]+/g)
     .map(value => value.trim()).filter(value => value.length >= 2 && !GENERIC_TERMS.has(value))
@@ -90,7 +97,7 @@ function entryTerms(entry: TemplateRouteCatalogEntry): string[] {
     ...titleTokens(entry.name),
   ]).filter(value => {
     const normalized = normalizeTemplateRouteText(value)
-    return normalized.length >= 2 && !GENERIC_TERMS.has(normalized)
+    return normalized.length >= 2 && !GENERIC_TERMS.has(normalized) && !isGenericFieldTerm(normalized)
   })
 }
 

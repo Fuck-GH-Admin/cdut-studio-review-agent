@@ -25,6 +25,11 @@ describe('Review V3 template matching and deep-match contract', () => {
     expect(matches[0]?.reason).toContain('业务关键词命中')
   })
 
+  test('generic form fields alone do not create a false business match', () => {
+    const matches = rankTemplateCandidates('学生姓名、学号、班级、联系电话', catalog)
+    expect(matches).toHaveLength(0)
+  })
+
   test('search includes keywords and aliases and ranks title/ID ahead of keyword hits', () => {
     const matches = filterTemplateCatalog(catalog, '部门邮箱')
     expect(matches.map(item => item.templateId)).toContain('campus-mail')
