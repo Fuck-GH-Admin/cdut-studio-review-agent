@@ -1043,41 +1043,83 @@ export const template: TemplateVersion = {
   "policyVersionIds": [],
   "stages": [
     {
-      "id": "intake",
-      "name": "材料与版本登记（仅事实校验）",
-      "kind": "auto-check",
-      "executorRole": "system",
-      "nextStageId": "fact-review",
-      "workflowOwner": "local"
-    },
-    {
-      "id": "fact-review",
-      "name": "语义核验与问题定位",
+      "id": "A",
+      "name": "申请草拟",
       "kind": "manual-review",
       "executorRole": "reviewer",
-      "nextStageId": "policy-gate",
-      "returnToStageId": "intake",
+      "nextStageId": "B",
       "workflowOwner": "local"
     },
     {
-      "id": "policy-gate",
-      "name": "校本政策/权限确认与人工处理",
+      "id": "B",
+      "name": "任务与单位初核",
+      "kind": "auto-check",
+      "executorRole": "reviewer",
+      "nextStageId": "C",
+      "returnToStageId": "A",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "C",
+      "name": "校方用车决定（仅记录真实授权决定）",
       "kind": "manual-review",
       "executorRole": "teacher",
-      "returnToStageId": "fact-review",
+      "nextStageId": "D",
+      "returnToStageId": "B",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "D",
+      "name": "调派与出车前（仅在有效授权成立后）",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "nextStageId": "E",
+      "returnToStageId": "C",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "E",
+      "name": "出车与收车（记录真实行程和差异）",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "nextStageId": "F",
+      "returnToStageId": "D",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "F",
+      "name": "报销/监督引用（只读记录；不代审结算）",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "returnToStageId": "E",
       "workflowOwner": "local"
     }
   ],
   "outputs": [
     {
-      "id": "fact-findings",
+      "id": "fact-results",
       "kind": "item-feedback",
       "audience": "reviewer"
     },
     {
-      "id": "manual-confirmations",
+      "id": "review-issues",
+      "kind": "item-feedback",
+      "audience": "reviewer"
+    },
+    {
+      "id": "review-todos",
       "kind": "supplement-list",
       "audience": "teacher"
+    },
+    {
+      "id": "dispatch-record-reference",
+      "kind": "item-feedback",
+      "audience": "teacher"
+    },
+    {
+      "id": "version-and-review-history",
+      "kind": "item-feedback",
+      "audience": "reviewer"
     }
   ],
   "autoPassPolicy": {
@@ -1808,6 +1850,150 @@ export const r02Metadata = {
       ],
       "evidenceStatus": "PARTIAL",
       "policyDependent": true
+    }
+  ],
+  "sourceStages": [
+    {
+      "id": "A",
+      "name": "申请草拟",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "B",
+      "name": "任务与单位初核",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "C",
+      "name": "校方用车决定",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "D",
+      "name": "调派与出车前",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "E",
+      "name": "出车与收车",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "F",
+      "name": "报销/监督引用",
+      "sourceSection": "03.1",
+      "mainline": true
+    }
+  ],
+  "sourceBranches": [
+    {
+      "id": "WAIT_MATERIAL",
+      "sourceSection": "11.1",
+      "meaning": "仅当前阶段缺失的必需材料待补"
+    },
+    {
+      "id": "WAIT_SOURCE",
+      "sourceSection": "11.1",
+      "meaning": "可信来源暂不可用，交来源 Owner 核验"
+    },
+    {
+      "id": "WAIT_POLICY",
+      "sourceSection": "11.1",
+      "meaning": "校本政策/授权待确认"
+    },
+    {
+      "id": "WAIT_HUMAN",
+      "sourceSection": "11.1",
+      "meaning": "必要性、例外、疑似私用或复核交人工裁量"
+    },
+    {
+      "id": "WITHDRAW_REQUESTED",
+      "sourceSection": "11.1",
+      "meaning": "撤回请求本身不等于许可或调度取消"
+    },
+    {
+      "id": "REVIEW_REQUESTED",
+      "sourceSection": "11.1",
+      "meaning": "复核请求本身不使原决定失效"
+    }
+  ],
+  "stageModelNote": "TemplateVersion.stages 映射原件 §03.1 A–F 主线。§11.1 的 WAIT_*、撤回/复核请求和异常状态作为规则驱动分支保存在 r02Metadata.sourceBranches；不得串成所有案件必经阶段。C 只记录真实授权岗位的决定，D 只在授权有效后记录调派，F 只读财务/监督证据，不派车、不回写学校系统。",
+  "resultCodes": [
+    {
+      "code": "PASS_FACT",
+      "meaning": "仅指定对象的可核事实一致；不批准也不拒绝派车。"
+    },
+    {
+      "code": "NOT_APPLICABLE",
+      "meaning": "触发条件可信为假，或后续阶段材料尚未形成；须留理由。"
+    },
+    {
+      "code": "NEEDS_MATERIAL",
+      "meaning": "当前阶段确需且合法持有人可提供的事实证据缺失。"
+    },
+    {
+      "code": "CONFLICT",
+      "meaning": "同目标有效材料/版本/身份/时间/车辆出现互斥事实主张。"
+    },
+    {
+      "code": "UNREADABLE",
+      "meaning": "已存在材料无法可靠提取指定字段。"
+    },
+    {
+      "code": "SOURCE_UNAVAILABLE",
+      "meaning": "外部可信源/接口/归档暂不可获取或核验。"
+    },
+    {
+      "code": "POLICY_UNCONFIRMED",
+      "meaning": "校本规则有效版本、授权角色、硬阈值、例外或复核程序未确认。"
+    },
+    {
+      "code": "NEEDS_HUMAN_DECISION",
+      "meaning": "疑似非公务、紧急优先、许可、核查或复核涉及行政裁量。"
+    }
+  ],
+  "outputContract": [
+    {
+      "id": "fact-results",
+      "sourceType": "resultCode/targetKey/trigger T-F-U",
+      "sourceSection": "10.1/10.2",
+      "runtimeKind": "item-feedback",
+      "audience": "reviewer"
+    },
+    {
+      "id": "review-issues",
+      "sourceType": "issueId/affectedF/affectedM/conflictingValues",
+      "sourceSection": "10.2",
+      "runtimeKind": "item-feedback",
+      "audience": "reviewer"
+    },
+    {
+      "id": "review-todos",
+      "sourceType": "todoId/blockingReason/nextOwnerRole",
+      "sourceSection": "10.2",
+      "runtimeKind": "supplement-list",
+      "audience": "teacher"
+    },
+    {
+      "id": "dispatch-record-reference",
+      "sourceType": "M011/M012/M013/M014 true dispatch records",
+      "sourceSection": "03.1/10.2/11.1",
+      "runtimeKind": "item-feedback",
+      "audience": "teacher",
+      "readOnly": true
+    },
+    {
+      "id": "version-and-review-history",
+      "sourceType": "M016/M017/supersedes/previous result",
+      "sourceSection": "10.2/11.1",
+      "runtimeKind": "item-feedback",
+      "audience": "reviewer",
+      "readOnly": true
     }
   ]
 } as const
