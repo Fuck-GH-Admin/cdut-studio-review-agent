@@ -76,6 +76,8 @@ function readPublicationControl(templateId: string, version: number): Publicatio
 function isCandidateDraft(template: TemplateVersion): boolean {
   return template.sourceNote?.startsWith('D0.5_DEMO_ONLY:') === true ||
     template.sourceNote?.startsWith('D1_AUTHORING_CANDIDATE:') === true ||
+    // R02 research templates are explicitly nonofficial and must remain draft-only.
+    template.sourceNote?.startsWith('R02_RESEARCH_TEMPLATE_NONOFFICIAL:') === true ||
     ((template.sections ?? []).some((section) =>
       section.id === 'semantic-tasks' && section.criteria.some((criterion) => criterion.id.startsWith('demo-'))))
 }
