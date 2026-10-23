@@ -43,11 +43,13 @@ describe('R02 T05-B runtime definitions', () => {
     expect(templates.map(t => [t.templateId, t.name])).toEqual(expected.map(e => [e.id, e.name]))
     expect(new Set(templates.map(t => t.templateId)).size).toBe(4)
     expect(new Set(templates.map(t => t.name)).size).toBe(4)
-    templates.forEach((template, index) => {
-      expect(template.fields).toHaveLength(expected[index].fields)
-      expect(template.materialSlots).toHaveLength(expected[index].materials)
-      expect(template.sections?.flatMap(section => section.criteria)).toHaveLength(expected[index].criteria)
-    })
+    for (const [index, template] of templates.entries()) {
+      const spec = expected[index]
+      if (!spec) throw new Error('Missing expected inventory entry at index ' + index)
+      expect(template.fields).toHaveLength(spec.fields)
+      expect(template.materialSlots).toHaveLength(spec.materials)
+      expect(template.sections?.flatMap(section => section.criteria)).toHaveLength(spec.criteria)
+    }
   })
 
   test('each template passes the repository structural validator', () => {
@@ -71,9 +73,9 @@ describe('R02 T05-B runtime definitions', () => {
   })
 
   test('no dangling field/material/source/criterion references or invalid stage links', () => {
-    for (let index = 0; index < templates.length; index++) {
-      const template = templates[index]
+    for (const [index, template] of templates.entries()) {
       const meta = metadata[index]
+      if (!meta) throw new Error('Missing metadata entry at index ' + index)
       const sections = template.sections ?? []
       const sectionIds = new Set(sections.map(section => section.id))
       const criteria = sections.flatMap(section => section.criteria)
@@ -87,7 +89,8 @@ describe('R02 T05-B runtime definitions', () => {
       }
       for (const item of meta.criteria) {
         expect(sectionIds.has(item.sectionId)).toBe(true)
-        expect(sections.find(section => section.id === item.sectionId)?.criteria.some(criterion => criterion.id === item.criterionId)).toBe(true)
+        const section = sections.find(candidate => candidate.id === item.sectionId)
+        expect(section?.criteria.some(criterion => criterion.id === item.criterionId)).toBe(true)
         for (const id of item.sourceIds as readonly string[]) expect(sourceIds.has(id)).toBe(true)
         expect(['VERIFIED', 'PARTIAL', 'UNCONFIRMED']).toContain(item.evidenceStatus)
       }
@@ -97,15 +100,17 @@ describe('R02 T05-B runtime definitions', () => {
         if (stage.returnToStageId) expect(stageIds.has(stage.returnToStageId)).toBe(true)
         expect(stage.workflowOwner).toBe('local')
       }
-      expect(template.stages[template.stages.length - 1]?.kind).toBe('finalize')
-      expect(['reviewer', 'teacher']).toContain(template.stages[template.stages.length - 1]?.executorRole)
+      const finalStage = template.stages[template.stages.length - 1]
+      if (!finalStage) throw new Error('Template has no final stage: ' + template.templateId)
+      expect(finalStage.kind).toBe('finalize')
+      expect(['reviewer', 'teacher']).toContain(finalStage.executorRole)
     }
   })
 
   test('unknown policy evidence cannot become automatic formal pass or rejection', () => {
-    for (let index = 0; index < templates.length; index++) {
-      const template = templates[index]
+    for (const [index, template] of templates.entries()) {
       const meta = metadata[index]
+      if (!meta) throw new Error('Missing metadata entry at index ' + index)
       expect(template.schemaVersion).toBe(2)
       expect(template.catalogKind).toBe('builtin')
       expect(template.status).toBe('draft')
@@ -116,9 +121,9 @@ describe('R02 T05-B runtime definitions', () => {
       const byId = new Map((template.sections ?? []).flatMap(section => section.criteria.map(criterion => [section.id + '/' + criterion.id, criterion] as const)))
       for (const item of meta.criteria) {
         const criterion = byId.get(item.sectionId + '/' + item.criterionId)
-        expect(criterion).toBeDefined()
-        expect(['semantic', 'manual']).toContain(criterion?.execution)
-        if (item.evidenceStatus === 'UNCONFIRMED') expect(criterion?.execution).toBe('manual')
+        if (!criterion) throw new Error('Metadata points to a missing criterion: ' + item.sectionId + '/' + item.criterionId)
+        expect(['semantic', 'manual']).toContain(criterion.execution)
+        if (item.evidenceStatus === 'UNCONFIRMED') expect(criterion.execution).toBe('manual')
       }
     }
   })
