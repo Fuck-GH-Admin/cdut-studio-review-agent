@@ -1388,7 +1388,7 @@ export const r02Metadata: R02TemplateMetadata = {
   "name": "科研助理、项目编外人员录用与聘用合同核验",
   "sourceDocumentPath": "docs/design/review-agent/business-templates/R02/T08-T02.md",
   "reviewedDocumentPath": "docs/design/review-agent/business-templates/R02/T08-T02.md",
-  "sourceDocumentSha256": "895f316f2b768af38f6a247c1d16c82b5d412d9b630a9d6c44613e4f46355ccb",
+  "sourceDocumentSha256": "4fdffbceb866ff830169a6d99e9f198569944a7e9ed9a7bae85488875a97d435",
   "sourceDocumentBytes": 150140,
   "sourceSnapshotCommit": "150acfe761cb7ad0424a2ca009fd57f12dbfddfd",
   "officialSchoolTemplate": false,
