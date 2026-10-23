@@ -6,10 +6,10 @@ import { template as T0408, r02Metadata as M0408 } from './T04-T08'
 import { template as T0409, r02Metadata as M0409 } from './T04-T09'
 
 const cases = [
-  { template: T0406, metadata: M0406, counts: { fields: 50, materials: 30, criteria: 37, sources: 11 }, sha256: 'c63c203f32ea4219d6fcda862ef4502941e984e96f325c4c2a79ded560d433ae' },
-  { template: T0407, metadata: M0407, counts: { fields: 41, materials: 16, criteria: 24, sources: 14 }, sha256: 'dd765f9831855988624812ffd04f0c2df83072afdf2e8289f184b629c236428e' },
-  { template: T0408, metadata: M0408, counts: { fields: 44, materials: 20, criteria: 28, sources: 13 }, sha256: 'a991eae590d4dfe2ceba8691b426b5470a5712ab6b8e09ff73b922f4c98b23a3' },
-  { template: T0409, metadata: M0409, counts: { fields: 40, materials: 25, criteria: 36, sources: 17 }, sha256: '87b125596d024b127376e5fda8de84127ff5e0073a5b75972e7f1b015912db25' },
+  { template: T0406, metadata: M0406, counts: { fields: 50, materials: 30, criteria: 37, sources: 11, stages: 7, sourceStages: 7, outputs: 5, sourceBranches: 0 }, optionalBranchIds: [], sha256: 'c63c203f32ea4219d6fcda862ef4502941e984e96f325c4c2a79ded560d433ae' },
+  { template: T0407, metadata: M0407, counts: { fields: 41, materials: 16, criteria: 24, sources: 14, stages: 6, sourceStages: 7, outputs: 5, sourceBranches: 0 }, optionalBranchIds: ['G'], sha256: 'dd765f9831855988624812ffd04f0c2df83072afdf2e8289f184b629c236428e' },
+  { template: T0408, metadata: M0408, counts: { fields: 44, materials: 20, criteria: 28, sources: 13, stages: 6, sourceStages: 6, outputs: 5, sourceBranches: 6 }, optionalBranchIds: [], sha256: 'a991eae590d4dfe2ceba8691b426b5470a5712ab6b8e09ff73b922f4c98b23a3' },
+  { template: T0409, metadata: M0409, counts: { fields: 40, materials: 25, criteria: 36, sources: 17, stages: 7, sourceStages: 8, outputs: 5, sourceBranches: 0 }, optionalBranchIds: ['P7'], sha256: '87b125596d024b127376e5fda8de84127ff5e0073a5b75972e7f1b015912db25' },
 ]
 
 function referencedIds(text: string, prefix: 'F' | 'M' | 'SRC'): Set<string> {
@@ -59,6 +59,14 @@ describe('T04-B R02 template definitions', () => {
       expect(item.template.materialSlots).toHaveLength(item.counts.materials)
       expect(criteria).toHaveLength(item.counts.criteria)
       expect(item.metadata.sources).toHaveLength(item.counts.sources)
+      expect(item.template.stages).toHaveLength(item.counts.stages)
+      expect(item.metadata.sourceStages).toHaveLength(item.counts.sourceStages)
+      expect(item.template.outputs).toHaveLength(item.counts.outputs)
+      expect(item.metadata.outputContract).toHaveLength(item.template.outputs.length)
+      expect(item.metadata.resultCodes).toHaveLength(8)
+      expect((item.metadata.sourceBranches ?? []).length).toBe(item.counts.sourceBranches)
+      expect(item.metadata.sourceStages.filter((stage) => stage.optionalBranch).map((stage) => stage.id)).toEqual(item.optionalBranchIds)
+      expect(item.template.stages.every((stage) => item.metadata.sourceStages.some((sourceStage) => sourceStage.id === stage.id))).toBe(true)
       expect(new Set(item.template.fields.map((field) => field.key)).size).toBe(item.template.fields.length)
       expect(new Set(item.template.materialSlots.map((slot) => slot.id)).size).toBe(item.template.materialSlots.length)
       expect(new Set(criteria.map((criterion) => criterion.id)).size).toBe(criteria.length)
@@ -112,7 +120,10 @@ describe('T04-B R02 template definitions', () => {
       expect(item.template.policyVersionIds).toEqual([])
       const criteria = (item.template.sections ?? []).flatMap((section) => section.criteria)
       expect(criteria.every((criterion) => criterion.execution === 'semantic' || criterion.execution === 'manual')).toBe(true)
-      expect(item.template.stages[item.template.stages.length - 1]?.executorRole).toBe('teacher')
+      expect(['reviewer', 'teacher'].includes(String(item.template.stages[item.template.stages.length - 1]?.executorRole))).toBe(true)
+      expect(item.template.outputs.every((output) => output.kind !== 'approval')).toBe(true)
+      expect(item.metadata.policyEvidenceStatus).toBe('PARTIAL')
+      expect(String(item.metadata.stageModelNote).length).toBeGreaterThan(0)
     }
   })
 })
