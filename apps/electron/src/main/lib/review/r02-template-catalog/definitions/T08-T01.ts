@@ -7,8 +7,13 @@ export interface R02TemplateMetadata {
   name: string
   sourceDocumentPath: string
   reviewedDocumentPath: string
+  researchSourcePath: string
   sourceDocumentSha256: string
   sourceDocumentBytes: number
+  manifestExpectedBytes: number
+  manifestExpectedSha256: string
+  sourceIntegrityStatus: 'LINE_ENDING_DRIFT_ONE_LF' | 'REVIEWED_COPY_PATCHED' | 'MATCH'
+  sourceIntegrityNote: string
   sourceSnapshotCommit: string
   officialSchoolTemplate: false
   researchEvidenceStatus: R02EvidenceStatus
@@ -1309,8 +1314,8 @@ export const r02Metadata: R02TemplateMetadata = {
   "name": "科研助理、项目聘用人员招聘岗位立项审核",
   "sourceDocumentPath": "docs/design/review-agent/business-templates/R02/T08-T01.md",
   "reviewedDocumentPath": "docs/design/review-agent/business-templates/R02/T08-T01.md",
-  "sourceDocumentSha256": "cc31df0cdcd9931038b0901d1c84e82d3a71601f927b2c97772b8d985cb0f239",
-  "sourceDocumentBytes": 139283,
+  "sourceDocumentSha256": "ec65a8c48ba646b3a84efc3986dfbddc838da3bf9e7155895a5a12e842f25fe4",
+  "sourceDocumentBytes": 139594,
   "sourceSnapshotCommit": "150acfe761cb7ad0424a2ca009fd57f12dbfddfd",
   "officialSchoolTemplate": false,
   "researchEvidenceStatus": "PARTIAL",
@@ -1772,7 +1777,12 @@ export const r02Metadata: R02TemplateMetadata = {
       ],
       "evidenceStatus": "PARTIAL"
     }
-  ]
+  ],
+  "manifestExpectedBytes": 139284,
+  "manifestExpectedSha256": "0b68bceba73624fe1e35f15037f1ef1f28f006e990cce6cd9bba2177a8f005b5",
+  "researchSourcePath": "docs/design/review-agent/business-templates/R02/research-original/T08-T01.md",
+  "sourceIntegrityStatus": "REVIEWED_COPY_PATCHED",
+  "sourceIntegrityNote": "research-original 的当前 Git blob 不含末尾 LF，追加一个 LF 后与清单 SHA-256 匹配；本审阅副本仅将国科发资〔2020〕132号的效力状态更正为科技部2025-08-05失效清单已列为失效文件，正文其余部分未改。研究原件只读。"
 }
 
 export default T08T01Template
