@@ -72,9 +72,9 @@ describe('R02 S01-B native template definitions', () => {
 
   it('keeps complete source metadata separate from case SourceRef and maps every criterion', () => {
     for (const { template, metadata } of entries) {
-      expect(metadata.templateId).toBe(template.templateId)
-      expect(metadata.name).toBe(template.name)
-      expect(metadata.sourceDocumentPath).toBe(`docs/design/review-agent/business-templates/R02/${template.templateId}.md`)
+      expect(String(metadata.templateId)).toBe(String(template.templateId))
+      expect(String(metadata.name)).toBe(String(template.name))
+      expect(String(metadata.sourceDocumentPath)).toBe(`docs/design/review-agent/business-templates/R02/${template.templateId}.md`)
       expect(metadata.sourceDocumentSha256).toMatch(/^[a-f0-9]{64}$/)
       expect(metadata.officialSchoolTemplate).toBe(false)
       expect(metadata.policyEvidenceStatus).toBe('PARTIAL')
@@ -82,7 +82,7 @@ describe('R02 S01-B native template definitions', () => {
         sectionId: section.id,
         criterionId: criterion.id,
       })))
-      expect(metadata.criteria.length).toBe(criteria.length)
+      expect(Number(metadata.criteria.length)).toBe(criteria.length)
       for (const mapping of metadata.criteria) {
         expect(mapping.sourceRuleId).toMatch(/^R\d{3}$/)
         expect(Array.isArray(mapping.srcIds)).toBe(true)
