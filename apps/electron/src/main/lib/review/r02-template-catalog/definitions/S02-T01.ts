@@ -16,8 +16,8 @@ export const r02Metadata = {
       "sourceIds": [
         "SRC-010"
       ],
-      "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceStatus": "UNCONFIRMED",
+      "evidenceNote": "SRC 来源表状态已逐项映射；至少一项来源未确认、跨校或缺少来源表行；不得自动判定。"
     },
     {
       "sectionId": "rules-08-2",
@@ -26,8 +26,8 @@ export const r02Metadata = {
         "SRC-001",
         "SRC-005"
       ],
-      "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceStatus": "UNCONFIRMED",
+      "evidenceNote": "SRC 来源表状态已逐项映射；至少一项来源未确认、跨校或缺少来源表行；不得自动判定。"
     },
     {
       "sectionId": "rules-08-2",
@@ -36,7 +36,7 @@ export const r02Metadata = {
         "SRC-001"
       ],
       "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceNote": "SRC 来源表状态已逐项映射；来源内容可核但当前性/学段/权限仍需人工确认。"
     },
     {
       "sectionId": "rules-08-2",
@@ -45,8 +45,8 @@ export const r02Metadata = {
         "SRC-001",
         "SRC-008"
       ],
-      "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceStatus": "UNCONFIRMED",
+      "evidenceNote": "SRC 来源表状态已逐项映射；至少一项来源未确认、跨校或缺少来源表行；不得自动判定。"
     },
     {
       "sectionId": "rules-08-2",
@@ -55,7 +55,7 @@ export const r02Metadata = {
         "SRC-001"
       ],
       "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceNote": "SRC 来源表状态已逐项映射；来源内容可核但当前性/学段/权限仍需人工确认。"
     },
     {
       "sectionId": "rules-08-2",
@@ -65,7 +65,7 @@ export const r02Metadata = {
         "SRC-002"
       ],
       "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceNote": "SRC 来源表状态已逐项映射；来源内容可核但当前性/学段/权限仍需人工确认。"
     },
     {
       "sectionId": "rules-08-2",
@@ -77,7 +77,7 @@ export const r02Metadata = {
         "SRC-004"
       ],
       "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceNote": "SRC 来源表状态已逐项映射；来源内容可核但当前性/学段/权限仍需人工确认。"
     },
     {
       "sectionId": "rules-08-3",
@@ -86,7 +86,7 @@ export const r02Metadata = {
         "SRC-001"
       ],
       "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceNote": "SRC 来源表状态已逐项映射；来源内容可核但当前性/学段/权限仍需人工确认。"
     },
     {
       "sectionId": "rules-08-3",
@@ -95,8 +95,8 @@ export const r02Metadata = {
         "SRC-001",
         "SRC-005"
       ],
-      "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceStatus": "UNCONFIRMED",
+      "evidenceNote": "SRC 来源表状态已逐项映射；至少一项来源未确认、跨校或缺少来源表行；不得自动判定。"
     },
     {
       "sectionId": "rules-08-3",
@@ -108,7 +108,7 @@ export const r02Metadata = {
         "SRC-004"
       ],
       "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceNote": "SRC 来源表状态已逐项映射；来源内容可核但当前性/学段/权限仍需人工确认。"
     },
     {
       "sectionId": "rules-08-3",
@@ -119,8 +119,8 @@ export const r02Metadata = {
         "SRC-003",
         "SRC-005"
       ],
-      "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceStatus": "UNCONFIRMED",
+      "evidenceNote": "SRC 来源表状态已逐项映射；至少一项来源未确认、跨校或缺少来源表行；不得自动判定。"
     },
     {
       "sectionId": "rules-08-3",
@@ -129,7 +129,7 @@ export const r02Metadata = {
         "SRC-001"
       ],
       "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceNote": "SRC 来源表状态已逐项映射；来源内容可核但当前性/学段/权限仍需人工确认。"
     },
     {
       "sectionId": "rules-08-3",
@@ -138,8 +138,8 @@ export const r02Metadata = {
         "SRC-001",
         "SRC-005"
       ],
-      "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceStatus": "UNCONFIRMED",
+      "evidenceNote": "SRC 来源表状态已逐项映射；至少一项来源未确认、跨校或缺少来源表行；不得自动判定。"
     },
     {
       "sectionId": "rules-08-3",
@@ -148,8 +148,8 @@ export const r02Metadata = {
         "SRC-001",
         "SRC-005"
       ],
-      "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceStatus": "UNCONFIRMED",
+      "evidenceNote": "SRC 来源表状态已逐项映射；至少一项来源未确认、跨校或缺少来源表行；不得自动判定。"
     },
     {
       "sectionId": "rules-08-3",
@@ -158,8 +158,8 @@ export const r02Metadata = {
         "SRC-001",
         "SRC-005"
       ],
-      "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceStatus": "UNCONFIRMED",
+      "evidenceNote": "SRC 来源表状态已逐项映射；至少一项来源未确认、跨校或缺少来源表行；不得自动判定。"
     },
     {
       "sectionId": "rules-08-3",
@@ -169,7 +169,7 @@ export const r02Metadata = {
         "SRC-004"
       ],
       "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceNote": "SRC 来源表状态已逐项映射；来源内容可核但当前性/学段/权限仍需人工确认。"
     },
     {
       "sectionId": "rules-08-3",
@@ -178,8 +178,8 @@ export const r02Metadata = {
         "SRC-001",
         "SRC-010"
       ],
-      "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceStatus": "UNCONFIRMED",
+      "evidenceNote": "SRC 来源表状态已逐项映射；至少一项来源未确认、跨校或缺少来源表行；不得自动判定。"
     },
     {
       "sectionId": "rules-08-4",
@@ -191,8 +191,8 @@ export const r02Metadata = {
         "SRC-004",
         "SRC-005"
       ],
-      "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceStatus": "UNCONFIRMED",
+      "evidenceNote": "SRC 来源表状态已逐项映射；至少一项来源未确认、跨校或缺少来源表行；不得自动判定。"
     },
     {
       "sectionId": "rules-08-4",
@@ -201,8 +201,8 @@ export const r02Metadata = {
         "SRC-001",
         "SRC-005"
       ],
-      "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceStatus": "UNCONFIRMED",
+      "evidenceNote": "SRC 来源表状态已逐项映射；至少一项来源未确认、跨校或缺少来源表行；不得自动判定。"
     },
     {
       "sectionId": "rules-08-4",
@@ -211,7 +211,7 @@ export const r02Metadata = {
         "SRC-001"
       ],
       "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceNote": "SRC 来源表状态已逐项映射；来源内容可核但当前性/学段/权限仍需人工确认。"
     },
     {
       "sectionId": "rules-08-4",
@@ -220,7 +220,7 @@ export const r02Metadata = {
         "SRC-001"
       ],
       "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceNote": "SRC 来源表状态已逐项映射；来源内容可核但当前性/学段/权限仍需人工确认。"
     },
     {
       "sectionId": "rules-08-4",
@@ -232,7 +232,7 @@ export const r02Metadata = {
         "SRC-004"
       ],
       "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceNote": "SRC 来源表状态已逐项映射；来源内容可核但当前性/学段/权限仍需人工确认。"
     },
     {
       "sectionId": "rules-08-4",
@@ -241,7 +241,7 @@ export const r02Metadata = {
         "SRC-001"
       ],
       "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceNote": "SRC 来源表状态已逐项映射；来源内容可核但当前性/学段/权限仍需人工确认。"
     },
     {
       "sectionId": "rules-08-5",
@@ -250,7 +250,7 @@ export const r02Metadata = {
         "SRC-001"
       ],
       "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceNote": "SRC 来源表状态已逐项映射；来源内容可核但当前性/学段/权限仍需人工确认。"
     },
     {
       "sectionId": "rules-08-5",
@@ -259,8 +259,8 @@ export const r02Metadata = {
         "SRC-001",
         "SRC-010"
       ],
-      "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceStatus": "UNCONFIRMED",
+      "evidenceNote": "SRC 来源表状态已逐项映射；至少一项来源未确认、跨校或缺少来源表行；不得自动判定。"
     },
     {
       "sectionId": "rules-08-5",
@@ -272,8 +272,8 @@ export const r02Metadata = {
         "SRC-004",
         "SRC-010"
       ],
-      "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceStatus": "UNCONFIRMED",
+      "evidenceNote": "SRC 来源表状态已逐项映射；至少一项来源未确认、跨校或缺少来源表行；不得自动判定。"
     },
     {
       "sectionId": "rules-08-5",
@@ -282,8 +282,8 @@ export const r02Metadata = {
         "SRC-001",
         "SRC-008"
       ],
-      "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceStatus": "UNCONFIRMED",
+      "evidenceNote": "SRC 来源表状态已逐项映射；至少一项来源未确认、跨校或缺少来源表行；不得自动判定。"
     },
     {
       "sectionId": "rules-08-addendum",
@@ -293,7 +293,7 @@ export const r02Metadata = {
         "SRC-002"
       ],
       "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceNote": "SRC 来源表状态已逐项映射；来源内容可核但当前性/学段/权限仍需人工确认。"
     },
     {
       "sectionId": "rules-08-addendum",
@@ -302,7 +302,7 @@ export const r02Metadata = {
         "SRC-001"
       ],
       "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceNote": "SRC 来源表状态已逐项映射；来源内容可核但当前性/学段/权限仍需人工确认。"
     },
     {
       "sectionId": "rules-08-addendum",
@@ -322,8 +322,8 @@ export const r02Metadata = {
         "SRC-012",
         "SRC-013"
       ],
-      "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceStatus": "UNCONFIRMED",
+      "evidenceNote": "SRC 来源表状态已逐项映射；至少一项来源未确认、跨校或缺少来源表行；不得自动判定。"
     },
     {
       "sectionId": "rules-08-addendum",
@@ -335,8 +335,101 @@ export const r02Metadata = {
         "SRC-004",
         "SRC-005"
       ],
-      "evidenceStatus": "PARTIAL",
-      "evidenceNote": "SRC 来自原文来源账；内容可核不等于当前有效或授权已确认。"
+      "evidenceStatus": "UNCONFIRMED",
+      "evidenceNote": "SRC 来源表状态已逐项映射；至少一项来源未确认、跨校或缺少来源表行；不得自动判定。"
+    }
+  ],
+  "sources": [
+    {
+      "id": "SRC-001",
+      "title": "CDUT-VERIFIED / 已验证 — 成都理工大学：《关于印发〈成都理工大学全日制普通本科学生学籍管理办法〉的通知》，成理校教〔2019〕18 号；校方 PDF",
+      "url": "https://dbxb.cdut.edu.cn/__local/7/B6/E5/006AC04D88A214D1AD8B1F5E540_16B4A5B7_C543C.pdf",
+      "sourceStatus": "CDUT-VERIFIED",
+      "evidenceStatus": "PARTIAL"
+    },
+    {
+      "id": "SRC-002",
+      "title": "CDUT-VERIFIED / 已验证 — 成都理工大学教务处：《关于做好2025—2026学年第一学期期末课程考试安排及监巡考工作的通知》（正文可核，教通字〔2025〕59 号）；校方 PDF",
+      "url": "https://aao.cdut.edu.cn/__local/F/02/A6/0340BCDBCC4E8B384C66750E7B3_0949CB5E_42625.pdf",
+      "sourceStatus": "CDUT-VERIFIED",
+      "evidenceStatus": "PARTIAL"
+    },
+    {
+      "id": "SRC-003",
+      "title": "CDUT-VERIFIED / 已验证 — 成都理工大学教务处：教通字〔2025〕25 号，2024—2025 学年第二学期期末考试安排通知；校方 PDF",
+      "url": "https://www.aao.cdut.edu.cn/__local/A/A9/09/0D8AFAFE17938B772AAD0DE0803_19FDF450_3E3B5.pdf",
+      "sourceStatus": "CDUT-VERIFIED",
+      "evidenceStatus": "PARTIAL"
+    },
+    {
+      "id": "SRC-004",
+      "title": "CDUT-VERIFIED / 已验证 — 成都理工大学教务处：教通字〔2024〕73 号，2024—2025 学年第一学期期末课程考试安排通知；校方 PDF",
+      "url": "https://aao.cdut.edu.cn/__local/5/E1/70/0CFBF107E3B3BA9D5305E2EA8D3_24DEBD07_4BF2C.pdf",
+      "sourceStatus": "CDUT-VERIFIED",
+      "evidenceStatus": "PARTIAL"
+    },
+    {
+      "id": "SRC-005",
+      "title": "CURRENTITY-UNKNOWN / 尚未验证完整原页 — 成都理工大学传播科学与艺术学院：《传播科学与艺术学院考务工作规范（试行）》；学院页面",
+      "url": "https://ccsa.cdut.edu.cn/info/1034/1892.htm",
+      "sourceStatus": "CURRENTITY-UNKNOWN",
+      "evidenceStatus": "UNCONFIRMED"
+    },
+    {
+      "id": "SRC-006",
+      "title": "CURRENTITY-UNKNOWN / 尚未验证直接页面 — 成都理工大学教务处：《关于2020—2021学年第二学期课程补考工作的通知》；教务处页面",
+      "url": "https://aao.cdut.edu.cn/info/1171/4201.htm",
+      "sourceStatus": "CURRENTITY-UNKNOWN",
+      "evidenceStatus": "UNCONFIRMED"
+    },
+    {
+      "id": "SRC-007",
+      "title": "CURRENTITY-UNKNOWN / 尚未验证直接页面 — 成都理工大学教务处：《科室设置》；部门页面",
+      "url": "https://aao.cdut.edu.cn/jgsz/kssz.htm",
+      "sourceStatus": "CURRENTITY-UNKNOWN",
+      "evidenceStatus": "UNCONFIRMED"
+    },
+    {
+      "id": "SRC-008",
+      "title": "CURRENTITY-UNKNOWN / 尚未验证完整正文 — 成都理工大学：《关于印发〈成都理工大学研究生学籍管理办法〉的通知》，成理校研〔2021〕13 号；信息公开页面",
+      "url": "https://dbxb.cdut.edu.cn/xxgkwz/info/1032/2549.htm",
+      "sourceStatus": "CURRENTITY-UNKNOWN",
+      "evidenceStatus": "UNCONFIRMED"
+    },
+    {
+      "id": "SRC-009",
+      "title": "CURRENTITY-UNKNOWN / 尚未验证通知正文 — 成都理工大学教务处主页“关于做好2025—2026学年第二学期期末课程考试安排及监巡考……”条目；教务处主页",
+      "url": "https://aao.cdut.edu.cn/",
+      "sourceStatus": "CURRENTITY-UNKNOWN",
+      "evidenceStatus": "UNCONFIRMED"
+    },
+    {
+      "id": "SRC-010",
+      "title": "GENERAL-RESEARCH / 已验证技术内容 — Fuck-GH-Admin/cdut-studio-review-agent @ 7b6cdc843d26e926c0c63b8c51a451ff3925cfad；docs/design/review-agent/acceptance/d4-unified-r01/catalog.json；仓库路径",
+      "url": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/blob/7b6cdc843d26e926c0c63b8c51a451ff3925cfad/docs/design/review-agent/acceptance/d4-unified-r01/catalog.json",
+      "sourceStatus": "GENERAL-RESEARCH",
+      "evidenceStatus": "UNCONFIRMED"
+    },
+    {
+      "id": "SRC-011",
+      "title": "成都理工大学信息公开网：成理校研〔2021〕13 号研究生学籍管理办法网页正文，CDUT-VERIFIED（网页正文） — 2023-04-12 发布页，第 8–14 条确有研究生课程与培养环节考核，第 9 条将考试/考查方式交研究生课程教学管理规定，第 13 条提出事先请假并获批准；该网页不能证明研究生缓考程序、材料时限或审批人；原附件与当期课程制度仍需…",
+      "url": "https://dbxb.cdut.edu.cn/xxgkwz/info/1032/2549.htm",
+      "sourceStatus": "CDUT-VERIFIED",
+      "evidenceStatus": "PARTIAL"
+    },
+    {
+      "id": "SRC-012",
+      "title": "成都理工大学核技术与自动化工程学院转载：研究生课程建设及课程管理办法（暂行），CURRENTITY-UNKNOWN — 页面显示 2018 年 1 月起的研究生课程管理制度；其课程考核、成绩以及进修生参照执行可作历史制度线索，2026 适用状态及针对缓考的明确权限尚未确认，不得当作研究生自动办理门槛。",
+      "url": "https://cnae.cdut.edu.cn/info/1040/1425.htm",
+      "sourceStatus": "CURRENTITY-UNKNOWN",
+      "evidenceStatus": "UNCONFIRMED"
+    },
+    {
+      "id": "SRC-013",
+      "title": "成都理工大学信息公开网：学籍管理办法目录，CDUT-VERIFIED（目录事实） — 2023-04-12 列示本科 2019、研究生 2021 文件；只支持“当时公开列示”事实，不证明截至 2026-10-23 未有修订。2026-06-30 教务处最新学期通知仍仅见检索标题，归 SRC-009 CURRENTITY-UNKNOWN，未据此创设三日后补新…",
+      "url": "https://dbxb.cdut.edu.cn/xxgkwz/gksx/xjglbf.htm",
+      "sourceStatus": "CDUT-VERIFIED",
+      "evidenceStatus": "UNCONFIRMED"
     }
   ]
 } as const

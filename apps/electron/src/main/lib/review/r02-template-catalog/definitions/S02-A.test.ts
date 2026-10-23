@@ -48,13 +48,13 @@ describe('R02 S02-A local research template definitions', () => {
         expect(section.criteria.length).toBeGreaterThan(0)
         for (const criterion of section.criteria) {
           expect(['semantic', 'manual']).toContain(criterion.execution)
-          for (const id of criterion.requirement.match(/\bF\d{3}\b/g) ?? []) expect(fieldIds.has(id)).toBeTrue()
-          for (const id of criterion.requirement.match(/\bM\d{3}\b/g) ?? []) expect(slotIds.has(id.toUpperCase())).toBeTrue()
+          for (const id of criterion.requirement.match(/\bF\d{3}\b/g) ?? []) expect(fieldIds.has(id)).toBe(true)
+          for (const id of criterion.requirement.match(/\bM\d{3}\b/g) ?? []) expect(slotIds.has(id.toUpperCase())).toBe(true)
         }
       }
       for (const stage of template.stages) {
-        if (stage.nextStageId) expect(template.stages.some((s) => s.id === stage.nextStageId)).toBeTrue()
-        if (stage.returnToStageId) expect(template.stages.some((s) => s.id === stage.returnToStageId)).toBeTrue()
+        if (stage.nextStageId) expect(template.stages.some((s) => s.id === stage.nextStageId)).toBe(true)
+        if (stage.returnToStageId) expect(template.stages.some((s) => s.id === stage.returnToStageId)).toBe(true)
         expect(stage.workflowOwner).toBe('local')
         expect(['reviewer', 'teacher']).toContain(stage.executorRole)
       }
@@ -79,13 +79,14 @@ describe('R02 S02-A local research template definitions', () => {
       expect(metadata.officialSchoolTemplate).toBe(false)
       expect(metadata.policyEvidenceStatus).toBe(b.policy)
       const criteria = (template.sections ?? []).flatMap((s) => s.criteria)
+      const knownSources = new Set(metadata.sources.map((source) => source.id))
       expect(metadata.criteria).toHaveLength(criteria.length)
       for (const criterion of criteria) {
         const row = metadata.criteria.find((m) => m.criterionId === criterion.id)
         expect(row).toBeDefined()
-        expect(sectionIdsFor(template).has(row!.sectionId)).toBeTrue()
+        expect(sectionIdsFor(template).has(row!.sectionId)).toBe(true)
         expect(['PARTIAL', 'UNCONFIRMED']).toContain(row!.evidenceStatus)
-        for (const sourceId of row!.sourceIds) expect(sourceId).toMatch(/^SRC-\d{3}$/)
+        for (const sourceId of row!.sourceIds) { expect(sourceId).toMatch(/^SRC-\d{3}$/); expect(knownSources.has(sourceId)).toBe(true) }
       }
     }
   })
@@ -94,12 +95,12 @@ describe('R02 S02-A local research template definitions', () => {
     for (const b of batches) {
       const { template, metadata } = b
       expect(template.description).toContain('本地研究模板 · 非校方正式模板')
-      expect(template.sourceNote?.startsWith('R02_RESEARCH_TEMPLATE_NONOFFICIAL:')).toBeTrue()
+      expect(template.sourceNote?.startsWith('R02_RESEARCH_TEMPLATE_NONOFFICIAL:')).toBe(true)
       expect(template.autoPassPolicy).toEqual({ enabled: false })
       expect(template.policyVersionIds).toEqual([])
       expect(template.policyRefs).toEqual([])
-      expect(template.stages.every((s) => s.kind === 'manual-review')).toBeTrue()
-      expect(template.sections?.flatMap((s) => s.criteria).every((c) => c.execution !== 'deterministic')).toBeTrue()
+      expect(template.stages.every((s) => s.kind === 'manual-review')).toBe(true)
+      expect(template.sections?.flatMap((s) => s.criteria).every((c) => c.execution !== 'deterministic')).toBe(true)
       expect(metadata.officialSchoolTemplate).toBe(false)
       expect(metadata.policyEvidenceStatus).not.toBe('VERIFIED')
       expect(template.status).toBe('draft')
@@ -109,7 +110,7 @@ describe('R02 S02-A local research template definitions', () => {
   test('all generated definitions pass validateTemplate without errors', () => {
     for (const b of batches) {
       const errors = validateTemplate(b.template).filter((issue) => issue.level === 'error')
-      expect(errors, b.template.templateId).toEqual([])
+      expect(errors).toEqual([])
     }
   })
 })
