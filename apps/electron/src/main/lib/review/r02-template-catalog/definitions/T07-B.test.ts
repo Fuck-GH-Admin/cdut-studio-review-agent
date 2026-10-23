@@ -67,7 +67,7 @@ describe('R02 T07-B template definitions', () => {
       expect(template.stages.every((stage) => stage.workflowOwner === 'local')).toBe(true)
       expect(template.stages.every((stage) => !stage.nextStageId || stageIds.has(stage.nextStageId))).toBe(true)
       expect(template.stages.every((stage) => !stage.returnToStageId || stageIds.has(stage.returnToStageId))).toBe(true)
-      expect(['reviewer', 'teacher']).toContain(template.stages[template.stages.length - 1]?.executorRole)
+      expect(['reviewer', 'teacher']).toContain(template.stages[template.stages.length - 1]?.executorRole ?? '')
       expect(template.stages[template.stages.length - 1]?.kind).toBe('finalize')
       const reachable = new Set<string>()
       let current = template.stages[0]?.id
