@@ -20,20 +20,48 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f001",
       "label": "环境许可",
-      "kind": "text",
+      "kind": "enum",
       "required": true,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原件字段 F001；F001 环境许可 enum(DENIED,AUTHORIZED,UNKNOWN)；O01；所有真实办理之前；学校信息系统+保密合规责任机构正式许可；M001；L0/L1；未知/无许可直接停止数字化收件"
+      "extractionHint": "原件字段 F001；F001 环境许可 enum(DENIED,AUTHORIZED,UNKNOWN)；O01；所有真实办理之前；学校信息系统+保密合规责任机构正式许可；M001；L0/L1；未知/无许可直接停止数字化收件",
+      "options": [
+        {
+          "value": "DENIED",
+          "label": "DENIED"
+        },
+        {
+          "value": "AUTHORIZED",
+          "label": "AUTHORIZED"
+        },
+        {
+          "value": "UNKNOWN",
+          "label": "UNKNOWN"
+        }
+      ]
     },
     {
       "key": "f002",
       "label": "合法渠道",
-      "kind": "text",
+      "kind": "enum",
       "required": true,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原件字段 F002；F002 合法渠道 enum(SECURE_OFFLINE,APPROVED_SECURE,UNCONFIRMED)；O01；路由；M001 的允许渠道说明；L0；未知只给静态线下指引"
+      "extractionHint": "原件字段 F002；F002 合法渠道 enum(SECURE_OFFLINE,APPROVED_SECURE,UNCONFIRMED)；O01；路由；M001 的允许渠道说明；L0；未知只给静态线下指引",
+      "options": [
+        {
+          "value": "SECURE_OFFLINE",
+          "label": "SECURE_OFFLINE"
+        },
+        {
+          "value": "APPROVED_SECURE",
+          "label": "APPROVED_SECURE"
+        },
+        {
+          "value": "UNCONFIRMED",
+          "label": "UNCONFIRMED"
+        }
+      ]
     }
   ],
   "materialSlots": [
