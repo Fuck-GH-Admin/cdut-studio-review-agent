@@ -268,7 +268,7 @@ export const templateVersion: TemplateVersion = {
       "displayHint": "原始字段编号 F028；字段语义来自研究模板字段字典。"
     }
   ],
-  materialSlots:   [
+  materialSlots:     [
     {
       "id": "M001",
       "name": "学籍/培养身份快照；研究生院[A]权威记录",
@@ -278,8 +278,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -300,8 +299,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -322,8 +320,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -344,8 +341,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -366,8 +362,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -388,8 +383,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -410,8 +404,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -432,8 +425,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -454,8 +446,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -476,8 +467,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -498,8 +488,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -520,8 +509,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -542,8 +530,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -564,8 +551,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -586,8 +572,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -608,8 +593,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -630,8 +614,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -652,8 +635,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -674,8 +656,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -696,8 +677,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -718,8 +698,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
@@ -740,8 +719,7 @@ export const templateVersion: TemplateVersion = {
         "image",
         "office",
         "sheet",
-        "text",
-        "zip"
+        "text"
       ],
       "minCount": 0,
       "maxCount": 999,
