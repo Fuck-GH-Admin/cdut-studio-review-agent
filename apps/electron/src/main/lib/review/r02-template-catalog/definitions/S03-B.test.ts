@@ -51,7 +51,7 @@ describe('R02 S03-B native template definitions', () => {
       const criterionKeys = criteria.map(item => `${item.sectionId}/${item.criterion.id}`)
       expect(new Set(criterionKeys).size).toBe(criterionKeys.length)
       const indexedSourceIds = new Set(entry.metadata.sources.map(source => source.id))
-      expect(entry.metadata.criteria.length).toBe(criteria.length)
+      expect(criteria.length).toBe(entry.metadata.criteria.length)
 
       for (const { sectionId, criterion } of criteria) {
         for (const match of criterion.requirement.matchAll(/\bF\d{3}\b/g)) expect(fieldIds.has(match[0])).toBe(true)
@@ -62,7 +62,7 @@ describe('R02 S03-B native template definitions', () => {
         for (const fieldId of mapping!.fieldIds) expect(fieldIds.has(fieldId)).toBe(true)
         for (const slotId of mapping!.materialSlotIds) expect(slotIds.has(slotId)).toBe(true)
         expect(['PARTIAL', 'UNCONFIRMED']).toContain(mapping!.evidenceStatus)
-        if (mapping!.srcIds.length === 0) expect(mapping!.evidenceStatus).toBe('UNCONFIRMED')
+        if (Number(mapping!.srcIds.length) === 0) expect(mapping!.evidenceStatus).toBe('UNCONFIRMED')
       }
     }
   })
