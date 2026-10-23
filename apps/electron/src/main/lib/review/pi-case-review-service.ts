@@ -270,8 +270,7 @@ export function reconcilePiReviewRunsWithReadReceipts(caseId: string, runs: Revi
 
 function materialSlotRules(aggregate: CaseAggregateV2, template: TemplateVersion): RuleSpec[] {
   return (template.materialSlots ?? [])
-    .filter((slot) => (slot.requiredAt ?? 'submission') === 'submission'
-      && (slot.requiredElements?.length ?? 0) > 0
+    .filter((slot) => (slot.requiredElements?.length ?? 0) > 0
       && assessMaterialSlotV2(aggregate, slot).status === 'compliant')
     .map((slot, index) => ({
       id: `material-slot:${slot.id}`,

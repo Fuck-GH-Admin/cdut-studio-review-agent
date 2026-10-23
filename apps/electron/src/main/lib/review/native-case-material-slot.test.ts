@@ -54,6 +54,7 @@ describe('原生案卷材料槽', () => {
     await registerNativeWorkspaceMaterialV3(missingCaseId, planFile, 'evidence', actor)
     const missingSubmission = await submitCaseV2(missingCaseId)
     expect(missingSubmission.ok).toBe(true)
+    if (!missingSubmission.ok) throw new Error(missingSubmission.message)
     expect(missingSubmission.receipt.summary).toContain('待补材料')
     expect(readAggregate(missingCaseId)?.caseV2.stage).toBe('submitted')
 
@@ -64,6 +65,7 @@ describe('原生案卷材料槽', () => {
       document.active !== false && document.materialSlotId === 'plan')).toBe(true)
     const completeSubmission = await submitCaseV2(completeCaseId)
     expect(completeSubmission.ok).toBe(true)
+    if (!completeSubmission.ok) throw new Error(completeSubmission.message)
     expect(completeSubmission.receipt.summary).not.toContain('待补材料')
   })
 })
