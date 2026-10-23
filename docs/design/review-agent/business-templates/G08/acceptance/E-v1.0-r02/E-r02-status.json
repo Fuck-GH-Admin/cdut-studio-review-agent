@@ -1,0 +1,71 @@
+{
+  "schema": "G08-E-r02-phase-status",
+  "date": "2026-10-15",
+  "domain": "G08",
+  "branch": "audit/g08-e-v1-r02",
+  "r01": {
+    "head": "d5901f1d6ed03454fe1c00201e20d4a373834b75",
+    "PR": 29,
+    "decision": "NEEDS_REWORK",
+    "unchanged": true,
+    "e1Lock": "5a24a0197d4b6d8260097da17be64e18346b511b"
+  },
+  "E0": {
+    "status": "DELTA_INPUTS_HASHED; GATED_ACL",
+    "historicalArchivesReread": 12,
+    "newArchivesHashed": 6,
+    "newPrivateGoldContentsOpened": false,
+    "manifestConflict": true
+  },
+  "E1": {
+    "status": "INHERITED_R01_LOCK; NEW_SOURCE_CORROBORATION_NON_BLIND",
+    "sourceOwnerBlocked": [
+      "T02_NONCARD",
+      "T03_AUTO_REOPEN"
+    ],
+    "freshBlindNeededForNewDisputedPolicies": true
+  },
+  "E2": {
+    "status": "PUBLIC_INPUT_STRUCTURE_VERIFIED; PRIVATE_GOLD_SEMANTICS_BLOCKED",
+    "newCaseCount": 42,
+    "T02": 14,
+    "T03": 28,
+    "newInputFileCount": 220,
+    "T03CoverageCounts": {
+      "oldDirectRuleCount": 44,
+      "newDirectRuleCount": 8,
+      "combinedRuleCount": 52,
+      "totalRuleCount": 52
+    },
+    "goldValidity": "NOT_RETESTED_NEW"
+  },
+  "E3": {
+    "status": "INHERITED_PARTIAL; DELTA_SCOPED",
+    "AnewSHA": "NOT_PROVIDED",
+    "CnewSHA": "NOT_PROVIDED",
+    "crossDomainIDs": "PENDING"
+  },
+  "E4": {
+    "status": "ISSUE_DELTA_RECORDED",
+    "r01IssuesOpen": 7,
+    "newIssues": 2,
+    "totalOpenP1": 5,
+    "blockedSource": 2,
+    "blockedInput": 2,
+    "independentlyClosed": 0,
+    "overall": "NEEDS_REWORK"
+  },
+  "external": {
+    "technicalTemplateRuntime": "NOT_RUN",
+    "onlineModelAccuracy": "NOT_RUN",
+    "productEndToEnd": "NOT_RUN",
+    "administrativeAuthority": "NOT_VERIFIED"
+  },
+  "next": [
+    "E4-r02-issue-delta.md",
+    "E4-r02-retest-ledger.md",
+    "E0-delta-manifest.json",
+    "E-r02-final-verdict.md"
+  ],
+  "auditCommitIsAuthorCommit": false
+}

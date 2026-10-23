@@ -1,0 +1,115 @@
+{
+  "schema": "E-v1.0-G08-r02-delta-input-manifest",
+  "date": "2026-10-15",
+  "domain": "G08",
+  "officialDomainName": "公共事务与申请流程",
+  "historicalR01": {
+    "branch": "audit/g08-e-v1-r01",
+    "frozenAuditHead": "d5901f1d6ed03454fe1c00201e20d4a373834b75",
+    "draftPR": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/29",
+    "E1BlindLockCommit": "5a24a0197d4b6d8260097da17be64e18346b511b",
+    "inputManifestPath": "docs/design/review-agent/business-templates/G08/acceptance/E-v1.0/E0-input-manifest.json",
+    "originalZipCount": 12,
+    "originalZipHashesRereadMatched": 12,
+    "unchangedSourceCodeCommit": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+    "warning": "r01 HEAD is an E audit commit and never an A/B/C/D production commit"
+  },
+  "r02": {
+    "branch": "audit/g08-e-v1-r02",
+    "baseCommit": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+    "r01FilesUntouched": true,
+    "differenceOnly": true
+  },
+  "newInputs": [
+    {
+      "role": "T02 new blind inputs",
+      "basename": "G08-T02_E_r01_TARGETED_INPUT_ONLY_v1.zip",
+      "libraryFileId": "file_000000006c048206b50ea430fa7af40e",
+      "bytes": 1258575,
+      "sha256": "be657d17755c429825aa9c2dfc084895834ef64951da4ac49456b7f38201a571",
+      "zipMembers": 70,
+      "cases": 14,
+      "caseRange": "TC-033..TC-046",
+      "crc": "PASS",
+      "metadataReview": "PASSED",
+      "goldOpened": false
+    },
+    {
+      "role": "T02 new private eval/32 legacy semantic index",
+      "basename": "G08-T02_E_r01_PRIVATE_DELTA_v1.1.zip",
+      "libraryFileId": "file_00000000b4cc820999b156fafc22b206",
+      "bytes": 29468,
+      "sha256": "ad95f70925c81e70ce9c001b7cf51218a12c0de6e2e3a3709c8e088ad00c69c9",
+      "crc": "NOT_RUN_PRIVATE_ACL",
+      "access": "LIBRARY_PRESENT; ORG_ACL_NOT_VERIFIED; CONTENT_UNOPENED",
+      "authorReadmeShaMatches": true,
+      "publicJsonClaimSha": "04993294d671ca8c7d1c11af153bc99cfecd64e726426b527c65be5eca69b3c1",
+      "manifestConflict": "P1 E-G08-T02-R02-0001"
+    },
+    {
+      "role": "T02 public handoff",
+      "basename": "G08-T02_E_r01_PUBLIC_RETEST_HANDOFF_v1.zip",
+      "libraryFileId": "file_0000000070088206a6e9b18c5979a5ea",
+      "bytes": 5555,
+      "sha256": "af894cfa86fb7967c0ea4bf1b43f1f5422a6b9c33a28b8f8e11374e187ab718c",
+      "zipMembers": 3,
+      "crc": "PASS"
+    },
+    {
+      "role": "T03 new blind inputs",
+      "basename": "G08-T03_Er01_定向增量_INPUT_ONLY.zip",
+      "libraryFileId": "file_00000000d3a48209bbd649ceaea39162",
+      "bytes": 526988,
+      "sha256": "56248ec8fc52dfce6d4b94ae53be25b31c9ef27a5f1b35ca81fadb6260e0086f",
+      "zipMembers": 150,
+      "cases": 28,
+      "caseRange": "TC-031..TC-058",
+      "crc": "PASS",
+      "metadataReview": "PASSED",
+      "goldOpened": false
+    },
+    {
+      "role": "T03 new private eval",
+      "basename": "G08-T03_Er01_定向增量_EVALUATION_ONLY_PRIVATE.zip",
+      "libraryFileId": "file_00000000bdec8209b9d1e142eae7ec77",
+      "bytes": 58957,
+      "sha256": "56f0ab405ebd12e3e715593741f3a59115f34e338e1f9732b579afe5435c7630",
+      "crc": "NOT_RUN_PRIVATE_ACL",
+      "access": "LIBRARY_PRESENT; ORG_ACL_NOT_VERIFIED; CONTENT_UNOPENED"
+    },
+    {
+      "role": "T03 public handoff",
+      "basename": "G08-T03_Er01_修复对接报告_PUBLIC.zip",
+      "libraryFileId": "file_00000000ab3c8207b55c7505e5a99aac",
+      "bytes": 10419,
+      "sha256": "da7837cacb44a4cc700a1d090e84c395647b21b0c881093044fb91d488443241",
+      "zipMembers": 7,
+      "crc": "PASS"
+    }
+  ],
+  "newPublicGit": {
+    "T02": {
+      "branch": "docs/g08-t02-d-e-r01-targeted-fix-20261015",
+      "head": "1c90df1af4c8f883201128127eabb1fe972062b5",
+      "pull": 64,
+      "draft": true,
+      "metadataFileBlobSHA": {
+        "README.md": "7b0d72773dc7353c6f243a9c6cb637569aa3094b",
+        "00_整改范围与E-r02复验清单.md": "5db0bf372ea3b6a6b91df168e2ed16786318abd3"
+      },
+      "scope": "PUBLIC_TEXT_HANDOFF_ONLY; DOES_NOT_CONTAIN_D_PRIVATE_GOLD; NOT_ORIGINAL_D1"
+    },
+    "T03": {
+      "branch": "NOT_FOUND",
+      "originalAuthorGitCommit": "NOT_AVAILABLE",
+      "scope": "LIBRARY_ZIP_WITH_SHA_ONLY"
+    }
+  },
+  "policyFreeze": "NO_NEW_VERIFIED_SCHOOL_2026_T02_NONCARD_POLICY_OR_T03_AUTO_REOPEN_AUTHORITY",
+  "privateAccessDecision": "BLOCKED_INPUT/ACL_NOT_VERIFIED",
+  "privacy": "No hidden answer read or committed by r02",
+  "discrepancies": [
+    "T02 new private delta publicly claimed SHA256 differs between the ZIP's true bytes/README/report versus JSON manifest"
+  ],
+  "notes": "All 12 unchanged original ZIPs were bytewise rehashed and matched r01. Their hashes are not duplicated here; dereference r01 E0-input-manifest.json. Private new ZIPs only read at byte-hash level, not inspected or extracted."
+}
