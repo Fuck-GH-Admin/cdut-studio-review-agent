@@ -160,10 +160,6 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
     setInstalled(receipt);setMessage('公共兜底已接入当前案卷：'+receipt.checks+' 项真实 Pi 检查可运行。')
     onInstall.current?.(receipt)
   })}
-  const chooseManual=(templateId:string):void=>{
-    setPreferred(templateId);setSelection(undefined)
-    setMessage('请在下方确认实际审核对象、场景和条件；不会套用示例对象。')
-  }
   const identifyWithModel=(automatic=false,sourceRead:C11MainLocalProductRead|null=read):void=>{
     if(!sourceRead||!caseId)return
     const scope=sourceRead.sessionKey
@@ -297,9 +293,6 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
     read?.read.route.chosen?.templateVersion,installed?.caseId])
   const route=read?.read.route
   const eligible=read?.catalog.filter(item=>!item.templateId.startsWith('fallback-'))??[]
-  // G04的8套冻结业务标识是 d4-g04-tXX，不能按统一 g0 前缀误删。
-  const isD4=(id:string):boolean=>/^(?:g0[1-8]-|d4-g04-)/.test(id)
-  const d4Catalog=eligible.filter(item=>isD4(item.templateId))
   const visibleCatalog=filterTemplateCatalog(eligible,catalogQuery)
   return <section className="space-y-3 rounded-xl bg-card p-4 shadow-sm" aria-label="审核模板匹配与公共兜底" data-testid="review-v3-route-assistant">
     <div className="flex flex-wrap items-start justify-between gap-2">
@@ -322,7 +315,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
         <p>{route.candidates?.length&&route.candidates.length>1?'已找到多个有效候选':'已找到可靠候选'}；约 {Math.ceil(route.remainingMs/1000)} 秒后默认进入第一项。</p>
         <progress className="w-full" max={20} value={20-Math.min(20,Math.ceil(route.remainingMs/1000))}/>
       </div>
-      {route?.status==='unmatched'&&<p className="text-xs text-amber-700 dark:text-amber-300">没有匹配到可靠的现有模板。可以从50套手动选，也可用公共兜底起草审核规则继续审核。</p>}
+      {route?.status==='unmatched'&&<p className="text-xs text-amber-700 dark:text-amber-300">尚未找到可靠的现有模板，正在自动深度匹配；你也可以搜索全部模板，或在确认超出范围后使用公共兜底。</p>}
       {['needs-user-confirmation','awaiting-evidence'].includes(route?.status??'')&&
         <p className="text-xs text-amber-700 dark:text-amber-300">材料可能缺少申请原件、存在多个业务对象或角色未归属。请先在案卷中补齐或确认材料归属，再刷新；不能把不明材料自动归到某个人。</p>}
       <div className="flex gap-2">
@@ -384,10 +377,14 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
           {visibleCatalog.length===0&&<p className="p-2 text-xs text-muted-foreground">没有命中；清空关键词查看全部模板。</p>}
           {visibleCatalog.length>80&&<p className="text-xs text-muted-foreground">显示前 80 项，请继续输入关键词缩小范围。</p>}
         </div>
-        <D4CaseSetup key={preferred||'manual'} suggestedTemplateId={preferred||undefined} onChange={setSelection}/>
-        <button type="button" className={action} disabled={!selection||busy} onClick={attachD4}>
-          {busy?'正在固定审核计划…':'确认对象与条件，开始使用该模板'}
-        </button>
+        {preferred&&<div className="space-y-2 rounded-lg border border-primary/30 p-3">
+          <p className="text-sm font-semibold">模板下一步配置</p>
+          <p className="text-xs text-muted-foreground">已选择 {read.catalog.find(item=>item.templateId===preferred)?.name??preferred}。请核对真实对象、场景和模板要求的条件。</p>
+          <D4CaseSetup key={preferred} suggestedTemplateId={preferred} onChange={setSelection}/>
+          <button type="button" className={action} disabled={!selection||busy} onClick={attachD4}>
+            {busy?'正在固定审核计划…':'确认对象与条件，固定审核计划'}
+          </button>
+        </div>}
 
       </div>}
       {mode==='fallback'&&<div className="space-y-3">
