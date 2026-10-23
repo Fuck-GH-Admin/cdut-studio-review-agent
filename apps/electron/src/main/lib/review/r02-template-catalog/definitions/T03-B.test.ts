@@ -63,7 +63,7 @@ describe('T03-B R02 native template definitions', () => {
         expect(criterionKeys.has(item.criterionId)).toBeTrue()
         expect(['VERIFIED', 'PARTIAL', 'UNCONFIRMED']).toContain(item.evidenceStatus)
         expect(Array.isArray(item.srcIds)).toBeTrue()
-        for (const srcId of item.srcIds) expect(srcId).toMatch(/^SRC-\\d{3}$/)
+        for (const srcId of item.srcIds) expect(srcId).toMatch(/^SRC-\d{3}$/)
       }
     }
   })
