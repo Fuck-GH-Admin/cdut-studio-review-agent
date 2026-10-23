@@ -42,7 +42,7 @@ describe('R02 S02-A local research template definitions', () => {
       const criterionIds = (template.sections ?? []).flatMap((s) => s.criteria.map((c) => c.id))
       expect(new Set(template.fields.map((f) => f.key)).size).toBe(template.fields.length)
       expect(new Set(template.materialSlots.map((m) => m.id)).size).toBe(template.materialSlots.length)
-      expect(sectionIds.size).toBe(template.sections?.length)
+      expect(sectionIds.size).toBe((template.sections ?? []).length)
       expect(new Set(criterionIds).size).toBe(criterionIds.length)
       for (const section of template.sections ?? []) {
         expect(section.criteria.length).toBeGreaterThan(0)
@@ -72,9 +72,9 @@ describe('R02 S02-A local research template definitions', () => {
   test('source metadata maps every criterion to source IDs and an evidence status', () => {
     for (const b of batches) {
       const { template, metadata } = b
-      expect(metadata.templateId).toBe(template.templateId)
-      expect(metadata.name).toBe(template.name)
-      expect(metadata.sourceDocumentPath).toBe(`docs/design/review-agent/business-templates/R02/${template.templateId}.md`)
+      expect(String(metadata.templateId)).toBe(String(template.templateId))
+      expect(String(metadata.name)).toBe(String(template.name))
+      expect(String(metadata.sourceDocumentPath)).toBe(`docs/design/review-agent/business-templates/R02/${template.templateId}.md`)
       expect(metadata.sourceDocumentSha256).toMatch(/^[a-f0-9]{64}$/)
       expect(metadata.officialSchoolTemplate).toBe(false)
       expect(metadata.policyEvidenceStatus).toBe(b.policy)
