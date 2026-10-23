@@ -319,7 +319,7 @@ function materialSlotChecks(aggregate: CaseAggregateV2, template: TemplateVersio
     const semanticRule = rules.some((rule) => rule.id === semanticRuleId)
     const subjectIds = aggregate.caseV2.subjects
       .filter((subject) => !slot.sectionId || subject.sectionId === slot.sectionId)
-      .map((subject) => subject.id).sort()
+      .map((subject) => subject.id)
     const target = { scope: 'case' as const, subjectIds: semanticRule ? subjectIds : [] }
     const checkId = semanticRule
       ? `check-${semanticRuleId}-case-${subjectIds.join('-') || 'case'}`
