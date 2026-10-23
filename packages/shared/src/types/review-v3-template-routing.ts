@@ -60,7 +60,7 @@ const GENERIC_TERMS = new Set([
 
 export function normalizeTemplateRouteText(value: string): string {
   return value.normalize('NFKC').toLocaleLowerCase()
-    .replace(/[\s\-—_【】\[\]（）()<>《》,，。;；:：·|｜、/\\]+/g, '')
+    .replace(/[\s\-—_【】\[\]（）()<>《》,，。;；:：·|｜、\/\\]+/g, '')
 }
 
 function uniqueStrings(values: readonly string[]): string[] {
