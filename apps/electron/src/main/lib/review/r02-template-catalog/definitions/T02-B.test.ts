@@ -19,6 +19,25 @@ function referencedIds(text: string, prefix: 'F' | 'M'): Set<string> {
   return found
 }
 
+function referencedSourceIds(text: string): Set<string> {
+  const found = new Set<string>()
+  const expression = /\bSRC-(\d{3}(?:(?:[\/／,，、]\s*)\d{3})*(?:[–-]\s*\d{3})?)/g
+  for (const match of text.matchAll(expression)) {
+    for (const raw of match[1].split(/[\/／,，、]/)) {
+      const part = raw.trim()
+      const range = part.match(/^(\d{3})[–-]\s*(\d{3})$/)
+      if (range) {
+        for (let value = Number(range[1]); value <= Number(range[2]) && value <= 999; value += 1) {
+          found.add('SRC-' + String(value).padStart(3, '0'))
+        }
+      } else if (/^\d{3}$/.test(part)) {
+        found.add('SRC-' + part)
+      }
+    }
+  }
+  return found
+}
+
 describe('R02 T02-B runtime template definitions', () => {
   test('IDs and formal names are correct and unique', () => {
     expect(batch.map(({ template }) => template.templateId)).toEqual(['T02-T05', 'T02-T06', 'T02-T07', 'T02-T09'])
@@ -47,6 +66,10 @@ describe('R02 T02-B runtime template definitions', () => {
         expect(Array.isArray(item.srcIds)).toBe(true)
         expect(['PARTIAL', 'UNCONFIRMED', 'VERIFIED']).toContain(item.evidenceStatus)
         for (const srcId of item.srcIds) expect(sourceIds.has(srcId)).toBe(true)
+        const mappedCriterion = (template.sections ?? []).flatMap(section => section.criteria.map(criterion => ({ section, criterion }))).find(entry => entry.section.id === item.sectionId && entry.criterion.id === item.criterionId)?.criterion
+        const expectedSourceIds = referencedSourceIds((mappedCriterion?.requirement ?? '').split("\n\n安全门禁")[0])
+        for (const srcId of expectedSourceIds) expect(new Set<string>(item.srcIds).has(srcId)).toBe(true)
+        expect(new Set<string>(item.srcIds).size).toBe(expectedSourceIds.size)
       }
       for (const section of template.sections ?? []) {
         for (const criterion of section.criteria) {

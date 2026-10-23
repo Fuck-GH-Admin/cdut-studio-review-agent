@@ -1684,7 +1684,10 @@ export const r02Metadata = {
       "sectionId": "rule-checks",
       "criterionId": "r001",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-009",
+        "SRC-011",
+        "SRC-012"
       ],
       "evidenceStatus": "PARTIAL"
     },
@@ -1692,7 +1695,9 @@ export const r02Metadata = {
       "sectionId": "rule-checks",
       "criterionId": "r002",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-009",
+        "SRC-012"
       ],
       "evidenceStatus": "PARTIAL"
     },
@@ -1700,7 +1705,8 @@ export const r02Metadata = {
       "sectionId": "rule-checks",
       "criterionId": "r003",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-009"
       ],
       "evidenceStatus": "PARTIAL"
     },
@@ -1708,7 +1714,10 @@ export const r02Metadata = {
       "sectionId": "rule-checks",
       "criterionId": "r004",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-009",
+        "SRC-012",
+        "SRC-013"
       ],
       "evidenceStatus": "PARTIAL"
     },
@@ -1726,7 +1735,9 @@ export const r02Metadata = {
       "criterionId": "r006",
       "srcIds": [
         "SRC-001",
-        "SRC-012"
+        "SRC-009",
+        "SRC-012",
+        "SRC-013"
       ],
       "evidenceStatus": "PARTIAL"
     },
@@ -1771,6 +1782,7 @@ export const r02Metadata = {
       "criterionId": "r011",
       "srcIds": [
         "SRC-001",
+        "SRC-009",
         "SRC-012"
       ],
       "evidenceStatus": "PARTIAL"
@@ -1788,7 +1800,10 @@ export const r02Metadata = {
       "sectionId": "rule-checks",
       "criterionId": "r013",
       "srcIds": [
-        "SRC-002"
+        "SRC-002",
+        "SRC-003",
+        "SRC-008",
+        "SRC-011"
       ],
       "evidenceStatus": "PARTIAL"
     },
@@ -1822,7 +1837,9 @@ export const r02Metadata = {
       "sectionId": "rule-checks",
       "criterionId": "r017",
       "srcIds": [
-        "SRC-004"
+        "SRC-004",
+        "SRC-005",
+        "SRC-009"
       ],
       "evidenceStatus": "PARTIAL"
     },
@@ -1831,7 +1848,10 @@ export const r02Metadata = {
       "criterionId": "r018",
       "srcIds": [
         "SRC-004",
-        "SRC-005"
+        "SRC-005",
+        "SRC-008",
+        "SRC-011",
+        "SRC-012"
       ],
       "evidenceStatus": "PARTIAL"
     },
@@ -1839,7 +1859,11 @@ export const r02Metadata = {
       "sectionId": "rule-checks",
       "criterionId": "r019",
       "srcIds": [
-        "SRC-002"
+        "SRC-002",
+        "SRC-003",
+        "SRC-004",
+        "SRC-005",
+        "SRC-011"
       ],
       "evidenceStatus": "PARTIAL"
     },
@@ -1858,6 +1882,8 @@ export const r02Metadata = {
       "criterionId": "r021",
       "srcIds": [
         "SRC-001",
+        "SRC-008",
+        "SRC-009",
         "SRC-012"
       ],
       "evidenceStatus": "PARTIAL"
@@ -1866,7 +1892,9 @@ export const r02Metadata = {
       "sectionId": "rule-checks",
       "criterionId": "r022",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-008",
+        "SRC-009"
       ],
       "evidenceStatus": "PARTIAL"
     },
@@ -1874,7 +1902,9 @@ export const r02Metadata = {
       "sectionId": "rule-checks",
       "criterionId": "r023",
       "srcIds": [
-        "SRC-003"
+        "SRC-003",
+        "SRC-007",
+        "SRC-009"
       ],
       "evidenceStatus": "PARTIAL"
     },
@@ -1882,7 +1912,8 @@ export const r02Metadata = {
       "sectionId": "rule-checks",
       "criterionId": "r024",
       "srcIds": [
-        "SRC-001"
+        "SRC-001",
+        "SRC-009"
       ],
       "evidenceStatus": "PARTIAL"
     }
