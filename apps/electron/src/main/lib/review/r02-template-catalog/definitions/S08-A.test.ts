@@ -1,0 +1,30 @@
+import { expect, test } from 'bun:test'
+import { validateTemplate } from '../../template-store'
+import { templateVersion as S08T01, r02Metadata as S08T01Meta } from './S08-T01'
+import { templateVersion as S08T03, r02Metadata as S08T03Meta } from './S08-T03'
+import { templateVersion as S08T04, r02Metadata as S08T04Meta } from './S08-T04'
+import { templateVersion as S08T05, r02Metadata as S08T05Meta } from './S08-T05'
+import { templateVersion as S08T06, r02Metadata as S08T06Meta } from './S08-T06'
+
+const batch = [
+  { template: S08T01, metadata: S08T01Meta },
+  { template: S08T03, metadata: S08T03Meta },
+  { template: S08T04, metadata: S08T04Meta },
+  { template: S08T05, metadata: S08T05Meta },
+  { template: S08T06, metadata: S08T06Meta },
+]
+function expandRefs(text: string, prefix: 'F' | 'M'): Set<string> {
+  const refs = new Set<string>()
+  const range = new RegExp('\\b' + prefix + '(\\d{3})\\s*[–—-]\\s*' + prefix + '(\\d{3})\\b', 'g')
+  for (const m of text.matchAll(range)) { const a=Number(m[1]), b=Number(m[2]); if (b>=a && b-a<300) for(let n=a;n<=b;n++) refs.add(prefix+String(n).padStart(3,'0')) }
+  const single = new RegExp('\\b' + prefix + '\\d{3}\\b', 'g')
+  for (const m of text.matchAll(single)) refs.add(m[0])
+  return refs
+}
+function criteriaOf(template: typeof batch[number]['template']) { return (template.sections ?? []).flatMap(s=>s.criteria.map(c=>({...c,sectionId:s.id}))) }
+test('IDs and formal names are correct and unique',()=>{expect(batch).toHaveLength(5);expect(new Set(batch.map(x=>x.template.templateId)).size).toBe(5);for(const x of batch){expect(x.template.name).toBe(x.metadata.name);expect(x.template.templateId).toBe(x.metadata.templateId);expect(x.template.schemaVersion).toBe(2)}})
+test('all definitions pass validateTemplate without errors',()=>{for(const {template} of batch){const errors=validateTemplate(template).filter(x=>x.level==='error');expect(errors,template.templateId+': '+errors.map(x=>x.message).join('; ')).toEqual([])}})
+test('field, material and criterion references have no dangling F/M IDs',()=>{for(const {template} of batch){const fs=new Set(template.fields.map(x=>x.key)),ms=new Set(template.materialSlots.map(x=>x.id));expect(fs.size).toBe(template.fields.length);expect(ms.size).toBe(template.materialSlots.length);const texts=[...(template.sections??[]).flatMap(s=>s.criteria.map(c=>c.requirement)),...template.materialSlots.flatMap(m=>[m.name,m.purpose,...m.requiredElements])];for(const t of texts){for(const id of expandRefs(t,'F'))expect(fs.has(id),template.templateId+' dangling field '+id).toBe(true);for(const id of expandRefs(t,'M'))expect(ms.has(id),template.templateId+' dangling material '+id).toBe(true)}const cs=criteriaOf(template);expect(new Set(cs.map(c=>c.id)).size).toBe(cs.length);for(const s of template.sections??[])expect(new Set(s.criteria.map(c=>c.id)).size).toBe(s.criteria.length)}})
+test('every criterion maps to SRC evidence metadata',()=>{for(const {template,metadata} of batch){const cs=criteriaOf(template);expect(metadata.criteria).toHaveLength(cs.length);const keys=new Set(metadata.criteria.map(c=>c.sectionId+'/'+c.criterionId));expect(keys.size).toBe(metadata.criteria.length);for(const c of cs){const m=metadata.criteria.find(x=>x.sectionId===c.sectionId&&x.criterionId===c.id);expect(m).toBeDefined();expect(['VERIFIED','PARTIAL','UNCONFIRMED']).toContain(m!.evidenceStatus);expect(m!.srcIds.every(x=>/^SRC-\d{3}$/.test(x))).toBe(true)}}})
+test('stage graphs are reachable, unique, acyclic and local',()=>{for(const {template} of batch){const ss=template.stages,ids=ss.map(s=>s.id),byId=new Map(ss.map(s=>[s.id,s]));expect(ids.length).toBeGreaterThan(1);expect(new Set(ids).size).toBe(ids.length);for(const s of ss){if(s.nextStageId)expect(byId.has(s.nextStageId)).toBe(true);if(s.returnToStageId)expect(byId.has(s.returnToStageId)).toBe(true);expect(s.workflowOwner).toBe('local');expect(['reviewer','teacher']).toContain(s.executorRole);expect(s.kind).not.toBe('auto-check')}const seen=new Set<string>();let cur:string|undefined=ss[0].id;while(cur){expect(seen.has(cur),template.templateId+' cycle at '+cur).toBe(false);seen.add(cur);cur=byId.get(cur)?.nextStageId}expect(seen.size).toBe(ss.length);expect(ss[ss.length-1].kind).toBe('handoff')}})
+test('non-official and uncertain policies cannot auto-pass or impersonate PolicyVersion',()=>{for(const {template,metadata} of batch){expect(template.description).toContain('本地研究模板 · 非校方正式模板');expect(template.sourceNote?.startsWith('R02_RESEARCH_TEMPLATE_NONOFFICIAL:')).toBe(true);expect(metadata.officialSchoolTemplate).toBe(false);expect(metadata.policyEvidenceStatus).toBe('PARTIAL');expect(metadata.sourceDocumentPath).toContain('/R02/'+template.templateId+'.md');expect(metadata.sourceDocumentSha256).toMatch(/^[0-9a-f]{64}$/);expect(metadata.manifestHashCheck).toBe(true);expect(template.policyVersionIds).toEqual([]);expect(template.autoPassPolicy?.enabled).toBe(false);expect(template.status).toBe('draft');expect((template.sections??[]).flatMap(s=>s.criteria).every(c=>c.execution!=='deterministic')).toBe(true);expect(template.outputs.some(o=>o.kind==='approval')).toBe(false)}})
