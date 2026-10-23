@@ -24,7 +24,7 @@ export interface R02Metadata {
   criteria: R02CriterionMetadata[]
 }
 
-export const template: TemplateVersion = export const template: TemplateVersion = {
+export const template: TemplateVersion = {
   "templateId": "S06-T05",
   "version": 1,
   "schemaVersion": 2,

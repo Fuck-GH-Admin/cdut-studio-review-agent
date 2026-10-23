@@ -1,4 +1,7 @@
 import { describe, expect, test } from 'bun:test'
+import { createHash } from 'node:crypto'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { validateTemplate } from '../../template-store'
 import { template as t01, r02Metadata as m01 } from './S06-T01'
 import { template as t02, r02Metadata as m02 } from './S06-T02'
@@ -39,6 +42,11 @@ describe('R02 S06-A native template definitions', () => {
       const criteria = (template.sections ?? []).flatMap(section => section.criteria.map(criterion => ({ sectionId: section.id, ...criterion })))
       expect(criteria.length).toBe(item.expectedCriteria)
       expect(new Set(criteria.map(criterion => criterion.id)).size).toBe(criteria.length)
+      for (const criterion of criteria) {
+        for (const ref of criterion.requirement.match(/\b[FM]\d{3}\b/g) ?? []) {
+          expect(ref.startsWith('F') ? template.fields.some(field => field.key === ref) : template.materialSlots.some(slot => slot.id === ref)).toBe(true)
+        }
+      }
       for (const field of template.fields) {
         if (field.sectionId) expect(sectionIds.has(field.sectionId)).toBe(true)
       }
@@ -64,7 +72,14 @@ describe('R02 S06-A native template definitions', () => {
   })
 
   test('metadata maps every criterion to research SRC IDs and an evidence state', () => {
+    const repoRoot = resolve(import.meta.dir, '../../../../../../../../')
     for (const item of cases) {
+      const reviewed = readFileSync(resolve(repoRoot, item.metadata.sourceDocumentPath))
+      const original = readFileSync(resolve(repoRoot, item.metadata.sourceOriginalPath))
+      expect(reviewed.equals(Buffer.concat([original, Buffer.from('\n')]))).toBe(true)
+      expect(reviewed.byteLength).toBe(item.metadata.sourceDocumentBytes)
+      expect(createHash('sha256').update(reviewed).digest('hex')).toBe(item.metadata.sourceDocumentSha256)
+      const declaredSources = new Set(reviewed.toString('utf8').match(/\bSRC-\d{3}\b/g) ?? [])
       const criteria = (item.template.sections ?? []).flatMap(section => section.criteria.map(criterion => ({ sectionId: section.id, id: criterion.id })))
       expect(item.metadata.criteria.length).toBe(criteria.length)
       for (const criterion of criteria) {
@@ -72,7 +87,11 @@ describe('R02 S06-A native template definitions', () => {
         expect(mapped).toBeDefined()
         expect(['VERIFIED', 'PARTIAL', 'UNCONFIRMED'].includes(mapped?.evidenceStatus ?? '')).toBe(true)
         expect(Array.isArray(mapped?.srcIds)).toBe(true)
-        for (const srcId of mapped?.srcIds ?? []) expect(srcId).toMatch(/^SRC-\d{3}$/)
+        expect((mapped?.srcIds.length ?? 0) > 0).toBe(true)
+        for (const srcId of mapped?.srcIds ?? []) {
+          expect(srcId).toMatch(/^SRC-\d{3}$/)
+          expect(declaredSources.has(srcId)).toBe(true)
+        }
       }
     }
   })
