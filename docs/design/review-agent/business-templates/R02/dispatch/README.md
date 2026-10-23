@@ -18,6 +18,7 @@
 | 统一审查标准 | `docs/design/review-agent/business-templates/R02/dispatch/00_统一审查标准.md` |
 | 文件所有权与集成分工 | `docs/design/review-agent/business-templates/R02/dispatch/00_集成分工与文件所有权.md` |
 | 128 项模板清单 | `docs/design/review-agent/business-templates/R02/dispatch/00_模板清单_128.tsv` |
+| 本轮完整核验报告 | `docs/design/review-agent/business-templates/R02/dispatch/02_R02_原件与派发最终核验_20261024.md` |
 | 未找到正式源 MD 的 16 项 | `docs/design/review-agent/business-templates/R02/dispatch/01_未纳入的16项.md` |
 | 总集成会话提示词 | `docs/design/review-agent/business-templates/R02/dispatch/00_总集成会话提示词.md` |
 | 派发说明 | `docs/design/review-agent/business-templates/R02/dispatch/README_派发说明.md` |
