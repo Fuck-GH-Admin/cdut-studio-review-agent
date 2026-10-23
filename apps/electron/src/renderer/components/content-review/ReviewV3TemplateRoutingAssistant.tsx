@@ -320,7 +320,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
       {['needs-user-confirmation','awaiting-evidence'].includes(route?.status??'')&&
         <p className="text-xs text-amber-700 dark:text-amber-300">材料可能缺少申请原件、存在多个业务对象或角色未归属。请先在案卷中补齐或确认材料归属，再刷新；不能把不明材料自动归到某个人。</p>}
       <div className="flex gap-2">
-        <button type="button" className={mode==='catalog'?action:secondary} onClick={()=>setMode('catalog')}>使用50套现有模板</button>
+        <button type="button" className={mode==='catalog'?action:secondary} onClick={()=>setMode('catalog')}>全部模板目录</button>
         <button type="button" className={mode==='fallback'?action:secondary} onClick={()=>setMode('fallback')}>公共兜底 / 自动起草</button>
       </div>
       {mode==='catalog'&&<div className="space-y-2">
@@ -389,6 +389,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
 
       </div>}
       {mode==='fallback'&&<div className="space-y-3">
+        {modelMatchState==='out-of-scope'&&modelRouteNote&&<p role="status" className="rounded-lg bg-amber-500/10 p-2 text-xs">{modelRouteNote}</p>}
         <p className="text-xs text-muted-foreground">描述本案审核目的和具体要求。草稿必须由你逐条确认；模型只起草，不决定通过、不伪造学校政策。</p>
         <textarea aria-label="公共兜底审核目的" className="min-h-24 w-full rounded-lg border border-border bg-background p-2 text-sm"
           placeholder={'审核名称：临时活动材料审核\n审核对象：申请人\n材料：活动计划书、场地使用说明\n规则：核查申请用途、时间和材料是否相互一致'}
