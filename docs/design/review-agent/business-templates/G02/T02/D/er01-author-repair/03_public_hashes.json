@@ -1,0 +1,16 @@
+{
+  "schema": "G02-T02-D-E-r01-public-hashes",
+  "date": "2026-10-14",
+  "gold_version": "FROZEN_GOLD_v1",
+  "original_author_git_commit": "NOT_AVAILABLE",
+  "audit_commit_not_author": "49a14db3abb53e2ba6164af15537c4537b8f15fc",
+  "input_zip_sha256": "c1ec8087c94a922d23c401d51f59ed219dea2fd6cd65983c4db7a720cbe67ad7",
+  "gold_zip_sha256": "9ba244eb1b884f7da4d8762d44a4b7bc168fde9d34fa3a58821625391d804b7a",
+  "reports_zip_sha256": "2a824988bea2ddaa42da77c715b3c28f4953ea21fbd1f589d1353e0db93e5702",
+  "original_submission_summary_sha256": "898e9e1c73df315044969574abf2f5f2045dc269e42f61d32834f3e44bfbce21",
+  "new_local_full_public_report_zip_sha256": "fdd62c157719e9b54a89d10727e1e9381a1a579b9f52927918a53dfbc46ee211",
+  "private_acl_storage_configured": false,
+  "verified_acl": false,
+  "author_report_status": "D0/D3/D4_PARTIAL",
+  "e_r02": "NOT_RUN"
+}
