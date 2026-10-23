@@ -53,7 +53,7 @@ describe('R02 S03-A template definitions', () => {
     for (const { template } of entries) {
       const issues = validateTemplate(template)
       expect(issues.filter(issue => issue.level === 'error')).toEqual([])
-      const stageById = new Map(template.stages.map(stage => [stage.id, stage]))
+      const stageById = new Map<string, (typeof template.stages)[number]>(template.stages.map(stage => [stage.id, stage] as const))
       const visited = new Set<string>()
       let next: string | undefined = template.stages[0]?.id
       while (next) {
