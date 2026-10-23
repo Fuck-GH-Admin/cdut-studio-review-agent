@@ -88,6 +88,8 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
   currentCase.current=caseId
   const latestReadRef=React.useRef(read)
   latestReadRef.current=read
+  const latestModeRef=React.useRef(mode)
+  latestModeRef.current=mode
   const onInstall=React.useRef(onPlanInstalled)
   onInstall.current=onPlanInstalled
   const onBound=React.useRef(onTemplateBound)
@@ -230,7 +232,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
           caseEvidence:evidence,
           templates:sourceRead.catalog as TemplateRouteCatalogEntry[],
         })
-        if(currentCase.current!==caseId||latestReadRef.current?.sessionKey!==scope)return
+        if(currentCase.current!==caseId||latestReadRef.current?.sessionKey!==scope||latestModeRef.current!=='catalog')return
         if(result.scope==='matched'&&result.matches.length){
           const ranked=result.matches.map(item=>{
             const entry=sourceRead.catalog.find(candidate=>candidate.templateId===item.templateId&&
@@ -364,7 +366,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
         <button type="button" className={mode==='catalog'?action:secondary} onClick={()=>setMode('catalog')}>全部模板目录</button>
         <button type="button" className={mode==='fallback'?action:secondary} onClick={()=>{
           setMode('fallback');setModelCandidates([]);setModelDeadline(null);setModelMatchState('idle')
-          if(route?.status==='countdown')void window.reviewAPI.interruptLocalNativeProductV3(caseId)
+          if(route&&(route.status==='countdown'||route.status==='default-selected'))void window.reviewAPI.interruptLocalNativeProductV3(caseId)
             .then(setRead).catch(reason=>setError(reason instanceof Error?reason.message:String(reason)))
         }}>公共兜底 / 自动起草</button>
       </div>
