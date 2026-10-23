@@ -3,44 +3,24 @@ export type { TemplateVersion } from '@profer/shared'
 
 export type R02EvidenceStatus = 'VERIFIED' | 'PARTIAL' | 'UNCONFIRMED' | 'HISTORICAL' | 'CROSS_SCHOOL_ONLY'
 export type R02PolicyEvidenceStatus = 'VERIFIED' | 'PARTIAL' | 'UNCONFIRMED'
-
-export interface R02CriterionMetadata {
-  sectionId: string
-  criterionId: string
-  sourceIds: string[]
-  evidenceStatus: R02EvidenceStatus
-}
-
-export interface R02Metadata {
-  templateId: string
-  name: string
-  sourceDocumentPath: string
-  sourceDocumentSha256: string
-  researchOriginalPath: string
-  researchOriginalSha256: string
-  officialSchoolTemplate: false
-  researchDate: string
-  policyEvidenceStatus: R02PolicyEvidenceStatus
-  sourceStatus: Record<string, R02EvidenceStatus>
-  criteria: R02CriterionMetadata[]
-  externalPolicyReferences: Array<{id:string;title:string;documentNo:string;publishedAt:string;url:string;evidenceStatus:R02EvidenceStatus;scope:string}>
-}
+export interface R02CriterionMetadata { sectionId: string; criterionId: string; sourceIds: string[]; evidenceStatus: R02EvidenceStatus }
+export interface R02Metadata { templateId: string; name: string; sourceDocumentPath: string; sourceDocumentSha256: string; researchOriginalPath: string; researchOriginalSha256: string; officialSchoolTemplate: false; researchDate: string; policyEvidenceStatus: R02PolicyEvidenceStatus; sourceStatus: Record<string, R02EvidenceStatus>; criteria: R02CriterionMetadata[]; externalPolicyReferences: Array<{id:string;title:string;documentNo:string;publishedAt:string;url:string;evidenceStatus:R02EvidenceStatus;scope:string}> }
 
 const fieldDefinitions = [
   {
     "key": "F001",
-    "label": "F001 · ",
+    "label": "F001 · 学生权威标识／引用ID",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F001；学生权威标识／引用ID；GraduateSubject；L0 全情形；校身；M001权威身份记录；P3；U/H。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F002",
-    "label": "F002 · ",
+    "label": "F002 · 学生规范姓名／文本",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -51,7 +31,7 @@ const fieldDefinitions = [
   },
   {
     "key": "F003",
-    "label": "F003 · ",
+    "label": "F003 · 学段（本/硕/博/其他）／枚举",
     "kind": "enum",
     "required": false,
     "visibility": "public",
@@ -80,7 +60,7 @@ const fieldDefinitions = [
   },
   {
     "key": "F004",
-    "label": "F004 · ",
+    "label": "F004 · 毕业届别／枚举或年份",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -91,7 +71,7 @@ const fieldDefinitions = [
   },
   {
     "key": "F005",
-    "label": "F005 · ",
+    "label": "F005 · 学院、校区／引用",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -102,10 +82,10 @@ const fieldDefinitions = [
   },
   {
     "key": "F006",
-    "label": "F006 · ",
+    "label": "F006 · 毕结业/当前服务可办理状态／枚举",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
     "readOnly": false,
     "extractionHint": "来源字段字典：F006；毕结业/当前服务可办理状态／枚举；GraduateSubject；L0、L5；校身或授权校审；M001、M016；非自主推导；P2；U/H。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
@@ -113,7 +93,7 @@ const fieldDefinitions = [
   },
   {
     "key": "F007",
-    "label": "F007 · ",
+    "label": "F007 · 申请人声明角色／枚举",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -124,10 +104,10 @@ const fieldDefinitions = [
   },
   {
     "key": "F008",
-    "label": "F008 · ",
+    "label": "F008 · 真实发起操作人及授权范围／引用",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
     "readOnly": false,
     "extractionHint": "来源字段字典：F008；真实发起操作人及授权范围／引用；AgreementAction；L0/L1/Lx；校身/川台/校审登录与授权；M002、M005、M022；P3；U/H。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
@@ -135,7 +115,7 @@ const fieldDefinitions = [
   },
   {
     "key": "F009",
-    "label": "F009 · ",
+    "label": "F009 · 办理情形P01—P12／枚举",
     "kind": "enum",
     "required": false,
     "visibility": "public",
@@ -143,51 +123,51 @@ const fieldDefinitions = [
     "options": [
       {
         "value": "P01",
-        "label": "P01（按原件情形矩阵解释）"
+        "label": "P01"
       },
       {
         "value": "P02",
-        "label": "P02（按原件情形矩阵解释）"
+        "label": "P02"
       },
       {
         "value": "P03",
-        "label": "P03（按原件情形矩阵解释）"
+        "label": "P03"
       },
       {
         "value": "P04",
-        "label": "P04（按原件情形矩阵解释）"
+        "label": "P04"
       },
       {
         "value": "P05",
-        "label": "P05（按原件情形矩阵解释）"
+        "label": "P05"
       },
       {
         "value": "P06",
-        "label": "P06（按原件情形矩阵解释）"
+        "label": "P06"
       },
       {
         "value": "P07",
-        "label": "P07（按原件情形矩阵解释）"
+        "label": "P07"
       },
       {
         "value": "P08",
-        "label": "P08（按原件情形矩阵解释）"
+        "label": "P08"
       },
       {
         "value": "P09",
-        "label": "P09（按原件情形矩阵解释）"
+        "label": "P09"
       },
       {
         "value": "P10",
-        "label": "P10（按原件情形矩阵解释）"
+        "label": "P10"
       },
       {
         "value": "P11",
-        "label": "P11（按原件情形矩阵解释）"
+        "label": "P11"
       },
       {
         "value": "P12",
-        "label": "P12（按原件情形矩阵解释）"
+        "label": "P12"
       }
     ],
     "readOnly": false,
@@ -196,21 +176,21 @@ const fieldDefinitions = [
   },
   {
     "key": "F010",
-    "label": "F010 · ",
+    "label": "F010 · 本申请业务标识／引用ID",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F010；本申请业务标识／引用ID；AgreementAction；L1以后；案卷/权威受理系统；M002、M023；P1；U/B。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F011",
-    "label": "F011 · ",
+    "label": "F011 · 当前阶段／L0—L5/Lx枚举",
     "kind": "enum",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
     "options": [
       {
@@ -242,13 +222,13 @@ const fieldDefinitions = [
         "label": "Lx"
       }
     ],
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F011；当前阶段／L0—L5/Lx枚举；AgreementAction；全流程；案卷+校审权威事件；M002、M023；P1；U/H。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F012",
-    "label": "F012 · ",
+    "label": "F012 · 使用的原渠道/平台／枚举",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -259,18 +239,18 @@ const fieldDefinitions = [
   },
   {
     "key": "F013",
-    "label": "F013 · ",
+    "label": "F013 · 申请/响应/审批事件时点／时间戳",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F013；申请/响应/审批事件时点／时间戳；AgreementAction；L1之后按事件；相应系统服务端时间；M002、M007、M015/M016；P1；U/V。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F014",
-    "label": "F014 · ",
+    "label": "F014 · 原就业协议唯一编号／引用",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -281,19 +261,19 @@ const fieldDefinitions = [
   },
   {
     "key": "F015",
-    "label": "F015 · ",
+    "label": "F015 · 原协议当前有效/解除/待审状态／枚举",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F015；原协议当前有效/解除/待审状态／枚举；AgreementChain；L0解约/重签、L5；川台权威状态；M003、M017；P2；U/H。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F016",
-    "label": "F016 · ",
-    "kind": "text",
+    "label": "F016 · 原协议版本及摘要/指纹／复合",
+    "kind": "object",
     "required": false,
     "visibility": "public",
     "scope": "case",
@@ -303,18 +283,18 @@ const fieldDefinitions = [
   },
   {
     "key": "F017",
-    "label": "F017 · ",
+    "label": "F017 · 原单位法定主体识别号／文本",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F017；原单位法定主体识别号／文本；EmployerParty（原）；L0解约/重签；川台/单位权威注册资料；M003、M004；P2；U/H。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F018",
-    "label": "F018 · ",
+    "label": "F018 · 原单位规范名称／文本",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -325,10 +305,10 @@ const fieldDefinitions = [
   },
   {
     "key": "F019",
-    "label": "F019 · ",
+    "label": "F019 · 单位具体签约操作人真实授权／引用",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
     "readOnly": false,
     "extractionHint": "来源字段字典：F019；单位具体签约操作人真实授权／引用；EmployerParty；L1/L2；经核的企业授权/平台身份；M005、M014、M022；P3；C/H。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
@@ -336,7 +316,7 @@ const fieldDefinitions = [
   },
   {
     "key": "F020",
-    "label": "F020 · ",
+    "label": "F020 · 拟签新单位法定主体识别号／文本",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -347,7 +327,7 @@ const fieldDefinitions = [
   },
   {
     "key": "F021",
-    "label": "F021 · ",
+    "label": "F021 · 拟签新单位规范名称／文本",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -358,8 +338,8 @@ const fieldDefinitions = [
   },
   {
     "key": "F022",
-    "label": "F022 · ",
-    "kind": "text",
+    "label": "F022 · 录用/签约意向及适用时间／复合",
+    "kind": "object",
     "required": false,
     "visibility": "public",
     "scope": "case",
@@ -369,7 +349,7 @@ const fieldDefinitions = [
   },
   {
     "key": "F023",
-    "label": "F023 · ",
+    "label": "F023 · 线上邀请标识/版本／引用",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -380,7 +360,7 @@ const fieldDefinitions = [
   },
   {
     "key": "F024",
-    "label": "F024 · ",
+    "label": "F024 · 学生对邀请的应约/拒绝事件／枚举+时间",
     "kind": "enum",
     "required": false,
     "visibility": "public",
@@ -401,40 +381,40 @@ const fieldDefinitions = [
   },
   {
     "key": "F025",
-    "label": "F025 · ",
+    "label": "F025 · 线下协议生成/申请版本／引用",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F025；线下协议生成/申请版本／引用；AgreementChain；L1线下；授权平台生成记录/正式表单；M008；P2；U/V。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F026",
-    "label": "F026 · ",
+    "label": "F026 · 双方签署协议正文与签章证据／引用",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F026；双方签署协议正文与签章证据／引用；AgreementChain；L2已签；核实的双方原件及权威签署记录；M009、M011、M020；P3；B/V/H。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F027",
-    "label": "F027 · ",
+    "label": "F027 · 已签版上传/登记提交事件／引用",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F027；已签版上传/登记提交事件／引用；AgreementAction；L2/L3；川台或国台各自原始回执；M010、M026；P2；U/V。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F028",
-    "label": "F028 · ",
+    "label": "F028 · 解约发起方（生/企）／枚举",
     "kind": "enum",
     "required": false,
     "visibility": "public",
@@ -455,7 +435,7 @@ const fieldDefinitions = [
   },
   {
     "key": "F029",
-    "label": "F029 · ",
+    "label": "F029 · 解约事由/所依据协议条款／文本",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -466,7 +446,7 @@ const fieldDefinitions = [
   },
   {
     "key": "F030",
-    "label": "F030 · ",
+    "label": "F030 · 相对方同意/拒绝及时间／事件",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -477,10 +457,10 @@ const fieldDefinitions = [
   },
   {
     "key": "F031",
-    "label": "F031 · ",
+    "label": "F031 · 解除函签署主体、效力核验／引用",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
     "readOnly": false,
     "extractionHint": "来源字段字典：F031；解除函签署主体、效力核验／引用；AgreementChain；L2线下或纸质；单位核验原件/签章及授权；M014；P3；C/V/H。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
@@ -488,43 +468,43 @@ const fieldDefinitions = [
   },
   {
     "key": "F032",
-    "label": "F032 · ",
+    "label": "F032 · 学院审核意见、经办人、版本／事件",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F032；学院审核意见、经办人、版本／事件；ReviewEvent；L3后；校审；M015；P2；U/H。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F033",
-    "label": "F033 · ",
+    "label": "F033 · 学校后续审批意见、权责、版本／事件",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F033；学校后续审批意见、权责、版本／事件；ReviewEvent；L4后；校审；M016；P2；U/H。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F034",
-    "label": "F034 · ",
+    "label": "F034 · 解约办理完成的权威回执／事件",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F034；解约办理完成的权威回执／事件；AgreementChain；L5旧约解除；川台/校方确认的真实解除状态；M017；P2；U/H。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F035",
-    "label": "F035 · ",
+    "label": "F035 · 当前网签/重签资格状态／枚举",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
     "readOnly": false,
     "extractionHint": "来源字段字典：F035；当前网签/重签资格状态／枚举；GraduateSubject；L5后拟重签；川台/校身授权状态；M017、M018；P2；U/H。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
@@ -532,18 +512,18 @@ const fieldDefinitions = [
   },
   {
     "key": "F036",
-    "label": "F036 · ",
-    "kind": "text",
+    "label": "F036 · 新协议独立编号与上游解除链／复合",
+    "kind": "object",
     "required": false,
     "visibility": "public",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F036；新协议独立编号与上游解除链／复合；AgreementChain；L1/L5重签过程；川台/正式新约；M018、M019；P2；U/V。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F037",
-    "label": "F037 · ",
+    "label": "F037 · 特别约定（升学、公务员、违约等）／受限文本",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -554,8 +534,8 @@ const fieldDefinitions = [
   },
   {
     "key": "F038",
-    "label": "F038 · ",
-    "kind": "text",
+    "label": "F038 · 证据版本、摘要、来源时间和父版本／复合",
+    "kind": "object",
     "required": false,
     "visibility": "public",
     "scope": "case",
@@ -565,32 +545,32 @@ const fieldDefinitions = [
   },
   {
     "key": "F039",
-    "label": "F039 · ",
+    "label": "F039 · 升学/招录等状态变化及生效时点／引用",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F039；升学/招录等状态变化及生效时点／引用；AdjacentDecisionRef；P10 L0/L1；招录/学校权威结果或核实证明；M021；P3；C/H。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F040",
-    "label": "F040 · ",
+    "label": "F040 · 毕业去向/档案/离校等只读权威结论／引用+版本",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F040；毕业去向/档案/离校等只读权威结论／引用+版本；AdjacentDecisionRef；冲突及L5关联；国台及G/S/T Owner；M026；P2；U/H。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F041",
-    "label": "F041 · ",
+    "label": "F041 · 真实代理授权与可代理范围／引用",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
     "readOnly": false,
     "extractionHint": "来源字段字典：F041；真实代理授权与可代理范围／引用；AgreementAction；有代理才于L0/L1；本人授权、单位授权、校方许可；M022；P3；C/H。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
@@ -598,8 +578,8 @@ const fieldDefinitions = [
   },
   {
     "key": "F042",
-    "label": "F042 · ",
-    "kind": "text",
+    "label": "F042 · 撤回、补件、复核请求及处理事件／复合",
+    "kind": "object",
     "required": false,
     "visibility": "public",
     "scope": "case",
@@ -608,7 +588,6 @@ const fieldDefinitions = [
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   }
 ] satisfies TemplateVersion['fields']
-
 const materialSlotDefinitions = [
   {
     "id": "M001",
@@ -1232,7 +1211,6 @@ const materialSlotDefinitions = [
     "allowReuseAcrossSubjects": false
   }
 ] satisfies TemplateVersion['materialSlots']
-
 const criteria = [
   {
     "id": "R001",
@@ -1425,10 +1403,7 @@ export const templateVersion: TemplateVersion = {
     { id: 'local-review', name: "本地复核意见记录（非校方审批）", kind: 'manual-review', executorRole: 'teacher', nextStageId: 'local-summary', returnToStageId: 'policy-confirmation', workflowOwner: 'local' },
     { id: 'local-summary', name: "输出事实核验问题与待办", kind: 'finalize', executorRole: 'teacher', workflowOwner: 'local' }
   ],
-  outputs: [
-    { id: 'fact-review-feedback', kind: 'item-feedback', audience: 'reviewer' },
-    { id: 'supplement-and-confirmation-todo', kind: 'supplement-list', audience: 'teacher' }
-  ],
+  outputs: [{ id: 'fact-review-feedback', kind: 'item-feedback', audience: 'reviewer' }, { id: 'supplement-and-confirmation-todo', kind: 'supplement-list', audience: 'teacher' }],
   autoPassPolicy: { enabled: false },
   status: 'draft',
   createdAt: '2026-10-24T03:12:00+08:00'

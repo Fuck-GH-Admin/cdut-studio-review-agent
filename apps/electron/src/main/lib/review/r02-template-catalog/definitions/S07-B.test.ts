@@ -34,6 +34,8 @@ describe('R02 S07-B templates', () => {
       const criteria = template.sections?.flatMap(section => section.criteria) ?? []
       expect(new Set(template.fields.map(field => field.key)).size).toBe(template.fields.length)
       expect(new Set(template.materialSlots.map(slot => slot.id)).size).toBe(template.materialSlots.length)
+      expect(template.fields.every(field => field.label.split('·')[1]?.trim().length > 0)).toBeTrue()
+      expect(template.materialSlots.every(slot => slot.name.split('·')[1]?.trim().length > 0 && slot.purpose.trim().length > 0)).toBeTrue()
       expect(new Set(criteria.map(criterion => criterion.id)).size).toBe(criteria.length)
       expect(metadata.criteria).toHaveLength(criteria.length)
       for (const criterion of criteria) {

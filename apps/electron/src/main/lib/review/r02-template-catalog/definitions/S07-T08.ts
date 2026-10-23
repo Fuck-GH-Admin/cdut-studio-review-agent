@@ -3,33 +3,13 @@ export type { TemplateVersion } from '@profer/shared'
 
 export type R02EvidenceStatus = 'VERIFIED' | 'PARTIAL' | 'UNCONFIRMED' | 'HISTORICAL' | 'CROSS_SCHOOL_ONLY'
 export type R02PolicyEvidenceStatus = 'VERIFIED' | 'PARTIAL' | 'UNCONFIRMED'
-
-export interface R02CriterionMetadata {
-  sectionId: string
-  criterionId: string
-  sourceIds: string[]
-  evidenceStatus: R02EvidenceStatus
-}
-
-export interface R02Metadata {
-  templateId: string
-  name: string
-  sourceDocumentPath: string
-  sourceDocumentSha256: string
-  researchOriginalPath: string
-  researchOriginalSha256: string
-  officialSchoolTemplate: false
-  researchDate: string
-  policyEvidenceStatus: R02PolicyEvidenceStatus
-  sourceStatus: Record<string, R02EvidenceStatus>
-  criteria: R02CriterionMetadata[]
-  externalPolicyReferences: Array<{id:string;title:string;documentNo:string;publishedAt:string;url:string;evidenceStatus:R02EvidenceStatus;scope:string}>
-}
+export interface R02CriterionMetadata { sectionId: string; criterionId: string; sourceIds: string[]; evidenceStatus: R02EvidenceStatus }
+export interface R02Metadata { templateId: string; name: string; sourceDocumentPath: string; sourceDocumentSha256: string; researchOriginalPath: string; researchOriginalSha256: string; officialSchoolTemplate: false; researchDate: string; policyEvidenceStatus: R02PolicyEvidenceStatus; sourceStatus: Record<string, R02EvidenceStatus>; criteria: R02CriterionMetadata[]; externalPolicyReferences: Array<{id:string;title:string;documentNo:string;publishedAt:string;url:string;evidenceStatus:R02EvidenceStatus;scope:string}> }
 
 const fieldDefinitions = [
   {
     "key": "F001",
-    "label": "F001 · ",
+    "label": "F001 · case_id / UUID",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -40,7 +20,7 @@ const fieldDefinitions = [
   },
   {
     "key": "F002",
-    "label": "F002 · ",
+    "label": "F002 · applicant_subject_ref / opaque ID",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -51,21 +31,21 @@ const fieldDefinitions = [
   },
   {
     "key": "F003",
-    "label": "F003 · ",
+    "label": "F003 · enrollment_record_ref / opaque ID",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F003；enrollment_record_ref / opaque ID；L0 学籍权威记录；H；`SOURCE_UNAVAILABLE`。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F004",
-    "label": "F004 · ",
+    "label": "F004 · education_level / 枚举本科/硕士/博士/其他",
     "kind": "enum",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
     "options": [
       {
@@ -85,13 +65,13 @@ const fieldDefinitions = [
         "label": "其他"
       }
     ],
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F004；education_level / 枚举本科/硕士/博士/其他；L0 学籍记录；H；`NEEDS_MATERIAL` 请求权威核实。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F005",
-    "label": "F005 · ",
+    "label": "F005 · student_category / 枚举普通/留学/非全/其他",
     "kind": "enum",
     "required": false,
     "visibility": "public",
@@ -120,7 +100,7 @@ const fieldDefinitions = [
   },
   {
     "key": "F006",
-    "label": "F006 · ",
+    "label": "F006 · admission_cohort / 年度/批次",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -131,7 +111,7 @@ const fieldDefinitions = [
   },
   {
     "key": "F007",
-    "label": "F007 · ",
+    "label": "F007 · program_plan_id_version / 字符串+版本",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -142,10 +122,10 @@ const fieldDefinitions = [
   },
   {
     "key": "F008",
-    "label": "F008 · ",
+    "label": "F008 · legacy_status / 结业/毕业/在读/肄业/未知",
     "kind": "enum",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
     "options": [
       {
@@ -169,14 +149,14 @@ const fieldDefinitions = [
         "label": "未知"
       }
     ],
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F008；legacy_status / 结业/毕业/在读/肄业/未知；L0 正式学籍决定；H；冲突 `CONFLICT`。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F009",
-    "label": "F009 · ",
-    "kind": "text",
+    "label": "F009 · legacy_decision_id_date / ID+日期",
+    "kind": "date",
     "required": false,
     "visibility": "public",
     "scope": "case",
@@ -186,7 +166,7 @@ const fieldDefinitions = [
   },
   {
     "key": "F010",
-    "label": "F010 · ",
+    "label": "F010 · legacy_certificate_ref_status / ID+枚举",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -197,7 +177,7 @@ const fieldDefinitions = [
   },
   {
     "key": "F011",
-    "label": "F011 · ",
+    "label": "F011 · application_type / 换证/其他",
     "kind": "enum",
     "required": false,
     "visibility": "public",
@@ -218,10 +198,10 @@ const fieldDefinitions = [
   },
   {
     "key": "F012",
-    "label": "F012 · ",
+    "label": "F012 · submitted_at / 带时区时间",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
     "readOnly": false,
     "extractionHint": "来源字段字典：F012；submitted_at / 带时区时间；L1 可信受理系统；M；待核受理时点。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
@@ -229,10 +209,10 @@ const fieldDefinitions = [
   },
   {
     "key": "F013",
-    "label": "F013 · ",
+    "label": "F013 · requester_capacity / 本人/代理/未知",
     "kind": "enum",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
     "options": [
       {
@@ -254,7 +234,7 @@ const fieldDefinitions = [
   },
   {
     "key": "F014",
-    "label": "F014 · ",
+    "label": "F014 · policy_ref_version / SRC+版本+适用裁定",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -265,18 +245,18 @@ const fieldDefinitions = [
   },
   {
     "key": "F015",
-    "label": "F015 · ",
-    "kind": "text",
+    "label": "F015 · max_study_end / 日期+例外说明",
+    "kind": "date",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F015；max_study_end / 日期+例外说明；L2 权威学籍期限计算；H；`POLICY_UNCONFIRMED`。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F016",
-    "label": "F016 · ",
+    "label": "F016 · remedial_route / 重修/论文/其他",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -287,54 +267,54 @@ const fieldDefinitions = [
   },
   {
     "key": "F017",
-    "label": "F017 · ",
-    "kind": "text",
+    "label": "F017 · missing_requirement_set / 结构化清单+版本",
+    "kind": "object",
     "required": false,
     "visibility": "public",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F017；missing_requirement_set / 结构化清单+版本；L2 官方毕业要求审查；H；`SOURCE_UNAVAILABLE`。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F018",
-    "label": "F018 · ",
-    "kind": "text",
+    "label": "F018 · remedial_result_ref / 多条权威成绩/结果 ID",
+    "kind": "rows",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F018；remedial_result_ref / 多条权威成绩/结果 ID；L3–L4 教务/培养系统；H；阶段未到不报缺。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F019",
-    "label": "F019 · ",
-    "kind": "text",
+    "label": "F019 · remediation_completed_at / 日期",
+    "kind": "date",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F019；remediation_completed_at / 日期；L4 权威结果；H；无法核实按来源不可用。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F020",
-    "label": "F020 · ",
+    "label": "F020 · graduate_attainment_decision_ref / 结论 ID+状态+版本",
     "kind": "text",
     "required": false,
     "visibility": "public",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F020；graduate_attainment_decision_ref / 结论 ID+状态+版本；L4 官方毕业资格确认；H；`NEEDS_HUMAN_DECISION`。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F021",
-    "label": "F021 · ",
+    "label": "F021 · thesis_review_ref / ID+状态+版本",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
     "readOnly": false,
     "extractionHint": "来源字段字典：F021；thesis_review_ref / ID+状态+版本；L3–L4 研究生论文系统；H；仅触发时检查。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
@@ -342,21 +322,21 @@ const fieldDefinitions = [
   },
   {
     "key": "F022",
-    "label": "F022 · ",
+    "label": "F022 · defense_result_ref / ID+状态+版本",
     "kind": "text",
     "required": false,
     "visibility": "public",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F022；defense_result_ref / ID+状态+版本；L4 正式答辩记录；H；仅触发时检查。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F023",
-    "label": "F023 · ",
+    "label": "F023 · application_revision / 正整数",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
     "readOnly": false,
     "extractionHint": "来源字段字典：F023；application_revision / 正整数；L1/LX 申请事件服务；M；默认首版 1（系统生成）。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
@@ -364,8 +344,8 @@ const fieldDefinitions = [
   },
   {
     "key": "F024",
-    "label": "F024 · ",
-    "kind": "text",
+    "label": "F024 · evidence_version_map / 对象→版本/hash",
+    "kind": "rows",
     "required": false,
     "visibility": "public",
     "scope": "case",
@@ -375,7 +355,7 @@ const fieldDefinitions = [
   },
   {
     "key": "F025",
-    "label": "F025 · ",
+    "label": "F025 · authorized_decision_actor_ref / opaque 服务身份",
     "kind": "text",
     "required": false,
     "visibility": "public",
@@ -386,43 +366,42 @@ const fieldDefinitions = [
   },
   {
     "key": "F026",
-    "label": "F026 · ",
+    "label": "F026 · replacement_decision_ref / ID+状态+时间",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F026；replacement_decision_ref / ID+状态+时间；L6 正式决策系统；H；决策前 `NOT_APPLICABLE`。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F027",
-    "label": "F027 · ",
+    "label": "F027 · replacement_certificate_registration_ref / ID+回执",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F027；replacement_certificate_registration_ref / ID+回执；L7 证书/学历注册系统；H；决定前 `NOT_APPLICABLE`。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   },
   {
     "key": "F028",
-    "label": "F028 · ",
+    "label": "F028 · withdrawal_or_review_event / 类型+受理+决定+版本",
     "kind": "text",
     "required": false,
-    "visibility": "public",
+    "visibility": "internal",
     "scope": "case",
-    "readOnly": false,
+    "readOnly": true,
     "extractionHint": "来源字段字典：F028；withdrawal_or_review_event / 类型+受理+决定+版本；LX 真实流程服务；H；未知权限 `POLICY_UNCONFIRMED`。仅采集本案最小必要信息；权威来源不可用或适用性未知时不得猜测，转人工复核。",
     "displayHint": "本地研究模板字段，不代表校方正式字段/必填要求。"
   }
 ] satisfies TemplateVersion['fields']
-
 const materialSlotDefinitions = [
   {
     "id": "M001",
-    "name": "M001 · ",
+    "name": "M001 · 本人实名申请/受信身份断言；认证服务，可替代纸质身份证复印件",
     "purpose": "原件材料槽字典：本人实名申请/受信身份断言；认证服务，可替代纸质身份证复印件；L1；F002/F013；R001/R004；SRC-011。条件性材料按实际阶段与适用规则核对，不得仅因未到产生阶段而报缺件；政策未确认时转人工复核。",
     "acceptedKinds": [
       "pdf",
@@ -436,7 +415,7 @@ const materialSlotDefinitions = [
     "requiredAt": "decision",
     "maxCount": 20,
     "requiredElements": [
-      "",
+      "本人实名申请/受信身份断言；认证服务，可替代纸质身份证复印件",
       "核验材料主体与本案申请人/对象一致",
       "保留原始版本、形成时间、签发主体和可追溯定位",
       "无法验真、制度适用未知或授权不明时人工复核"
@@ -445,7 +424,7 @@ const materialSlotDefinitions = [
   },
   {
     "id": "M002",
-    "name": "M002 · ",
+    "name": "M002 · 原结业决定及权威学籍状态；学籍服务/档案正式认证摘要，上传结业证仅线索",
     "purpose": "原件材料槽字典：原结业决定及权威学籍状态；学籍服务/档案正式认证摘要，上传结业证仅线索；L0；F003/F008/F009；R002/R003；SRC-001/002/005。条件性材料按实际阶段与适用规则核对，不得仅因未到产生阶段而报缺件；政策未确认时转人工复核。",
     "acceptedKinds": [
       "pdf",
@@ -459,7 +438,7 @@ const materialSlotDefinitions = [
     "requiredAt": "decision",
     "maxCount": 20,
     "requiredElements": [
-      "",
+      "原结业决定及权威学籍状态；学籍服务/档案正式认证摘要，上传结业证仅线索",
       "核验材料主体与本案申请人/对象一致",
       "保留原始版本、形成时间、签发主体和可追溯定位",
       "无法验真、制度适用未知或授权不明时人工复核"
@@ -468,7 +447,7 @@ const materialSlotDefinitions = [
   },
   {
     "id": "M003",
-    "name": "M003 · ",
+    "name": "M003 · 原结业证及校方登记对应关系；证书记录回执替代原件图",
     "purpose": "原件材料槽字典：原结业证及校方登记对应关系；证书记录回执替代原件图；L0；F010；R003；SRC-001/011。条件性材料按实际阶段与适用规则核对，不得仅因未到产生阶段而报缺件；政策未确认时转人工复核。",
     "acceptedKinds": [
       "pdf",
@@ -482,7 +461,7 @@ const materialSlotDefinitions = [
     "requiredAt": "decision",
     "maxCount": 20,
     "requiredElements": [
-      "",
+      "原结业证及校方登记对应关系；证书记录回执替代原件图",
       "核验材料主体与本案申请人/对象一致",
       "保留原始版本、形成时间、签发主体和可追溯定位",
       "无法验真、制度适用未知或授权不明时人工复核"
@@ -491,7 +470,7 @@ const materialSlotDefinitions = [
   },
   {
     "id": "M004",
-    "name": "M004 · ",
+    "name": "M004 · 有版本的现行/历史规章及归口适用意见；制度库/签署解释",
     "purpose": "原件材料槽字典：有版本的现行/历史规章及归口适用意见；制度库/签署解释；L2；F004–F006/F014；R005/R006；SRC-001–005/010/011。条件性材料按实际阶段与适用规则核对，不得仅因未到产生阶段而报缺件；政策未确认时转人工复核。",
     "acceptedKinds": [
       "pdf",
@@ -505,7 +484,7 @@ const materialSlotDefinitions = [
     "requiredAt": "decision",
     "maxCount": 20,
     "requiredElements": [
-      "",
+      "有版本的现行/历史规章及归口适用意见；制度库/签署解释",
       "核验材料主体与本案申请人/对象一致",
       "保留原始版本、形成时间、签发主体和可追溯定位",
       "无法验真、制度适用未知或授权不明时人工复核"
@@ -514,7 +493,7 @@ const materialSlotDefinitions = [
   },
   {
     "id": "M005",
-    "name": "M005 · ",
+    "name": "M005 · 人员学籍批次与期限/例外官方计算；学籍服务回执",
     "purpose": "原件材料槽字典：人员学籍批次与期限/例外官方计算；学籍服务回执；L2；F006/F015；R007；SRC-001/002/005。条件性材料按实际阶段与适用规则核对，不得仅因未到产生阶段而报缺件；政策未确认时转人工复核。",
     "acceptedKinds": [
       "pdf",
@@ -528,7 +507,7 @@ const materialSlotDefinitions = [
     "requiredAt": "decision",
     "maxCount": 20,
     "requiredElements": [
-      "",
+      "人员学籍批次与期限/例外官方计算；学籍服务回执",
       "核验材料主体与本案申请人/对象一致",
       "保留原始版本、形成时间、签发主体和可追溯定位",
       "无法验真、制度适用未知或授权不明时人工复核"
@@ -537,7 +516,7 @@ const materialSlotDefinitions = [
   },
   {
     "id": "M006",
-    "name": "M006 · ",
+    "name": "M006 · 适用培养方案及毕业要求/结业缺项清单；主管培养部门",
     "purpose": "原件材料槽字典：适用培养方案及毕业要求/结业缺项清单；主管培养部门；L2；F007/F017；R008；SRC-001/002/005。条件性材料按实际阶段与适用规则核对，不得仅因未到产生阶段而报缺件；政策未确认时转人工复核。",
     "acceptedKinds": [
       "pdf",
@@ -551,7 +530,7 @@ const materialSlotDefinitions = [
     "requiredAt": "decision",
     "maxCount": 20,
     "requiredElements": [
-      "",
+      "适用培养方案及毕业要求/结业缺项清单；主管培养部门",
       "核验材料主体与本案申请人/对象一致",
       "保留原始版本、形成时间、签发主体和可追溯定位",
       "无法验真、制度适用未知或授权不明时人工复核"
@@ -560,7 +539,7 @@ const materialSlotDefinitions = [
   },
   {
     "id": "M007",
-    "name": "M007 · ",
+    "name": "M007 · 换证申请及事项声明、收件回执；电子受理回执替代纸表",
     "purpose": "原件材料槽字典：换证申请及事项声明、收件回执；电子受理回执替代纸表；L1；F011/F012/F023；R001/R009；SRC-006/007。条件性材料按实际阶段与适用规则核对，不得仅因未到产生阶段而报缺件；政策未确认时转人工复核。",
     "acceptedKinds": [
       "pdf",
@@ -574,7 +553,7 @@ const materialSlotDefinitions = [
     "requiredAt": "decision",
     "maxCount": 20,
     "requiredElements": [
-      "",
+      "换证申请及事项声明、收件回执；电子受理回执替代纸表",
       "核验材料主体与本案申请人/对象一致",
       "保留原始版本、形成时间、签发主体和可追溯定位",
       "无法验真、制度适用未知或授权不明时人工复核"
@@ -583,7 +562,7 @@ const materialSlotDefinitions = [
   },
   {
     "id": "M008",
-    "name": "M008 · ",
+    "name": "M008 · 代理权限/委托证明；合法授权系统与工作人员核验结果",
     "purpose": "原件材料槽字典：代理权限/委托证明；合法授权系统与工作人员核验结果；仅代理 L1；F013；R004；SRC-006/007（正文未取得）。条件性材料按实际阶段与适用规则核对，不得仅因未到产生阶段而报缺件；政策未确认时转人工复核。",
     "acceptedKinds": [
       "pdf",
@@ -597,7 +576,7 @@ const materialSlotDefinitions = [
     "requiredAt": "decision",
     "maxCount": 20,
     "requiredElements": [
-      "",
+      "代理权限/委托证明；合法授权系统与工作人员核验结果",
       "核验材料主体与本案申请人/对象一致",
       "保留原始版本、形成时间、签发主体和可追溯定位",
       "无法验真、制度适用未知或授权不明时人工复核"
@@ -606,7 +585,7 @@ const materialSlotDefinitions = [
   },
   {
     "id": "M009",
-    "name": "M009 · ",
+    "name": "M009 · 本科重修权威成绩与完成记录；教务服务",
     "purpose": "原件材料槽字典：本科重修权威成绩与完成记录；教务服务；本科 L3–L4；F016/F018/F019；R010；SRC-001/005。条件性材料按实际阶段与适用规则核对，不得仅因未到产生阶段而报缺件；政策未确认时转人工复核。",
     "acceptedKinds": [
       "pdf",
@@ -620,7 +599,7 @@ const materialSlotDefinitions = [
     "requiredAt": "decision",
     "maxCount": 20,
     "requiredElements": [
-      "",
+      "本科重修权威成绩与完成记录；教务服务",
       "核验材料主体与本案申请人/对象一致",
       "保留原始版本、形成时间、签发主体和可追溯定位",
       "无法验真、制度适用未知或授权不明时人工复核"
@@ -629,7 +608,7 @@ const materialSlotDefinitions = [
   },
   {
     "id": "M010",
-    "name": "M010 · ",
+    "name": "M010 · 学业达标/毕业资格正式确认；主管部门正式结论 ID",
     "purpose": "原件材料槽字典：学业达标/毕业资格正式确认；主管部门正式结论 ID；L4；F017/F020；R011；SRC-001/002/005/011。条件性材料按实际阶段与适用规则核对，不得仅因未到产生阶段而报缺件；政策未确认时转人工复核。",
     "acceptedKinds": [
       "pdf",
@@ -643,7 +622,7 @@ const materialSlotDefinitions = [
     "requiredAt": "decision",
     "maxCount": 20,
     "requiredElements": [
-      "",
+      "学业达标/毕业资格正式确认；主管部门正式结论 ID",
       "核验材料主体与本案申请人/对象一致",
       "保留原始版本、形成时间、签发主体和可追溯定位",
       "无法验真、制度适用未知或授权不明时人工复核"
@@ -652,7 +631,7 @@ const materialSlotDefinitions = [
   },
   {
     "id": "M011",
-    "name": "M011 · ",
+    "name": "M011 · 研究生结业后送审审批及预答辩结果；导师、分委员会、研究生院",
     "purpose": "原件材料槽字典：研究生结业后送审审批及预答辩结果；导师、分委员会、研究生院；研究生相应 L3；F021；R012；SRC-004。条件性材料按实际阶段与适用规则核对，不得仅因未到产生阶段而报缺件；政策未确认时转人工复核。",
     "acceptedKinds": [
       "pdf",
@@ -666,7 +645,7 @@ const materialSlotDefinitions = [
     "requiredAt": "decision",
     "maxCount": 20,
     "requiredElements": [
-      "",
+      "研究生结业后送审审批及预答辩结果；导师、分委员会、研究生院",
       "核验材料主体与本案申请人/对象一致",
       "保留原始版本、形成时间、签发主体和可追溯定位",
       "无法验真、制度适用未知或授权不明时人工复核"
@@ -675,7 +654,7 @@ const materialSlotDefinitions = [
   },
   {
     "id": "M012",
-    "name": "M012 · ",
+    "name": "M012 · 正式论文评阅及复评结果；盲审系统受限摘要",
     "purpose": "原件材料槽字典：正式论文评阅及复评结果；盲审系统受限摘要；研究生送审后 L3–L4；F021；R013；SRC-004。条件性材料按实际阶段与适用规则核对，不得仅因未到产生阶段而报缺件；政策未确认时转人工复核。",
     "acceptedKinds": [
       "pdf",
@@ -689,7 +668,7 @@ const materialSlotDefinitions = [
     "requiredAt": "decision",
     "maxCount": 20,
     "requiredElements": [
-      "",
+      "正式论文评阅及复评结果；盲审系统受限摘要",
       "核验材料主体与本案申请人/对象一致",
       "保留原始版本、形成时间、签发主体和可追溯定位",
       "无法验真、制度适用未知或授权不明时人工复核"
@@ -698,7 +677,7 @@ const materialSlotDefinitions = [
   },
   {
     "id": "M013",
-    "name": "M013 · ",
+    "name": "M013 · 正式答辩结论；有权答辩归档",
     "purpose": "原件材料槽字典：正式答辩结论；有权答辩归档；研究生答辩后 L4；F022；R014；SRC-002/004。条件性材料按实际阶段与适用规则核对，不得仅因未到产生阶段而报缺件；政策未确认时转人工复核。",
     "acceptedKinds": [
       "pdf",
@@ -712,7 +691,7 @@ const materialSlotDefinitions = [
     "requiredAt": "decision",
     "maxCount": 20,
     "requiredElements": [
-      "",
+      "正式答辩结论；有权答辩归档",
       "核验材料主体与本案申请人/对象一致",
       "保留原始版本、形成时间、签发主体和可追溯定位",
       "无法验真、制度适用未知或授权不明时人工复核"
@@ -721,7 +700,7 @@ const materialSlotDefinitions = [
   },
   {
     "id": "M014",
-    "name": "M014 · ",
+    "name": "M014 · 国际学生类别/专门归口确认；国际学生管理部门权威记录",
     "purpose": "原件材料槽字典：国际学生类别/专门归口确认；国际学生管理部门权威记录；留学 L2；F005/F014；R015；SRC-005。条件性材料按实际阶段与适用规则核对，不得仅因未到产生阶段而报缺件；政策未确认时转人工复核。",
     "acceptedKinds": [
       "pdf",
@@ -735,7 +714,7 @@ const materialSlotDefinitions = [
     "requiredAt": "decision",
     "maxCount": 20,
     "requiredElements": [
-      "",
+      "国际学生类别/专门归口确认；国际学生管理部门权威记录",
       "核验材料主体与本案申请人/对象一致",
       "保留原始版本、形成时间、签发主体和可追溯定位",
       "无法验真、制度适用未知或授权不明时人工复核"
@@ -744,7 +723,7 @@ const materialSlotDefinitions = [
   },
   {
     "id": "M015",
-    "name": "M015 · ",
+    "name": "M015 · 差异核对、补件说明及重传证据；申请人与原权威持有者",
     "purpose": "原件材料槽字典：差异核对、补件说明及重传证据；申请人与原权威持有者；LX；F018/F023/F024；R016；SRC-001/011。条件性材料按实际阶段与适用规则核对，不得仅因未到产生阶段而报缺件；政策未确认时转人工复核。",
     "acceptedKinds": [
       "pdf",
@@ -758,7 +737,7 @@ const materialSlotDefinitions = [
     "requiredAt": "decision",
     "maxCount": 20,
     "requiredElements": [
-      "",
+      "差异核对、补件说明及重传证据；申请人与原权威持有者",
       "核验材料主体与本案申请人/对象一致",
       "保留原始版本、形成时间、签发主体和可追溯定位",
       "无法验真、制度适用未知或授权不明时人工复核"
@@ -767,7 +746,7 @@ const materialSlotDefinitions = [
   },
   {
     "id": "M016",
-    "name": "M016 · ",
+    "name": "M016 · 有效签批决定、授权主体和完整审计链；校方决策系统",
     "purpose": "原件材料槽字典：有效签批决定、授权主体和完整审计链；校方决策系统；L6；F025/F026；R017；SRC-001/002/011。条件性材料按实际阶段与适用规则核对，不得仅因未到产生阶段而报缺件；政策未确认时转人工复核。",
     "acceptedKinds": [
       "pdf",
@@ -781,7 +760,7 @@ const materialSlotDefinitions = [
     "requiredAt": "decision",
     "maxCount": 20,
     "requiredElements": [
-      "",
+      "有效签批决定、授权主体和完整审计链；校方决策系统",
       "核验材料主体与本案申请人/对象一致",
       "保留原始版本、形成时间、签发主体和可追溯定位",
       "无法验真、制度适用未知或授权不明时人工复核"
@@ -790,7 +769,7 @@ const materialSlotDefinitions = [
   },
   {
     "id": "M017",
-    "name": "M017 · ",
+    "name": "M017 · 换发证书、旧证处置和学历电子注册回执；校方证书系统",
     "purpose": "原件材料槽字典：换发证书、旧证处置和学历电子注册回执；校方证书系统；L7；F027；R018；SRC-001/011。条件性材料按实际阶段与适用规则核对，不得仅因未到产生阶段而报缺件；政策未确认时转人工复核。",
     "acceptedKinds": [
       "pdf",
@@ -804,7 +783,7 @@ const materialSlotDefinitions = [
     "requiredAt": "decision",
     "maxCount": 20,
     "requiredElements": [
-      "",
+      "换发证书、旧证处置和学历电子注册回执；校方证书系统",
       "核验材料主体与本案申请人/对象一致",
       "保留原始版本、形成时间、签发主体和可追溯定位",
       "无法验真、制度适用未知或授权不明时人工复核"
@@ -813,7 +792,7 @@ const materialSlotDefinitions = [
   },
   {
     "id": "M018",
-    "name": "M018 · ",
+    "name": "M018 · 撤回、异议、复核请求及正式受理/回复；申请人和校方流程服务",
     "purpose": "原件材料槽字典：撤回、异议、复核请求及正式受理/回复；申请人和校方流程服务；LX；F028；R019；SRC-001/011（专门程序待核）。条件性材料按实际阶段与适用规则核对，不得仅因未到产生阶段而报缺件；政策未确认时转人工复核。",
     "acceptedKinds": [
       "pdf",
@@ -827,7 +806,7 @@ const materialSlotDefinitions = [
     "requiredAt": "decision",
     "maxCount": 20,
     "requiredElements": [
-      "",
+      "撤回、异议、复核请求及正式受理/回复；申请人和校方流程服务",
       "核验材料主体与本案申请人/对象一致",
       "保留原始版本、形成时间、签发主体和可追溯定位",
       "无法验真、制度适用未知或授权不明时人工复核"
@@ -835,7 +814,6 @@ const materialSlotDefinitions = [
     "allowReuseAcrossSubjects": false
   }
 ] satisfies TemplateVersion['materialSlots']
-
 const criteria = [
   {
     "id": "R001",
@@ -993,10 +971,7 @@ export const templateVersion: TemplateVersion = {
     { id: 'local-review', name: "本地复核意见记录（非校方颁证）", kind: 'manual-review', executorRole: 'teacher', nextStageId: 'local-summary', returnToStageId: 'policy-confirmation', workflowOwner: 'local' },
     { id: 'local-summary', name: "输出事实核验问题与待办", kind: 'finalize', executorRole: 'teacher', workflowOwner: 'local' }
   ],
-  outputs: [
-    { id: 'fact-review-feedback', kind: 'item-feedback', audience: 'reviewer' },
-    { id: 'supplement-and-confirmation-todo', kind: 'supplement-list', audience: 'teacher' }
-  ],
+  outputs: [{ id: 'fact-review-feedback', kind: 'item-feedback', audience: 'reviewer' }, { id: 'supplement-and-confirmation-todo', kind: 'supplement-list', audience: 'teacher' }],
   autoPassPolicy: { enabled: false },
   status: 'draft',
   createdAt: '2026-10-24T03:12:00+08:00'
