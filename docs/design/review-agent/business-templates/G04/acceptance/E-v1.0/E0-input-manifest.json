@@ -1,0 +1,90 @@
+{
+  "schema": "E0-G04-v1.0",
+  "checkedAt": "2026-10-14",
+  "repo": "Fuck-GH-Admin/cdut-studio-review-agent",
+  "mainSHA": "dd5a553c34a92b559559a7cb3c4e9c3f67fd9c8e",
+  "sourceLocation": "ChatGPT Library ZIP archives; not Git author branches",
+  "A_SHA256": "1da05eb89bcbc4116cb0afd79f496ba1eb38a4b6a8c2b0b139898144abd37a50",
+  "TXX": {
+    "G04-T01": {
+      "B_archiveSHA256": "6a2f403c4809f3e21029b4f5b311fff80d7b393c0955899a9b95f17b15452227",
+      "C_archiveSHA256": null,
+      "D_reports_archiveSHA256": "894105d1b09c53ed5a15ccc60990aa8337a3a06d0f800476127147d98539a23d",
+      "D_input_archiveSHA256": "f2175e9c3407ad93b729e0bee2d61edd403495dd0609e7f058f2db846eaff1a9",
+      "D_evaluation_archiveSHA256": "07cc9e38fb246652074daa78e51d369ae603e19cf8af701f8ed5a6ba28d9df8f",
+      "D_inputCaseDirectoryCount": 24,
+      "gitAuthorCommit": null,
+      "gitBlobSha": null
+    },
+    "G04-T02": {
+      "B_archiveSHA256": "7b8d9c6724d66a4ecd7a4ea48cbec4b92e826dbc78647791c2227588ebf33f6d",
+      "C_archiveSHA256": "9710f90922bc36da2d8ac83520eda6695bbd645f23a42ef06d082b9b7082713c",
+      "D_reports_archiveSHA256": "d93cdc4175c613c8b9bbc33f40947e235f4ba3b90547fb6c6ad6258b37529217",
+      "D_input_archiveSHA256": "a6108d5686326fc59b10fbb3a5a36d360a7afa3c4374d78ebaa5a444307a1b8c",
+      "D_evaluation_archiveSHA256": "c81d27287d7b13f2f5fcf4b6bbf225108fcc54461613b287b77dc21991f24e33",
+      "D_inputCaseDirectoryCount": 30,
+      "gitAuthorCommit": null,
+      "gitBlobSha": null
+    },
+    "G04-T03": {
+      "B_archiveSHA256": "c49938772cbff9d235ff9039928ceec0e7e1bfe3210143f3fe4befae3e80f232",
+      "C_archiveSHA256": "a2fbcb85d7e38a2c8c392ac179b831a795159032b6a426e7e15cfb474754e7ff",
+      "D_reports_archiveSHA256": "0b35c5ee2339cc3c01c11257b89a27c707128a645568096a55c2575456c63676",
+      "D_input_archiveSHA256": "3aeb2f6fec08d4e34e1ab6f78fce4bd033ac957f664aae7c3acf6092256c1bcd",
+      "D_evaluation_archiveSHA256": "3d877f439fb9e7a589f81d727d317fcefcf09bba3f37deaa08eec418b4d54350",
+      "D_inputCaseDirectoryCount": 30,
+      "gitAuthorCommit": null,
+      "gitBlobSha": null
+    },
+    "G04-T04": {
+      "B_archiveSHA256": "2137b8d2877b0660a310677c7ff0ba99f98aab1ba6a1d06f4e505112ac1fa64a",
+      "C_archiveSHA256": "b97d24f57bca96ecb9f261220f96dd923361800d0d6cd68047aa363ef7e107e0",
+      "D_reports_archiveSHA256": "806a2fd037a16b96cac043811ed196804a3511c97fd6e9f9fea47d8be503fe4b",
+      "D_input_archiveSHA256": "4dd6444d725e9abca750b871fe34355e3f2527de5c33c73179dea17a6773a71d",
+      "D_evaluation_archiveSHA256": "bcb195006e89d77d4fd2481afd28f43ad77510580fef23092e9438a1e486bc95",
+      "D_inputCaseDirectoryCount": 30,
+      "gitAuthorCommit": null,
+      "gitBlobSha": null
+    },
+    "G04-T05": {
+      "B_archiveSHA256": "be4a08dbb91d41e1963b814e7d0e525678745fd7f609df15054fec59d10fcf61",
+      "C_archiveSHA256": "756a61eeb00f1af4b32acf9cbf85c2f149be9deed639f73b71ea5650b6278a6f",
+      "D_reports_archiveSHA256": "121737bce03946cada21067d8432ddc8907b0b5e099763e07994c0f485b58a80",
+      "D_input_archiveSHA256": "cb778721698bee8106bcced4a59b163f5afcf8564999eadb7c3468e11085033b",
+      "D_evaluation_archiveSHA256": "3439b51dde96863cfe854432d62ded6db1c41fb6d4e5b622b5b1099f6f11de0e",
+      "D_inputCaseDirectoryCount": 26,
+      "gitAuthorCommit": null,
+      "gitBlobSha": null
+    },
+    "G04-T06": {
+      "B_archiveSHA256": "8da4993e4ce4eb9f32498fcd63830f9069d116f467623c17912036c83a996fb6",
+      "C_archiveSHA256": "cb1f2628fecabef182e5bc7f2b28fcab9844c801651bc07fe02350ee4377a64d",
+      "D_reports_archiveSHA256": "564deb46c0db15129b426449a503abe25411518289a15a212d3f731ea63826dd",
+      "D_input_archiveSHA256": "d94354c38d2ed37114dd6b68b288530367061eb08b2d1f298f31e2cad7928252",
+      "D_evaluation_archiveSHA256": "cd818cd0672104ad407a99b71506192b9922174d3d6284f36fe11eec33b47050",
+      "D_inputCaseDirectoryCount": 24,
+      "gitAuthorCommit": null,
+      "gitBlobSha": null
+    },
+    "G04-T07": {
+      "B_archiveSHA256": "a30e9d6db9c33a68fd8d85d75b52aedb99dd8bc32106e495f750b60e106902a4",
+      "C_archiveSHA256": "1c016e96062b9d764c47ab5ea02479c09a11054f4ce8fd4a03c69b3826fb1526",
+      "D_reports_archiveSHA256": "e4e6a95115ccbc570fc9d52f8c9c3e5658da57d53a1a14e61047382e204db358",
+      "D_input_archiveSHA256": "394bbacbcbd4d41d97b195702e032d4a71ad4b63d1479a5b858d5aaa18f11ace",
+      "D_evaluation_archiveSHA256": "d1beee13af9040333dabdde4520b318e02872ac7e6c3849a4f344c39eb5b57b8",
+      "D_inputCaseDirectoryCount": 24,
+      "gitAuthorCommit": null,
+      "gitBlobSha": null
+    },
+    "G04-T08": {
+      "B_archiveSHA256": "835393d105b95fb1015d3f912850a320d4257d7039035e25d5ba8d42bc825e7f",
+      "C_archiveSHA256": "7be3f1a6c3256e24169091f393e36235fcd8f35b98182aa3b9ca1eeacbff25bf",
+      "D_reports_archiveSHA256": "8b925e06a37f8bdc3784cc17e2b6b25a12d9556d5f0f8f66aac536f9a4ad976e",
+      "D_input_archiveSHA256": "c31f52026391261b7d76289b6113a168f2d72ff59a9bfb6cf54f0d4b6181c15a",
+      "D_evaluation_archiveSHA256": "8867ac156677134f678e2fddd6640966153c56c0b1d1f98aa748aeb42bfe318b",
+      "D_inputCaseDirectoryCount": 24,
+      "gitAuthorCommit": null,
+      "gitBlobSha": null
+    }
+  }
+}

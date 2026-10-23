@@ -1,0 +1,28 @@
+{
+  "schema": "G04-E1-evidence-lock-v1",
+  "checkedAt": "2026-10-14",
+  "reviewer": "independent-G04-E-r01",
+  "frozenBeforeCDAndGoldRead": true,
+  "preE1GoldAnswerRead": false,
+  "e0GitCommit": "f7881dc5bbbc07111e400a59c47618f3611ff8be",
+  "sourceDutyCount": 21,
+  "highRiskCount": 19,
+  "mediumRiskCount": 2,
+  "lowRiskCount": 0,
+  "independentlySourceConfirmedOrGeneral": 17,
+  "pendingPolicy": 3,
+  "citationGranularity": "official URL + dated source document + article/section; latest local configuration mostly pending",
+  "officialPdfVisualScreenshot": "NOT_VERIFIED_CACHE_MISS",
+  "files": {
+    "E1-official-fact-register.md": {
+      "sha256": "f9d66e46c686f8176a8907b9c1b493bed089474f1d893c82c3822a02dd82b9c9",
+      "bytesUtf8": 10323
+    },
+    "E1-adversarial-hypotheses.md": {
+      "sha256": "0f61eb4a7986cecfb7279adeefd3d59f088ff51345b31e25f427b151d3a01918",
+      "bytesUtf8": 4255
+    }
+  },
+  "E1decision": "INDEPENDENT_FACTS_FROZEN_WITH_POLICY_GAPS; E2 may inspect frozen C/D now; E1 not full policy certification",
+  "limitation": "19 preregistered H source fact candidates covered, not all B duties; pending policy prevents G04 full design PASS"
+}
