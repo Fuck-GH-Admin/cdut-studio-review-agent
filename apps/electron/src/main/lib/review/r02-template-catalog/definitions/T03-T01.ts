@@ -1444,7 +1444,8 @@ export const templateVersion: TemplateVersion = {
       "kind": "manual-review",
       "executorRole": "reviewer",
       "nextStageId": "stage-p7",
-      "workflowOwner": "local"
+      "workflowOwner": "local",
+      "returnToStageId": "stage-p2"
     },
     {
       "id": "stage-p7",

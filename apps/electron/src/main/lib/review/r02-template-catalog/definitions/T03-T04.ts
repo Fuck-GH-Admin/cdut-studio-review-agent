@@ -1192,7 +1192,8 @@ export const templateVersion: TemplateVersion = {
       "kind": "manual-review",
       "executorRole": "reviewer",
       "nextStageId": "stage-s4",
-      "workflowOwner": "local"
+      "workflowOwner": "local",
+      "returnToStageId": "stage-s2"
     },
     {
       "id": "stage-s4",
@@ -1215,7 +1216,8 @@ export const templateVersion: TemplateVersion = {
       "name": "撤回/复核/再次变更",
       "kind": "manual-review",
       "executorRole": "teacher",
-      "workflowOwner": "local"
+      "workflowOwner": "local",
+      "returnToStageId": "stage-s2"
     }
   ],
   "outputs": [

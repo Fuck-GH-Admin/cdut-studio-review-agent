@@ -1206,7 +1206,8 @@ export const templateVersion: TemplateVersion = {
       "name": "后续更正/调整/终止/复核",
       "kind": "manual-review",
       "executorRole": "teacher",
-      "workflowOwner": "local"
+      "workflowOwner": "local",
+      "returnToStageId": "stage-l3"
     }
   ],
   "outputs": [
