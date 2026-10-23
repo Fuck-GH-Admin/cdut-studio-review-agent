@@ -36,11 +36,11 @@ describe('S05-A R02 native template definitions', () => {
       expect(new Set(slotIds).size).toBe(slotIds.length)
       expect(new Set(sectionIds).size).toBe(sectionIds.length)
       expect(new Set(criteria.map(c => c.id)).size).toBe(criteria.length)
-      expect(metadata.fieldIds.length).toBe(template.fields.length)
-      expect(metadata.materialSlotIds.length).toBe(template.materialSlots.length)
+      expect(metadata.fieldIds.length === template.fields.length).toBe(true)
+      expect(metadata.materialSlotIds.length === template.materialSlots.length).toBe(true)
       for (const fieldId of metadata.fieldIds) expect(fieldKeys).toContain(fieldId.toLowerCase())
       for (const materialId of metadata.materialSlotIds) expect(slotIds).toContain(materialId.toLowerCase())
-      expect(metadata.criteria.length).toBe(criteria.length)
+      expect(metadata.criteria.length === criteria.length).toBe(true)
       const srcIds = new Set(metadata.sources.map(source => source.id))
       for (const mapping of metadata.criteria) {
         expect(sectionIds).toContain(mapping.sectionId)
@@ -92,9 +92,7 @@ describe('S05-A R02 native template definitions', () => {
       expect(template.stages.some(stage => stage.kind === 'auto-check')).toBe(false)
       const criterionById = new Map((template.sections ?? []).flatMap(section => section.criteria.map(c => [c.id, c] as const)))
       for (const mapping of metadata.criteria) {
-        if (mapping.evidenceStatus !== 'VERIFIED') {
-          expect(criterionById.get(mapping.criterionId)?.execution).toBe('manual')
-        }
+        expect(criterionById.get(mapping.criterionId)?.execution).toBe('manual')
       }
       if (metadata.policyEvidenceStatus !== 'VERIFIED') {
         expect(template.status).toBe('draft')
