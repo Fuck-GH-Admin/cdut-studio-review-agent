@@ -52,6 +52,7 @@ describe('R02 T07-B template definitions', () => {
       expect(metadata.criteria.every((criterion) => criterion.sectionId === 'rule-checks')).toBe(true)
       expect(metadata.criteria.every((criterion) => criterionIds.includes(criterion.criterionId))).toBe(true)
       expect(metadata.criteria.every((criterion) => ['VERIFIED', 'PARTIAL', 'UNCONFIRMED'].includes(criterion.evidenceStatus))).toBe(true)
+      expect(metadata.criteria.every((criterion) => criterion.sourceIds.length > 0)).toBe(true)
       expect(metadata.criteria.every((criterion) => criterion.sourceIds.every((sourceId) => sources.has(sourceId)))).toBe(true)
 
       const requirementText = criteria.map((criterion) => criterion.requirement).join(' ')
@@ -67,6 +68,7 @@ describe('R02 T07-B template definitions', () => {
       expect(template.stages.every((stage) => !stage.nextStageId || stageIds.has(stage.nextStageId))).toBe(true)
       expect(template.stages.every((stage) => !stage.returnToStageId || stageIds.has(stage.returnToStageId))).toBe(true)
       expect(['reviewer', 'teacher']).toContain(template.stages[template.stages.length - 1]?.executorRole)
+      expect(template.stages[template.stages.length - 1]?.kind).toBe('finalize')
       const reachable = new Set<string>()
       let current = template.stages[0]?.id
       while (current) {
