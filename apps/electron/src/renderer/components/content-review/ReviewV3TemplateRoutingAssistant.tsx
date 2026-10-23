@@ -23,6 +23,40 @@ type Step='catalog'|'fallback'
 const action='rounded-lg bg-primary px-3 py-2 text-sm text-primary-foreground disabled:cursor-not-allowed disabled:opacity-40'
 const secondary='rounded-lg border border-border bg-background px-3 py-2 text-sm disabled:opacity-40'
 
+type UnifiedRouteCandidate = {
+  templateId:string;templateVersion:string;name:string;confidence:number;reason:string;
+  matchedSignals:string[];source:'规则匹配'|'AI 深度匹配'|'规则 + AI'
+}
+function mergeUnifiedRouteCandidates(
+  ruleCandidates:C11MainLocalProductRead['routeCandidates'],
+  modelCandidates:Array<TemplateDeepMatchCandidate & {name:string}>,
+):UnifiedRouteCandidate[] {
+  const merged=new Map<string,UnifiedRouteCandidate>()
+  for(const candidate of ruleCandidates){
+    const key=candidate.templateId+'@'+candidate.templateVersion
+    merged.set(key,{
+      templateId:candidate.templateId,templateVersion:candidate.templateVersion,name:candidate.name,
+      confidence:candidate.confidence,reason:candidate.evidence,
+      matchedSignals:candidate.matchedSignals,source:'规则匹配',
+    })
+  }
+  for(const candidate of modelCandidates){
+    const key=candidate.templateId+'@'+candidate.templateVersion
+    const prior=merged.get(key)
+    merged.set(key,prior?{
+      ...prior,confidence:Math.max(prior.confidence,candidate.confidence),
+      reason:prior.reason+'；AI 深度匹配：'+candidate.reason,
+      source:'规则 + AI',
+    }:{
+      templateId:candidate.templateId,templateVersion:candidate.templateVersion,name:candidate.name,
+      confidence:candidate.confidence,reason:candidate.reason,matchedSignals:[],source:'AI 深度匹配',
+    })
+  }
+  return [...merged.values()].sort((a,b)=>b.confidence-a.confidence||
+    b.matchedSignals.length-a.matchedSignals.length||
+    a.templateId.localeCompare(b.templateId)||a.templateVersion.localeCompare(b.templateVersion))
+}
+
 export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTemplateBound}:ReviewV3TemplateRoutingAssistantProps):React.ReactElement {
   const [read,setRead]=React.useState<C11MainLocalProductRead|null>(null)
   const [mode,setMode]=React.useState<Step>('catalog')
@@ -269,7 +303,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
       const remaining=Math.max(0,modelDeadline-Date.now())
       setModelRemainingMs(remaining)
       if(remaining===0){
-        const first=unifiedCandidates[0]
+        const first=mergeUnifiedRouteCandidates(read?.routeCandidates??[],modelCandidates)[0]
         if(!first)return
         const key=(read?.sessionKey??'')+'::'+first.templateId+'@'+first.templateVersion
         if(modelAutoChoiceRef.current!==key){
@@ -297,35 +331,10 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
   const route=read?.read.route
   const eligible=read?.catalog.filter(item=>!item.templateId.startsWith('fallback-'))??[]
   const visibleCatalog=filterTemplateCatalog(eligible,catalogQuery)
-  const unifiedCandidates=React.useMemo(()=>{
-    const merged=new Map<string,{
-      templateId:string;templateVersion:string;name:string;confidence:number;reason:string;
-      matchedSignals:string[];source:'规则匹配'|'AI 深度匹配'|'规则 + AI'
-    }>()
-    for(const candidate of read?.routeCandidates??[]){
-      const key=candidate.templateId+'@'+candidate.templateVersion
-      merged.set(key,{
-        templateId:candidate.templateId,templateVersion:candidate.templateVersion,name:candidate.name,
-        confidence:candidate.confidence,reason:candidate.evidence,
-        matchedSignals:candidate.matchedSignals,source:'规则匹配',
-      })
-    }
-    for(const candidate of modelCandidates){
-      const key=candidate.templateId+'@'+candidate.templateVersion
-      const prior=merged.get(key)
-      merged.set(key,prior?{
-        ...prior,confidence:Math.max(prior.confidence,candidate.confidence),
-        reason:prior.reason+'；AI 深度匹配：'+candidate.reason,
-        source:'规则 + AI',
-      }:{
-        templateId:candidate.templateId,templateVersion:candidate.templateVersion,name:candidate.name,
-        confidence:candidate.confidence,reason:candidate.reason,matchedSignals:[],source:'AI 深度匹配',
-      })
-    }
-    return [...merged.values()].sort((a,b)=>b.confidence-a.confidence||
-      b.matchedSignals.length-a.matchedSignals.length||
-      a.templateId.localeCompare(b.templateId)||a.templateVersion.localeCompare(b.templateVersion))
-  },[read?.routeCandidates,modelCandidates])
+  const unifiedCandidates=React.useMemo(()=>mergeUnifiedRouteCandidates(
+    read?.routeCandidates??[],modelCandidates
+  ),[read?.routeCandidates,modelCandidates])
+
   return <section className="space-y-3 rounded-xl bg-card p-4 shadow-sm" aria-label="审核模板匹配与公共兜底" data-testid="review-v3-route-assistant">
     <div className="flex flex-wrap items-start justify-between gap-2">
       <div><h2 className="text-base font-semibold">匹配审核模板</h2>
