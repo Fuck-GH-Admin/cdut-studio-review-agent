@@ -28,6 +28,8 @@ describe('R02 S04-B template definitions', () => {
   test('fields, slots, sections and criteria are unique and all typed definitions validate', () => {
     for (const { template, metadata } of entries) {
       expect(new Set(template.fields.map(x => x.key)).size).toBe(template.fields.length)
+      expect(template.fields.every(field => field.displayHint?.includes('原稿字段合同'))).toBe(true)
+      expect(template.fields.filter(field => field.kind === 'enum').every(field => (field.options?.length ?? 0) > 0)).toBe(true)
       expect(new Set(template.materialSlots.map(x => x.id)).size).toBe(template.materialSlots.length)
       expect(new Set((template.sections ?? []).map(x => x.id)).size).toBe((template.sections ?? []).length)
       const criteria = (template.sections ?? []).flatMap(section => section.criteria.map(criterion => ({ section, criterion })))
