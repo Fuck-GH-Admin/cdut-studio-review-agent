@@ -1262,7 +1262,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "fact-review-summary",
-      "kind": "summary-report",
+      "kind": "item-feedback",
       "audience": "reviewer"
     }
   ],
