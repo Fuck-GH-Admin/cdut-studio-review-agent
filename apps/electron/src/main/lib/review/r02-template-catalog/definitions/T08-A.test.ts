@@ -47,13 +47,16 @@ describe('T08-A R02 template definitions', () => {
       for (const slot of template.materialSlots) if (slot.sectionId) expect(sectionIds.has(slot.sectionId)).toBe(true)
       const stageIds = new Set(template.stages.map((stage) => stage.id))
       expect(stageIds.size).toBe(template.stages.length)
-      for (const stage of template.stages) if (stage.nextStageId) expect(stageIds.has(stage.nextStageId)).toBe(true)
+      for (const stage of template.stages) {
+        if (stage.nextStageId) expect(stageIds.has(stage.nextStageId)).toBe(true)
+        if (stage.returnToStageId) expect(stageIds.has(stage.returnToStageId)).toBe(true)
+      }
     }
   })
 
   it('has a finite reachable stage graph and local reviewer/teacher terminal', () => {
     for (const { template } of definitions) {
-      const byId = new Map(template.stages.map((stage) => [stage.id, stage]))
+      const byId = new Map(template.stages.map((stage) => [stage.id, stage] as const))
       const seen = new Set<string>()
       let currentId: string | undefined = template.stages[0]?.id
       while (currentId) {
@@ -81,10 +84,20 @@ describe('T08-A R02 template definitions', () => {
       expect(template.autoPassPolicy?.enabled).toBe(false)
       expect(metadata.officialSchoolTemplate).toBe(false)
       expect(metadata.policyEvidenceStatus).toBe('PARTIAL')
+      expect(metadata.researchEvidenceStatus).toBe('PARTIAL')
+      expect(metadata.researchStatus).toBeTruthy()
+      expect(['MATCH', 'LINE_ENDING_DRIFT_ONE_LF', 'REVIEWED_PATCH_APPLIED']).toContain(metadata.sourceIntegrityStatus)
+      expect(metadata.manifestExpectedSha256).toMatch(/^[a-f0-9]{64}$/)
+      expect(metadata.manifestExpectedBytes).toBeGreaterThan(0)
+      expect(metadata.sourceRecordCount).toBe(metadata.sourceIds.length)
+      expect(metadata.fieldCount).toBe(template.fields.length)
+      expect(metadata.materialSlotCount).toBe(template.materialSlots.length)
+      expect(metadata.criterionCount).toBe(metadata.criteria.length)
       expect(metadata.sourceDocumentSha256).toMatch(/^[a-f0-9]{64}$/)
       expect(metadata.sourceIds.length).toBeGreaterThan(0)
       expect(metadata.sourceDocumentPath.endsWith(`/${template.templateId}.md`)).toBe(true)
       const bytes = await readFile(metadata.sourceDocumentPath)
+      expect(bytes.length).toBe(metadata.sourceDocumentBytes)
       expect(createHash('sha256').update(bytes).digest('hex')).toBe(metadata.sourceDocumentSha256)
     }
   })
@@ -94,6 +107,12 @@ describe('T08-A R02 template definitions', () => {
       const criteria = (template.sections ?? []).flatMap((section) => section.criteria.map((criterion) => ({ sectionId: section.id, criterionId: criterion.id, execution: criterion.execution })))
       expect(criteria.length).toBe(metadata.criteria.length)
       const sourceIds = new Set(metadata.sourceIds)
+      const fieldCodes = new Set(template.fields.map((field) => field.extractionHint?.match(/\\bF\\d{3}\\b/)?.[0] ?? field.label.match(/\\bF\\d{3}\\b/)?.[0]).filter((id): id is string => Boolean(id)))
+      const materialCodes = new Set(template.materialSlots.map((slot) => slot.name.match(/\\bM\\d{3}\\b/)?.[0] ?? slot.id.toUpperCase()))
+      for (const section of template.sections ?? []) for (const criterion of section.criteria) {
+        for (const fieldId of criterion.requirement.match(/\\bF\\d{3}\\b/g) ?? []) expect(fieldCodes.has(fieldId)).toBe(true)
+        for (const materialId of criterion.requirement.match(/\\bM\\d{3}\\b/g) ?? []) expect(materialCodes.has(materialId)).toBe(true)
+      }
       for (const criterion of criteria) {
         const meta = metadata.criteria.find((item) => item.sectionId === criterion.sectionId && item.criterionId === criterion.criterionId)
         expect(meta).toBeDefined()
