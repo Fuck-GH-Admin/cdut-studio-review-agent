@@ -26,7 +26,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "public",
       "scope": "case",
-      "extractionHint": "原研究字段 F001 类型提示：F001。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F001 类型提示：学段/教学体系 enum。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F002",
@@ -35,7 +35,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "public",
       "scope": "case",
-      "extractionHint": "原研究字段 F002 类型提示：F002。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F002 类型提示：项目建设类别 enum/string。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F003",
@@ -44,16 +44,16 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "public",
       "scope": "case",
-      "extractionHint": "原研究字段 F003 类型提示：F003。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F003 类型提示：批次唯一代码/年度 string。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F004",
       "label": "校本公告/政策版本 URI+hash+date",
-      "kind": "date",
+      "kind": "text",
       "required": false,
       "visibility": "public",
       "scope": "case",
-      "extractionHint": "原研究字段 F004 类型提示：F004。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F004 类型提示：校本公告/政策版本 URI+hash+date。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F005",
@@ -62,7 +62,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "public",
       "scope": "case",
-      "extractionHint": "原研究字段 F005 类型提示：F005。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F005 类型提示：报送截止/分阶段截止 datetime?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F006",
@@ -71,7 +71,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F006 类型提示：F006。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F006 类型提示：主管/归口组织及动作 orgId+roles。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F007",
@@ -80,7 +80,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F007 类型提示：F007。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F007 类型提示：本批课程清单/学院名额 ref+value?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F008",
@@ -89,7 +89,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F008 类型提示：F008。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F008 类型提示：申请/案卷唯一 ID uuid。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F009",
@@ -98,7 +98,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F009 类型提示：F009。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F009 类型提示：当前办理阶段 enum。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F010",
@@ -107,7 +107,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F010 类型提示：F010。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F010 类型提示：申请提交/送达时间 datetime。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F011",
@@ -116,7 +116,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F011 类型提示：F011。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F011 类型提示：代理/经办人可信 ID personId?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F012",
@@ -125,7 +125,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F012 类型提示：F012。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F012 类型提示：课程负责人可信 ID personId。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F013",
@@ -134,7 +134,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F013 类型提示：F013。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F013 类型提示：负责人姓名 string。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F014",
@@ -143,16 +143,16 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F014 类型提示：F014。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F014 类型提示：负责人所属学院/单位 orgId。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F015",
       "label": "在职/聘用或身份状态 enum+date",
-      "kind": "date",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F015 类型提示：F015。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F015 类型提示：在职/聘用或身份状态 enum+date。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F016",
@@ -161,16 +161,16 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F016 类型提示：F016。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F016 类型提示：职称/学位与生效日 struct?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F017",
       "label": "研究生教学经历/授课事实 list?",
-      "kind": "multi",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F017 类型提示：F017。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F017 类型提示：研究生教学经历/授课事实 list?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F018",
@@ -179,7 +179,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F018 类型提示：F018。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F018 类型提示：本批限项/历史事故/在研状态 struct?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F019",
@@ -188,7 +188,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F019 类型提示：F019。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F019 类型提示：课程权威 ID courseId?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F020",
@@ -197,7 +197,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F020 类型提示：F020。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F020 类型提示：课程名称/曾用名 string+aliases?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F021",
@@ -206,16 +206,16 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F021 类型提示：F021。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F021 类型提示：培养方案版本/课程归属 ref+version。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F022",
       "label": "课程学分与学时 number+unit?",
-      "kind": "number",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F022 类型提示：F022。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F022 类型提示：课程学分与学时 number+unit?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F023",
@@ -224,16 +224,16 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F023 类型提示：F023。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F023 类型提示：课程性质/专业方向 enum/string?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F024",
       "label": "既有开课/建设基础 list+dates?",
-      "kind": "multi",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F024 类型提示：F024。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F024 类型提示：既有开课/建设基础 list+dates?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F025",
@@ -242,7 +242,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F025 类型提示：F025。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F025 类型提示：平台与项目课程 ID platformId+courseId?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F026",
@@ -251,7 +251,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F026 类型提示：F026。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F026 类型提示：资源/图谱/访问量等指标 metrics?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F027",
@@ -260,16 +260,16 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F027 类型提示：F027。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F027 类型提示：平台数据截止/出具者/签名 struct?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F028",
       "label": "课程资源清单及第三方素材来源 list",
-      "kind": "multi",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F028 类型提示：F028。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F028 类型提示：课程资源清单及第三方素材来源 list。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F029",
@@ -278,7 +278,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F029 类型提示：F029。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F029 类型提示：建设目标和拟交付成果 text+struct。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F030",
@@ -287,16 +287,16 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F030 类型提示：F030。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F030 类型提示：建设进度/阶段任务与周期 schedule。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F031",
       "label": "团队成员身份集合 personId[]?",
-      "kind": "multi",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F031 类型提示：F031。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F031 类型提示：团队成员身份集合 personId[]?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F032",
@@ -305,7 +305,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F032 类型提示：F032。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F032 类型提示：团队分工/参与确认 role[]。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F033",
@@ -314,7 +314,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F033 类型提示：F033。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F033 类型提示：企业外方负责人资质 struct?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F034",
@@ -323,7 +323,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F034 类型提示：F034。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F034 类型提示：合作企业身份、合作基础 org+evidence[]?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F035",
@@ -332,7 +332,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F035 类型提示：F035。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F035 类型提示：校企课程大纲与授课协同 struct?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F036",
@@ -341,16 +341,16 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F036 类型提示：F036。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F036 类型提示：知识产权/公开传播承诺 signedStatement?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F037",
       "label": "申报书版次、填报签署 hash+date+sign?",
-      "kind": "date",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F037 类型提示：F037。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F037 类型提示：申报书版次、填报签署 hash+date+sign?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F038",
@@ -359,7 +359,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F038 类型提示：F038。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F038 类型提示：学院初审意见/签发者 decisionRef?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F039",
@@ -368,7 +368,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F039 类型提示：F039。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F039 类型提示：学院推荐排序/汇总版本 rank?+version。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F040",
@@ -377,7 +377,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F040 类型提示：F040。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F040 类型提示：归口受理回执 receipt+time?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F041",
@@ -386,7 +386,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F041 类型提示：F041。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F041 类型提示：专家组和评审/部门评议意见 reviewRef?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F042",
@@ -395,7 +395,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F042 类型提示：F042。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F042 类型提示：公示内容、版本与期限 noticeRef?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F043",
@@ -404,7 +404,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F043 类型提示：F043。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F043 类型提示：异议请求人/事项及证据 struct?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F044",
@@ -413,16 +413,16 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F044 类型提示：F044。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F044 类型提示：正式立项/同意建设/不予立项决定 enum+ref?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F045",
       "label": "决定机关、审定依据、文号（若有）及日期 struct?",
-      "kind": "date",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F045 类型提示：F045。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F045 类型提示：决定机关、审定依据、文号（若有）及日期 struct?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F046",
@@ -431,7 +431,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F046 类型提示：F046。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F046 类型提示：既有项目/相邻业务正式状态 decisionLink[]?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F047",
@@ -440,7 +440,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F047 类型提示：F047。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F047 类型提示：补正、撤回、变更请求 event?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F048",
@@ -449,7 +449,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F048 类型提示：F048。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F048 类型提示：补正/撤回/复核处理结果 decisionRef?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F049",
@@ -458,7 +458,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F049 类型提示：F049。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F049 类型提示：中期、结题、上线、验收事实 eventRefs[]?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F050",
@@ -467,7 +467,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F050 类型提示：F050。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F050 类型提示：建设经费/配套资金口径 money?+currency。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F051",
@@ -476,7 +476,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F051 类型提示：F051。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F051 类型提示：规定报送渠道及方式 enum+address?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F052",
@@ -485,7 +485,7 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F052 类型提示：F052。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F052 类型提示：材料主从版本链与失效范围 versionGraph。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F053",
@@ -494,16 +494,16 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F053 类型提示：F053。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F053 类型提示：审核/代报送主体的组织授权 authorityRef?。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     },
     {
       "key": "F054",
       "label": "2026 校企课程拟定企业授课学时 nonnegativeInt+totalHours+planVersion",
-      "kind": "number",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原研究字段 F054 类型提示：F054。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
+      "extractionHint": "原研究字段 F054 类型提示：2026 校企课程拟定企业授课学时 nonnegativeInt+totalHours+planVersion。按本批原文及可信来源核验；未列明的枚举值、阈值和校方规则不得推定。"
     }
   ],
   "materialSlots": [

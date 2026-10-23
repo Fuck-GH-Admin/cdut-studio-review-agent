@@ -50,6 +50,7 @@ describe('R02 T05-A native template definitions', () => {
         for (const match of criterion.requirement.matchAll(/\bM\d{3}\b/g)) expect(slotIds.has(match[0])).toBe(true)
         const mapping = entry.metadata.criteria.find(item => item.sectionId === sectionId && item.criterionId === criterion.id)
         expect(mapping).toBeDefined()
+        expect(mapping!.srcIds.length).toBeGreaterThan(0)
         for (const srcId of mapping!.srcIds) expect(indexedSourceIds.has(srcId)).toBe(true)
         expect(['PARTIAL', 'UNCONFIRMED']).toContain(mapping!.evidenceStatus)
       }
