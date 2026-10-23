@@ -1,0 +1,82 @@
+{
+  "schema": "g03-t06-d-e-r01-evidence-v1",
+  "as_of": "2026-10-15",
+  "template_id": "G03-T06",
+  "scope": "NON_SENSITIVE_METADATA_ONLY",
+  "e_r01_audit_head": "1be43d8bacc015e1fd21949796defcdd3ecb96fc",
+  "origin_git_commit": "NOT_AVAILABLE",
+  "sources": {
+    "A": {
+      "version": "v0.1",
+      "sha256": "4728b8b9be2a067eca327aba346e68f567f8ec4f84f1df0ebb300f12c4c737b3"
+    },
+    "B": {
+      "version": "v0.2",
+      "sha256": "209d7ab976326c50ba6857e2b719e974f72069f6f3945a40d677314685a213f1"
+    },
+    "C": {
+      "version": "v0.1 original MD",
+      "sha256": "8bc189af1d53125023b5e93ecd78cb07b4148abb5098921ccc0c02dae1bbaa88",
+      "reference_only": "E0 metadata; body not read"
+    },
+    "D_INPUT": {
+      "sha256": "304eec24b209791b7c2c96a2b260f60cfc979cf265692164f8dcad275a5fb344",
+      "bytes": 801895
+    },
+    "D_EVALUATION": {
+      "sha256": "f5b7a676e100e6c4c3d4fe3d661846da5bb5e04eaa29e8c7dd218e9dbc2aaa38",
+      "bytes": 21357,
+      "public_upload": false
+    },
+    "D_REPORTS": {
+      "sha256": "596cbce176129e907b39292c8a66d111bd112071f70e73582578ba8cb37212fb",
+      "bytes": 8309
+    }
+  },
+  "gold": {
+    "version": "FROZEN_GOLD_v0_PROVISIONAL_CONTAMINATED",
+    "content_sha256": "7b516fdd68f411df2e7ed1f83ad4086e23d90f998db6ea4ceabb3bebfbb3cddb",
+    "changed": false,
+    "independence": "COMPROMISED_PRIOR_C_EXPOSURE",
+    "acl": "UNVERIFIED"
+  },
+  "B_variant_files": [
+    {
+      "path": "G03-T06_00_独立业务深调研.md",
+      "d_read_sha": "ec7dea0f95cb92440285a353787ba8029971c94b2a2bbbcd780cf230f1f8e332",
+      "bv02_sha": "f95b61b10b5776767a22097ff1d9955dc478d85398798c6fbbc0977568f396cd"
+    },
+    {
+      "path": "G03-T06_02_字段材料证据矩阵.md",
+      "d_read_sha": "c66d1de93d6dcea2c5c7e837ef043ed4bcb9ddc092c056155bf42c62bf461260",
+      "bv02_sha": "ff6d3bcd3783e827ffb6991459ec3f785eac81c766ca27cb6797954c4e37dc64"
+    },
+    {
+      "path": "G03-T06_06_C与D双向交接卡.md",
+      "d_read_sha": "6cc1a6d9f1548f1599016e59e0d61bd88072182c2e16bfd53326896025dac2dc",
+      "bv02_sha": "0df6fef35eb2a8bf8b7db755efa9a67214a0233f949ae26847348e39a6b42640"
+    }
+  ],
+  "static_qa": {
+    "cases": 22,
+    "zip_members": 124,
+    "manifest_docs": 101,
+    "sha_mismatch": 0,
+    "pdfs": 33,
+    "image_only_pdf": 11,
+    "answer_marker_hits": 0
+  },
+  "statuses": {
+    "DEP001": "OPEN_ACL_UNVERIFIED",
+    "DEP003": "OPEN_ORIGIN_COMMIT_NOT_AVAILABLE",
+    "B_VARIANT": "E_R02_REVIEW_REQUIRED",
+    "product": "NOT_RUN",
+    "E_r01_unchanged": true
+  },
+  "contents_excluded": [
+    "gold",
+    "trusted fixtures",
+    "per-case expected answer",
+    "scoring tool"
+  ]
+}
