@@ -56,7 +56,7 @@ import { startReviewRun } from './run-service'
 import { exportReport } from './report-service'
 import { getReviewModelGatewayStatus } from './review-model-gateway'
 import {
-  createNativeWorkspaceCaseV3, isNativeWorkspaceCaseV3, updateNativeWorkspaceSettingsV3,
+  createNativeWorkspaceCaseV3, isNativeWorkspaceCaseV3, updateNativeWorkspaceSettingsV3, reclassifyNativeWorkspaceMaterialV3,
   registerNativeWorkspaceMaterialV3, removeNativeWorkspaceDocumentsV3, reorderNativeWorkspaceDocumentsV3,
   updateNativeWorkspaceReviewItemV3, createNativeReviewItemV3,
 } from './native-workspace-case-v3'
@@ -1262,6 +1262,22 @@ export function registerReviewIpc(): void {
     }, () => assertC0ReviewMainSender(_e))
     if (!outcome.ok) throw new Error(outcome.message ?? '登记失败')
     return outcome.entity?.versionId ?? outcome.aggregate.caseV2.documents.at(-1)?.versionId
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RECLASSIFY_NATIVE_MATERIAL_V3, async (event, input: {
+    caseId: string; documentVersionId: string; role: 'rule' | 'application' | 'evidence'; materialSlotId?: string
+  }) => {
+    assertC0ReviewMainSender(event)
+    if (!input || typeof input.caseId !== 'string' || !input.caseId ||
+      typeof input.documentVersionId !== 'string' || !input.documentVersionId ||
+      !['rule', 'application', 'evidence'].includes(input.role) ||
+      (input.materialSlotId !== undefined && typeof input.materialSlotId !== 'string')) {
+      throw new Error('材料重新分类参数无效')
+    }
+    return reclassifyNativeWorkspaceMaterialV3(input.caseId, {
+      documentVersionId: input.documentVersionId,
+      role: input.role,
+      ...(input.materialSlotId ? { materialSlotId: input.materialSlotId } : {}),
+    }, undefined, () => assertC0ReviewMainSender(event))
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.SUBMIT_CASE_V2, (_e, caseId: string) => {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')

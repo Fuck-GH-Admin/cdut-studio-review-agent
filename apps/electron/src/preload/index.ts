@@ -4875,6 +4875,8 @@ const reviewAPI = {
   submitCaseV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SUBMIT_CASE_V2, caseId) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
   registerMaterialPathV2: (input: { caseId: string; sourcePath: string; role: 'application' | 'evidence' | 'rule' | 'attachment'; materialSlotId?: string; fileName?: string; replacesVersionIds?: string[] }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.REGISTER_MATERIAL_PATH_V2, input) as Promise<string | undefined>,
+  reclassifyNativeMaterialV3: (input: { caseId: string; documentVersionId: string; role: 'application' | 'evidence' | 'rule'; materialSlotId?: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RECLASSIFY_NATIVE_MATERIAL_V3, input) as Promise<import('@profer/shared').ReviewCase>,
   pickRegisterMaterialV2: (input: { caseId: string; role: 'application' | 'evidence' | 'rule' | 'attachment'; materialSlotId?: string }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.PICK_REGISTER_MATERIAL_V2, input) as Promise<string[]>,
   bootCheckV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.BOOT_CHECK_V2) as Promise<{ templatesSeeded: number; templatesPublished: number; migratableCases: string[]; notes: string[] }>,
