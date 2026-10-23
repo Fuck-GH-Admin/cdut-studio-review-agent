@@ -1,0 +1,192 @@
+{
+  "schema": "G07_RESEARCH_CROSSCHECK_R03_V1",
+  "scope": "research only, public synthetic cases, no D Gold",
+  "priorSourceLockCommit": "2287c74b3f7b979bd4cc7f8e21c5e36f31efe058",
+  "preCChallengeCommit": "a709fc0dad5ae52e2be4b200efba202d6f09041d",
+  "count": 5,
+  "netNewContrastAxisFromSourceLock": 1,
+  "cases": [
+    {
+      "caseId": "G07-R03-Q1",
+      "dutyId": "G07-T02-02",
+      "sourceLocator": [
+        {
+          "url": "https://jcc.cdut.edu.cn/__local/8/A8/96/748E97CB5061A750C78C9A841EF_9631E851_E5400.pdf",
+          "locator": "PDF physical page 5 (0-based P4), item 6, 科研差旅④(3); explicitly includes 无法取得住宿票据"
+        }
+      ],
+      "applicability": {
+        "school": "成都理工大学",
+        "policy_time": "documented 2025 guide; 2026 formal continuation unverified",
+        "scope": "科研经费国内出差，旅后材料预审",
+        "factClass": "F_2025_SOURCE_PLUS_U_2026_APPLICABILITY",
+        "simulationAssumptions": "所有 A/B/C 对照案件中的申请人、金额、提交材料、审批动作和凭证状态均为显式虚构的封闭输入（S_SIMULATION）。它们不是学校真实案卷；官方政策依据依 sourceLocator 中的 F/U 独立分级。"
+      },
+      "changedFact": "A=城市学术会议，已实际付住宿费但客观无法取得住宿发票，提交情况说明+项目负责人签认+学院有效审批；B=同一行程且无票据、无说明/审批；C=合作单位提供免费住宿，有对方盖章证明",
+      "expectedDecision": "A=进入有权审核的无票据佐证路径，不得因不是野外而自动拒件，也不擅自批准房费金额；B=待补证/待审批；C=免费住宿无自付住宿费，按免费住宿证据组审核",
+      "admissibleAlternatives": [
+        "2025指南列明说明+负责人签字+学院审批的佐证组合",
+        "对方提供免费住宿的盖章证明是不同分支"
+      ],
+      "evidenceAnchors": [
+        "https://jcc.cdut.edu.cn/__local/8/A8/96/748E97CB5061A750C78C9A841EF_9631E851_E5400.pdf#page=5",
+        "C-T02@1564a20f:#L166-L180 (MS-06/MS-19)",
+        "C-T02@1564a20f:#L204-L207 (EV-07 restricted to field work)",
+        "C-T02@1564a20f:#L249-L255 (R-14...R-17)",
+        "C-T02@1564a20f:#L315-L323 (R17 author notes)"
+      ],
+      "failureMode": "C T02 has generic no-invoice material slot but R17/EV07 narrow the actionable exception to field/remote hardship; R17 walk-through further says zero hotel fee without proof that all no-invoice cases are free lodging; city paid hotel scenario falls through.",
+      "confidence": "HIGH for 2025 source scope and frozen C text; MEDIUM for business impact; no runtime execution",
+      "unresolved": [
+        "2026 operative policy and 2025 travel revision",
+        "Whether other implicit C logic can cover general city no-invoice path",
+        "Accounting judgment on reimbursable lodging amount"
+      ],
+      "C_staticVerdict": "SEMANTIC_GAP_RESEARCH_ONLY"
+    },
+    {
+      "caseId": "G07-R03-Q2",
+      "dutyId": "G07-T03-05",
+      "sourceLocator": [
+        {
+          "url": "https://jcc.cdut.edu.cn/__local/8/A8/96/748E97CB5061A750C78C9A841EF_9631E851_E5400.pdf",
+          "locator": "2025 invoice / reimbursement evidence belongs to later expense stages"
+        },
+        {
+          "url": "https://jcc.cdut.edu.cn/tzgg.htm",
+          "locator": "2026 procurement preparation notice; full policy incomplete"
+        }
+      ],
+      "applicability": {
+        "school": "成都理工大学",
+        "scope": "采购事前需求/方式预审 vs 合同履约结算",
+        "factClass": "F_SOURCE_PROCESS_BOUNDARY_PLUS_U_CURRENT_ADMINISTRATIVE_RULE",
+        "simulationAssumptions": "所有 A/B/C 对照案件中的申请人、金额、提交材料、审批动作和凭证状态均为显式虚构的封闭输入（S_SIMULATION）。它们不是学校真实案卷；官方政策依据依 sourceLocator 中的 F/U 独立分级。"
+      },
+      "changedFact": "A=提交采购需求论证，尚无中标/签约/发票/验收；B=已供货、申请尾款但缺适用合同要求的正式验收",
+      "expectedDecision": "A=不要求未来合同/发票/验收，待采购有权审批；B=进入T04查验履约与付款阶段证据，不把T03预审意见当付款许可",
+      "admissibleAlternatives": [
+        "正式采购审批在授权系统可查时代替重复纸质上传，需学校认可"
+      ],
+      "evidenceAnchors": [
+        "C-T03@e9f4db82:#L13-L27",
+        "#L34-L42 (ST-00...ST-06)",
+        "#L177-L204 (M-25 excluded)",
+        "#L237-L247 (R-01)"
+      ],
+      "failureMode": "Pre-procurement receipt/acceptance gate misapplied at demand stage; falsified as a risk hypothesis and rejected by C text",
+      "confidence": "HIGH for C text, MEDIUM for current administrative details",
+      "unresolved": [
+        "2026 autonomous procurement specifics"
+      ],
+      "C_staticVerdict": "HYPOTHESIS_EXCLUDED_BY_FROZEN_C"
+    },
+    {
+      "caseId": "G07-R03-Q3",
+      "dutyId": "G07-T04-04",
+      "sourceLocator": [
+        {
+          "url": "https://jcc.cdut.edu.cn/__local/8/A8/96/748E97CB5061A750C78C9A841EF_9631E851_E5400.pdf",
+          "locator": "PDF physical page 6 (P5), item 9 材料费, 单张或连号发票合计 >20000科研/>10000非科研"
+        }
+      ],
+      "applicability": {
+        "school": "成都理工大学",
+        "scope": "2025材料费报销合同材料触发，非2026采购方式批准",
+        "factClass": "F_2025_SOURCE_PLUS_U_2026_THRESHOLD",
+        "simulationAssumptions": "所有 A/B/C 对照案件中的申请人、金额、提交材料、审批动作和凭证状态均为显式虚构的封闭输入（S_SIMULATION）。它们不是学校真实案卷；官方政策依据依 sourceLocator 中的 F/U 独立分级。"
+      },
+      "changedFact": "A=同一科研材料报销、2张连号发票¥12,000和¥11,000, 合计¥23,000；B=改为两张非连号而其他内容不变；C=把费用类别改为测试服务",
+      "expectedDecision": "A=命中2025清单该连号合计的合同资料条件（还须核现行效力）；B=该特定连号触发事实不再成立，但其他合同义务仍须核；C=按服务专属制度，不能搬材料费规则",
+      "admissibleAlternatives": [
+        "有授权的合同电子档案可供核验，是否免提交纸件须校方确认"
+      ],
+      "evidenceAnchors": [
+        "https://jcc.cdut.edu.cn/__local/8/A8/96/748E97CB5061A750C78C9A841EF_9631E851_E5400.pdf#page=6",
+        "C-T04@4f914de3:#L90-L96",
+        "C-T04@4f914de3:#L315",
+        "C-T04@4f914de3:#L546-L555",
+        "C-T04@4f914de3:#L900-L907"
+      ],
+      "failureMode": "Ignoring invoice sequence or applying a generalized all-purchase threshold; rejected by C's explicit conditional scope and strict > wording",
+      "confidence": "HIGH for 2025 document and frozen C; 2026 enforceability unknown",
+      "unresolved": [
+        "Current 2026 contract trigger and same procurement project aggregation"
+      ],
+      "C_staticVerdict": "HYPOTHESIS_EXCLUDED_BY_FROZEN_C"
+    },
+    {
+      "caseId": "G07-R03-Q4",
+      "dutyId": "G07-T05-03",
+      "sourceLocator": [
+        {
+          "url": "https://jcc.cdut.edu.cn/ssjg.jsp?currentnum=3&newskeycode2=&searchScope=0&wbtreeid=1033",
+          "locator": "2026-01-15 《智能报销审批人员选择操作须知》 official search excerpt of leader countersignature"
+        }
+      ],
+      "applicability": {
+        "school": "成都理工大学",
+        "scope": "经费负责人本人作为酬金受款人，智能报销审批流",
+        "factClass": "F_OFFICIAL_INDEX_EXCERPT_WITH_U_FULL_WORKFLOW",
+        "simulationAssumptions": "所有 A/B/C 对照案件中的申请人、金额、提交材料、审批动作和凭证状态均为显式虚构的封闭输入（S_SIMULATION）。它们不是学校真实案卷；官方政策依据依 sourceLocator 中的 F/U 独立分级。"
+      },
+      "changedFact": "A=负责人同时是酬金受款人，部门领导独立互签已由授权OA确认；B=同一人自身签字但无其他独立互签",
+      "expectedDecision": "A=可继续其余材料财务预审，非自动入账；B=AUTHORITY_PENDING，不因负责人自签构成终审",
+      "admissibleAlternatives": [
+        "校方正式电子互签回执，而非手工复制签字图"
+      ],
+      "evidenceAnchors": [
+        "C-T05@780cd209:#L81-L89 (BR-11)",
+        "#L151 (F-37)",
+        "#L201 (M-17)",
+        "#L302 (R-23)"
+      ],
+      "failureMode": "Self-approval mistaken as complete or countersignature demanded at initial submission; both explicitly avoided by C",
+      "confidence": "HIGH for frozen C; MEDIUM for publicly readable partial official source",
+      "unresolved": [
+        "Full 2026 OA approval node definition and authority"
+      ],
+      "C_staticVerdict": "HYPOTHESIS_EXCLUDED_BY_FROZEN_C"
+    },
+    {
+      "caseId": "G07-R03-Q5",
+      "dutyId": "G07-T07-03",
+      "sourceLocator": [
+        {
+          "url": "https://jcc.cdut.edu.cn/__local/8/A8/96/748E97CB5061A750C78C9A841EF_9631E851_E5400.pdf",
+          "locator": "PDF physical page 16 (P15), item 32(3) 智能报销现金还款 steps I/II; initial remittance, then system offset action"
+        }
+      ],
+      "applicability": {
+        "school": "成都理工大学",
+        "scope": "项目借款归还，2025清单路径与当前会计账务确认的区别",
+        "factClass": "F_2025_WORKFLOW_PLUS_U_ACTUAL_2026_LEDGER",
+        "simulationAssumptions": "所有 A/B/C 对照案件中的申请人、金额、提交材料、审批动作和凭证状态均为显式虚构的封闭输入（S_SIMULATION）。它们不是学校真实案卷；官方政策依据依 sourceLocator 中的 F/U 独立分级。"
+      },
+      "changedFact": "A=个人提交转账截图，学校财务尚未核实到账/正式冲销；B=学校财务系统已有匹配借款号的到账和会计冲销凭证，余额=0",
+      "expectedDecision": "A=还款材料提交/转账待核，不可标结清；B=只在有权账证真实确认后记录会计已结清",
+      "admissibleAlternatives": [
+        "银行电子回单可证明转出但不能独立证明学校过账；校方可信会计凭证可证明已冲销"
+      ],
+      "evidenceAnchors": [
+        "https://jcc.cdut.edu.cn/__local/8/A8/96/748E97CB5061A750C78C9A841EF_9631E851_E5400.pdf#page=16",
+        "C-T07@41b88bab:#L69-L74 (ST-07/ST-09)",
+        "#L168-L170 (F-42...44)",
+        "#L227-L228 (EV-10)",
+        "#L249-L257 (posting invariants)"
+      ],
+      "failureMode": "Applicant screenshot wrongly creates a settled debt state; excluded by C's explicit ledger/receipt separation",
+      "confidence": "HIGH for 2025 procedure and C text; no real backend data accessed",
+      "unresolved": [
+        "Current live ledger integration and access permissions"
+      ],
+      "C_staticVerdict": "HYPOTHESIS_EXCLUDED_BY_FROZEN_C"
+    }
+  ],
+  "evaluationTaxonomy": {
+    "F": "仅指已核官方源文明确支持的事实，受具体年份、学校、材料类型与阶段限制",
+    "S": "仅指公开的封闭合成案情/模拟输入；不升格为学校规则或实际发生的付款",
+    "U": "未取得或未能确认适用效力的校本制度、权限、接口及真实状态",
+    "contrastVsPreviousSourceLock": "本轮官方新增来源政策事实=0；以事前事实卡进行 C 静态语义交叉核验。"
+  }
+}
