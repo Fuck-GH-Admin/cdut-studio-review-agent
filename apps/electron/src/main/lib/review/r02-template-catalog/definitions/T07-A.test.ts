@@ -15,7 +15,7 @@ const entries = [
 /** 原研究稿用 SRC-001/005 等缩写时，两个来源都必须保留在元数据中。 */
 function sourceIdsInRequirement(requirement: string): string[] {
   return [...new Set([...requirement.matchAll(/SRC-(\d{3}(?:[\/、,，]\d{3})*)/g)]
-    .flatMap(match => match[1].split(/[\/、,，]/).map(part => `SRC-${part}`)))].sort()
+    .flatMap(match => (match[1] ?? '').split(/[\/、,，]/).filter(Boolean).map(part => `SRC-${part}`)))].sort()
 }
 
 describe('R02 T07-A local template definitions', () => {
@@ -54,7 +54,8 @@ describe('R02 T07-A local template definitions', () => {
         expect(meta).toBeDefined()
         expect(Array.isArray(meta?.srcIds)).toBe(true)
         expect(meta?.srcIds.every(srcId => (metadata.sourceIds as readonly string[]).includes(srcId))).toBe(true)
-        expect(meta ? [...meta.srcIds].sort() : []).toEqual(sourceIdsInRequirement(criterion.requirement))
+        const mappedSrcIds: string[] = meta ? [...meta.srcIds] : []
+        expect(mappedSrcIds.sort()).toEqual(sourceIdsInRequirement(criterion.requirement))
         expect(['semantic', 'manual']).toContain(criterion.execution)
         expect(criterion.execution).not.toBe('deterministic')
       }
