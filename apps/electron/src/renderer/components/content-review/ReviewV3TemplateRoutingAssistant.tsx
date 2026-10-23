@@ -286,6 +286,8 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
     if(receipt.requiresPlanSetup){
       setPreferred(templateId);setSelection(undefined);setMode('catalog')
       setMessage('已选择 '+item.name+'（'+source+'）。请继续核对真实对象、场景和必要条件，再固定审核计划。')
+      const updated=await window.reviewAPI.readLocalNativeProductV3(caseId)
+      if(currentCase.current===caseId)setRead(updated)
       return
     }
     setMessage('已选择并绑定 '+item.name+'；下一步将使用该模板处理当前案卷。')
