@@ -17,7 +17,7 @@
 
 依据权威分支原件、R02统一审查标准、V3实现契约、文件所有权、128项清单、未纳入项及总集成说明；并复核成都理工大学、NSFC、全国社科工作办、工信部与民法典公开来源。公开来源可访问不等于校内授权矩阵已确认。
 
-本地容器无法解析 `github.com`，未执行本地 Bun 命令；专项测试已提交但须以真实 GitHub Actions/本地输出确认。所有模板均保持 `draft`、空 `policyVersionIds`、关闭 auto-pass。
+本地容器无法解析 `github.com`，未执行本地 Bun 命令。GitHub Actions 已通过：PR CI、Review Baseline CI、D2 Scoped Pi Review Tests 均为 success；T03-A 专项测试 6 项通过，全套单元/回归测试 5,027 pass、5 skip、0 fail（5,032 tests / 602 files）。所有模板均保持 `draft`、空 `policyVersionIds`、关闭 auto-pass。
 
 ## 修订稿与原件
 

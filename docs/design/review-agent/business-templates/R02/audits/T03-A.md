@@ -101,9 +101,9 @@
 ## 6. 测试状态与下一步
 
 - 原件完整性：已核；五份原件补回末尾 LF 后字节数与清单一致。
-- `bun test apps/electron/src/main/lib/review/r02-template-catalog/definitions/T03-A.test.ts`：本环境未执行。
-- `bun run typecheck`：本环境未执行。
-- `bun run check:boundaries`：本环境未执行。
-- 原因：容器无法解析 `github.com`，没有可运行的本地工作树。本报告不声称通过；PR 后需核对 GitHub Actions 的真实结果。
+- `bun test apps/electron/src/main/lib/review/r02-template-catalog/definitions/T03-A.test.ts`：GitHub PR CI 已执行并通过；T03-A 专项测试 6 项通过、0 失败。全套单元/回归测试 5,027 pass、5 skip、0 fail（5,032 tests / 602 files）。
+- `bun run typecheck`：GitHub PR CI `Typecheck workspace` 通过；`D2 Scoped Pi Review Tests` 的 `Typecheck all workspaces` 也通过。
+- `bun run check:boundaries`：GitHub PR CI `Check package boundaries` 通过。
+- 本地容器无法解析 `github.com`，所以没有声称执行本地 Bun 命令。最新实现提交 `1f1bd82b2ce32824a0bf4cf51efb34855781cca9` 的 `PR CI`、`Review Baseline CI`、`D2 Scoped Pi Review Tests` 均为 success；PR CI 的 typecheck、边界检查、内置皮肤契约、主进程/preload/renderer 构建和单元/回归测试均通过。
 
 优先级：① T03-T03 补齐横向管理办法、合同管理办法和签约授权链后再转出 draft；② T03-T04 取得设备费调增冲突的书面校方解释；③ 将 NSFC 2026 依托单位管理办法纳入 T03-T02/T03-T05 来源索引；④ 由集成 Owner 接入共享目录与 Plan/Run 编译桥；⑤ T03-T08 缺项不由邻项补壳。
