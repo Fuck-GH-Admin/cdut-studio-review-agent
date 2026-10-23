@@ -63,7 +63,7 @@ describe('全链路旅程（自检探查）', () => {
     const fileB = join(CONFIG_DIR, 'cert.txt')
     writeFileSync(fileB, '证书：省级一等奖，颁发单位 省教育厅')
     const baseRev = readAggregate(caseId)!.caseV2.revision
-    const r1 = (await registerMaterial(caseId, { requestId: 'j-reg-1', actor, expectedRevision: baseRev, payload: { sourcePath: fileA, role: 'evidence', materialSlotId: 'application-form' } })) as { ok: boolean }
+    const r1 = (await registerMaterial(caseId, { requestId: 'j-reg-1', actor, expectedRevision: baseRev, payload: { sourcePath: fileA, role: 'application', materialSlotId: 'application-form' } })) as { ok: boolean }
     expect(r1.ok).toBe(true)
     const afterReg1 = readAggregate(caseId)!
     const r2 = (await registerMaterial(caseId, { requestId: 'j-reg-2', actor, expectedRevision: afterReg1.caseV2.revision, payload: { sourcePath: fileB, role: 'evidence', materialSlotId: 'certificates' } })) as { ok: boolean }
