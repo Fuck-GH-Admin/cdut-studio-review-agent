@@ -16,10 +16,11 @@ export interface R02Metadata {
   sourceDocumentBytes: number
   manifestExpectedBytes: number
   manifestExpectedSha256: string
-  sourceIntegrityStatus: 'LINE_ENDING_DRIFT_ONE_LF' | 'MATCH'
+  sourceIntegrityStatus: 'LINE_ENDING_DRIFT_ONE_LF' | 'REVIEWED_COPY_PATCHED' | 'MATCH'
   sourceIntegrityNote: string
   officialSchoolTemplate: false
   researchStatus: string
+  researchEvidenceStatus: 'VERIFIED' | 'PARTIAL' | 'UNCONFIRMED'
   policyEvidenceStatus: 'VERIFIED' | 'PARTIAL' | 'UNCONFIRMED'
   sourceRecordCount: number
   sourceIds: string[]
@@ -1420,12 +1421,12 @@ export const r02Metadata: R02Metadata = {
   "name": "项目用工解除、离岗与责任交接审核",
   "sourceDocumentPath": "docs/design/review-agent/business-templates/R02/T08-T04.md",
   "researchSourcePath": "docs/design/review-agent/business-templates/R02/research-original/T08-T04.md",
-  "sourceDocumentSha256": "c0d167d169ae808be966a14eecc126b4c73ec453bd5bafd630409658456dcec6",
-  "sourceDocumentBytes": 146241,
+  "sourceDocumentSha256": "5586198bba7f152b2ffd9c32619355d9e0840d20d21cde426c5d244aff848013",
+  "sourceDocumentBytes": 146242,
   "manifestExpectedBytes": 146242,
   "manifestExpectedSha256": "ef4847f5e08744cacb311b383c99eabd79f812619905baf64822edcd86adde65",
   "sourceIntegrityStatus": "LINE_ENDING_DRIFT_ONE_LF",
-  "sourceIntegrityNote": "当前 research-original blob 的 UTF-8 原始字节不含末尾 LF；00_模板清单_128.tsv 的 bytes 与 SHA-256 对应同一正文追加一个 LF。未发现正文差异，不修改原件或清单。",
+  "sourceIntegrityNote": "research-original 当前 Git blob 不含末尾 LF；审阅副本在正文不变的情况下保留一个末尾 LF，字节数和 SHA-256 与 00_模板清单_128.tsv 完全一致。",
   "officialSchoolTemplate": false,
   "researchStatus": "RESEARCH_HANDOFF_READY",
   "policyEvidenceStatus": "PARTIAL",
@@ -1769,5 +1770,6 @@ export const r02Metadata: R02Metadata = {
     "SRC-017",
     "SRC-018",
     "SRC-019"
-  ]
+  ],
+  "researchEvidenceStatus": "PARTIAL"
 }
