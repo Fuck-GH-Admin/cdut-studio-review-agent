@@ -79,7 +79,7 @@ describe('R02 S04-A template definitions', () => {
       expect(item.template.policyVersionIds).toEqual([])
       expect(item.template.status).toBe('draft')
       expect(item.template.outputs.some(output => output.kind === 'approval')).toBe(false)
-      expect(item.metadata.criteria.every(criterion => criterion.execution !== 'deterministic').toBe(true)
+      expect(item.metadata.criteria.every(criterion => criterion.execution !== 'deterministic')).toBe(true)
       expect(item.metadata.criteria.every(criterion => criterion.evidenceStatus !== 'UNCONFIRMED' || criterion.execution === 'manual')).toBe(true)
     }
   })
