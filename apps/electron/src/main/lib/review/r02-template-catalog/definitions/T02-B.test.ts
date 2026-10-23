@@ -12,6 +12,13 @@ const batch = [
   { template: T02T09, metadata: T02T09Metadata },
 ]
 
+function referencedIds(text: string, prefix: 'F' | 'M'): Set<string> {
+  const found = new Set<string>()
+  const expression = new RegExp(`\\b${prefix}-?(\\d{3})\\b`, 'g')
+  for (const match of text.matchAll(expression)) found.add(`${prefix}${match[1]}`)
+  return found
+}
+
 describe('R02 T02-B runtime template definitions', () => {
   test('IDs and formal names are correct and unique', () => {
     expect(batch.map(({ template }) => template.templateId)).toEqual(['T02-T05', 'T02-T06', 'T02-T07', 'T02-T09'])
@@ -24,18 +31,28 @@ describe('R02 T02-B runtime template definitions', () => {
     }
   })
 
-  test('source metadata and criteria provenance are complete', () => {
+  test('source metadata and every criterion source reference are complete', () => {
     for (const { template, metadata } of batch) {
       expect(metadata.sourceDocumentPath).toContain(`/${template.templateId}.md`)
       expect(metadata.sourceDocumentSha256).toMatch(/^[a-f0-9]{64}$/)
       expect(metadata.criteria.length).toBe(template.sections?.reduce((n, section) => n + section.criteria.length, 0))
       const sectionIds = new Set((template.sections ?? []).map(section => section.id))
       const criteria = new Set((template.sections ?? []).flatMap(section => section.criteria.map(criterion => `${section.id}:${criterion.id}`)))
+      const fieldIds = new Set(metadata.fieldIds.map(item => item.sourceId))
+      const materialIds = new Set(metadata.materialSlotIds.map(item => item.sourceId))
+      const sourceIds = new Set(metadata.sourceIndexIds)
       for (const item of metadata.criteria) {
         expect(sectionIds.has(item.sectionId)).toBe(true)
         expect(criteria.has(`${item.sectionId}:${item.criterionId}`)).toBe(true)
         expect(Array.isArray(item.srcIds)).toBe(true)
         expect(['PARTIAL', 'UNCONFIRMED', 'VERIFIED']).toContain(item.evidenceStatus)
+        for (const srcId of item.srcIds) expect(sourceIds.has(srcId)).toBe(true)
+      }
+      for (const section of template.sections ?? []) {
+        for (const criterion of section.criteria) {
+          for (const fieldId of referencedIds(criterion.requirement, 'F')) expect(fieldIds.has(fieldId)).toBe(true)
+          for (const materialId of referencedIds(criterion.requirement, 'M')) expect(materialIds.has(materialId)).toBe(true)
+        }
       }
       expect(metadata.fieldIds.length).toBe(template.fields.length)
       expect(metadata.materialSlotIds.length).toBe(template.materialSlots.length)
@@ -78,6 +95,8 @@ describe('R02 T02-B runtime template definitions', () => {
         next = template.stages.find(stage => stage.id === next)?.nextStageId
       }
       expect(reachable.size).toBe(template.stages.length)
+      expect(template.stages.at(-1)?.kind).toBe('finalize')
+      expect(template.stages.at(-1)?.nextStageId).toBeUndefined()
       expect(validateTemplate(template).filter(issue => issue.level === 'error')).toEqual([])
     }
   })
