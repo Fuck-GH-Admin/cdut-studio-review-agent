@@ -66,7 +66,7 @@ export function ReviewV3QuickIntake({ onCreated }: Props): JSX.Element {
     if (busy || pendingPaths.length === 0) return
     const applications = pendingPaths.filter(file => file.role === 'application')
     if (applications.length !== 1) {
-      setError('一个快速审核案卷必须明确一份申请主件。若这些文件属于多个独立事项，请先通过文件夹/ZIP批量分案入口分别归组，不能把多个事项合并成一个案卷。')
+      setError('一个快速审核案卷必须明确一份申请主件。若这些文件属于多个独立事项，请先分别建立案卷后再导入，不能把多个事项合并成一个案卷。')
       return
     }
     setBusy(true); setError(''); setNotice('正在保存原件并建立本地案卷…')
@@ -169,7 +169,7 @@ export function ReviewV3QuickIntake({ onCreated }: Props): JSX.Element {
       <p className={'text-xs '+(applicationCount===1?'text-muted-foreground':'text-amber-700 dark:text-amber-300')}>
         {applicationCount===1?'已指定一份申请主件。':'请选择且只选择一份申请主件。'}
       </p>
-      {applicationCount>1&&<p className="text-xs text-amber-700 dark:text-amber-300">多份独立申请书不能合并成一份案卷；请按文件夹/ZIP批量分案入口分别归组。</p>}
+      {applicationCount>1&&<p className="text-xs text-amber-700 dark:text-amber-300">多份独立申请书不能合并成一份案卷；请先分别建立案卷，再逐份导入。</p>}
       <Button size="sm" disabled={busy||applicationCount!==1||pendingPaths.length===0}
         onClick={event=>{event.stopPropagation();void startWithPaths()}}>
         {busy?'正在导入…':'确认材料并匹配模板'}
