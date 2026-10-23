@@ -45,9 +45,11 @@ export function ReviewV3QuickIntake({ onCreated }: Props): JSX.Element {
       } catch { missing.push(file.name) }
     }
     if (missing.length) {
-      setError('这些文件没有可读取的本机路径：' + missing.join('、') + '。请改用系统文件选择器。')
-      if (!paths.length) return
-    } else setError('')
+      setError('这些文件没有可读取的本机路径：' + missing.join('、') + '。为避免漏件，已取消本次选择，请改用系统文件选择器。')
+      setPendingPaths([]);setNotice('')
+      return
+    }
+    setError('')
     if (!paths.length) return
     const likelyApplication=(name:string):boolean=>
       /(申请书|申请表|申报书|申报表|申请单|申报单|application(?:-form)?|proposal|request-form)/i.test(name)
