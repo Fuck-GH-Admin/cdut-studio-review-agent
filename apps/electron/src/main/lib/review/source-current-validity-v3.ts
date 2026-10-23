@@ -25,10 +25,13 @@ export function revokeCurrentSourceValidity(
     // An unattested fact cannot silently stay confirmed after the case's source
     // set changed. Also reject mixed current/retired refs rather than retaining
     // a partially unsupported old confirmation.
-    const referencesInvalid = observation.sourceRefs.length === 0
-      ? (retiredSubjects.has(observation.subjectId) || retiredVersionIds.size > 0)
-      : observation.sourceRefs.some((ref) =>
-        ref.caseId !== draft.caseV2.id || !activeVersions.has(ref.documentVersionId))
+    const referencesInvalid = reason === 'reclassify'
+      ? (observation.sourceRefs.some((ref) => retiredVersionIds.has(ref.documentVersionId))
+        || (observation.sourceRefs.length === 0 && retiredSubjects.has(observation.subjectId)))
+      : observation.sourceRefs.length === 0
+        ? (retiredSubjects.has(observation.subjectId) || retiredVersionIds.size > 0)
+        : observation.sourceRefs.some((ref) =>
+          ref.caseId !== draft.caseV2.id || !activeVersions.has(ref.documentVersionId))
     if (!referencesInvalid) return observation
     revokedObservations.add(observation.id)
     confirmedObservations.add(observation.id)
