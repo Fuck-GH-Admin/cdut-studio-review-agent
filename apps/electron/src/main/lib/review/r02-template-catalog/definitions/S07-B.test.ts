@@ -87,6 +87,10 @@ describe('R02 S07-B templates', () => {
       expect(template.outputs.every(output => output.kind !== 'approval')).toBe(true)
       const criteria = template.sections?.flatMap(section => section.criteria) ?? []
       expect(criteria.every(criterion => criterion.execution !== 'deterministic')).toBe(true)
+      for (const criterion of criteria) {
+        const evidence = metadata.criteria.find(item => item.criterionId === criterion.id)?.evidenceStatus
+        if (evidence !== 'VERIFIED') expect(criterion.execution).toBe('manual')
+      }
       expect(metadata.criteria.every(item => item.evidenceStatus === 'VERIFIED' || item.evidenceStatus === 'PARTIAL' || item.evidenceStatus === 'UNCONFIRMED' || item.evidenceStatus === 'HISTORICAL' || item.evidenceStatus === 'CROSS_SCHOOL_ONLY')).toBe(true)
     }
   })
