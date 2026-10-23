@@ -22,7 +22,7 @@ export const templateVersion: TemplateVersion = {
       "key": "f001",
       "label": "F001 · caseId: string",
       "kind": "text",
-      "required": false,
+      "required": true,
       "visibility": "public",
       "scope": "case",
       "extractionHint": "原件字段 F001。caseId: string；系统案卷创建 L0；必；不可与正式学校决定 ID 混用；绑定本人权限。字段缺失不自动等于资格不符；需要权威记录或政策判断时转人工复核。"
@@ -31,7 +31,7 @@ export const templateVersion: TemplateVersion = {
       "key": "f002",
       "label": "F002 · studentRef: opaque",
       "kind": "text",
-      "required": false,
+      "required": true,
       "visibility": "public",
       "scope": "case",
       "extractionHint": "原件字段 F002。studentRef: opaque；T：可信学生身份/学籍名册 L0；必；与上传表单学号核对，不接受仅 Renderer 自述作身份凭证。字段缺失不自动等于资格不符；需要权威记录或政策判断时转人工复核。"
@@ -40,7 +40,7 @@ export const templateVersion: TemplateVersion = {
       "key": "f003",
       "label": "F003 · educationLevel: enum",
       "kind": "text",
-      "required": false,
+      "required": true,
       "visibility": "public",
       "scope": "case",
       "extractionHint": "原件字段 F003。educationLevel: enum；T：本科、硕士、博士、阶段性身份 L0；必；校内身份源确认；影响学院政策选择，C 不可覆盖。字段缺失不自动等于资格不符；需要权威记录或政策判断时转人工复核。"
@@ -49,7 +49,7 @@ export const templateVersion: TemplateVersion = {
       "key": "f004",
       "label": "F004 · collegeRef: string",
       "kind": "text",
-      "required": false,
+      "required": true,
       "visibility": "public",
       "scope": "case",
       "extractionHint": "原件字段 F004。collegeRef: string；T：学籍所在学院/年级管理归口 L0；必；变更学院保留历史快照；政策范围不得按自由文本判定。字段缺失不自动等于资格不符；需要权威记录或政策判断时转人工复核。"
@@ -67,7 +67,7 @@ export const templateVersion: TemplateVersion = {
       "key": "f006",
       "label": "F006 · assessmentYear: string",
       "kind": "text",
-      "required": false,
+      "required": true,
       "visibility": "public",
       "scope": "case",
       "extractionHint": "原件字段 F006。assessmentYear: string；T：学校当期通知/申报批次 L0；必；格式为起止学年，非上传日；政策期次绑定。字段缺失不自动等于资格不符；需要权威记录或政策判断时转人工复核。"
@@ -76,7 +76,7 @@ export const templateVersion: TemplateVersion = {
       "key": "f007",
       "label": "F007 · caseMode: enum",
       "kind": "text",
-      "required": false,
+      "required": true,
       "visibility": "public",
       "scope": "case",
       "extractionHint": "原件字段 F007。caseMode: enum；路由与经本人确认 L0；必；UG_ASSESSMENT / GRAD_SPECIAL_APPENDIX / OFFICIAL_RESULT_REFERENCE，不得以相似名称跨制度合并。字段缺失不自动等于资格不符；需要权威记录或政策判断时转人工复核。"
@@ -103,7 +103,7 @@ export const templateVersion: TemplateVersion = {
       "key": "f010",
       "label": "F010 · caseStage: enum",
       "kind": "text",
-      "required": false,
+      "required": true,
       "visibility": "public",
       "scope": "case",
       "extractionHint": "原件字段 F010。caseStage: enum；A：工作流事件 L0 起；必；仅合法角色可推进，阶段不同材料槽不同。字段缺失不自动等于资格不符；需要权威记录或政策判断时转人工复核。"
@@ -211,7 +211,7 @@ export const templateVersion: TemplateVersion = {
       "key": "f022",
       "label": "F022 · materialVersions: object[]",
       "kind": "text",
-      "required": false,
+      "required": true,
       "visibility": "public",
       "scope": "case",
       "extractionHint": "原件字段 F022。materialVersions: object[]；系统：sha256、版本号、时间、来源及前序引用 L1 起；必；文件无法读取也保留 hash 和错误原因；历史只读。字段缺失不自动等于资格不符；需要权威记录或政策判断时转人工复核。"
