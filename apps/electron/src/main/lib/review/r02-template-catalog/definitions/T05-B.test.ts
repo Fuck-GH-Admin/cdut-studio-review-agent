@@ -31,8 +31,12 @@ function referencedIds(text: string, prefix: 'F' | 'M'): string[] {
     }
     const tail = text.slice(re.lastIndex, re.lastIndex + 35)
     const slash = tail.match(/^\s*(?:(?:\([^)]*\)|（[^）]*）)\s*)?((?:\/(?:F|M)?\d{1,3})+)/)
-    if (slash) {
-      for (const part of slash[1].matchAll(/\/(?:F|M)?(\d{1,3})/g)) found.add(prefix + String(Number(part[1])).padStart(3, '0'))
+    const slashRefs = slash?.[1]
+    if (slashRefs) {
+      for (const part of slashRefs.matchAll(/\/(?:F|M)?(\d{1,3})/g)) {
+        const value = part[1]
+        if (value) found.add(prefix + String(Number(value)).padStart(3, '0'))
+      }
     }
   }
   return [...found]
