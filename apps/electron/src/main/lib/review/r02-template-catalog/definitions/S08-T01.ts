@@ -1028,7 +1028,7 @@ export const templateVersion: TemplateVersion = {
       ]
     }
   ],
-  policyVersionIds: [], stages:   [
+  policyVersionIds: [], stages:     [
     {
       "id": "p0",
       "name": "关系/资格基线读取：核研究生身份及当前导师登记，识别招生已录取但尚未报到、在籍、国际生、联合培养",

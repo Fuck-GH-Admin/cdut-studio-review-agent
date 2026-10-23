@@ -981,7 +981,7 @@ export const templateVersion: TemplateVersion = {
       ]
     }
   ],
-  policyVersionIds: [], stages:   [
+  policyVersionIds: [], stages:     [
     {
       "id": "registered",
       "name": "REGISTERED：立案与身份基线",

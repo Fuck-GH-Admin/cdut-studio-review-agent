@@ -1715,7 +1715,7 @@ export const templateVersion: TemplateVersion = {
       ]
     }
   ],
-  policyVersionIds: [], stages:   [
+  policyVersionIds: [], stages:     [
     {
       "id": "phase-1",
       "name": "申请与身份/版本定位",

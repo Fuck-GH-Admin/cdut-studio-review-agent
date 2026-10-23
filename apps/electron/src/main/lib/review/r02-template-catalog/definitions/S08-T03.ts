@@ -1264,34 +1264,90 @@ export const templateVersion: TemplateVersion = {
       ]
     }
   ],
-  policyVersionIds: [], stages:   [
+  policyVersionIds: [], stages:     [
     {
-      "id": "intake",
-      "name": "申请与身份定位",
+      "id": "p0",
+      "name": "范围识别",
       "kind": "manual-review",
       "executorRole": "reviewer",
       "workflowOwner": "local",
-      "nextStageId": "evidence-review"
+      "nextStageId": "p1"
     },
     {
-      "id": "evidence-review",
-      "name": "材料与事实核验",
+      "id": "p1",
+      "name": "资格准备",
       "kind": "manual-review",
       "executorRole": "reviewer",
       "workflowOwner": "local",
-      "nextStageId": "human-review"
+      "nextStageId": "p2"
     },
     {
-      "id": "human-review",
-      "name": "政策与权限人工复核",
+      "id": "p2",
+      "name": "报告与导师审阅",
+      "kind": "manual-review",
+      "executorRole": "teacher",
+      "workflowOwner": "local",
+      "nextStageId": "p3"
+    },
+    {
+      "id": "p3",
+      "name": "排会与公告",
       "kind": "manual-review",
       "executorRole": "reviewer",
       "workflowOwner": "local",
-      "nextStageId": "handoff"
+      "nextStageId": "p4"
     },
     {
-      "id": "handoff",
-      "name": "人工决定前审阅交接",
+      "id": "p4",
+      "name": "汇报与答辩",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "workflowOwner": "local",
+      "nextStageId": "p5"
+    },
+    {
+      "id": "p5",
+      "name": "专家评议",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "workflowOwner": "local",
+      "nextStageId": "p6"
+    },
+    {
+      "id": "p6",
+      "name": "移交、录入、归档、公布",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "workflowOwner": "local",
+      "nextStageId": "p7"
+    },
+    {
+      "id": "p7",
+      "name": "通过后修改",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "workflowOwner": "local",
+      "nextStageId": "p8"
+    },
+    {
+      "id": "p8",
+      "name": "新尝试/重大改题",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "workflowOwner": "local",
+      "nextStageId": "p9"
+    },
+    {
+      "id": "p9",
+      "name": "复议",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "workflowOwner": "local",
+      "nextStageId": "p10"
+    },
+    {
+      "id": "p10",
+      "name": "供下游引用",
       "kind": "handoff",
       "executorRole": "reviewer",
       "workflowOwner": "local"

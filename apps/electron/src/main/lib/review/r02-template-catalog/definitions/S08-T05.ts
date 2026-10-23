@@ -1421,34 +1421,50 @@ export const templateVersion: TemplateVersion = {
       ]
     }
   ],
-  policyVersionIds: [], stages:   [
+  policyVersionIds: [], stages:     [
     {
-      "id": "intake",
-      "name": "申请与身份定位",
+      "id": "l0",
+      "name": "身份与政策分流",
       "kind": "manual-review",
       "executorRole": "reviewer",
       "workflowOwner": "local",
-      "nextStageId": "evidence-review"
+      "nextStageId": "l1"
     },
     {
-      "id": "evidence-review",
-      "name": "材料与事实核验",
+      "id": "l1",
+      "name": "学术活动滚动登记",
       "kind": "manual-review",
       "executorRole": "reviewer",
       "workflowOwner": "local",
-      "nextStageId": "human-review"
+      "nextStageId": "l2"
     },
     {
-      "id": "human-review",
-      "name": "政策与权限人工复核",
+      "id": "l2",
+      "name": "科研成果逐件录入",
       "kind": "manual-review",
       "executorRole": "reviewer",
       "workflowOwner": "local",
-      "nextStageId": "handoff"
+      "nextStageId": "l3"
     },
     {
-      "id": "handoff",
-      "name": "人工决定前审阅交接",
+      "id": "l3",
+      "name": "培养环节与成果审核",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "workflowOwner": "local",
+      "nextStageId": "l4"
+    },
+    {
+      "id": "l4",
+      "name": "申请资格衔接",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "workflowOwner": "local",
+      "nextStageId": "l5"
+    },
+    {
+      "id": "l5",
+      "name": "后续更新/异议",
       "kind": "handoff",
       "executorRole": "reviewer",
       "workflowOwner": "local"
