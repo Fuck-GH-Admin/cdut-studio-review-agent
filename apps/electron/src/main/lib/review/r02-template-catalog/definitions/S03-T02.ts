@@ -285,7 +285,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "P1 申请",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -305,7 +305,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "P1 身份学籍",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -325,7 +325,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "P1 本科成绩排名",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -345,7 +345,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "P1 本科综测",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -365,7 +365,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "P1 研究生培养成绩",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -385,7 +385,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "P1 转段条件",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -405,7 +405,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "P1 成果条件",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -425,7 +425,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "P2 既往获奖使用",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -445,7 +445,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "P2 纪律诚信",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -465,7 +465,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "P2 研究生注册缴费",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -485,7 +485,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "P0 当年批次",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -505,7 +505,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "P3 研究生学院细则",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -525,7 +525,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "P3 研究生答辩推荐",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -545,7 +545,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "P3 学院公示",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -565,7 +565,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "P4 学校审定公示",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -585,7 +585,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "P5 报送与结果",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -605,7 +605,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "P6 撤回",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -625,7 +625,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "P6 复核申诉",
         "签发方、对象、适用时点与来源版本（如适用）"
@@ -645,7 +645,7 @@ export const templateVersion: TemplateVersion = {
       ],
       "minCount": 0,
       "requiredAt": "decision",
-      "maxCount": 999999,
+      maxCount: Number.MAX_SAFE_INTEGER,
       "requiredElements": [
         "P2/P6 重传",
         "签发方、对象、适用时点与来源版本（如适用）"
