@@ -1785,7 +1785,7 @@ export const r02Metadata: R02TemplateMetadata = {
   "manifestExpectedBytes": 139284,
   "manifestExpectedSha256": "0b68bceba73624fe1e35f15037f1ef1f28f006e990cce6cd9bba2177a8f005b5",
   "researchSourcePath": "docs/design/review-agent/business-templates/R02/research-original/T08-T01.md",
-  "sourceIntegrityStatus": "REVIEWED_COPY_PATCHED",
+  "sourceIntegrityStatus": "REVIEWED_PATCH_APPLIED",
   "sourceIntegrityNote": "research-original 的当前 Git blob 不含末尾 LF，追加一个 LF 后与清单 SHA-256 匹配；本审阅副本只更正国科发资〔2020〕132号的效力状态，依据科技部2025-08-05失效文件目录，研究原件保持只读。",
   "researchStatus": "RESEARCH_HANDOFF_READY",
   "sourceRecordCount": 20,
