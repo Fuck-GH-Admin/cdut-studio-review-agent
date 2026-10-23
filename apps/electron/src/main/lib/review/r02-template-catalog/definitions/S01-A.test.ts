@@ -38,12 +38,11 @@ describe('R02 S01-A templates', () => {
       const sectionIds = new Set((template.sections ?? []).map((section) => section.id))
       const criteria = (template.sections ?? []).flatMap((section) => section.criteria.map((criterion) => ({ ...criterion, sectionId: section.id })))
       const sourceIds = new Set(metadata.sources.map((source) => source.srcId)), criterionIds = criteria.map((criterion) => criterion.id)
-      const mappingByKey = new Map(metadata.criteria.map((mapping) => [`${mapping.sectionId}:${mapping.criterionId}`, mapping] as const))
       expect(new Set(criterionIds).size).toBe(criteria.length); expect(new Set((template.sections ?? []).map((section) => section.id)).size).toBe((template.sections ?? []).length)
       for (const criterion of criteria) { for (const ref of criterion.requirement.matchAll(/\bF\d{3}\b/g)) expect(fieldIds.has(ref[0])).toBe(true); for (const ref of criterion.requirement.matchAll(/\bM\d{3}\b/g)) expect(materialIds.has(ref[0])).toBe(true) }
-      expect(metadata.criteria.length).toBe(criteria.length); expect(new Set(metadata.criteria.map((x) => `${x.sectionId}:${x.criterionId}`)).size).toBe(criteria.length)
+      expect(Number(metadata.criteria.length)).toBe(Number(criteria.length)); expect(new Set(metadata.criteria.map((x) => `${x.sectionId}:${x.criterionId}`)).size).toBe(criteria.length)
       for (const mapping of metadata.criteria) { expect(sectionIds.has(mapping.sectionId)).toBe(true); expect(criterionIds.includes(mapping.criterionId)).toBe(true); for (const sourceId of mapping.srcIds) expect(sourceIds.has(sourceId)).toBe(true); expect(['VERIFIED', 'PARTIAL', 'UNCONFIRMED']).toContain(mapping.evidenceStatus) }
-      for (const criterion of criteria) { const mapping = mappingByKey.get(`${criterion.sectionId}:${criterion.id}`); expect(mapping?.srcIds).toEqual(sourceRefsFromText(criterion.requirement)) }
+      for (const criterion of criteria) { const mapping = metadata.criteria.find((entry) => entry.sectionId === criterion.sectionId && entry.criterionId === criterion.id); expect(JSON.stringify(mapping?.srcIds)).toBe(JSON.stringify(sourceRefsFromText(criterion.requirement))) }
     }
   })
   test('stage graph is unique, reachable, acyclic, and locally owned', () => {
@@ -59,11 +58,11 @@ describe('R02 S01-A templates', () => {
   test('source metadata is complete and official-school status stays false', () => {
     for (const item of cases) {
       const { template, metadata } = item
-      expect(metadata.templateId).toBe(template.templateId); expect(metadata.name).toBe(template.name); expect(metadata.officialSchoolTemplate).toBe(false)
+      expect(String(metadata.templateId)).toBe(String(template.templateId)); expect(String(metadata.name)).toBe(String(template.name)); expect(metadata.officialSchoolTemplate).toBe(false)
       expect(metadata.sourceDocumentPath).toContain(`${template.templateId}.md`); expect(metadata.sourceDocumentSha256).toMatch(/^[a-f0-9]{64}$/)
       expect(metadata.researchStatus).toBe('PARTIAL'); expect(metadata.policyEvidenceStatus).toBe('PARTIAL')
       expect(metadata.sources.length).toBeGreaterThan(0); expect(new Set(metadata.sources.map((source) => source.srcId)).size).toBe(metadata.sources.length)
-      expect(metadata.criteria.length).toBe((template.sections ?? []).reduce((sum, section) => sum + section.criteria.length, 0))
+      expect(Number(metadata.criteria.length)).toBe((template.sections ?? []).reduce<number>((sum, section) => sum + section.criteria.length, 0))
       expect(template.sourceNote?.startsWith('R02_RESEARCH_TEMPLATE_NONOFFICIAL:')).toBe(true); expect(template.description).toContain('本地研究模板 · 非校方正式模板')
     }
   })
