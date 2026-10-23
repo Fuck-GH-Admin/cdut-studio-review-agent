@@ -1377,10 +1377,10 @@ export const template = T08T02Template
 export const r02Metadata: R02TemplateMetadata = {
   "templateId": "T08-T02",
   "name": "科研助理、项目编外人员录用与聘用合同核验",
-  "sourceDocumentPath": "docs/design/review-agent/business-templates/R02/research-original/T08-T02.md",
+  "sourceDocumentPath": "docs/design/review-agent/business-templates/R02/T08-T02.md",
   "reviewedDocumentPath": "docs/design/review-agent/business-templates/R02/T08-T02.md",
-  "sourceDocumentSha256": "17bd28b28c5599812493f4a4de68de48a62ea040f3e02abb3404c969c8e1ada9",
-  "sourceDocumentBytes": 149842,
+  "sourceDocumentSha256": "e6fa47059b51d517f44d0277c9415271cd2f2e924e79eb8f505465b2793f01ab",
+  "sourceDocumentBytes": 149841,
   "sourceSnapshotCommit": "150acfe761cb7ad0424a2ca009fd57f12dbfddfd",
   "officialSchoolTemplate": false,
   "researchEvidenceStatus": "PARTIAL",
