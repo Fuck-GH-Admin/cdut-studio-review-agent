@@ -910,7 +910,7 @@ export const template: TemplateVersion = {
           "id": "R019",
           "title": "困难认定是否是当前条件",
           "requirement": "【研究级核验标准；非校方正式规则】R019 R019 困难认定是否是当前条件 | L1；T 当期银行明确要求校内困难结论/F 无该要求/U 要求未知 | F025/F029；M014；SRC-007/008 | 引用有效 S03-T06 决定 PASS_FACT；要求未证不索表；资助中心/银行",
-          "execution": "semantic",
+          "execution": "manual",
           "targetScope": "subject"
         },
         {

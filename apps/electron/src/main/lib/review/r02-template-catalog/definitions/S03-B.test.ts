@@ -62,6 +62,7 @@ describe('R02 S03-B native template definitions', () => {
         for (const fieldId of mapping!.fieldIds) expect(fieldIds.has(fieldId)).toBe(true)
         for (const slotId of mapping!.materialSlotIds) expect(slotIds.has(slotId)).toBe(true)
         expect(['PARTIAL', 'UNCONFIRMED']).toContain(mapping!.evidenceStatus)
+        if (mapping!.evidenceStatus === 'UNCONFIRMED') expect(criterion.execution).toBe('manual')
         if (Number(mapping!.srcIds.length) === 0) expect(mapping!.evidenceStatus).toBe('UNCONFIRMED')
       }
     }

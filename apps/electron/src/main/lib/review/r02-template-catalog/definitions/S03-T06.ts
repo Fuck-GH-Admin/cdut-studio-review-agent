@@ -961,7 +961,7 @@ export const template: TemplateVersion = {
           "id": "R007",
           "title": "本人承诺与签认",
           "requirement": "【研究级核验标准；非校方正式规则】R007 R007 [E/P] P1 本人承诺与签认 | T：适用表要求的本人/合法监护签认可读且身份匹配；F：当期确需且缺签署；U：电子签名/代理签署规则未核 | SRC-007/009/003；F003/F011/F015；M001/M008/M024 | 对本人承诺、签字区与身份/受理版本匹配；扫描签名不等于可信登录；2025 宣传“不用基层盖章”不推定所有表格项 | T→PASS_FACT；F→NEEDS_MATERIAL→本人；U→POLICY_UNCONFIRMED→资助受理人",
-          "execution": "semantic",
+          "execution": "manual",
           "targetScope": "subject"
         },
         {

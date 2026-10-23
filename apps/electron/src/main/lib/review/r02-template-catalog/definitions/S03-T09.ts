@@ -1223,7 +1223,7 @@ export const template: TemplateVersion = {
           "id": "R008",
           "title": "核验：该岗公告规定申请表、简历或其他载体，核真实材料与正式渠道",
           "requirement": "【研究级核验标准；非校方正式规则】R008 R008 P1–P2；F009/F017/F025/F027；M001/M004/M005；SRC-005/SRC-006/SRC-008/SRC-013/SRC-014/SRC-015 | T：该岗公告规定申请表、简历或其他载体，核真实材料与正式渠道；F：公告未要求某一载体则其材料 NA；U：只知历史附件但无现行附件 | 正确申请载体的提交事实 PF；当期明确要交却缺 NM，格式允许替代未明 PU/HD，文件读不清 UR；下一人：学生/岗位收件人",
-          "execution": "semantic",
+          "execution": "manual",
           "targetScope": "case"
         },
         {
@@ -1237,21 +1237,21 @@ export const template: TemplateVersion = {
           "id": "R010",
           "title": "核验：岗位发布具体技能/作品条件，核自述及证明是否同一申请人且在可接受时间",
           "requirement": "【研究级核验标准；非校方正式规则】R010 R010 P1–P3；F020/F027/F036；M002/M005/M011；SRC-006/SRC-008/SRC-013/SRC-014 | T：岗位发布具体技能/作品条件，核自述及证明是否同一申请人且在可接受时间；F：无特技门槛→NA；U：门槛/原件要求未核 | 仅证据归属与存在可 PF；明确应交而无作品 NM、不可读 UR、真实性冲突 CF；实际胜任性、排序 HD；下一人：岗位面试负责人",
-          "execution": "semantic",
+          "execution": "manual",
           "targetScope": "case"
         },
         {
           "id": "R011",
           "title": "核验：当岗要求可工作时段，比较同学期有效课表与申请班次的时间交集",
           "requirement": "【研究级核验标准；非校方正式规则】R011 R011 P1–P3；F028–F029/F020；M001/M006/M007；SRC-006/SRC-008/SRC-013/SRC-014 | T：当岗要求可工作时段，比较同学期有效课表与申请班次的时间交集；F：岗位未要求表明时段→NA；U：课程改表或官方课表不可取 | “时段未冲突”事实 PF；有重叠 CF，改版课表须重审 R011；课表系统失联 SU、学业是否允许兼顾 HD；下一人：学生/教务/设岗方",
-          "execution": "semantic",
+          "execution": "manual",
           "targetScope": "case"
         },
         {
           "id": "R012",
           "title": "核验：公告载困难要求，按具体岗位分“硬门槛/优先/未载明”",
           "requirement": "【研究级核验标准；非校方正式规则】R012 R012 P1–P2；F014/F020–F021；M001；SRC-005/SRC-006/SRC-013/SRC-014/SRC-010 | T：公告载困难要求，按具体岗位分“硬门槛/优先/未载明”；F：未载则困难材料本阶段 NA；U：公告相互冲突或当前正文未得 | 对该历史岗位的用语提取可 PF；不自动把地科院“必须”套保卫部“优先”，跨岗套用 PU；解释冲突 HD；下一人：岗位发布者/资助中心",
-          "execution": "semantic",
+          "execution": "manual",
           "targetScope": "case"
         },
         {
@@ -1293,7 +1293,7 @@ export const template: TemplateVersion = {
           "id": "R018",
           "title": "核验：当期岗位明确面试携申请表原件或当场核意见，核纸件与登记版相符",
           "requirement": "【研究级核验标准；非校方正式规则】R018 R018 P3；F025/F030/F038；M001/M004/M012/M014；SRC-013/SRC-014/SRC-015 | T：当期岗位明确面试携申请表原件或当场核意见，核纸件与登记版相符；F：没到面试或未要求原件→NA；U：扫描件与纸件法律替代未明 | 原件已由有权面试者核验的记录 PF；明示必需但到面试时无原件 NM，扫描不可读 UR，允许电子替代不明 HD；下一人：岗位面试者",
-          "execution": "semantic",
+          "execution": "manual",
           "targetScope": "case"
         },
         {
@@ -1307,7 +1307,7 @@ export const template: TemplateVersion = {
           "id": "R020",
           "title": "核验：单位形成拟录用名单，核名单行绑定本学年本人及岗位",
           "requirement": "【研究级核验标准；非校方正式规则】R020 R020 P3；F023/F039；M002/M015；SRC-005/SRC-007/SRC-013 | T：单位形成拟录用名单，核名单行绑定本学年本人及岗位；F：未进入拟录用→NA；U：只看到同名或群内截图 | “拟录用名单有该人”可核 PF；同名疑似串案 CF，名单真实性 HD/SU；绝不把候选当终审；下一人：设岗单位",
-          "execution": "semantic",
+          "execution": "manual",
           "targetScope": "case"
         },
         {
@@ -1321,7 +1321,7 @@ export const template: TemplateVersion = {
           "id": "R022",
           "title": "核验：当岗进入公示或已提出公示异议，核公示出处、公告期和真实受理事件",
           "requirement": "【研究级核验标准；非校方正式规则】R022 R022 P4；F041–F042；M017/M026；SRC-005/SRC-006/SRC-013/SRC-015 | T：当岗进入公示或已提出公示异议，核公示出处、公告期和真实受理事件；F：尚未进入→NA；U：有异议但受理责任方不明 | “公示/异议已发生”事实 PF；主体或名单冲突 CF、存异议需有权处置 HD、期限不明 PU；下一人：公示发布/异议受理单位",
-          "execution": "semantic",
+          "execution": "manual",
           "targetScope": "subject"
         },
         {
@@ -1342,14 +1342,14 @@ export const template: TemplateVersion = {
           "id": "R025",
           "title": "核验：真实到岗后逐月考勤，按受控签到与工作日、考勤月份比较实际时数",
           "requirement": "【研究级核验标准；非校方正式规则】R025 R025 P5–P6；F044–F046；M019/M020；SRC-003/SRC-005 | T：真实到岗后逐月考勤，按受控签到与工作日、考勤月份比较实际时数；F：仅申请尚未上岗→NA；U：月台账尚未结算或系统失联 | 可核某月实际记录工时 PF，不据申请中预计时长替代；原始记录失联 SU，时间矛盾 CF；下一人：用工单位考勤员",
-          "execution": "semantic",
+          "execution": "manual",
           "targetScope": "subject"
         },
         {
           "id": "R026",
           "title": "核验：真实月考核已进入办理，核考核者身份与记录归属",
           "requirement": "【研究级核验标准；非校方正式规则】R026 R026 P5–P6；F045/F047；M020/M021；SRC-003/SRC-005/SRC-007 | T：真实月考核已进入办理，核考核者身份与记录归属；F：未到考核月→NA；U：只有学生自评 | “考核记录已签发”事实 PF；材料缺、签发者不明 SU/HD，模型不能给分/决定合格；下一人：有权考核部门",
-          "execution": "semantic",
+          "execution": "manual",
           "targetScope": "subject"
         },
         {

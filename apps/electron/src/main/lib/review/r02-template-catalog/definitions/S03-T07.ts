@@ -1151,14 +1151,14 @@ export const template: TemplateVersion = {
           "id": "R002",
           "title": "唯一学生身份及材料主体匹配",
           "requirement": "【研究级核验标准；非校方正式规则】R002 R002 L1/L2：唯一学生身份及材料主体匹配 | 真＝已有学生或正式申请；假＝非学生/别的事项；未知＝同名不同号 | F001—F003、F045；M002、M003、M006/M011；SRC-001 第 5 条、SRC-020。权威学籍学生键与申请人、学号、学院、有效更名版本一致，不凭 OCR 模糊匹配 | 全部匹配→PASS_FACT；不同权威主体→CONFLICT，学籍部门核；图像糊→UNREADABLE，学生补清晰版；学籍源断→SOURCE_UNAVAILABLE；前端 actor 无效，Main/Host 鉴权",
-          "execution": "semantic",
+          "execution": "manual",
           "targetScope": "subject"
         },
         {
           "id": "R003",
           "title": "学段/学院归属路由",
           "requirement": "【研究级核验标准；非校方正式规则】R003 R003 L1：学段/学院归属路由 | 真＝本专科/研究生之一；假＝不属于本事项人群；未知＝学段转换中 | F005—F006、F011；M002/M014；SRC-001 第 8 条、SRC-020。取正式学籍有效日与学院，学院细则不得用于外院 | 可信分支→PASS_FACT；跨学段错套→CONFLICT；学籍未生效或转换中→NEEDS_HUMAN_DECISION，学籍/研究生院；完全无源→SOURCE_UNAVAILABLE",
-          "execution": "semantic",
+          "execution": "manual",
           "targetScope": "subject"
         },
         {
@@ -1193,7 +1193,7 @@ export const template: TemplateVersion = {
           "id": "R008",
           "title": "本科困难身份正式生效",
           "requirement": "【研究级核验标准；非校方正式规则】R008 R008 L1：本科困难身份正式生效 | 真＝普通本科困难型申报 A01/A03；假＝研究生正常国助；未知＝退役特别情形 | F022—F025；M004、条件 M027；SRC-008、013、019。只消费 S03-T06 有权认定的 ID、状态、学年、版次；本人 M005 不是终局 | 有效且覆盖本期→PASS_FACT（仅前置）；待认定→NEEDS_HUMAN_DECISION 路由 S03-T06；源断→SOURCE_UNAVAILABLE；学校 2026 等级适用规则未知→POLICY_UNCONFIRMED",
-          "execution": "semantic",
+          "execution": "manual",
           "targetScope": "case"
         },
         {
@@ -1403,7 +1403,7 @@ export const template: TemplateVersion = {
           "id": "R038",
           "title": "材料版本替换与受影响规则定向失效",
           "requirement": "【研究级核验标准；非校方正式规则】R038 R038 L2—L7：材料版本替换与受影响规则定向失效 | 真＝M 被补件/重传/源更新；假＝无变化；未知＝新旧版关系不明 | F044—F046；M029＋被替换任一 M；SRC-006、020—022 仅技术设计证据。保存 materialId@sourceVersion、supersedes、受影响的 R 与原 Run，冻结历史 | 关系完整→PASS_FACT（重审管理事实），仅依赖旧版的 R 标 STALE 待重审；无版本映射→CONFLICT，案卷业务 Owner；不得编辑历史 Run 或正式学校决定",
-          "execution": "semantic",
+          "execution": "manual",
           "targetScope": "subject"
         },
         {
