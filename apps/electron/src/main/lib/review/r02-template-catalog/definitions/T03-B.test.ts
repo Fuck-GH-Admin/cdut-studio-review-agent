@@ -89,6 +89,14 @@ describe('T03-B R02 native template definitions', () => {
     }
   })
 
+  test('underspecified enums and tri-state fields are not guessed', () => {
+    for (const { template } of entries) {
+      for (const field of template.fields) {
+        if (field.kind === 'enum') expect((field.options ?? []).length).toBeGreaterThan(0)
+      }
+    }
+  })
+
   test('T03-T09 is metadata-only and keeps all rules manual', () => {
     expect(T03T09.fields.map(field => field.key)).toEqual(['f001', 'f002'])
     expect(T03T09.materialSlots.map(slot => slot.id)).toEqual(['m001'])
