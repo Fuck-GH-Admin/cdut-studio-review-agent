@@ -14,7 +14,7 @@ export const templateVersion: TemplateVersion = {
   templateId: "S08-T06", version: 1, schemaVersion: 2, name: "学位论文预审、预答辩、送审资格与评阅材料审核",
   description: "本地研究模板 · 非校方正式模板。学位论文预审、预答辩、送审资格与评阅材料审核；仅供本地材料核验、证据覆盖检查和人工审阅建议，不构成学校正式审批。政策证据状态：PARTIAL。",
   catalogKind: 'builtin', sourceNote: "R02_RESEARCH_TEMPLATE_NONOFFICIAL: 非校方正式模板；研究原件 docs/design/review-agent/business-templates/R02/research-original/S08-T06.md（Git blob SHA-256=b4fc142ec280e06563947a4f7e2ee1b9092f6713e3f1c50cd6bdcebc75b751f1）；审阅后来源文档 docs/design/review-agent/business-templates/R02/S08-T06.md（SHA-256=516a27d22ccc299d8c3589c8220d5528861659ef230002b9ef1c0c7f35ab9774）；政策证据 PARTIAL，禁止将模板 criterion 视为 PolicyVersion 或学校授权。", objectType: 'person', displayName: { template: "学位论文预审、预答辩、送审资格与评阅材料审核" },
-  fields:   [
+  fields:     [
     {
       "key": "F001",
       "label": "学校受理号/本地案卷关联号",
@@ -45,29 +45,29 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F004",
       "label": "在读/结业/其他身份",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F004；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F004；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F005",
       "label": "硕士/博士",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F005；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F005；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F006",
       "label": "学术/专业/工程类专业博士",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F006；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F006；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F007",
@@ -99,20 +99,20 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F010",
       "label": "当前生命周期阶段",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F010；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F010；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F011",
       "label": "毕业资格审查结论",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F011；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F011；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F012",
@@ -126,11 +126,11 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F013",
       "label": "论文/工程博士实践成果路径",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F013；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F013；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F014",
@@ -153,38 +153,38 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F016",
       "label": "涉密分类/安全路由",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F016；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F016；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F017",
       "label": "格式检测完成状态",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F017；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F017；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F018",
       "label": "学院质量控制结论",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F018；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F018；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F019",
       "label": "导师同意预审",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F019；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F019；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F020",
@@ -198,11 +198,11 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F021",
       "label": "预审采用专家评阅/预答辩",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F021；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F021；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F022",
@@ -225,11 +225,11 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F024",
       "label": "学院预审综合结果",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F024；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F024；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F025",
@@ -252,11 +252,11 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F027",
       "label": "导师确认修改/同意进入后续",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F027；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F027；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F028",
@@ -270,20 +270,20 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F029",
       "label": "检测通过/复检/未通过/未知",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F029；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F029；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F030",
       "label": "学院准入与送审经办确认",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F030；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F030；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F031",
@@ -333,11 +333,11 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F036",
       "label": "综合处理去向",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F036；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F036；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F037",
@@ -369,11 +369,11 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F040",
       "label": "分委员会同意复增评",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F040；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F040；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F041",
@@ -387,11 +387,11 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F042",
       "label": "观点分歧申诉适格性",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F042；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F042；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F043",
@@ -459,11 +459,11 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F050",
       "label": "enum/reference；H，机要送达/专人取回状态",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F050；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F050；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F051",
@@ -486,20 +486,20 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F053",
       "label": "enum/reference；H，撤回提出及学校处置",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F053；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F053；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F054",
       "label": "enum/list；H，材料取回、读取、权源冲突状态",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F054；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F054；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F055",
@@ -522,20 +522,20 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F057",
       "label": "reference/enum；H，学院当期质量控制/预审细则的有效版本与适用对象",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F057；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F057；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F058",
       "label": "enum/reference；H，第三方受理后稿件撤回、替换、重投的学校+平台分别确认状态",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F058；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F058；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     }
   ],
   materialSlots:   [

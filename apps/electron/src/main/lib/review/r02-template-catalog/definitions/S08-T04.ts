@@ -14,7 +14,7 @@ export const templateVersion: TemplateVersion = {
   templateId: "S08-T04", version: 1, schemaVersion: 2, name: "研究生中期考核与培养进展审核",
   description: "本地研究模板 · 非校方正式模板。研究生中期考核与培养进展审核；仅供本地材料核验、证据覆盖检查和人工审阅建议，不构成学校正式审批。政策证据状态：PARTIAL。",
   catalogKind: 'builtin', sourceNote: "R02_RESEARCH_TEMPLATE_NONOFFICIAL: 非校方正式模板；研究原件 docs/design/review-agent/business-templates/R02/research-original/S08-T04.md（Git blob SHA-256=92e39c9f5673b5884c762f922c440727c99515595d69bd83e928ffdd5d0f5a91）；审阅后来源文档 docs/design/review-agent/business-templates/R02/S08-T04.md（SHA-256=df0265569e6213739b24a35496410566faadd822a89a26f43972b38f5f9af275）；政策证据 PARTIAL，禁止将模板 criterion 视为 PolicyVersion 或学校授权。", objectType: 'person', displayName: { template: "研究生中期考核与培养进展审核" },
-  fields:   [
+  fields:     [
     {
       "key": "F001",
       "label": "student_id",
@@ -27,20 +27,20 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F002",
       "label": "enrollment_status",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F002；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F002；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F003",
       "label": "degree_track",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F003；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F003；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F004",
@@ -108,11 +108,11 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F011",
       "label": "exception_route",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F011；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F011；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F012",
@@ -198,11 +198,11 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F021",
       "label": "assessment_grade",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F021；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F021；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F022",

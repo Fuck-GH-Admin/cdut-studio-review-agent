@@ -14,7 +14,7 @@ export const templateVersion: TemplateVersion = {
   templateId: "S08-T03", version: 1, schemaVersion: 2, name: "硕博研究生学位论文开题资格和报告审核",
   description: "本地研究模板 · 非校方正式模板。硕博研究生学位论文开题资格和报告审核；仅供本地材料核验、证据覆盖检查和人工审阅建议，不构成学校正式审批。政策证据状态：PARTIAL。",
   catalogKind: 'builtin', sourceNote: "R02_RESEARCH_TEMPLATE_NONOFFICIAL: 非校方正式模板；研究原件 docs/design/review-agent/business-templates/R02/research-original/S08-T03.md（Git blob SHA-256=13a37c9eafa97fb71694aad93b0095da79ac948466c7f69269b07902edd725da）；审阅后来源文档 docs/design/review-agent/business-templates/R02/S08-T03.md（SHA-256=c0adc04b868793000b1ab0e996ca4a1b29fe1059a11c5d4e0500bf131c1db284）；政策证据 PARTIAL，禁止将模板 criterion 视为 PolicyVersion 或学校授权。", objectType: 'person', displayName: { template: "硕博研究生学位论文开题资格和报告审核" },
-  fields:   [
+  fields:     [
     {
       "key": "F001",
       "label": "学号／Student",
@@ -36,38 +36,38 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F003",
       "label": "学籍/在读资格／Student",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F003；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F003；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F004",
       "label": "硕士/博士层次／Student",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F004；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F004；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F005",
       "label": "普通博士/直博/硕博连读路径／Student",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F005；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F005；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F006",
       "label": "学术/专业及工程博士论文路径／Student",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F006；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F006；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F007",
@@ -108,11 +108,11 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F011",
       "label": "enum+date? 中期考核既有状态／TrainingPlan",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F011；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F011；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F012",
@@ -126,11 +126,11 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F013",
       "label": "首次/失败重试/重大改题等申请理由／Application",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F013；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F013；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F014",
@@ -234,11 +234,11 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F025",
       "label": "enum+text 小组意见、等级/通过状态／OfficialOutcome",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F025；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F025；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F026",
@@ -252,11 +252,11 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F027",
       "label": "enum+datetime 教务系统录入等级、时间／OfficialOutcome",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F027；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F027；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F028",
@@ -306,11 +306,11 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F033",
       "label": "enum+token? 涉密开题的安全转介/许可状态／Application",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F033；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F033；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     },
     {
       "key": "F034",
@@ -405,11 +405,11 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F044",
       "label": "enum+ref 本案当前阶段、attempt、材料/结论状态／Application",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "原始字段编号 F044；字段语义来自研究模板字段字典。"
+      "displayHint": "原始字段编号 F044；原稿标注枚举/复合枚举，但未确认完整选项集合；运行时不强制选项，须按对应规则人工核验。"
     }
   ],
   materialSlots:   [
