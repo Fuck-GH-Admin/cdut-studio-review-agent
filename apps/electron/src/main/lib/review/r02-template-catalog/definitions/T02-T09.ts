@@ -20,7 +20,7 @@ export const templateVersion: TemplateVersion = {
   "fields": [
     {
       "key": "f001",
-      "label": "申请主体权威人员键 id",
+      "label": "申请主体权威人员键",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -30,7 +30,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f002",
-      "label": "法定/人事登记姓名 string",
+      "label": "法定/人事登记姓名",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -40,7 +40,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f003",
-      "label": "所属组织单位 orgRef",
+      "label": "所属组织单位",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -50,7 +50,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f004",
-      "label": "聘任/人员类别 enum+source",
+      "label": "聘任/人员类别",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -60,7 +60,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f005",
-      "label": "当前任职状态及起讫 status+interval",
+      "label": "当前任职状态及起讫",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -70,7 +70,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f006",
-      "label": "岗位与应履职职责 structuredText",
+      "label": "岗位与应履职职责",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -80,7 +80,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f007",
-      "label": "代理人可信主体键 id?",
+      "label": "代理人可信主体键",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -90,7 +90,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f008",
-      "label": "代理授权范围与有效期 scope+interval?",
+      "label": "代理授权范围与有效期",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -100,7 +100,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f009",
-      "label": "联系与通知通道 contactRef?",
+      "label": "联系与通知通道",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -110,7 +110,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f010",
-      "label": "进修计划 ID id",
+      "label": "进修计划 ID",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -120,7 +120,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f011",
-      "label": "计划版本/指纹 version+hash",
+      "label": "计划版本/指纹",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -130,7 +130,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f012",
-      "label": "拟培养学校与权威名称 orgRef/text",
+      "label": "拟培养学校与权威名称",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -140,7 +140,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f013",
-      "label": "地区/境内外 enum",
+      "label": "地区/境内外",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -150,7 +150,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f014",
-      "label": "目标学历层次 enum/none",
+      "label": "目标学历层次",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -160,7 +160,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f015",
-      "label": "目标学位层次 enum/none",
+      "label": "目标学位层次",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -170,7 +170,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f016",
-      "label": "专业/学科/培养方向 text+code?",
+      "label": "专业/学科/培养方向",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -180,7 +180,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f017",
-      "label": "教学学习形式 enum",
+      "label": "教学学习形式",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -190,7 +190,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f018",
-      "label": "招生录取类别 enum?",
+      "label": "招生录取类别",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -200,7 +200,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f019",
-      "label": "校内离岗/在岗拟安排 enum+interval?",
+      "label": "校内离岗/在岗拟安排",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -210,7 +210,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f020",
-      "label": "拟起始/离岗日期 date?",
+      "label": "拟起始/离岗日期",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -220,7 +220,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f021",
-      "label": "拟结束/返岗日期 date?",
+      "label": "拟结束/返岗日期",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -230,7 +230,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f022",
-      "label": "申请目的/进修理由 text",
+      "label": "申请目的/进修理由",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -240,7 +240,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f023",
-      "label": "外部招生/学籍阶段 enum+asOf",
+      "label": "外部招生/学籍阶段",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -250,7 +250,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f024",
-      "label": "外部报考识别号 string?",
+      "label": "外部报考识别号",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -260,7 +260,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f025",
-      "label": "预录取/拟录取事实 status+date?",
+      "label": "预录取/拟录取事实",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -270,7 +270,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f026",
-      "label": "正式录取事实 status+date?",
+      "label": "正式录取事实",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -280,7 +280,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f027",
-      "label": "入学、在读、完成阶段 enum+date?",
+      "label": "入学、在读、完成阶段",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -290,7 +290,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f028",
-      "label": "既有学历学位/报考前置背景 facts?",
+      "label": "既有学历学位/报考前置背景",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -300,7 +300,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f029",
-      "label": "本岗位职责受影响情况 structuredText",
+      "label": "本岗位职责受影响情况",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -310,7 +310,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f030",
-      "label": "代课/科研/离岗保障拟方案 structuredText?",
+      "label": "代课/科研/离岗保障拟方案",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -320,7 +320,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f031",
-      "label": "所在单位意见状态 enum?",
+      "label": "所在单位意见状态",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -330,7 +330,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f032",
-      "label": "单位意见签发者及权限引用 actor+authority?",
+      "label": "单位意见签发者及权限引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -340,7 +340,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f033",
-      "label": "本事项适用校本政策/版本 policyRef?",
+      "label": "本事项适用校本政策/版本",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -350,7 +350,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f034",
-      "label": "校内正式决定 ID id?",
+      "label": "校内正式决定 ID",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -360,7 +360,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f035",
-      "label": "校内有权决定者可信 Actor actorRef?",
+      "label": "校内有权决定者可信 Actor",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -370,7 +370,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f036",
-      "label": "决定文本、效力与范围 status+scope?",
+      "label": "决定文本、效力与范围",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -380,7 +380,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f037",
-      "label": "决定生效时间 datetime?",
+      "label": "决定生效时间",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -390,7 +390,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f038",
-      "label": "外事/招生/其他权威决定引用 refList?",
+      "label": "外事/招生/其他权威决定引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -400,7 +400,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f039",
-      "label": "独立资助事项引用 ref?",
+      "label": "独立资助事项引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -410,7 +410,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f040",
-      "label": "本次计划变更差异 changeSet?",
+      "label": "本次计划变更差异",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -420,7 +420,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f041",
-      "label": "原决定/原计划关联 ref?",
+      "label": "原决定/原计划关联",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -430,7 +430,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f042",
-      "label": "事件类型 enum",
+      "label": "事件类型",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -440,7 +440,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f043",
-      "label": "本事项校内截止及起算 date+source?",
+      "label": "本事项校内截止及起算",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -450,7 +450,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f044",
-      "label": "外部项目截止与适用年度 date+source?",
+      "label": "外部项目截止与适用年度",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -460,7 +460,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f045",
-      "label": "本案提交/补件/请求时点 datetime",
+      "label": "本案提交/补件/请求时点",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -470,7 +470,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f046",
-      "label": "事实异议或复核理由 text?",
+      "label": "事实异议或复核理由",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -480,7 +480,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f047",
-      "label": "复核/更正最终记录 decisionRef?",
+      "label": "复核/更正最终记录",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -490,7 +490,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f048",
-      "label": "字段证据归属与核验状态 evidenceMap",
+      "label": "字段证据归属与核验状态",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -1336,242 +1336,242 @@ export const r02Metadata = {
     {
       "sourceId": "F001",
       "fieldKey": "f001",
-      "label": "申请主体权威人员键 id"
+      "label": "申请主体权威人员键"
     },
     {
       "sourceId": "F002",
       "fieldKey": "f002",
-      "label": "法定/人事登记姓名 string"
+      "label": "法定/人事登记姓名"
     },
     {
       "sourceId": "F003",
       "fieldKey": "f003",
-      "label": "所属组织单位 orgRef"
+      "label": "所属组织单位"
     },
     {
       "sourceId": "F004",
       "fieldKey": "f004",
-      "label": "聘任/人员类别 enum+source"
+      "label": "聘任/人员类别"
     },
     {
       "sourceId": "F005",
       "fieldKey": "f005",
-      "label": "当前任职状态及起讫 status+interval"
+      "label": "当前任职状态及起讫"
     },
     {
       "sourceId": "F006",
       "fieldKey": "f006",
-      "label": "岗位与应履职职责 structuredText"
+      "label": "岗位与应履职职责"
     },
     {
       "sourceId": "F007",
       "fieldKey": "f007",
-      "label": "代理人可信主体键 id?"
+      "label": "代理人可信主体键"
     },
     {
       "sourceId": "F008",
       "fieldKey": "f008",
-      "label": "代理授权范围与有效期 scope+interval?"
+      "label": "代理授权范围与有效期"
     },
     {
       "sourceId": "F009",
       "fieldKey": "f009",
-      "label": "联系与通知通道 contactRef?"
+      "label": "联系与通知通道"
     },
     {
       "sourceId": "F010",
       "fieldKey": "f010",
-      "label": "进修计划 ID id"
+      "label": "进修计划 ID"
     },
     {
       "sourceId": "F011",
       "fieldKey": "f011",
-      "label": "计划版本/指纹 version+hash"
+      "label": "计划版本/指纹"
     },
     {
       "sourceId": "F012",
       "fieldKey": "f012",
-      "label": "拟培养学校与权威名称 orgRef/text"
+      "label": "拟培养学校与权威名称"
     },
     {
       "sourceId": "F013",
       "fieldKey": "f013",
-      "label": "地区/境内外 enum"
+      "label": "地区/境内外"
     },
     {
       "sourceId": "F014",
       "fieldKey": "f014",
-      "label": "目标学历层次 enum/none"
+      "label": "目标学历层次"
     },
     {
       "sourceId": "F015",
       "fieldKey": "f015",
-      "label": "目标学位层次 enum/none"
+      "label": "目标学位层次"
     },
     {
       "sourceId": "F016",
       "fieldKey": "f016",
-      "label": "专业/学科/培养方向 text+code?"
+      "label": "专业/学科/培养方向"
     },
     {
       "sourceId": "F017",
       "fieldKey": "f017",
-      "label": "教学学习形式 enum"
+      "label": "教学学习形式"
     },
     {
       "sourceId": "F018",
       "fieldKey": "f018",
-      "label": "招生录取类别 enum?"
+      "label": "招生录取类别"
     },
     {
       "sourceId": "F019",
       "fieldKey": "f019",
-      "label": "校内离岗/在岗拟安排 enum+interval?"
+      "label": "校内离岗/在岗拟安排"
     },
     {
       "sourceId": "F020",
       "fieldKey": "f020",
-      "label": "拟起始/离岗日期 date?"
+      "label": "拟起始/离岗日期"
     },
     {
       "sourceId": "F021",
       "fieldKey": "f021",
-      "label": "拟结束/返岗日期 date?"
+      "label": "拟结束/返岗日期"
     },
     {
       "sourceId": "F022",
       "fieldKey": "f022",
-      "label": "申请目的/进修理由 text"
+      "label": "申请目的/进修理由"
     },
     {
       "sourceId": "F023",
       "fieldKey": "f023",
-      "label": "外部招生/学籍阶段 enum+asOf"
+      "label": "外部招生/学籍阶段"
     },
     {
       "sourceId": "F024",
       "fieldKey": "f024",
-      "label": "外部报考识别号 string?"
+      "label": "外部报考识别号"
     },
     {
       "sourceId": "F025",
       "fieldKey": "f025",
-      "label": "预录取/拟录取事实 status+date?"
+      "label": "预录取/拟录取事实"
     },
     {
       "sourceId": "F026",
       "fieldKey": "f026",
-      "label": "正式录取事实 status+date?"
+      "label": "正式录取事实"
     },
     {
       "sourceId": "F027",
       "fieldKey": "f027",
-      "label": "入学、在读、完成阶段 enum+date?"
+      "label": "入学、在读、完成阶段"
     },
     {
       "sourceId": "F028",
       "fieldKey": "f028",
-      "label": "既有学历学位/报考前置背景 facts?"
+      "label": "既有学历学位/报考前置背景"
     },
     {
       "sourceId": "F029",
       "fieldKey": "f029",
-      "label": "本岗位职责受影响情况 structuredText"
+      "label": "本岗位职责受影响情况"
     },
     {
       "sourceId": "F030",
       "fieldKey": "f030",
-      "label": "代课/科研/离岗保障拟方案 structuredText?"
+      "label": "代课/科研/离岗保障拟方案"
     },
     {
       "sourceId": "F031",
       "fieldKey": "f031",
-      "label": "所在单位意见状态 enum?"
+      "label": "所在单位意见状态"
     },
     {
       "sourceId": "F032",
       "fieldKey": "f032",
-      "label": "单位意见签发者及权限引用 actor+authority?"
+      "label": "单位意见签发者及权限引用"
     },
     {
       "sourceId": "F033",
       "fieldKey": "f033",
-      "label": "本事项适用校本政策/版本 policyRef?"
+      "label": "本事项适用校本政策/版本"
     },
     {
       "sourceId": "F034",
       "fieldKey": "f034",
-      "label": "校内正式决定 ID id?"
+      "label": "校内正式决定 ID"
     },
     {
       "sourceId": "F035",
       "fieldKey": "f035",
-      "label": "校内有权决定者可信 Actor actorRef?"
+      "label": "校内有权决定者可信 Actor"
     },
     {
       "sourceId": "F036",
       "fieldKey": "f036",
-      "label": "决定文本、效力与范围 status+scope?"
+      "label": "决定文本、效力与范围"
     },
     {
       "sourceId": "F037",
       "fieldKey": "f037",
-      "label": "决定生效时间 datetime?"
+      "label": "决定生效时间"
     },
     {
       "sourceId": "F038",
       "fieldKey": "f038",
-      "label": "外事/招生/其他权威决定引用 refList?"
+      "label": "外事/招生/其他权威决定引用"
     },
     {
       "sourceId": "F039",
       "fieldKey": "f039",
-      "label": "独立资助事项引用 ref?"
+      "label": "独立资助事项引用"
     },
     {
       "sourceId": "F040",
       "fieldKey": "f040",
-      "label": "本次计划变更差异 changeSet?"
+      "label": "本次计划变更差异"
     },
     {
       "sourceId": "F041",
       "fieldKey": "f041",
-      "label": "原决定/原计划关联 ref?"
+      "label": "原决定/原计划关联"
     },
     {
       "sourceId": "F042",
       "fieldKey": "f042",
-      "label": "事件类型 enum"
+      "label": "事件类型"
     },
     {
       "sourceId": "F043",
       "fieldKey": "f043",
-      "label": "本事项校内截止及起算 date+source?"
+      "label": "本事项校内截止及起算"
     },
     {
       "sourceId": "F044",
       "fieldKey": "f044",
-      "label": "外部项目截止与适用年度 date+source?"
+      "label": "外部项目截止与适用年度"
     },
     {
       "sourceId": "F045",
       "fieldKey": "f045",
-      "label": "本案提交/补件/请求时点 datetime"
+      "label": "本案提交/补件/请求时点"
     },
     {
       "sourceId": "F046",
       "fieldKey": "f046",
-      "label": "事实异议或复核理由 text?"
+      "label": "事实异议或复核理由"
     },
     {
       "sourceId": "F047",
       "fieldKey": "f047",
-      "label": "复核/更正最终记录 decisionRef?"
+      "label": "复核/更正最终记录"
     },
     {
       "sourceId": "F048",
       "fieldKey": "f048",
-      "label": "字段证据归属与核验状态 evidenceMap"
+      "label": "字段证据归属与核验状态"
     }
   ],
   "materialSlotIds": [

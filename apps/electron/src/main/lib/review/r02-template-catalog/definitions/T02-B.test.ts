@@ -1,4 +1,7 @@
 import { describe, expect, test } from 'bun:test'
+import { createHash } from 'node:crypto'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { validateTemplate } from '../../template-store'
 import { templateVersion as T02T05, r02Metadata as T02T05Metadata } from './T02-T05'
 import { templateVersion as T02T06, r02Metadata as T02T06Metadata } from './T02-T06'
@@ -55,6 +58,9 @@ describe('R02 T02-B runtime template definitions', () => {
     for (const { template, metadata } of batch) {
       expect(metadata.sourceDocumentPath).toContain(`/${template.templateId}.md`)
       expect(metadata.sourceDocumentSha256).toMatch(/^[a-f0-9]{64}$/)
+      const sourcePath = resolve(import.meta.dir, '../../../../../../../../', metadata.sourceDocumentPath)
+      const sourceSha256 = createHash('sha256').update(readFileSync(sourcePath)).digest('hex')
+      expect(sourceSha256).toBe(metadata.sourceDocumentSha256)
       expect(template.sections?.reduce<number>((n, section) => n + section.criteria.length, 0) ?? 0).toBe(metadata.criteria.length)
       const sectionIds = new Set((template.sections ?? []).map(section => section.id))
       const criteria = new Set((template.sections ?? []).flatMap(section => section.criteria.map(criterion => `${section.id}:${criterion.id}`)))
@@ -83,7 +89,18 @@ describe('R02 T02-B runtime template definitions', () => {
       expect(template.materialSlots.length).toBe(metadata.materialSlotIds.length)
       expect(new Set(metadata.fieldIds.map(item => item.sourceId)).size).toBe(metadata.fieldIds.length)
       expect(new Set(metadata.materialSlotIds.map(item => item.sourceId)).size).toBe(metadata.materialSlotIds.length)
+      for (const item of metadata.fieldIds) expect(template.fields.find(field => field.key === item.fieldKey)?.label).toBe(item.label)
+      for (const item of metadata.materialSlotIds) expect(template.materialSlots.find(slot => slot.id === item.slotId)?.name).toBe(item.name)
     }
+  })
+
+  test('display names do not read adjacent evidence/source columns', () => {
+    expect(T02T05.fields.find(field => field.key === 'f007')?.label).toBe('考核年度')
+    expect(T02T05.fields.find(field => field.key === 'f009')?.label).toBe('各阶段办理时间窗')
+    expect(T02T05.materialSlots.find(slot => slot.id === 'm012')?.name).toBe('已形成且可引用的师德结论/状态')
+    expect(T02T05.materialSlots.find(slot => slot.id === 'm017')?.name).toBe('师德年度有效结论及最终签发者')
+    expect(T02T07.fields.find(field => field.key === 'f010')?.label).toBe('成果发生/获批/完成时点')
+    expect(T02T09.fields.find(field => field.key === 'f033')?.label).toBe('本事项适用校本政策/版本')
   })
 
   test('no dangling structured references, duplicate IDs, or illegal stage edges', () => {

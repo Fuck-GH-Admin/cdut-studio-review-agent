@@ -30,7 +30,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f002",
-      "label": "M002 姓名/曾用名项",
+      "label": "姓名/曾用名",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -40,7 +40,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f003",
-      "label": "M002 单位变动项",
+      "label": "归属单位",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -50,7 +50,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f004",
-      "label": "positionClass / enum（教师/辅导员/其他专技/管理/工勤/待核）",
+      "label": "受聘岗位类别",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -86,7 +86,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f005",
-      "label": "employmentClass / enum（事业编/人事代理/其他合同/返聘/其他/待核）",
+      "label": "人员聘用关系类别",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -122,7 +122,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f006",
-      "label": "specialAuthorityRoute / enum（一般/领导干部专门路线/未知）",
+      "label": "特殊授权审核路线",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -146,7 +146,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f007",
-      "label": "归口部门/受理上下文",
+      "label": "考核年度",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -156,7 +156,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f008",
-      "label": "归口部门核准的当期政策",
+      "label": "当期政策版本引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -166,7 +166,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f009",
-      "label": "deadline>",
+      "label": "各阶段办理时间窗",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -176,7 +176,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f010",
-      "label": "M003 登录会话索引",
+      "label": "发起人可信主体标识",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -186,7 +186,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f011",
-      "label": "HR/授权机关+HOST",
+      "label": "代办授权范围",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -196,7 +196,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f012",
-      "label": "unit>",
+      "label": "任职服务区间",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -206,7 +206,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f013",
-      "label": "M002 首次就业登记",
+      "label": "是否首次就业",
       "kind": "boolean",
       "required": false,
       "visibility": "internal",
@@ -216,7 +216,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f014",
-      "label": "issuer>",
+      "label": "既往任职区间",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -226,7 +226,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f015",
-      "label": "M005 兼岗聘任/职责",
+      "label": "兼任岗位引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -236,7 +236,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f016",
-      "label": "HR/派出主管",
+      "label": "外派派驻记录",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -246,7 +246,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f017",
-      "label": "leaveCategory / enum（病/事/产/非派出培训/其他/未知）",
+      "label": "请假类别",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -282,7 +282,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f018",
-      "label": "HR/考勤主管",
+      "label": "已批准请假期间",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -292,7 +292,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f019",
-      "label": "HR/岗位主管",
+      "label": "岗位任务基准引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -302,7 +302,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f020",
-      "label": "SELF 本人真实提交/代办有授权",
+      "label": "年度个人陈述引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -312,7 +312,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f021",
-      "label": "ORG 考勤/日常管理机关",
+      "label": "考勤事实引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -322,7 +322,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f022",
-      "label": "ORG 教学科研管理/单位",
+      "label": "履职业绩事实引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -332,7 +332,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f023",
-      "label": "接收/派出单位有权签发者",
+      "label": "外派接收单位意见引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -342,7 +342,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f024",
-      "label": "priorEthicsStatus / enum（存在有效结论/未有可引结论/状态未知）",
+      "label": "既有师德结论状态",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -366,7 +366,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f025",
-      "label": "M012 文号/人员/期间/效力",
+      "label": "既有师德决定引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -376,7 +376,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f026",
-      "label": "P2（G 或确有相关记录）",
+      "label": "科研诚信正式决定引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -386,7 +386,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f027",
-      "label": "investigationProcedureState / enum（未知/已受理/正式立案/调查中/结案）",
+      "label": "调查程序阶段",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -418,7 +418,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f028",
-      "label": "ETH 受限登记簿",
+      "label": "受限调查记录引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -428,7 +428,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f029",
-      "label": "HR/当期授权考核组织",
+      "label": "单位评审授权证明",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -438,7 +438,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f030",
-      "label": "有权单位评议组",
+      "label": "单位评审建议引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -448,7 +448,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f031",
-      "label": "SCH 正式年度结果管理者",
+      "label": "年度考核正式决定引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -458,7 +458,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f032",
-      "label": "annualDecisionGrade / enum（四档/不定档/未知）",
+      "label": "年度考核档次",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -482,7 +482,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f033",
-      "label": "P4（师德链独立）",
+      "label": "师德年度正式决定引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -492,7 +492,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f034",
-      "label": "annualEthicsOutcome / enum（校本待定义）",
+      "label": "师德考核结论状态",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -508,7 +508,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f035",
-      "label": "date>",
+      "label": "决定生效时间",
       "kind": "date",
       "required": false,
       "visibility": "internal",
@@ -518,7 +518,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f036",
-      "label": "issuer>",
+      "label": "决定签发权限证明",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -528,7 +528,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f037",
-      "label": "SCH/送达经办",
+      "label": "结果送达记录引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -538,7 +538,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f038",
-      "label": "本人可信提交/受理机关",
+      "label": "异议/复核申请引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -548,7 +548,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f039",
-      "label": "有权复核/申诉机关",
+      "label": "复核决定引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -558,7 +558,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f040",
-      "label": "原签发/变更机关",
+      "label": "撤销替代效力链",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -568,7 +568,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f041",
-      "label": "reusePurpose / enum（职称/聘期/其他经核目的）",
+      "label": "下游复用目的",
       "kind": "enum",
       "required": false,
       "visibility": "internal",
@@ -592,7 +592,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f042",
-      "label": "源结果管理机关+HOST",
+      "label": "下游复用授权引用",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -602,7 +602,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f043",
-      "label": "HOST 主进程/校方权限源",
+      "label": "可信 Actor 权限快照",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -612,7 +612,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f044",
-      "label": "owner",
+      "label": "证据归属版本关系图",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -800,7 +800,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "m009",
-      "name": "勤与日常履职事实",
+      "name": "考勤与日常履职事实",
       "purpose": "勤与日常履职事实；考勤/部门主管；出勤汇总、工作检查/平时考核记录；C：确有对应核验项目时；能由主管提取则不让本人重传；F021；SRC-009 第5、24条；归属年度与统计窗口；失联 SOURCE_UNAVAILABLE，不可读 UNREADABLE。来源材料槽 M009；材料缺失、不可读或权限不明时仅生成补件/人工核源待办，不据此自动拒绝。",
       "acceptedKinds": [
         "pdf",
@@ -866,7 +866,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "m012",
-      "name": "（仅已有）",
+      "name": "已形成且可引用的师德结论/状态",
       "purpose": "已形成且可引用的师德结论/状态；党委教师工作部等有权保管者；有效年度师德结论引用，不是举报表；C：仅确有先期权威结论；没有已生成结论时不前置索取；F024,F025；SRC-002,003,008,011；凭结论号/有效状态+人员/年份；权限不足 NEEDS_HUMAN_DECISION，失联 SOURCE_UNAVAILABLE。来源材料槽 M012；材料缺失、不可读或权限不明时仅生成补件/人工核源待办，不据此自动拒绝。",
       "acceptedKinds": [
         "pdf",
@@ -888,7 +888,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "m013",
-      "name": "（仅相关）",
+      "name": "科研诚信已正式认定的结论",
       "purpose": "科研诚信已正式认定的结论；科研诚信有权机关；经调查处理后的有效决定摘要；C：仅相关、已存在且合法可用；可读取源端决定引用；F026；SRC-006 第9、16、21–23条；不接收“论文举报=失信”；决定在复核则记状态，不作最终归责。来源材料槽 M013；材料缺失、不可读或权限不明时仅生成补件/人工核源待办，不据此自动拒绝。",
       "acceptedKinds": [
         "pdf",
@@ -976,7 +976,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "m017",
-      "name": "（独立链）",
+      "name": "师德年度有效结论及最终签发者",
       "purpose": "师德年度有效结论及最终签发者；师德结果有权机关；年度师德最终结果文书/权威登记回执；L：师德结论形成后，不能把 M016 或校务会“审议”当替代；F033–F036；SRC-004,005,008,011,012；单独结论号/年度/生效状态；签发权限未知 NEEDS_HUMAN_DECISION。来源材料槽 M017；材料缺失、不可读或权限不明时仅生成补件/人工核源待办，不据此自动拒绝。",
       "acceptedKinds": [
         "pdf",
@@ -1354,217 +1354,217 @@ export const r02Metadata = {
     {
       "sourceId": "F002",
       "fieldKey": "f002",
-      "label": "M002 姓名/曾用名项"
+      "label": "姓名/曾用名"
     },
     {
       "sourceId": "F003",
       "fieldKey": "f003",
-      "label": "M002 单位变动项"
+      "label": "归属单位"
     },
     {
       "sourceId": "F004",
       "fieldKey": "f004",
-      "label": "positionClass / enum（教师/辅导员/其他专技/管理/工勤/待核）"
+      "label": "受聘岗位类别"
     },
     {
       "sourceId": "F005",
       "fieldKey": "f005",
-      "label": "employmentClass / enum（事业编/人事代理/其他合同/返聘/其他/待核）"
+      "label": "人员聘用关系类别"
     },
     {
       "sourceId": "F006",
       "fieldKey": "f006",
-      "label": "specialAuthorityRoute / enum（一般/领导干部专门路线/未知）"
+      "label": "特殊授权审核路线"
     },
     {
       "sourceId": "F007",
       "fieldKey": "f007",
-      "label": "归口部门/受理上下文"
+      "label": "考核年度"
     },
     {
       "sourceId": "F008",
       "fieldKey": "f008",
-      "label": "归口部门核准的当期政策"
+      "label": "当期政策版本引用"
     },
     {
       "sourceId": "F009",
       "fieldKey": "f009",
-      "label": "deadline>"
+      "label": "各阶段办理时间窗"
     },
     {
       "sourceId": "F010",
       "fieldKey": "f010",
-      "label": "M003 登录会话索引"
+      "label": "发起人可信主体标识"
     },
     {
       "sourceId": "F011",
       "fieldKey": "f011",
-      "label": "HR/授权机关+HOST"
+      "label": "代办授权范围"
     },
     {
       "sourceId": "F012",
       "fieldKey": "f012",
-      "label": "unit>"
+      "label": "任职服务区间"
     },
     {
       "sourceId": "F013",
       "fieldKey": "f013",
-      "label": "M002 首次就业登记"
+      "label": "是否首次就业"
     },
     {
       "sourceId": "F014",
       "fieldKey": "f014",
-      "label": "issuer>"
+      "label": "既往任职区间"
     },
     {
       "sourceId": "F015",
       "fieldKey": "f015",
-      "label": "M005 兼岗聘任/职责"
+      "label": "兼任岗位引用"
     },
     {
       "sourceId": "F016",
       "fieldKey": "f016",
-      "label": "HR/派出主管"
+      "label": "外派派驻记录"
     },
     {
       "sourceId": "F017",
       "fieldKey": "f017",
-      "label": "leaveCategory / enum（病/事/产/非派出培训/其他/未知）"
+      "label": "请假类别"
     },
     {
       "sourceId": "F018",
       "fieldKey": "f018",
-      "label": "HR/考勤主管"
+      "label": "已批准请假期间"
     },
     {
       "sourceId": "F019",
       "fieldKey": "f019",
-      "label": "HR/岗位主管"
+      "label": "岗位任务基准引用"
     },
     {
       "sourceId": "F020",
       "fieldKey": "f020",
-      "label": "SELF 本人真实提交/代办有授权"
+      "label": "年度个人陈述引用"
     },
     {
       "sourceId": "F021",
       "fieldKey": "f021",
-      "label": "ORG 考勤/日常管理机关"
+      "label": "考勤事实引用"
     },
     {
       "sourceId": "F022",
       "fieldKey": "f022",
-      "label": "ORG 教学科研管理/单位"
+      "label": "履职业绩事实引用"
     },
     {
       "sourceId": "F023",
       "fieldKey": "f023",
-      "label": "接收/派出单位有权签发者"
+      "label": "外派接收单位意见引用"
     },
     {
       "sourceId": "F024",
       "fieldKey": "f024",
-      "label": "priorEthicsStatus / enum（存在有效结论/未有可引结论/状态未知）"
+      "label": "既有师德结论状态"
     },
     {
       "sourceId": "F025",
       "fieldKey": "f025",
-      "label": "M012 文号/人员/期间/效力"
+      "label": "既有师德决定引用"
     },
     {
       "sourceId": "F026",
       "fieldKey": "f026",
-      "label": "P2（G 或确有相关记录）"
+      "label": "科研诚信正式决定引用"
     },
     {
       "sourceId": "F027",
       "fieldKey": "f027",
-      "label": "investigationProcedureState / enum（未知/已受理/正式立案/调查中/结案）"
+      "label": "调查程序阶段"
     },
     {
       "sourceId": "F028",
       "fieldKey": "f028",
-      "label": "ETH 受限登记簿"
+      "label": "受限调查记录引用"
     },
     {
       "sourceId": "F029",
       "fieldKey": "f029",
-      "label": "HR/当期授权考核组织"
+      "label": "单位评审授权证明"
     },
     {
       "sourceId": "F030",
       "fieldKey": "f030",
-      "label": "有权单位评议组"
+      "label": "单位评审建议引用"
     },
     {
       "sourceId": "F031",
       "fieldKey": "f031",
-      "label": "SCH 正式年度结果管理者"
+      "label": "年度考核正式决定引用"
     },
     {
       "sourceId": "F032",
       "fieldKey": "f032",
-      "label": "annualDecisionGrade / enum（四档/不定档/未知）"
+      "label": "年度考核档次"
     },
     {
       "sourceId": "F033",
       "fieldKey": "f033",
-      "label": "P4（师德链独立）"
+      "label": "师德年度正式决定引用"
     },
     {
       "sourceId": "F034",
       "fieldKey": "f034",
-      "label": "annualEthicsOutcome / enum（校本待定义）"
+      "label": "师德考核结论状态"
     },
     {
       "sourceId": "F035",
       "fieldKey": "f035",
-      "label": "date>"
+      "label": "决定生效时间"
     },
     {
       "sourceId": "F036",
       "fieldKey": "f036",
-      "label": "issuer>"
+      "label": "决定签发权限证明"
     },
     {
       "sourceId": "F037",
       "fieldKey": "f037",
-      "label": "SCH/送达经办"
+      "label": "结果送达记录引用"
     },
     {
       "sourceId": "F038",
       "fieldKey": "f038",
-      "label": "本人可信提交/受理机关"
+      "label": "异议/复核申请引用"
     },
     {
       "sourceId": "F039",
       "fieldKey": "f039",
-      "label": "有权复核/申诉机关"
+      "label": "复核决定引用"
     },
     {
       "sourceId": "F040",
       "fieldKey": "f040",
-      "label": "原签发/变更机关"
+      "label": "撤销替代效力链"
     },
     {
       "sourceId": "F041",
       "fieldKey": "f041",
-      "label": "reusePurpose / enum（职称/聘期/其他经核目的）"
+      "label": "下游复用目的"
     },
     {
       "sourceId": "F042",
       "fieldKey": "f042",
-      "label": "源结果管理机关+HOST"
+      "label": "下游复用授权引用"
     },
     {
       "sourceId": "F043",
       "fieldKey": "f043",
-      "label": "HOST 主进程/校方权限源"
+      "label": "可信 Actor 权限快照"
     },
     {
       "sourceId": "F044",
       "fieldKey": "f044",
-      "label": "owner"
+      "label": "证据归属版本关系图"
     }
   ],
   "materialSlotIds": [
@@ -1611,7 +1611,7 @@ export const r02Metadata = {
     {
       "sourceId": "M009",
       "slotId": "m009",
-      "name": "勤与日常履职事实"
+      "name": "考勤与日常履职事实"
     },
     {
       "sourceId": "M010",
@@ -1626,12 +1626,12 @@ export const r02Metadata = {
     {
       "sourceId": "M012",
       "slotId": "m012",
-      "name": "（仅已有）"
+      "name": "已形成且可引用的师德结论/状态"
     },
     {
       "sourceId": "M013",
       "slotId": "m013",
-      "name": "（仅相关）"
+      "name": "科研诚信已正式认定的结论"
     },
     {
       "sourceId": "M014",
@@ -1651,7 +1651,7 @@ export const r02Metadata = {
     {
       "sourceId": "M017",
       "slotId": "m017",
-      "name": "（独立链）"
+      "name": "师德年度有效结论及最终签发者"
     },
     {
       "sourceId": "M018",

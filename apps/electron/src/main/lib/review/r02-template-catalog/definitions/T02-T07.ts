@@ -40,7 +40,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f003",
-      "label": "申请人受控身份",
+      "label": "申请人受控身份 ID",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -70,7 +70,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f006",
-      "label": "申请时所属院系",
+      "label": "申请时所属院系/校区",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -80,7 +80,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f007",
-      "label": "代理关系",
+      "label": "代理关系/授权范围",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -110,7 +110,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f010",
-      "label": "成果发生",
+      "label": "成果发生/获批/完成时点",
       "kind": "date",
       "required": false,
       "visibility": "internal",
@@ -120,7 +120,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f011",
-      "label": "同一成果实体的受控",
+      "label": "同一成果实体的受控 ID",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -130,7 +130,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f012",
-      "label": "成果题名",
+      "label": "成果题名/项目名",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -140,7 +140,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f013",
-      "label": "外部唯一标识（DOI、专利号、项目号、ISBN 等）str",
+      "label": "外部唯一标识（DOI、专利号、项目号、ISBN 等）",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -150,7 +150,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f014",
-      "label": "颁发",
+      "label": "颁发/发表/委托主体",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -160,7 +160,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f015",
-      "label": "正式发文",
+      "label": "正式发文/出版/授权日期",
       "kind": "date",
       "required": false,
       "visibility": "internal",
@@ -190,7 +190,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f018",
-      "label": "作者",
+      "label": "作者/参与人/指导教师排序",
       "kind": "number",
       "required": false,
       "visibility": "internal",
@@ -210,7 +210,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f020",
-      "label": "成果时点署名",
+      "label": "成果时点署名/承担单位",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -220,7 +220,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f021",
-      "label": "其他作者",
+      "label": "其他作者/团队及各自顺序",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -230,7 +230,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f022",
-      "label": "项目",
+      "label": "项目/课题/专题层级及负责人",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -240,7 +240,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f023",
-      "label": "合规核对所需到账",
+      "label": "合规核对所需到账/资助金额及口径",
       "kind": "number",
       "required": false,
       "visibility": "internal",
@@ -250,7 +250,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f024",
-      "label": "出版物类型与检索级别",
+      "label": "出版物类型与检索级别/年度",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -260,7 +260,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f025",
-      "label": "社会服务类型",
+      "label": "社会服务类型/对象",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -290,7 +290,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f028",
-      "label": "系统提出的候选类别",
+      "label": "系统提出的候选类别/等级",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -310,7 +310,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f030",
-      "label": "成果主题库数据审核阶段",
+      "label": "成果主题库数据审核阶段/状态",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -320,7 +320,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f031",
-      "label": "核验",
+      "label": "核验/决定人服务端可信角色",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -360,7 +360,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "key": "f035",
-      "label": "撤回",
+      "label": "撤回/补件/异议请求状态",
       "kind": "text",
       "required": false,
       "visibility": "internal",
@@ -1325,7 +1325,7 @@ export const r02Metadata = {
     {
       "sourceId": "F003",
       "fieldKey": "f003",
-      "label": "申请人受控身份"
+      "label": "申请人受控身份 ID"
     },
     {
       "sourceId": "F004",
@@ -1340,12 +1340,12 @@ export const r02Metadata = {
     {
       "sourceId": "F006",
       "fieldKey": "f006",
-      "label": "申请时所属院系"
+      "label": "申请时所属院系/校区"
     },
     {
       "sourceId": "F007",
       "fieldKey": "f007",
-      "label": "代理关系"
+      "label": "代理关系/授权范围"
     },
     {
       "sourceId": "F008",
@@ -1360,32 +1360,32 @@ export const r02Metadata = {
     {
       "sourceId": "F010",
       "fieldKey": "f010",
-      "label": "成果发生"
+      "label": "成果发生/获批/完成时点"
     },
     {
       "sourceId": "F011",
       "fieldKey": "f011",
-      "label": "同一成果实体的受控"
+      "label": "同一成果实体的受控 ID"
     },
     {
       "sourceId": "F012",
       "fieldKey": "f012",
-      "label": "成果题名"
+      "label": "成果题名/项目名"
     },
     {
       "sourceId": "F013",
       "fieldKey": "f013",
-      "label": "外部唯一标识（DOI、专利号、项目号、ISBN 等）str"
+      "label": "外部唯一标识（DOI、专利号、项目号、ISBN 等）"
     },
     {
       "sourceId": "F014",
       "fieldKey": "f014",
-      "label": "颁发"
+      "label": "颁发/发表/委托主体"
     },
     {
       "sourceId": "F015",
       "fieldKey": "f015",
-      "label": "正式发文"
+      "label": "正式发文/出版/授权日期"
     },
     {
       "sourceId": "F016",
@@ -1400,7 +1400,7 @@ export const r02Metadata = {
     {
       "sourceId": "F018",
       "fieldKey": "f018",
-      "label": "作者"
+      "label": "作者/参与人/指导教师排序"
     },
     {
       "sourceId": "F019",
@@ -1410,32 +1410,32 @@ export const r02Metadata = {
     {
       "sourceId": "F020",
       "fieldKey": "f020",
-      "label": "成果时点署名"
+      "label": "成果时点署名/承担单位"
     },
     {
       "sourceId": "F021",
       "fieldKey": "f021",
-      "label": "其他作者"
+      "label": "其他作者/团队及各自顺序"
     },
     {
       "sourceId": "F022",
       "fieldKey": "f022",
-      "label": "项目"
+      "label": "项目/课题/专题层级及负责人"
     },
     {
       "sourceId": "F023",
       "fieldKey": "f023",
-      "label": "合规核对所需到账"
+      "label": "合规核对所需到账/资助金额及口径"
     },
     {
       "sourceId": "F024",
       "fieldKey": "f024",
-      "label": "出版物类型与检索级别"
+      "label": "出版物类型与检索级别/年度"
     },
     {
       "sourceId": "F025",
       "fieldKey": "f025",
-      "label": "社会服务类型"
+      "label": "社会服务类型/对象"
     },
     {
       "sourceId": "F026",
@@ -1450,7 +1450,7 @@ export const r02Metadata = {
     {
       "sourceId": "F028",
       "fieldKey": "f028",
-      "label": "系统提出的候选类别"
+      "label": "系统提出的候选类别/等级"
     },
     {
       "sourceId": "F029",
@@ -1460,12 +1460,12 @@ export const r02Metadata = {
     {
       "sourceId": "F030",
       "fieldKey": "f030",
-      "label": "成果主题库数据审核阶段"
+      "label": "成果主题库数据审核阶段/状态"
     },
     {
       "sourceId": "F031",
       "fieldKey": "f031",
-      "label": "核验"
+      "label": "核验/决定人服务端可信角色"
     },
     {
       "sourceId": "F032",
@@ -1485,7 +1485,7 @@ export const r02Metadata = {
     {
       "sourceId": "F035",
       "fieldKey": "f035",
-      "label": "撤回"
+      "label": "撤回/补件/异议请求状态"
     },
     {
       "sourceId": "F036",
