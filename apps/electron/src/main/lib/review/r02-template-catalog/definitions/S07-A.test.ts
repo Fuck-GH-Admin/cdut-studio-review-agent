@@ -51,7 +51,7 @@ describe('R02 S07-A template definitions', () => {
       const sourceIds = new Set(metadata.sources.map((item) => item.srcId))
       for (const { sectionId, criterion } of allCriteria) {
         const mapping = metadata.criteria.find((item) => item.sectionId === sectionId && item.criterionId === criterion.id)
-        expect(mapping, `${template.templateId}/${sectionId}/${criterion.id}`).toBeDefined()
+        expect(mapping).toBeDefined()
         expect(mapping!.srcIds.length).toBeGreaterThan(0)
         expect(mapping!.srcIds.every((id) => sourceIds.has(id))).toBe(true)
         expect(['semantic', 'manual']).toContain(criterion.execution)
@@ -89,10 +89,10 @@ describe('R02 S07-A template definitions', () => {
       '0d7f3127a64ff75b8c0ba242eff78ecacf23bae09d41764251d2462e0e827065',
     ]
     for (const [index, { template, metadata }] of entries.entries()) {
-      expect(metadata.templateId).toBe(template.templateId)
-      expect(metadata.name).toBe(template.name)
+      expect(String(metadata.templateId)).toBe(template.templateId)
+      expect(String(metadata.name)).toBe(template.name)
       expect(metadata.sourceDocumentPath).toContain(`/${template.templateId}.md`)
-      expect(metadata.sourceDocumentSha256).toBe(expectedHashes[index])
+      expect(String(metadata.sourceDocumentSha256)).toBe(String(expectedHashes[index]))
       expect(metadata.officialSchoolTemplate).toBe(false)
       expect(metadata.policyEvidenceStatus).not.toBe('VERIFIED')
       expect(metadata.criteria.every((item) => item.srcIds.length > 0)).toBe(true)
