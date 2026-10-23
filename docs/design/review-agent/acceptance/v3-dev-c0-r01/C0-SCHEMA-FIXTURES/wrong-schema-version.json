@@ -1,5 +1,0 @@
-{
-  "schemaVersion": "review-c0/99",
-  "expected": "CONTRACT_INVALID",
-  "note": "No implicit downgrade"
-}

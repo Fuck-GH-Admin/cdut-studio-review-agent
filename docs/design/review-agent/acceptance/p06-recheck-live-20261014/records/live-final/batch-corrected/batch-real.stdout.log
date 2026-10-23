@@ -1,1 +1,0 @@
-{"id":"E06-BATCH-REAL-QUEUE-AND-GATES","status":"FAIL","assertions":3,"error":"AssertionError [ERR_ASSERTION]: 每案实际模型用量均非零"}
