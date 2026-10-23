@@ -110,6 +110,15 @@ function normalizeOrder(sections: TemplateSectionSpec[]): TemplateSectionSpec[] 
 function validateEditor(template: TemplateVersion, forPublish = false): string[] {
   const issues: string[] = []
   if (!template.name.trim()) issues.push('请填写模板名称')
+  for (const [label, values] of [['关键词',template.keywords],['别名',template.aliases]] as const) {
+    if (values && (values.length > 100 || values.some(value =>
+      typeof value !== 'string' || !value.trim() || value.length > 100))) {
+      issues.push('模板' + label + '需为非空短词，每类最多100项且每项不超过100字符')
+    }
+    if (values && new Set(values.map(value=>value.trim().normalize('NFKC').toLocaleLowerCase())).size !== values.length) {
+      issues.push('模板' + label + '不能重复')
+    }
+  }
   const keys = template.fields.map((field) => field.key.trim())
   if (keys.some((key) => !key)) issues.push('字段编号不能为空')
   if (new Set(keys).size !== keys.length) issues.push('字段编号不能重复')
@@ -461,6 +470,18 @@ export function TemplateWizardPanel(): JSX.Element {
             </label>
             <label className="text-xs md:col-span-2">模板用途说明
               <textarea className="mt-1 w-full rounded-md border bg-background px-2 py-1.5 text-sm" rows={2} value={editing.description ?? ''} onChange={(event) => updateTemplate((current) => ({ ...current, description: event.target.value }))} placeholder="说明适用对象、流程范围和需要负责人确认的规则边界" />
+            </label>
+            <label className="text-xs md:col-span-2">业务关键词（每行一个，也可用逗号分隔）
+              <textarea className="mt-1 w-full rounded-md border bg-background px-2 py-1.5 text-sm" rows={2}
+                value={(editing.keywords ?? []).join('\n')}
+                onChange={event=>updateTemplate(current=>({...current,keywords:[...new Set(event.target.value.split(/[\n,，、;]/).map(value=>value.trim()).filter(Boolean))]}))}
+                placeholder="例如：学籍更正、身份信息修改、信息纠错" />
+            </label>
+            <label className="text-xs md:col-span-2">业务别名 / 常见简称（每行一个，也可用逗号分隔）
+              <textarea className="mt-1 w-full rounded-md border bg-background px-2 py-1.5 text-sm" rows={2}
+                value={(editing.aliases ?? []).join('\n')}
+                onChange={event=>updateTemplate(current=>({...current,aliases:[...new Set(event.target.value.split(/[\n,，、;]/).map(value=>value.trim()).filter(Boolean))]}))}
+                placeholder="例如：软著、部门邮箱、校卡" />
             </label>
           </div>
           {editing.sourceNote && <p className="mt-2 rounded-lg bg-muted/50 px-3 py-2 text-xs text-muted-foreground">参考来源与边界：{editing.sourceNote}</p>}
