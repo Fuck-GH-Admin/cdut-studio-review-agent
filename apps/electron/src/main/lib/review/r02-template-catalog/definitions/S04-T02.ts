@@ -106,7 +106,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F006",
       "label": "F006 · campuscode（string/enum；U）",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "public",
       "scope": "subject",
@@ -124,29 +124,11 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F008",
       "label": "F008 · enrollmentstatus（enum 在校/休学/退学/未确定等；D）",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
-      "extractionHint": "原始字段字典：F008；enrollmentstatus（enum 在校/休学/退学/未确定等；D）；Person / L0；校：M001，S01 权威结论；P1；SU；不可用学生声明代替。缺失是否构成补件须按当前阶段与已确认政策人工核验。",
-      "options": [
-        {
-          "value": "在校",
-          "label": "在校"
-        },
-        {
-          "value": "休学",
-          "label": "休学"
-        },
-        {
-          "value": "退学",
-          "label": "退学"
-        },
-        {
-          "value": "未确定等",
-          "label": "未确定等"
-        }
-      ]
+      "extractionHint": "原始字段字典：F008；enrollmentstatus（enum 在校/休学/退学/未确定等；D）；Person / L0；校：M001，S01 权威结论；P1；SU；不可用学生声明代替。缺失是否构成补件须按当前阶段与已确认政策人工核验。"
     },
     {
       "key": "F009",
@@ -160,29 +142,11 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F010",
       "label": "F010 · applicationkind（enum 首次/重办/补件/变更等；D）",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "extractionHint": "原始字段字典：F010；applicationkind（enum 首次/重办/补件/变更等；D）；Application / L1；申：M003/004/005；内：案卷事件；P1；不明人工分类 HU，不新立模板。缺失是否构成补件须按当前阶段与已确认政策人工核验。",
-      "options": [
-        {
-          "value": "首次",
-          "label": "首次"
-        },
-        {
-          "value": "重办",
-          "label": "重办"
-        },
-        {
-          "value": "补件",
-          "label": "补件"
-        },
-        {
-          "value": "变更等",
-          "label": "变更等"
-        }
-      ]
+      "extractionHint": "原始字段字典：F010；applicationkind（enum 首次/重办/补件/变更等；D）；Application / L1；申：M003/004/005；内：案卷事件；P1；不明人工分类 HU，不新立模板。缺失是否构成补件须按当前阶段与已确认政策人工核验。"
     },
     {
       "key": "F011",
@@ -2111,6 +2075,7 @@ export const r02Metadata: R02TemplateMetadata = {
   "reviewNotes": [
     "SRC IDs are research metadata, not case-material SourceRef values.",
     "Criteria use semantic/manual only; unknown policy, authority and current forms never auto-pass or auto-reject.",
-    "Template stays draft with empty policyVersionIds and autoPassPolicy.enabled=false; shared registration belongs to integration owner."
+    "Template stays draft with empty policyVersionIds and autoPassPolicy.enabled=false; shared registration belongs to integration owner.",
+    "原稿声明 ENUM 但未提供可核验的封闭选项时，runtime kind 使用 text，并在 label/extractionHint 保留原稿语义；不虚构枚举值。"
   ]
 }

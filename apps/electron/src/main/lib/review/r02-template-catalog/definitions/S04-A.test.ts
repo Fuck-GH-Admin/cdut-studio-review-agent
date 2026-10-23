@@ -47,6 +47,7 @@ describe('R02 S04-A template definitions', () => {
       const criteria = (item.template.sections ?? []).flatMap(section => section.criteria.map(criterion => ({ section, criterion })))
       const stageIds = new Set(item.template.stages.map(stage => stage.id))
       expect(fieldKeys.size).toBe(item.template.fields.length)
+      for (const field of item.template.fields) if (field.kind === 'enum') expect(field.options?.length).toBeGreaterThan(0)
       expect(slotIds.size).toBe(item.template.materialSlots.length)
       expect(stageIds.size).toBe(item.template.stages.length)
       for (const slot of item.template.materialSlots) for (const element of slot.requiredElements) if (/^F\d{3}$/.test(element)) expect(fieldKeys.has(element)).toBe(true)

@@ -61,7 +61,25 @@ export const templateVersion: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "subject",
-      "extractionHint": "原始字段字典：F005；studentcategory ENUM／Student；L0 和规则分流；M001 学籍类别（国内本科／研究生／来华留学本科／其他）；P2；U/H：未知不得套用本科规则。缺失是否构成补件须按当前阶段与已确认政策人工核验。"
+      "extractionHint": "原始字段字典：F005；studentcategory ENUM／Student；L0 和规则分流；M001 学籍类别（国内本科／研究生／来华留学本科／其他）；P2；U/H：未知不得套用本科规则。缺失是否构成补件须按当前阶段与已确认政策人工核验。",
+      "options": [
+        {
+          "value": "国内本科",
+          "label": "国内本科"
+        },
+        {
+          "value": "研究生",
+          "label": "研究生"
+        },
+        {
+          "value": "来华留学本科",
+          "label": "来华留学本科"
+        },
+        {
+          "value": "其他",
+          "label": "其他"
+        }
+      ]
     },
     {
       "key": "F006",
@@ -70,12 +88,22 @@ export const templateVersion: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "subject",
-      "extractionHint": "原始字段字典：F006；studymode ENUM／Student；L0；研究生；M001 全日制／非全日制权威记载；P2；C/U：不适用或人工核定。缺失是否构成补件须按当前阶段与已确认政策人工核验。"
+      "extractionHint": "原始字段字典：F006；studymode ENUM／Student；L0；研究生；M001 全日制／非全日制权威记载；P2；C/U：不适用或人工核定。缺失是否构成补件须按当前阶段与已确认政策人工核验。",
+      "options": [
+        {
+          "value": "全日制",
+          "label": "全日制"
+        },
+        {
+          "value": "非全日制",
+          "label": "非全日制"
+        }
+      ]
     },
     {
       "key": "F007",
       "label": "F007 · enrollmentstatus ENUM／Student",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -111,7 +139,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F011",
       "label": "F011 · submitauthoritybasis ENUM/REF／LeaveCase",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -120,7 +148,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F012",
       "label": "F012 · lifecyclestage ENUM／LeaveCase",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "public",
       "scope": "case",
@@ -129,7 +157,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F013",
       "label": "F013 · leavetype ENUM／LeaveEpisode",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -228,7 +256,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F024",
       "label": "F024 · medicalevidencetype ENUM／Evidence",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -273,7 +301,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F029",
       "label": "F029 · submissionchannel ENUM／LeaveCase",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -291,7 +319,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F031",
       "label": "F031 · approvalstate ENUM／ApprovalEvent",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -300,7 +328,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F032",
       "label": "F032 · requiredapproverrole ENUM[]／ApprovalEvent",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -2045,6 +2073,7 @@ export const r02Metadata: R02TemplateMetadata = {
   "reviewNotes": [
     "SRC IDs are research metadata, not case-material SourceRef values.",
     "Criteria use semantic/manual only; unknown policy, authority and current forms never auto-pass or auto-reject.",
-    "Template stays draft with empty policyVersionIds and autoPassPolicy.enabled=false; shared registration belongs to integration owner."
+    "Template stays draft with empty policyVersionIds and autoPassPolicy.enabled=false; shared registration belongs to integration owner.",
+    "原稿声明 ENUM 但未提供可核验的封闭选项时，runtime kind 使用 text，并在 label/extractionHint 保留原稿语义；不虚构枚举值。"
   ]
 }

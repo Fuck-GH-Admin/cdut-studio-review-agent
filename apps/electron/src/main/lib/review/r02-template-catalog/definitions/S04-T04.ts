@@ -57,7 +57,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F005",
       "label": "F005 · 学生类别/学段（enum；I）",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -66,7 +66,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F006",
       "label": "F006 · 有效在校/学籍状态（enum；I）",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -84,7 +84,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F008",
       "label": "F008 · 实际申请校区（enum；A/I）",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -102,7 +102,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F010",
       "label": "F010 · 假期类型（enum；P/A）",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "public",
       "scope": "subject",
@@ -142,7 +142,41 @@ export const templateVersion: TemplateVersion = {
       "required": false,
       "visibility": "public",
       "scope": "subject",
-      "extractionHint": "原始字段字典：F014 办理情形标签（enum；A）；P1 及变更时；根据 M002 陈述、M001 适用性判断为 H01—H08；§03；P1；冲突或无证据 HD，H08 不默认准入。缺失是否构成补件须按当前阶段与已确认政策人工核验。"
+      "extractionHint": "原始字段字典：F014 办理情形标签（enum；A）；P1 及变更时；根据 M002 陈述、M001 适用性判断为 H01—H08；§03；P1；冲突或无证据 HD，H08 不默认准入。缺失是否构成补件须按当前阶段与已确认政策人工核验。",
+      "options": [
+        {
+          "value": "H01",
+          "label": "H01"
+        },
+        {
+          "value": "H02",
+          "label": "H02"
+        },
+        {
+          "value": "H03",
+          "label": "H03"
+        },
+        {
+          "value": "H04",
+          "label": "H04"
+        },
+        {
+          "value": "H05",
+          "label": "H05"
+        },
+        {
+          "value": "H06",
+          "label": "H06"
+        },
+        {
+          "value": "H07",
+          "label": "H07"
+        },
+        {
+          "value": "H08",
+          "label": "H08"
+        }
+      ]
     },
     {
       "key": "F015",
@@ -165,7 +199,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F017",
       "label": "F017 · 申请理由类别（enum；A）",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -210,7 +244,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F022",
       "label": "F022 · 学院审核结论（enum；D）",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -259,7 +293,21 @@ export const templateVersion: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "subject",
-      "extractionHint": "原始字段字典：F027 汇总签章/提交一致性（enum；D/X）；P4 后；M006 学院签章原件与后勤收件回执；SRC-001；P1/P2；UNREADABLE/HD，电子名单与纸本不符 CONFLICT。缺失是否构成补件须按当前阶段与已确认政策人工核验。"
+      "extractionHint": "原始字段字典：F027 汇总签章/提交一致性（enum；D/X）；P4 后；M006 学院签章原件与后勤收件回执；SRC-001；P1/P2；UNREADABLE/HD，电子名单与纸本不符 CONFLICT。缺失是否构成补件须按当前阶段与已确认政策人工核验。",
+      "options": [
+        {
+          "value": "一致",
+          "label": "一致"
+        },
+        {
+          "value": "冲突",
+          "label": "冲突"
+        },
+        {
+          "value": "待核",
+          "label": "待核"
+        }
+      ]
     },
     {
       "key": "F028",
@@ -282,7 +330,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "F030",
       "label": "F030 · 安全告知/承诺状态（enum?；X）",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -1360,6 +1408,7 @@ export const r02Metadata: R02TemplateMetadata = {
   "reviewNotes": [
     "SRC IDs are research metadata, not case-material SourceRef values.",
     "Criteria use semantic/manual only; unknown policy, authority and current forms never auto-pass or auto-reject.",
-    "Template stays draft with empty policyVersionIds and autoPassPolicy.enabled=false; shared registration belongs to integration owner."
+    "Template stays draft with empty policyVersionIds and autoPassPolicy.enabled=false; shared registration belongs to integration owner.",
+    "原稿声明 ENUM 但未提供可核验的封闭选项时，runtime kind 使用 text，并在 label/extractionHint 保留原稿语义；不虚构枚举值。"
   ]
 }
