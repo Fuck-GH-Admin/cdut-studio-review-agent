@@ -6,21 +6,26 @@ export interface R02TemplateMetadata {
   templateId: string
   name: string
   sourceDocumentPath: string
-  reviewedDocumentPath: string
   researchSourcePath: string
+  reviewedDocumentPath: string
   sourceDocumentSha256: string
   sourceDocumentBytes: number
   manifestExpectedBytes: number
   manifestExpectedSha256: string
-  sourceIntegrityStatus: 'LINE_ENDING_DRIFT_ONE_LF' | 'REVIEWED_COPY_PATCHED' | 'MATCH'
+  sourceIntegrityStatus: 'MATCH' | 'LINE_ENDING_DRIFT_ONE_LF' | 'REVIEWED_PATCH_APPLIED'
   sourceIntegrityNote: string
   sourceSnapshotCommit: string
   officialSchoolTemplate: false
+  researchStatus: string
   researchEvidenceStatus: R02EvidenceStatus
   policyEvidenceStatus: R02EvidenceStatus
+  sourceRecordCount: number
   sourceIds: string[]
+  fieldCount: number
   fieldIds: string[]
+  materialSlotCount: number
   materialIds: string[]
+  criterionCount: number
   criteria: Array<{
     sectionId: string
     criterionId: string
@@ -28,7 +33,6 @@ export interface R02TemplateMetadata {
     evidenceStatus: R02EvidenceStatus
   }>
 }
-
 export const T08T02Template: TemplateVersion = {
   "templateId": "T08-T02",
   "version": 1,
@@ -1833,8 +1837,13 @@ export const r02Metadata: R02TemplateMetadata = {
   "manifestExpectedBytes": 149842,
   "manifestExpectedSha256": "17bd28b28c5599812493f4a4de68de48a62ea040f3e02abb3404c969c8e1ada9",
   "researchSourcePath": "docs/design/review-agent/business-templates/R02/research-original/T08-T02.md",
-  "sourceIntegrityStatus": "REVIEWED_COPY_PATCHED",
-  "sourceIntegrityNote": "research-original 的当前 Git blob 不含末尾 LF，追加一个 LF 后与清单 SHA-256 匹配；本审阅副本仅将国科发资〔2020〕132号的效力状态更正为科技部2025-08-05失效清单已列为失效文件，正文其余部分未改。研究原件只读。"
+  "sourceIntegrityStatus": "REVIEWED_PATCH_APPLIED",
+  "sourceIntegrityNote": "原始 research-original 文件保持只读；本审阅副本仅修正国科发资〔2020〕132号失效状态。sourceDocumentSha256/Bytes 对审阅副本精确字节计算，manifestExpectedSha256/Bytes 保留原件清单值。",
+  "researchStatus": "RESEARCH_HANDOFF_READY",
+  "sourceRecordCount": 20,
+  "fieldCount": 44,
+  "materialSlotCount": 30,
+  "criterionCount": 30
 }
 
 export default T08T02Template
