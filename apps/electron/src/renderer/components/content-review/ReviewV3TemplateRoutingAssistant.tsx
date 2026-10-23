@@ -296,11 +296,11 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
   })}
   applyChoiceRef.current=applyTemplateChoice
   React.useEffect(()=>{
-    if(!read||installed||read.read.route.status!=='unmatched')return
+    if(mode!=='catalog'||!read||installed||read.read.route.status!=='unmatched')return
     const reliable=read.routeCandidates.some(candidate=>candidate.autoEligible)
     if(reliable||modelAttemptRef.current===read.sessionKey)return
     identifyWithModel(true,read)
-  },[read?.sessionKey,read?.read.route.status,read?.routeCandidates,installed?.caseId,caseId])
+  },[mode,read?.sessionKey,read?.read.route.status,read?.routeCandidates,installed?.caseId,caseId])
   React.useEffect(()=>{
     if(mode!=='catalog'||modelMatchState!=='matched'||!modelCandidates.length||modelDeadline===null)return
     const tick=()=>{
@@ -367,7 +367,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
       <div className="flex gap-2">
         <button type="button" className={mode==='catalog'?action:secondary} onClick={()=>setMode('catalog')}>全部模板目录</button>
         <button type="button" className={mode==='fallback'?action:secondary} onClick={()=>{
-          setMode('fallback');setModelCandidates([]);setModelDeadline(null);setModelMatchState('idle')
+          setMode('fallback');setModelCandidates([]);setModelDeadline(null);setModelMatchState('idle');modelAttemptRef.current=''
           if(route&&(route.status==='countdown'||route.status==='default-selected'))void window.reviewAPI.interruptLocalNativeProductV3(caseId)
             .then(setRead).catch(reason=>setError(reason instanceof Error?reason.message:String(reason)))
         }}>公共兜底 / 自动起草</button>
@@ -407,7 +407,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
           </div>)}
         </div>}
         {modelRouteNote&&<p role="status" className="rounded-lg bg-amber-500/10 p-2 text-xs">{modelRouteNote}</p>}
-        {(modelMatchState==='uncertain'||modelMatchState==='failed')&&<button type="button" className={secondary}
+        {(modelMatchState==='uncertain'||modelMatchState==='failed'||modelMatchState==='out-of-scope')&&<button type="button" className={secondary}
           disabled={busy} onClick={()=>{modelAttemptRef.current='';identifyWithModel(false,read)}}>
           重新运行 AI 深度匹配
         </button>}
