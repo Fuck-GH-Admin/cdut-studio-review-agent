@@ -22,7 +22,7 @@ export const templateVersion: TemplateVersion = {
       "key": "f001",
       "label": "F001 · string 案卷 P1–P6：Case ID",
       "kind": "text",
-      "required": false,
+      "required": true,
       "visibility": "public",
       "scope": "case",
       "extractionHint": "原件字段 F001。string 案卷 P1–P6：Case ID；后端/M；未绑定禁止审查。字段缺失不自动等于资格不符；需要权威记录或政策判断时转人工复核。"
