@@ -24,7 +24,7 @@ export interface R02Metadata {
   criteria: R02CriterionMetadata[]
 }
 
-export const template: TemplateVersion = {
+export const template: TemplateVersion = export const template: TemplateVersion = {
   "templateId": "S06-T05",
   "version": 1,
   "schemaVersion": 2,
@@ -1418,7 +1418,7 @@ export const template: TemplateVersion = {
     },
     {
       "id": "B",
-      "name": "学院受理与初审",
+      "name": "学院受理与初审状态核验",
       "kind": "manual-review",
       "executorRole": "reviewer",
       "workflowOwner": "local",
@@ -1426,7 +1426,7 @@ export const template: TemplateVersion = {
     },
     {
       "id": "C",
-      "name": "校级立项/备案",
+      "name": "校级立项/备案状态核验",
       "kind": "manual-review",
       "executorRole": "reviewer",
       "workflowOwner": "local",
@@ -1451,7 +1451,7 @@ export const template: TemplateVersion = {
     },
     {
       "id": "F",
-      "name": "实践时长认定申请",
+      "name": "实践时长认定申请核验/转交",
       "kind": "manual-review",
       "executorRole": "reviewer",
       "workflowOwner": "local",
@@ -1460,7 +1460,7 @@ export const template: TemplateVersion = {
     },
     {
       "id": "G",
-      "name": "评优/引用/复核",
+      "name": "评优/引用/复核转交",
       "kind": "manual-review",
       "executorRole": "teacher",
       "workflowOwner": "local",

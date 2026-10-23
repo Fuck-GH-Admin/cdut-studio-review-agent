@@ -24,7 +24,7 @@ export interface R02Metadata {
   criteria: R02CriterionMetadata[]
 }
 
-export const template: TemplateVersion = {
+export const template: TemplateVersion = export const template: TemplateVersion = {
   "templateId": "S06-T01",
   "version": 1,
   "schemaVersion": 2,
@@ -1420,7 +1420,7 @@ export const template: TemplateVersion = {
     },
     {
       "id": "B",
-      "name": "学院初审及评审推荐",
+      "name": "学院初审及评审推荐状态核验",
       "kind": "manual-review",
       "executorRole": "reviewer",
       "workflowOwner": "local",
@@ -1428,7 +1428,7 @@ export const template: TemplateVersion = {
     },
     {
       "id": "C",
-      "name": "学校复核与上级立项链",
+      "name": "学校复核与上级立项链证据核对",
       "kind": "manual-review",
       "executorRole": "reviewer",
       "workflowOwner": "local",
@@ -1444,7 +1444,7 @@ export const template: TemplateVersion = {
     },
     {
       "id": "E",
-      "name": "项目变更/延期/终止（条件支线）",
+      "name": "项目变更/延期/终止申请核验（条件支线）",
       "kind": "manual-review",
       "executorRole": "reviewer",
       "workflowOwner": "local",
@@ -1453,7 +1453,7 @@ export const template: TemplateVersion = {
     },
     {
       "id": "F",
-      "name": "结题申请与验收",
+      "name": "结题申请与验收材料核验",
       "kind": "manual-review",
       "executorRole": "reviewer",
       "workflowOwner": "local",
@@ -1461,7 +1461,7 @@ export const template: TemplateVersion = {
     },
     {
       "id": "G",
-      "name": "学校决定、异议/复核与归档",
+      "name": "学校决定引用、异议/复核与归档（本地转交）",
       "kind": "manual-review",
       "executorRole": "teacher",
       "workflowOwner": "local",
