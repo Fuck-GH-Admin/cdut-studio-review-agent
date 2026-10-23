@@ -904,41 +904,83 @@ export const template: TemplateVersion = {
   "policyVersionIds": [],
   "stages": [
     {
-      "id": "intake",
-      "name": "材料与版本登记（仅事实校验）",
-      "kind": "auto-check",
-      "executorRole": "system",
-      "nextStageId": "fact-review",
-      "workflowOwner": "local"
-    },
-    {
-      "id": "fact-review",
-      "name": "语义核验与问题定位",
+      "id": "A",
+      "name": "起案",
       "kind": "manual-review",
       "executorRole": "reviewer",
-      "nextStageId": "policy-gate",
-      "returnToStageId": "intake",
+      "nextStageId": "B",
       "workflowOwner": "local"
     },
     {
-      "id": "policy-gate",
-      "name": "校本政策/权限确认与人工处理",
+      "id": "B",
+      "name": "核验",
+      "kind": "auto-check",
+      "executorRole": "reviewer",
+      "nextStageId": "C",
+      "returnToStageId": "A",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "C",
+      "name": "补件/分类",
+      "kind": "supplement-wait",
+      "executorRole": "reviewer",
+      "nextStageId": "D",
+      "returnToStageId": "B",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "D",
+      "name": "审批（仅记录真实授权岗位作出的事前决定）",
       "kind": "manual-review",
       "executorRole": "teacher",
-      "returnToStageId": "fact-review",
+      "nextStageId": "E",
+      "returnToStageId": "C",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "E",
+      "name": "执行和清单（事后事实，不倒填事前批准）",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "nextStageId": "F",
+      "returnToStageId": "D",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "F",
+      "name": "财务和审计（只读引用；不代审报销）",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "returnToStageId": "E",
       "workflowOwner": "local"
     }
   ],
   "outputs": [
     {
-      "id": "fact-findings",
+      "id": "fact-observations",
       "kind": "item-feedback",
       "audience": "reviewer"
     },
     {
-      "id": "manual-confirmations",
+      "id": "review-issues",
+      "kind": "item-feedback",
+      "audience": "reviewer"
+    },
+    {
+      "id": "review-todos",
       "kind": "supplement-list",
       "audience": "teacher"
+    },
+    {
+      "id": "external-decision-reference",
+      "kind": "item-feedback",
+      "audience": "teacher"
+    },
+    {
+      "id": "finance-evidence-reference",
+      "kind": "item-feedback",
+      "audience": "reviewer"
     }
   ],
   "autoPassPolicy": {
@@ -1641,6 +1683,125 @@ export const r02Metadata = {
       ],
       "evidenceStatus": "PARTIAL",
       "policyDependent": true
+    }
+  ],
+  "sourceStages": [
+    {
+      "id": "A",
+      "name": "起案",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "B",
+      "name": "核验",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "C",
+      "name": "补件/分类",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "D",
+      "name": "审批",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "E",
+      "name": "执行和清单",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "F",
+      "name": "财务和审计",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "G",
+      "name": "变更/撤回/复核",
+      "sourceSection": "03.1",
+      "mainline": false,
+      "optionalBranch": true
+    }
+  ],
+  "stageModelNote": "TemplateVersion.stages 映射原件 §03.1 A–F 主线；G 变更/撤回/复核是原件定义的条件分支，记录于 r02Metadata.sourceStages，不能把它串成所有案件必经步骤。§11.1 的 WAIT_MATERIAL/WAIT_SOURCE/WAIT_POLICY/WAIT_HUMAN/DECISION_REFERENCED/FINANCE_EXTERNAL 是状态/事件，不是额外学校审批层级。D 阶段只引用真实、可验证的授权事前决定；F 只读财务证据，不代审报销。",
+  "resultCodes": [
+    {
+      "code": "PASS_FACT",
+      "meaning": "仅当前触发事实有可追溯、同版本且无冲突的证据支持；不代表接待必要性裁量或学校批准。"
+    },
+    {
+      "code": "NOT_APPLICABLE",
+      "meaning": "触发条件可信为假，或材料属于尚未到来的阶段；须记录理由。"
+    },
+    {
+      "code": "NEEDS_MATERIAL",
+      "meaning": "当前阶段确需且合法持有人可提供的材料缺失。"
+    },
+    {
+      "code": "CONFLICT",
+      "meaning": "同一业务对象/版本的可定位证据实质不一致。"
+    },
+    {
+      "code": "UNREADABLE",
+      "meaning": "材料已存在但所需字段无法可靠读取。"
+    },
+    {
+      "code": "SOURCE_UNAVAILABLE",
+      "meaning": "应由可信组织/签发源提供的记录无法获取或核验。"
+    },
+    {
+      "code": "POLICY_UNCONFIRMED",
+      "meaning": "校本现行规则、授权角色、阈值、例外或复核程序未被充分证实。"
+    },
+    {
+      "code": "NEEDS_HUMAN_DECISION",
+      "meaning": "接待必要性、主办责任、审批、例外、复核或撤销需由有权人员裁量。"
+    }
+  ],
+  "outputContract": [
+    {
+      "id": "fact-observations",
+      "sourceType": "resultCode/fact evidence",
+      "sourceSection": "10.1/10.2",
+      "runtimeKind": "item-feedback",
+      "audience": "reviewer"
+    },
+    {
+      "id": "review-issues",
+      "sourceType": "issueId/affectedFieldIds/affectedMaterialIds",
+      "sourceSection": "10.2",
+      "runtimeKind": "item-feedback",
+      "audience": "reviewer"
+    },
+    {
+      "id": "review-todos",
+      "sourceType": "todoId/nextActorRole/requiredAction",
+      "sourceSection": "10.2/11.1",
+      "runtimeKind": "supplement-list",
+      "audience": "teacher"
+    },
+    {
+      "id": "external-decision-reference",
+      "sourceType": "M012/true authority decision reference",
+      "sourceSection": "03.1/10.2/11.1",
+      "runtimeKind": "item-feedback",
+      "audience": "teacher",
+      "readOnly": true
+    },
+    {
+      "id": "finance-evidence-reference",
+      "sourceType": "M015/M016/G07 finance record",
+      "sourceSection": "03.1/10.2/11.1",
+      "runtimeKind": "item-feedback",
+      "audience": "reviewer",
+      "readOnly": true
     }
   ]
 } as const
