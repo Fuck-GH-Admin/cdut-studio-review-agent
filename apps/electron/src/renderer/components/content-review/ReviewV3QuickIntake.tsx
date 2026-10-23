@@ -49,8 +49,15 @@ export function ReviewV3QuickIntake({ onCreated }: Props): JSX.Element {
       if (!paths.length) return
     } else setError('')
     if (!paths.length) return
-    setPendingPaths(paths.map((item,index)=>({...item,role:index===0?'application':'evidence'})))
-    setNotice('已读取 ' + paths.length + ' 份文件。请核对哪一份是申请主件，其余作为附件；原件尚未入库。')
+    const likelyApplication=(name:string):boolean=>
+      /(申请书|申请表|申报书|申报表|申请单|申报单|application(?:-form)?|proposal|request-form)/i.test(name)
+    const namedApplications=paths.filter(item=>likelyApplication(item.name))
+    const initialApplicationPaths=new Set(namedApplications.length===1
+      ?[namedApplications[0]!.path]:namedApplications.length>1
+        ?namedApplications.map(item=>item.path):[paths[0]!.path])
+    setPendingPaths(paths.map(item=>({...item,
+      role:initialApplicationPaths.has(item.path)?'application':'evidence'})))
+    setNotice('已读取 ' + paths.length + ' 份文件。系统仅按文件名提出初始角色建议；请核对申请主件与附件，原件尚未入库。')
   }
 
   const startWithPaths = React.useCallback(async (): Promise<void> => {
