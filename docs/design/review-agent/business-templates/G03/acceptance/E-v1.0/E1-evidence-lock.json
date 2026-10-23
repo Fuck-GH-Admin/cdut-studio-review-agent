@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "E1-evidence-lock-v1.0",
+  "domain": "G03",
+  "auditor": "independent-g03-e-r01",
+  "snapshotDate": "2026-10-13",
+  "lockStatus": "PARTIAL_SOURCE_SNAPSHOT_ONLY",
+  "e1ExitSatisfied": false,
+  "mayOpenCOrGold": false,
+  "e2Authorized": false,
+  "hDenominatorStatus": "UNKNOWN_INCOMPLETE",
+  "mDenominatorStatus": "UNKNOWN_INCOMPLETE",
+  "lSampleDenominatorStatus": "NOT_YET_REGISTERED",
+  "sourcesRepresented": "12 source/fact groups covering 10 TXX; not all source duties",
+  "blinding": {
+    "cBusinessBodyRead": false,
+    "dHiddenGoldAnswersRead": false,
+    "onlyCAndDFileMetadataSeen": true
+  },
+  "shaType": "Git blob SHA (content SHA-1); E0 source packages have per-file SHA256 in E0 manifest",
+  "frozenContent": [
+    {
+      "path": "docs/design/review-agent/business-templates/G03/acceptance/E-v1.0/E1-official-fact-register.md",
+      "gitBlobSha": "3b4008ce58927b2d656f3f4a59db23131fbade02"
+    },
+    {
+      "path": "docs/design/review-agent/business-templates/G03/acceptance/E-v1.0/E1-adversarial-hypotheses.md",
+      "gitBlobSha": "8ed28f1d68fa812c48f7931faf6fc8a577acc9b6"
+    }
+  ],
+  "evidenceDependencies": [
+    "https://clhq.cdut.edu.cn/info/1037/2343.htm",
+    "https://wxc.cdut.edu.cn/info/1010/1282.htm",
+    "https://bwc.cdut.edu.cn/bmjs/jgsz.htm",
+    "https://tyxy.cdut.edu.cn/index.htm",
+    "https://gz.cdut.edu.cn/info/1043/2055.htm",
+    "https://gz.cdut.edu.cn/zcfg/xjzc.htm",
+    "https://xcb.cdut.edu.cn/bmgk/bmjj.htm"
+  ],
+  "openBlocks": [
+    "BLOCKED_SOURCE: 2026 institution-specific compulsory documents, approval authority and active resource status unavailable",
+    "BLOCKED_INPUT: Gold secured ACL unconfigured or unverified, T03 D duplicate versions, C v2.1 ancillary hashes pending"
+  ],
+  "continuation": "Complete true H original-source inventory, verify original 2023 regulations and current school workflows, revise/final-freeze E1 at a NEW fixed SHA; only then and with E0 security blockers resolved allow E2.",
+  "warning": "This records and locks a partial independent review BEFORE exposure. This is NOT the official E1 final fact lock required for E2."
+}
