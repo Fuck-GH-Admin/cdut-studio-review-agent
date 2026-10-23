@@ -243,7 +243,7 @@ function evaluate(s:Session,items:B3ManualCatalogEntry[]):B3RouteState {
         confidence:1,reason:'当前原生案卷已持久绑定该模板版本'}],
       reason:'当前案卷已持久绑定模板；不重新启动20秒默认选择'}
   }
-  const routeCandidates:C11RouteCandidate[]=scoped
+  let routeCandidates:C11RouteCandidate[]=scoped
     ?buildRouteCandidatesForRead(items,activeDocs):[]
   // A current, already-authorized template binding is stronger than text classification.
   const selectedCandidate=selected&&scoped?{

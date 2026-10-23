@@ -360,7 +360,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
         </div>}
         {modelRouteNote&&<p role="status" className="rounded-lg bg-amber-500/10 p-2 text-xs">{modelRouteNote}</p>}
         {(modelMatchState==='uncertain'||modelMatchState==='failed')&&<button type="button" className={secondary}
-          disabled={busy||modelMatchState==='matching'} onClick={()=>{modelAttemptRef.current='';identifyWithModel(false,read)}}>
+          disabled={busy} onClick={()=>{modelAttemptRef.current='';identifyWithModel(false,read)}}>
           重新运行 AI 深度匹配
         </button>}
         <label className="block text-xs">搜索全部模板（标题、编号、别名、内置关键词）
