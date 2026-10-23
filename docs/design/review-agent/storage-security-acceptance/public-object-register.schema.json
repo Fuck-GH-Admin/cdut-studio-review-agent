@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/tree/infra/storage-security-acceptance-r01-20261016/docs/design/review-agent/storage-security-acceptance/public-object-register.schema.json",
+  "title": "CDUT Studio public storage security object register (redacted)",
+  "description": "Public-only metadata. Full provider ID/version/key, principal names, audit log, case results, expected labels, URLs and tokens MUST stay in the restricted custody ledger. Schema validity is not ACL verification.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "records"],
+  "properties": {
+    "schema_version": {"const": "cdut-public-storage-register-v1"},
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["template_id", "asset_class", "opaque_ref", "version_ref", "acl_status", "historical_independence_status", "e_gate_effect"],
+        "properties": {
+          "template_id": {"type": "string", "pattern": "^G0[2-8]-T[0-9]{2}$"},
+          "asset_class": {"enum": ["PUBLIC_INPUT", "C_AUTHOR_PACKAGE", "D_GOLD_RESTRICTED", "E_PRIVATE_FINDINGS", "AUDIT_RESTRICTED", "PUBLIC_ACCEPTANCE"]},
+          "opaque_ref": {"type": "string", "pattern": "^pubref-[A-Za-z0-9_-]{16,}$", "description": "Random public alias; not a storage key, path or URL."},
+          "version_ref": {"type": "string", "pattern": "^v-[A-Za-z0-9_-]{8,}$", "description": "Public alias; actual provider version ID is private."},
+          "acl_status": {"enum": ["ACL_VERIFIED", "ACL_PARTIAL", "NOT_CONFIGURED"]},
+          "storage_backend_evidence": {"enum": ["PROVIDER_AUDITED", "PARTIAL_PROVIDER", "LOCAL_SYNTHETIC_ONLY", "NONE"]},
+          "archive_sha256": {"oneOf": [{"type": "string", "pattern": "^[a-f0-9]{64}$"}, {"type": "null"}]},
+          "archive_sha256_basis": {"enum": ["INDEPENDENT_BYTES_VERIFIED", "AUTHOR_CLAIM_ONLY", "NOT_AVAILABLE"]},
+          "object_download_sha256": {"oneOf": [{"type": "string", "pattern": "^[a-f0-9]{64}$"}, {"type": "null"}]},
+          "content_equivalence": {"enum": ["VERIFIED", "MISMATCH", "NOT_TESTED"]},
+          "historical_independence_status": {"enum": ["INDEPENDENCE_UNPROVEN", "CONTAMINATED", "CLEAN_NEW_D_VERIFIED", "NOT_APPLICABLE"]},
+          "historical_time_evidence": {"enum": ["CONTEMPORANEOUS_VERIFIED", "POSTHOC_CLAIM_ONLY", "NOT_AVAILABLE", "NOT_APPLICABLE"]},
+          "e_allow_test": {"enum": ["REAL_PROVIDER_PASS", "REAL_PROVIDER_FAIL", "NOT_RUN"]},
+          "c_deny_test": {"enum": ["REAL_PROVIDER_PASS", "REAL_PROVIDER_FAIL", "NOT_RUN"]},
+          "ci_deny_test": {"enum": ["REAL_PROVIDER_PASS", "REAL_PROVIDER_FAIL", "NOT_RUN"]},
+          "revocation_test": {"enum": ["REAL_PROVIDER_PASS", "REAL_PROVIDER_FAIL", "NOT_RUN"]},
+          "share_link_review": {"enum": ["REAL_PROVIDER_PASS", "PUBLIC_LINK_FOUND", "PARTIAL", "NOT_RUN"]},
+          "server_audit_log": {"enum": ["EXISTS_RESTRICTED", "INCOMPLETE", "NOT_RUN"]},
+          "protected_evidence_alias": {"oneOf": [{"type": "string", "pattern": "^evidence-[A-Za-z0-9_-]{12,}$"}, {"type": "null"}]},
+          "e_gate_effect": {"const": "NO_CHANGE_NO_E1_E2_PASS"},
+          "comment": {"type": "string", "maxLength": 240, "description": "No links, details of Gold, labels, counts, paths or identities."}
+        }
+      }
+    }
+  }
+}

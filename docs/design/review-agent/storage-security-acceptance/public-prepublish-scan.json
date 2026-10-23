@@ -1,0 +1,39 @@
+{
+  "schema": "cdut-storage-security-public-scan-v1",
+  "checked_scope": "ONLY_THIS_CHANGESET_AT_STATED_BLOB_SHAS; NOT_REPOSITORY_HISTORY_OR_EXTERNAL_LIBRARY",
+  "technique": "Fetched exact GitHub file bytes on infrastructure branch and checked signed-URL/JWT/object-store-URI patterns; parsed new public JSON keys for outcome distributions, predicted labels and private location fields",
+  "candidate_files": [
+    {
+      "path": "docs/design/review-agent/storage-security-acceptance/README.md",
+      "github_blob_sha": "39028baf025fade01690ed60d8aba153bd52ce6d",
+      "risky_pattern_hits": 0
+    },
+    {
+      "path": "docs/design/review-agent/storage-security-acceptance/public-object-register.schema.json",
+      "github_blob_sha": "aa0e695372136a42f4416b4f1aa69f060358c7b4",
+      "risky_pattern_hits": 0
+    },
+    {
+      "path": "docs/design/review-agent/storage-security-acceptance/synthetic-posix-observed.json",
+      "github_blob_sha": "701372a9ddf7d95e8b032a334f0de2000cac2ec5",
+      "risky_pattern_hits": 0
+    }
+  ],
+  "guard_local_synthetic_tests": {
+    "guard_source_local_sha256": "b3c1bf905e6f648c1a7c6b1a79b32e9204840e2e97c678506a1967743f0290b8",
+    "remote_source_matches_local_git_blob": "4929ff2ff11b0fd50b7527bd504fae631b389f69",
+    "clean_json_result": "PASS; exit=0",
+    "synthetic_leaky_json_result": "FAIL; exit=1",
+    "forbidden_keys_identified": [
+      "status_counts",
+      "private_object_url",
+      "case_result_distribution",
+      "private_storage_location"
+    ],
+    "scope": "Synthetic-only fixtures. No real Gold metadata used.",
+    "extended_synthetic_leaky_json_result": "FAIL; exit=1"
+  },
+  "historical_exposure_review": "INCOMPLETE; G05-T04 previously exposed aggregated outcome statistics in old public artifacts per PR #65. This scan does not erase them or prove old Git/PR/Library/forks are clean.",
+  "storage_provider_public_link_scan": "NOT_RUN_NO_PROVIDER_ACCESS",
+  "security_disposition": "PREPUBLISH_CHECK_ONLY_NOT_ACL_VERIFIED"
+}
