@@ -1,0 +1,32 @@
+{
+  "schema": "G07-T04/D-author-evidence-recovery-r02",
+  "date": "2026-10-15",
+  "template": "G07-T04",
+  "audit_ref": "audit/g07-e-v1-r01@ccbf9bd6b16c9472bb35b03cd8b676d87c6cd6ab",
+  "audit_sha_role": "AUDIT_ONLY_NOT_D_AUTHOR",
+  "D_author_commit": "NOT_AVAILABLE",
+  "old_files_unchanged": true,
+  "original_gold_version": "FROZEN_GOLD_v1.0_30_plus_ADDENDUM_v1.1_TC031",
+  "original_archives_sha256": {
+    "G07-T04_INPUT_ONLY.zip": "2b4e2a4e9d46358263104b451f753b38ba63be72e6df108a491c1d1bf4fe0a8f",
+    "G07-T04_EVALUATION_ONLY.zip": "75e2f5a0203ef9b2df14e4f86611ee0cbee1fa7830d692ba0b6d29113dce36a1",
+    "G07-T04_D_REPORTS.zip": "1a4ca361bdfe1129d7ef3b8db5a8c87c5b3ad2b4251b8bc6e115f4890880d74f",
+    "G07-T04_D21_CHECKSUMS.json": "c7639d9cecaf6d17b1d87329ef14ee0865afdd66f48fa50266383a4f3abdd772"
+  },
+  "checks": {
+    "input_files_verified": 329,
+    "gold_files_verified": 31,
+    "baseline_files_verified": 9,
+    "pdfs": 174,
+    "pages": 205,
+    "crc": "PASS"
+  },
+  "gold_acl": "ACL_UNVERIFIED",
+  "external_freeze_chronology": "NOT_VERIFIED",
+  "source_pending": true,
+  "E_r01": "BLOCKED_INPUT_UNCHANGED",
+  "C_read": false,
+  "E1_to_E4": "NOT_EXECUTED",
+  "contains_case_gold": false,
+  "contains_trusted_ledger": false
+}
