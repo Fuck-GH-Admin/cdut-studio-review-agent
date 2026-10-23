@@ -20,7 +20,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f001",
       "label": "资助渠道",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -56,7 +56,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f005",
       "label": "学校承担地位",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -65,7 +65,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f006",
       "label": "在研/变更/结题状态",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -137,7 +137,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f014",
       "label": "报告类型/检查方式",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -209,7 +209,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f022",
       "label": "成果形成/发表/接受日期",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "subject",
@@ -254,7 +254,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f027",
       "label": "资助方正式接收/审核状态",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -299,7 +299,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f032",
       "label": "正式评估结论/分档",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
@@ -398,7 +398,7 @@ export const templateVersion: TemplateVersion = {
     {
       "key": "f043",
       "label": "复评申请受理/处理状态",
-      "kind": "enum",
+      "kind": "text",
       "required": false,
       "visibility": "internal",
       "scope": "case",
