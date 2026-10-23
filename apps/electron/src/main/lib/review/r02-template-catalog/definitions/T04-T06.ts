@@ -1370,41 +1370,92 @@ export const template: TemplateVersion = {
   "policyVersionIds": [],
   "stages": [
     {
-      "id": "intake",
-      "name": "材料与版本登记（仅事实校验）",
+      "id": "L0",
+      "name": "发现与资产核对",
       "kind": "auto-check",
-      "executorRole": "system",
-      "nextStageId": "fact-review",
+      "executorRole": "reviewer",
+      "nextStageId": "L1",
       "workflowOwner": "local"
     },
     {
-      "id": "fact-review",
-      "name": "语义核验与问题定位",
+      "id": "L1",
+      "name": "单位内部研判/发起",
       "kind": "manual-review",
       "executorRole": "reviewer",
-      "nextStageId": "policy-gate",
-      "returnToStageId": "intake",
+      "nextStageId": "L2",
+      "returnToStageId": "L0",
       "workflowOwner": "local"
     },
     {
-      "id": "policy-gate",
-      "name": "校本政策/权限确认与人工处理",
+      "id": "L2",
+      "name": "归口初审与专业证据",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "nextStageId": "L3",
+      "returnToStageId": "L1",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "L3",
+      "name": "校内集体决策与逐级报批（仅核验真实意见）",
       "kind": "manual-review",
       "executorRole": "teacher",
-      "returnToStageId": "fact-review",
+      "nextStageId": "L4",
+      "returnToStageId": "L2",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "L4",
+      "name": "有权审批、退补/撤回/复核（仅记录真实决定）",
+      "kind": "manual-review",
+      "executorRole": "teacher",
+      "nextStageId": "L5",
+      "returnToStageId": "L3",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "L5",
+      "name": "批准后实施与交割（仅核对后续凭证）",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "nextStageId": "L6",
+      "returnToStageId": "L4",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "L6",
+      "name": "账务更新与归档（仅核对凭证；不执行销账/记账）",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "returnToStageId": "L5",
       "workflowOwner": "local"
     }
   ],
   "outputs": [
     {
-      "id": "fact-findings",
+      "id": "review-observations",
       "kind": "item-feedback",
       "audience": "reviewer"
     },
     {
-      "id": "manual-confirmations",
+      "id": "review-issues",
+      "kind": "item-feedback",
+      "audience": "reviewer"
+    },
+    {
+      "id": "review-todos",
       "kind": "supplement-list",
       "audience": "teacher"
+    },
+    {
+      "id": "external-decision-reference",
+      "kind": "item-feedback",
+      "audience": "teacher"
+    },
+    {
+      "id": "history-and-supersession",
+      "kind": "item-feedback",
+      "audience": "reviewer"
     }
   ],
   "autoPassPolicy": {
@@ -2327,6 +2378,124 @@ export const r02Metadata = {
       ],
       "evidenceStatus": "PARTIAL",
       "policyDependent": true
+    }
+  ],
+  "sourceStages": [
+    {
+      "id": "L0",
+      "name": "发现与资产核对",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "L1",
+      "name": "单位内部研判/发起",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "L2",
+      "name": "归口初审与专业证据",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "L3",
+      "name": "校内集体决策与逐级报批",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "L4",
+      "name": "有权审批、退补/撤回/复核",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "L5",
+      "name": "批准后实施与交割",
+      "sourceSection": "03.1",
+      "mainline": true
+    },
+    {
+      "id": "L6",
+      "name": "账务更新与归档",
+      "sourceSection": "03.1",
+      "mainline": true
+    }
+  ],
+  "stageModelNote": "L0–L6 是原件定义的研究用时间轴，不代表学校系统有七个页面或七级审批。模板阶段仅表达主线；每次到达 L4 都必须核验真实有权决定，L5/L6 仅能引用批准后真实产生的交割/账务凭证。撤回、复核、退补及终止是原件 §03/§11 的条件分支，不得由线性 nextStageId 推断为必经步骤。",
+  "resultCodes": [
+    {
+      "code": "PASS_FACT",
+      "meaning": "仅指定事实命题有可追溯、同版本且无冲突的证据支持；不代表行政批准。"
+    },
+    {
+      "code": "NOT_APPLICABLE",
+      "meaning": "触发条件可信为假，或证据属于尚未到来的后置阶段；须记录理由。"
+    },
+    {
+      "code": "NEEDS_MATERIAL",
+      "meaning": "当前阶段确需且合法持有人可提供的材料缺失。"
+    },
+    {
+      "code": "CONFLICT",
+      "meaning": "有效证据在资产、批次、金额、签署主体、版本或法定顺序上实质冲突。"
+    },
+    {
+      "code": "UNREADABLE",
+      "meaning": "材料已存在但无法可靠读取所需内容。"
+    },
+    {
+      "code": "SOURCE_UNAVAILABLE",
+      "meaning": "应由权威系统/原机关提供的来源暂不可访问或无法核验。"
+    },
+    {
+      "code": "POLICY_UNCONFIRMED",
+      "meaning": "当前校本条款、授权口径、上级原件或适用日期尚未证实。"
+    },
+    {
+      "code": "NEEDS_HUMAN_DECISION",
+      "meaning": "审批、赔偿责任、权属争议、专业安全或法定复核等必须由有权人员决定。"
+    }
+  ],
+  "outputContract": [
+    {
+      "id": "review-observations",
+      "sourceType": "ReviewObservation",
+      "sourceSection": "10.2",
+      "runtimeKind": "item-feedback",
+      "audience": "reviewer"
+    },
+    {
+      "id": "review-issues",
+      "sourceType": "ReviewIssue",
+      "sourceSection": "10.2",
+      "runtimeKind": "item-feedback",
+      "audience": "reviewer"
+    },
+    {
+      "id": "review-todos",
+      "sourceType": "ReviewTodo",
+      "sourceSection": "10.2",
+      "runtimeKind": "supplement-list",
+      "audience": "teacher"
+    },
+    {
+      "id": "external-decision-reference",
+      "sourceType": "ExternalDecisionRef",
+      "sourceSection": "10.2",
+      "runtimeKind": "item-feedback",
+      "audience": "teacher",
+      "readOnly": true
+    },
+    {
+      "id": "history-and-supersession",
+      "sourceType": "supersedesIssueId/auditEventId",
+      "sourceSection": "10.2/11.1",
+      "runtimeKind": "item-feedback",
+      "audience": "reviewer",
+      "readOnly": true
     }
   ]
 } as const
