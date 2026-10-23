@@ -131,7 +131,7 @@ export const S03T13: TemplateVersion = {
       "label": "prior_hardship_decision（F015）",
       "kind": "text",
       "required": false,
-      "visibility": "public",
+      "visibility": "internal",
       "scope": "case"
     },
     {

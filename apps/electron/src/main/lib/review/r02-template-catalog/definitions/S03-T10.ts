@@ -95,7 +95,7 @@ export const S03T10: TemplateVersion = {
       "label": "requestActorId（F006）",
       "kind": "text",
       "required": false,
-      "visibility": "public",
+      "visibility": "internal",
       "scope": "case"
     },
     {
@@ -329,7 +329,7 @@ export const S03T10: TemplateVersion = {
       "label": "otherAidDecisionRef（F022）",
       "kind": "text",
       "required": false,
-      "visibility": "public",
+      "visibility": "internal",
       "scope": "case"
     },
     {
@@ -345,7 +345,7 @@ export const S03T10: TemplateVersion = {
       "label": "applicablePolicyVersion（F024）",
       "kind": "date",
       "required": false,
-      "visibility": "public",
+      "visibility": "internal",
       "scope": "case"
     },
     {
@@ -377,7 +377,7 @@ export const S03T10: TemplateVersion = {
       "label": "reviewerOpinion（F028）",
       "kind": "enum",
       "required": false,
-      "visibility": "public",
+      "visibility": "internal",
       "scope": "case"
     },
     {
@@ -477,7 +477,7 @@ export const S03T10: TemplateVersion = {
       "label": "sourceVersionRelation（F036）",
       "kind": "object",
       "required": false,
-      "visibility": "public",
+      "visibility": "internal",
       "scope": "case"
     },
     {
