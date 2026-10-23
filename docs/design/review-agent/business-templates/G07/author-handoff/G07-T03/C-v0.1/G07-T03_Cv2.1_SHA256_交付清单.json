@@ -1,0 +1,82 @@
+{
+  "template_id": "G07-T03",
+  "business_template_version": "v0.1",
+  "prompt_delivery_spec": "C v2.1",
+  "author_business_status": "BUSINESS_MD_DRAFT_WITH_GAPS",
+  "migration_status": "C_V2_1_MIGRATION_VERIFIED_WITH_EXISTING_GAPS",
+  "phase_D_gold_test": "not_performed_by_C",
+  "phase_E_cross_acceptance": "not_performed",
+  "real_system_run": "not_performed",
+  "source_original_zip": {
+    "path": "/mnt/data/G07-T03_C阶段_完整MD模板_v0.1_交付包.zip",
+    "sha256": "bb69afe241f7c7a842dbfa78ff7d0eaa404f7701cda84759cccc24528e73bbe0",
+    "size_bytes": 69423
+  },
+  "source_prompts": {
+    "C_v2_0_sha256": "2b7b35cd38cd2625e282203240fb38e1a184a458d7f481b3c976588150dd8167",
+    "C_v2_1_sha256": "2acca4e103a4bcc4bd6fd1d4c2e11fa2b2d52f6fd3dc9565ea75ccf3405260a1"
+  },
+  "file_locations": [
+    {
+      "relative_path": "C阶段_静态审计结果.json",
+      "absolute_path": "/mnt/data/G07-T03_C阶段_v2.1_迁移核验交接包/C阶段_静态审计结果.json",
+      "size_bytes": 1819,
+      "sha256": "e74d9947400ddfbdd228ab002f8fc8faea6bf77525e2627501c7ab17b9393205"
+    },
+    {
+      "relative_path": "G07-T03_Cv2.0至v2.1_迁移核验结论.md",
+      "absolute_path": "/mnt/data/G07-T03_C阶段_v2.1_迁移核验交接包/G07-T03_Cv2.0至v2.1_迁移核验结论.md",
+      "size_bytes": 4815,
+      "sha256": "608bdb2395d0fbdf6d8d698588ea4b838e2eee2e75c0b46ed89095dca19e65ad"
+    },
+    {
+      "relative_path": "G07-T03_作者自检与问题修订记录.md",
+      "absolute_path": "/mnt/data/G07-T03_C阶段_v2.1_迁移核验交接包/G07-T03_作者自检与问题修订记录.md",
+      "size_bytes": 6077,
+      "sha256": "b7c2fbe308052eb405a66cbcc149b108388369d3a5d5676d07a3d2214d0923e2"
+    },
+    {
+      "relative_path": "G07-T03_正式业务模板_MD_v0.1.md",
+      "absolute_path": "/mnt/data/G07-T03_C阶段_v2.1_迁移核验交接包/G07-T03_正式业务模板_MD_v0.1.md",
+      "size_bytes": 141566,
+      "sha256": "fec6ee135ad9b5f644dfe8415440e34f633e851c690deba678a2097f2fc98d98"
+    },
+    {
+      "relative_path": "G07-T03_测试对接说明.md",
+      "absolute_path": "/mnt/data/G07-T03_C阶段_v2.1_迁移核验交接包/G07-T03_测试对接说明.md",
+      "size_bytes": 3890,
+      "sha256": "d85a0c97fa8196672396e1e2b94e024fd5e2554e0152bb2074764313ce66655b"
+    },
+    {
+      "relative_path": "G07-T03_编辑器共性模块候选.md",
+      "absolute_path": "/mnt/data/G07-T03_C阶段_v2.1_迁移核验交接包/G07-T03_编辑器共性模块候选.md",
+      "size_bytes": 4486,
+      "sha256": "158024d93dad986fd3a87405a1bc10ce38632a2e74783acf493f7fabd6240812"
+    },
+    {
+      "relative_path": "G07-T03_规则追踪矩阵.csv",
+      "absolute_path": "/mnt/data/G07-T03_C阶段_v2.1_迁移核验交接包/G07-T03_规则追踪矩阵.csv",
+      "size_bytes": 18446,
+      "sha256": "680bbc2830107f6abcb04389c8f59bc75ddd401a9c5516245c6ad4ef433aec26"
+    },
+    {
+      "relative_path": "G07-T03_规则追踪矩阵.md",
+      "absolute_path": "/mnt/data/G07-T03_C阶段_v2.1_迁移核验交接包/G07-T03_规则追踪矩阵.md",
+      "size_bytes": 31583,
+      "sha256": "828137bd6caab332933775bcf47538722c3975f3cde75982ea0257e606466d68"
+    },
+    {
+      "relative_path": "G07-T03_验收对接说明.md",
+      "absolute_path": "/mnt/data/G07-T03_C阶段_v2.1_迁移核验交接包/G07-T03_验收对接说明.md",
+      "size_bytes": 9132,
+      "sha256": "44992650b288e573394b028f54498cf0d4701573b46084b58c5729dde591d710"
+    },
+    {
+      "relative_path": "README_交付阅读顺序.md",
+      "absolute_path": "/mnt/data/G07-T03_C阶段_v2.1_迁移核验交接包/README_交付阅读顺序.md",
+      "size_bytes": 938,
+      "sha256": "434cb646d39f00dd2cfd85ff6e5de6b8fdc88f4d28175a5eddf996aa6d4ba55f"
+    }
+  ],
+  "manifest_hash_policy": "sha256 of original file bytes; this manifest excludes its own digest to avoid recursion; the ZIP digest may be calculated externally after packaging."
+}
