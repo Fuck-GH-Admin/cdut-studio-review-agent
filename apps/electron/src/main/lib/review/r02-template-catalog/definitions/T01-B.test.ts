@@ -75,7 +75,7 @@ describe("R02 T01-B native template definitions", () => {
   test("stage graph is reachable and acyclic, including return targets", () => {
     for (const entry of cases) {
       const stages = entry.template.stages
-      const byId = new Map(stages.map(stage => [stage.id, stage]))
+      const byId = new Map(stages.map(stage => [stage.id, stage] as const))
       expect(new Set(stages.map(stage => stage.id)).size).toBe(stages.length)
       expect(stages.length).toBeGreaterThan(0)
       expect(stages.every(stage => stage.workflowOwner === "local")).toBe(true)
