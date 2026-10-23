@@ -1155,61 +1155,115 @@ export const templateVersion: TemplateVersion = {
   "policyVersionIds": [],
   "stages": [
     {
-      "id": "intake-routing",
-      "name": "申请/事项识别与路由（本地预审）",
+      "id": "a",
+      "name": "A 目标识别",
       "kind": "manual-review",
       "executorRole": "reviewer",
-      "nextStageId": "fact-evidence-review",
+      "nextStageId": "b",
       "workflowOwner": "local"
     },
     {
-      "id": "fact-evidence-review",
-      "name": "事实、字段与材料证据核验",
-      "kind": "manual-review",
-      "executorRole": "reviewer",
-      "nextStageId": "policy-authority-confirmation",
-      "workflowOwner": "local"
-    },
-    {
-      "id": "policy-authority-confirmation",
-      "name": "政策版本、适用范围与权限确认",
+      "id": "b",
+      "name": "B 申请/登记",
       "kind": "manual-review",
       "executorRole": "teacher",
+      "nextStageId": "c",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "c",
+      "name": "C 初核和授权核验",
+      "kind": "manual-review",
+      "executorRole": "teacher",
+      "nextStageId": "d",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "d",
+      "name": "D 补证与冲突处理",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "nextStageId": "e",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "e",
+      "name": "E 正式决定/排期",
+      "kind": "manual-review",
+      "executorRole": "teacher",
+      "nextStageId": "f",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "f",
+      "name": "F 同步与归档",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "nextStageId": "g",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "g",
+      "name": "G 后续变更与争议",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
       "nextStageId": "human-decision-handoff",
       "workflowOwner": "local",
-      "skippableReason": "只有有权人员确认适用规则后才可推进；不得跳过未确认政策门禁。"
+      "skippableReason": "原稿将此情形标记为条件性/后续/跨阶段节点；此处仅为本地审查路由，不代表学校官方流程。"
     },
     {
       "id": "human-decision-handoff",
-      "name": "人工决定待办交接（不代表校方签批）",
-      "kind": "manual-review",
-      "executorRole": "teacher",
-      "nextStageId": "local-result-handoff",
-      "workflowOwner": "local"
-    },
-    {
-      "id": "local-result-handoff",
-      "name": "记录预审结果并交有权人员",
+      "name": "人工决定待办交接（来自 §10 NEEDS_HUMAN_DECISION；不代表校方签批）",
       "kind": "handoff",
-      "executorRole": "reviewer",
+      "executorRole": "teacher",
       "workflowOwner": "local"
     }
   ],
   "outputs": [
     {
-      "id": "fact-review-summary",
+      "id": "pass-fact",
       "kind": "item-feedback",
       "audience": "reviewer"
     },
     {
-      "id": "supplement-request-draft",
+      "id": "not-applicable",
+      "kind": "item-feedback",
+      "audience": "reviewer"
+    },
+    {
+      "id": "needs-material",
       "kind": "supplement-list",
       "audience": "student"
     },
     {
-      "id": "human-decision-handoff",
+      "id": "conflict",
       "kind": "item-feedback",
       "audience": "teacher"
+    },
+    {
+      "id": "unreadable",
+      "kind": "item-feedback",
+      "audience": "reviewer"
+    },
+    {
+      "id": "source-unavailable",
+      "kind": "item-feedback",
+      "audience": "teacher"
+    },
+    {
+      "id": "policy-unconfirmed",
+      "kind": "item-feedback",
+      "audience": "teacher"
+    },
+    {
+      "id": "needs-human-decision",
+      "kind": "item-feedback",
+      "audience": "teacher"
+    },
+    {
+      "id": "fact-review-summary",
+      "kind": "summary-report",
+      "audience": "reviewer"
     }
   ],
   "autoPassPolicy": {
@@ -1228,7 +1282,6 @@ export const r02Metadata = {
   "sourceOriginalPath": "docs/design/review-agent/business-templates/R02/research-original/S02-T10.md",
   "sourceOriginalSha256": "a4d62bbc73d7ed8229b5497762e3a825b98fcccd0a57f77f28aaed65c6cadd31",
   "sourceOriginalGitBlobSha": "98ce5fd43b5b85d458ede2e77fc578e79129582c",
-  "sourceOriginalBytes": 115480,
   "officialSchoolTemplate": false,
   "researchAsOf": "2026-10-23",
   "implementationAsOf": "2026-10-24",

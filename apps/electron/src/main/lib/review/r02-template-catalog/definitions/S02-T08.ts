@@ -1353,61 +1353,127 @@ export const templateVersion: TemplateVersion = {
   "policyVersionIds": [],
   "stages": [
     {
-      "id": "intake-routing",
-      "name": "申请/事项识别与路由（本地预审）",
+      "id": "p0",
+      "name": "P0 政策与身份定位",
       "kind": "manual-review",
-      "executorRole": "reviewer",
-      "nextStageId": "fact-evidence-review",
+      "executorRole": "teacher",
+      "nextStageId": "p1",
       "workflowOwner": "local"
     },
     {
-      "id": "fact-evidence-review",
-      "name": "事实、字段与材料证据核验",
+      "id": "p1",
+      "name": "P1 首次申请",
       "kind": "manual-review",
-      "executorRole": "reviewer",
-      "nextStageId": "policy-authority-confirmation",
+      "executorRole": "teacher",
+      "nextStageId": "p2",
+      "workflowOwner": "local",
+      "skippableReason": "原稿将此情形标记为条件性/后续/跨阶段节点；此处仅为本地审查路由，不代表学校官方流程。"
+    },
+    {
+      "id": "p2",
+      "name": "P2 前置证据核验",
+      "kind": "manual-review",
+      "executorRole": "teacher",
+      "nextStageId": "p3",
       "workflowOwner": "local"
     },
     {
-      "id": "policy-authority-confirmation",
-      "name": "政策版本、适用范围与权限确认",
+      "id": "p3",
+      "name": "P3 条件性人工审批",
+      "kind": "manual-review",
+      "executorRole": "teacher",
+      "nextStageId": "p4",
+      "workflowOwner": "local",
+      "skippableReason": "原稿将此情形标记为条件性/后续/跨阶段节点；此处仅为本地审查路由，不代表学校官方流程。"
+    },
+    {
+      "id": "p4",
+      "name": "P4 报名/选课/缴费或改班",
+      "kind": "manual-review",
+      "executorRole": "teacher",
+      "nextStageId": "p5",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "p5",
+      "name": "P5 开课确认/考试衔接",
+      "kind": "manual-review",
+      "executorRole": "teacher",
+      "nextStageId": "p6",
+      "workflowOwner": "local",
+      "skippableReason": "原稿将此情形标记为条件性/后续/跨阶段节点；此处仅为本地审查路由，不代表学校官方流程。"
+    },
+    {
+      "id": "p6",
+      "name": "P6 学校办理结果",
+      "kind": "manual-review",
+      "executorRole": "teacher",
+      "nextStageId": "p7",
+      "workflowOwner": "local",
+      "skippableReason": "原稿将此情形标记为条件性/后续/跨阶段节点；此处仅为本地审查路由，不代表学校官方流程。"
+    },
+    {
+      "id": "p7",
+      "name": "P7 结果变化/复核",
       "kind": "manual-review",
       "executorRole": "teacher",
       "nextStageId": "human-decision-handoff",
       "workflowOwner": "local",
-      "skippableReason": "只有有权人员确认适用规则后才可推进；不得跳过未确认政策门禁。"
+      "skippableReason": "原稿将此情形标记为条件性/后续/跨阶段节点；此处仅为本地审查路由，不代表学校官方流程。"
     },
     {
       "id": "human-decision-handoff",
-      "name": "人工决定待办交接（不代表校方签批）",
-      "kind": "manual-review",
-      "executorRole": "teacher",
-      "nextStageId": "local-result-handoff",
-      "workflowOwner": "local"
-    },
-    {
-      "id": "local-result-handoff",
-      "name": "记录预审结果并交有权人员",
+      "name": "人工决定待办交接（来自 §10 NEEDS_HUMAN_DECISION；不代表校方签批）",
       "kind": "handoff",
-      "executorRole": "reviewer",
+      "executorRole": "teacher",
       "workflowOwner": "local"
     }
   ],
   "outputs": [
     {
-      "id": "fact-review-summary",
+      "id": "pass-fact",
       "kind": "item-feedback",
       "audience": "reviewer"
     },
     {
-      "id": "supplement-request-draft",
+      "id": "not-applicable",
+      "kind": "item-feedback",
+      "audience": "reviewer"
+    },
+    {
+      "id": "needs-material",
       "kind": "supplement-list",
       "audience": "student"
     },
     {
-      "id": "human-decision-handoff",
+      "id": "conflict",
       "kind": "item-feedback",
       "audience": "teacher"
+    },
+    {
+      "id": "unreadable",
+      "kind": "item-feedback",
+      "audience": "reviewer"
+    },
+    {
+      "id": "source-unavailable",
+      "kind": "item-feedback",
+      "audience": "teacher"
+    },
+    {
+      "id": "policy-unconfirmed",
+      "kind": "item-feedback",
+      "audience": "teacher"
+    },
+    {
+      "id": "needs-human-decision",
+      "kind": "item-feedback",
+      "audience": "teacher"
+    },
+    {
+      "id": "fact-review-summary",
+      "kind": "summary-report",
+      "audience": "reviewer"
     }
   ],
   "autoPassPolicy": {
@@ -1426,7 +1492,6 @@ export const r02Metadata = {
   "sourceOriginalPath": "docs/design/review-agent/business-templates/R02/research-original/S02-T08.md",
   "sourceOriginalSha256": "e52593eb8d26abca361433a5e5300a0d4a5b283a7a7301b3137f80d83297db4d",
   "sourceOriginalGitBlobSha": "e9242b81a47f7c3898f4e2e8c47e309a36a441fa",
-  "sourceOriginalBytes": 148676,
   "officialSchoolTemplate": false,
   "researchAsOf": "2026-10-23",
   "implementationAsOf": "2026-10-24",

@@ -1088,61 +1088,117 @@ export const templateVersion: TemplateVersion = {
   "policyVersionIds": [],
   "stages": [
     {
-      "id": "intake-routing",
-      "name": "申请/事项识别与路由（本地预审）",
+      "id": "l0-window-classify",
+      "name": "L0_WINDOW_CLASSIFY · 先取得学期、教学班、当期选课批次及系统是否开放",
       "kind": "manual-review",
       "executorRole": "reviewer",
-      "nextStageId": "fact-evidence-review",
+      "nextStageId": "l1-application",
       "workflowOwner": "local"
     },
     {
-      "id": "fact-evidence-review",
-      "name": "事实、字段与材料证据核验",
+      "id": "l1-application",
+      "name": "L1_APPLICATION · 学生按可用制度提交申请信息与理由",
+      "kind": "manual-review",
+      "executorRole": "teacher",
+      "nextStageId": "l2-fact-check",
+      "workflowOwner": "local",
+      "skippableReason": "原稿将此情形标记为条件性/后续/跨阶段节点；此处仅为本地审查路由，不代表学校官方流程。"
+    },
+    {
+      "id": "l2-fact-check",
+      "name": "L2_FACT_CHECK · 核对注册、学籍异动生效状态、课程班号、现选课名单、关联材料、冲突及容量数据",
       "kind": "manual-review",
       "executorRole": "reviewer",
-      "nextStageId": "policy-authority-confirmation",
+      "nextStageId": "l3-preapproval",
       "workflowOwner": "local"
     },
     {
-      "id": "policy-authority-confirmation",
-      "name": "政策版本、适用范围与权限确认",
+      "id": "l3-preapproval",
+      "name": "L3_PREAPPROVAL · 如确属当期仍可处理的特殊情形，逐次获取任课教师意见与所在学院意见",
+      "kind": "manual-review",
+      "executorRole": "teacher",
+      "nextStageId": "l4-school-decision",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "l4-school-decision",
+      "name": "L4_SCHOOL_DECISION · 交教务处等当期有权机构审定",
+      "kind": "manual-review",
+      "executorRole": "teacher",
+      "nextStageId": "l5-roster-effect",
+      "workflowOwner": "local",
+      "skippableReason": "原稿将此情形标记为条件性/后续/跨阶段节点；此处仅为本地审查路由，不代表学校官方流程。"
+    },
+    {
+      "id": "l5-roster-effect",
+      "name": "L5_ROSTER_EFFECT · 如果获有效批准，再核对教务系统选课名单/课表是否实际更改，记录操作人/时间与教学班",
+      "kind": "manual-review",
+      "executorRole": "reviewer",
+      "nextStageId": "l6-post-decision",
+      "workflowOwner": "local"
+    },
+    {
+      "id": "l6-post-decision",
+      "name": "L6_POST_DECISION · 后续补件、撤回、更正、复核或申诉按学校授权流程进行",
       "kind": "manual-review",
       "executorRole": "teacher",
       "nextStageId": "human-decision-handoff",
       "workflowOwner": "local",
-      "skippableReason": "只有有权人员确认适用规则后才可推进；不得跳过未确认政策门禁。"
+      "skippableReason": "原稿将此情形标记为条件性/后续/跨阶段节点；此处仅为本地审查路由，不代表学校官方流程。"
     },
     {
       "id": "human-decision-handoff",
-      "name": "人工决定待办交接（不代表校方签批）",
-      "kind": "manual-review",
-      "executorRole": "teacher",
-      "nextStageId": "local-result-handoff",
-      "workflowOwner": "local"
-    },
-    {
-      "id": "local-result-handoff",
-      "name": "记录预审结果并交有权人员",
+      "name": "人工决定待办交接（来自 §10 NEEDS_HUMAN_DECISION；不代表校方签批）",
       "kind": "handoff",
-      "executorRole": "reviewer",
+      "executorRole": "teacher",
       "workflowOwner": "local"
     }
   ],
   "outputs": [
     {
-      "id": "fact-review-summary",
+      "id": "pass-fact",
       "kind": "item-feedback",
       "audience": "reviewer"
     },
     {
-      "id": "supplement-request-draft",
+      "id": "not-applicable",
+      "kind": "item-feedback",
+      "audience": "reviewer"
+    },
+    {
+      "id": "needs-material",
       "kind": "supplement-list",
       "audience": "student"
     },
     {
-      "id": "human-decision-handoff",
+      "id": "conflict",
       "kind": "item-feedback",
       "audience": "teacher"
+    },
+    {
+      "id": "unreadable",
+      "kind": "item-feedback",
+      "audience": "reviewer"
+    },
+    {
+      "id": "source-unavailable",
+      "kind": "item-feedback",
+      "audience": "teacher"
+    },
+    {
+      "id": "policy-unconfirmed",
+      "kind": "item-feedback",
+      "audience": "teacher"
+    },
+    {
+      "id": "needs-human-decision",
+      "kind": "item-feedback",
+      "audience": "teacher"
+    },
+    {
+      "id": "fact-review-summary",
+      "kind": "summary-report",
+      "audience": "reviewer"
     }
   ],
   "autoPassPolicy": {
@@ -1161,7 +1217,6 @@ export const r02Metadata = {
   "sourceOriginalPath": "docs/design/review-agent/business-templates/R02/research-original/S02-T07.md",
   "sourceOriginalSha256": "7f21e74f7940fa37c6985c96c258efc45761be0583b309f2845b3ea5cb994fa6",
   "sourceOriginalGitBlobSha": "abaf40ebaf4eb70bbb63e3bbe754658ca0713344",
-  "sourceOriginalBytes": 142384,
   "officialSchoolTemplate": false,
   "researchAsOf": "2026-10-23",
   "implementationAsOf": "2026-10-24",
