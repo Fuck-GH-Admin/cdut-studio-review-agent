@@ -65,7 +65,11 @@ describe('T04-B R02 template definitions', () => {
       expect(item.metadata.outputContract).toHaveLength(item.template.outputs.length)
       expect(item.metadata.resultCodes).toHaveLength(8)
       expect(Number('sourceBranches' in item.metadata ? item.metadata.sourceBranches.length : 0)).toBe(Number(item.counts.sourceBranches))
-      expect(item.metadata.sourceStages.filter((stage) => 'optionalBranch' in stage && stage.optionalBranch).map((stage) => stage.id)).toEqual(item.optionalBranchIds)
+      const actualOptionalBranchIds: string[] = item.metadata.sourceStages
+        .filter((stage) => 'optionalBranch' in stage && stage.optionalBranch)
+        .map((stage) => String(stage.id))
+      const expectedOptionalBranchIds: string[] = [...item.optionalBranchIds]
+      expect(actualOptionalBranchIds).toEqual(expectedOptionalBranchIds)
       expect(item.template.stages.every((stage) => item.metadata.sourceStages.some((sourceStage) => sourceStage.id === stage.id))).toBe(true)
       expect(new Set(item.template.fields.map((field) => field.key)).size).toBe(item.template.fields.length)
       expect(new Set(item.template.materialSlots.map((slot) => slot.id)).size).toBe(item.template.materialSlots.length)
