@@ -21,7 +21,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F001；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：案卷 ID、操作事件 ID、版本序号；X；M021；P0 全程；不可由上传文件改写；S1；string+event_ref+int／案卷事件；服务端案卷主键、事件日志与 M021 版本账；服务端生成失败→技术异常；绝不从上传件补造 ID。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F001；原稿字段合同：案卷 ID、操作事件 ID、版本序号；X；M021；P0 全程；不可由上传文件改写；S1；string+event_ref+int／案卷事件；服务端案卷主键、事件日志与 M021 版本账；服务端生成失败→技术异常；绝不从上传件补造 ID；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F002",
@@ -30,7 +31,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F002；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：被审学生的可信唯一身份键与姓名映射；S；M003；P0 必核；仅姓名同名不够；查不到主档为 SOURCE_UNAVAILABLE；S2；student_ref+string／被审学生；M003 学籍主键、合法姓名映射/历史身份变更键；学籍源失联 SOURCE_UNAVAILABLE；不同主键同名 CONFLICT。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F002；原稿字段合同：被审学生的可信唯一身份键与姓名映射；S；M003；P0 必核；仅姓名同名不够；查不到主档为 SOURCE_UNAVAILABLE；S2；student_ref+string／被审学生；M003 学籍主键、合法姓名映射/历史身份变更键；学籍源失联 SOURCE_UNAVAILABLE；不同主键同名 CONFLICT；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F003",
@@ -39,7 +41,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F003；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：实际上传/提交人及登录身份；X + M020；P0、P7；与学生本人可不同，不暗含代理权；S2；actor_ref／提交事件；可信会话主体、M020 授权人索引、签收日志；未登录/无代理校验不得执行正式动作；NEEDS_HUMAN_DECISION。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F003；原稿字段合同：实际上传/提交人及登录身份；X + M020；P0、P7；与学生本人可不同，不暗含代理权；S2；actor_ref／提交事件；可信会话主体、M020 授权人索引、签收日志；未登录/无代理校验不得执行正式动作；NEEDS_HUMAN_DECISION；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F004",
@@ -48,7 +51,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F004；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：校区（成都/宜宾及其他）、归口组织；H/S；M004、M011；P0；影响适用政策、办理角色和时间窗；S1；enum+org_ref／校区/申请对象；M004 房间所属校区、M011 政策适用地区；申报未写校区先澄清；两校区冲突 CONFLICT；权威源失联 SOURCE_UNAVAILABLE。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F004；原稿字段合同：校区（成都/宜宾及其他）、归口组织；H/S；M004、M011；P0；影响适用政策、办理角色和时间窗；S1；enum+org_ref／校区/申请对象；M004 房间所属校区、M011 政策适用地区；申报未写校区先澄清；两校区冲突 CONFLICT；权威源失联 SOURCE_UNAVAILABLE；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F005",
@@ -57,7 +61,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F005；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：学段、培养方式及研究生类型；S；M003；P0–P2；本科/专科/硕士/连读/国际/非全日制应保留原始类别，未知不自动拒绝；S2；enum+code／学生身份；M003 学段/培养类别原字段、有效学籍期；可信主档无法读→SOURCE_UNAVAILABLE；无现行类别规则→POLICY_UNCONFIRMED。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F005；原稿字段合同：学段、培养方式及研究生类型；S；M003；P0–P2；本科/专科/硕士/连读/国际/非全日制应保留原始类别，未知不自动拒绝；S2；enum+code／学生身份；M003 学段/培养类别原字段、有效学籍期；可信主档无法读→SOURCE_UNAVAILABLE；无现行类别规则→POLICY_UNCONFIRMED；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F006",
@@ -66,7 +71,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F006；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：学籍/毕业/休学/退学当前权威状态；S；M003、M005；P0/P2/P5；不得从学生证或自述推断生效；S2；enum+date_range／学籍状态；M003/M005 的变动决定号和生效日期；尚无生效决定不得擅填“退学/延期”；待学校原机关处理。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F006；原稿字段合同：学籍/毕业/休学/退学当前权威状态；S；M003、M005；P0/P2/P5；不得从学生证或自述推断生效；S2；enum+date_range／学籍状态；M003/M005 的变动决定号和生效日期；尚无生效决定不得擅填“退学/延期”；待学校原机关处理；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F007",
@@ -75,7 +81,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F007；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：一次住宿分配/床位占用关系键，关联楼栋房号/历史；H；M004；P0 全程；必须区分旧房/新房及不同时期；S2；assignment_ref／住寝关系；M004 原始分配键、楼栋/房号、入住区间；unassigned 是合法状态；房间权威不可取 SOURCE_UNAVAILABLE。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F007；原稿字段合同：一次住宿分配/床位占用关系键，关联楼栋房号/历史；H；M004；P0 全程；必须区分旧房/新房及不同时期；S2；assignment_ref／住寝关系；M004 原始分配键、楼栋/房号、入住区间；unassigned 是合法状态；房间权威不可取 SOURCE_UNAVAILABLE；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F008",
@@ -84,7 +91,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F008；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：宿管占用状态与最近更新时刻；H；M004、M015；P0/P6；不能用“欠费”代替宿管状态；S2；enum+timestamp／住寝占用；M004/M015 宿管占用状态更新事件；状态冲突 CONFLICT；接口失败 SOURCE_UNAVAILABLE。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F008；原稿字段合同：宿管占用状态与最近更新时刻；H；M004、M015；P0/P6；不能用“欠费”代替宿管状态；S2；enum+timestamp／住寝占用；M004/M015 宿管占用状态更新事件；状态冲突 CONFLICT；接口失败 SOURCE_UNAVAILABLE；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F009",
@@ -93,7 +101,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F009；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：操作类型：延住/恢复入住/中途退住/毕业退住/终止状态核验；A/H；M001、M021；P0；类型与主业务路由不一致则 CONFLICT；S1；enum／本次办理动作；M001 表头、M021 案卷登记动作；申请意图未明 NEEDS_MATERIAL 澄清；调寝转邻项。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F009；原稿字段合同：操作类型：延住/恢复入住/中途退住/毕业退住/终止状态核验；A/H；M001、M021；P0；类型与主业务路由不一致则 CONFLICT；S1；enum／本次办理动作；M001 表头、M021 案卷登记动作；申请意图未明 NEEDS_MATERIAL 澄清；调寝转邻项；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F010",
@@ -102,7 +111,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F010；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：申请/受理时间、时区和可信回执；X/C；M001、M007、M021；P1；系统时间优先，上传表单日期仅候选；S1；timestamp+receipt_ref／受理事件；M007 正式收件时刻、M021 服务端事件；上传表单日期不是收件日期；无收件应由学院核实。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F010；原稿字段合同：申请/受理时间、时区和可信回执；X/C；M001、M007、M021；P1；系统时间优先，上传表单日期仅候选；S1；timestamp+receipt_ref／受理事件；M007 正式收件时刻、M021 服务端事件；上传表单日期不是收件日期；无收件应由学院核实；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F011",
@@ -111,7 +121,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F011；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：学年、学期、毕业届别、年度批次；S/P；M003、M011、M016；P0/P5；批次与校区共同决定适用范围；S1；term_ref+cohort／批次；M003 学年、M011 通知题头、M016 毕业届别；学年错配 CONFLICT；无当期通知 POLICY_UNCONFIRMED。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F011；原稿字段合同：学年、学期、毕业届别、年度批次；S/P；M003、M011、M016；P0/P5；批次与校区共同决定适用范围；S1；term_ref+cohort／批次；M003 学年、M011 通知题头、M016 毕业届别；学年错配 CONFLICT；无当期通知 POLICY_UNCONFIRMED；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F012",
@@ -120,7 +131,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F012；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：使用的校本 policy_profile 键与确认状态；P；M011；P0 全程；缺现行版本标 POLICY_UNCONFIRMED；S0；policy_ref+enum／政策配置；M011 生效政策 ID、适用键及版本记录；当期规范不明 POLICY_UNCONFIRMED，停止时限硬判。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F012；原稿字段合同：使用的校本 policy_profile 键与确认状态；P；M011；P0 全程；缺现行版本标 POLICY_UNCONFIRMED；S0；policy_ref+enum／政策配置；M011 生效政策 ID、适用键及版本记录；当期规范不明 POLICY_UNCONFIRMED，停止时限硬判；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F013",
@@ -129,7 +141,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F013；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：申请理由、拟入住或拟退住安排（申请人陈述）；A；M001；P1；文本事实不等于经审批的例外；S2；text+date_range?／申请主张；M001 理由栏、拟安排栏、页码；当前应填却空或字迹不清分别 NEEDS_MATERIAL/UNREADABLE。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F013；原稿字段合同：申请理由、拟入住或拟退住安排（申请人陈述）；A；M001；P1；文本事实不等于经审批的例外；S2；text+date_range?／申请主张；M001 理由栏、拟安排栏、页码；当前应填却空或字迹不清分别 NEEDS_MATERIAL/UNREADABLE；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F014",
@@ -138,7 +151,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F014；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：S04-T02 已生效外住/取消外住决定与时间；H/S；M006；SC-02/04，P2；未办理外住者不适用；S2；decision_ref+timestamp／外住邻项；M006 S04-T02 原业务决定 ID、状态和签发；非外住情形 NOT_APPLICABLE；权威不可查 SOURCE_UNAVAILABLE。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F014；原稿字段合同：S04-T02 已生效外住/取消外住决定与时间；H/S；M006；SC-02/04，P2；未办理外住者不适用；S2；decision_ref+timestamp／外住邻项；M006 S04-T02 原业务决定 ID、状态和签发；非外住情形 NOT_APPLICABLE；权威不可查 SOURCE_UNAVAILABLE；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F015",
@@ -147,7 +161,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F015；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：S01 学籍异动或延毕有效决定、起止时点；S；M005；SC-01/04/08，P2/P5；只引用权威结果；S2；decision_ref+date_range／学籍邻项；M005 原机关文书页码/系统决定号；拟异动≠已生效；权威未决交学籍有权人。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F015；原稿字段合同：S01 学籍异动或延毕有效决定、起止时点；S；M005；SC-01/04/08，P2/P5；只引用权威结果；S2；decision_ref+date_range／学籍邻项；M005 原机关文书页码/系统决定号；拟异动≠已生效；权威未决交学籍有权人；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F016",
@@ -156,7 +171,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F016；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：学院审核、签章主体、意见及提交时刻；C；M002、M007；延住 P2，退住按正式流程选用；表单章像非权威审批；S2；opinion_ref+timestamp／学院审核；M002/M007 个人行、签章/审批日志；P1 尚未发生 NOT_APPLICABLE；P2 真实缺本阶段审核才列学院待办。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F016；原稿字段合同：学院审核、签章主体、意见及提交时刻；C；M002、M007；延住 P2，退住按正式流程选用；表单章像非权威审批；S2；opinion_ref+timestamp／学院审核；M002/M007 个人行、签章/审批日志；P1 尚未发生 NOT_APPLICABLE；P2 真实缺本阶段审核才列学院待办；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F017",
@@ -165,7 +181,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F017；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：住宿申请表的申请对象、签字、填写项；A/C；M001；申请 P1；不要求未来阶段中心批文；S2；structured_fields／申请表；M001 学生/动作/签名栏与页码；到 P1 应填项目缺 NEEDS_MATERIAL；文字看不清 UNREADABLE。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F017；原稿字段合同：住宿申请表的申请对象、签字、填写项；A/C；M001；申请 P1；不要求未来阶段中心批文；S2；structured_fields／申请表；M001 学生/动作/签名栏与页码；到 P1 应填项目缺 NEEDS_MATERIAL；文字看不清 UNREADABLE；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F018",
@@ -174,7 +191,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F018；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：楼寓有权住宿审批/备案决定及版本；H；M008；延住 P3 后才出现；是否批准只从学校正式记录得知；S2；decision_ref+version／住房正式决定；M008 校方审批/名单条目与编号；P1/P2 NOT_APPLICABLE；P3 接口断 SOURCE_UNAVAILABLE。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F018；原稿字段合同：楼寓有权住宿审批/备案决定及版本；H；M008；延住 P3 后才出现；是否批准只从学校正式记录得知；S2；decision_ref+version／住房正式决定；M008 校方审批/名单条目与编号；P1/P2 NOT_APPLICABLE；P3 接口断 SOURCE_UNAVAILABLE；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F019",
@@ -183,7 +201,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F019；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：审批批准的校区/床位/期限/附加条件；H；M008；P3–P6；未知期限不可由模型补造；S2；campus+assignment+date_range／决定范围；M008 获批行、期限/附款原文；期限不见 SOURCE_UNAVAILABLE 或待原文；不能模型补填。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F019；原稿字段合同：审批批准的校区/床位/期限/附加条件；H；M008；P3–P6；未知期限不可由模型补造；S2；campus+assignment+date_range／决定范围；M008 获批行、期限/附款原文；期限不见 SOURCE_UNAVAILABLE 或待原文；不能模型补填；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F020",
@@ -192,7 +211,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F020；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：正式缴费通知、截止时刻与送达证明；H/F；M009、M023；延住 P4；适用期和送达不明不得“自动放弃”；S2；notice_ref+timestamp／收费通知；M009/M023 通知原文、收件/送达日志；无当期通知或已否送达不明→POLICY_UNCONFIRMED/NEEDS_HUMAN_DECISION。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F020；原稿字段合同：正式缴费通知、截止时刻与送达证明；H/F；M009、M023；延住 P4；适用期和送达不明不得“自动放弃”；S2；notice_ref+timestamp／收费通知；M009/M023 通知原文、收件/送达日志；无当期通知或已否送达不明→POLICY_UNCONFIRMED/NEEDS_HUMAN_DECISION；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F021",
@@ -201,7 +221,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F021；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：财务住宿费应缴/已生成状态与时间；F；M009；P4；金额不由本模板核算；S3；charge_ref+enum+timestamp／财务应缴；M009 住宿收费单号、期间、费用类别；财务服务失联 SOURCE_UNAVAILABLE；学生无义务自建收费账。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F021；原稿字段合同：财务住宿费应缴/已生成状态与时间；F；M009；P4；金额不由本模板核算；S3；charge_ref+enum+timestamp／财务应缴；M009 住宿收费单号、期间、费用类别；财务服务失联 SOURCE_UNAVAILABLE；学生无义务自建收费账；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F022",
@@ -210,7 +231,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F022；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：该次住宿对应的实缴状态、入账时刻；F；M010；P4/P5；截图只作查询线索；S3；payment_ref+enum+timestamp／财务实缴；M010 入账流水与状态更新时点；截图与未入账时点错开先等待核账；确定同一时点冲突才 CONFLICT。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F022；原稿字段合同：该次住宿对应的实缴状态、入账时刻；F；M010；P4/P5；截图只作查询线索；S3；payment_ref+enum+timestamp／财务实缴；M010 入账流水与状态更新时点；截图与未入账时点错开先等待核账；确定同一时点冲突才 CONFLICT；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F023",
@@ -219,7 +241,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F023；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：房间钥匙/门禁介质移交与接收时间；D；M012；退宿 P5；申请阶段未发生=不适用；S2；handover_ref+timestamp／退房实物；M012 前台钥匙/卡签收号、签收栏；P1–P4 NOT_APPLICABLE；P5 实际应交未交→现场待办。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F023；原稿字段合同：房间钥匙/门禁介质移交与接收时间；D；M012；退宿 P5；申请阶段未发生=不适用；S2；handover_ref+timestamp／退房实物；M012 前台钥匙/卡签收号、签收栏；P1–P4 NOT_APPLICABLE；P5 实际应交未交→现场待办；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F024",
@@ -228,7 +251,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F024；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：室内公物与房间交验事实、异常；D；M013；退宿 P5；破损责任/赔偿需有权处理；S2；inspection_ref+enum／公物交验；M013 公物/遗留物检查表位置及异常栏；P5 现场缺记录则前台核；损坏争议 NEEDS_HUMAN_DECISION。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F024；原稿字段合同：室内公物与房间交验事实、异常；D；M013；退宿 P5；破损责任/赔偿需有权处理；S2；inspection_ref+enum／公物交验；M013 公物/遗留物检查表位置及异常栏；P5 现场缺记录则前台核；损坏争议 NEEDS_HUMAN_DECISION；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F025",
@@ -237,7 +261,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F025；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：退寝室单/退宿单编号、签发者、关联房号；D/H；M014；退宿 P5；须和 F007 绑定，不能复用到新房；S2；receipt_ref+room_ref／退寝室单；M014 退宿单号、旧房号、签发章、页码；错房 CONFLICT；扫描难读 UNREADABLE；前台无台账 SOURCE_UNAVAILABLE。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F025；原稿字段合同：退寝室单/退宿单编号、签发者、关联房号；D/H；M014；退宿 P5；须和 F007 绑定，不能复用到新房；S2；receipt_ref+room_ref／退寝室单；M014 退宿单号、旧房号、签发章、页码；错房 CONFLICT；扫描难读 UNREADABLE；前台无台账 SOURCE_UNAVAILABLE；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F026",
@@ -246,7 +271,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F026；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：毕业数字离校系统的相关事项结果；S/H；M016；毕业退宿 P5–P6；不同校区流程未知则不强求；S2；enum+event_ref／毕业离校；M016 数字离校系统宿舍子项/届别；本届未用平台 NOT_APPLICABLE；制度不明 POLICY_UNCONFIRMED。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F026；原稿字段合同：毕业数字离校系统的相关事项结果；S/H；M016；毕业退宿 P5–P6；不同校区流程未知则不强求；S2；enum+event_ref／毕业离校；M016 数字离校系统宿舍子项/届别；本届未用平台 NOT_APPLICABLE；制度不明 POLICY_UNCONFIRMED；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F027",
@@ -255,7 +281,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F027；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：中心/宿管最终入住或退宿台账处理状态；H；M015；P5–P6；区别“已接收申请”和“已更新床位”；S2；enum+timestamp／宿管落账；M015 公寓后台状态事件、登记人员；交钥匙已收却未更新账 CONFLICT；不代写台账。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F027；原稿字段合同：中心/宿管最终入住或退宿台账处理状态；H；M015；P5–P6；区别“已接收申请”和“已更新床位”；S2；enum+timestamp／宿管落账；M015 公寓后台状态事件、登记人员；交钥匙已收却未更新账 CONFLICT；不代写台账；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F028",
@@ -264,7 +291,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F028；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：计划财务处对住宿收费变更的独立处理状态；F；M017；P4/P6；不是本模板的正式退费裁决；S3；finance_decision_ref／独立费用处理；M017 核减/退款等财务原始处理号；没有财务动作 NOT_APPLICABLE；无接口 SOURCE_UNAVAILABLE。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F028；原稿字段合同：计划财务处对住宿收费变更的独立处理状态；F；M017；P4/P6；不是本模板的正式退费裁决；S3；finance_decision_ref／独立费用处理；M017 核减/退款等财务原始处理号；没有财务动作 NOT_APPLICABLE；无接口 SOURCE_UNAVAILABLE；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F029",
@@ -273,7 +301,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F029；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：撤回、补件、复核申请、主张及关联旧案 ID；A/X；M018；P1–P7 触发时；不可覆盖历史；S2；action_ref+enum／撤回/复核；M018 原案号、请求文本、递交回执；无请求 NOT_APPLICABLE；是否正式生效待有权受理员。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F029；原稿字段合同：撤回、补件、复核申请、主张及关联旧案 ID；A/X；M018；P1–P7 触发时；不可覆盖历史；S2；action_ref+enum／撤回/复核；M018 原案号、请求文本、递交回执；无请求 NOT_APPLICABLE；是否正式生效待有权受理员；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F030",
@@ -282,7 +311,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F030；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：涉住宿资格终止的正式文书、原因、送达和生效时点；H/其他有权机关；M023；SC-07/08，P6；无当前授权文件只能人工核；S3；formal_doc_ref+timestamp／终止文书；M023 正式决定号、签发单位、生效/送达栏；没有正式授权 POLICY_UNCONFIRMED，绝不编造终止结果。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F030；原稿字段合同：涉住宿资格终止的正式文书、原因、送达和生效时点；H/其他有权机关；M023；SC-07/08，P6；无当前授权文件只能人工核；S3；formal_doc_ref+timestamp／终止文书；M023 正式决定号、签发单位、生效/送达栏；没有正式授权 POLICY_UNCONFIRMED，绝不编造终止结果；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F031",
@@ -291,7 +321,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F031；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：适用规范版本、发布、生效、废止/替代、校区范围；P；M011；P0–P7；旧试行办法不能默认当前有效；S0；policy_versions[]／规范时效；M011 发布、生效、修订和适用页码；替代链不全 POLICY_UNCONFIRMED，不以抓取时间代生效。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F031；原稿字段合同：适用规范版本、发布、生效、废止/替代、校区范围；P；M011；P0–P7；旧试行办法不能默认当前有效；S0；policy_versions[]／规范时效；M011 发布、生效、修订和适用页码；替代链不全 POLICY_UNCONFIRMED，不以抓取时间代生效；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F032",
@@ -300,7 +331,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F032；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：代办授权人/被授权人、动作、期限、签发渠道；S/X；M020；仅实际代理提交/撤回/复核时；未核代理规范则人工；S2；delegation_ref+scope／代理动作；M020 授权书/校内代理登记范围栏；无真实委托或许可不明→分别补件/政策确认；越权动作不执行。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F032；原稿字段合同：代办授权人/被授权人、动作、期限、签发渠道；S/X；M020；仅实际代理提交/撤回/复核时；未核代理规范则人工；S2；delegation_ref+scope／代理动作；M020 授权书/校内代理登记范围栏；无真实委托或许可不明→分别补件/政策确认；越权动作不执行；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F033",
@@ -309,7 +341,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F033；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：申请跨宿舍、跨校区、跨学年的重叠关系；H/X；M004、M021；P0/P6；需关系键而非姓名匹配；S2；relation_ref[]／跨案关联；M004 多房关系键、M021 重叠事件日志；旧房/新房时段不一不算冲突；源失联不判占用。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F033；原稿字段合同：申请跨宿舍、跨校区、跨学年的重叠关系；H/X；M004、M021；P0/P6；需关系键而非姓名匹配；S2；relation_ref[]／跨案关联；M004 多房关系键、M021 重叠事件日志；旧房/新房时段不一不算冲突；源失联不判占用；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F034",
@@ -318,7 +351,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F034；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：材料版本、取代链与影响字段集合；X；M021；全程更新；原件哈希、页码和旧审查不删除；S1；version_ref+set<F_ref>／证据版本；M021 哈希、supersedes、更改字段映射；旧版丢失 SOURCE_UNAVAILABLE；保留旧 R 快照而非覆盖。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F034；原稿字段合同：材料版本、取代链与影响字段集合；X；M021；全程更新；原件哈希、页码和旧审查不删除；S1；version_ref+set<F_ref>／证据版本；M021 哈希、supersedes、更改字段映射；旧版丢失 SOURCE_UNAVAILABLE；保留旧 R 快照而非覆盖；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F035",
@@ -327,7 +361,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F035；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：证据出处、页/栏位、可信等级、签发角色与校验结果；X + 对应签发源；M001–M026；每条规则；OCR 章像/人工意见与权威数据分层；S1–S3；evidence_locator[]／每条规则证据；M001–M026 的文件页/坐标/表格行/签发和可信等级；缺原件可无法核源，不可读是 UNREADABLE；OCR 不是独立权威。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F035；原稿字段合同：证据出处、页/栏位、可信等级、签发角色与校验结果；X + 对应签发源；M001–M026；每条规则；OCR 章像/人工意见与权威数据分层；S1–S3；evidence_locator[]／每条规则证据；M001–M026 的文件页/坐标/表格行/签发和可信等级；缺原件可无法核源，不可读是 UNREADABLE；OCR 不是独立权威；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F036",
@@ -336,7 +371,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F036；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：特殊困难、缴费例外、延住例外的人工裁量请求；A/C/H；M001、M011、M023；仅 SC-03/07 等；无授权标准→人工；S2/S3；text+request_ref／例外主张；M001 理由及附件位置，M023 若后续有正式答复；没有例外 NOT_APPLICABLE；请求真实但标准未知→人工。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F036；原稿字段合同：特殊困难、缴费例外、延住例外的人工裁量请求；A/C/H；M001、M011、M023；仅 SC-03/07 等；无授权标准→人工；S2/S3；text+request_ref／例外主张；M001 理由及附件位置，M023 若后续有正式答复；没有例外 NOT_APPLICABLE；请求真实但标准未知→人工；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F037",
@@ -345,7 +381,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F037；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：本次办理动作人员及当时有效授权范围；X + 学校授权目录；M007、M008、M015、M019、M023；每次受理、批准、撤回、复核、签收；Renderer 自报身份无效；S2；actor_authority_ref／正式动作权限；岗位目录、M007/M008/M015/M019/M023 签发源；Renderer 自述无效；无法验证时不记录正式决定。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F037；原稿字段合同：本次办理动作人员及当时有效授权范围；X + 学校授权目录；M007、M008、M015、M019、M023；每次受理、批准、撤回、复核、签收；Renderer 自报身份无效；S2；actor_authority_ref／正式动作权限；岗位目录、M007/M008/M015/M019/M023 签发源；Renderer 自述无效；无法验证时不记录正式决定；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F038",
@@ -354,7 +391,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F038；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：与本案关联的学校正式决定类型、签发日与效力；H/S；M005、M006、M008、M019、M022、M023；P3–P7；不把事实预审结果写成有效学校决定；S2/S3；decision_ref[]／正式权利事件；M005/M006/M008/M019/M022/M023 决定签发/效力；无决定记录保持未知/待有权人；与事实 PASS 分离。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F038；原稿字段合同：与本案关联的学校正式决定类型、签发日与效力；H/S；M005、M006、M008、M019、M022、M023；P3–P7；不把事实预审结果写成有效学校决定；S2/S3；decision_ref[]／正式权利事件；M005/M006/M008/M019/M022/M023 决定签发/效力；无决定记录保持未知/待有权人；与事实 PASS 分离；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F039",
@@ -363,7 +401,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F039；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：权威数据服务可用性、快照及最后更新时刻；X + H/S/F/P；M003、M004、M011、M021；全程；服务故障为 SOURCE_UNAVAILABLE，与学生缺件分开；S1；source_health+timestamp／源可用性；学籍/宿管/财务/政策服务快照及错误码；服务不可达 SOURCE_UNAVAILABLE；不能向学生转嫁补系统截图。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F039；原稿字段合同：权威数据服务可用性、快照及最后更新时刻；X + H/S/F/P；M003、M004、M011、M021；全程；服务故障为 SOURCE_UNAVAILABLE，与学生缺件分开；S1；source_health+timestamp／源可用性；学籍/宿管/财务/政策服务快照及错误码；服务不可达 SOURCE_UNAVAILABLE；不能向学生转嫁补系统截图；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F040",
@@ -372,7 +411,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F040；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：当前案卷阶段、历史事件与办结/重开关联；X；M018、M019、M021；全程；每个阶段只检查已经应形成的材料；S1；enum+event_ref[]／流程阶段；M021 原始事件版本、M018/M019 复核事件；不能凭申请文本跳 P3/P5，历史状态完整保存。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F040；原稿字段合同：当前案卷阶段、历史事件与办结/重开关联；X；M018、M019、M021；全程；每个阶段只检查已经应形成的材料；S1；enum+event_ref[]／流程阶段；M021 原始事件版本、M018/M019 复核事件；不能凭申请文本跳 P3/P5，历史状态完整保存；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F041",
@@ -381,7 +421,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F041；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：已结算/已退或待退的费用类别和财务结果引用；F；M017；仅财务已处理/提出财务请求；区分住宿费与电费、不得以此得出退宿；S3；fee_type+finance_ref／费用类别；M017 财务费用类别、应退/已退处理号；非财务事项 NOT_APPLICABLE；未知收费标准由财务确认。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F041；原稿字段合同：已结算/已退或待退的费用类别和财务结果引用；F；M017；仅财务已处理/提出财务请求；区分住宿费与电费、不得以此得出退宿；S3；fee_type+finance_ref／费用类别；M017 财务费用类别、应退/已退处理号；非财务事项 NOT_APPLICABLE；未知收费标准由财务确认；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F042",
@@ -390,7 +431,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F042；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：国际学生科与楼寓之间的退宿/外住变更受理号、动作时间及状态；国际学生科/H；M024；SC-10 涉国际生且正式登记阶段；不能以派出所《住宿登记表》直接标“学校已退房”；S2；office_receipt_ref+enum+timestamp／国际生住宿变更；M024 国际学生科正式受理号、校区宿管衔接记录；国际学生无此阶段 NOT_APPLICABLE；仅有公安登记/手册图片不得推定校方已退宿。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F042；原稿字段合同：国际学生科与楼寓之间的退宿/外住变更受理号、动作时间及状态；国际学生科/H；M024；SC-10 涉国际生且正式登记阶段；不能以派出所《住宿登记表》直接标“学校已退房”；S2；office_receipt_ref+enum+timestamp／国际生住宿变更；M024 国际学生科正式受理号、校区宿管衔接记录；国际学生无此阶段 NOT_APPLICABLE；仅有公安登记/手册图片不得推定校方已退宿；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     },
     {
       "key": "F043",
@@ -399,7 +441,8 @@ export const template: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "case",
-      "displayHint": "研究字段 F043；按来源文件及权威登记核对，缺失/冲突不得直接形成正式决定。"
+      "extractionHint": "原稿类型/对象与证据定位：国际学生校外实际居住的公安住宿登记表号、登记时刻及对应对象；学生申请/公安机关可核来源；M025；SC-10 中真实需外住及国际学生科按当期制度要求时；不表示宿舍钥匙已还；S3；police_registration_ref+timestamp／国际生校外居住登记；M025 《住宿登记表》公安登记号、学生身份、居住时点（最小化，不外显住址）；无此国际转外住分支 NOT_APPLICABLE；2025 年度以后强制条件待校方确认，登记证明不充当学校退宿结果。只提取候选事实；必须按指定材料/权威来源核验，未知或冲突不得猜测。",
+      "displayHint": "研究字段 F043；原稿字段合同：国际学生校外实际居住的公安住宿登记表号、登记时刻及对应对象；学生申请/公安机关可核来源；M025；SC-10 中真实需外住及国际学生科按当期制度要求时；不表示宿舍钥匙已还；S3；police_registration_ref+timestamp／国际生校外居住登记；M025 《住宿登记表》公安登记号、学生身份、居住时点（最小化，不外显住址）；无此国际转外住分支 NOT_APPLICABLE；2025 年度以后强制条件待校方确认，登记证明不充当学校退宿结果；缺失、不可读、来源失联和政策不明须分开处理，不自动形成正式决定。"
     }
   ],
   "materialSlots": [
