@@ -1239,12 +1239,12 @@ export const template: TemplateVersion = {
   ],
   "outputs": [
     {
-      "id": "fact-review-feedback",
+      "id": "result-code-findings",
       "kind": "item-feedback",
       "audience": "reviewer"
     },
     {
-      "id": "supplement-suggestions",
+      "id": "issue-and-todo-list",
       "kind": "supplement-list",
       "audience": "reviewer"
     }
@@ -1534,6 +1534,56 @@ export const r02Metadata = {
         "SRC-007"
       ],
       "evidenceStatus": "UNCONFIRMED"
+    }
+  ],
+  "resultCodes": [
+    {
+      "code": "PASS_FACT",
+      "meaning": "当前适用的某个单独事实获可读、可溯源、版本匹配且授权允许读取的证据证实；允许验证“确有不批准决定”这一文件事实",
+      "nextAction": "保留事实和引用，传下一阶段待办/人工审查",
+      "notEquivalentTo": "解除资格充分、学校已批准、申诉成功"
+    },
+    {
+      "code": "NOT_APPLICABLE",
+      "meaning": "此规则在本申请类别或当前阶段未触发；或有权确定常规解除分支不适用（例如开除学籍）",
+      "nextAction": "可有分流提示；不要求无关或后置材料",
+      "notEquivalentTo": "自动否决所有其它合法救济路径"
+    },
+    {
+      "code": "NEEDS_MATERIAL",
+      "meaning": "已触发且已到使用阶段、持有人能够依法提供的必要事实证据缺失；排除未来才生成及权威系统失联",
+      "nextAction": "指明 M、事实、合法替代与补证 Owner；仅重核关联 R",
+      "notEquivalentTo": "学生必须上传所有校内已有记录"
+    },
+    {
+      "code": "CONFLICT",
+      "meaning": "不同材料、受信任记录、主体键、授权身份或版本链存在不可自动消解的相互矛盾或可证伪关联",
+      "nextAction": "锁定争议字段、双方引用和权属核对人员；暂停受影响事实的正向输出",
+      "notEquivalentTo": "以模型置信度选胜者，或视为学生违纪新事实"
+    },
+    {
+      "code": "UNREADABLE",
+      "meaning": "已有材料，但关键页/字段因扫描、损坏、解密、OCR 不确定等无法可靠解读",
+      "nextAction": "指材料 ID、页码/区域、可读替代；持有人/档案 Owner 重取",
+      "notEquivalentTo": "“未上传文件”，也不意味着内容为假"
+    },
+    {
+      "code": "SOURCE_UNAVAILABLE",
+      "meaning": "本应由学校或官方权威来源提供的数据暂不可访问、权限不足、接口不存在/失联、无法调档",
+      "nextAction": "转权威数据 Owner、记录失败时间与重试/人工调档渠道",
+      "notEquivalentTo": "申请人缺件或权威事实不存在"
+    },
+    {
+      "code": "POLICY_UNCONFIRMED",
+      "meaning": "适用制度版本、效力、跨期过渡、具体时限或校本授权规则缺当前有效权威依据",
+      "nextAction": "交制度解释/业务 Owner 补现行 SRC；可继续无关客观核验",
+      "notEquivalentTo": "套用旧版或外校阈值后得出“合格/不合格”"
+    },
+    {
+      "code": "NEEDS_HUMAN_DECISION",
+      "meaning": "事实具备或尚待权威裁量，但最终处分解除、提前例外、受理撤回、申诉纠正、校级审批或更正操作属有权主体",
+      "nextAction": "形成有权办理待办，等待真实身份、授权及正式结果",
+      "notEquivalentTo": "模型或 Renderer 自己成为有权决定者"
     }
   ]
 } as const
