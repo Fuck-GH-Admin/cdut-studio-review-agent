@@ -79,15 +79,15 @@ export function planB3ConservativeRouting(input: B3RoutingInput): B3RouteState {
     status:'needs-user-confirmation',remainingMs,
     reason:'File role, subject or owner scope ambiguous',
   }
-  if (input.suggestions.length===0) return {
-    status:'unmatched',remainingMs:0,
-    reason:'No evidenced template match; user must confirm a business category or author a held candidate',
-  }
   const applications=input.materialCandidates.filter(m=>m.role==='application')
   if (applications.length!==1 ||
       new Set(input.materialCandidates.map(m=>m.subjectId)).size!==1) return {
     status:'needs-user-confirmation',remainingMs,
     reason:'Multiple application owners, Subjects or no application require manual business confirmation',
+  }
+  if (input.suggestions.length===0) return {
+    status:'unmatched',remainingMs:0,
+    reason:'No evidenced template match; user must confirm a business category or author a held candidate',
   }
   const evidenceValid = (suggestion:B3RouteSuggestion):boolean => {
     if (!Array.isArray(suggestion.evidence) ||

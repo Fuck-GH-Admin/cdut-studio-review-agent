@@ -236,6 +236,13 @@ function evaluate(s:Session,items:B3ManualCatalogEntry[]):B3RouteState {
   const scoped=all.length>0&&applications.length===1&&
     all.every(x=>x.role!=='unassigned'&&Boolean(x.subjectId))&&
     new Set(all.map(x=>x.subjectId)).size===1
+  if(selected&&scoped&&!s.chosen){
+    return {status:'manually-selected',remainingMs:0,
+      chosen:{templateId:selected.templateId,templateVersion:selected.templateVersion},
+      candidates:[{templateId:selected.templateId,templateVersion:selected.templateVersion,
+        confidence:1,reason:'当前原生案卷已持久绑定该模板版本'}],
+      reason:'当前案卷已持久绑定模板；不重新启动20秒默认选择'}
+  }
   let routeCandidates:C11RouteCandidate[]=[]
   if(scoped&&applications.length===1){
     const d4Matches=classifyD4ApplicationDocuments(items,activeDocs)
@@ -285,6 +292,8 @@ function evaluate(s:Session,items:B3ManualCatalogEntry[]):B3RouteState {
     item.templateVersion===selectedCandidate.templateVersion)){
     routeCandidates=[selectedCandidate,...routeCandidates]
   }
+  routeCandidates.sort((a,b)=>b.confidence-a.confidence||
+    a.templateId.localeCompare(b.templateId)||a.templateVersion.localeCompare(b.templateVersion))
   const automatic=selectedCandidate?[selectedCandidate]:routeCandidates.filter(item=>
     item.autoEligible&&items.some(entry=>entry.templateId===item.templateId&&
       entry.templateVersion===item.templateVersion&&
@@ -319,7 +328,8 @@ function buildRouteCandidatesForRead(items:B3ManualCatalogEntry[],documents:Snap
       evidence:match.evidence,
       tier:match.evidence==='application-declaration'?'exact' as const:'business-content-l1' as const,
     }]
-  })
+  }).sort((a,b)=>b.confidence-a.confidence||
+    a.templateId.localeCompare(b.templateId)||a.templateVersion.localeCompare(b.templateVersion))
   const app=applications[0]!
   const strongBlocks=app.blocks.filter(block=>block.kind==='text'&&
     block.format!=='ocr-text'&&block.format!=='vision-text')
@@ -338,7 +348,8 @@ function buildRouteCandidatesForRead(items:B3ManualCatalogEntry[],documents:Snap
       matchedSignals:match.matchedSignals,confidence,autoEligible:confidence>=0.95,
       evidence:match.reason,tier:match.tier,
     }]
-  })
+  }).sort((a,b)=>b.confidence-a.confidence||
+    a.templateId.localeCompare(b.templateId)||a.templateVersion.localeCompare(b.templateVersion))
 }
 function read(event:IpcMainInvokeEvent,caseId:string):C11MainLocalProductRead {
   const {data,s}=session(event,caseId)

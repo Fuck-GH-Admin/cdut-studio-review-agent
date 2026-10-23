@@ -309,13 +309,14 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
       <div className="flex flex-wrap items-center gap-2 text-xs">
         <span className="rounded-full bg-muted px-2 py-1">真实材料 {read.read.inventory?.sources?.length ?? 0} 份</span>
         <span className="rounded-full bg-muted px-2 py-1">可选模板 {eligible.length} 套</span>
-        <span className="rounded-full bg-muted px-2 py-1">{route?.status==='default-selected'?'已匹配':route?.status==='countdown'?'建议确认中':route?.status==='unmatched'?'未匹配':route?.status==='awaiting-evidence'?'缺少可用材料':'需人工选择'}</span>
+        <span className="rounded-full bg-muted px-2 py-1">{route?.status==='default-selected'?'已匹配':route?.status==='countdown'?'建议确认中':route?.status==='unmatched'?'深度匹配中':route?.status==='awaiting-evidence'?'缺少可用材料':route?.status==='manually-selected'?'已选模板':'需人工选择'}</span>
       </div>
       {route?.status==='countdown'&&<div className="space-y-1 text-xs text-muted-foreground">
         <p>{route.candidates?.length&&route.candidates.length>1?'已找到多个有效候选':'已找到可靠候选'}；约 {Math.ceil(route.remainingMs/1000)} 秒后默认进入第一项。</p>
         <progress className="w-full" max={20} value={20-Math.min(20,Math.ceil(route.remainingMs/1000))}/>
       </div>
       {route?.status==='unmatched'&&<p className="text-xs text-amber-700 dark:text-amber-300">尚未找到可靠的现有模板，正在自动深度匹配；你也可以搜索全部模板，或在确认超出范围后使用公共兜底。</p>}
+      {route?.status==='manually-selected'&&route.chosen&&<p role="status" className="rounded-lg bg-primary/5 p-2 text-xs">当前已选择模板 {route.chosen.templateId}@{route.chosen.templateVersion}。继续完成该模板要求的配置；这不是审核结论。</p>}
       {['needs-user-confirmation','awaiting-evidence'].includes(route?.status??'')&&
         <p className="text-xs text-amber-700 dark:text-amber-300">材料可能缺少申请原件、存在多个业务对象或角色未归属。请先在案卷中补齐或确认材料归属，再刷新；不能把不明材料自动归到某个人。</p>}
       <div className="flex gap-2">
