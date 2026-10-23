@@ -269,7 +269,8 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
       const remaining=Math.max(0,modelDeadline-Date.now())
       setModelRemainingMs(remaining)
       if(remaining===0){
-        const first=modelCandidates[0]!
+        const first=unifiedCandidates[0]
+        if(!first)return
         const key=(read?.sessionKey??'')+'::'+first.templateId+'@'+first.templateVersion
         if(modelAutoChoiceRef.current!==key){
           modelAutoChoiceRef.current=key
@@ -296,6 +297,35 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
   const route=read?.read.route
   const eligible=read?.catalog.filter(item=>!item.templateId.startsWith('fallback-'))??[]
   const visibleCatalog=filterTemplateCatalog(eligible,catalogQuery)
+  const unifiedCandidates=React.useMemo(()=>{
+    const merged=new Map<string,{
+      templateId:string;templateVersion:string;name:string;confidence:number;reason:string;
+      matchedSignals:string[];source:'规则匹配'|'AI 深度匹配'|'规则 + AI'
+    }>()
+    for(const candidate of read?.routeCandidates??[]){
+      const key=candidate.templateId+'@'+candidate.templateVersion
+      merged.set(key,{
+        templateId:candidate.templateId,templateVersion:candidate.templateVersion,name:candidate.name,
+        confidence:candidate.confidence,reason:candidate.evidence,
+        matchedSignals:candidate.matchedSignals,source:'规则匹配',
+      })
+    }
+    for(const candidate of modelCandidates){
+      const key=candidate.templateId+'@'+candidate.templateVersion
+      const prior=merged.get(key)
+      merged.set(key,prior?{
+        ...prior,confidence:Math.max(prior.confidence,candidate.confidence),
+        reason:prior.reason+'；AI 深度匹配：'+candidate.reason,
+        source:'规则 + AI',
+      }:{
+        templateId:candidate.templateId,templateVersion:candidate.templateVersion,name:candidate.name,
+        confidence:candidate.confidence,reason:candidate.reason,matchedSignals:[],source:'AI 深度匹配',
+      })
+    }
+    return [...merged.values()].sort((a,b)=>b.confidence-a.confidence||
+      b.matchedSignals.length-a.matchedSignals.length||
+      a.templateId.localeCompare(b.templateId)||a.templateVersion.localeCompare(b.templateVersion))
+  },[read?.routeCandidates,modelCandidates])
   return <section className="space-y-3 rounded-xl bg-card p-4 shadow-sm" aria-label="审核模板匹配与公共兜底" data-testid="review-v3-route-assistant">
     <div className="flex flex-wrap items-start justify-between gap-2">
       <div><h2 className="text-base font-semibold">匹配审核模板</h2>
@@ -326,7 +356,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
         <button type="button" className={mode==='fallback'?action:secondary} onClick={()=>setMode('fallback')}>公共兜底 / 自动起草</button>
       </div>
       {mode==='catalog'&&<div className="space-y-2">
-        {read.routeCandidates.length>0&&<div className="rounded-lg bg-primary/5 p-3 text-xs">
+        {read.routeCandidates.length>0&&modelMatchState!=='matched'&&<div className="rounded-lg bg-primary/5 p-3 text-xs">
           <p className="font-semibold">规则匹配候选 · {read.routeCandidates.length} 项</p>
           <div className="mt-2 space-y-2">{read.routeCandidates.map((candidate,index)=><div
             key={candidate.templateId+'@'+candidate.templateVersion} className="flex items-start gap-2 rounded border border-border/70 bg-background p-2">
@@ -343,19 +373,20 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
         {modelMatchState==='matching'&&<p role="status" className="text-xs text-muted-foreground">规则层未找到可靠结果，正在用当前已配置通用模型比较全部可用模板…</p>}
         {modelMatchState==='matched'&&modelCandidates.length>0&&<div className="space-y-2 rounded-lg border border-primary/30 p-3" role="status">
           <div className="flex items-center justify-between gap-2">
-            <p className="font-semibold text-sm">AI 深度匹配候选 · {modelCandidates.length} 项</p>
+            <p className="font-semibold text-sm">统一候选列表 · {unifiedCandidates.length} 项</p>
             <span className="text-xs tabular-nums">{Math.ceil(modelRemainingMs/1000)} 秒</span>
           </div>
           <progress className="w-full" max={20} value={20-Math.min(20,Math.ceil(modelRemainingMs/1000))}/>
           <p className="text-xs text-muted-foreground">无操作时默认选择第一项；选择只会进入模板配置/绑定阶段，不会作出审核结论。</p>
-          {modelCandidates.map((candidate,index)=><div key={candidate.templateId+'@'+candidate.templateVersion} className="flex items-start gap-2 rounded border border-border p-2">
+          {unifiedCandidates.map((candidate,index)=><div key={candidate.templateId+'@'+candidate.templateVersion} className="flex items-start gap-2 rounded border border-border p-2">
             <span className="font-semibold">{index+1}.</span>
             <div className="min-w-0 flex-1">
               <p className="text-sm font-medium">{candidate.name} · {candidate.templateId} · v{candidate.templateVersion}</p>
-              <p className="text-xs text-muted-foreground">{candidate.reason} · 模型排序参考 {Math.round(candidate.confidence*100)}%</p>
+              <p className="text-xs text-muted-foreground">{candidate.source} · {candidate.reason} · 排序参考 {Math.round(candidate.confidence*100)}%</p>
+              {candidate.matchedSignals.length>0&&<p className="text-xs text-muted-foreground">规则命中：{candidate.matchedSignals.join(' + ')}</p>}
             </div>
             <button type="button" className={secondary} disabled={busy}
-              onClick={()=>applyTemplateChoice(candidate.templateId,candidate.templateVersion,'AI 深度匹配人工选择')}>选择</button>
+              onClick={()=>applyTemplateChoice(candidate.templateId,candidate.templateVersion,'统一候选列表人工选择')}>选择</button>
           </div>)}
         </div>}
         {modelRouteNote&&<p role="status" className="rounded-lg bg-amber-500/10 p-2 text-xs">{modelRouteNote}</p>}
