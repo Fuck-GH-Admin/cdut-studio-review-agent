@@ -54,9 +54,9 @@
 
 每个批次必须：
 
-1. 完整阅读本 ZIP 中分配的全部 MD，不得只看摘要。
+1. 从 `feat/v3-r02-template-library` 当前 HEAD 按固定 ID 读取分配的全部原始 Markdown：`docs/design/review-agent/business-templates/R02/research-original/{TEMPLATE_ID}.md`，并完整阅读，不得只看摘要。原始 ZIP 不是输入前提；若已有 ZIP，可作为辅助交叉校验。
 2. 审核来源、业务范围、字段/材料/规则/角色、异常和跨模板边界；可查证的官方来源记录 URL/文号/条款，未确认项标状态并继续。
-3. 对可确定的低歧义内容错误直接修正审阅后 MD；不得虚构政策。
+3. 对可确定的低歧义内容错误直接修正审阅后 MD；不得虚构政策。将 GitHub 上 `research-original/` 原件保持只读，修订稿写入 `docs/design/review-agent/business-templates/R02/{TEMPLATE_ID}.md`。若已有批次 ZIP，可作为可选辅助材料；不得要求用户提供或等待 ZIP。
 4. 将每份模板转换为 `TemplateVersion` 数据模块；每个 R ID 都必须有至少一个运行检查 criterion，材料/字段/阶段契约须通过结构校验。
 5. 生成每批次测试，至少验证：ID/名称、字段与材料槽引用、分项/criterion ID 唯一、阶段图合法、source metadata 存在、autoPass 关闭、未知政策状态不会生成自动正式通过。
 6. 运行批次专项测试；按仓库规则运行 `bun run typecheck` 与 `bun run check:boundaries`（如当前环境不能运行，记录真实错误和已执行命令，不得声称通过）。
