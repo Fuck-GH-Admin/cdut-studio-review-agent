@@ -6,7 +6,7 @@ import { templateVersion as t3, r02Metadata as m3 } from './T04-T03'
 import { templateVersion as t4, r02Metadata as m4 } from './T04-T04'
 import { templateVersion as t5, r02Metadata as m5 } from './T04-T05'
 const entries=[{template:t1,metadata:m1},{template:t2,metadata:m2},{template:t3,metadata:m3},{template:t4,metadata:m4},{template:t5,metadata:m5}]
-const expected=[["T04-T01","部门采购需求、采购立项与组织采购权责审核"],["T04-T02","招采方式、询比价与供应商选择程序审核"],["T04-T03","采购合同订立、变更与采购合规性审核"],["T04-T04","设备物资接收验收与国有资产入账审核"],["T04-T05","国有资产调拨、借用与保管责任变更审核"]] as const
+const expected=[["T04-T01","部门采购需求、采购立项与组织采购权责审核"],["T04-T02","招采方式、询比价与供应商选择程序审核"],["T04-T03","采购合同订立、变更与采购合规性审核"],["T04-T04","设备物资接收验收与国有资产入账审核"],["T04-T05","国有资产调拨、借用与保管责任变更审核"]]
 
 test('T04-A IDs/names unique',()=>{expect(entries.map(x=>[x.template.templateId,x.template.name])).toEqual(expected);expect(new Set(entries.map(x=>x.template.templateId)).size).toBe(5);expect(new Set(entries.map(x=>x.template.name)).size).toBe(5)})
 test('T04-A TemplateVersion validation and safe defaults',()=>{for(const{template}of entries){expect(validateTemplate(template).filter(x=>x.level==='error')).toEqual([]);expect(template.schemaVersion).toBe(2);expect(template.catalogKind).toBe('builtin');expect(template.status).toBe('draft');expect(template.policyVersionIds).toEqual([]);expect(template.autoPassPolicy?.enabled).toBe(false);expect(template.sourceNote?.startsWith('R02_RESEARCH_TEMPLATE_NONOFFICIAL:')).toBe(true);expect(template.description).toContain('本地研究模板 · 非校方正式模板');expect(template.stages.every(x=>x.workflowOwner==='local'&&x.kind==='manual-review')).toBe(true);expect(template.sections?.flatMap(s=>s.criteria).every(x=>x.execution!=='deterministic')).toBe(true)}})
