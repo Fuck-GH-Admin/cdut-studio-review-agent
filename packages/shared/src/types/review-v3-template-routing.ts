@@ -9,7 +9,7 @@ import type { MaterialSlotSpec } from './review-v2'
  * is a valid policy or has been read. Unsupported formats require confirmation.
  */
 export function reviewV3MaterialFileKind(fileName:string):MaterialSlotSpec['acceptedKinds'][number]|undefined {
-  const ext=fileName.toLowerCase().match(/\\.([^.]+)$/)?.[1]??''
+  const ext=fileName.toLowerCase().match(/[.]([^.]+)$/)?.[1]??''
   if(ext==='pdf')return 'pdf'
   if(['jpg','jpeg','png','gif','webp','bmp','tif','tiff'].includes(ext))return 'image'
   if(['xls','xlsx','xlsm','xltx','xltm','ods','et','ett'].includes(ext))return 'sheet'
