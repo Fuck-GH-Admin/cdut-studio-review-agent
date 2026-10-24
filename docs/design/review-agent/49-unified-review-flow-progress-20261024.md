@@ -277,3 +277,33 @@
 - **最终约束**：重复/缺失 Check ID、错误冻结规则、非已完成 Run、检查覆盖不足、全部不适用继续阻断积极通过；可以被当前可信人工处置解决的是待确认/特定问题检查，不是未执行/执行失败。
 - 本次修正没有修改业务数据或正式 Decision 的存储方式；检查基于原有同一 Run 的 `coverage` 和 `dispositions`。
 - 本节写入时，最新代码 HEAD 为 `dcbb265316c89ab7cfd592a07154d919bc854fdb`，该 SHA 的全量 PR CI 与专项工作流仍在运行，**尚不得宣称新提交六项 CI 全绿**。之前 `a07adda` 的六项成功证据不迁移到新 SHA。
+
+## 15. 2026-10-24 11:15（UTC+8）阶段进度同步及下阶段缺口
+
+> 本节依照当时远端 HEAD `2359bbb249dcd2453f3c9f21d891dcd322f2f94a` 和同一 SHA 对应的 Actions 读取；先记录，再继续改动。以前各节中的失败与正在运行记录是历史快照。
+
+### 最新远端 CI
+
+- D1 Review Authoring Tests：`success`，run `40054513969`
+- D2 Scoped Pi Review Tests：`success`，run `40054513915`
+- Review Baseline CI：`success`，run `40054513931`
+- D0.5 Semantic Module Tests：`success`，run `40054513982`
+- PR CI：`success`，run `40054513919`
+- Review batch focused tests：`success`，run `40054513938`
+
+- 当前 PR #249 仍为 Open / Draft；本次读取的六项检查均为同一 HEAD 的 `success`。
+- 这意味着当前提交的自动化基线/专项/PR CI 已通过，**不等于实机端到端已验收**。
+- 目前覆盖 Main/IPC、材料槽、单 Run、Pi 检查、T05 阶段决定及人工处置；对客户端界面多材料纠错、真实补件/恢复与多事项模板，还需要业务级实测。
+
+### 本轮深入源码确认的新风险
+
+- `stage-workflow.ts::resolveSupplementV2` 对 `satisfied` 已有角色与回复状态校验；但绑定 `materialSlotId` 的补件请求可能仅根据回复状态被核结，**未强制复算该模板槽位是否真正满足**。这会在终审门禁之前造成补件状态与材料事实不一致。
+- 同一模块的补件回复校验已有 `documentVersionIdsAtRequest` 和关联槽位版本校验；应让该版本快照契约和最终槽位准备度联合约束 `satisfied`，同时保证 `cancelled` 是有理由的豁免而不是伪造“材料已齐”。
+- 计划在 Main 事务中补判定前置检查，并新增负例：已回复但槽位仍缺件、角色/类型不符合时不能设为 `satisfied`；补齐并绑定槽位后才允许核结；最终决定仍必须单独审查 Run 与材料。
+
+### 剩余验证要求
+
+1. 实现和测试补件槽位真实性门禁，覆盖同一补件请求的有材料与无材料回复路径。
+2. 修复后必须读取新 HEAD 的检查，不能沿用本节 `2359bbb249dcd2453f3c9f21d891dcd322f2f94a` 的六个绿灯。
+3. 继续核对补件结束后同案新 Run、旧人工认定和证据归属不会在最终决定中误用。
+4. 保持 PR Draft，未通过实机验收前不得声称整条业务线已经交付完毕。
