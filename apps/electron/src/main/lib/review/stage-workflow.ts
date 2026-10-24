@@ -417,11 +417,18 @@ export async function submitCaseV2(caseId: string, actor?: Actor, source?: Comma
   // application. Only rules whose targetScope is subject require a concrete Subject here.
   // 少量材料缺件不阻断初审。按模板适用条件、文件类型和数量生成待补项，
   // 由统一 Run 记录；最终决定仍会再次检查所有必需槽位。
-  const missingSlots = (template.materialSlots ?? [])
+  const reviewedSlots = (template.materialSlots ?? [])
     .filter((slot) => (slot.requiredAt ?? 'submission') === 'submission')
-    .map((slot) => assessMaterialSlotV2(aggregate, slot))
-    .filter((assessment) => assessment.status === 'awaiting-supplement' || assessment.status === 'awaiting-confirmation')
-    .map((assessment) => assessment.reason)
+    .map((slot) => ({ slot, assessment: assessMaterialSlotV2(aggregate, slot) }))
+    .filter((entry) => entry.assessment.status === 'awaiting-supplement' || entry.assessment.status === 'awaiting-confirmation')
+  const blockedSlots = reviewedSlots.filter((entry) => entry.slot.initialReviewPolicy === 'block')
+  if (blockedSlots.length > 0) {
+    throw new CommandValidationError('DEPENDENCY_UNRESOLVED',
+      `模板要求初审前必须具备关键材料：${blockedSlots.map((entry) => entry.assessment.reason).join('；')}。请补足后再开始初审。`)
+  }
+  // Most slots are deferrable: missing proof is visible in the Pi Run and
+  // still blocks final approval until corrected and re-reviewed.
+  const missingSlots = reviewedSlots.map((entry) => entry.assessment.reason)
   const firstStage = template.stages[0]
   if (!firstStage) throw new CommandValidationError('VALIDATION_FAILED', '模板没有审核阶段')
   // 状态和首任务在同一个聚合事务内保存，避免两次写入间出现已提交却无任务。

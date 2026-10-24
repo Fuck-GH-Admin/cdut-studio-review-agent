@@ -35,10 +35,10 @@ const template = {
   stages: [{ id: 'first', name: '初审', kind: 'manual-review', executorRole: 'reviewer' }],
 } as never
 
-async function createCase(title: string): Promise<string> {
+async function createCase(title: string, selectedTemplateId: string = templateId): Promise<string> {
   const created = await createNativeWorkspaceCaseV3({
     title, type: '自定义审核', applicant: 'E2E',
-    domainPackId: 'contract-review', reviewTemplate: { templateId, version: 1 },
+    domainPackId: 'contract-review', reviewTemplate: { templateId: selectedTemplateId, version: 1 },
   }, actor)
   return created.aggregate.caseV2.id
 }
@@ -103,6 +103,23 @@ describe('原生案卷材料槽', () => {
     expect(readAggregate(completeCaseId)?.decisions).toHaveLength(0)
   })
 
+
+  test('模板能明确声明初审前关键材料，缺件阻断；其余槽位可延期到初审后补件', async () => {
+    const strictId = 'slot-template-strict'
+    saveDraft({
+      ...template,
+      templateId: strictId,
+      materialSlots: [{ ...planSlot, initialReviewPolicy: 'block' }],
+    })
+    publishTemplate(strictId, 1)
+    const applicationFile = join(configDir, 'strict-application.txt')
+    writeFileSync(applicationFile, '申请事项：实验项目', 'utf8')
+    const strictCaseId = await createCase('初审关键材料缺失', strictId)
+    await registerNativeWorkspaceMaterialV3(strictCaseId, applicationFile, 'application', actor)
+    await expect(submitCaseV2(strictCaseId)).rejects.toThrow('初审前必须具备关键材料')
+    expect(readAggregate(strictCaseId)?.caseV2.stage).toBe('draft')
+    expect(readAggregate(strictCaseId)?.tasks).toHaveLength(0)
+  })
 
   test('材料槽补件：仅有回复不能假称已满足；补齐且绑定正确槽位后才恢复来源任务', async () => {
     const applicationFile = join(configDir, 'supplement-application.txt')

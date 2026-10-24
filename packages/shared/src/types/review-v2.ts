@@ -137,6 +137,14 @@ export interface MaterialSlotSpec {
   minCount: number
   /** 缺少材料在哪个生命周期阶段阻断；旧模板默认 submission。 */
   requiredAt?: 'submission' | 'decision'
+  /**
+   * Initial-review gate for this specific slot:
+   * - block: the declared material is critical before starting Pi;
+   * - defer (default): Pi can start with a pending supplement, but the
+   *   final decision must still verify this slot.
+   * This is template-specific, not a global "number of missing files" limit.
+   */
+  initialReviewPolicy?: 'block' | 'defer'
   maxCount: number
   /** 关键要素：Agent 提取与人工检查的要点 */
   requiredElements: string[]

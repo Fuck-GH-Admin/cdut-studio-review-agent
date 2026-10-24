@@ -345,6 +345,13 @@ export function validateTemplate(template: TemplateVersion): TemplateValidationI
     )) {
       issues.push({ level: 'error', message: `材料槽 ${slot.id} 的 acceptedRoles 必须是非空、无重复的有效材料类别列表` })
     }
+    if (slot.initialReviewPolicy !== undefined &&
+      slot.initialReviewPolicy !== 'block' && slot.initialReviewPolicy !== 'defer') {
+      issues.push({ level: 'error', message: `材料槽 ${slot.id} 的 initialReviewPolicy 必须为 block 或 defer` })
+    }
+    if (slot.initialReviewPolicy === 'block' && slot.requiredAt === 'decision') {
+      issues.push({ level: 'error', message: `材料槽 ${slot.id} 仅在终审时必需，不能同时声明初审前强制阻断` })
+    }
     if (slot.minCount > slot.maxCount) issues.push({ level: 'error', message: `材料槽 ${slot.id} 的 minCount 大于 maxCount` })
   }
   // 政策引用存在性由仓库层核对（getPolicyVersion），模板侧仅检查非空数组声明
