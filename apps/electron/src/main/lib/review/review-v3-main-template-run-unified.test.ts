@@ -44,7 +44,7 @@ function aggregateFor(slotId?:string):CaseAggregateV2 {
       createdAt:'2026-10-24T00:00:00Z',updatedAt:'2026-10-24T00:00:00Z',
     },
     observations:[],evidenceLinks:[],tasks:[],decisions:[],supplements:[],
-    dispositions:[],receiptLog:[],
+    appeals:[],dispositions:[],receiptLog:[],
   } as CaseAggregateV2
 }
 
