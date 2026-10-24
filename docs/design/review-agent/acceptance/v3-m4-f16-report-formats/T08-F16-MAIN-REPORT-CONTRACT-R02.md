@@ -3,7 +3,7 @@
 更新日期：2026-10-24
 实现分支：fix/v3-t08-f16-main-report-contract-20261024
 基线：150acfe761cb7ad0424a2ca009fd57f12dbfddfd
-状态：实现已提交，待仓库 CI 与实际 Electron GUI 验收确认
+状态：PR CI PASS；真实 Electron GUI / 原生保存对话框验收仍未执行
 
 ## 1. 本次范围
 
@@ -31,7 +31,7 @@
 - decisionIds / decisionDigest；
 - audience、historical、renderVersion；
 - 已脱敏 T08Report 正文、JSON 投影与表格记录；
-- createdAt、Main 固定的 local reviewer 创建主体；
+- createdAt、由 Main 调用入口确定的创建主体（UI 导出为 local reviewer；受指派 Agent 工具记录 agent 来源和指派 ID，不接受 Renderer 自报身份）；
 - projectionHash、snapshotHash。
 
 哈希用于检测报告内容与绑定元数据被意外改动，不是数字签名、发送者认证或学校审批证明。创建主体是本地 reviewer，不得冒充教师或学校认证身份。
@@ -66,4 +66,12 @@
 
 ## 7. 验收状态
 
-本提交包含快照篡改检测、归档重开、HTML 转义、XLSX、PDF 生成器委托与 ZIP 生成的定向测试。仓库 CI 与实际 Electron GUI / 原生保存对话框的执行结果应在合并前另行记录；未实际执行的 GUI 验收不得标为通过。
+**CI：PASS**（提交 `eaa942cc1e4e24922c60ddb3652d683c9586b9cb`，2026-10-24）。
+
+- PR CI：workspace typecheck、package boundary check、Main / Preload / Renderer build、unit and regression tests 全部通过。
+- Review Baseline CI：PASS。
+- Review batch focused tests：PASS。
+- D2 Scoped Pi Review Tests：typecheck、scoped Pi BDD、既有 Pi run / authoring regressions 全部通过。
+- 新增定向测试覆盖快照哈希与绑定篡改、归档持久化重开、HTML 转义、XLSX 公式中和、PDF 生成器接口、ZIP 文件清单与哈希、取消保存与成功保存回执。
+
+**仍未验收**：真实 Electron 窗口中逐一操作受众 / Run / 历史档案，原生保存对话框的真实取消 / 覆盖 / 失败行为，实际 Electron printToPDF 生成的 PDF 可搜索性，以及关闭应用后再启动的人工 GUI 复验。上述项目保持 `NOT_RUN_GUI`，不能因为 CI 通过而宣称完整用户旅程已验收。
