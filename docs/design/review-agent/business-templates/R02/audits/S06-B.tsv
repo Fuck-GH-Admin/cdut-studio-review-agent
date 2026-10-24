@@ -1,0 +1,16 @@
+issue_id	template_id	severity	category	location_or_section	finding	evidence_or_source	required_action	policy_or_quality	cross_template_related_ids	patch_status
+S06B-001	S06-T03	P2	POLICY-CURRENTITY	04/08 R008,R022,R025	组委会当届最终结果、学校当前赛事分类目录和事实签认权未被研究稿证明可自动套用	S06-T03.md §04/§08	保持 policy UNCONFIRMED；当届赛事来源和校本适用版本由有权人逐案核验	policy	S06-T02,S03	SAFE_GUARD_IN_CODE
+S06B-002	S06-T03	P2	CROSS-TEMPLATE-DEDUPE	02/08 R018,R026	同一奖项或团队角色若跨竞赛、科研奖、综合测评引用，存在重复计入风险	S06-T03.md §02/§08	按届次赛段团队个人奖项稳定键查重；其他模板只读已核事实，禁止自动重复授益	quality	S06-T02,S06-T04,S03	GUARDED_PENDING_INTEGRATION
+S06B-003	S06-T03	P2	FIELD-TYPING	06 F001-F034	历史学籍、奖项等字段的权威来源及枚举无法只靠研究稿部署为确定性校验	S06-T03.md §06	保守 text 和 semantic/manual；授权字段通过可信服务后再收窄类型	quality	S06-T02	SAFE_FALLBACK
+S06B-004	S06-T04	P2	POLICY-CURRENTITY	04/08 R001-R005,R018-R021	当前校级创新科研成果奖励批次和具体奖项制度不完整，不能推断资金额度或最终权限	S06-T04.md §04/§08	获取当期奖励通知、制度原文和有权签认链后再配置规则	policy	S06-T03,S03	SAFE_GUARD_IN_CODE
+S06B-005	S06-T04	P2	CROSS-TEMPLATE-DEDUPE	09.2/08	同一科研成果跨校级奖励、竞赛、综测、权属申请可能多头重复或混淆认定对象	S06-T04.md §09.2	保留成果唯一标识和批次去重；奖励与成果事实、知识产权权属拆开处理	quality	S06-T03,S03,G06	GUARDED_PENDING_INTEGRATION
+S06B-006	S06-T04	P2	FIELD-TYPING	06 F001-F034	奖励批次/成果属性/权利主体字段尚无完整当期值域和权威数据联接	S06-T04.md §06	先保守文本提取并人工复核，不依据疑似类别自动计奖	quality	G06	SAFE_FALLBACK
+S06B-007	S06-T06	P2	POLICY-CURRENTITY	04/08 R003-R005,R025	2018 校本实习管理文件与 2026 国家实习意见需按当前学年、学段和课程确认实际适用	S06-T06.md §04/§08	由教务及当期培养方案核实效力与考核权限，不自动生效旧规则	policy	S06-T05	SAFE_GUARD_IN_CODE
+S06B-008	S06-T06	P2	CROSS-TEMPLATE-DEDUPE	02/08	同一学生课程实习、社会实践和学时或学分可能被重复登记	S06-T06.md §02/§08	以课程实例+学生+实习期核对；不得用社会实践直接充抵课程要求	quality	S06-T05,S05-T03	GUARDED_PENDING_INTEGRATION
+S06B-009	S06-T06	P2	FIELD-TYPING	06 F001-F046	课程与培养方案的实时状态、成绩类型等尚缺权威系统值域	S06-T06.md §06	使用文本提示并在人工复审前取得课程系统可信版本	quality	S06-T05	SAFE_FALLBACK
+S06B-010	S06-T07	P2	POLICY-CURRENTITY	04/08 R001,R002,R003	2015/2017 的园区/俱乐部历史规则不能代表当期载体入驻资格与签批权限	S06-T07.md §04/§08	取得当期园区载体、入驻批次、申请协议与有权机构配置	policy	S06-T08,G03	SAFE_GUARD_IN_CODE
+S06B-011	S06-T07	P2	CROSS-TEMPLATE-DEDUPE	02/08	创业项目入驻资格和创业资金计划、场地许可的授权对象不同，不能自动视为同一决定	S06-T07.md §02/§08	按载体/项目/团队/周期保留独立状态，资金项目仅引用签发的入驻事实	quality	S06-T08,G03	GUARDED_PENDING_INTEGRATION
+S06B-012	S06-T07	P2	FIELD-TYPING	06 F001-F044	入园企业和学生创业团队的身份/期限枚举需实时政策及服务端权责核验	S06-T07.md §06	保守文本与人工核对，不把历史毕业年限作为默认硬门槛	quality	S06-T08	SAFE_FALLBACK
+S06B-013	S06-T08	P2	POLICY-CURRENTITY	04/08 R001-R003,R028	校级创业专项资金的当期设立文件、金额、时效与批准机关未取得完整依据	S06-T08.md §04/§08	人工确认计划/版本/主管权责及地方实际细则，系统不能自动拨款	policy	S06-T01,S06-T07,G07	SAFE_GUARD_IN_CODE
+S06B-014	S06-T08	P2	CROSS-TEMPLATE-DEDUPE	02/08	入驻、大创、竞赛成果、科研奖励与财务支付不能被同一事实重复认定为本次资金资格	S06-T08.md §02/§08	按 scheme+cycle+venture+applicant+decision 去重和消费只读事实	quality	S06-T01,S06-T03,S06-T04,S06-T07,G07	GUARDED_PENDING_INTEGRATION
+S06B-015	S06-T08	P2	FIELD-TYPING	06 F001-F032	财务/毕业年限/资金状态字段缺少统一可信数据和当期约束	S06-T08.md §06	文本/人工审阅并避免收集非必要账户材料，不把计划摘要作额度计算	quality	G07	SAFE_FALLBACK
