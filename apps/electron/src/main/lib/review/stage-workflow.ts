@@ -15,7 +15,7 @@
 import type { Appeal, BusinessDecision, CaseAggregateV2, ReviewCommandResult, SupplementRequest, TemplateVersion, WorkflowTask } from '@profer/shared'
 import { randomUUID } from 'node:crypto'
 import { CommandValidationError, submitCommand, type CommandSourceMeta } from './case-store-v2'
-import { reviewV3SubmissionMaterialIssues } from './review-v3-submission-material-gate'
+import { reviewV3MaterialIssuesForPhase, reviewV3SubmissionMaterialIssues } from './review-v3-submission-material-gate'
 import type { Actor } from '@profer/shared'
 
 const newWorkflowTaskId = (): string => `task-${randomUUID()}`
@@ -134,6 +134,15 @@ export function recordStageDecision(
       'return-for-supplement', 'return-to-previous-stage', 'final-reject', 'withdraw']
     if (!allowedActions.includes(payload?.action)) {
       throw new CommandValidationError('VALIDATION_FAILED', `未知的阶段决定动作：${String(payload?.action)}`)
+    }
+    // Only approvals require decision-stage materials. A return-for-supplement
+    // must remain possible when those materials are missing. The check happens
+    // in the Main transaction against the CURRENT template and case snapshot.
+    if(nativeRunId!==undefined&&
+      ['stage-pass','item-pass','item-partial-pass'].includes(payload.action)){
+      const issues=reviewV3MaterialIssuesForPhase(aggregate,template,'decision')
+      if(issues.length)throw new CommandValidationError('VALIDATION_FAILED',
+        '当前模板终审材料未满足：'+issues.map(issue=>issue.message).join('；'))
     }
     if (typeof payload.reason !== 'string' || !payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '决定必须附理由')
     if (!aggregate.decisions.every((decision) => decision.taskId !== task.id)) throw new CommandValidationError('INVALID_TRANSITION', '该任务已有决定')

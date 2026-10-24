@@ -28,14 +28,18 @@ function confirmedCaseFields(aggregate:CaseAggregateV2):Record<string,T04Value>{
   return fields
 }
 
-export function reviewV3SubmissionMaterialIssues(
+/** Phase-aware checks; submission and decision do not borrow each other's
+ * requirements. Decision-stage checks are enforced at an approval transaction.
+ */
+export function reviewV3MaterialIssuesForPhase(
   aggregate:CaseAggregateV2,template:TemplateVersion,
+  phase:'submission'|'decision',
 ):ReviewV3SubmissionMaterialIssue[]{
   const active=aggregate.caseV2.documents.filter(document=>document.active!==false)
   const target:T04Item={id:aggregate.caseV2.id,fields:confirmedCaseFields(aggregate)}
   const issues:ReviewV3SubmissionMaterialIssue[]=[]
   for(const slot of template.materialSlots??[]){
-    if((slot.requiredAt??'submission')!=='submission')continue
+    if((slot.requiredAt??'submission')!==phase)continue
     const applicable=slot.requiredWhen?conditionT04(slot.requiredWhen,target):'true'
     if(applicable==='false')continue
     if(applicable==='unknown'){
@@ -63,4 +67,11 @@ export function reviewV3SubmissionMaterialIssues(
     }
   }
   return issues
+}
+
+/** Preserve the submission-only contract for callers and existing test fixtures. */
+export function reviewV3SubmissionMaterialIssues(
+  aggregate:CaseAggregateV2,template:TemplateVersion,
+):ReviewV3SubmissionMaterialIssue[]{
+  return reviewV3MaterialIssuesForPhase(aggregate,template,'submission')
 }
