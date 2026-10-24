@@ -1,0 +1,7 @@
+template_id	issue_id	severity	category	location	finding	evidence	action	needs_policy_verification	cross_template	status
+T08-T06	T08-B-01	P2	policy_evidence	§02 SRC-005; §14	校本《博士后管理办法》成理校人〔2020〕25号完整现行正文未取得；不能核与2025省级办法的适用关系	SRC-003、SRC-005、SRC-001/002；学校2025招收公告引用但未提供完整条款	校方提供受控全文/效力及冲突确认；R035保持人工门禁	YES	NO	OPEN_POLICY_CONFIRMATION_REQUIRED
+T08-T06	T08-B-02	P2	batch_scope	§02 SRC-011; §03 A/B	当期岗位附件、招收批次、设站/导师有效名录未知；不得将历史公告阈值硬编码	SRC-003、SRC-011；省级办法第3—10条	补当批公告和有效资格记录；R003—R007只作预核	YES	YES	OPEN_POLICY_CONFIRMATION_REQUIRED
+T08-T06	T08-B-03	P2	authority	§01/§04/§08 R012/R015/R026/R027/R031	校内开题/中期/年度/出站考核签发与退站/延期权限未核；不能推定软件teacher是真学校批准人	SRC-001第5条、SRC-002第11/17/25/27—29条、SRC-012	请求现行流动站细则/专家组组成/签发矩阵；保持NEEDS_HUMAN_DECISION	YES	NO	OPEN_POLICY_CONFIRMATION_REQUIRED
+T08-T06	T08-B-04	P2	rules_effectivity	§03/§08 R020/R035	省级时限/例外与学校2020办法修订关系及适用身份需逐案核证	SRC-001第22条、SRC-002第14/15/17/25/33条	核现行法源、岗位、身份和协议，不把时限自动用于正式拒绝	YES	NO	OPEN_POLICY_CONFIRMATION_REQUIRED
+T08-T06	T08-B-05	P2	external_system	§02 SRC-008/013; §08 R009/R022/R028	国家及四川博士后系统的真实回执/权限接口尚不可核，出站证书与备案不能由本地系统证明	SRC-001第19—21条、SRC-002第8/25/28条、SRC-013	仅只读引用有权回执；共享集成 Owner日后做合法接口及真端到端验证	YES	NO	OPEN_POLICY_CONFIRMATION_REQUIRED
+T08-T06	T08-B-06	P3	provenance	§00/§14; runtime sourceIntegrityStatus	旧会话曾报告生成临时研究稿，但文件库与当前GitHub基线均无可读完整旧稿；本文件为本轮重建不是逐字恢复	本轮base@150acfe；Library精确检索T08-T06无命中	保持REBUILT_NOT_RECOVERED并记录新稿SHA；如旧稿找回另开差异审计	NO	NO	OPEN_WITH_PROVENANCE_DISCLOSURE
