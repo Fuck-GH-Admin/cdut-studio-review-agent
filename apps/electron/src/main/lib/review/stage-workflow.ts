@@ -135,9 +135,22 @@ export function recordStageDecision(
     if (!allowedActions.includes(payload?.action)) {
       throw new CommandValidationError('VALIDATION_FAILED', `未知的阶段决定动作：${String(payload?.action)}`)
     }
-    // Only approvals require decision-stage materials. A return-for-supplement
-    // must remain possible when those materials are missing. The check happens
-    // in the Main transaction against the CURRENT template and case snapshot.
+    // A completed-but-incomplete review may open a supplement request or
+    // record a partial/manual response; it must not silently become an approval.
+    // This gate concerns coverage/unknowns, not the human's discretion over
+    // an evidenced non-compliant result.
+    if(nativeRunId!==undefined&&
+      ['stage-pass','item-pass'].includes(payload.action)){
+      const {getRunV2}=require('./run-store-v2') as typeof import('./run-store-v2')
+      const run=getRunV2(aggregate.caseV2.id,nativeRunId)
+      const unresolved=run?.checks.filter(check=>
+        ['awaiting-supplement','awaiting-confirmation','not-executed','execution-failed'].includes(check.status))??[]
+      if(!run||run.coverage.pendingChecks>0||unresolved.length>0)
+        throw new CommandValidationError('INVALID_TRANSITION',
+          '本轮初审仍有未完成/待补/待确认检查；请先补件或由有权人员记录明确的部分决定，不得直接整案通过')
+    }
+    // Only approval-like decisions require the template's decision-stage
+    // material slots. Returning for supplement must remain possible.
     if(nativeRunId!==undefined&&
       ['stage-pass','item-pass','item-partial-pass'].includes(payload.action)){
       const issues=reviewV3MaterialIssuesForPhase(aggregate,template,'decision')
