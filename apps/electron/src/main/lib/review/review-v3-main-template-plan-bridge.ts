@@ -13,7 +13,7 @@
  *   `case-store-v2` / `run-store-v2` 的既有 writer。
  */
 import {
-  REVIEW_V3_OTHER_MATERIAL_SLOT_ID,
+  REVIEW_V3_OTHER_MATERIAL_SLOT_ID, reviewV3SlotAcceptsFile,
   type CaseAggregateV2, type TemplateVersion, type TemplateCriterionSpec, type RuleSpec,
 } from '@profer/shared'
 import {
@@ -162,8 +162,16 @@ export function buildT04TargetFromCase(
     document.materialSlotId===REVIEW_V3_OTHER_MATERIAL_SLOT_ID||
     (typeof document.materialSlotId==='string'&&validSlotIds.has(document.materialSlotId)))
   for (const slot of template.materialSlots ?? []) {
-    const ids = active.filter((document) => document.materialSlotId === slot.id).map((document) => document.versionId)
-    materialSlots[slot.id] = { documentVersionIds: ids, confirmed: classificationComplete }
+    const matched=active.filter(document=>document.materialSlotId===slot.id)
+    const accepted=matched.filter(document=>reviewV3SlotAcceptsFile(slot,document.fileName))
+    // A malformed, unreadable or incompatible original must not be counted
+    // as either a complete evidence receipt or confirmed absence.
+    const valid=matched.every(document=>
+      reviewV3SlotAcceptsFile(slot,document.fileName)&&document.parseStatus!=='failed')
+    materialSlots[slot.id]={
+      documentVersionIds:accepted.map(document=>document.versionId),
+      confirmed:classificationComplete&&valid,
+    }
   }
   return {
     scope: 'case',

@@ -3,6 +3,28 @@
  * JEV and the currently configured generic model implement the same deep-match port.
  * Routing is technical guidance only; it never grants policy or Case-write authority.
  */
+import type { MaterialSlotSpec } from './review-v2'
+
+/** File-extension classification is a format gate, not proof that the content
+ * is a valid policy or has been read. Unsupported formats require confirmation.
+ */
+export function reviewV3MaterialFileKind(fileName:string):MaterialSlotSpec['acceptedKinds'][number]|undefined {
+  const ext=fileName.toLowerCase().match(/\\.([^.]+)$/)?.[1]??''
+  if(ext==='pdf')return 'pdf'
+  if(['jpg','jpeg','png','gif','webp','bmp','tif','tiff'].includes(ext))return 'image'
+  if(['xls','xlsx','xlsm','xltx','xltm','ods','et','ett'].includes(ext))return 'sheet'
+  if(['doc','docx','docm','dot','dotx','dotm','wps','wpt','ppt','pptx','pptm','potx','potm','ppsx','ppsm','dps','dpt','odt','odp','rtf'].includes(ext))return 'office'
+  if(['txt','md','csv','json','html','htm','eml'].includes(ext))return 'text'
+  if(ext==='zip')return 'zip'
+  return undefined
+}
+export function reviewV3SlotAcceptsFile(slot:Pick<MaterialSlotSpec,'acceptedKinds'>,fileName:string):boolean {
+  // An empty acceptedKinds array means the template did not restrict the kind.
+  if(!slot.acceptedKinds?.length)return true
+  const kind=reviewV3MaterialFileKind(fileName)
+  return !!kind&&slot.acceptedKinds.includes(kind)
+}
+
 /** Explicit user-confirmed classification for a material that belongs to no template slot. */
 export const REVIEW_V3_OTHER_MATERIAL_SLOT_ID = '__review_other__'
 

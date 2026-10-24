@@ -16,7 +16,7 @@ import { ensureBuiltinTemplateDrafts } from './builtin-templates'
 import { getTemplate, saveDraft } from './template-store'
 import { materialsDirCaseId, registerMaterial } from './material-service'
 import { revokeCurrentSourceValidity } from './source-current-validity-v3'
-import { isKnownDomainPack, resolveDomainPack, REVIEW_V3_OTHER_MATERIAL_SLOT_ID } from '@profer/shared'
+import { isKnownDomainPack, resolveDomainPack, REVIEW_V3_OTHER_MATERIAL_SLOT_ID, reviewV3SlotAcceptsFile } from '@profer/shared'
 
 export const NATIVE_CREATE_RECEIPT_V3 = 'CreateNativeWorkspaceCaseV3'
 const PENDING_TEMPLATE = 'pending-template-v3'
@@ -453,9 +453,13 @@ export async function classifyNativeWorkspaceMaterialV3(input:{
   if(!template||template.status!=='published')
     throw new CommandValidationError('DEPENDENCY_UNRESOLVED','当前案卷没有可用于材料分类的已发布模板')
   const slotId=input.materialSlotId
+  const selectedSlot=template.materialSlots.find(slot=>slot.id===slotId)
   if(typeof slotId!=='string'||!slotId.trim()||
-      (slotId!==REVIEW_V3_OTHER_MATERIAL_SLOT_ID&&!(template.materialSlots??[]).some(slot=>slot.id===slotId)))
+      (slotId!==REVIEW_V3_OTHER_MATERIAL_SLOT_ID&&!selectedSlot))
     throw new CommandValidationError('VALIDATION_FAILED','材料槽位不属于当前已发布模板')
+  if(selectedSlot&&!reviewV3SlotAcceptsFile(selectedSlot,document.fileName))
+    throw new CommandValidationError('VALIDATION_FAILED',
+      '该材料格式不符合模板槽位「'+selectedSlot.name+'」的文件类型要求，请更正分类或换用允许的格式')
   if(document.role===input.role&&document.materialSlotId===slotId){
     const projected=nativeWorkspaceProjectionV3(current)?.documents.find(item=>item.id===document.documentId)
     if(projected)return projected
@@ -474,9 +478,11 @@ export async function classifyNativeWorkspaceMaterialV3(input:{
     if(!latest.caseV2.documents.some(item=>item.versionId===document.versionId&&item.active!==false))
       throw new CommandValidationError('STALE_INPUT','材料版本在分类期间已变化，请刷新后重新分类')
     const latestTemplate=getTemplate(latest.caseV2.templateId,latest.caseV2.templateVersion)
+    const currentSlot=latestTemplate?.materialSlots.find(slot=>slot.id===slotId)
     if(!latestTemplate||latestTemplate.status!=='published'||
-      (slotId!==REVIEW_V3_OTHER_MATERIAL_SLOT_ID&&!(latestTemplate.materialSlots??[]).some(slot=>slot.id===slotId)))
-      throw new CommandValidationError('STALE_INPUT','材料槽位授权已变化，请刷新后重新分类')
+      (slotId!==REVIEW_V3_OTHER_MATERIAL_SLOT_ID&&!currentSlot)||
+      (currentSlot&&!reviewV3SlotAcceptsFile(currentSlot,document.fileName)))
+      throw new CommandValidationError('STALE_INPUT','材料槽位授权或文件类型已变化，请刷新后重新分类')
   }
   return registerNativeWorkspaceMaterialV3(
     input.caseId,sourcePath,input.role,MAIN_ACTOR,revalidate,
