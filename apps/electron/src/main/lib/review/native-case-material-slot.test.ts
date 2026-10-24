@@ -3,7 +3,7 @@ import { afterAll, describe, expect, test } from 'bun:test'
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { assessMaterialSlotV2, type MaterialSlotSpec } from '@profer/shared'
+import { assessMaterialSlotV2, type MaterialSlotSpec, type TemplateVersion } from '@profer/shared'
 
 const configDir = mkdtempSync(join(tmpdir(), 'slot-'))
 process.env.PROFER_CONFIG_DIR = configDir
@@ -106,11 +106,12 @@ describe('原生案卷材料槽', () => {
 
   test('模板能明确声明初审前关键材料，缺件阻断；其余槽位可延期到初审后补件', async () => {
     const strictId = 'slot-template-strict'
-    saveDraft({
-      ...template,
+    const strictTemplate: TemplateVersion = {
+      ...(template as TemplateVersion),
       templateId: strictId,
       materialSlots: [{ ...planSlot, initialReviewPolicy: 'block' }],
-    })
+    }
+    saveDraft(strictTemplate)
     publishTemplate(strictId, 1)
     const applicationFile = join(configDir, 'strict-application.txt')
     writeFileSync(applicationFile, '申请事项：实验项目', 'utf8')
