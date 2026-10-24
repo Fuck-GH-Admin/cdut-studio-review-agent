@@ -101,7 +101,7 @@ export function ReviewV3UnifiedRun({ caseId, stage, documentCount, technicalPlan
     setSupplementBusy(true);setPiError('')
     try{
       const count=await createInitialSupplementRequests()
-      setMessage('已建立/复用 '+count+' 条持久补件请求。请在下方“补件周期”中逐项回复并等待人工核验；补件核结不等于审核通过。')
+      setMessage('已建立/复用 '+count+' 条持久补件请求。请进入本案“补件周期”逐项回复并等待人工核验；补件核结不等于审核通过。')
       await onUpdated()
     }catch(cause){setPiError(cause instanceof Error?cause.message:String(cause))}
     finally{setSupplementBusy(false)}
@@ -121,10 +121,10 @@ export function ReviewV3UnifiedRun({ caseId, stage, documentCount, technicalPlan
       })
       if(imported.length){
         setRunStale(true)
-        setMessage('补件请求已持久化，原件已登记。请在下方“补件周期”将新材料关联为回复并等待人工核验，再更新审核生成新 Run。')
+        setMessage('补件请求已持久化，原件已登记。请进入本案“补件周期”将新材料关联为回复并等待人工核验，再更新审核生成新 Run。')
         await onUpdated()
       }else{
-        setMessage('补件请求已持久化；本次未选择新材料。可稍后在下方“补件周期”提交回复。')
+        setMessage('补件请求已持久化；本次未选择新材料。可稍后进入本案“补件周期”提交回复。')
       }
     }catch(cause){setPiError(cause instanceof Error?cause.message:String(cause))}
     finally{setSupplementBusy(false)}
