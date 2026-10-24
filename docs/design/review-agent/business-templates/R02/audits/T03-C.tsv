@@ -1,0 +1,8 @@
+template_id	issue_id	severity	category	location	finding	impact	evidence	action	policy_check	cross_template	status
+T03-T08	T03-C-001	P1	缺失源稿／代码	canonical及definition	128原件库原无T03-T08正式稿	误用T03-T03会错路由和实体决定	独立研究稿SHA256=01592025bc49e56367fa6bd9e57f29f17db211d716a004ecc12d5a386b84453f	完整原稿入canonical并新增TemplateVersion、测试	否	是	FIXED
+T03-T08	T03-C-002	P2	政策现行性	SRC-006/R003-R006	2017科研外协管理办法仅验证目录，正文和2026效力未核	无法确认外协定义、限制和当前签批链	SRC-006 https://skc.cdut.edu.cn/info/1147/1170.htm	科研归口取全文和替代/衔接文件；当前只做事实预审	是	是	OPEN
+T03-T08	T03-C-003	P2	权限矩阵	SRC-005/008/R018-R021	2024校级合同办法全文、当前签字及用章授权未核；院级细则限单学院	不可从合同额或学院名称推断合法签发权	SRC-005 https://dbxb.cdut.edu.cn/info/1063/4726.htm；SRC-008	合同/法务归口取得最新版授权矩阵并人工核签发事件	是	是	OPEN
+T03-T08	T03-C-004	P2	经费口径	SRC-003/R005-R007/R015	横向外协50%系原则；累计去重、分母和例外与纵向专项限制需核	机械阈值会错误批准或否决	SRC-003 第3/6条 https://skc.cdut.edu.cn/__local/0/81/F8/F213AF25A8DDE36DF9DC104CDD7_3BB8AB3B_3BB05.pdf	保存完整计算依据，超过原则交科研/财务人工核例外	是	是	OPEN
+T03-T08	T03-C-005	P2	采购交界	02/R014/M011	外协、标准技术服务和采购适用目录/限额及豁免未核	项目可能因误称科研而规避采购程序	SRC-014/015；T04采购有权决定	分流待确认，仅读T04签发decisionId及版本	是	是	OPEN
+T03-T08	T03-C-006	P1	保密/可信Actor	M013/M025/R001/R016/R018/R020	仅靠TemplateVersion的材料说明和mime类型不能强制拦截涉密内容或伪造身份	误传国家秘密及伪批准是生产安全风险	SRC-016/017；源稿11节；共享Main/上传/模型出口不属于本批文件所有权	集成Owner在导入和Pi出口加保密门禁并验收Main签发身份；本模板保持draft	是	是	OPEN
+T03-T08	T03-C-007	P2	真实签发和救济	05/11/12及R018-R027	科研台账、相关决定、复核期限和正式后端服务未核	不能证明有权决定和当前状态，也不能按未知期限拒绝复核	SRC-003/005/008；源稿12.1/12.9	接可信系统验证决定ID/对象/版本/时点；未证转人工	是	是	OPEN
