@@ -134,3 +134,24 @@
 - 重新运行专项检查和全量 PR CI，并以新 SHA 的结果追加记录；不以旧绿灯冒充新绿灯。
 - 延续原计划 P2/P3：补件历史快照、分类归位、规则和主体判定、最终决定限制、人为复核与同案工作区路径审查。
 - 此时仍保持 PR Draft；合并与全链路验收没有完成。
+
+
+## 9. 2026-10-24 后续实现记录（续审与旧阶段决定隔离）
+
+### 已完成的代码提交
+
+- `5866ffdb00414acde9ddedccfe5809bbd17f23f2`：修复 Main `review-pi-run-bridge.ts` 的 Pi 部分完成轮次续交门控。新 Run 的未完成检查写作 `not-executed`，旧入口却只识别 `execution-failed`，导致更新审核新建 Run。现在仅对真实 `executedBy === 'semantic'` 且状态为上述两个未完成占位值的检查识别续审，仍维持现有输入快照、Assignment、会话身份核验。
+- 同一提交：`submit-case-v2.test.ts` 现在准确检查“模拟旧提交状态”自身已经写过一次 revision，恢复动作只应再增加一个 revision，并验证首任务与回执；此前期待的固定 revision=3 不符合真实事务历史。
+- 同一提交：`native-workspace-case-v3.ts` 与 `material-service.ts` 的错误角色拒绝统一说明“材料类别不匹配”，保留 Main 双层拒绝约束。
+- `d0b694c0eab10f40ebc7a7ce5a8042c250bb5d48`：读源码确认原生案卷 UI `V2CasePanel` 使用 `ReviewV3T05HumanWorkflow`、可信 `T05_RECORD_STAGE_DECISION`；而旧 `recordStageDecision` 仍然将 `basedOnRunId` 伪装为 `run@rev...`。现在旧服务对 **原生 V3 案卷拒绝**，统一要求走 T05；旧 V2 非原生案卷暂保留兼容。补充“提交后旧入口不能生成原生 V3 决定”的回归断言。
+
+### 验证与边界
+
+- 上述修复提交推送成功，尚未宣称全量 CI 已通过。
+- `5866ffdb` 观察到五组专项 CI 已通过、完整 PR CI 尚在运行；后续新提交 `d0b694c` 已触发新一轮检查，其结论必须以该最新 HEAD 为准。
+- **仍需处理的遗留边界**：旧 V2 阶段服务为非原生兼容案卷生成 `run@rev...`，且 `RECORD_STAGE_DECISION_V2` IPC 仍在。当前已阻断原生 V3 通过该服务写决定；删除完整兼容路径需同步核对仍存旧案卷的办理入口，不能直接删到用户无法处理历史案卷。
+- 补件 `satisfied/cancelled` 回流和旧历史运行/凭据的长期清理仍需要针对当前 V3 的回归验证，不能因上面三处 CI 故障关闭而自动视为完成。
+
+### 后续验收记录位置
+
+请在本小节下续写最新 HEAD 的全量 PR CI / 专项结果、失败日志、剩余问题、是否仍为 Draft；不得删掉历史失败记录。
