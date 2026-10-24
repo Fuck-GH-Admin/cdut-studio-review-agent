@@ -16,6 +16,7 @@ import type { Appeal, BusinessDecision, CaseAggregateV2, ReviewCommandResult, Su
 import { randomUUID } from 'node:crypto'
 import { CommandValidationError, submitCommand, type CommandSourceMeta } from './case-store-v2'
 import type { Actor } from '@profer/shared'
+import { assessMaterialSlotV2 } from '@profer/shared'
 
 const newWorkflowTaskId = (): string => `task-${randomUUID()}`
 
@@ -86,6 +87,13 @@ export function recordStageDecision(
   return submitCommand<StageDecisionPayload, { decision: BusinessDecision; task?: WorkflowTask; supplement?: SupplementRequest }>(caseId, { ...command, type: 'RecordStageDecision' }, (aggregate, payload) => {
     // Agent 代批门控：在事务校验内、任何业务变更前检查（排队期间关闭也生效）
     assertAgentDecisionAllowed({ actor: command.actor, type: 'RecordStageDecision' })
+    // Native V3 must go through T05, which verifies the real Run, input hash,
+    // coverage and trusted stage authority. The legacy N3 writer below records
+    // a synthetic run@rev reference; it may not decide a native V3 case.
+    const { isNativeWorkspaceCaseV3 } = require('./native-workspace-case-v3') as typeof import('./native-workspace-case-v3')
+    if (isNativeWorkspaceCaseV3(aggregate)) {
+      throw new CommandValidationError('INVALID_TRANSITION', 'V3 原生案卷必须使用 T05 可信阶段决定，不允许旧 V2 决定入口生成伪 Run 引用')
+    }
     if (aggregate.d2RuntimePlan) throw new CommandValidationError('AGENT_DECISION_DISABLED', 'D2 技术预审案卷无权进入正式阶段决定')
     const task = aggregate.tasks.find((candidate) => candidate.id === payload.taskId && candidate.status === 'open')
     if (!task) throw new CommandValidationError('INVALID_TRANSITION', '当前阶段没有开放任务（或已处理）')
@@ -202,7 +210,23 @@ export function respondSupplementV2(caseId: string, command: { requestId: string
     if (target.status !== 'open' && target.status !== 'responded' && target.status !== 'insufficient') throw new CommandValidationError('INVALID_TRANSITION', `补件已关闭（${target.status}）`)
     // 角色校验（05 §2 补件责任方）：仅 student/submitter 可回复
     if (target.responsibleRole === 'student' && command.actor.role !== 'student' && command.actor.role !== 'reviewer') throw new CommandValidationError('INVALID_TRANSITION', '该补件由学生负责，其他角色不能代回复')
-    if (!payload.note.trim() && !(payload.documentVersionIds?.length)) throw new CommandValidationError('VALIDATION_FAILED', '回复必须附说明或材料')
+    const suppliedIds = payload.documentVersionIds ?? []
+    if (!Array.isArray(suppliedIds) || suppliedIds.some((id) => typeof id !== 'string' || !id)
+      || new Set(suppliedIds).size !== suppliedIds.length) {
+      throw new CommandValidationError('VALIDATION_FAILED', '补件材料版本列表无效或重复')
+    }
+    const activeDocuments = aggregate.caseV2.documents.filter((document) => document.active !== false)
+    for (const versionId of suppliedIds) {
+      const document = activeDocuments.find((item) => item.versionId === versionId)
+      if (!document) throw new CommandValidationError('STALE_INPUT', `补件材料不存在、已归档或不属于当前案卷：${versionId}`)
+      if (target.documentVersionIdsAtRequest?.includes(versionId)) {
+        throw new CommandValidationError('STALE_INPUT', `补件必须引用请求创建后新增的材料版本：${versionId}`)
+      }
+      if (target.materialSlotId && document.materialSlotId !== target.materialSlotId) {
+        throw new CommandValidationError('VALIDATION_FAILED', `补件材料尚未绑定指定材料槽：${target.materialSlotId}`)
+      }
+    }
+    if (!payload.note.trim() && suppliedIds.length === 0) throw new CommandValidationError('VALIDATION_FAILED', '回复必须附说明或材料')
     return {
       summary: `补件回复：${target.id}`,
       mutate: (draft) => {
@@ -235,14 +259,41 @@ export async function resolveSupplementV2(caseId: string, command: { requestId: 
         `补件判定结果无效：${String(payload.outcome)}（只允许 satisfied / insufficient / cancelled）`)
     }
     if (target.status !== 'open' && target.status !== 'responded') throw new CommandValidationError('INVALID_TRANSITION', `补件已关闭（${target.status}）`)
+    // T05/Main-snapshotted supplement requests must be explicitly replied to
+    // before a reviewer can record satisfied or insufficient. A request existing
+    // on disk is never evidence that a user actually supplied a response.
+    if (target.originStageId && target.documentVersionIdsAtRequest &&
+      (payload.outcome === 'satisfied' || payload.outcome === 'insufficient') &&
+      target.status !== 'responded') {
+      throw new CommandValidationError('INVALID_TRANSITION', '可信阶段补件必须先由提交方回复，再由审核员判定满足或不足')
+    }
     if (payload.outcome === 'cancelled' && !payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '取消补件必须说明理由')
+    if (payload.outcome === 'satisfied' && target.materialSlotId) {
+      // Material-slot supplements are evidence claims, not merely comments.
+      // The reviewer cannot close a still-missing slot as "satisfied"; cancellation
+      // remains an explicit, reasoned waiver, and final-decision gates stay active.
+      if (target.status !== 'responded') {
+        throw new CommandValidationError('INVALID_TRANSITION', '材料槽补件必须先由提交方回复，不能直接核结为已满足')
+      }
+      const { getTemplate } = require('./template-store') as typeof import('./template-store')
+      const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
+      const slot = template?.materialSlots.find((candidate) => candidate.id === target.materialSlotId)
+      if (!slot) {
+        throw new CommandValidationError('STALE_INPUT', '当前模板已经不存在该补件材料槽，不能核结为已满足')
+      }
+      const assessment = assessMaterialSlotV2(aggregate, slot)
+      if (assessment.status !== 'compliant') {
+        throw new CommandValidationError('DEPENDENCY_UNRESOLVED',
+          `材料槽补件仍未满足：${assessment.reason}；请补充或正确归类材料，再由审核员核结。`)
+      }
+    }
     return {
       summary: `补件判定：${payload.outcome}`,
       mutate: (draft) => {
         draft.supplements = draft.supplements.map((request) => (request.id === payload.supplementId ? { ...request, status: payload.outcome } : request))
         // 多请求门控：所有未满足请求结束才恢复（open/responded/insufficient 都阻断；cancelled=明确豁免）
         const stillOpen = draft.supplements.some((request) => request.status === 'open' || request.status === 'responded' || request.status === 'insufficient')
-        if (payload.outcome === 'satisfied' && !stillOpen) {
+        if ((payload.outcome === 'satisfied' || payload.outcome === 'cancelled') && !stillOpen) {
           draft.caseV2.stage = 'reviewing'
           // G05 任务回流：按退回来源阶段重建开放任务（同轮次续审补交材料）
           const originStageId = target.originStageId
@@ -255,7 +306,7 @@ export async function resolveSupplementV2(caseId: string, command: { requestId: 
       entity: payload.outcome === 'satisfied' ? { ...target, status: 'satisfied' } : { ...target, status: payload.outcome },
     }
   })
-  if (result.ok && command.payload.outcome === 'satisfied'
+  if (result.ok && (command.payload.outcome === 'satisfied' || command.payload.outcome === 'cancelled')
     && result.aggregate.caseV2.stage === 'reviewing'
     && result.aggregate.supplements.every((supplement) =>
       !['open', 'responded', 'insufficient'].includes(supplement.status))) {
@@ -346,15 +397,38 @@ export async function submitCaseV2(caseId: string, actor?: Actor, source?: Comma
   if (aggregate.caseV2.stage !== 'draft' && !recovering) throw new CommandValidationError('INVALID_TRANSITION', `当前阶段 ${aggregate.caseV2.stage} 不可提交`)
   const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
   if (!template) throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '模板不存在或已删除')
-  if (aggregate.caseV2.documents.length === 0) throw new CommandValidationError('VALIDATION_FAILED', '尚未登记任何材料，不能提交')
-  // 必需材料槽门控（复查 §5.9：不能只判非空——按模板 minCount 逐槽核对 active 材料）
-  const missingSlots: string[] = []
-  for (const slot of template.materialSlots ?? []) {
-    if ((slot.requiredAt ?? 'submission') !== 'submission') continue
-    const active = aggregate.caseV2.documents.filter((doc) => doc.materialSlotId === slot.id && doc.active !== false)
-    if (active.length < slot.minCount) missingSlots.push(`${slot.name}（需 ${slot.minCount}，现有 ${active.length}）`)
+  const activeDocuments = aggregate.caseV2.documents.filter((document) => document.active !== false)
+  if (activeDocuments.length === 0) throw new CommandValidationError('VALIDATION_FAILED', '尚未登记任何有效材料，不能提交')
+  if (!aggregate.d2RuntimePlan && !activeDocuments.some((document) => document.role === 'application')) {
+    throw new CommandValidationError('VALIDATION_FAILED', '缺少明确的申报材料：请先把一份真实申请原件分类为“申报材料”，再开始初审')
   }
-  if (missingSlots.length > 0) throw new CommandValidationError('VALIDATION_FAILED', `缺少必需材料：${missingSlots.join('；')}`)
+  const { resolveEffectiveRules } = await import('./effective-rules')
+  const effectiveRules = resolveEffectiveRules(aggregate, template)
+  if (!aggregate.d2RuntimePlan && effectiveRules.length === 0) {
+    throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '当前模板和审核依据没有任何有效审核规则；请先补充或确认审核规则，不能让 Pi 猜测标准')
+  }
+  const subjectRules = effectiveRules.filter((item) => item.rule.targetScope === 'subject')
+  if (!aggregate.d2RuntimePlan && subjectRules.length > 0 &&
+      !aggregate.caseV2.subjects.some((subject) => subject.status !== 'ignored' && subject.title.trim())) {
+    throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '当前模板要求按申报事项逐项审核，但案卷尚未登记可识别的申报事项；请先补充或确认事项')
+  }
+  // Do not treat every template section marked "required" as a mandatory user-entered
+  // Subject. Sections can be non-applicable to this case and may be inferred from the
+  // application. Only rules whose targetScope is subject require a concrete Subject here.
+  // 少量材料缺件不阻断初审。按模板适用条件、文件类型和数量生成待补项，
+  // 由统一 Run 记录；最终决定仍会再次检查所有必需槽位。
+  const reviewedSlots = (template.materialSlots ?? [])
+    .filter((slot) => (slot.requiredAt ?? 'submission') === 'submission')
+    .map((slot) => ({ slot, assessment: assessMaterialSlotV2(aggregate, slot) }))
+    .filter((entry) => entry.assessment.status === 'awaiting-supplement' || entry.assessment.status === 'awaiting-confirmation')
+  const blockedSlots = reviewedSlots.filter((entry) => entry.slot.initialReviewPolicy === 'block')
+  if (blockedSlots.length > 0) {
+    throw new CommandValidationError('DEPENDENCY_UNRESOLVED',
+      `模板要求初审前必须具备关键材料：${blockedSlots.map((entry) => entry.assessment.reason).join('；')}。请补足后再开始初审。`)
+  }
+  // Most slots are deferrable: missing proof is visible in the Pi Run and
+  // still blocks final approval until corrected and re-reviewed.
+  const missingSlots = reviewedSlots.map((entry) => entry.assessment.reason)
   const firstStage = template.stages[0]
   if (!firstStage) throw new CommandValidationError('VALIDATION_FAILED', '模板没有审核阶段')
   // 状态和首任务在同一个聚合事务内保存，避免两次写入间出现已提交却无任务。
@@ -365,7 +439,11 @@ export async function submitCaseV2(caseId: string, actor?: Actor, source?: Comma
     type: 'SubmitCase',
     payload: {},
   }, current => ({
-    summary: recovering ? '恢复已提交案卷的首阶段任务' : '案卷已提交进入审核',
+    summary: recovering
+      ? '恢复已提交案卷的首阶段任务'
+      : missingSlots.length
+        ? `案卷已提交进入初审；本轮可继续，待补材料/待确认项：${missingSlots.join('；')}`
+        : '案卷已提交进入审核',
     mutate: (draft) => {
       const task: WorkflowTask = {
         id: `task-submit-${caseId}-${current.caseV2.revision}`,

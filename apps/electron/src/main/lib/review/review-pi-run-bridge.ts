@@ -54,7 +54,10 @@ export async function startBackgroundPiReview(input: ReviewBackgroundPiStartRequ
     // 占据列表首位，就错误放弃原 Pi 的有效续交检查点。
     const previous = listRunsV2(input.caseId).find((run) => run.id.startsWith('run-pi-'))
     const resumeRunId = reusable && previous?.status === 'partially-completed'
-      && previous.checks.some((check) => check.status === 'execution-failed')
+      // Both the new not-executed placeholder and legacy execution-failed
+      // placeholder represent outstanding Pi work; neither is a final verdict.
+      && previous.checks.some((check) => check.executedBy === 'semantic'
+        && (check.status === 'not-executed' || check.status === 'execution-failed'))
       && !isWorkspaceRunStaleV2(aggregate, previous.id)
       && listAssignments().some((assignment) => assignment.caseId === input.caseId
         && assignment.sessionId === session.id && assignment.activeRunId === previous.id)

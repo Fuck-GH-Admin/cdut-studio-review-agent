@@ -404,6 +404,14 @@ export async function registerNativeWorkspaceMaterialV3(
   if (!isNativeWorkspaceCaseV3(current) || !current || current.caseV2.stage === 'archived')
     throw new CommandValidationError('INVALID_TRANSITION', '案卷不存在、已归档或不是原生 V2 案卷')
   authorizeAtCommit?.()
+  if (materialSlotId) {
+    const slot = getTemplate(current.caseV2.templateId, current.caseV2.templateVersion)?.materialSlots
+      .find((candidate) => candidate.id === materialSlotId)
+    if (slot?.acceptedRoles?.length && !slot.acceptedRoles.includes(role)) {
+      throw new CommandValidationError('VALIDATION_FAILED',
+        `材料类别不匹配：材料槽「${slot.name}」只接受 ${slot.acceptedRoles.join('、')} 类材料，当前类别为 ${role}`)
+    }
+  }
   const result = await registerMaterial(caseId, {
     requestId: `native-register-${randomUUID().replace(/-/g, '')}`,
     actor, expectedRevision: current.caseV2.revision,
@@ -415,6 +423,145 @@ export async function registerNativeWorkspaceMaterialV3(
   const found = view?.documents.find(candidate => candidate.id === doc?.documentId)
   if (!found) throw new Error('原生材料已写入但只读兼容投影失败，请通过 V2 材料列表查看')
   return found
+}
+
+/** Reclassify one existing physical document without changing its immutable version identity. */
+export async function reclassifyNativeWorkspaceMaterialV3(
+  caseId: string,
+  input: { documentVersionId: string; role: 'rule' | 'application' | 'evidence' | 'attachment'; materialSlotId?: string },
+  actor: Actor = MAIN_ACTOR,
+  authorizeAtCommit?: () => void,
+): Promise<ReviewCase> {
+  return reclassifyNativeWorkspaceMaterialsV3(caseId, [input], actor, authorizeAtCommit)
+}
+
+/**
+ * Apply reviewer-approved classification changes atomically. A batch cannot
+ * partially rewrite the case if one proposal is stale or removes the last
+ * application source.
+ */
+export async function reclassifyNativeWorkspaceMaterialsV3(
+  caseId: string,
+  inputs: Array<{ documentVersionId: string; role: 'rule' | 'application' | 'evidence' | 'attachment'; materialSlotId?: string }>,
+  actor: Actor = MAIN_ACTOR,
+  authorizeAtCommit?: () => void,
+): Promise<ReviewCase> {
+  if (!Array.isArray(inputs) || inputs.length === 0 || inputs.length > 500
+    || inputs.some((input) => !input || typeof input.documentVersionId !== 'string' || !input.documentVersionId.trim()
+      || !['rule', 'application', 'evidence', 'attachment'].includes(input.role)
+      || (input.materialSlotId !== undefined &&
+        (typeof input.materialSlotId !== 'string' || !input.materialSlotId.trim() || input.materialSlotId.length > 160)))
+    || new Set(inputs.map((input) => input.documentVersionId)).size !== inputs.length) {
+    throw new CommandValidationError('VALIDATION_FAILED', '材料分类批次无效：版本 ID 不能为空、重复或类别非法')
+  }
+  const normalized = inputs.map((input) => ({
+    documentVersionId: input.documentVersionId,
+    role: input.role,
+    materialSlotId: input.materialSlotId ?? null,
+  }))
+  const original = readAggregate(caseId)
+  if (!isNativeWorkspaceCaseV3(original) || !original) {
+    throw new CommandValidationError('NOT_FOUND', '原生案卷不存在')
+  }
+  if (original.caseV2.stage === 'archived' || original.caseV2.stage === 'decided') {
+    throw new CommandValidationError('INVALID_TRANSITION', '已归档或已作出最终决定的案卷不能直接改写材料分类')
+  }
+  if (original.canonicalPlan || original.d2RuntimePlan) {
+    throw new CommandValidationError('INVALID_TRANSITION', '正式审核计划已冻结；请先完成计划升版/重建，再修改材料分类')
+  }
+  const template = getTemplate(original.caseV2.templateId, original.caseV2.templateVersion)
+  const activeByVersion = new Map(original.caseV2.documents
+    .filter((document) => document.active !== false)
+    .map((document) => [document.versionId, document]))
+  for (const item of normalized) {
+    if (!activeByVersion.has(item.documentVersionId)) {
+      throw new CommandValidationError('STALE_INPUT', `材料版本不存在、已归档或不属于当前案卷：${item.documentVersionId}`)
+    }
+    if (item.materialSlotId !== null) {
+      const slot = template?.materialSlots.find((candidate) => candidate.id === item.materialSlotId)
+      if (!slot) throw new CommandValidationError('VALIDATION_FAILED', `材料槽不存在于当前模板：${item.materialSlotId}`)
+      if (slot.acceptedRoles?.length && !slot.acceptedRoles.includes(item.role)) {
+        throw new CommandValidationError('VALIDATION_FAILED',
+          `材料槽「${slot.name}」只接受 ${slot.acceptedRoles.join('、')} 类材料，当前类别为 ${item.role}`)
+      }
+    }
+  }
+  const proposedRoles = new Map(normalized.map((item) => [item.documentVersionId, item.role]))
+  const resultingApplicationCount = original.caseV2.documents.filter((document) =>
+    document.active !== false && (proposedRoles.get(document.versionId) ?? document.role) === 'application').length
+  if (resultingApplicationCount === 0) {
+    throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '分类结果会移除本案全部申报材料；请至少保留一份真实申报原件')
+  }
+  const changed = normalized.filter((item) => {
+    const current = activeByVersion.get(item.documentVersionId)!
+    return current.role !== item.role || (current.materialSlotId ?? null) !== item.materialSlotId
+  })
+  if (changed.length === 0) {
+    throw new CommandValidationError('INVALID_TRANSITION', '分类建议与当前类别和槽位完全一致，无需写入')
+  }
+  const output = await submitCommand(caseId, {
+    type: 'ReclassifyNativeWorkspaceMaterialsV3',
+    requestId: `native-classify-batch-${randomUUID().replace(/-/g, '')}`,
+    expectedRevision: original.caseV2.revision,
+    actor,
+    payload: { items: normalized },
+  }, (snapshot, payload) => {
+    authorizeAtCommit?.()
+    if (!isNativeWorkspaceCaseV3(snapshot) || snapshot.caseV2.stage === 'archived' || snapshot.caseV2.stage === 'decided'
+      || snapshot.canonicalPlan || snapshot.d2RuntimePlan) {
+      throw new CommandValidationError('INVALID_TRANSITION', '案卷或正式计划状态已变化；请刷新后重试')
+    }
+    const currentByVersion = new Map(snapshot.caseV2.documents
+      .filter((document) => document.active !== false)
+      .map((document) => [document.versionId, document]))
+    for (const item of payload.items) {
+      if (!currentByVersion.has(item.documentVersionId)) {
+        throw new CommandValidationError('STALE_INPUT', `材料版本已变化或不再有效：${item.documentVersionId}`)
+      }
+      if (item.materialSlotId !== null) {
+        const currentTemplate = getTemplate(snapshot.caseV2.templateId, snapshot.caseV2.templateVersion)
+        const slot = currentTemplate?.materialSlots.find((candidate) => candidate.id === item.materialSlotId)
+        if (!slot) throw new CommandValidationError('STALE_INPUT', `模板或材料槽已变化：${item.materialSlotId}`)
+        if (slot.acceptedRoles?.length && !slot.acceptedRoles.includes(item.role)) {
+          throw new CommandValidationError('VALIDATION_FAILED', '所选材料类别不符合该材料槽的角色约束')
+        }
+      }
+    }
+    const roles = new Map(payload.items.map((item) => [item.documentVersionId, item.role]))
+    const applicationCount = snapshot.caseV2.documents.filter((document) =>
+      document.active !== false && (roles.get(document.versionId) ?? document.role) === 'application').length
+    if (applicationCount === 0) {
+      throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '分类结果会移除本案全部申报材料；请至少保留一份真实申报原件')
+    }
+    const changedItems = payload.items.filter((item) => {
+      const current = currentByVersion.get(item.documentVersionId)!
+      return current.role !== item.role || (current.materialSlotId ?? null) !== item.materialSlotId
+    })
+    if (changedItems.length === 0) {
+      throw new CommandValidationError('INVALID_TRANSITION', '材料分类批次没有任何实际变化')
+    }
+    const changedVersions = new Set(changedItems.map((item) => item.documentVersionId))
+    return {
+      summary: `批量重新分类 ${changedItems.length} 份材料；保留原件版本并使旧审核输入失效`,
+      mutate: (draft) => {
+        draft.caseV2.documents = draft.caseV2.documents.map((document) => {
+          const item = changedItems.find((candidate) => candidate.documentVersionId === document.versionId)
+          if (!item) return document
+          return {
+            ...document,
+            role: item.role,
+            ...(item.materialSlotId ? { materialSlotId: item.materialSlotId } : { materialSlotId: undefined }),
+            usage: 'unread' as const,
+          }
+        })
+        revokeCurrentSourceValidity(draft, changedVersions, 'reclassify')
+      },
+    }
+  })
+  if (!output.ok) throw new CommandValidationError(output.code, output.message)
+  const view = nativeWorkspaceProjectionV3(output.aggregate)
+  if (!view) throw new Error('材料分类已写入，但只读兼容视图不可用')
+  return view
 }
 
 export async function removeNativeWorkspaceDocumentsV3(

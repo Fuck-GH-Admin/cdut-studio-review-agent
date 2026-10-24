@@ -17,6 +17,7 @@
  * - 不冒充学校审批：D2/B1 技术预审永远不能形成正式业务决定。
  */
 import type { Actor, CaseAggregateV2, ReviewRunV2, TemplateVersion } from '@profer/shared'
+import { assessMaterialSlotV2 } from '@profer/shared'
 import { CommandValidationError, readAggregate, submitCommand } from './case-store-v2'
 import { getTemplate } from './template-store'
 import { listRunsV2 } from './run-store-v2'
@@ -145,9 +146,12 @@ export function isLocalBusinessCase(aggregate: CaseAggregateV2): boolean {
  * （真实字段是 `documentVersions`），导致选择结果不可信。
  */
 export function currentT05Run(aggregate: CaseAggregateV2): ReviewRunV2 | undefined {
+  // listRunsV2 is already newest-first. Diagnostic template-only Runs must
+  // never become the basis for a business stage decision.
   const runs = listRunsV2(aggregate.caseV2.id)
-  for (let index = runs.length - 1; index >= 0; index -= 1) {
+  for (let index = 0; index < runs.length; index += 1) {
     const run = runs[index]!
+    if (run.id.startsWith('run-tpl-')) continue
     if (run.status !== 'completed' && run.status !== 'partially-completed') continue
     if (run.caseId !== aggregate.caseV2.id) continue
     if (run.templateId !== aggregate.caseV2.templateId) continue
@@ -225,11 +229,33 @@ export function t05ActionEligibility(
 
   const checks = run.checks ?? []
   coverage.produced = checks.length
+  // Only a completed authoritative Run may authorize a positive stage
+  // transition. Partially-completed Runs can still be reviewed or rejected.
+  if (run.status !== 'completed') {
+    blockers.push('本轮审核尚未完整结束；不能以部分完成或未结束的 Run 作出通过决定')
+  }
+  // A duplicate checkId is not a second independent planned check. Counting
+  // both could fake full coverage and let the same finding be disposed once.
+  const checkIds = checks.map((check) => check.checkId)
+  if (checkIds.some((id) => typeof id !== 'string' || !id.trim()) ||
+      new Set(checkIds).size !== checkIds.length) {
+    blockers.push('审核结果中存在缺失或重复的 checkId，不能计为独立检查覆盖')
+  }
   // 无真实计划或无有效检查不能因「没有待办」而被视为允许阶段通过。
   const required = run.coverage?.plannedChecks
   if (!Number.isSafeInteger(required) || !required || required < 1 || checks.length < required) {
     blockers.push('本次运行缺少有效检查计划或结果覆盖不足')
   }
+  // The ledger reconciles checks with actual RuleSpec×target bindings;
+  // array length alone cannot replace its verified completed count.
+  const completed = run.coverage?.completedChecks
+  if (typeof required === 'number' && Number.isSafeInteger(required) && required > 0 &&
+      (typeof completed !== 'number' || !Number.isSafeInteger(completed) || completed < required)) {
+    blockers.push('本次运行的检查账本尚未完整覆盖计划目标')
+  }
+  // Pending totals are computed before human dispositions. They cannot be used
+  // as an unconditional blocker: a reviewer may explicitly resolve an
+  // awaiting-confirmation item for this exact Run/inputHash below.
   // Run 本身已经冻结原件使用账本；未完成的原件不等同于通过。
   const unread = (run.coverage?.documents ?? []).filter((item) => item.status !== 'read')
   if (unread.length) blockers.push(`${unread.length} 份原件缺少完整读取或人工核对回执`)
@@ -238,21 +264,38 @@ export function t05ActionEligibility(
   const plannedRuleIds = run.inputManifest?.effectiveRuleIds ?? []
   if (plannedRuleIds.length > 0) {
     coverage.planned = plannedRuleIds.length
+    const plannedRuleSet = new Set(plannedRuleIds)
     const produced = new Set(checks.map((check) => check.ruleId))
     coverage.missing = plannedRuleIds.filter((ruleId) => !produced.has(ruleId))
     if (coverage.missing.length > 0) {
       blockers.push(`计划覆盖不足：${coverage.missing.length} 条规则没有检查结果`)
     }
+    // Check results with a fabricated ruleId must not inflate the count of
+    // completed bindings. Main-owned "system:" checks are an explicit exception.
+    const unexpected = checks.filter((check) =>
+      !plannedRuleSet.has(check.ruleId) && !check.ruleId.startsWith('system:'))
+    if (unexpected.length > 0) {
+      blockers.push(`${unexpected.length} 项检查不属于当前 Run 冻结的有效规则集`)
+    }
+  }
+  if (checks.length > 0 && checks.every((check) => check.status === 'not-applicable')) {
+    blockers.push('本次没有任何适用的检查，不能把全部不适用当作审核通过')
   }
 
   // 处置必须绑定当前 Run（换输入后旧处置自然失效）
+  // Only an explicit disposition for the exact current Run and immutable input
+  // snapshot can authorize a stage-pass. Historical records without a run/hash
+  // are visible as history, but cannot waive checks in a different review.
   const disposed = new Map(
     (aggregate.dispositions ?? [])
-      .filter((item) => !item.runId || item.runId === run.id)
+      .filter((item) => item.runId === run.id && item.inputHash === run.inputManifest?.hash)
       .map((item) => [item.findingKey, item]),
   )
+  const ruleMultiplicity = new Map<string, number>()
+  for (const check of checks) ruleMultiplicity.set(check.ruleId, (ruleMultiplicity.get(check.ruleId) ?? 0) + 1)
   const dispositionOf = (check: { checkId: string; ruleId?: string }) =>
-    disposed.get(check.checkId) ?? (check.ruleId ? disposed.get(check.ruleId) : undefined)
+    disposed.get(check.checkId) ??
+    (check.ruleId && ruleMultiplicity.get(check.ruleId) === 1 ? disposed.get(check.ruleId) : undefined)
 
   const pending = checks.filter((check) => {
     if (check.status !== 'awaiting-confirmation' && check.status !== 'awaiting-supplement') return false
@@ -306,6 +349,20 @@ export function t05ActionEligibility(
   }
 }
 
+/** Before the final approval, re-check all applicable template material slots.
+ * A slot may have been deliberately allowed to remain incomplete at submission
+ * or initial review. Neither a cancelled supplement nor an older Run can waive
+ * the material requirements of the currently published template.
+ */
+export function t05FinalMaterialBlockers(aggregate: CaseAggregateV2, template: TemplateVersion): string[] {
+  return (template.materialSlots ?? []).flatMap((slot) => {
+    const assessment = assessMaterialSlotV2(aggregate, slot)
+    return assessment.status === 'awaiting-supplement' || assessment.status === 'awaiting-confirmation'
+      ? [assessment.reason]
+      : []
+  })
+}
+
 /** 兼容旧名字：只回答「能否阶段通过」。 */
 export function t05DecisionReadiness(
   aggregate: CaseAggregateV2, run: ReviewRunV2 | undefined,
@@ -339,8 +396,15 @@ export function readT05StageCapability(caseId: string, claim?: T05RoleClaim): T0
     .map((task) => task.id)
   const run = currentT05Run(aggregate)
   const eligibility = t05ActionEligibility(aggregate, run)
+  const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
+  const hasEligibleFinalStage = (aggregate.tasks ?? []).some((task) =>
+    eligible.includes(task.id) && !!template?.stages.find((stage) =>
+      stage.id === task.stageId && !stage.nextStageId))
+  const finalMaterialBlockers = hasEligibleFinalStage && template
+    ? t05FinalMaterialBlockers(aggregate, template) : []
   const allowedActions = mode === 'local-business'
-    ? (Object.keys(eligibility.allowed) as T05StageAction[]).filter((action) => eligibility.allowed[action])
+    ? (Object.keys(eligibility.allowed) as T05StageAction[]).filter((action) =>
+      eligibility.allowed[action] && (action !== 'stage-pass' || finalMaterialBlockers.length === 0))
     : []
   return {
     mode,
@@ -349,7 +413,9 @@ export function readT05StageCapability(caseId: string, claim?: T05RoleClaim): T0
     eligibleTaskIds: eligible,
     hasCurrentRun: Boolean(run),
     allowedActions,
-    blockers: mode === 'local-business' ? eligibility.blockers : ['技术预审案卷不具备正式业务决定权'],
+    blockers: mode === 'local-business'
+      ? [...eligibility.blockers, ...finalMaterialBlockers]
+      : ['技术预审案卷不具备正式业务决定权'],
   }
 }
 
@@ -392,6 +458,15 @@ Promise<{ ok: true; revision: number; proposal: T05StageProposal; decisionId?: s
     const template: TemplateVersion | undefined = getTemplate(payload.templateId, payload.version)
     if (!template || template.status !== 'published') {
       throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '模板不存在或未发布')
+    }
+    const stageTask = aggregate.tasks.find((task) => task.id === payload.taskId && task.status === 'open')
+    const currentStage = template.stages.find((stage) => stage.id === stageTask?.stageId)
+    if (payload.action === 'stage-pass' && currentStage && !currentStage.nextStageId) {
+      const materialBlockers = t05FinalMaterialBlockers(aggregate, template)
+      if (materialBlockers.length > 0) {
+        throw new CommandValidationError('DEPENDENCY_UNRESOLVED',
+          `终审材料尚未满足模板要求：${materialBlockers.join('；')}`)
+      }
     }
     const run = currentT05Run(aggregate)
     const eligibility = t05ActionEligibility(aggregate, run)

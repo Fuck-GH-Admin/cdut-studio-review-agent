@@ -14,6 +14,7 @@ import { tmpdir } from 'node:os'
 import type { Actor, DocumentVersion, ReviewCommandResult, ReviewDocumentBlock, TemplateVersion } from '@profer/shared'
 import { CommandValidationError, readAggregate, submitCommand } from './case-store-v2'
 import { revokeCurrentSourceValidity } from './source-current-validity-v3'
+import { getTemplate } from './template-store'
 import { getConfigDir } from '../config-paths'
 import { extractDocxReviewContent, extractSpreadsheetReviewContent, extractTextFromFile, type DocxReviewContent, type XlsxReviewContent } from '../document-parser'
 import { extractReviewableTextFile } from './document-service'
@@ -147,6 +148,14 @@ export async function registerMaterial(caseId: string, command: { requestId: str
     // inside the serialized command, before any physical asset is copied.
     authorizeAtCommit?.()
     if (aggregate.caseV2.stage === 'archived') throw new CommandValidationError('INVALID_TRANSITION', '已归档案卷不可登记材料')
+    if (payload.materialSlotId) {
+      const slot = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)?.materialSlots
+        .find((candidate) => candidate.id === payload.materialSlotId)
+      if (slot?.acceptedRoles?.length && !slot.acceptedRoles.includes(payload.role)) {
+        throw new CommandValidationError('VALIDATION_FAILED',
+          `材料类别不匹配：材料槽「${slot.name}」只接受 ${slot.acceptedRoles.join('、')} 类材料，当前类别为 ${payload.role}`)
+      }
+    }
     const sourcePath = payload.sourcePath
     if (!sourcePath) throw new CommandValidationError('VALIDATION_FAILED', '缺少源文件路径')
     // 版本链语义（复查 §5.9）：同槽位 + 同文件名 = 同一逻辑材料的新版本；不同槽位各自独立

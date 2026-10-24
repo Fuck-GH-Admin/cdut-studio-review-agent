@@ -9,6 +9,7 @@ import { reviewV2AggregateAtom } from './V2CasePanel'
 import { ReviewV3LocalManualItem } from './ReviewV3LocalManualItem'
 import { ReviewV3LocalPiControls } from './ReviewV3LocalPiControls'
 import { ReviewV3UnifiedRun } from './ReviewV3UnifiedRun'
+import { ReviewV3MaterialClassification } from './ReviewV3MaterialClassification'
 import { ReviewV3T08ReportPanel } from './ReviewV3T08ReportPanel'
 import { D4CaseSetup } from './D4CaseSetup'
 import { ReviewV3TemplateRoutingAssistant } from './ReviewV3TemplateRoutingAssistant'
@@ -43,6 +44,9 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
     templateId:string;templateVersion:number;checks:number;fingerprint:string
   }|null>(null)
   const [nativeAggregate,setNativeAggregate]=React.useState<CaseAggregateV2|null>(null)
+  const [classificationConfirmed,setClassificationConfirmed]=React.useState(false)
+  const [publishedTemplateBound,setPublishedTemplateBound]=React.useState(false)
+  React.useEffect(()=>{setClassificationConfirmed(false)},[localCaseId,materialsEpoch])
   const [nativeRun,setNativeRun]=React.useState<ReviewRunV2|null>(null)
   const [nativeRunStale,setNativeRunStale]=React.useState(true)
   const [runEpoch,setRunEpoch]=React.useState(0)
@@ -65,6 +69,7 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
   },[localCaseId])
   React.useEffect(()=>{
     setProduct(null);setActivePlan(null);setProductError('')
+    setPublishedTemplateBound(false)
     setNativeAggregate(null)
     if(!localCaseId)return
     let mounted=true
@@ -73,6 +78,10 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
         const aggregate=await window.reviewAPI.getAggregateV2(localCaseId)
         if(!mounted)return
         setNativeAggregate(aggregate??null)
+        if(aggregate && aggregate.caseV2.templateVersion > 0 && !aggregate.d2RuntimePlan){
+          const boundTemplate=await window.reviewAPI.getTemplateV2(aggregate.caseV2.templateId,aggregate.caseV2.templateVersion)
+          if(mounted)setPublishedTemplateBound(boundTemplate?.status==='published')
+        }else setPublishedTemplateBound(false)
         if(aggregate?.d2RuntimePlan){
           const plan=aggregate.d2RuntimePlan
           setActivePlan({templateId:plan.templateId,templateVersion:plan.templateVersion,
@@ -91,7 +100,7 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
     let live=true
     void (async()=>{
       const runs=await window.reviewAPI.listRunsV2(localCaseId)
-      const latest=[...runs].sort((a,b)=>b.startedAt.localeCompare(a.startedAt))[0]??null
+      const latest=[...runs].filter(run=>run.id.startsWith('run-pi-')).sort((a,b)=>b.startedAt.localeCompare(a.startedAt))[0]??null
       if (!live) return
       setNativeRun(latest)
       if (!latest || latest.status==='queued' || latest.status==='running') return
@@ -318,13 +327,28 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
       {caseNotice&&<p role="status" className="text-xs">{caseNotice}</p>}
       {caseError&&<p role="alert" className="text-xs text-red-600">{caseError}</p>}
     </div>
-    {localCaseId&&!activePlan&&<ReviewV3TemplateRoutingAssistant
+    {localCaseId&&nativeAggregate&&nativeAggregate.caseV2.templateVersion>0&&(!!activePlan||!!nativeAggregate.d2RuntimePlan||publishedTemplateBound)&&<ReviewV3MaterialClassification
+      caseId={localCaseId}
+      aggregate={nativeAggregate}
+      confirmed={classificationConfirmed}
+      onConfirmed={()=>setClassificationConfirmed(true)}
+      onClassificationChanged={()=>{
+        setClassificationConfirmed(false)
+        setMaterialsEpoch(x=>x+1)
+      }}
+      onUpdated={refreshNativeAggregate}
+    />}
+    {localCaseId&&!activePlan&&!nativeAggregate?.d2RuntimePlan&&!publishedTemplateBound&&<ReviewV3TemplateRoutingAssistant
       caseId={localCaseId}
       onPlanInstalled={plan=>{
         setActivePlan(plan)
+        setClassificationConfirmed(false)
         setMaterialsEpoch(x=>x+1)
       }}
-      onTemplateBound={()=>setMaterialsEpoch(x=>x+1)}
+      onTemplateBound={()=>{
+        setClassificationConfirmed(false)
+        setMaterialsEpoch(x=>x+1)
+      }}
     />}
     {activePlan&&<div className="space-y-2 rounded-lg border border-border p-4">
       <h2 className="text-base font-semibold">本案已绑定审核计划</h2>
@@ -332,7 +356,7 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
       <p className="break-all text-xs text-muted-foreground">任务指纹：{activePlan.fingerprint}</p>
       <p className="text-xs">不必重新选择模板。继续导入材料、在下方启动 Pi，或打开案卷进行人工复核。</p>
     </div>}
-    {localCaseId&&!activePlan&&<div className="space-y-3 rounded-lg border border-border p-4">
+    {localCaseId&&!activePlan&&!nativeAggregate?.d2RuntimePlan&&!publishedTemplateBound&&<div className="space-y-3 rounded-lg border border-border p-4">
       <h2 className="text-base font-semibold">使用已有 50 套 D4 模板生成本案审核任务</h2>
       <p className="text-xs text-muted-foreground">选择方案并确认对象/场景后，把检查方案写入当前案卷；不另外创建案卷。已添加人工事项或已固定方案的案卷请另建新案卷。</p>
       <D4CaseSetup onChange={setD4Selection} suggestedTemplateId={routedD4TemplateId}/>
@@ -365,7 +389,7 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
       {message&&<p role="status" className="text-xs">{message}</p>}
       {error&&<p role="alert" className="text-xs text-red-600">{error}</p>}
     </div>
-    {localCaseId&&!activePlan&&<div className="space-y-2">
+    {localCaseId&&!activePlan&&!nativeAggregate?.d2RuntimePlan&&!publishedTemplateBound&&<div className="space-y-2">
       {productError&&<p role="alert" className="text-xs text-red-600">
         当前材料 Main 读取失败：{productError}（未返回候选结果）
       </p>}
@@ -422,7 +446,7 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
       stage={nativeAggregate?.caseV2.stage??'draft'}
       documentCount={nativeAggregate?.caseV2.documents.filter(item=>item.active!==false).length??0}
       technicalPlan={!!nativeAggregate?.d2RuntimePlan}
-      canRun={!!activePlan||!!nativeAggregate?.d2RuntimePlan}
+      canRun={classificationConfirmed&&(!!activePlan||!!nativeAggregate?.d2RuntimePlan||publishedTemplateBound)}
       onUpdated={refreshNativeAggregate}
     />}
     {localCaseId&&<div className="space-y-2 rounded-lg border border-border p-3">

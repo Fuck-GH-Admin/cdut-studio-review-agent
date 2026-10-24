@@ -132,9 +132,19 @@ export interface MaterialSlotSpec {
   purpose: string
   requiredWhen?: ConditionAST
   acceptedKinds: Array<'pdf' | 'image' | 'office' | 'sheet' | 'text' | 'zip'>
+  /** 可选的语义角色约束；文件扩展名正确不代表材料类别正确。未声明时保持旧模板兼容。 */
+  acceptedRoles?: Array<DocumentVersion['role']>
   minCount: number
   /** 缺少材料在哪个生命周期阶段阻断；旧模板默认 submission。 */
   requiredAt?: 'submission' | 'decision'
+  /**
+   * Initial-review gate for this specific slot:
+   * - block: the declared material is critical before starting Pi;
+   * - defer (default): Pi can start with a pending supplement, but the
+   *   final decision must still verify this slot.
+   * This is template-specific, not a global "number of missing files" limit.
+   */
+  initialReviewPolicy?: 'block' | 'defer'
   maxCount: number
   /** 关键要素：Agent 提取与人工检查的要点 */
   requiredElements: string[]

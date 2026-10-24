@@ -196,6 +196,53 @@ describe('补件多请求门控（06 §5.3）', () => {
   })
 })
 
+describe('可信 T05 补件回复前置门控', () => {
+  test('冻结材料版本的 T05 请求不能未经回复直接标记满足', async () => {
+    const { caseId, firstTaskId } = await seed()
+    const { submitCommand } = await import('./case-store-v2')
+    const snapshot = readAggregate(caseId)!
+    const added = await submitCommand(caseId, {
+      requestId: nextReq(), actor, expectedRevision: snapshot.caseV2.revision,
+      type: 'SeedT05SupplementGate', payload: {},
+    }, () => ({
+      summary: '模拟可信阶段退回补件',
+      mutate: (draft) => {
+        draft.caseV2.stage = 'awaiting-supplement'
+        draft.tasks = draft.tasks.map(task => task.id === firstTaskId ? { ...task, status: 'completed' } : task)
+        draft.supplements.push({
+          id: `t05-sup-${caseId}`, caseId,
+          originFindingKeys: [], requiredElements: ['证明日期'], reason: '缺少日期',
+          responsibleRole: 'student', status: 'open', responses: [], createdAt: new Date().toISOString(),
+          originTaskId: firstTaskId, originStageId: 'first',
+          documentVersionIdsAtRequest: [],
+        })
+      },
+    }))
+    expect(added.ok).toBeTrue()
+    const current = readAggregate(caseId)!
+    const denied = await resolveSupplementV2(caseId, {
+      requestId: nextReq(), actor, expectedRevision: current.caseV2.revision,
+      payload: { supplementId: `t05-sup-${caseId}`, outcome: 'satisfied', reason: '直接关闭' },
+    })
+    expect(denied.ok).toBeFalse()
+    if (!denied.ok) expect(denied.code).toBe('INVALID_TRANSITION')
+    const responded = await respondSupplementV2(caseId, {
+      requestId: nextReq(), actor: { actorId: 'student', actorSource: 'local', role: 'student' },
+      expectedRevision: current.caseV2.revision,
+      payload: { supplementId: `t05-sup-${caseId}`, note: '已解释日期事项' },
+    })
+    expect(responded.ok).toBeTrue()
+    if (!responded.ok) return
+    const accepted = await resolveSupplementV2(caseId, {
+      requestId: nextReq(), actor, expectedRevision: responded.aggregate.caseV2.revision,
+      payload: { supplementId: `t05-sup-${caseId}`, outcome: 'satisfied', reason: '审核员已核实说明' },
+    })
+    expect(accepted.ok).toBeTrue()
+    if (accepted.ok) expect(accepted.aggregate.tasks.some(task =>
+      task.stageId === 'first' && task.status === 'open')).toBeTrue()
+  })
+})
+
 describe('补件回复与任务回流（G04/G05）', () => {
   test('Given 退回补件 When 学生回复+判定满足 Then 原阶段任务回流（不是没有任务）', async () => {
     const { caseId, firstTaskId } = await seed()

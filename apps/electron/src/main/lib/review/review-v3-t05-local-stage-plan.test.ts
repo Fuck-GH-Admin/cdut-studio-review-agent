@@ -124,6 +124,7 @@ describe('T05 real append-only stage mutations (Main-owned persistence)', () => 
     expect(result.addedSupplement).toMatchObject({originTaskId:'task-initial',originStageId:'initial',
       responsibleRole:'student',status:'open'})
     expect(result.addedDecision).toBeUndefined()
+    expect(result.addedSupplement?.documentVersionIdsAtRequest).toEqual([])
     expect(result.decisions).toHaveLength(0)
     expect(result.tasks[0]?.status).toBe('completed')
   })
