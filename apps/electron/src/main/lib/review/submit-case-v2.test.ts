@@ -20,16 +20,16 @@ writeFileSync(material, '虚构提交测试材料')
 
 async function seed(caseId: string): Promise<void> {
   await createCaseFromTemplate('comprehensive-assessment-v2', 2, {
-    title: '提交测试', fieldValues: { studentName: '测试学生', studentId: '001', academicYear: '2025-2026', applicant: '测试学生' }, subjects: [],
+    title: '提交测试', fieldValues: { studentName: '测试学生', studentId: '001', academicYear: '2025-2026', applicant: '测试学生' }, subjects: [{ id: 's-submit', title: '竞赛申报事项', type: 'item' as const, fieldValues: { category: 'competition', level: 'national-1', declaredScore: 8, activityDate: '2026-10-01', eventId: 'event-submit' } }],
   }, actor, caseId)
-  await registerMaterial(caseId, { requestId: 'register', actor, expectedRevision: 0, payload: { sourcePath: material, role: 'evidence', materialSlotId: 'application-form' } })
+  await registerMaterial(caseId, { requestId: 'register', actor, expectedRevision: 0, payload: { sourcePath: material, role: 'application', materialSlotId: 'application-form' } })
   await registerMaterial(caseId, { requestId: 'register-cert', actor, expectedRevision: 1, payload: { sourcePath: material, role: 'evidence', materialSlotId: 'certificates' } })
 }
 
 describe('提交案卷的原子事务', () => {
   test('有申报表但没有证明时仍可提交审核', async () => {
     await createCaseFromTemplate('comprehensive-assessment-v2', 2, {
-      title: '缺证明测试', fieldValues: { studentName: '测试学生', studentId: '002', academicYear: '2025-2026', applicant: '测试学生' }, subjects: [],
+      title: '缺证明测试', fieldValues: { studentName: '测试学生', studentId: '002', academicYear: '2025-2026', applicant: '测试学生' }, subjects: [{ id: 's-submit', title: '竞赛申报事项', type: 'item' as const, fieldValues: { category: 'competition', level: 'national-1', declaredScore: 8, activityDate: '2026-10-01', eventId: 'event-submit' } }],
     }, actor, 'missing-evidence')
     await registerMaterial('missing-evidence', { requestId: 'register-application', actor, expectedRevision: 0, payload: { sourcePath: material, role: 'application', materialSlotId: 'application-form' } })
     const result = await submitCaseV2('missing-evidence')
@@ -42,7 +42,7 @@ describe('提交案卷的原子事务', () => {
       title: '无申报表测试', fieldValues: { studentName: '测试学生', studentId: '003', academicYear: '2025-2026', applicant: '测试学生' }, subjects: [],
     }, actor, 'missing-application')
     await registerMaterial('missing-application', { requestId: 'register-certificate', actor, expectedRevision: 0, payload: { sourcePath: material, role: 'evidence', materialSlotId: 'certificates' } })
-    await expect(submitCaseV2('missing-application')).rejects.toThrow('缺少必需材料：综合测评申报表')
+    await expect(submitCaseV2('missing-application')).rejects.toThrow('缺少明确的申报材料')
   })
 
   test('Given 已登记材料且 revision 非零 When 提交 Then 状态和首任务一次落盘', async () => {
