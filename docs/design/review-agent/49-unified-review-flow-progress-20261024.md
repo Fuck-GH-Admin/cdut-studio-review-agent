@@ -246,3 +246,26 @@
 2. 对新增 HEAD 重跑专项和 PR CI，不把 `a07adda` 旧绿灯用于后续提交。
 3. 再核对 UI/IPC 到 T05 决定与补件回流的真实身份链、案卷刷新时权威 Run 不切换。
 4. 未通过新提交检查与人工业务核验前，不合并，不声明彻底完成。
+
+## 13. 2026-10-24 继续实施：T05 正式阶段通过门控防伪
+
+### 本轮提交（均已推送工作分支）
+
+- `5c5942fdb801c245b07292a763e641b676a3bc60`：本文件追加第 12 节，以同一 HEAD `a07adda` 的六项 CI 全绿结果作为真实历史进度证据；将新发现的 T05 检查账本信任问题登记为待实施。
+- `fe730aed6db600adbd809800db95b0be63de2a4e`：在 `t05ActionEligibility` 中要求 `stage-pass` 使用真正 `completed` 的权威 Run；拦截重复/空 `checkId`，不再让重复检查凑足覆盖数量；阶段通过前进一步核对 `coverage.completedChecks/plannedChecks/pendingChecks`。新增重复 ID、部分完成 Run、伪造覆盖计数等反例。
+- `24f4db62827699d89a269efea0719ad4cc9197a0`：当 Run 有 `inputManifest.effectiveRuleIds` 时，拒绝将不属于冻结规则集的非 `system:` 检查作为通过依据；全部检查均 `not-applicable` 时禁止“无待办所以通过”。新增伪造规则和全部不适用两项反例。
+- `21823f59b8b5ad03dfc2f24f6838f8121314da8e`：修正覆盖数值的 TypeScript 类型收窄，避免未定义计数进入比较表达式。
+- 本节写入前 HEAD：`21823f59b8b5ad03dfc2f24f6838f8121314da8e`。
+
+### 设计和实际效果的边界
+
+- 上述加固**只收紧积极通过（`stage-pass`）**：`partially-completed` 的 Run 如确属当前案卷，原有“退回补件/要求复核/有依据地驳回”等路径保持独立的适格判定，不因为待审问题被迫冒充通过。
+- 当前 CheckResult 可能合法地一条规则对应多个事项/目标，禁止的是重复 `checkId`，不是一律禁止重复 `ruleId`；`system:` Main 自有检查允许存在，但仍受非空唯一 Check 身份和覆盖账本约束。
+- 此轮仅变更 `review-v3-t05-main-service.ts` 与 `review-v3-t05-business-mode.test.ts` 的逻辑/反例，不建立新的 Run、Decision、Plan 或持久化状态。
+- CI 证据不能继承：`a07adda` 的 6 项成功是**本轮代码变更之前**的历史结果。`21823f5` 的新检查查询时 尚未全部完成；完整通过与否待后续新 HEAD 的实际结果。
+
+### 下一轮重点
+
+1. 固定最新 HEAD 跟踪 6 项 CI；若出现失败，优先查看日志并修复真实生产逻辑。
+2. 复查 UI → IPC → T05 阶段事务对最新单一 Pi Run 的选择，特别是补件后旧 Run 过期、人工处置 `runId/inputHash`、取消补件不等于材料已满足。
+3. 记录实际完成的专项/全量结果；验收前继续保持 Draft，不合并。
