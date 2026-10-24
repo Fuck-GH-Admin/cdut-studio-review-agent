@@ -331,10 +331,19 @@ export function validateTemplate(template: TemplateVersion): TemplateValidationI
       if (!fieldKeys.has(ref)) issues.push({ level: 'error', message: `字段 ${field.key} 的条件必填引用了不存在的字段 ${ref}` })
     }
   }
-  // 材料槽：requiredWhen 引用存在；min<=max
+  // 材料槽：requiredWhen 引用存在；min<=max；可选语义角色约束必须是合法的非空集合
+  const allowedMaterialRoles = new Set(['rule', 'application', 'evidence', 'attachment'])
   for (const slot of template.materialSlots) {
     for (const ref of condFields(slot.requiredWhen)) {
       if (!fieldKeys.has(ref)) issues.push({ level: 'error', message: `材料槽 ${slot.id} 的条件引用了不存在的字段 ${ref}` })
+    }
+    const acceptedRoles = (slot as typeof slot & { acceptedRoles?: unknown }).acceptedRoles
+    if (acceptedRoles !== undefined && (
+      !Array.isArray(acceptedRoles) || acceptedRoles.length === 0 ||
+      acceptedRoles.some((role) => typeof role !== 'string' || !allowedMaterialRoles.has(role)) ||
+      new Set(acceptedRoles).size !== acceptedRoles.length
+    )) {
+      issues.push({ level: 'error', message: `材料槽 ${slot.id} 的 acceptedRoles 必须是非空、无重复的有效材料类别列表` })
     }
     if (slot.minCount > slot.maxCount) issues.push({ level: 'error', message: `材料槽 ${slot.id} 的 minCount 大于 maxCount` })
   }
