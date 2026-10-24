@@ -393,6 +393,19 @@ export interface CaseAggregateV2 {
   /** Bound immutable Dev-B CanonicalPlan; upgrades preserve earlier plans. */
   canonicalPlan?: import('./review-v3-c0').CanonicalPlan
   canonicalPlanHistory?: import('./review-v3-c0').CanonicalPlan[]
+  /**
+   * Main 核实后的本地业务发布确认，与 Case/Plan 同一事务持久化。
+   * 只表示本机试办，不构成学校授权；升版后旧指纹不得复用。
+   */
+  localBusinessConfirmation?: {
+    caseId: string
+    planFingerprint: string
+    templateId: string
+    templateVersion: number
+    confirmedBy: 'local-organizer'
+    confirmedAt: string
+    reason: string
+  }
   /** D2 技术预审任务固定快照；不授予正式学校发布/审批权限。 */
   d2RuntimePlan?: import('./review-d2').D2RuntimePlan
   /** 独立评分（G06：唯一票，事务内查重） */

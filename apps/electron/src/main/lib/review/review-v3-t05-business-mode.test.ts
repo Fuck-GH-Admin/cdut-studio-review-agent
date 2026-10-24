@@ -7,15 +7,16 @@
  * - 非合规项不能靠 Run completed 直接 stage-pass；
  * - 计划覆盖不足、执行失败、未执行都阻断通过，但允许退回/拒绝。
  */
-import { afterAll, afterEach, describe, expect, test } from 'bun:test'
+import { afterAll, beforeEach, describe, expect, test } from 'bun:test'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import {
-  resolveT05BusinessMode, t05ActionEligibility, registerT05LocalBusinessConfirmation,
-  clearT05LocalBusinessConfirmations,
+  resolveT05BusinessMode, t05ActionEligibility, recordT05LocalBusinessConfirmation,
+  readT05LocalBusinessConfirmation,
 } from './review-v3-t05-main-service'
 import type { CaseAggregateV2, ReviewCaseV2, ReviewRunV2 } from '@profer/shared'
+import { readAggregate, writeAggregate } from './case-store-v2'
 import { saveRunV2 } from './run-store-v2'
 import { computeRunInputHash } from './run-service-v2'
 
@@ -23,7 +24,6 @@ import { computeRunInputHash } from './run-service-v2'
 const configDir = mkdtempSync(join(tmpdir(), 't05arch-'))
 process.env.PROFER_CONFIG_DIR = configDir
 afterAll(() => rmSync(configDir, { recursive: true, force: true }))
-afterEach(() => { clearT05LocalBusinessConfirmations() })
 
 let runSeq = 0
 
@@ -65,6 +65,16 @@ function run(checks: Array<Record<string, unknown>>, extra: Record<string, unkno
 }
 
 describe('D2 可信业务模式', () => {
+  beforeEach(() => writeAggregate(aggregate({ canonicalPlan: {
+    fingerprint: 'fp-1', planId: 'p', templateId: 'tpl-arch', templateVersion: '1',
+  } })))
+
+  const confirm = () => recordT05LocalBusinessConfirmation('case-arch', {
+    requestId: 't05-confirm-1', expectedRevision: 5,
+    actor: { actorId: 'local-reviewer', actorSource: 'local', role: 'reviewer' },
+    payload: { planFingerprint: 'fp-1', reason: '本地审核员明确确认试办发布' },
+  }, () => {})
+
   test('无计划：模板绑定的本地业务案卷可办理阶段', () => {
     expect(resolveT05BusinessMode(aggregate())).toMatchObject({ mode: 'local-business' })
   })
@@ -72,6 +82,18 @@ describe('D2 可信业务模式', () => {
   test('D2 技术预审：即便有其他结构也不具备业务决定权', () => {
     const result = resolveT05BusinessMode(aggregate({ d2RuntimePlan: { id: 'd2' } }))
     expect(result.mode).toBe('technical-pre-review')
+  })
+
+  test('归档案卷即使仍有历史确认也不能恢复业务决定资格', () => {
+    const snapshot = aggregate({
+      caseV2: { ...caseFixture(), stage: 'archived' },
+      localBusinessConfirmation: {
+        caseId: 'case-arch', planFingerprint: 'fp-1', templateId: 'tpl-arch',
+        templateVersion: 1, confirmedBy: 'local-organizer',
+        confirmedAt: new Date().toISOString(), reason: '历史确认',
+      },
+    })
+    expect(resolveT05BusinessMode(snapshot).mode).toBe('technical-pre-review')
   })
 
   test('CanonicalPlan 未经 Main 确认时按技术预审处理（fail closed）', () => {
@@ -82,23 +104,58 @@ describe('D2 可信业务模式', () => {
     expect(result.reason).toContain('尚未经 Main 确认')
   })
 
-  test('CanonicalPlan + 指纹与模板版本相符的本地业务确认 → local-business', () => {
-    registerT05LocalBusinessConfirmation({
-      caseId: 'case-arch', planFingerprint: 'fp-1', templateId: 'tpl-arch',
-      templateVersion: 1, confirmedBy: 'local-organizer', confirmedAt: '', reason: '本地业务发布',
+  test('Main 确认同 Case CAS 落盘，冷读后仍有效且 requestId 重放不新增回执', async () => {
+    const command = {
+      requestId: 't05-confirm-1', expectedRevision: 5,
+      actor: { actorId: 'local-reviewer', actorSource: 'local' as const, role: 'reviewer' as const },
+      payload: { planFingerprint: 'fp-1', reason: '本地审核员明确确认试办发布' },
+    }
+    const confirmed = await recordT05LocalBusinessConfirmation('case-arch', command, () => {
+      // 实机由可信 Main 的 Owner/物理确认端口核验，此处仅测试事务持久化。
     })
-    const result = resolveT05BusinessMode(aggregate({ canonicalPlan: { fingerprint: 'fp-1', planId: 'p' } }))
-    expect(result.mode).toBe('local-business')
+    expect(confirmed.ok).toBe(true)
+    const recovered = readAggregate('case-arch')!
+    expect(readT05LocalBusinessConfirmation('case-arch')).toMatchObject({
+      caseId: 'case-arch', planFingerprint: 'fp-1', confirmedBy: 'local-organizer',
+    })
+    expect(resolveT05BusinessMode(recovered).mode).toBe('local-business')
+    const replay = await recordT05LocalBusinessConfirmation('case-arch', command, () => {})
+    expect(replay.ok).toBe(true)
+    expect(readAggregate('case-arch')?.caseV2.revision).toBe(6)
+    expect(readAggregate('case-arch')?.receiptLog).toHaveLength(1)
   })
 
-  test('计划指纹变化后确认失效（升版必须重新确认）', () => {
-    registerT05LocalBusinessConfirmation({
-      caseId: 'case-arch', planFingerprint: 'fp-1', templateId: 'tpl-arch',
-      templateVersion: 1, confirmedBy: 'local-organizer', confirmedAt: '', reason: '本地业务发布',
-    })
-    const result = resolveT05BusinessMode(aggregate({ canonicalPlan: { fingerprint: 'fp-2', planId: 'p' } }))
+  test('计划升版后旧确认不能继承业务权限，不能由伪教师身份重新确认', async () => {
+    expect((await confirm()).ok).toBe(true)
+    const old = readAggregate('case-arch')!
+    const result = resolveT05BusinessMode({ ...old, canonicalPlan: {
+      ...old.canonicalPlan!, fingerprint: 'fp-2', planId: 'p2',
+    } })
     expect(result.mode).toBe('technical-pre-review')
     expect(result.reason).toContain('指纹')
+    const rejected = await recordT05LocalBusinessConfirmation('case-arch', {
+      requestId: 't05-teacher-forged', expectedRevision: old.caseV2.revision,
+      actor: { actorId: 'local-teacher', actorSource: 'local', role: 'teacher' },
+      payload: { planFingerprint: 'fp-1', reason: '直接提升权限' },
+    }, () => {})
+    expect(rejected.ok).toBe(false)
+    expect(readAggregate('case-arch')?.receiptLog).toHaveLength(1)
+  })
+
+  test('没有可信现场确认端口及错误指纹时不允许持久授权', async () => {
+    expect((await confirm()).ok).toBe(true)
+    expect(() => recordT05LocalBusinessConfirmation('case-arch', {
+      requestId: 'no-witness', expectedRevision: 6,
+      actor: { actorId: 'local-reviewer', actorSource: 'local', role: 'reviewer' },
+      payload: { planFingerprint: 'fp-1', reason: '未核验' },
+    }, undefined as never)).toThrow('可信 Main')
+    const denied = await recordT05LocalBusinessConfirmation('case-arch', {
+      requestId: 'wrong-fingerprint', expectedRevision: 6,
+      actor: { actorId: 'local-reviewer', actorSource: 'local', role: 'reviewer' },
+      payload: { planFingerprint: 'fp-2', reason: '企图绑定另一计划' },
+    }, () => {})
+    expect(denied.ok).toBe(false)
+    expect(readAggregate('case-arch')?.receiptLog).toHaveLength(1)
   })
 })
 

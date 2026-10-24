@@ -9,7 +9,7 @@ import { REVIEW_IPC_CHANNELS } from '@profer/shared'
 import { setMainWindow } from '../main-window-state'
 import { registerReviewIpc } from './review-ipc'
 import { buildDemoCase } from './demo-fixtures/demo-case-fixture'
-import { deleteCase, getCase, getReviewCasesDir, listCases, saveCase, updateCase } from './case-store'
+import { deleteCase, getCase, getReviewCasesDir, listCases, saveCase, saveRun, updateCase } from './case-store'
 import { createAggregate, listAggregatesV2, readAggregate, writeAggregate } from './case-store-v2'
 import { ensureWorkspaceAggregateV2 } from './workspace-service-v2'
 import { restoreReviewCaseV3 } from './case-lifecycle-v3'
@@ -322,6 +322,18 @@ describe('C1 legacy Main command isolation and compatibility', () => {
     }))).rejects.toThrow('审核计划已冻结')
     expect(JSON.stringify(getCase(id))).toBe(beforeV1)
     expect(JSON.stringify(readAggregate(id))).toBe(beforeV2)
+    // 原生 Plan 已冻结后，连旧 V1 直写标题/Run 都不能产生竞争状态；
+    // 历史投影仍能只读打开，拒绝不会创建额外运行文件。
+    expect(() => saveCase({ ...legacy(id), title: 'Overwrite after frozen Plan' }))
+      .toThrow('旧版写入口仅允许历史读取')
+    await expect(updateCase(id, latest => ({ ...latest, title: 'Unsafe V1 title' })))
+      .rejects.toThrow('旧版写入口仅允许历史读取')
+    const oldRun = { id: 'legacy-run-frozen', caseId: id, status: 'completed' }
+    expect(() => saveRun(id, oldRun as never)).toThrow('旧版写入口仅允许历史读取')
+    const { existsSync } = await import('node:fs')
+    expect(existsSync(join(getReviewCasesDir(), id, 'runs', 'legacy-run-frozen.json'))).toBe(false)
+    expect(JSON.stringify(readAggregate(id))).toBe(beforeV2)
+    expect(JSON.stringify(getCase(id))).toBe(beforeV1)
   })
 
   test('existing migrated legacy case can still edit ordinary title and project it to V2', async () => {
