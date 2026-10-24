@@ -18,6 +18,7 @@ interface AssignmentRow {
   workRole: string
   createdAt: string
   revokedAt?: string
+  executionTurnId?: string
 }
 
 /** 本地单用户场景的会话标识（多会话接入后由会话上下文替换） */
@@ -85,7 +86,8 @@ export function ReviewAssignmentCard({ caseId }: { caseId: string }): JSX.Elemen
     }
   }, [])
 
-  const activeCount = rows.filter((row) => !row.revokedAt && row.caseId === caseId).length
+  // 授权首次被 Main 某一执行轮次认领后只对该轮有效；允许为后续轮次重新指派。
+  const activeCount = rows.filter((row) => !row.revokedAt && !row.executionTurnId && row.caseId === caseId).length
 
   return (
     <div className="space-y-2 rounded-lg border-t pt-3">
@@ -115,7 +117,7 @@ export function ReviewAssignmentCard({ caseId }: { caseId: string }): JSX.Elemen
           <div className="min-w-0 flex-1">
             <span className="font-medium">{row.id}</span>
             <span className="mx-1">·</span>
-            <span>{row.revokedAt ? '已撤销' : '有效'}</span>
+            <span>{row.revokedAt ? '已撤销' : row.executionTurnId ? '本轮已使用（后续轮次请重新指派）' : '待使用'}</span>
             <span className="ml-1 text-muted-foreground">（{row.actions.length} 项动作 · {row.workRole} · {row.createdAt.slice(11, 19)}）</span>
           </div>
           {!row.revokedAt && <Button size="sm" variant="ghost" onClick={() => void revoke(row.id)}>撤销</Button>}

@@ -27,6 +27,8 @@ export interface ReviewAgentAssignment {
   sessionId: string
   /** 用户发起指派的轮次消息 ID（归属到轮，审计可溯） */
   turnId: string
+  /** Main 在首次工具调用时绑定的实际执行轮次；旧工具实例不得在后续轮次复用授权。 */
+  executionTurnId?: string
   /** 指派的目标案卷（建案型指派初始缺省，建案成功后绑定） */
   caseId?: string
   /** 建案型指派允许的模板（模板+版本锁定；防止拿指派开任意模板的案） */
@@ -181,7 +183,7 @@ export function bindRunToAssignment(assignmentId: string, runId: string): Review
 /** 指派校验结果 */
 export interface AssignmentCheck {
   ok: boolean
-  code?: 'ASSIGNMENT_NOT_FOUND' | 'ASSIGNMENT_REVOKED' | 'ACTION_NOT_ALLOWED' | 'CASE_MISMATCH' | 'TURN_NOT_USER'
+  code?: 'ASSIGNMENT_NOT_FOUND' | 'ASSIGNMENT_REVOKED' | 'ACTION_NOT_ALLOWED' | 'CASE_MISMATCH' | 'TURN_NOT_USER' | 'TURN_MISMATCH'
   message?: string
   assignment?: ReviewAgentAssignment
 }
@@ -196,6 +198,7 @@ export function checkAssignment(input: {
   sessionId: string
   action: ReviewAssignmentAction
   turnTriggeredBy?: 'user' | 'automation' | 'delegation' | 'goal'
+  executionTurnId?: string
 }): AssignmentCheck {
   if (pendingRevocations.has(input.assignmentId)) {
     return { ok: false, code: 'ASSIGNMENT_REVOKED', message: '该指派撤销未成功持久化，已在当前进程隔离；请修复存储后重试' }
@@ -215,10 +218,43 @@ export function checkAssignment(input: {
   if (input.turnTriggeredBy && input.turnTriggeredBy !== 'user') {
     return { ok: false, code: 'TURN_NOT_USER', message: `仅用户发起的轮次可执行审核写操作（当前轮次来源: ${input.turnTriggeredBy}）` }
   }
+  if (input.executionTurnId && assignment.executionTurnId && assignment.executionTurnId !== input.executionTurnId) {
+    return { ok: false, code: 'TURN_MISMATCH', message: '该指派已经由其他执行轮次使用；请重新显式指派' }
+  }
   if (!assignment.actions.includes(input.action)) {
     return { ok: false, code: 'ACTION_NOT_ALLOWED', message: `指派未授权动作: ${input.action}（授权范围: ${assignment.actions.join('、')}）` }
   }
   return { ok: true, assignment }
+}
+
+/**
+ * 单次执行轮次租约。executionTurnId 仅由 Main 编排器生成，不接受模型或 Renderer 参数。
+ * 首次使用时原子持久绑定；之后即使模型在另一轮保留 assignmentId 也无法复用。
+ */
+export function claimAssignmentExecutionTurn(input: {
+  assignmentId: string
+  sessionId: string
+  action: ReviewAssignmentAction
+  turnTriggeredBy: 'user' | 'automation' | 'delegation' | 'goal'
+  executionTurnId: string
+}): AssignmentCheck {
+  if (!input.executionTurnId || input.turnTriggeredBy !== 'user') {
+    return { ok: false, code: 'TURN_NOT_USER', message: '缺少可信用户执行轮次，拒绝工具授权' }
+  }
+  const check = checkAssignment(input)
+  if (!check.ok || !check.assignment || check.assignment.executionTurnId) return check
+  try {
+    const all = readAll()
+    const target = all.find((item) => item.id === input.assignmentId)
+    if (!target || target.executionTurnId || target.revokedAt || pendingRevocations.has(input.assignmentId)) {
+      return checkAssignment(input)
+    }
+    target.executionTurnId = input.executionTurnId
+    writeAll(all)
+    return checkAssignment(input)
+  } catch {
+    return { ok: false, code: 'ASSIGNMENT_REVOKED', message: '执行轮次授权无法可信持久化，已拒绝操作' }
+  }
 }
 
 /** 列出会话的有效指派（UI 展示 + 工具发现） */

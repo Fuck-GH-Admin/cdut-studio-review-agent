@@ -1607,6 +1607,7 @@ export class AgentOrchestrator {
               // 执行期动态读取，供 CSLab 工具审计记录真实模式。
               getPermissionMode: () => this.sessionPermissionModes.get(sessionId) ?? initialPermissionMode,
               triggeredBy: input.triggeredBy,
+              reviewExecutionTurnId: runGeneration,
               goalIteration: input.goalIteration,
               reportGoalResult: input.reportGoalResult,
               allowedPresetOperations,

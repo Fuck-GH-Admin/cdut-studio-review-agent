@@ -9,8 +9,9 @@
  */
 import { Type } from 'typebox'
 import { realpathSync } from 'node:fs'
+import { createHash } from 'node:crypto'
 import { dirname, isAbsolute, join, sep } from 'node:path'
-import { checkAssignment, actorOfAssignment, bindCaseToAssignment, type ReviewAssignmentAction } from '../review/review-agent-assignment'
+import { claimAssignmentExecutionTurn, actorOfAssignment, bindCaseToAssignment, type ReviewAssignmentAction } from '../review/review-agent-assignment'
 import type { ToolDefinition } from '@earendil-works/pi-coding-agent'
 import type { AgentToolResult } from '@earendil-works/pi-agent-core'
 import {
@@ -50,6 +51,8 @@ export interface ReviewOpsToolsContext {
   sessionId: string
   /** 当前轮次来源（08 设计：仅 user 轮可写；automation/goal/delegation 拒绝） */
   triggeredBy?: 'user' | 'automation' | 'delegation' | 'goal'
+  /** Main 每次 sendMessage 独立生成；不能从工具参数或 Renderer 获取。 */
+  executionTurnId?: string
   /** 会话授权目录（复用 collectAttachedDirectories 同源清单） */
   allowedRoots: string[]
   disabledTools?: string[]
@@ -198,9 +201,11 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
   }
 
   /** 写操作前置：指派校验 → 返回 actor/assignment；失败抛结构化错误 */
-  const requireAssignment = (assignmentId: string, action: ReviewAssignmentAction): { actorId: string; role: 'reviewer' | 'student'; assignment: ReturnType<typeof checkAssignment>['assignment'] } => {
-    if (ctx.triggeredBy && ctx.triggeredBy !== 'user') throw new Error(`仅用户发起的轮次可执行审核写操作（当前: ${ctx.triggeredBy}）`)
-    const check = checkAssignment({ assignmentId, sessionId: ctx.sessionId, action, turnTriggeredBy: ctx.triggeredBy })
+  const requireAssignment = (assignmentId: string, action: ReviewAssignmentAction): { actorId: string; role: 'reviewer' | 'student'; assignment: NonNullable<ReturnType<typeof claimAssignmentExecutionTurn>['assignment']> } => {
+    const check = claimAssignmentExecutionTurn({
+      assignmentId, sessionId: ctx.sessionId, action,
+      turnTriggeredBy: ctx.triggeredBy ?? 'user', executionTurnId: ctx.executionTurnId ?? '',
+    })
     if (!check.ok || !check.assignment) throw new Error(`指派校验失败[${check.code}]: ${check.message ?? '未知'}`)
     const actor = actorOfAssignment(check.assignment)
     return { actorId: actor.actorId, role: actor.role, assignment: check.assignment }
@@ -270,21 +275,14 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
     tools.push(sdk.defineTool({
       name: 'review_list_cases',
       label: '列出审核案卷',
-      description: '列出审核案卷摘要（id/标题/阶段/revision）。返回结构化列表，不含材料内容。',
-      parameters: Type.Object({ assignmentId: Type.Optional(AssignmentParam.assignmentId) }),
+      description: '仅列出当前指派绑定案卷的摘要；需要 assignmentId，不提供跨案枚举。',
+      parameters: Type.Object({ ...AssignmentParam }),
       async execute(_id, params) {
         try {
+          const guard = requireAssignment((params as { assignmentId: string }).assignmentId, 'list')
+          if (!guard.assignment.caseId) return result({ error: '指派尚未绑定案卷，不能列案卷' }, true)
           const { listAggregatesV2 } = require('../review/case-store-v2') as typeof import('../review/case-store-v2')
-          const all = listAggregatesV2()
-          // 携带指派时收敛到绑定案卷（未携带=纯只读浏览，不含任何后续写授权）
-          const assignmentId = (params as { assignmentId?: string }).assignmentId
-          if (assignmentId) {
-            const check = checkAssignment({ assignmentId, sessionId: ctx.sessionId, action: 'list', turnTriggeredBy: ctx.triggeredBy })
-            if (!check.ok) return result({ error: `指派校验失败[${check.code}]: ${check.message}` }, true)
-            const bound = check.assignment?.caseId
-            return result({ cases: all.filter((item) => !bound || item.caseId === bound) })
-          }
-          return result({ cases: all })
+          return result({ cases: listAggregatesV2().filter((item) => item.caseId === guard.assignment.caseId) })
         } catch (error) {
           return result({ error: error instanceof Error ? error.message : String(error) }, true)
         }
@@ -298,11 +296,16 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
       name: 'review_get_case',
       label: '读取审核案卷',
       description: '读取案卷摘要：状态/字段/材料清单（文件名与版本，不含内容）/开放任务/下一步。判断下一步动作前调用。',
-      parameters: Type.Object({ caseId: Type.String({ minLength: 4 }) }),
+      parameters: Type.Object({ ...AssignmentParam, caseId: Type.String({ minLength: 4 }) }),
       async execute(_id, params) {
         try {
+          const input = params as { assignmentId: string; caseId: string }
+          const guard = requireAssignment(input.assignmentId, 'list')
+          if (!guard.assignment.caseId || guard.assignment.caseId !== input.caseId) {
+            return result({ error: '指派未授权读取此案卷' }, true)
+          }
           const { getCaseV2Aggregate } = require('../review/application-service') as typeof import('../review/application-service')
-          const aggregate = getCaseV2Aggregate((params as { caseId: string }).caseId)
+          const aggregate = getCaseV2Aggregate(input.caseId)
           if (!aggregate) return result({ error: '案卷不存在' }, true)
           return result(caseSummary(aggregate))
         } catch (error) {
@@ -320,6 +323,7 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
       description: '从已发布模板创建案卷（字段值 + 事项列表）。需 assignmentId；建案型指派成功后自动绑定 caseId。幂等：同 requestId 重试返回原案。',
       parameters: Type.Object({
         ...AssignmentParam,
+        requestId: Type.String({ minLength: 8, maxLength: 128, description: '调用方生成并在重试时保持不变的幂等 ID' }),
         templateId: Type.String({ minLength: 1 }),
         templateVersion: Type.Integer({ minimum: 1 }),
         title: Type.String({ minLength: 1, maxLength: 120 }),
@@ -328,21 +332,45 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
       }),
       async execute(_id, params) {
         try {
-          const input = params as { assignmentId: string; templateId: string; templateVersion: number; title: string; fieldValues?: Record<string, unknown>; subjects?: Array<{ id: string; type?: string; title: string; sectionId?: string; fieldValues?: Record<string, unknown> }> }
+          const input = params as { assignmentId: string; requestId: string; templateId: string; templateVersion: number; title: string; fieldValues?: Record<string, unknown>; subjects?: Array<{ id: string; type?: string; title: string; sectionId?: string; fieldValues?: Record<string, unknown> }> }
+          if (typeof input.requestId !== 'string' || input.requestId.length < 8 || input.requestId.length > 128) return result({ error: '建案必须提供有效 requestId' }, true)
           const guard = requireAssignment(input.assignmentId, 'create-case')
-          const assignment = guard.assignment!
+          const assignment = guard.assignment
           // 指派锁定的模板必须一致
           if (assignment.templateId && (assignment.templateId !== input.templateId || assignment.templateVersion !== input.templateVersion)) {
             return result({ error: `指派锁定模板 ${assignment.templateId}@${assignment.templateVersion}，与请求 ${input.templateId}@${input.templateVersion} 不一致` }, true)
           }
-          if (assignment.caseId) return result({ error: `指派已绑定案卷 ${assignment.caseId}（一次指派一个案卷）` }, true)
-          const { createCaseFromTemplate } = require('../review/application-service') as typeof import('../review/application-service')
-          const caseId = `case-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`
-          const outcome = await createCaseFromTemplate(input.templateId, input.templateVersion, {
+          // 同一指派 + requestId 指向唯一聚合；业务存储中的首条创建回执证明载荷一致。
+          const caseId = `case-agent-${createHash('sha256').update(`${input.assignmentId}\0${input.requestId}`).digest('hex').slice(0, 32)}`
+          if (assignment.caseId && assignment.caseId !== caseId) return result({ error: `指派已绑定案卷 ${assignment.caseId}（一次指派一个案卷）` }, true)
+          const payload = {
             title: input.title,
             fieldValues: (input.fieldValues ?? {}) as never,
             subjects: (input.subjects ?? []).map((subject) => ({ id: subject.id, type: subject.type ?? 'person', title: subject.title, sectionId: subject.sectionId, fieldValues: (subject.fieldValues ?? {}) as never })) as never,
-          }, { actorId: guard.actorId, actorSource: 'agent', role: guard.role }, caseId)
+          }
+          const { readAggregate, payloadHash } = require('../review/case-store-v2') as typeof import('../review/case-store-v2')
+          const replay = (): { caseId: string; title: string; revision: number; stage: string; idempotentReplay: true } | undefined => {
+            const prior = readAggregate(caseId)
+            if (!prior) return undefined
+            const receipt = prior.receiptLog?.find((item) => item.type === 'CreateCaseFromTemplate')
+            if (prior.caseV2?.id !== caseId || prior.caseV2.templateId !== input.templateId || prior.caseV2.templateVersion !== input.templateVersion || receipt?.payloadHash !== payloadHash('CreateCaseFromTemplate', payload) || receipt?.actor?.actorId !== guard.actorId) {
+              throw new Error('REQUEST_ID_COLLISION：相同 requestId 的建案载荷或授权主体不一致')
+            }
+            bindCaseToAssignment(input.assignmentId, caseId)
+            return { caseId, title: prior.caseV2.title, revision: prior.caseV2.revision, stage: prior.caseV2.stage, idempotentReplay: true }
+          }
+          const previous = replay()
+          if (previous) return result(previous)
+          const { createCaseFromTemplate } = require('../review/application-service') as typeof import('../review/application-service')
+          let outcome: Awaited<ReturnType<typeof createCaseFromTemplate>>
+          try {
+            outcome = await createCaseFromTemplate(input.templateId, input.templateVersion, payload, { actorId: guard.actorId, actorSource: 'agent', role: guard.role }, caseId)
+          } catch (error) {
+            // 并发重试可能在另一调用创建后才获取聚合锁。
+            const concurrent = replay()
+            if (concurrent) return result(concurrent)
+            throw error
+          }
           if (!outcome.ok) return result({ error: `建案失败[${outcome.code}]: ${outcome.message}`, currentRevision: outcome.currentRevision }, true)
           bindCaseToAssignment(input.assignmentId, caseId)
           return result({ caseId, title: input.title, revision: outcome.aggregate.caseV2.revision, stage: outcome.aggregate.caseV2.stage })
@@ -371,7 +399,7 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
           const input = params as { assignmentId: string; caseId: string; sourcePath: string; role?: 'rule' | 'application' | 'evidence'; materialSlotId?: string }
           const guard = requireAssignment(input.assignmentId, 'register-material')
           const assignment = guard.assignment!
-          if (assignment.caseId && assignment.caseId !== input.caseId) return result({ error: `指派绑定的是案卷 ${assignment.caseId}，不能操作 ${input.caseId}` }, true)
+          if (assignment.caseId !== input.caseId) return result({ error: '指派未绑定此案卷，禁止操作' }, true)
           if (!isPathUnderRoots(input.sourcePath, ctx.allowedRoots)) return result({ error: '文件路径不在本会话授权目录内（拒绝登记）' }, true)
           const role = input.role ?? 'application'
           const { getCase } = require('../review/case-store') as typeof import('../review/case-store')
@@ -415,7 +443,7 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
           const input = params as { assignmentId: string; caseId: string }
           const guard = requireAssignment(input.assignmentId, 'submit-case')
           const assignment = guard.assignment!
-          if (assignment.caseId && assignment.caseId !== input.caseId) return result({ error: `指派绑定的是案卷 ${assignment.caseId}` }, true)
+          if (assignment.caseId !== input.caseId) return result({ error: '指派未绑定此案卷，禁止操作' }, true)
           const { submitCaseV2 } = require('../review/stage-workflow') as typeof import('../review/stage-workflow')
           const outcome = await submitCaseV2(input.caseId, { actorId: guard.actorId, actorSource: 'agent', role: guard.role }, { assignmentId: input.assignmentId, sessionId: ctx.sessionId })
           if (!outcome.ok) return result({ error: `提交失败[${outcome.code}]: ${outcome.message}` }, true)
@@ -442,7 +470,7 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
           const input = params as { assignmentId: string; caseId: string }
           const guard = requireAssignment(input.assignmentId, 'start-run')
           const assignment = guard.assignment!
-          if (assignment.caseId && assignment.caseId !== input.caseId) return result({ error: `指派绑定的是案卷 ${assignment.caseId}` }, true)
+          if (assignment.caseId !== input.caseId) return result({ error: '指派未绑定此案卷，禁止操作' }, true)
           const { startReviewRunAsync } = require('../review/run-async-service') as typeof import('../review/run-async-service')
           const started = startReviewRunAsync(input.caseId, { actorId: guard.actorId, actorSource: 'agent', role: guard.role }, { assignmentId: input.assignmentId, sessionId: ctx.sessionId })
           return result(started)
@@ -460,15 +488,18 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
       label: '查询审核运行状态',
       description: '读取指定运行的状态（running/completed/failed/cancelled）、检查结果摘要与结论。completed 表示技术执行完成，不代表业务批准。',
       parameters: Type.Object({
+        ...AssignmentParam,
         caseId: Type.String({ minLength: 4 }),
         runId: Type.String({ minLength: 4 }),
       }),
       async execute(_id, params) {
         try {
-          const input = params as { caseId: string; runId: string }
+          const input = params as { assignmentId: string; caseId: string; runId: string }
+          const guard = requireAssignment(input.assignmentId, 'get-run-status')
+          if (guard.assignment.caseId !== input.caseId) return result({ error: '指派未绑定此案卷，禁止读取运行' }, true)
           const { getRunById } = require('../review/run-async-service') as typeof import('../review/run-async-service')
           const run = getRunById(input.caseId, input.runId)
-          if (!run) return result({ error: `运行不存在: ${input.runId}` }, true)
+          if (!run || run.caseId !== input.caseId || run.id !== input.runId) return result({ error: `运行不存在或归属不一致: ${input.runId}` }, true)
           return result({
             runId: run.id, caseId: run.caseId, status: run.status,
             initiatedBy: run.initiatedBy ? { actorSource: run.initiatedBy.actorSource, role: run.initiatedBy.role } : null,
@@ -504,8 +535,12 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
           const input = params as { assignmentId: string; caseId: string; runId: string }
           const guard = requireAssignment(input.assignmentId, 'cancel-run')
           const assignment = guard.assignment!
-          if (assignment.caseId && assignment.caseId !== input.caseId) return result({ error: `指派绑定的是案卷 ${assignment.caseId}` }, true)
-          const { cancelAsyncRun } = require('../review/run-async-service') as typeof import('../review/run-async-service')
+          if (assignment.caseId !== input.caseId) return result({ error: '指派未绑定此案卷，禁止操作' }, true)
+          const { cancelAsyncRun, getRunById } = require('../review/run-async-service') as typeof import('../review/run-async-service')
+          const run = getRunById(input.caseId, input.runId)
+          if (!run || run.caseId !== input.caseId || run.id !== input.runId) {
+            return result({ error: '运行不存在或不属于指派案卷，拒绝取消' }, true)
+          }
           const cancelled = cancelAsyncRun(input.runId)
           return result({ runId: input.runId, cancelRequested: true, wasActive: cancelled })
         } catch (error) {
@@ -530,7 +565,7 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
           const input = params as { assignmentId: string; caseId: string }
           const guard = requireAssignment(input.assignmentId, 'export-report')
           const assignment = guard.assignment!
-          if (assignment.caseId && assignment.caseId !== input.caseId) return result({ error: `指派绑定的是案卷 ${assignment.caseId}` }, true)
+          if (assignment.caseId !== input.caseId) return result({ error: '指派未绑定此案卷，禁止操作' }, true)
           const { exportCaseReport } = require('../review/report-export-v2-service') as typeof import('../review/report-export-v2-service')
           return result(exportCaseReport(input.caseId))
         } catch (error) {
@@ -562,7 +597,7 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
           const input = params as { assignmentId: string; caseId: string; taskId: string; action: string; reason: string; supplementRequiredElements?: string[] }
           const guard = requireAssignment(input.assignmentId, 'decide-stage')
           const assignment = guard.assignment!
-          if (assignment.caseId && assignment.caseId !== input.caseId) return result({ error: `指派绑定的是案卷 ${assignment.caseId}` }, true)
+          if (assignment.caseId !== input.caseId) return result({ error: '指派未绑定此案卷，禁止操作' }, true)
           const { recordStageDecision } = require('../review/stage-workflow') as typeof import('../review/stage-workflow')
           const { getTemplate } = require('../review/template-store') as typeof import('../review/template-store')
           const { getCaseV2Aggregate } = require('../review/application-service') as typeof import('../review/application-service')
@@ -603,7 +638,7 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
           const input = params as { assignmentId: string; caseId: string; supplementId: string; outcome: string; reason: string }
           const guard = requireAssignment(input.assignmentId, 'resolve-supplement')
           const assignment = guard.assignment!
-          if (assignment.caseId && assignment.caseId !== input.caseId) return result({ error: `指派绑定的是案卷 ${assignment.caseId}` }, true)
+          if (assignment.caseId !== input.caseId) return result({ error: '指派未绑定此案卷，禁止操作' }, true)
           const { resolveSupplementV2 } = require('../review/stage-workflow') as typeof import('../review/stage-workflow')
           const { getCaseV2Aggregate } = require('../review/application-service') as typeof import('../review/application-service')
           const aggregate = getCaseV2Aggregate(input.caseId)
@@ -641,7 +676,7 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
           const input = params as { assignmentId: string; caseId: string; supplementId: string; note: string; documentVersionIds?: string[] }
           const guard = requireAssignment(input.assignmentId, 'respond-supplement')
           const assignment = guard.assignment!
-          if (assignment.caseId && assignment.caseId !== input.caseId) return result({ error: `指派绑定的是案卷 ${assignment.caseId}` }, true)
+          if (assignment.caseId !== input.caseId) return result({ error: '指派未绑定此案卷，禁止操作' }, true)
           const { respondSupplementV2 } = require('../review/stage-workflow') as typeof import('../review/stage-workflow')
           const { getCaseV2Aggregate } = require('../review/application-service') as typeof import('../review/application-service')
           const aggregate = getCaseV2Aggregate(input.caseId)
