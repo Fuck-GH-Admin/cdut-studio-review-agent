@@ -170,6 +170,43 @@ export function buildT04TargetFromCase(
   }
 }
 
+/** Case + subject targets from the current aggregate. Subject rules must not be silently
+ * dropped just because the compiler previously supplied only a case target.
+ */
+export function buildT04TargetsFromCase(
+  aggregate:CaseAggregateV2,template:TemplateVersion,fieldUnits:Readonly<Record<string,string>>={},
+):T04PublishedTarget[] {
+  const caseTarget=buildT04TargetFromCase(aggregate,template,fieldUnits)
+  const activeVersions=new Set((aggregate.caseV2.documents??[])
+    .filter(document=>document.active!==false).map(document=>document.versionId))
+  const subjectTargets:T04PublishedTarget[]=aggregate.caseV2.subjects.map(subject=>{
+    const fields:Record<string,T04Value>={}
+    const confirmed=subject.status==='confirmed'
+    for(const [key,rawValue] of Object.entries(subject.fields??{})){
+      const raw=rawValue as {kind?:string;value?:unknown;documentVersionId?:string}
+      if(!raw||raw.value===undefined||raw.value===null)continue
+      const spec=template.fields.find(field=>field.key===key&&
+        (field.scope??'subject')==='subject'&&(!field.sectionId||field.sectionId===subject.sectionId))
+      if(!spec)continue
+      if(raw.kind==='number'){
+        const value=typeof raw.value==='number'?raw.value:Number(raw.value)
+        if(Number.isFinite(value))fields[key]={value,confirmed,...(spec.unit?{unit:spec.unit}:{})}
+      }else if(raw.kind==='text'||raw.kind==='date'||raw.kind==='enum'){
+        fields[key]={value:String(raw.value),confirmed}
+      }else if(raw.kind==='boolean'&&typeof raw.value==='boolean'){
+        fields[key]={value:raw.value,confirmed}
+      }
+    }
+    const sourceVersionIds=[...new Set((subject.sourceRefs??[])
+      .map(source=>source.documentVersionId).filter(id=>activeVersions.has(id)))]
+    return {
+      scope:'subject',targetKey:'subject:'+subject.id,objectKey:'subject:'+subject.id,
+      subjectId:subject.id,fields,sourceVersionIds,materialSlots:{},
+    }
+  })
+  return [caseTarget,...subjectTargets]
+}
+
 export interface CompileTemplatePlanInput {
   aggregate: CaseAggregateV2
   template: TemplateVersion
@@ -198,12 +235,12 @@ export function compileTemplatePlanForCase(input: CompileTemplatePlanInput): T04
   for (const item of constraints) {
     if (item.constraint.unit) fieldUnits[item.constraint.fieldKey] = item.constraint.unit
   }
-  const target = buildT04TargetFromCase(aggregate, template, fieldUnits)
+  const targets = buildT04TargetsFromCase(aggregate, template, fieldUnits)
   const compiled = compilePublishedTemplateReviewPlan({
     template,
     effectiveRules,
     constraints,
-    targets: [target],
+    targets,
     phase: input.phase ?? 'submission',
   })
   return { compiled, constraints, unresolved, ruleIds }
