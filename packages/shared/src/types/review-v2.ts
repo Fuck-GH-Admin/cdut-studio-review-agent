@@ -567,6 +567,8 @@ export interface SupplementRequest {
   createdAt: string
   /** 本地审核员模拟补件时，用于只接收请求创建后新增的材料版本。 */
   documentVersionIdsAtRequest?: string[]
+  /** 初审缺件请求的来源 Run；与正式阶段退回补件（originStageId）区分。 */
+  originRunId?: string
   /** G04：退回来源（核验通过后按原阶段回流任务） */
   originTaskId?: string
   originStageId?: string

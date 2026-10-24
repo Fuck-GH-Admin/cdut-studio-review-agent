@@ -12,7 +12,8 @@
  * 全部变更走 case-store-v2 命令事务（幂等回执、revision 事务统一 +1）。
  */
 
-import type { Appeal, BusinessDecision, CaseAggregateV2, ReviewCommandResult, SupplementRequest, TemplateVersion, WorkflowTask } from '@profer/shared'
+import type { Appeal, BusinessDecision, CaseAggregateV2, ReviewCommandResult, ReviewRunV2, SupplementRequest, TemplateVersion, WorkflowTask } from '@profer/shared'
+import { reviewV3SlotAcceptsFile } from '@profer/shared'
 import { randomUUID } from 'node:crypto'
 import { CommandValidationError, submitCommand, type CommandSourceMeta } from './case-store-v2'
 import { reviewV3MaterialIssuesForPhase, reviewV3SubmissionMaterialIssues } from './review-v3-submission-material-gate'
@@ -244,6 +245,108 @@ export function recordStageDecision(
   })
 }
 
+/** Group template-slot supplement findings from one completed initial-review Run.
+ * Only explicit required-material-* checks become slot requests; other findings stay
+ * in the review queue and are not silently converted into document requests.
+ */
+export interface InitialReviewSupplementSpec {
+  slotId:string
+  slotName:string
+  checkIds:string[]
+  requiredElements:string[]
+  reason:string
+}
+
+export function buildInitialReviewSupplementSpecs(
+  run:ReviewRunV2,template:TemplateVersion,
+):InitialReviewSupplementSpec[] {
+  const grouped=new Map<string,ReviewRunV2['checks']>()
+  for(const check of run.checks){
+    if(check.status!=='awaiting-supplement'||!check.ruleId.startsWith('required-material-'))continue
+    const slotId=check.ruleId.slice('required-material-'.length)
+    if(!slotId)throw new CommandValidationError('DEPENDENCY_UNRESOLVED','待补件检查没有材料槽位 ID')
+    const current=grouped.get(slotId)??[]
+    current.push(check)
+    grouped.set(slotId,current)
+  }
+  const specs:InitialReviewSupplementSpec[]=[]
+  for(const [slotId,checks] of grouped){
+    const slot=template.materialSlots.find(item=>item.id===slotId)
+    if(!slot||slot.minCount<1)
+      throw new CommandValidationError('DEPENDENCY_UNRESOLVED','待补件检查引用了不存在或非必需的模板槽位：'+slotId)
+    const details=[...new Set(checks.map(check=>check.reason.trim()).filter(Boolean))]
+    specs.push({
+      slotId,slotName:slot.name,
+      checkIds:[...new Set(checks.map(check=>check.checkId))],
+      requiredElements:[slot.name+'：至少补齐 '+slot.minCount+' 份有效材料'],
+      reason:('初审 Run '+run.id+' 检出材料槽位待补件：'+slot.name+
+        (details.length?'；'+details.join('；'):'')).slice(0,1200),
+    })
+  }
+  return specs
+}
+
+/** Persist initial-review missing-material requests without changing the formal
+ * workflow stage. A user can respond and a reviewer can verify through F12;
+ * this remains separate from a formal return-for-supplement decision.
+ */
+export function openInitialReviewSupplementV3(
+  caseId:string,
+  command:{requestId:string;actor:Actor;expectedRevision:number;payload:{runId:string}},
+  authorizeAtCommit?:()=>void,
+):Promise<ReviewCommandResult<SupplementRequest[]>> {
+  return submitCommand(caseId,{...command,type:'OpenInitialReviewSupplementV3'},(aggregate,payload)=>{
+    authorizeAtCommit?.()
+    if(command.actor.actorSource!=='local'||command.actor.role!=='reviewer')
+      throw new CommandValidationError('INVALID_TRANSITION','只有本地审核员可为初审缺件创建补件请求')
+    const {isNativeWorkspaceCaseV3}=require('./native-workspace-case-v3') as typeof import('./native-workspace-case-v3')
+    if(!isNativeWorkspaceCaseV3(aggregate))
+      throw new CommandValidationError('INVALID_TRANSITION','初审补件请求只适用于原生 V3 案卷')
+    const currentRunId=nativeStageDecisionRunId(aggregate)
+    if(currentRunId!==payload.runId)
+      throw new CommandValidationError('STALE_INPUT','初审 Run 已过期或不是本案最新有效运行，请刷新后重新审核')
+    const {getRunV2}=require('./run-store-v2') as typeof import('./run-store-v2')
+    const run=getRunV2(caseId,payload.runId) as ReviewRunV2|undefined
+    if(!run||run.caseId!==caseId||run.templateId!==aggregate.caseV2.templateId||
+      run.templateVersion!==aggregate.caseV2.templateVersion||
+      !['completed','partially-completed'].includes(run.status))
+      throw new CommandValidationError('STALE_INPUT','找不到与当前案卷/模板匹配的已完成初审 Run')
+    const {getTemplate}=require('./template-store') as typeof import('./template-store')
+    const template=getTemplate(aggregate.caseV2.templateId,aggregate.caseV2.templateVersion) as TemplateVersion|undefined
+    if(!template||template.status!=='published')
+      throw new CommandValidationError('DEPENDENCY_UNRESOLVED','当前案卷没有可用的已发布模板')
+    const specs=buildInitialReviewSupplementSpecs(run,template)
+    if(!specs.length)
+      throw new CommandValidationError('VALIDATION_FAILED','本轮没有可转成持久补件请求的模板材料槽位待补件项')
+    return {
+      summary:'为初审 Run '+run.id+' 创建/复用 '+specs.length+' 条材料补件请求',
+      mutate:(draft)=>{
+        authorizeAtCommit?.()
+        const now=new Date().toISOString()
+        const activeVersions=draft.caseV2.documents.filter(document=>document.active!==false)
+          .map(document=>document.versionId)
+        const results:SupplementRequest[]=[]
+        for(const spec of specs){
+          const existing=draft.supplements.find(request=>
+            request.originRunId===run.id&&request.materialSlotId===spec.slotId&&
+            ['open','responded','insufficient'].includes(request.status))
+          if(existing){results.push(existing);continue}
+          const request:SupplementRequest={
+            id:'sup-'+randomUUID(),caseId,
+            originFindingKeys:spec.checkIds,materialSlotId:spec.slotId,
+            requiredElements:spec.requiredElements,reason:spec.reason,
+            responsibleRole:'student',status:'open',responses:[],createdAt:now,
+            documentVersionIdsAtRequest:activeVersions,originRunId:run.id,
+          }
+          draft.supplements=[...draft.supplements,request]
+          results.push(request)
+        }
+        return results
+      },
+    }
+  })
+}
+
 // ===== 补件核验（多请求门控） =====
 
 /** 补件回复（G04：学生/提交方对单个请求提交说明与材料版本；open→responded） */
@@ -255,6 +358,25 @@ export function respondSupplementV2(caseId: string, command: { requestId: string
     // 角色校验（05 §2 补件责任方）：仅 student/submitter 可回复
     if (target.responsibleRole === 'student' && command.actor.role !== 'student' && command.actor.role !== 'reviewer') throw new CommandValidationError('INVALID_TRANSITION', '该补件由学生负责，其他角色不能代回复')
     if (!payload.note.trim() && !(payload.documentVersionIds?.length)) throw new CommandValidationError('VALIDATION_FAILED', '回复必须附说明或材料')
+    if(target.originRunId&&payload.documentVersionIds?.length){
+      if(!target.documentVersionIdsAtRequest)
+        throw new CommandValidationError('STALE_INPUT','该补件请求缺少原始材料快照，不能自动核验回件版本')
+      const baseline=new Set(target.documentVersionIdsAtRequest)
+      const {getTemplate}=require('./template-store') as typeof import('./template-store')
+      const template=getTemplate(aggregate.caseV2.templateId,aggregate.caseV2.templateVersion) as TemplateVersion|undefined
+      const slot=target.materialSlotId?template?.materialSlots.find(item=>item.id===target.materialSlotId):undefined
+      if(target.materialSlotId&&!slot)
+        throw new CommandValidationError('STALE_INPUT','补件所对应的模板槽位已变化，不能接收该回件')
+      for(const versionId of payload.documentVersionIds){
+        const document=aggregate.caseV2.documents.find(item=>item.versionId===versionId&&item.active!==false)
+        if(!document||baseline.has(versionId))
+          throw new CommandValidationError('STALE_INPUT','补件回复只能关联请求创建后新增且仍有效的材料版本')
+        if(target.materialSlotId&&document.materialSlotId!==target.materialSlotId)
+          throw new CommandValidationError('VALIDATION_FAILED','回件材料未归入本补件请求对应的模板槽位')
+        if(slot&&(!reviewV3SlotAcceptsFile(slot,document.fileName)||document.parseStatus==='failed'))
+          throw new CommandValidationError('VALIDATION_FAILED','回件材料格式不符或解析失败，不能作为有效补件')
+      }
+    }
     return {
       summary: `补件回复：${target.id}`,
       mutate: (draft) => {
@@ -288,13 +410,41 @@ export async function resolveSupplementV2(caseId: string, command: { requestId: 
     }
     if (target.status !== 'open' && target.status !== 'responded') throw new CommandValidationError('INVALID_TRANSITION', `补件已关闭（${target.status}）`)
     if (payload.outcome === 'cancelled' && !payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '取消补件必须说明理由')
+    if(target.originRunId&&payload.outcome==='satisfied'){
+      if(target.status!=='responded')
+        throw new CommandValidationError('INVALID_TRANSITION','初审补件必须先提交回复，再由审核员核验')
+      if(target.materialSlotId){
+        if(!target.documentVersionIdsAtRequest)
+          throw new CommandValidationError('STALE_INPUT','该补件请求缺少原始材料快照，不能自动核验')
+        const {getRunV2}=require('./run-store-v2') as typeof import('./run-store-v2')
+        const originRun=getRunV2(caseId,target.originRunId) as ReviewRunV2|undefined
+        if(!originRun||originRun.caseId!==caseId||
+          originRun.templateId!==aggregate.caseV2.templateId||
+          originRun.templateVersion!==aggregate.caseV2.templateVersion)
+          throw new CommandValidationError('STALE_INPUT','补件来源 Run 与当前案卷模板不一致')
+        const {getTemplate}=require('./template-store') as typeof import('./template-store')
+        const template=getTemplate(aggregate.caseV2.templateId,aggregate.caseV2.templateVersion) as TemplateVersion|undefined
+        const slot=template?.materialSlots.find(item=>item.id===target.materialSlotId)
+        if(!slot)throw new CommandValidationError('STALE_INPUT','补件对应的材料槽位已不存在')
+        const baseline=new Set(target.documentVersionIdsAtRequest)
+        const repliedIds=new Set(target.responses.flatMap(response=>response.documentVersionIds))
+        const activeSlotDocs=aggregate.caseV2.documents.filter(document=>
+          document.active!==false&&document.materialSlotId===slot.id&&
+          reviewV3SlotAcceptsFile(slot,document.fileName)&&document.parseStatus!=='failed')
+        const hasNewRepliedDocument=activeSlotDocs.some(document=>
+          !baseline.has(document.versionId)&&repliedIds.has(document.versionId))
+        if(activeSlotDocs.length<slot.minCount||!hasNewRepliedDocument)
+          throw new CommandValidationError('VALIDATION_FAILED',
+            '当前有效材料尚未满足槽位「'+slot.name+'」的数量/回件关联要求，不能核验满足')
+      }
+    }
     return {
       summary: `补件判定：${payload.outcome}`,
       mutate: (draft) => {
         draft.supplements = draft.supplements.map((request) => (request.id === payload.supplementId ? { ...request, status: payload.outcome } : request))
         // 多请求门控：所有未满足请求结束才恢复（open/responded/insufficient 都阻断；cancelled=明确豁免）
         const stillOpen = draft.supplements.some((request) => request.status === 'open' || request.status === 'responded' || request.status === 'insufficient')
-        if (payload.outcome === 'satisfied' && !stillOpen) {
+        if (payload.outcome === 'satisfied' && !stillOpen && !target.originRunId) {
           draft.caseV2.stage = 'reviewing'
           // G05 任务回流：按退回来源阶段重建开放任务（同轮次续审补交材料）
           const originStageId = target.originStageId
@@ -307,7 +457,10 @@ export async function resolveSupplementV2(caseId: string, command: { requestId: 
       entity: payload.outcome === 'satisfied' ? { ...target, status: 'satisfied' } : { ...target, status: payload.outcome },
     }
   })
-  if (result.ok && command.payload.outcome === 'satisfied'
+  const resolvedSupplement=result.ok
+    ?result.aggregate.supplements.find(supplement=>supplement.id===command.payload.supplementId)
+    :undefined
+  if (result.ok && !resolvedSupplement?.originRunId && command.payload.outcome === 'satisfied'
     && result.aggregate.caseV2.stage === 'reviewing'
     && result.aggregate.supplements.every((supplement) =>
       !['open', 'responded', 'insufficient'].includes(supplement.status))) {
