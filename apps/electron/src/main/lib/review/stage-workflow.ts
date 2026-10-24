@@ -361,6 +361,28 @@ export function resolveFinalDecisionProjection(decisions: BusinessDecision[]): {
   return { decision: latestStage, isFinal: false, supersededIds }
 }
 
+/**
+ * V3 native cases get conditional/format-aware, template-owned gates.
+ * Pre-V3 cases retain their original count-only gate so an old imported
+ * receipt (for example the legacy .txt fixture) is not silently reinterpreted.
+ */
+function submissionMaterialErrorsForCase(
+  aggregate:CaseAggregateV2,template:TemplateVersion,
+):string[]{
+  const {isNativeWorkspaceCaseV3}=require('./native-workspace-case-v3') as typeof import('./native-workspace-case-v3')
+  if(isNativeWorkspaceCaseV3(aggregate))
+    return reviewV3SubmissionMaterialIssues(aggregate,template).map(issue=>issue.message)
+  const missing:string[]=[]
+  for(const slot of template.materialSlots??[]){
+    if((slot.requiredAt??'submission')!=='submission')continue
+    const active=aggregate.caseV2.documents.filter(document=>
+      document.materialSlotId===slot.id&&document.active!==false)
+    if(active.length<slot.minCount)missing.push(
+      slot.name+'（需 '+slot.minCount+'，现有 '+active.length+'）')
+  }
+  return missing
+}
+
 // ===== 提交案卷（G01：draft → submitted + 首阶段任务） =====
 
 export async function submitCaseV2(caseId: string, actor?: Actor, source?: CommandSourceMeta): Promise<ReviewCommandResult<WorkflowTask>> {
@@ -380,9 +402,9 @@ export async function submitCaseV2(caseId: string, actor?: Actor, source?: Comma
     throw new CommandValidationError('VALIDATION_FAILED','尚未登记任何当前有效材料，不能正式提交')
   // A submission gate cannot apply every template's slot as if it were
   // unconditional. False/unknown conditions, format and phase differ by case.
-  const issues=reviewV3SubmissionMaterialIssues(aggregate,template)
+  const issues=submissionMaterialErrorsForCase(aggregate,template)
   if(issues.length)throw new CommandValidationError('VALIDATION_FAILED',
-    '正式提交前需处理模板材料条件：'+issues.map(issue=>issue.message).join('；'))
+    '正式提交前需处理模板材料条件：'+issues.join('；'))
   const firstStage = template.stages[0]
   if (!firstStage) throw new CommandValidationError('VALIDATION_FAILED', '模板没有审核阶段')
   // 状态和首任务在同一个聚合事务内保存，避免两次写入间出现已提交却无任务。
@@ -398,9 +420,9 @@ export async function submitCaseV2(caseId: string, actor?: Actor, source?: Comma
     if(current.caseV2.templateId!==template.templateId||
         current.caseV2.templateVersion!==template.version)
       throw new CommandValidationError('STALE_INPUT','正式提交时模板版本已变化，请刷新后重新确认')
-    const latestIssues=reviewV3SubmissionMaterialIssues(current,template)
+    const latestIssues=submissionMaterialErrorsForCase(current,template)
     if(latestIssues.length)throw new CommandValidationError('VALIDATION_FAILED',
-      '正式提交前需处理模板材料条件：'+latestIssues.map(issue=>issue.message).join('；'))
+      '正式提交前需处理模板材料条件：'+latestIssues.join('；'))
     return {
     summary: recovering ? '恢复已提交案卷的首阶段任务' : '案卷已提交进入审核',
     mutate: (draft) => {
