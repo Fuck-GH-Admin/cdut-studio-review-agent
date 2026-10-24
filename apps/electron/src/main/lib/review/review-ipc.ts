@@ -56,7 +56,8 @@ import { startReviewRun } from './run-service'
 import { exportReport } from './report-service'
 import { getReviewModelGatewayStatus } from './review-model-gateway'
 import {
-  createNativeWorkspaceCaseV3, isNativeWorkspaceCaseV3, updateNativeWorkspaceSettingsV3, reclassifyNativeWorkspaceMaterialV3,
+  createNativeWorkspaceCaseV3, isNativeWorkspaceCaseV3, updateNativeWorkspaceSettingsV3,
+  reclassifyNativeWorkspaceMaterialV3, reclassifyNativeWorkspaceMaterialsV3,
   registerNativeWorkspaceMaterialV3, removeNativeWorkspaceDocumentsV3, reorderNativeWorkspaceDocumentsV3,
   updateNativeWorkspaceReviewItemV3, createNativeReviewItemV3,
 } from './native-workspace-case-v3'
@@ -1278,6 +1279,16 @@ export function registerReviewIpc(): void {
       role: input.role,
       ...(input.materialSlotId ? { materialSlotId: input.materialSlotId } : {}),
     }, undefined, () => assertC0ReviewMainSender(event))
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RECLASSIFY_NATIVE_MATERIALS_V3, async (event, input: {
+    caseId: string; items: Array<{ documentVersionId: string; role: 'rule' | 'application' | 'evidence'; materialSlotId?: string }>
+  }) => {
+    assertC0ReviewMainSender(event)
+    if (!input || typeof input.caseId !== 'string' || !input.caseId || !Array.isArray(input.items)) {
+      throw new Error('批量材料重新分类参数无效')
+    }
+    return reclassifyNativeWorkspaceMaterialsV3(input.caseId, input.items, undefined,
+      () => assertC0ReviewMainSender(event))
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.SUBMIT_CASE_V2, (_e, caseId: string) => {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')

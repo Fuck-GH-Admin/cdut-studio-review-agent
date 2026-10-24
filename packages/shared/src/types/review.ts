@@ -655,6 +655,7 @@ export const REVIEW_IPC_CHANNELS = {
   PICK_REGISTER_MATERIAL_V2: 'review-v2:pick-register-material',
   REGISTER_MATERIAL_PATH_V2: 'review-v2:register-material-path',
   RECLASSIFY_NATIVE_MATERIAL_V3: 'review-v3:reclassify-native-material',
+  RECLASSIFY_NATIVE_MATERIALS_V3: 'review-v3:reclassify-native-materials',
   /** 助手对话 */
   ASSISTANT_CHAT: 'review:assistant-chat',
   /** 导出预审报告 */

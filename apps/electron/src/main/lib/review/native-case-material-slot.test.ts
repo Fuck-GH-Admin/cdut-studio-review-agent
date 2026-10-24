@@ -8,7 +8,7 @@ const configDir = mkdtempSync(join(tmpdir(), 'slot-'))
 process.env.PROFER_CONFIG_DIR = configDir
 afterAll(() => rmSync(configDir, { recursive: true, force: true }))
 
-const { createNativeWorkspaceCaseV3, registerNativeWorkspaceMaterialV3 } =
+const { createNativeWorkspaceCaseV3, registerNativeWorkspaceMaterialV3, reclassifyNativeWorkspaceMaterialsV3 } =
   await import('./native-workspace-case-v3')
 const { readAggregate } = await import('./case-store-v2')
 const { saveDraft, publishTemplate } = await import('./template-store')
@@ -67,5 +67,32 @@ describe('原生案卷材料槽', () => {
     expect(completeSubmission.ok).toBe(true)
     if (!completeSubmission.ok) throw new Error(completeSubmission.message)
     expect(completeSubmission.receipt.summary).not.toContain('待补材料')
+  })
+
+  test('AI 分类批次以单次事务原子应用，且不能把全部申报材料改成其他类别', async () => {
+    const applicationFile = join(configDir, 'atomic-application.txt')
+    const evidenceFile = join(configDir, 'atomic-evidence.txt')
+    writeFileSync(applicationFile, '申请事项：实验项目', 'utf8')
+    writeFileSync(evidenceFile, '证明正文', 'utf8')
+    const caseId = await createCase('原子分类案卷')
+    await registerNativeWorkspaceMaterialV3(caseId, applicationFile, 'application', actor)
+    await registerNativeWorkspaceMaterialV3(caseId, evidenceFile, 'evidence', actor)
+    const before = readAggregate(caseId)!
+    const application = before.caseV2.documents.find((document) => document.fileName === 'atomic-application.txt')!
+    const evidence = before.caseV2.documents.find((document) => document.fileName === 'atomic-evidence.txt')!
+    await expect(reclassifyNativeWorkspaceMaterialsV3(caseId, [
+      { documentVersionId: application.versionId, role: 'evidence' },
+      { documentVersionId: evidence.versionId, role: 'rule' },
+    ], actor)).rejects.toThrow('移除本案全部申报材料')
+    const afterRejected = readAggregate(caseId)!
+    expect(afterRejected.caseV2.revision).toBe(before.caseV2.revision)
+    expect(afterRejected.caseV2.documents.find((document) => document.versionId === application.versionId)?.role).toBe('application')
+    const result = await reclassifyNativeWorkspaceMaterialsV3(caseId, [
+      { documentVersionId: evidence.versionId, role: 'rule' },
+    ], actor)
+    expect(result.documents.find((document) => document.id === evidence.documentId)?.role).toBe('rule')
+    const afterAccepted = readAggregate(caseId)!
+    expect(afterAccepted.caseV2.revision).toBe(before.caseV2.revision + 1)
+    expect(afterAccepted.caseV2.documents.find((document) => document.versionId === application.versionId)?.role).toBe('application')
   })
 })
