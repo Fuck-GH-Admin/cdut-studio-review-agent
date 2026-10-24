@@ -173,3 +173,15 @@
 - **人工验收：**需在 Electron 中操作拖入→模板选择→分类→缺件初审→补传→新一轮 Run→T08 报告→人工决定，并检查刷新/重启后状态连续性。
 
 **继续实现顺序：**以单 Run/字段、目标覆盖一致性为先；随后将补件状态接进持久业务待办，修复虚构决定 Run 引用，最后做真实桌面回归。没有通过的检查和业务步骤不写“完成”。
+
+
+## 8. 第四次阶段提交：原生阶段决定的真实 Run 绑定
+
+- 源码提交：`ac90f0fd5c7ea2ea1ea437d0ae886ae08e8640b7`。
+- `stage-workflow.ts` 对 **V3 原生案卷** 在决定事务内读取本案真实已完成 `run-pi-*`，校验模板版本与当前输入新鲜度，并拒绝仍在运行/无真实 Run 的阶段决定；`BusinessDecision.basedOnRunId` 写入这个真实 ID，而非伪造 `run@rev`。
+- 兼容性：非原生旧案卷暂时保留旧行为，不在本次强行迁移历史数据；其他 T05/V3 专用决定路径仍须单独核对身份授权与签发资格。
+- 独立接口 `runTemplateRuleReview` 尚未整体下线，但新单案工作台只启动一份 Pi Run；单纯代码入口收敛不等于所有历史按钮都已迁移完毕。
+- 新增的 `review-v3-main-template-run-unified.test.ts` 和 `review-v3-template-routing.test.ts` 由仓库既有 `.github/workflows/ci.yml` 的全量 `bun test --isolate` 覆盖，不额外新建工作流。
+- 过程中修复了一次专门测试夹具缺少 `appeals` 的类型错误，并修正 `reviewV3MaterialFileKind` 扩展名匹配表达式，防止常见 PDF/图片/表格被误判为未知类型。
+
+**此提交后的 CI 尚待重新核对；请只引用最新 HEAD 对应的 workflow 结果。** Electron GUI 人工验收、完整的模板条件缺件分级以及同案补件请求持久事务仍需要落实。
