@@ -1265,12 +1265,12 @@ export function registerReviewIpc(): void {
     return outcome.entity?.versionId ?? outcome.aggregate.caseV2.documents.at(-1)?.versionId
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.RECLASSIFY_NATIVE_MATERIAL_V3, async (event, input: {
-    caseId: string; documentVersionId: string; role: 'rule' | 'application' | 'evidence'; materialSlotId?: string
+    caseId: string; documentVersionId: string; role: 'rule' | 'application' | 'evidence' | 'attachment'; materialSlotId?: string
   }) => {
     assertC0ReviewMainSender(event)
     if (!input || typeof input.caseId !== 'string' || !input.caseId ||
       typeof input.documentVersionId !== 'string' || !input.documentVersionId ||
-      !['rule', 'application', 'evidence'].includes(input.role) ||
+      !['rule', 'application', 'evidence', 'attachment'].includes(input.role) ||
       (input.materialSlotId !== undefined && typeof input.materialSlotId !== 'string')) {
       throw new Error('材料重新分类参数无效')
     }
@@ -1281,7 +1281,7 @@ export function registerReviewIpc(): void {
     }, undefined, () => assertC0ReviewMainSender(event))
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.RECLASSIFY_NATIVE_MATERIALS_V3, async (event, input: {
-    caseId: string; items: Array<{ documentVersionId: string; role: 'rule' | 'application' | 'evidence'; materialSlotId?: string }>
+    caseId: string; items: Array<{ documentVersionId: string; role: 'rule' | 'application' | 'evidence' | 'attachment'; materialSlotId?: string }>
   }) => {
     assertC0ReviewMainSender(event)
     if (!input || typeof input.caseId !== 'string' || !input.caseId || !Array.isArray(input.items)) {
