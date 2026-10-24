@@ -15,6 +15,7 @@
 import type { Appeal, BusinessDecision, CaseAggregateV2, ReviewCommandResult, SupplementRequest, TemplateVersion, WorkflowTask } from '@profer/shared'
 import { randomUUID } from 'node:crypto'
 import { CommandValidationError, submitCommand, type CommandSourceMeta } from './case-store-v2'
+import { reviewV3SubmissionMaterialIssues } from './review-v3-submission-material-gate'
 import type { Actor } from '@profer/shared'
 
 const newWorkflowTaskId = (): string => `task-${randomUUID()}`
@@ -375,15 +376,13 @@ export async function submitCaseV2(caseId: string, actor?: Actor, source?: Comma
   if (aggregate.caseV2.stage !== 'draft' && !recovering) throw new CommandValidationError('INVALID_TRANSITION', `当前阶段 ${aggregate.caseV2.stage} 不可提交`)
   const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
   if (!template) throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '模板不存在或已删除')
-  if (aggregate.caseV2.documents.length === 0) throw new CommandValidationError('VALIDATION_FAILED', '尚未登记任何材料，不能提交')
-  // 必需材料槽门控（复查 §5.9：不能只判非空——按模板 minCount 逐槽核对 active 材料）
-  const missingSlots: string[] = []
-  for (const slot of template.materialSlots ?? []) {
-    if ((slot.requiredAt ?? 'submission') !== 'submission') continue
-    const active = aggregate.caseV2.documents.filter((doc) => doc.materialSlotId === slot.id && doc.active !== false)
-    if (active.length < slot.minCount) missingSlots.push(`${slot.name}（需 ${slot.minCount}，现有 ${active.length}）`)
-  }
-  if (missingSlots.length > 0) throw new CommandValidationError('VALIDATION_FAILED', `缺少必需材料：${missingSlots.join('；')}`)
+  if (!aggregate.caseV2.documents.some(document=>document.active!==false))
+    throw new CommandValidationError('VALIDATION_FAILED','尚未登记任何当前有效材料，不能正式提交')
+  // A submission gate cannot apply every template's slot as if it were
+  // unconditional. False/unknown conditions, format and phase differ by case.
+  const issues=reviewV3SubmissionMaterialIssues(aggregate,template)
+  if(issues.length)throw new CommandValidationError('VALIDATION_FAILED',
+    '正式提交前需处理模板材料条件：'+issues.map(issue=>issue.message).join('；'))
   const firstStage = template.stages[0]
   if (!firstStage) throw new CommandValidationError('VALIDATION_FAILED', '模板没有审核阶段')
   // 状态和首任务在同一个聚合事务内保存，避免两次写入间出现已提交却无任务。
@@ -393,7 +392,16 @@ export async function submitCaseV2(caseId: string, actor?: Actor, source?: Comma
     expectedRevision: aggregate.caseV2.revision,
     type: 'SubmitCase',
     payload: {},
-  }, current => ({
+  }, current => {
+    // Recheck against Main's transaction snapshot rather than only the earlier
+    // renderer-visible revision, to avoid submitting a changed materials set.
+    if(current.caseV2.templateId!==template.templateId||
+        current.caseV2.templateVersion!==template.version)
+      throw new CommandValidationError('STALE_INPUT','正式提交时模板版本已变化，请刷新后重新确认')
+    const latestIssues=reviewV3SubmissionMaterialIssues(current,template)
+    if(latestIssues.length)throw new CommandValidationError('VALIDATION_FAILED',
+      '正式提交前需处理模板材料条件：'+latestIssues.map(issue=>issue.message).join('；'))
+    return {
     summary: recovering ? '恢复已提交案卷的首阶段任务' : '案卷已提交进入审核',
     mutate: (draft) => {
       const task: WorkflowTask = {
@@ -410,5 +418,6 @@ export async function submitCaseV2(caseId: string, actor?: Actor, source?: Comma
       draft.tasks = [...draft.tasks, task]
       return task
     },
-  }), source)
+    }
+  }, source)
 }
