@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test'
 import type { CaseAggregateV2, TemplateVersion } from '@profer/shared'
-import { reviewV3SubmissionMaterialIssues } from './review-v3-submission-material-gate'
+import { reviewV3MaterialIssuesForPhase, reviewV3SubmissionMaterialIssues } from './review-v3-submission-material-gate'
 
 function template(patch:Partial<TemplateVersion['materialSlots'][number]>={}):TemplateVersion {
   return {
@@ -56,6 +56,23 @@ describe('V3 conditional material submission gate',()=>{
     const t=template({requiredAt:'decision',requiredWhen:undefined})
     expect(reviewV3SubmissionMaterialIssues(aggregate({}),t)).toEqual([])
   })
+  test('decision-only material does not block submission but blocks native approval',()=>{
+    const t=template({requiredAt:'decision',requiredWhen:undefined})
+    const agg=aggregate({})
+    expect(reviewV3SubmissionMaterialIssues(agg,t)).toEqual([])
+    expect(reviewV3MaterialIssuesForPhase(agg,t,'decision')[0]?.kind).toBe('missing')
+    const attached=aggregate({},[{slot:'authorization',name:'签字确认.pdf'}])
+    expect(reviewV3MaterialIssuesForPhase(attached,t,'decision')).toEqual([])
+  })
+  test('conditional decision-only requirement stays unknown without confirmed facts',()=>{
+    const t=template({requiredAt:'decision'})
+    const missing=reviewV3MaterialIssuesForPhase(aggregate({}),t,'decision')
+    expect(missing[0]?.kind).toBe('applicability-unknown')
+    const waived=reviewV3MaterialIssuesForPhase(
+      aggregate({isMinor:{kind:'boolean',value:false}}),t,'decision')
+    expect(waived).toEqual([])
+  })
+
   test('enforces the template maximum independently of unrelated attachments',()=>{
     const agg=aggregate({isMinor:{kind:'boolean',value:true}},[
       {slot:'authorization',name:'一.pdf'},
