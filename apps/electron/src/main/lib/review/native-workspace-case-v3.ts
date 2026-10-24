@@ -407,6 +407,12 @@ export async function registerNativeWorkspaceMaterialV3(
   const current = readAggregate(caseId)
   if (!isNativeWorkspaceCaseV3(current) || !current || current.caseV2.stage === 'archived')
     throw new CommandValidationError('INVALID_TRANSITION', '案卷不存在、已归档或不是原生 V2 案卷')
+  if(materialSlotId){
+    const template=getTemplate(current.caseV2.templateId,current.caseV2.templateVersion)
+    if(materialSlotId!==REVIEW_V3_OTHER_MATERIAL_SLOT_ID&&
+      (!template||template.status!=='published'||!(template.materialSlots??[]).some(slot=>slot.id===materialSlotId)))
+      throw new CommandValidationError('VALIDATION_FAILED','材料槽位不属于当前已发布模板')
+  }
   authorizeAtCommit?.()
   const result = await registerMaterial(caseId, {
     requestId: `native-register-${randomUUID().replace(/-/g, '')}`,
@@ -459,8 +465,21 @@ export async function classifyNativeWorkspaceMaterialV3(input:{
   const assetName=basename(document.assetPath)
   const sourcePath=join(materialsDirCaseId(input.caseId),document.versionId,assetName)
   if(!existsSync(sourcePath))throw new CommandValidationError('NOT_FOUND','案卷中找不到当前材料的已存原件')
+  const revalidate=()=>{
+    authorizeAtCommit?.()
+    const latest=readAggregate(input.caseId)
+    if(!isNativeWorkspaceCaseV3(latest)||!latest||latest.caseV2.templateId!==template.templateId||
+      latest.caseV2.templateVersion!==template.version)
+      throw new CommandValidationError('STALE_INPUT','模板在材料分类期间已变化，请刷新后重新分类')
+    if(!latest.caseV2.documents.some(item=>item.versionId===document.versionId&&item.active!==false))
+      throw new CommandValidationError('STALE_INPUT','材料版本在分类期间已变化，请刷新后重新分类')
+    const latestTemplate=getTemplate(latest.caseV2.templateId,latest.caseV2.templateVersion)
+    if(!latestTemplate||latestTemplate.status!=='published'||
+      (slotId!==REVIEW_V3_OTHER_MATERIAL_SLOT_ID&&!(latestTemplate.materialSlots??[]).some(slot=>slot.id===slotId)))
+      throw new CommandValidationError('STALE_INPUT','材料槽位授权已变化，请刷新后重新分类')
+  }
   return registerNativeWorkspaceMaterialV3(
-    input.caseId,sourcePath,input.role,MAIN_ACTOR,authorizeAtCommit,
+    input.caseId,sourcePath,input.role,MAIN_ACTOR,revalidate,
     slotId,[document.versionId],document.fileName,
   )
 }
