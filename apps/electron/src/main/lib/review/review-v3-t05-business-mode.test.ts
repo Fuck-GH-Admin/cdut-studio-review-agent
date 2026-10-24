@@ -119,6 +119,33 @@ describe('D3 按动作适格判定', () => {
     expect(e.allowed['return-to-previous-stage']).toBe(true)
   })
 
+  test('重复 checkId 即使列表长度等于计划数量，也不能冒充独立检查后阶段通过', () => {
+    const duplicated = run([
+      { checkId: 'same-check', ruleId: 'r1', status: 'compliant' },
+      { checkId: 'same-check', ruleId: 'r1', status: 'compliant' },
+    ])
+    const eligibility = t05ActionEligibility(aggregate(), duplicated)
+    expect(eligibility.allowed['stage-pass']).toBe(false)
+    expect(eligibility.blockers.join()).toContain('重复的 checkId')
+    expect(eligibility.allowed['final-reject']).toBe(true)
+  })
+
+  test('Run 仍为部分完成或覆盖账本未完成时，不允许靠全合规数组通过', () => {
+    const check = [{ checkId: 'c1', ruleId: 'r1', status: 'compliant' }]
+    const partiallyCompleted = run(check, { status: 'partially-completed' })
+    const partial = t05ActionEligibility(aggregate(), partiallyCompleted)
+    expect(partial.allowed['stage-pass']).toBe(false)
+    expect(partial.blockers.join()).toContain('尚未完整结束')
+    expect(partial.allowed['final-reject']).toBe(true)
+
+    const misleadingCoverage = run(check, {
+      coverage: { plannedChecks: 1, completedChecks: 0, pendingChecks: 1, documents: [] },
+    })
+    const mismatch = t05ActionEligibility(aggregate(), misleadingCoverage)
+    expect(mismatch.allowed['stage-pass']).toBe(false)
+    expect(mismatch.blockers.join()).toContain('检查账本尚未完整覆盖')
+  })
+
   test('21 人超限（non-compliant）不能仅凭 Run completed 通过', () => {
     const e = t05ActionEligibility(aggregate(), run([{ checkId: 'headcount', ruleId: 'r1', status: 'non-compliant' }]))
     expect(e.readiness).toBe('blocked')

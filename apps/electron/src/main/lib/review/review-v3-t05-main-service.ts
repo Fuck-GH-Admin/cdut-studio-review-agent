@@ -229,10 +229,32 @@ export function t05ActionEligibility(
 
   const checks = run.checks ?? []
   coverage.produced = checks.length
+  // Only a completed authoritative Run may authorize a positive stage
+  // transition. Partially-completed Runs can still be reviewed or rejected.
+  if (run.status !== 'completed') {
+    blockers.push('本轮审核尚未完整结束；不能以部分完成或未结束的 Run 作出通过决定')
+  }
+  // A duplicate checkId is not a second independent planned check. Counting
+  // both could fake full coverage and let the same finding be disposed once.
+  const checkIds = checks.map((check) => check.checkId)
+  if (checkIds.some((id) => typeof id !== 'string' || !id.trim()) ||
+      new Set(checkIds).size !== checkIds.length) {
+    blockers.push('审核结果中存在缺失或重复的 checkId，不能计为独立检查覆盖')
+  }
   // 无真实计划或无有效检查不能因「没有待办」而被视为允许阶段通过。
   const required = run.coverage?.plannedChecks
   if (!Number.isSafeInteger(required) || !required || required < 1 || checks.length < required) {
     blockers.push('本次运行缺少有效检查计划或结果覆盖不足')
+  }
+  // The ledger reconciles checks with actual RuleSpec×target bindings;
+  // array length alone cannot replace its verified completed count.
+  const completed = run.coverage?.completedChecks
+  if (Number.isSafeInteger(required) && required > 0 &&
+      (!Number.isSafeInteger(completed) || completed === undefined || completed < required)) {
+    blockers.push('本次运行的检查账本尚未完整覆盖计划目标')
+  }
+  if ((run.coverage?.pendingChecks ?? 0) > 0) {
+    blockers.push('检查账本仍有待处理或未执行项')
   }
   // Run 本身已经冻结原件使用账本；未完成的原件不等同于通过。
   const unread = (run.coverage?.documents ?? []).filter((item) => item.status !== 'read')
