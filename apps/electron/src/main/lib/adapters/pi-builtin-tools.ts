@@ -149,6 +149,8 @@ export interface PiBuiltinToolsContext {
   /** 执行期动态读取当前会话权限模式（用于 CSLab 工具审计记账）。 */
   getPermissionMode?: () => ProferPermissionMode
   triggeredBy?: 'user' | 'automation' | 'delegation' | 'goal'
+  /** Main 为当前 Agent sendMessage 生成的唯一审核工具执行轮次。 */
+  reviewExecutionTurnId?: string
   /** 当前 Agent 工作目录；用于解析生图产物、参考图和本地网页预览的相对路径。 */
   agentCwd?: string
   /** 图片外发前必须校验在这些已授权目录内。 */
@@ -2094,6 +2096,7 @@ export async function buildPiBuiltinTools(
         tools.push(...buildReviewOpsTools(sdk, {
           sessionId: ctx.sessionId,
           triggeredBy: ctx.triggeredBy,
+          executionTurnId: ctx.reviewExecutionTurnId,
           allowedRoots: ctx.allowedRoots ?? [],
           disabledTools: ctx.disabledTools,
           ...(directReviewBinding ? { directReviewBinding } : {}),
