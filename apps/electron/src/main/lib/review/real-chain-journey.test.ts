@@ -47,7 +47,7 @@ const fakeClient = {
       void docId
       return { content: withGhost }
     }
-    return { content: JSON.stringify({ opinion: '结论：材料齐全，建议通过', checks: [{ ruleId: 'F1', status: 'compliant', reason: '要素齐全' }, { ruleId: 'FAKE', status: 'compliant', reason: '伪造规则' }] }) }
+    return { content: JSON.stringify({ opinion: '结论：材料齐全，建议通过', checks: [{ ruleId: 'P4', status: 'compliant', reason: '要素齐全' }, { ruleId: 'FAKE', status: 'compliant', reason: '伪造规则' }] }) }
   },
 }
 

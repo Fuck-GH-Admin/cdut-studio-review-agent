@@ -36,6 +36,34 @@ export function buildComprehensiveFixture(): { policy: PolicyRecord; template: T
     origin: { kind: 'owner-statement', text: '演示负责人录入（虚构样例）', enteredBy: 'fixture', enteredAt: '2026-10-04T00:00:00.000Z' },
     status: 'draft',
     confirmations: [{ actorId: 'fixture-owner', role: 'template-owner', at: '2026-10-04T00:00:00.000Z', note: '虚构样例确认（演示数据）' }],
+    // Keep the structured policy ledger consistent with the four clauses above.
+    // These are deliberately semantic: no score is calculated from unconfirmed facts.
+    compiledRules: [
+      {
+        id: 'P1', policyVersionId: `${FIXTURE_POLICY_ID}@1`, title: '证书等级分值映射',
+        when: { all: [] }, requirement: '按政策原文核对证书级别与等级对应分值；不在已声明映射中的等级进入待确认，不得猜测。',
+        targetScope: 'subject', execution: 'semantic', semanticOutputEnum: ['compliant', 'non-compliant'],
+        onFail: 'manual-review', onUnknown: 'needs-confirmation', sourceRefIds: [], priority: 1, confirmation: 'confirmed',
+      },
+      {
+        id: 'P2', policyVersionId: `${FIXTURE_POLICY_ID}@1`, title: '同一活动择高',
+        when: { all: [] }, requirement: '按 eventId 识别同一活动的多份证书，只计最高等级；其余记录择高舍弃。',
+        targetScope: 'group', groupBy: ['eventId'], execution: 'semantic', semanticOutputEnum: ['compliant', 'non-compliant'],
+        onFail: 'manual-review', onUnknown: 'needs-confirmation', sourceRefIds: [], priority: 2, confirmation: 'confirmed',
+      },
+      {
+        id: 'P3', policyVersionId: `${FIXTURE_POLICY_ID}@1`, title: '竞赛类组上限',
+        when: { all: [] }, requirement: '核对竞赛类事项合计上限 10 分，并逐项解释超出部分的处理；缺少确认输入时进入待确认。',
+        targetScope: 'group', groupBy: ['category'], execution: 'semantic', semanticOutputEnum: ['compliant', 'non-compliant'],
+        onFail: 'manual-review', onUnknown: 'needs-confirmation', sourceRefIds: [], priority: 3, confirmation: 'confirmed',
+      },
+      {
+        id: 'P4', policyVersionId: `${FIXTURE_POLICY_ID}@1`, title: '必需材料与四要素',
+        when: { all: [] }, requirement: '核对申报表及证明材料，并逐项检查姓名、等级、日期、颁发单位；缺少材料或要素时进入待补件。',
+        targetScope: 'case', execution: 'semantic', semanticOutputEnum: ['compliant', 'non-compliant'],
+        onFail: 'supplement', onUnknown: 'needs-confirmation', sourceRefIds: [], priority: 4, confirmation: 'confirmed',
+      },
+    ],
   }
 
   const template: TemplateVersion = {

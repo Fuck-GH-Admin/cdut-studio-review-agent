@@ -270,7 +270,8 @@ export function reconcilePiReviewRunsWithReadReceipts(caseId: string, runs: Revi
 
 function materialSlotRules(aggregate: CaseAggregateV2, template: TemplateVersion): RuleSpec[] {
   return (template.materialSlots ?? [])
-    .filter((slot) => (slot.requiredElements?.length ?? 0) > 0
+    .filter((slot) => (slot.requiredAt ?? 'submission') === 'submission'
+      && (slot.requiredElements?.length ?? 0) > 0
       && assessMaterialSlotV2(aggregate, slot).status === 'compliant')
     .map((slot, index) => ({
       id: `material-slot:${slot.id}`,
@@ -324,8 +325,9 @@ function materialSlotChecks(aggregate: CaseAggregateV2, template: TemplateVersio
     const checkId = semanticRule
       ? `check-${semanticRuleId}-case-${subjectIds.join('-') || 'case'}`
       : `system:material-slot:${slot.id}`
+    // "not-executed" is a replaceable Pi placeholder, not a failed execution.
     const status: CheckResult['status'] = assessment.status === 'compliant' && semanticRule
-      ? 'execution-failed'
+      ? 'not-executed'
       : assessment.status
     return {
       checkId,
@@ -336,7 +338,7 @@ function materialSlotChecks(aggregate: CaseAggregateV2, template: TemplateVersio
         ? `材料数量和文件类型满足要求；待 Pi 逐项核验必需要素：${slot.requiredElements.join('、')}`
         : assessment.reason,
       sourceRefs: [],
-      executedBy: status === 'execution-failed' ? 'semantic' as const : 'deterministic' as const,
+      executedBy: semanticRule ? 'semantic' as const : 'deterministic' as const,
       executedAt: now,
     }
   })
@@ -349,8 +351,16 @@ function buildRun(aggregate: CaseAggregateV2, template: TemplateVersion, actor: 
   const embeddedTemplatePlan = aggregate.d2RuntimePlan
     ? undefined
     : runTemplateRuleReview({ caseId: aggregate.caseV2.id, phase: 'submission', persist: false, allowEmpty: true })
-  const templatePlanChecks = (embeddedTemplatePlan?.checks ?? []).map((check) =>
-    check.ruleId.startsWith('system:') ? check : { ...check, checkId: `template-plan:${check.checkId}` })
+  // T04 emits a plan binding for every effective rule, including semantic/manual
+  // rules whose T04 operation is intentionally unresolved, plus its own material
+  // count rules. Only deterministic effective-rule results belong in this Run:
+  // semantic rules are executed by Pi, manual rules by the reviewer, and material
+  // slots are represented by materialSlotChecks below.
+  const deterministicRuleIds = new Set(effectiveRules
+    .filter((rule) => rule.execution === 'deterministic').map((rule) => rule.id))
+  const templatePlanChecks = (embeddedTemplatePlan?.checks ?? [])
+    .filter((check) => check.ruleId.startsWith('system:') || deterministicRuleIds.has(check.ruleId))
+    .map((check) => check.ruleId.startsWith('system:') ? check : { ...check, checkId: `template-plan:${check.checkId}` })
   const templatePlanRuleIds = new Set(templatePlanChecks.filter((check) => check.checkId.startsWith('template-plan:')).map((check) => check.ruleId))
   const deterministic = buildDeterministicRuleChecks(aggregate, effectiveRules, observations, aggregate.evidenceLinks)
     .filter((check) => !templatePlanRuleIds.has(check.ruleId))
@@ -445,6 +455,12 @@ function ruleTargets(rule: RuleSpec, aggregate: CaseAggregateV2): string[] {
     .sort()
 }
 
+function isPendingSemanticPlaceholder(check: Pick<CheckResult, 'status'>): boolean {
+  // Older persisted Runs used execution-failed for a missing Pi result. Keep
+  // those records replaceable during migration, but write not-executed going forward.
+  return check.status === 'execution-failed' || check.status === 'not-executed'
+}
+
 function expectedSemanticChecks(rules: RuleSpec[], aggregate: CaseAggregateV2): CheckResult[] {
   const now = new Date().toISOString()
   return rules.filter((rule) => rule.execution === 'semantic').flatMap((rule) => {
@@ -456,8 +472,8 @@ function expectedSemanticChecks(rules: RuleSpec[], aggregate: CaseAggregateV2): 
       checkId: `check-${rule.id}-${target.scope}-${target.subjectIds.join('-') || 'case'}`,
       ruleId: rule.id,
       target,
-      status: 'execution-failed' as const,
-      reason: 'Pi Agent 未提交此项检查结果',
+      status: 'not-executed' as const,
+      reason: 'Pi Agent 尚未提交此项检查结果',
       sourceRefs: [],
       executedBy: 'semantic' as const,
       executedAt: now,
@@ -522,7 +538,7 @@ function continuationPrompt(aggregate: CaseAggregateV2, template: TemplateVersio
   const rules = effectiveRulesFor(aggregate, template)
   const ruleTitles = new Map(rules.map((rule) => [rule.id, rule.title]))
   const expected = expectedSemanticChecks(rules, aggregate)
-  const missing = expected.filter((item) => !run.checks.some((check) => check.checkId === item.checkId && check.status !== 'execution-failed'))
+  const missing = expected.filter((item) => !run.checks.some((check) => check.checkId === item.checkId && !isPendingSemanticPlaceholder(check)))
   const previousAccepted = expected.length - missing.length
   const history = readArtifact<{ attempts?: PiReviewSubmissionAttempt[] }>(aggregate.caseV2.id, run.id, 'node-pi-submit-attempts')
   const lastAttempt = history?.attempts?.at(-1)
@@ -569,7 +585,7 @@ export function preparePiReviewRunV2(input: { caseId: string; sessionId: string;
     if (previous.templateId !== template.templateId || previous.templateVersion !== template.version) throw new Error('案卷模板已变化，不能续写旧运行；请开始新一轮审核')
     if (inputHashOf(aggregate) !== previous.inputManifest.hash) throw new Error('案卷材料或人工事实已变化，旧运行结果已过期；请开始新一轮审核')
     const expected = expectedSemanticChecks(effectiveRules, aggregate)
-    const unfinished = expected.filter((item) => !previous.checks.some((check) => check.checkId === item.checkId && check.status !== 'execution-failed'))
+    const unfinished = expected.filter((item) => !previous.checks.some((check) => check.checkId === item.checkId && !isPendingSemanticPlaceholder(check)))
     if (unfinished.length === 0) throw new Error('该运行没有可续交的语义检查项；请刷新结果或开始新一轮审核')
     continuation = previous
   }
@@ -680,7 +696,7 @@ export function buildPiReviewCompactionSummary(caseId: string, runId: string): s
 
   if (template) {
     const expected = expectedSemanticChecks(rules, aggregate)
-    const recorded = new Set(run.checks.filter((check) => check.status !== 'execution-failed').map((check) => check.checkId))
+    const recorded = new Set(run.checks.filter((check) => !isPendingSemanticPlaceholder(check)).map((check) => check.checkId))
     const missing = expected.filter((check) => !recorded.has(check.checkId))
     lines.push(`尚缺语义检查 (${missing.length})：`, ...missing.map((check) => `- ${check.checkId} | ${check.ruleId} | ${check.target.subjectIds.map((id) => subjectsById.get(id)?.title ?? id).join('、') || '整案'}`))
   }
@@ -996,7 +1012,7 @@ export function submitPiReviewResultV2(input: {
 
   // A previous interrupted turn may have inserted execution-failed placeholders.
   // They are missing work, not accepted results, and must stay replaceable.
-  const semanticResultMap = new Map(run.checks.filter((item) => item.executedBy === 'semantic' && item.status !== 'execution-failed').map((item) => [item.checkId, item]))
+  const semanticResultMap = new Map(run.checks.filter((item) => item.executedBy === 'semantic' && !isPendingSemanticPlaceholder(item)).map((item) => [item.checkId, item]))
   for (const [index, candidate] of (input.result.checks ?? []).entries()) {
     const rule = rules.find((item) => item.id === candidate.ruleId)
     if (!rule || rule.execution !== 'semantic') {
@@ -1056,7 +1072,7 @@ export function submitPiReviewResultV2(input: {
   const preservedChecks = run.checks.filter((item) =>
     item.ruleId.startsWith('system:')
     || item.checkId.startsWith('template-plan:')
-    || (item.ruleId.startsWith('material-slot:') && item.status !== 'execution-failed' && !semanticResultMap.has(item.checkId)))
+    || (item.ruleId.startsWith('material-slot:') && !isPendingSemanticPlaceholder(item) && !semanticResultMap.has(item.checkId)))
   const embeddedTemplateRuleIds = new Set(preservedChecks
     .filter((item) => item.checkId.startsWith('template-plan:')).map((item) => item.ruleId))
   const deterministicWithoutEmbeddedDuplicates = deterministic.filter((item) => !embeddedTemplateRuleIds.has(item.ruleId))
@@ -1072,7 +1088,7 @@ export function submitPiReviewResultV2(input: {
   ]
 
   const expected = expectedSemanticChecks(rules, aggregate)
-  const received = new Set(run.checks.filter((item) => item.executedBy === 'semantic' && item.status !== 'execution-failed').map((item) => item.checkId))
+  const received = new Set(run.checks.filter((item) => item.executedBy === 'semantic' && !isPendingSemanticPlaceholder(item)).map((item) => item.checkId))
   const missing = expected.filter((item) => !received.has(item.checkId))
   const missingChecks = missing.map((item) => `${item.ruleId} / ${item.target.subjectIds.join('、') || '整案'}`)
   if (input.result.finish) {
