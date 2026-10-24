@@ -7,7 +7,8 @@ import type { B29UnmatchedAuthorDraft } from '../../../main/lib/review/review-v3
 import { D4CaseSetup } from './D4CaseSetup'
 import { draftT01FromBrief, type T01BriefDraft } from './review-v3-t01-brief-authoring'
 import { draftT01ViaAuthorizedModel } from './review-v3-t01-model-draft-port'
-import { executableFallbackAuthor, proposedFallbackChecks } from './review-v3-fallback-executable-plan'
+import { executableFallbackAuthor, proposedFallbackChecks, proposedFallbackReviewMatter } from './review-v3-fallback-executable-plan'
+import { F06_REQUIRED_CHECKS } from '../../../main/lib/review/review-v3-f06-generic-contract'
 
 export interface ReviewV3InstalledPlan {
   caseId:string;templateId:string;templateVersion:number;checks:number;fingerprint:string
@@ -67,6 +68,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
   const [error,setError]=React.useState('')
   const [installed,setInstalled]=React.useState<ReviewV3InstalledPlan|null>(null)
   const [brief,setBrief]=React.useState('')
+  const [reviewMatter,setReviewMatter]=React.useState('')
   const [proposal,setProposal]=React.useState<T01BriefDraft|null>(null)
   const [prepared,setPrepared]=React.useState<B29UnmatchedAuthorDraft|null>(null)
   const [requirements,setRequirements]=React.useState('')
@@ -113,7 +115,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
   React.useEffect(()=>{
     let live=true
     setRead(null);setInstalled(null);setPreferred('');setMode('catalog');setError('');setMessage('')
-    setProposal(null);setPrepared(null);setConfirmed(false)
+    setProposal(null);setPrepared(null);setConfirmed(false);setReviewMatter('')
     setModelRouteNote('');setCatalogQuery('');setModelCandidates([]);setModelMatchState('idle')
     modelAttemptRef.current='';routeAutoChoiceRef.current=''
     if(!caseId)return
@@ -185,19 +187,22 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
       setModelInfo('已按明确写出的要求本机提取；不明制度不会被推断')
     }
     setProposal(result);setPrepared(null);setConfirmed(false)
+    setReviewMatter(proposedFallbackReviewMatter(result,brief))
     setRequirements(proposedFallbackChecks(result,brief).join('\n'))
     setMessage('草拟完成。请修改下方逐条审核要求，再确认并接入真实案卷。')
   })}
   const attachFallback=():void=>{void run(async()=>{
     if(!proposal||!confirmed)throw new Error('请先逐条核对检查要求并确认')
     const checks=requirements.split(/\r?\n/).map(line=>line.trim()).filter(Boolean)
-    if(!checks.length)throw new Error('不能创建零检查计划')
+    const matter=reviewMatter.trim()
+    if(!matter)throw new Error('请确认本案真实申请事项')
     // B29在Main内根据当前真实原件重算全部来源和归属，不能使用UI自报的SHA/路径。
     const templateId='fallback-'+caseId.replace(/[^a-zA-Z0-9]/g,'').slice(0,36)+'-'+Date.now().toString(36)
     const intent={
       templateId,name:proposal.template.name||'本地公共审核',
-      purpose:brief.trim(),scenario:'当前本地申请材料',objectKey:'当前申请事项',
-      humanRequirement:checks[0]!,recordedBy:'local-reviewer',reviewerRole:'local-reviewer',
+      purpose:brief.trim(),scenario:'本机技术初审（非正式审批）',objectKey:matter,
+      humanRequirement:checks[0]??F06_REQUIRED_CHECKS[0].requirement,
+      recordedBy:'local-reviewer',reviewerRole:'local-reviewer',
       userConfirmedAuthoring:true as const,
     }
     const authoritative=await window.reviewAPI.prepareLocalNativeUnmatchedV3({caseId,intent})
@@ -206,7 +211,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
     const native=await window.reviewAPI.getAggregateV2(caseId)
     if(currentCase.current!==caseId)return
     if(!native||native.caseV2.id!==caseId)throw new Error('当前案卷已发生变化，请刷新材料')
-    const author=executableFallbackAuthor(authoritative,checks,native.caseV2.documents)
+    const author=executableFallbackAuthor(authoritative,checks,native.caseV2.documents,matter)
     // B1 Main 校验计划结构 -> 持久化修订 -> 冻结指纹 -> 装载同一原生案卷Pi。
     await window.reviewAPI.previewLocalCandidateAuthorV3({document:author})
     const saved=await window.reviewAPI.saveLocalCandidateAuthorV3({document:author,expectedRevision:0})
@@ -261,6 +266,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
           })
           if(currentCase.current!==caseId||latestReadRef.current?.sessionKey!==scope)return
           setProposal(draft);setPrepared(null)
+          setReviewMatter(proposedFallbackReviewMatter(draft,fallbackBrief))
           setRequirements(proposedFallbackChecks(draft,fallbackBrief).join('\n'))
           setModelInfo('由当前已配置通用模型起草；所有规则、材料要求与适用范围仍需逐条确认')
           setMessage('公共兜底草案已生成，请核对对象、材料和每一项检查要求后再确认。')
@@ -435,24 +441,32 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
         <p className="text-xs text-muted-foreground">描述本案审核目的和具体要求。草稿必须由你逐条确认；模型只起草，不决定通过、不伪造学校政策。</p>
         <textarea aria-label="公共兜底审核目的" className="min-h-24 w-full rounded-lg border border-border bg-background p-2 text-sm"
           placeholder={'审核名称：临时活动材料审核\n审核对象：申请人\n材料：活动计划书、场地使用说明\n规则：核查申请用途、时间和材料是否相互一致'}
-          value={brief} onChange={event=>{setBrief(event.target.value);setProposal(null);setConfirmed(false)}}/>
+          value={brief} onChange={event=>{setBrief(event.target.value);setProposal(null);setReviewMatter('');setConfirmed(false)}}/>
         <div className="flex flex-wrap gap-2">
           <button type="button" className={secondary} disabled={busy||!brief.trim()} onClick={()=>extract(false)}>提取明确要求</button>
           <button type="button" className={secondary} disabled={busy||!brief.trim()} onClick={()=>extract(true)}>用当前模型起草</button>
         </div>
         {proposal&&<div className="space-y-2 rounded-lg bg-muted/40 p-3">
           <p className="text-sm font-medium">审核草稿 · {proposal.template.name}</p>
-          <p className="text-xs text-muted-foreground">{modelInfo}。每行一项，将使用真实案卷材料进行语义审核。</p>
+          <label className="block text-xs">真实申请事项（必须由你核对；不能用笼统占位项）
+            <input className="mt-1 w-full rounded-lg border border-border bg-background px-2 py-2 text-sm"
+              aria-label="公共兜底真实申请事项" maxLength={240} value={reviewMatter}
+              onChange={event=>{setReviewMatter(event.target.value);setConfirmed(false)}}
+              placeholder="例如：某实验室临时借用申请"/>
+          </label>
+          <p className="text-xs text-muted-foreground">本机固定检查（{F06_REQUIRED_CHECKS.length} 项）：申请事项与主体、材料事实一致性、缺件建议、政策依据可信性。制度依据始终待人工核实。</p>
+          <p className="text-xs text-muted-foreground">{modelInfo}。下方每行一项可选的额外检查；用户/模型草拟的要求均不得自动视为有效校规。</p>
           <textarea aria-label="公共兜底逐项审核要求" className="min-h-32 w-full rounded-lg border border-border bg-background p-2 text-sm"
+            placeholder="可留空；需要针对某个事项补充审核问题时，每行填写一项"
             value={requirements} onChange={event=>{setRequirements(event.target.value);setConfirmed(false)}}/>
           {proposal.questions.length>0&&<details className="text-xs text-amber-700 dark:text-amber-300"><summary className="cursor-pointer">尚需人工核对的事项（{proposal.questions.length}）</summary>
             <ul className="list-disc space-y-1 pl-4">{proposal.questions.map((item,index)=><li key={index}>{item}</li>)}</ul>
           </details>}
           <label className="flex items-start gap-2 text-xs"><input type="checkbox" checked={confirmed}
             onChange={event=>setConfirmed(event.target.checked)}/>
-            我确认本案对象、审核要求和适用范围；不明确的政策和缺失材料由 Pi 标记待确认，不当作审核通过。
+            我确认真实申请事项和可选检查要求；学校政策、权限和适用性未经认证，只能形成待人工确认的本机初审，不当作审批通过。
           </label>
-          <button type="button" className={action} disabled={!confirmed||busy||!requirements.trim()}
+          <button type="button" className={action} disabled={!confirmed||busy||!reviewMatter.trim()}
             onClick={attachFallback}>{busy?'正在固定本地审核任务…':'确认并继续审核当前案卷'}</button>
           {prepared&&<p className="text-xs text-muted-foreground">来源已由 Main 核查，共 {prepared.sourceCandidates.length} 份；不会另建案卷。</p>}
         </div>}

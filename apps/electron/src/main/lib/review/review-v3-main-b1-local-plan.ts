@@ -10,6 +10,7 @@ import {getTemplate,isAuthoringCandidateDraft,saveAuthoringCandidateDraft,isSafe
 import {readB1FrozenCandidate,readB1AuthorRevision} from './review-template-author-store-v3-b1'
 import {verifyD2InstalledPlan} from './review-d2-runtime'
 import {assertC2PhysicalOriginalBytes} from './review-v3-main-trust-port'
+import {assertF06InstallContract,f06AuthorityFor} from './review-v3-f06-generic-contract'
 
 const sha=(x:unknown)=>createHash('sha256').update(JSON.stringify(x)??'undefined').digest('hex')
 const actor:Actor={actorId:'local-reviewer',actorSource:'local',role:'reviewer'}
@@ -32,10 +33,12 @@ export function installC11NativeB1TechnicalPlan():void{
     if(!latest)throw Error('B1_AUTHOR_REVISION_MISSING')
     const author=latest.document,descriptor=frozen.descriptor,version=Number(author.templateVersion)
     if(!Number.isSafeInteger(version)||version<1)throw Error('B1_NUMERIC_VERSION_REQUIRED')
+    const f06=assertF06InstallContract(author)
+    const isFallback=author.templateId.startsWith('fallback-')
     // 公共兜底入口的B29来源最初是瞬态B2 docv-*；装入原生案卷之前必须
     // 对应到当前案卷实际登记的原件版本，逐份物理验真且覆盖当前全部原件。
     // 不能仅因同名或同SHA从另一案卷挑选来源，也不能默默遗漏附件。
-    if(author.templateId.startsWith('fallback-')){
+    if(isFallback){
       const active=current.caseV2.documents.filter(doc=>doc.active!==false)
       const declared=descriptor.sourceLedger.map(source=>source.documentVersionId)
       const actual=new Set(active.map(doc=>doc.versionId))
@@ -90,16 +93,21 @@ export function installC11NativeB1TechnicalPlan():void{
       const t=byKey.get(b.targetKey)
       if(!t)throw Error('B1_TARGET_NOT_FOUND')
       const id='d2-'+sha([input.templateId,version,b.checkKey,b.targetKey]).slice(0,20)
-      const authority=b.sourceIds.every(s=>sourceMap.get(s)?.kind==='user-declared')
-        ? 'request-scope' : 'unverified-policy'
+      // F06 的通用要求虽经用户确认，也不能因此升级为学校政策。
+      // 只有内容经 Main 固定合同核验的三个事实核查可按用户声明范围执行。
+      const authority=f06
+        ? f06AuthorityFor(b.checkKey,b.requirement)
+        : b.sourceIds.every(s=>sourceMap.get(s)?.kind==='user-declared')
+          ? 'request-scope' : 'unverified-policy'
       // 新公共兜底B1来源已由Main锁定到本案DocumentVersion；把这些真实版本
       // 写入RuleSpec而非临时作者sourceId，旧B1作者入口继续保留原先映射语义。
-      const physicalSourceIds=author.templateId.startsWith('fallback-')
+      const physicalSourceIds=isFallback
         ? [...b.sourceVersionIds]:[...b.sourceIds]
       rules.push({
         id,policyVersionId:'workspace:b1-'+input.templateId+'@'+frozen.revision,
         title:b.responsibility,
         requirement:[b.requirement,author.purpose,'原对象：'+b.objectKey,
+          ...(f06&&authority==='unverified-policy'?['F06 未认证要求：只能列出待核实事实、来源或补件建议，结果必须 awaiting-confirmation；不得报告业务符合/不符合。']:[]),
           '来源：'+b.sourceIds.map(s=>s+'/'+(sourceMap.get(s)?.documentVersionId??'未知')).join('、')].join('\n'),
         when:{all:[]},sectionId:'d2-scope-'+sha(t.objectKey).slice(0,16),
         targetScope:'subject',execution:'semantic',semanticOutputEnum:['compliant','non-compliant'],
