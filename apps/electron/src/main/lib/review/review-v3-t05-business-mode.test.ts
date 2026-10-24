@@ -132,10 +132,44 @@ describe('D3 按动作适格判定', () => {
   test('具名例外（waived）后非合规项不再阻断通过', () => {
     const persisted = run([{ checkId: 'headcount', ruleId: 'r1', status: 'non-compliant' }])
     const e = t05ActionEligibility(
-      aggregate({ dispositions: [{ findingKey: 'headcount', disposition: 'waived', actor: 'local-reviewer', reason: '具名例外', at: '', runId: persisted.id }] }),
+      aggregate({ dispositions: [{ findingKey: 'headcount', disposition: 'waived', actor: 'local-reviewer', reason: '具名例外', at: '', runId: persisted.id, inputHash: persisted.inputManifest.hash }] }),
       persisted)
     expect(e.readiness).toBe('ready')
     expect(e.allowed['stage-pass']).toBe(true)
+  })
+
+  test('旧输入哈希或无运行绑定的例外不能解除当前检查', () => {
+    const persisted = run([{ checkId: 'headcount', ruleId: 'r1', status: 'non-compliant' }])
+    const disposition = { findingKey: 'headcount', disposition: 'waived', actor: 'local-reviewer',
+      reason: '原审核例外', at: '', runId: persisted.id }
+    const stale = t05ActionEligibility(
+      aggregate({ dispositions: [{ ...disposition, inputHash: 'stale-input' }] }), persisted)
+    expect(stale.allowed['stage-pass']).toBe(false)
+    const missing = t05ActionEligibility(
+      aggregate({ dispositions: [disposition] }), persisted)
+    expect(missing.allowed['stage-pass']).toBe(false)
+    const matching = t05ActionEligibility(
+      aggregate({ dispositions: [{ ...disposition, inputHash: persisted.inputManifest.hash }] }), persisted)
+    expect(matching.allowed['stage-pass']).toBe(true)
+  })
+
+  test('一条规则多个目标时不能用规则 ID 一次豁免所有检查', () => {
+    const persisted = run([
+      { checkId: 'r1-subject-1', ruleId: 'r1', status: 'non-compliant' },
+      { checkId: 'r1-subject-2', ruleId: 'r1', status: 'non-compliant' },
+    ])
+    const staleScope = t05ActionEligibility(aggregate({ dispositions: [{
+      findingKey: 'r1', disposition: 'waived', actor: 'local-reviewer',
+      reason: '不明确是哪一项', at: '', runId: persisted.id, inputHash: persisted.inputManifest.hash,
+    }] }), persisted)
+    expect(staleScope.allowed['stage-pass']).toBe(false)
+    const specific = t05ActionEligibility(aggregate({ dispositions: [
+      { findingKey: 'r1-subject-1', disposition: 'waived', actor: 'local-reviewer',
+        reason: '第一项例外', at: '', runId: persisted.id, inputHash: persisted.inputManifest.hash },
+      { findingKey: 'r1-subject-2', disposition: 'waived', actor: 'local-reviewer',
+        reason: '第二项例外', at: '', runId: persisted.id, inputHash: persisted.inputManifest.hash },
+    ] }), persisted)
+    expect(specific.allowed['stage-pass']).toBe(true)
   })
 
   test('计划覆盖不足阻断通过', () => {

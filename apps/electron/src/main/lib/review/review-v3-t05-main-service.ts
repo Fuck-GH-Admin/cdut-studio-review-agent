@@ -250,13 +250,19 @@ export function t05ActionEligibility(
   }
 
   // 处置必须绑定当前 Run（换输入后旧处置自然失效）
+  // Only an explicit disposition for the exact current Run and immutable input
+  // snapshot can authorize a stage-pass. Historical records without a run/hash
+  // are visible as history, but cannot waive checks in a different review.
   const disposed = new Map(
     (aggregate.dispositions ?? [])
-      .filter((item) => !item.runId || item.runId === run.id)
+      .filter((item) => item.runId === run.id && item.inputHash === run.inputManifest?.hash)
       .map((item) => [item.findingKey, item]),
   )
+  const ruleMultiplicity = new Map<string, number>()
+  for (const check of checks) ruleMultiplicity.set(check.ruleId, (ruleMultiplicity.get(check.ruleId) ?? 0) + 1)
   const dispositionOf = (check: { checkId: string; ruleId?: string }) =>
-    disposed.get(check.checkId) ?? (check.ruleId ? disposed.get(check.ruleId) : undefined)
+    disposed.get(check.checkId) ??
+    (check.ruleId && ruleMultiplicity.get(check.ruleId) === 1 ? disposed.get(check.ruleId) : undefined)
 
   const pending = checks.filter((check) => {
     if (check.status !== 'awaiting-confirmation' && check.status !== 'awaiting-supplement') return false
