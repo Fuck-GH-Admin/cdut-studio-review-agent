@@ -656,6 +656,8 @@ export const REVIEW_IPC_CHANNELS = {
   REGISTER_MATERIAL_PATH_V2: 'review-v2:register-material-path',
   /** 用户确认模板材料槽位分类；Main 以原件新版本记录变更。 */
   CLASSIFY_NATIVE_MATERIAL_V3: 'review-v3:classify-native-material',
+  /** 初审材料缺件转为持久补件请求，不改变正式业务阶段。 */
+  OPEN_INITIAL_REVIEW_SUPPLEMENT_V3: 'review-v3:open-initial-review-supplement',
   /** 助手对话 */
   ASSISTANT_CHAT: 'review:assistant-chat',
   /** 导出预审报告 */

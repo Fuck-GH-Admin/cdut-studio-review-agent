@@ -1276,6 +1276,24 @@ export function registerReviewIpc(): void {
     await classifyNativeWorkspaceMaterialV3(input,()=>assertC0ReviewMainSender(_e))
     return {ok:true as const}
   })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.OPEN_INITIAL_REVIEW_SUPPLEMENT_V3, async (_e,input:{caseId:string;runId:string}) => {
+    assertC0ReviewMainSender(_e)
+    if(!input||typeof input.caseId!=='string'||!input.caseId||
+      typeof input.runId!=='string'||!input.runId)
+      throw new Error('初审补件参数非法')
+    const aggregate=readAggregate(input.caseId)
+    if(!aggregate)throw new Error('案卷不存在：'+input.caseId)
+    const {openInitialReviewSupplementV3}=require('./stage-workflow') as typeof import('./stage-workflow')
+    const command=bindLocalReviewerCommand({
+      requestId:'initial-supplement-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),
+      actor:{actorId:'local-reviewer',actorSource:'local' as const,role:'reviewer' as const},
+      expectedRevision:aggregate.caseV2.revision,
+      payload:{runId:input.runId},
+    })
+    return openInitialReviewSupplementV3(input.caseId,
+      command as unknown as Parameters<typeof openInitialReviewSupplementV3>[1],
+      ()=>assertC0ReviewMainSender(_e))
+  })
   ipcMain.handle(REVIEW_IPC_CHANNELS.SUBMIT_CASE_V2, (_e, caseId: string) => {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
     const { submitCaseV2 } = require('./stage-workflow') as typeof import('./stage-workflow')

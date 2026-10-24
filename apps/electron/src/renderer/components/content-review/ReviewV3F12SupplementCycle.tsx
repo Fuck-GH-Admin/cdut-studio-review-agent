@@ -79,6 +79,7 @@ function SupplementReplyCard({ aggregate, request, onResult }: Props & { request
         <code className="text-muted-foreground">{request.id}</code>
       </div>
       <p>补件原因：{request.reason}</p>
+      {request.originRunId && <p className="text-muted-foreground">来源初审 Run：<code>{request.originRunId}</code></p>}
       <ul className="list-disc pl-5">
         {request.requiredElements.map((item, index) => <li key={`${request.id}-${index}`}>{item}</li>)}
       </ul>

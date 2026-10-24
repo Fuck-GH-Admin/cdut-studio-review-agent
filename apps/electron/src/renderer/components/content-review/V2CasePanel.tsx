@@ -472,6 +472,7 @@ export function V2CasePanel({ onCaseOpened }: { onCaseOpened?: (caseId: string) 
               stage={current.caseV2.stage}
               documentCount={current.caseV2.documents.filter((document) => document.active !== false).length}
               technicalPlan={!!current.d2RuntimePlan}
+              materialSlots={currentTemplate?.materialSlots ?? []}
               onUpdated={refreshCurrentRun}
             />
             {latestRun && <details className="rounded-md border border-border/60 px-3 py-2">

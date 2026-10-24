@@ -90,16 +90,35 @@ export function ReviewV3UnifiedRun({ caseId, stage, documentCount, technicalPlan
   const supplementSlotIds=[...new Set(awaitingSupplement.map(check=>
     check.ruleId.startsWith('required-material-')?check.ruleId.slice('required-material-'.length):''
   ).filter(Boolean))]
-  const addSupplement=async (slotId:string):Promise<void>=>{
-    if(supplementBusy||!caseId||runStale)return
+  const createInitialSupplementRequests=async():Promise<number>=>{
+    if(!caseId||!piRun)throw new Error('当前没有可关联的真实初审 Run')
+    const result=await window.reviewAPI.openInitialReviewSupplementV3({caseId,runId:piRun.id})
+    if(!result.ok)throw new Error(result.message)
+    return result.entity?.length??0
+  }
+  const requestSupplements=async():Promise<void>=>{
+    if(supplementBusy||!caseId||!piRun||runStale)return
     setSupplementBusy(true);setPiError('')
     try{
+      const count=await createInitialSupplementRequests()
+      setMessage('已建立/复用 '+count+' 条持久补件请求。请在下方“补件周期”中逐项回复并等待人工核验；补件核结不等于审核通过。')
+      await onUpdated()
+    }catch(cause){setPiError(cause instanceof Error?cause.message:String(cause))}
+    finally{setSupplementBusy(false)}
+  }
+  const addSupplement=async (slotId:string):Promise<void>=>{
+    if(supplementBusy||!caseId||!piRun||runStale)return
+    setSupplementBusy(true);setPiError('')
+    try{
+      // Create the durable request BEFORE importing, so its material-version
+      // baseline excludes the incoming file and F12 can verify the response.
+      await createInitialSupplementRequests()
       const imported=await window.reviewAPI.pickRegisterMaterialV2({
         caseId,role:'evidence',materialSlotId:slotId,
       })
       if(imported.length){
         setRunStale(true)
-        setMessage('补件原件已登记。原初审结果仅供历史参考；请更新审核，按新的材料版本生成新一轮 Run。')
+        setMessage('补件请求已持久化，原件已登记。请在下方“补件周期”将新材料关联为回复并等待人工核验，再更新审核生成新 Run。')
         await onUpdated()
       }
     }catch(cause){setPiError(cause instanceof Error?cause.message:String(cause))}
@@ -132,6 +151,10 @@ export function ReviewV3UnifiedRun({ caseId, stage, documentCount, technicalPlan
       {awaitingSupplement.map(check=><p key={check.checkId} className="text-xs">
         {check.reason||check.ruleId}
       </p>)}
+      {!runStale&&piRun&&['completed','partially-completed'].includes(piRun.status)&&supplementSlotIds.length>0&&
+        <Button size="sm" variant="outline" disabled={supplementBusy} onClick={()=>void requestSupplements()}>
+          {supplementBusy?'正在创建补件请求…':'建立持久补件请求'}
+        </Button>}
       {!runStale&&supplementSlotIds.map(slotId=>{
         const slot=materialSlots.find(item=>item.id===slotId)
         return slot?<Button size="sm" key={slotId} variant="outline"
@@ -139,7 +162,7 @@ export function ReviewV3UnifiedRun({ caseId, stage, documentCount, technicalPlan
           补传：{slot.name}
         </Button>:null
       })}
-      <p className="text-xs text-muted-foreground">补件不会修改旧 Run；新原件登记后请点击“更新审核”。人工复核及正式办理仍在案卷内完成。</p>
+      <p className="text-xs text-muted-foreground">系统会先创建/复用持久补件请求，再登记新原件。请在下方补件周期提交回复并等待人工核验；补件后旧 Run 失效，必须点击“更新审核”生成新 Run。</p>
     </div>}
     {summary && summary.documents.some((item) => item.status !== 'read') &&
       <p role="alert" className="text-xs text-red-600">有 {summary.documents.filter((item) => item.status !== 'read').length} 份材料尚未确认读取成功；本轮结果不可视为完整审核。</p>}
