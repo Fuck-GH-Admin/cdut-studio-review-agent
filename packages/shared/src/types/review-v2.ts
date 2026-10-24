@@ -132,6 +132,8 @@ export interface MaterialSlotSpec {
   purpose: string
   requiredWhen?: ConditionAST
   acceptedKinds: Array<'pdf' | 'image' | 'office' | 'sheet' | 'text' | 'zip'>
+  /** 可选的语义角色约束；文件扩展名正确不代表材料类别正确。未声明时保持旧模板兼容。 */
+  acceptedRoles?: Array<DocumentVersion['role']>
   minCount: number
   /** 缺少材料在哪个生命周期阶段阻断；旧模板默认 submission。 */
   requiredAt?: 'submission' | 'decision'
