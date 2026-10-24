@@ -1381,14 +1381,29 @@ export const r02Metadata = {
   "templateId": "T02-T12",
   "name": "离职、辞职、解聘与离岗手续审核",
   "sourceDocumentPath": "docs/design/review-agent/business-templates/R02/T02-T12.md",
-  "sourceDocumentBytes": 141833,
-  "sourceDocumentSha256": "ab77ca2d0f1ff691da09baecacc53c0acebdea30cd7574a09658de288296b5d3",
+  "sourceDocumentBytes": 143705,
+  "sourceDocumentSha256": "45fe4e65a7c15596fdd45109cb7b988326bbed26462b448c368fe510ec071e84",
+  "researchOriginalPath": "docs/design/review-agent/business-templates/R02/research-original/T02-T12.md",
+  "researchOriginalNormalizedBytes": 141833,
+  "researchOriginalNormalizedSha256": "ab77ca2d0f1ff691da09baecacc53c0acebdea30cd7574a09658de288296b5d3",
+  "researchHashNormalization": "Git blob + one terminal LF per manifest audit",
   "sourceIntegrityVerifiedAgainstManifest": true,
   "officialSchoolTemplate": false,
   "researchAsOf": "2026-10-23（当前可访问的最新正式 MD）",
   "researchStatus": "RESEARCH_HANDOFF_READY",
   "policyEvidenceStatus": "PARTIAL",
   "policyEvidenceSummary": "国家法律依据可核；学校辞聘流程正文、合同关系分类、2019/2025 校本制度现行性与实际授权仍需确认。",
+  "policyGates": [
+    {
+      "issueId": "T02-C-009",
+      "status": "UNCONFIRMED",
+      "requiredConfiguration": ["separation.employmentClass", "separation.schoolWorkflow", "separation.signingAuthority", "separation.currentContractTerms"],
+      "affectedCriterionIds": ["R003", "R008", "R018", "R020", "R025", "R026", "R027", "R028", "R029", "R030", "R031", "R032"],
+      "decisionBlocked": true,
+      "reviewBy": "依真实聘用关系确定的人事、组织或法务有权人员",
+      "reason": "辞聘现行表单、雇主/合同与校内签发链未确认；任何交接/通知事实不产生解除关系的效力。"
+    }
+  ],
   "workflowOwner": "local",
   "fields": [
     {
@@ -1915,11 +1930,11 @@ export const r02Metadata = {
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R003",
+"criterionId": "R003",
       "srcIds": [
         "SRC-003"
       ],
-      "evidenceStatus": "partial"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
@@ -1957,13 +1972,13 @@ export const r02Metadata = {
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R008",
+"criterionId": "R008",
       "srcIds": [
         "SRC-003",
         "SRC-009",
         "SRC-010"
       ],
-      "evidenceStatus": "partial"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
@@ -2040,11 +2055,11 @@ export const r02Metadata = {
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R018",
+"criterionId": "R018",
       "srcIds": [
         "SRC-002"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
@@ -2056,12 +2071,12 @@ export const r02Metadata = {
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R020",
+"criterionId": "R020",
       "srcIds": [
         "SRC-009",
         "SRC-010"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
@@ -2097,67 +2112,67 @@ export const r02Metadata = {
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R025",
+"criterionId": "R025",
       "srcIds": [
         "SRC-016"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R026",
+"criterionId": "R026",
       "srcIds": [
         "SRC-007"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R027",
+"criterionId": "R027",
       "srcIds": [
         "SRC-003"
       ],
-      "evidenceStatus": "partial"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R028",
+"criterionId": "R028",
       "srcIds": [
         "SRC-002"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R029",
+"criterionId": "R029",
       "srcIds": [
         "SRC-002"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R030",
+"criterionId": "R030",
       "srcIds": [
         "SRC-018"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R031",
+"criterionId": "R031",
       "srcIds": [
         "SRC-010"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R032",
+"criterionId": "R032",
       "srcIds": [
         "SRC-010"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     }
   ],
   "safetyConstraints": {

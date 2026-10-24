@@ -119,7 +119,7 @@ export const templateVersion: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "subject",
-      "extractionHint": "研究字段 F012；按原件可定位事实抽取，不补造缺失值。SRC 仅为研究来源索引，不得伪装为案卷 SourceRef。原始定义：| F012 原因最小摘要 | TEXT / APPLICATION | 初请、必要变更 | M001#申请理由；病情不要求诊断全文 | P2 | NM；过度敏感需遮蔽 |"
+      "extractionHint": "仅使用申请人自述的非诊断性质事由最小摘要；删除病名、完整病历、医疗影像和明文证件号；不得从原始医证自动抽取。研究字段 F012；SRC 是研究索引。原始定义：| F012 原因最小摘要 | TEXT / APPLICATION | 初请、必要变更 | M001#申请理由；病情不要求诊断全文 | P2 | NM；过度敏感需遮蔽 |"
     },
     {
       "key": "f013",
@@ -182,7 +182,7 @@ export const templateVersion: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "subject",
-      "extractionHint": "研究字段 F019；按原件可定位事实抽取，不补造缺失值。SRC 仅为研究来源索引，不得伪装为案卷 SourceRef。原始定义：| F019 医疗证明签发机构 | TEXT / EVIDENCE | 已出具病假材料后 | M003#机构名称及签发信息 | P3 | 条件未知 PU；已要求不可读 UR |"
+      "extractionHint": "禁止自动读取医疗原件；仅在有权核验岗制作的脱敏文字回执中读取签发机构事实，未授权则保持未知并转人工。研究字段 F019；SRC 不等于案卷 SourceRef。原始定义：| F019 医疗证明签发机构 | TEXT / EVIDENCE | 已出具病假材料后 | M003#机构名称及签发信息 | P3 | 条件未知 PU；已要求不可读 UR |"
     },
     {
       "key": "f020",
@@ -191,7 +191,7 @@ export const templateVersion: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "subject",
-      "extractionHint": "研究字段 F020；按原件可定位事实抽取，不补造缺失值。SRC 仅为研究来源索引，不得伪装为案卷 SourceRef。原始定义：| F020 医疗证明出具日 | DATE / EVIDENCE | 已出具病假材料后 | M003#出具日 | P3 | NR/UR/CF，不能倒填 |"
+      "extractionHint": "禁止自动读取医疗原件；仅使用有权核验岗的脱敏文字回执中签发日期，未授权转人工。研究字段 F020；SRC 不等于案卷 SourceRef。原始定义：| F020 医疗证明出具日 | DATE / EVIDENCE | 已出具病假材料后 | M003#出具日 | P3 | NR/UR/CF，不能倒填 |"
     },
     {
       "key": "f021",
@@ -200,7 +200,7 @@ export const templateVersion: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "subject",
-      "extractionHint": "研究字段 F021；按原件可定位事实抽取，不补造缺失值。SRC 仅为研究来源索引，不得伪装为案卷 SourceRef。原始定义：| F021 医疗证明指向人员 | TEXT/ID / EVIDENCE | 医证与本人匹配 | M003#就诊者标识，对 F002/F003 | P3 | CF/HU；不能公开病历全文 |"
+      "extractionHint": "仅接受有权核验岗出具的与案卷主体是否一致的布尔/核验状态，不存储患者姓名、明文身份证号或诊断；不自动读取原始医证。研究字段 F021；SRC 不等于案卷 SourceRef。原始定义：| F021 医疗证明指向人员 | TEXT/ID / EVIDENCE | 医证与本人匹配 | M003#就诊者标识，对 F002/F003 | P3 | CF/HU；不能公开病历全文 |"
     },
     {
       "key": "f022",
@@ -209,7 +209,7 @@ export const templateVersion: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "subject",
-      "extractionHint": "研究字段 F022；按原件可定位事实抽取，不补造缺失值。SRC 仅为研究来源索引，不得伪装为案卷 SourceRef。原始定义：| F022 医疗建议休息期间 | INTERVAL / EVIDENCE | 医证出具后 | M003#休息建议起止/时长 | P3 | NR/UR/PU；需医疗专家判断时 HU |"
+      "extractionHint": "仅在授权核验岗已形成脱敏文字回执时读取建议休息起止，不抽取诊断/医嘱全文；无授权保持未知并转人工。研究字段 F022；SRC 不等于案卷 SourceRef。原始定义：| F022 医疗建议休息期间 | INTERVAL / EVIDENCE | 医证出具后 | M003#休息建议起止/时长 | P3 | NR/UR/PU；需医疗专家判断时 HU |"
     },
     {
       "key": "f023",
@@ -218,7 +218,7 @@ export const templateVersion: TemplateVersion = {
       "required": false,
       "visibility": "internal",
       "scope": "subject",
-      "extractionHint": "研究字段 F023；按原件可定位事实抽取，不补造缺失值。SRC 仅为研究来源索引，不得伪装为案卷 SourceRef。原始定义：| F023 医证安全引用 | SECURE_REF / EVIDENCE | 医证被合法接收时 | M003#受控文件 ID 与版次 | P3 | NR/SU；不得输出明文 URL |"
+      "extractionHint": "仅保存授权核验岗返回的不可直接访问受控记录 ID/版本，绝不保存医证内容、公开 URL、访问令牌；无授权保持未知。研究字段 F023；SRC 不等于案卷 SourceRef。原始定义：| F023 医证安全引用 | SECURE_REF / EVIDENCE | 医证被合法接收时 | M003#受控文件 ID 与版次 | P3 | NR/SU；不得输出明文 URL |"
     },
     {
       "key": "f024",
@@ -418,20 +418,17 @@ export const templateVersion: TemplateVersion = {
     {
       "id": "M003",
       "name": "病假医疗证明",
-      "purpose": "证明医证属于本人及建议休息期间；医疗机构签发、本人持有；B/C/D 中**医证已产生且校规确实要求时条件必需**；具体证明级别、格式、期限均未知；对校规准许的等效医疗证明可人工核实，电子验真仅在确有官方渠道时；F019–F023，SRC-001/007，SRC-009 仅外校反例；归属就诊人，P3 隔离存储；未到出证 NR，政策不明 PU，缺 NM，不可读 UR；不需要完整病历作默认替代",
+      "purpose": "仅接受有权医疗/人事核验岗制作的脱敏文字核验回执（人员是否匹配、休息建议期间、受控引用、核验时点）；原始医疗证明 PDF/图片/诊断全文不得进入通用模板槽、模型或 OCR。校本是否要求医证及处理授权均未确认，未有回执不等于假不成立；F019–F023；未授权转人工隐私岗。",
       "acceptedKinds": [
-        "pdf",
-        "image",
-        "office",
         "text"
       ],
       "minCount": 0,
       "maxCount": 100,
       "requiredAt": "decision",
       "requiredElements": [
-        "病假医疗证明与本次事项/人员的对应关系",
-        "来源、形成日期/版本与真实形成阶段",
-        "可回指的原件位置或权威记录；无法核实时转人工"
+        "脱敏核验回执与案卷主体匹配状态（非患者身份证明原文）",
+        "已授权核验岗位、核验时点、建议休息期间（仅必要时）",
+        "受控记录不透明引用与版本；禁止诊断全文、原始病历、公开 URL 或 OCR 原件"
       ],
       "allowReuseAcrossSubjects": false
     },
@@ -921,14 +918,45 @@ export const r02Metadata = {
   "templateId": "T02-T11",
   "name": "教职工事假、病假等劳动人事请销假审核",
   "sourceDocumentPath": "docs/design/review-agent/business-templates/R02/T02-T11.md",
-  "sourceDocumentBytes": 116439,
-  "sourceDocumentSha256": "a16f173d337541564272e4c6651d79418e5c221b2210978297f873e7ac69cc37",
+  "sourceDocumentBytes": 118700,
+  "sourceDocumentSha256": "063ed9454407c0f4b8ea3a6561992380915b80f76326952e6f74b93b618542bc",
+  "researchOriginalPath": "docs/design/review-agent/business-templates/R02/research-original/T02-T11.md",
+  "researchOriginalNormalizedBytes": 116439,
+  "researchOriginalNormalizedSha256": "a16f173d337541564272e4c6651d79418e5c221b2210978297f873e7ac69cc37",
+  "researchHashNormalization": "Git blob + one terminal LF per manifest audit",
   "sourceIntegrityVerifiedAgainstManifest": true,
   "officialSchoolTemplate": false,
   "researchAsOf": "2026-10-22（当前可访问的最新正式 MD）",
   "researchStatus": "ROUND3_DRAFT",
   "policyEvidenceStatus": "PARTIAL",
   "policyEvidenceSummary": "人事处服务指南条目可检索，但请销假流程正文、现行制度、审批权限、假别门槛及病假隐私安排未完整核实。",
+  "policyGates": [
+    {
+      "issueId": "T02-C-005",
+      "status": "UNCONFIRMED",
+      "requiredConfiguration": ["leave.currentPolicy", "leave.approvalMatrix", "leave.entitlementAndPay"],
+      "affectedCriterionIds": ["R003", "R005", "R006", "R007", "R012", "R015", "R019", "R022"],
+      "decisionBlocked": true,
+      "reviewBy": "学校人事处有权制度及审批人员",
+      "reason": "现行请销假制度、天数待遇和权限矩阵未取得；不自动准假、销假、扣薪或认定旷工。"
+    },
+    {
+      "issueId": "T02-C-006",
+      "status": "UNCONFIRMED",
+      "requiredConfiguration": ["health.processingBasis", "health.allowedRoles", "health.retention"],
+      "affectedCriterionIds": ["R009", "R010", "R011", "R023"],
+      "decisionBlocked": true,
+      "reviewBy": "有权人事医疗材料核验岗与隐私负责人",
+      "reason": "原始健康信息处理授权未证，不进行通用 OCR/模型读取；只接受脱敏文字回执。"
+    }
+  ],
+  "sensitiveInputPolicy": {
+    "slotId": "M003",
+    "allowedKinds": ["text"],
+    "mode": "REDACTED_ATTESTATION_ONLY",
+    "rawMedicalOcrAndModelProcessing": "DISABLED_PENDING_AUTHORIZATION",
+    "enforcement": "TEMPLATE_LEVEL_ONLY_REQUIRES_SHARED_RUNTIME_ACCESS_GUARD"
+  },
   "workflowOwner": "local",
   "fields": [
     {
@@ -1275,11 +1303,11 @@ export const r02Metadata = {
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R003",
+"criterionId": "R003",
       "srcIds": [
         "SRC-001"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
@@ -1291,28 +1319,28 @@ export const r02Metadata = {
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R005",
+"criterionId": "R005",
       "srcIds": [
         "SRC-001"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R006",
+"criterionId": "R006",
       "srcIds": [
         "SRC-001"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R007",
+"criterionId": "R007",
       "srcIds": [
         "SRC-001",
         "SRC-009"
       ],
-      "evidenceStatus": "partial"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
@@ -1324,36 +1352,36 @@ export const r02Metadata = {
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R009",
+"criterionId": "R009",
       "srcIds": [
         "SRC-001",
         "SRC-009"
       ],
-      "evidenceStatus": "partial"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R010",
+"criterionId": "R010",
       "srcIds": [
         "SRC-007"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R011",
+"criterionId": "R011",
       "srcIds": [
         "SRC-001"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R012",
+"criterionId": "R012",
       "srcIds": [
         "SRC-001"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
@@ -1373,11 +1401,11 @@ export const r02Metadata = {
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R015",
+"criterionId": "R015",
       "srcIds": [
         "SRC-001"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
@@ -1405,11 +1433,11 @@ export const r02Metadata = {
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R019",
+"criterionId": "R019",
       "srcIds": [
         "SRC-001"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
@@ -1429,19 +1457,19 @@ export const r02Metadata = {
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R022",
+"criterionId": "R022",
       "srcIds": [
         "SRC-001"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R023",
+"criterionId": "R023",
       "srcIds": [
         "SRC-007"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     }
   ],
   "safetyConstraints": {

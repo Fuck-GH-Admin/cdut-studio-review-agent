@@ -988,7 +988,7 @@ export const templateVersion: TemplateVersion = {
           "id": "R007",
           "title": "R007 报名节点和时效事实",
           "requirement": "**R007** 报名节点和时效事实；`L1/L2/L6`；T=具名通知存在明确截止；F=当前节点没有截止约束；U=年度/批次/时区不明；SRC-003、SRC-004、SRC-005、SRC-009、SRC-010、SRC-015；F011/F012/F014；M001/M004/M015。以官方时区、节点和可信收件回执时间比对；2024 清华、2025 岗培/暑研、2026 CSC 仅各自历史批次，逾期受理归主管裁量；T 时间相符→PF；时间超限→HD（非自动拒件）；F→NA；U→PU/CF；当期受理机关。SRC 是研究证据索引，不是案卷 SourceRef。校本政策、适用身份、授权或法律效果未确认时保持待确认并交有权人员人工复核；不得自动正式批准或拒绝。",
-          "execution": "semantic",
+          "execution": "manual",
           "targetScope": "case"
         },
         {
@@ -1114,7 +1114,7 @@ export const templateVersion: TemplateVersion = {
           "id": "R025",
           "title": "R025 CSC 网上申报提交与提回记录",
           "requirement": "**R025** CSC 网上申报提交与提回记录；`E2/L2`；T=已获校内推荐并进入 2026 对应网上窗口；F=未到网上申报；U=受理批次或平台记录未知；SRC-003、SRC-009、SRC-010；F012/F014/F029；M004/M014/M015。以 CSC/受理单位回执和时间核对；校方六月批次措辞冲突不能作为自动拒件依据；受理回执不是录取；T 平台事实可核→PF，冲突 CF；F→NA；U→PU/SU；CSC 平台受理单位/国际处。SRC 是研究证据索引，不是案卷 SourceRef。校本政策、适用身份、授权或法律效果未确认时保持待确认并交有权人员人工复核；不得自动正式批准或拒绝。",
-          "execution": "semantic",
+          "execution": "manual",
           "targetScope": "case"
         },
         {
@@ -1285,14 +1285,29 @@ export const r02Metadata = {
   "templateId": "T02-T10",
   "name": "访学、研修、培训的人事安排与资格审核",
   "sourceDocumentPath": "docs/design/review-agent/business-templates/R02/T02-T10.md",
-  "sourceDocumentBytes": 150518,
-  "sourceDocumentSha256": "9ad3f122f83789bd1731b26b1873a27a7dc8aca4c8fda47543d64081999611ad",
+  "sourceDocumentBytes": 152143,
+  "sourceDocumentSha256": "ae2639c03faf8273c7d7e1045cd701df13cf9e54456ad08fed97f0a0e7757315",
+  "researchOriginalPath": "docs/design/review-agent/business-templates/R02/research-original/T02-T10.md",
+  "researchOriginalNormalizedBytes": 150518,
+  "researchOriginalNormalizedSha256": "9ad3f122f83789bd1731b26b1873a27a7dc8aca4c8fda47543d64081999611ad",
+  "researchHashNormalization": "Git blob + one terminal LF per manifest audit",
   "sourceIntegrityVerifiedAgainstManifest": true,
   "officialSchoolTemplate": false,
   "researchAsOf": "2026-10-23（当前可访问的最新正式 MD）",
   "researchStatus": "RESEARCH_HANDOFF_READY",
   "policyEvidenceStatus": "PARTIAL",
   "policyEvidenceSummary": "校本和批次通知部分核实；当前签批权限、部分原件附件及未来年度批次仍需确认。",
+  "policyGates": [
+    {
+      "issueId": "T02-C-001",
+      "status": "UNCONFIRMED",
+      "requiredConfiguration": ["csc2026.batchMapping", "csc2026.schoolDeadline"],
+      "affectedCriterionIds": ["R007", "R024", "R025"],
+      "reviewBy": "国际合作与交流处有权人员",
+      "decisionBlocked": true,
+      "reason": "2026 CSC 校方通知第一批/第二批措辞冲突，未取得可核更正件；不得据旧批次推断截止或自动拒件。"
+    }
+  ],
   "workflowOwner": "local",
   "fields": [
     {
@@ -1795,7 +1810,7 @@ export const r02Metadata = {
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R007",
+"criterionId": "R007",
       "srcIds": [
         "SRC-003",
         "SRC-004",
@@ -1804,7 +1819,7 @@ export const r02Metadata = {
         "SRC-010",
         "SRC-015"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
@@ -1951,23 +1966,23 @@ export const r02Metadata = {
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R024",
+"criterionId": "R024",
       "srcIds": [
         "SRC-003",
         "SRC-009",
         "SRC-011"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
-      "criterionId": "R025",
+"criterionId": "R025",
       "srcIds": [
         "SRC-003",
         "SRC-009",
         "SRC-010"
       ],
-      "evidenceStatus": "verified"
+      "evidenceStatus": "unconfirmed"
     },
     {
       "sectionId": "fact-review",
