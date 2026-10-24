@@ -483,6 +483,7 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
       stage={nativeAggregate?.caseV2.stage??'draft'}
       documentCount={nativeAggregate?.caseV2.documents.filter(item=>item.active!==false).length??0}
       technicalPlan={!!nativeAggregate?.d2RuntimePlan}
+      nativeV3={nativeAggregate?.receiptLog[0]?.type === 'CreateNativeWorkspaceCaseV3'}
       canRun={!!activePlan||!!nativeAggregate?.d2RuntimePlan||classificationComplete}
       materialSlots={currentTemplate?.materialSlots}
       onUpdated={refreshNativeAggregate}

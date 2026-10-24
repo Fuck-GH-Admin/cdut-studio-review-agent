@@ -472,6 +472,7 @@ export function V2CasePanel({ onCaseOpened }: { onCaseOpened?: (caseId: string) 
               stage={current.caseV2.stage}
               documentCount={current.caseV2.documents.filter((document) => document.active !== false).length}
               technicalPlan={!!current.d2RuntimePlan}
+              nativeV3={current.receiptLog[0]?.type === 'CreateNativeWorkspaceCaseV3'}
               materialSlots={currentTemplate?.materialSlots ?? []}
               onUpdated={refreshCurrentRun}
             />
