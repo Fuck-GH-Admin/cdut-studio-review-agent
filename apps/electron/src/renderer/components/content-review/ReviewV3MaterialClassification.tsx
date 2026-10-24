@@ -239,6 +239,7 @@ export function ReviewV3MaterialClassification({
     </div>
     {frozenPlan && <p role="alert" className="text-xs text-amber-700">审核计划已冻结，当前只允许查看；请先通过正式计划升版/重建流程再调整材料分类。</p>}
     {activeDocuments.length === 0 && <p className="text-xs text-muted-foreground">请先导入材料；系统不会根据空案卷猜测申报事项或审核规则。</p>}
+    {activeDocuments.length > 0 && applicationCount === 0 && <p role="alert" className="text-xs text-amber-700">尚未指定申报材料。请把真实申请原件归入“申报材料”；一项申请可以由多份原件组成。</p>}
     <div className="grid gap-3 md:grid-cols-3">
       {roles.map((role) => {
         const documents = activeDocuments.filter((document) => document.role === role.value)

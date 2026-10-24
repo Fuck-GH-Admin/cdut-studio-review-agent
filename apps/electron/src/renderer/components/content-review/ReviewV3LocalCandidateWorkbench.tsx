@@ -46,7 +46,7 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
   const [nativeAggregate,setNativeAggregate]=React.useState<CaseAggregateV2|null>(null)
   const [classificationConfirmed,setClassificationConfirmed]=React.useState(false)
   const [publishedTemplateBound,setPublishedTemplateBound]=React.useState(false)
-  React.useEffect(()=>{setClassificationConfirmed(false)},[localCaseId])
+  React.useEffect(()=>{setClassificationConfirmed(false)},[localCaseId,materialsEpoch])
   const [nativeRun,setNativeRun]=React.useState<ReviewRunV2|null>(null)
   const [nativeRunStale,setNativeRunStale]=React.useState(true)
   const [runEpoch,setRunEpoch]=React.useState(0)

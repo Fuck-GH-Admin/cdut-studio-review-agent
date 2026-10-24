@@ -60,7 +60,7 @@ describe('提交案卷的原子事务', () => {
 
   test('Given 旧实现留下 submitted 但无任务 When 恢复提交 Then 补任务且不重建案卷', async () => {
     await seed('legacy')
-    await submitCommand('legacy', { requestId: 'legacy-submit', actor, expectedRevision: 1, type: 'SubmitCase', payload: {} }, () => ({
+    await submitCommand('legacy', { requestId: 'legacy-submit', actor, expectedRevision: 2, type: 'SubmitCase', payload: {} }, () => ({
       summary: '模拟旧实现的中间状态', mutate: draft => { draft.caseV2.stage = 'submitted' },
     }))
     const result = await submitCaseV2('legacy')
