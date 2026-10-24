@@ -393,14 +393,20 @@ function submissionMaterialErrorsForCase(
 ):string[]{
   const {isNativeWorkspaceCaseV3}=require('./native-workspace-case-v3') as typeof import('./native-workspace-case-v3')
   if(isNativeWorkspaceCaseV3(aggregate))
-    return reviewV3SubmissionMaterialIssues(aggregate,template).map(issue=>issue.message)
+    return reviewV3SubmissionMaterialIssues(aggregate,template).map(issue=>{
+      // Keep actionable, stable error wording for existing callers while
+      // distinguishing missing evidence from unknown applicability and excess.
+      if(issue.kind==='missing')return '缺少必需材料：'+issue.message
+      if(issue.kind==='too-many')return '材料数量超过模板上限：'+issue.message
+      return '必需材料适用条件尚未确认：'+issue.message
+    })
   const missing:string[]=[]
   for(const slot of template.materialSlots??[]){
     if((slot.requiredAt??'submission')!=='submission')continue
     const active=aggregate.caseV2.documents.filter(document=>
       document.materialSlotId===slot.id&&document.active!==false)
     if(active.length<slot.minCount)missing.push(
-      slot.name+'（需 '+slot.minCount+'，现有 '+active.length+'）')
+      '缺少必需材料：'+slot.name+'（需 '+slot.minCount+'，现有 '+active.length+'）')
   }
   return missing
 }
@@ -425,8 +431,7 @@ export async function submitCaseV2(caseId: string, actor?: Actor, source?: Comma
   // A submission gate cannot apply every template's slot as if it were
   // unconditional. False/unknown conditions, format and phase differ by case.
   const issues=submissionMaterialErrorsForCase(aggregate,template)
-  if(issues.length)throw new CommandValidationError('VALIDATION_FAILED',
-    '正式提交前需处理模板材料条件：'+issues.join('；'))
+  if(issues.length)throw new CommandValidationError('VALIDATION_FAILED',issues.join('；'))
   const firstStage = template.stages[0]
   if (!firstStage) throw new CommandValidationError('VALIDATION_FAILED', '模板没有审核阶段')
   // 状态和首任务在同一个聚合事务内保存，避免两次写入间出现已提交却无任务。
@@ -443,8 +448,7 @@ export async function submitCaseV2(caseId: string, actor?: Actor, source?: Comma
         current.caseV2.templateVersion!==template.version)
       throw new CommandValidationError('STALE_INPUT','正式提交时模板版本已变化，请刷新后重新确认')
     const latestIssues=submissionMaterialErrorsForCase(current,template)
-    if(latestIssues.length)throw new CommandValidationError('VALIDATION_FAILED',
-      '正式提交前需处理模板材料条件：'+latestIssues.join('；'))
+    if(latestIssues.length)throw new CommandValidationError('VALIDATION_FAILED',latestIssues.join('；'))
     return {
     summary: recovering ? '恢复已提交案卷的首阶段任务' : '案卷已提交进入审核',
     mutate: (draft) => {
