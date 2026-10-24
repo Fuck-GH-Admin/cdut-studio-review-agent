@@ -92,8 +92,9 @@ export function ReviewV3T08ReportPanel({ caseId, currentRunId }: Props): React.R
   }, [caseId, selectedRunId, audience, viewingArchive])
 
   const report = projection?.report ?? null
-  const archived = projection ? isArchivedProjection(projection) : false
-  const archivePath = archived ? archives.find((item) => item.reportId === projection.reportId)?.archivePath : undefined
+  const archivedProjection = projection && isArchivedProjection(projection) ? projection : null
+  const archived = archivedProjection !== null
+  const archivePath = archivedProjection ? archives.find((item) => item.reportId === archivedProjection.reportId)?.archivePath : undefined
 
   const openArchive = async (): Promise<void> => {
     if (!caseId || !selectedArchiveId) return
@@ -118,7 +119,7 @@ export function ReviewV3T08ReportPanel({ caseId, currentRunId }: Props): React.R
     setNotice('')
     try {
       const receipt = archived
-        ? await window.reviewAPI.exportT08ReportArchiveV3({ caseId, reportId: projection.reportId, format })
+        ? await window.reviewAPI.exportT08ReportArchiveV3({ caseId, reportId: archivedProjection!.reportId, format })
         : await window.reviewAPI.exportT08ReportV3({
           caseId, runId: projection.runId, audience: projection.audience, format,
           expectedProjectionHash: projection.projectionHash,
@@ -160,7 +161,7 @@ export function ReviewV3T08ReportPanel({ caseId, currentRunId }: Props): React.R
             <p>受众：{projection.audience} · 输入：{projection.inputHash.slice(0, 16)}…</p>
             <p>关联决定：{projection.decisionIds.length} 条 · {projection.historical ? '历史/过期' : '当前输入'}</p>
             {archived
-              ? <p>报告档案：{projection.reportId} · 快照哈希 {projection.snapshotHash.slice(0, 16)}…</p>
+              ? <p>报告档案：{archivedProjection!.reportId} · 快照哈希 {archivedProjection!.snapshotHash.slice(0, 16)}…</p>
               : <p>预览指纹：{projection.projectionHash.slice(0, 16)}…；导出前 Main 会重新计算并拒绝过期预览。</p>}
             {projection.historical && <p className="text-amber-700 dark:text-amber-400">该报告是历史或过期输入的只读记录，不代表案卷当前状态。</p>}
             {archived && archivePath && <p>本地档案位置：{archivePath}</p>}

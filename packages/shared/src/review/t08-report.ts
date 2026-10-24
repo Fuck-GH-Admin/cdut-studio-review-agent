@@ -187,6 +187,11 @@ export function makeT08CaseReport(input: {
   const decision = [...decisions].reverse().find((item) => !supersededDecisionIds.has(item.id))
     ?? [...decisions].reverse()[0] ?? null
   const runDispositions = aggregate.dispositions.filter((item) => item.runId === run.id && item.inputHash === manifest.hash)
+  const allAdjudications = aggregate.adjudications ?? []
+  const supersededAdjudicationIds = new Set(allAdjudications.flatMap((item) => item.supersedesAdjudicationId ? [item.supersedesAdjudicationId] : []))
+  const currentAdjudications = historical ? [] : allAdjudications
+    .filter((item) => !supersededAdjudicationIds.has(item.id) && item.basedOnRunId === run.id && item.inputHash === manifest.hash)
+    .sort((a, b) => a.at.localeCompare(b.at))
   const docs = manifest.documentVersions.map((v) => {
     const original = aggregate.caseV2.documents.find((d) => d.versionId === v.versionId)
     return { versionId: v.versionId, name: original?.fileName ?? '历史原件（本地版本不可用）', contentHash: v.contentHash, role: original?.role ?? null }
@@ -202,6 +207,7 @@ export function makeT08CaseReport(input: {
     '- 有效判断：' + run.coverage.effectiveVerdicts + ' / ' + run.coverage.plannedChecks,
     '- 待处理检查：' + run.coverage.pendingChecks,
     '- 快照提示：' + (historical ? '历史或非当前输入；不使用当前案卷字段重建历史结果' : '以所选运行输入快照为准'),
+    ...(internal ? ['- 有效规则集哈希：' + (manifest.effectiveRuleSetHash ?? '旧运行未记录')] : []),
     '',
     '## 本次运行包含的原件版本',
     ...docs.map((d) => '- ' + d.name + '（' + d.versionId + '，' + d.contentHash + '）'),
@@ -229,6 +235,26 @@ export function makeT08CaseReport(input: {
     for (const subject of aggregate.caseV2.subjects) {
       lines.push('- 事项：' + subject.title + '；字段：' + (Object.entries(publicFields(subject.fields))
         .map(([key, value]) => escaped(key) + '：' + escaped(value)).join('；') || '无公开字段'))
+    }
+  }
+  if (currentAdjudications.length) {
+    lines.push('', '## 事项最终认定')
+    for (const subject of aggregate.caseV2.subjects) {
+      const adjudication = currentAdjudications.find((item) => item.subjectId === subject.id)
+      if (!adjudication) continue
+      const outcome = adjudication.outcome === 'accepted' ? '认可' : adjudication.outcome === 'modified' ? '修改认定' : '不予认定'
+      const finalFields = adjudication.finalFields ?? (adjudication.outcome === 'rejected' ? {} : subject.fields)
+      const visibleFields = publicFields(finalFields as Record<string, unknown>)
+      const scoreField = finalFields.declaredScore ?? finalFields.score
+      const scoreIsPublic = internal || visibility.get('declaredScore') === 'public' || visibility.get('score') === 'public'
+      const score = adjudication.outcome === 'rejected' ? '0'
+        : !scoreIsPublic ? '未公开'
+          : scoreField?.kind === 'number' ? String(scoreField.value) : '未记录'
+      const content = Object.entries(visibleFields).map(([key, value]) => escaped(key) + '：' + escaped(value)).join('；') || '无公开认定字段'
+      lines.push('- ' + subject.title + '：' + outcome + '；最终分值 ' + score + '；认定内容 ' + content
+        + (internal ? '；理由：' + adjudication.reason : ''))
+      rows.push({ kind: 'adjudication', id: adjudication.id, status: adjudication.outcome,
+        detail: outcome + '；最终分值 ' + score, source: 'Run ' + adjudication.basedOnRunId })
     }
   }
   if (decisions.length) {
@@ -273,7 +299,14 @@ export function makeT08CaseReport(input: {
       rows.push({ kind: 'opinion', id: opinion.id, status: opinion.verification, detail: opinion.detail, source })
     }
     for (const disposition of runDispositions) {
-      lines.push('- 人工处置：' + disposition.findingKey + ' / ' + disposition.disposition + '；' + disposition.reason)
+      const label = disposition.disposition === 'waived' ? '人工豁免（不代表规则符合）'
+        : disposition.disposition === 'false-positive' ? '人工确认误报'
+          : disposition.disposition === 'human-confirmed-compliant' ? '人工确认符合'
+            : disposition.disposition === 'supplement-requested' ? '要求补件'
+              : disposition.disposition === 'confirmed-issue' ? '确认问题属实' : '升级处理'
+      lines.push('- ' + label + '：' + disposition.findingKey + '；' + disposition.reason)
+      rows.push({ kind: 'disposition', id: disposition.findingKey, status: disposition.disposition,
+        detail: disposition.reason, source: 'Run ' + run.id })
     }
     if (run.error) lines.push('- 执行错误：' + run.error)
   }
@@ -302,17 +335,26 @@ export function makeT08CaseReport(input: {
     })),
     decision: decision ? { id: decision.id, result: decision.result, reason: decision.reason, at: decision.at,
       finality: decision.finality ?? null, stageId: decision.stageId, basedOnRevision: decision.basedOnRevision,
-      superseded: supersededDecisionIds.has(decision.id),
+      superseded: supersededDecisionIds.has(decision.id), finalScores: decision.finalScores ?? [],
       ...(internal ? { actorSource: decision.actor.actorSource, actorRole: decision.actor.role } : {}) } : null,
     decisions: decisions.map((item) => ({
       id: item.id, result: item.result, reason: item.reason, at: item.at,
       finality: item.finality ?? null, stageId: item.stageId, basedOnRevision: item.basedOnRevision,
-      superseded: supersededDecisionIds.has(item.id),
+      superseded: supersededDecisionIds.has(item.id), finalScores: item.finalScores ?? [],
       ...(internal ? { actorSource: item.actor.actorSource, actorRole: item.actor.role } : {}),
     })),
     ...(historical ? {} : {
       supplements: aggregate.supplements.map((s) => ({ reason: s.reason, requiredElements: s.requiredElements, status: s.status })),
       subjects: aggregate.caseV2.subjects.map((s) => ({ title: s.title, fields: publicFields(s.fields) })),
+      adjudications: currentAdjudications.map((item) => {
+        const subject = aggregate.caseV2.subjects.find((candidate) => candidate.id === item.subjectId)
+        const finalFields = item.finalFields ?? (item.outcome === 'rejected' ? {} : subject?.fields ?? {})
+        return {
+          id: item.id, subjectId: item.subjectId, outcome: item.outcome,
+          finalFields: publicFields(finalFields as Record<string, unknown>),
+          ...(internal ? { reason: item.reason, actorSource: item.actor.actorSource, actorRole: item.actor.role } : {}),
+        }
+      }),
       appeals: (aggregate.appeals ?? []).map((appeal) => {
         const amended = aggregate.decisions.find((item) => item.id === appeal.reviewDecisionId
           && item.amendsDecisionId === appeal.againstDecisionId)

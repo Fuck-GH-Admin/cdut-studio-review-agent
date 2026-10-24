@@ -29,6 +29,7 @@ export interface T08ReportServiceDependencies {
   now?: () => string
   chooseDestination?: (defaultName: string, format: T08ReportExportFormat) => Promise<string | undefined>
   renderPdf?: (html: string) => Promise<Uint8Array>
+  createdBy?: T08ReportSnapshot['createdBy']
 }
 
 function canonicalize(value: unknown): unknown {
@@ -324,7 +325,7 @@ async function renderPdfWithBrowserWindow(html: string): Promise<Uint8Array> {
   try {
     await window.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent(html))
     return new Uint8Array(await window.webContents.printToPDF({
-      pageSize: 'A4', printBackground: true, preferCSSPageSize: true, marginsType: 0,
+      pageSize: 'A4', printBackground: true, preferCSSPageSize: true,
     }))
   } finally {
     if (!window.isDestroyed()) window.destroy()
@@ -380,7 +381,10 @@ export async function exportT08ReportProjectionV3(
 ): Promise<T08ReportExportReceipt> {
   assertFormat(format)
   if (projection.projectionHash !== calculateT08ProjectionHash(projection)) throw new Error('报告预览指纹无效')
-  const snapshotOptions = dependencies.now ? { createdAt: dependencies.now() } : {}
+  const snapshotOptions = {
+    ...(dependencies.now ? { createdAt: dependencies.now() } : {}),
+    ...(dependencies.createdBy ? { createdBy: dependencies.createdBy } : {}),
+  }
   const snapshot = makeT08ReportSnapshot(projection, snapshotOptions)
   const rootDir = dependencies.rootDir ?? getConfigDir()
   const archivePath = persistT08ReportSnapshot(snapshot, rootDir)
@@ -401,6 +405,26 @@ export async function exportT08ReportProjectionV3(
   return { status: 'saved', reportId: snapshot.reportId, snapshotHash: snapshot.snapshotHash,
     caseId: snapshot.caseId, runId: snapshot.runId, audience: snapshot.audience, format,
     archivePath, archiveFilePath, filePath: destination, savedAt: (dependencies.now ?? (() => new Date().toISOString()))() }
+}
+
+
+/** Agent-assigned report creation: persist a Main-projected snapshot without opening a native save dialog. */
+export function archiveT08ReportV3(
+  input: { caseId: string; runId: string; audience: T08Audience },
+  dependencies: T08ReportServiceDependencies = {},
+): { reportId: string; snapshotHash: string; caseId: string; runId: string; audience: T08Audience; archivePath: string; filePath: string; jsonPath: string } {
+  const projection = getT08ReportPreviewV3(input)
+  const snapshotOptions = {
+    ...(dependencies.now ? { createdAt: dependencies.now() } : {}),
+    ...(dependencies.createdBy ? { createdBy: dependencies.createdBy } : {}),
+  }
+  const snapshot = makeT08ReportSnapshot(projection, snapshotOptions)
+  const archivePath = persistT08ReportSnapshot(snapshot, dependencies.rootDir ?? getConfigDir())
+  return {
+    reportId: snapshot.reportId, snapshotHash: snapshot.snapshotHash,
+    caseId: snapshot.caseId, runId: snapshot.runId, audience: snapshot.audience,
+    archivePath, filePath: join(archivePath, 'report.md'), jsonPath: join(archivePath, 'report.json'),
+  }
 }
 
 export async function exportT08ReportArchiveV3(
