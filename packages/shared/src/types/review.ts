@@ -654,6 +654,8 @@ export const REVIEW_IPC_CHANNELS = {
   SUBMIT_CASE_V2: 'review-v2:submit-case',
   PICK_REGISTER_MATERIAL_V2: 'review-v2:pick-register-material',
   REGISTER_MATERIAL_PATH_V2: 'review-v2:register-material-path',
+  /** 用户确认模板材料槽位分类；Main 以原件新版本记录变更。 */
+  CLASSIFY_NATIVE_MATERIAL_V3: 'review-v3:classify-native-material',
   /** 助手对话 */
   ASSISTANT_CHAT: 'review:assistant-chat',
   /** 导出预审报告 */

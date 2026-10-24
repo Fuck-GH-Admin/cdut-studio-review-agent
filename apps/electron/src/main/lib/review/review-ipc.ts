@@ -1263,6 +1263,19 @@ export function registerReviewIpc(): void {
     if (!outcome.ok) throw new Error(outcome.message ?? '登记失败')
     return outcome.entity?.versionId ?? outcome.aggregate.caseV2.documents.at(-1)?.versionId
   })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.CLASSIFY_NATIVE_MATERIAL_V3, async (_e, input: {
+    caseId:string;documentVersionId:string;role:'application'|'evidence'|'rule';materialSlotId:string
+  }) => {
+    assertC0ReviewMainSender(_e)
+    if(!input||typeof input.caseId!=='string'||!input.caseId||
+      typeof input.documentVersionId!=='string'||!input.documentVersionId||
+      typeof input.materialSlotId!=='string'||!input.materialSlotId||
+      !['application','evidence','rule'].includes(input.role))
+      throw new Error('材料分类参数非法')
+    const {classifyNativeWorkspaceMaterialV3}=require('./native-workspace-case-v3') as typeof import('./native-workspace-case-v3')
+    await classifyNativeWorkspaceMaterialV3(input,()=>assertC0ReviewMainSender(_e))
+    return {ok:true as const}
+  })
   ipcMain.handle(REVIEW_IPC_CHANNELS.SUBMIT_CASE_V2, (_e, caseId: string) => {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
     const { submitCaseV2 } = require('./stage-workflow') as typeof import('./stage-workflow')
