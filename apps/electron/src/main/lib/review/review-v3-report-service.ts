@@ -81,13 +81,14 @@ export function getT08ReportPreviewV3(input: {
   if (!run || run.caseId !== input.caseId) throw new Error('所选运行不存在或不属于当前案卷')
   const template = getTemplate(run.templateId, run.templateVersion) ?? null
   const stale = isWorkspaceRunStaleV2(aggregate, run.id)
-  const historical = stale || runs[0]?.id !== run.id
-  const report = makeT08CaseReport({ aggregate, run, template, audience: input.audience, stale: historical })
-  const decisions = aggregate.decisions.filter((item) => item.basedOnRunId === run.id).sort((a, b) => a.at.localeCompare(b.at))
+  const selectedRunHistorical = stale || runs[0]?.id !== run.id
+  const report = makeT08CaseReport({ aggregate, run, template, audience: input.audience, stale: selectedRunHistorical })
+  const historical = report.stale
+  const decisions = historical ? [] : aggregate.decisions.filter((item) => item.basedOnRunId === run.id).sort((a, b) => a.at.localeCompare(b.at))
   const projectionBase = {
     schema: 'review-v3-t08-report-projection/1' as const,
     caseId: input.caseId,
-    caseTitle: aggregate.caseV2.title,
+    caseTitle: historical ? '历史案卷（原始标题快照不可用）' : aggregate.caseV2.title,
     caseRevision: aggregate.caseV2.revision ?? 0,
     runId: run.id,
     audience: input.audience,

@@ -156,7 +156,7 @@ export function ReviewV3T08ReportPanel({ caseId, currentRunId }: Props): React.R
           <strong className="block">T08 / F16 报告工作台</strong>
           <p className="text-muted-foreground">报告内容由 Main 从所选 Run、模板版本和关联决定生成。技术检查、模型意见与业务决定分别呈现；导出只读，不会写入或替代决定。</p>
           {projection && <>
-            <p>案卷：{projection.caseTitle} · revision {projection.caseRevision}</p>
+            <p>案卷：{projection.caseTitle} · 生成时 revision {projection.caseRevision}</p>
             <p>Run：{projection.runId} · {report?.status} · {report?.rows.length ?? 0} 条报告记录</p>
             <p>受众：{projection.audience} · 输入：{projection.inputHash.slice(0, 16)}…</p>
             <p>关联决定：{projection.decisionIds.length} 条 · {projection.historical ? '历史/过期' : '当前输入'}</p>

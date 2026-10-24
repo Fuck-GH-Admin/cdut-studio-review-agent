@@ -182,11 +182,11 @@ export function makeT08CaseReport(input: {
   const historical = stale || aggregate.caseV2.documents.some((d) =>
     manifest.documentVersions.some((v) => v.documentId === d.documentId && v.versionId !== d.versionId && d.active !== false),
   )
-  const decisions = aggregate.decisions.filter((item) => item.basedOnRunId === run.id).sort((a, b) => a.at.localeCompare(b.at))
+  const decisions = historical ? [] : aggregate.decisions.filter((item) => item.basedOnRunId === run.id).sort((a, b) => a.at.localeCompare(b.at))
   const supersededDecisionIds = new Set(aggregate.decisions.flatMap((item) => item.amendsDecisionId ? [item.amendsDecisionId] : []))
   const decision = [...decisions].reverse().find((item) => !supersededDecisionIds.has(item.id))
     ?? [...decisions].reverse()[0] ?? null
-  const runDispositions = aggregate.dispositions.filter((item) => item.runId === run.id && item.inputHash === manifest.hash)
+  const runDispositions = historical ? [] : aggregate.dispositions.filter((item) => item.runId === run.id && item.inputHash === manifest.hash)
   const allAdjudications = aggregate.adjudications ?? []
   const supersededAdjudicationIds = new Set(allAdjudications.flatMap((item) => item.supersedesAdjudicationId ? [item.supersedesAdjudicationId] : []))
   const currentAdjudications = historical ? [] : allAdjudications
@@ -227,7 +227,7 @@ export function makeT08CaseReport(input: {
   }
   lines.push('', '## 补件与业务结论')
   if (historical) {
-    lines.push('- 历史输入的补件和当前事项字段未冻结在本次 Run 中，不混入本报告。')
+    lines.push('- 历史 Run 没有冻结的业务决定、补件、人工认定和当前事项字段快照；为避免把后续状态冒充历史结论，本报告不混入这些数据。')
   } else {
     for (const request of aggregate.supplements) {
       lines.push('- 补件：' + request.reason + '；状态：' + request.status + '；要求：' + request.requiredElements.join('、'))
@@ -257,7 +257,9 @@ export function makeT08CaseReport(input: {
         detail: outcome + '；最终分值 ' + score, source: 'Run ' + adjudication.basedOnRunId })
     }
   }
-  if (decisions.length) {
+  if (historical) {
+    lines.push('- 为避免混入后续业务状态，本历史 Run 报告不展示当前聚合中的业务决定。')
+  } else if (decisions.length) {
     lines.push('- 本次运行关联业务决定：' + decisions.length + ' 条')
     for (const item of decisions) {
       const superseded = supersededDecisionIds.has(item.id)

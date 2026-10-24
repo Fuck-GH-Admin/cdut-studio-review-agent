@@ -96,3 +96,27 @@ test('F16 historical report omits mutable current subjects and rejects a mismatc
   expect(t08ReportWorkbookSheets(report).map((sheet) => sheet.name)).not.toContain('事项字段')
   expect(() => makeT08CaseReport({ aggregate, run: { ...run, caseId: 'b' }, audience: 'student', stale: true })).toThrow('不属于当前案卷')
 })
+
+test('F16 historical report never mixes later decisions, dispositions or adjudications into an old Run', () => {
+  const aggregate = {
+    caseV2: { id: 'case-history', title: '后来修改的标题', documents: [], subjects: [
+      { id: 'subject-history', title: '后来修改的事项名', fields: { score: { kind: 'number', value: 99 } } },
+    ] },
+    decisions: [{ id: 'later-decision', basedOnRunId: 'old-run', result: 'pass', reason: '后来才作出的决定',
+      at: '2026-10-24T00:00:00.000Z', actor: { actorSource: 'local', role: 'reviewer' }, stageId: 'decided', basedOnRevision: 8 }],
+    dispositions: [{ runId: 'old-run', inputHash: 'old-hash', findingKey: 'check-1', disposition: 'waived', reason: '后来才记录的豁免' }],
+    adjudications: [{ id: 'later-adjudication', subjectId: 'subject-history', outcome: 'accepted', reason: '后来认定',
+      basedOnRunId: 'old-run', inputHash: 'old-hash', at: '2026-10-24T00:00:00.000Z' }],
+    supplements: [{ id: 'later-supplement', reason: '后来补件', status: 'open', requiredElements: ['后来新增的字段'] }],
+  } as unknown as CaseAggregateV2
+  const run = { id: 'old-run', caseId: 'case-history', templateId: 'old-template', templateVersion: 1,
+    inputManifest: { hash: 'old-hash', documentVersions: [] }, status: 'completed',
+    coverage: { effectiveVerdicts: 0, plannedChecks: 0, pendingChecks: 0 }, checks: [], opinions: [],
+  } as unknown as ReviewRunV2
+  const report = makeT08CaseReport({ aggregate, run, audience: 'reviewer', stale: true })
+  for (const later of ['后来修改的标题', '后来修改的事项名', '后来才作出的决定', '后来才记录的豁免', '后来认定', '后来补件', '后来新增的字段']) {
+    expect(report.markdown + report.json).not.toContain(later)
+  }
+  expect(report.markdown).toContain('不混入这些数据')
+  expect(report.json).not.toContain('later-decision')
+})
