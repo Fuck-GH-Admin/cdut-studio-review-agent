@@ -218,3 +218,31 @@
 - 对多个补件请求、撤销/不适用、证据材料重新分类与 Run 过期的交叉场景补齐操作级验收。
 - 完成上述事项前，不撤 Draft，不合并，也不报告“整条链路完全修复”。
 
+## 12. 2026-10-24 10:25（UTC+8）最新进度复核：本轮 CI 全绿，继续审查业务门控
+
+> 本节的结论仅针对远端 HEAD `a07adda635cd64faafc9379f9c237bdb6df158e7`。此前第 8～11 节记载的失败/修复过程为历史，不是此刻的 CI 状态。
+
+### 分支与 CI 实况
+
+- 草稿 PR [#249](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/249) 仍为 Open / Draft，基线 `feat/v3-r02-template-library`，37 个变更文件；GitHub 报告可合并性为 true，但这不等于业务验收完成。
+- 以下 6 项均为**同一 HEAD** 的 GitHub Actions 完成结果，不混用其他 SHA：
+  - Review Baseline CI：**success**，run `40051760857`
+  - Review batch focused tests：**success**，run `40051760911`
+  - D1 Review Authoring Tests：**success**，run `40051760842`
+  - D2 Scoped Pi Review Tests：**success**，run `40051760906`
+  - D0.5 Semantic Module Tests：**success**，run `40051760848`
+  - PR CI：**success**，run `40051760809`
+
+### 源码继续审查的结论
+
+- 上一轮 Run 续审、真实综测 fixture 的有效政策规则、原生 V3 对旧 `run@rev` 决定写路径的阻断、T05 补件版本快照与人工处置哈希限制，均已在分支代码中发现对应落点，自动测试当前全绿。
+- 当前仍需要额外审查 **T05 阶段通过门控的检查账本真实性**：`t05ActionEligibility` 当前按 `checks.length >= plannedChecks` 和规则 ID 的存在判断覆盖，但未单独拦截重复的 `checkId`；重复结果可能使覆盖数量看似足够。这属于额外发现的防伪边界，应先补失败反例，再在 Main 门控增加唯一性和实际覆盖计数约束。尤其不能只因为 `checks.length` 达标而批准。
+- 材料槽数量/类型检查与必需要素语义检查属于不同责任；后者应在 Pi 中有真实结果或明确待确认，不能把“已绑定材料槽”解释为已核对所有必需要素。
+- 本轮继续保留 PR Draft；只做精准补强与小范围测试，不重复大批模板制作或重构历史 V2。
+
+### 接下来执行与验收记录
+
+1. 增加 T05 Run 检查身份重复、覆盖计数不足、规则目标未核验等反例，修实际 Main 门控。
+2. 对新增 HEAD 重跑专项和 PR CI，不把 `a07adda` 旧绿灯用于后续提交。
+3. 再核对 UI/IPC 到 T05 决定与补件回流的真实身份链、案卷刷新时权威 Run 不切换。
+4. 未通过新提交检查与人工业务核验前，不合并，不声明彻底完成。
