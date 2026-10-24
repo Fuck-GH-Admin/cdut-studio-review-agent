@@ -101,3 +101,45 @@
 - Main 负责授权、真实原件和状态校验；Renderer 不得凭 UI 状态制造审核成功。
 - 一个案卷只认一套当前材料与计划；一个结论必须指向真实 Run 及其材料版本。
 - CI 全绿是进入人工验收的条件，不是端到端验收的替代品。
+
+
+## 6. 第二次阶段核验：统一运行与材料分类（2026-10-24 09:42，Asia/Shanghai）
+
+> 本节是对第 1 节所述早期 HEAD 的增量记录。早期“CI 全绿”只对 `a6372a8` 成立，不能外推到此节的新改动。
+
+### 6.1 当前提交与实际构建状态
+
+- 分支 HEAD：`4dc8dd98e1050bf0d1ef306006038067d7d976fb`。
+- `PR #246` 仍开放且 GitHub 报告 mergeable，**尚未合并**。
+- 在该 SHA 上共 6 项 workflow：`Review Baseline CI`、`Review batch focused tests` 通过；`D0.5 Semantic Module Tests`、`D1 Review Authoring Tests`、`D2 Scoped Pi Review Tests`、`PR CI` 失败。
+- 失败点均为 Electron TypeScript 编译阶段（不是运行期模型验收）；四个任务共用同一批约 9 条类型错误，不能误报已经通过。
+
+### 6.2 这一轮实际写入分支的改动（待修复与复验）
+
+1. `review-v3-main-template-run.ts` 将模板确定性检查抽出为无 Run 写入的 `evaluateTemplateRuleReview`，保留旧独立入口供尚未迁移的消费者使用。
+2. `pi-case-review-service.ts` 在构造和提交 Pi Run 时将已发布模板材料槽位/数值约束检查并入同一 `run-pi-*` 记录，不再依赖 UI 先创建 `run-tpl-*`。
+3. `ReviewV3UnifiedRun.tsx` 取消双 Run 启动，统一从原有后台 Pi 入口启动并刷新一个运行。
+4. `review-v3-main-template-plan-bridge.ts` 开始支持当前案卷 case 与 Subject 目标，并使“未确认分类”与“已确认缺件”区分。
+5. `native-workspace-case-v3.ts`、`material-service.ts`、`review-ipc.ts`、`preload/index.ts` 加入 Main 授权的分类动作、原件版本替换、目标修订重校验及实际存储快照。
+6. `ReviewV3LocalCandidateWorkbench.tsx` 接入模板材料槽位列表、人工确认与提示；允许非 D4 已发布模板在分类完成后启动统一审核。
+7. `run-service-v2.ts` 的当前输入指纹加入原件 `role/materialSlotId`，分类变化使旧 Run 自动过期。
+8. 加入“未分类不等于缺件”和 Subject target 的测试用例。
+
+以上是“已写代码”，并非“已验收”。其中关键问题为尚存在类型编译失败、规则计划覆盖身份差异，以及模型结果提交时 Run 当前性/补件状态需要复验。
+
+### 6.3 从失败 CI 获取的确切修复清单
+
+- `native-workspace-case-v3.ts:460`：`SourceDocument` 没有 `versionId`。
+- `pi-case-review-service.ts:254/371/871/1061`：`EvidenceLink[]` 与 `Record<string, unknown>[]` 的错误混用。
+- `review-v3-main-template-plan-bridge.test.ts:147`：`T04PublishedRuleBinding` 使用了不存在的 `target` 属性，真实属性为 `binding`。
+- `review-v3-main-template-run.ts:95/101`：抽取纯计算函数时漏移了 `sourceRefsOf` 与 `fingerprintOf` 函数。
+
+### 6.4 接下来实施与验收顺序
+
+1. 先将上述编译错误逐条修正到 CI 通过。
+2. 再确认“分类确认→冻结/运行→统一 Run 的确定性+语义检查→待补件→补传→新 Run→旧 Run 过期”的真实顺序。禁止以两个独立 Run 冒充一次审核。
+3. 补齐模板分类对同名多份材料、版本替换失败、多主件、非必需缺件、主体级/组级规则与未编译业务条件的防错；未知不能视为已通过。
+4. 对照 Main/V3 的审计与权限，确认 Renderer 不能提交自造计划或写入其他案卷，旧 run@rev 不得冒充当前。
+5. 补焦点测试与桌面验收证据；此前已经通过的工作流结论按对应 SHA 记录，不追认后续 SHA。
+
+**记录约定**：每次复核在文档末尾追加带 HEAD、测试结果、功能清单和未完成项的增量段；不要覆盖或倒写历史结果。
