@@ -1,0 +1,17 @@
+issue_id	template_id	severity	category	location_or_section	finding	evidence_or_source	required_action	policy_or_quality	cross_template_related_ids	patch_status
+TA01-01	T02-T01	P2	POLICY_CURRENTITY	§02/03/08 R001/R002	具体招聘批次岗位表及全部更正链未核全；历史公告不可自动充当当期硬门槛	研究稿 SRC-001/002/004/014/015；学校官网原页及附件仍待核	保持 R 为人工核验并核对当前官方公告/补充通知全文	POLICY	T02-T16	MITIGATED_MANUAL_POLICY_PENDING
+TA01-02	T02-T01	P2	ROUTING	§02/08 R003/R024	事业编制入职、科研助理编外/项目聘用法律关系不等价	研究稿 §02、SRC-007/008/009	路由仅用有权人事合同与公告事实；T08 出具录用结论后才引用	QUALITY	T08-T02	MITIGATED_MANUAL
+TA01-03	T02-T01	P2	PRIVACY	§07 M004/M016/M018/M019/M027	身份、体检、心理、准入和人事档案原件不应向通用模型/上传通道暴露	原稿 §05/07；个人信息保护法 SRC-019	受限槽禁普通文件种类，仅人工受控最小状态；集成前补上传前端与 Main 门禁验证	QUALITY	T08-T02	MITIGATED_DEFINITION_INTEGRATION_PENDING
+TA01-04	T02-T01	P3	TRACEABILITY	原件 SHA 清单与 canonical	Git blob 与原 128 清单哈希相差固定一个末尾 LF	dispatch/00_统一审查标准.md；原始 SHA 07a39286f98c86c139c0d539c07366bb7c2947f4bc2ab80bc4ce60e1358d9eaa	保留原 blob SHA 与 canonical SHA；补一个 LF 并做字节断言	QUALITY		FIXED
+TA02-01	T02-T02	P2	LEGAL_SCOPE	§02/08 R003/R006	未查清雇主与事业聘用/劳动合同法域，不可套用统一试用期	国务院令第652号第十三条 https://www.mohrss.gov.cn/SYrlzyhshbzb/fwyd/SYkaoshizhaopin/zyhgjjgsydwgkzp/xgzc/201711/t20171110_281424.html	保存合同与法律关系的可信事实；未确认仅人工决定	POLICY	T08-T02	MITIGATED_MANUAL
+TA02-02	T02-T02	P2	TEMPORAL	§06/08 R008/R009	合同起止、试用约定、原考核结果及正式生效时间不能从报到日或范本推算	研究稿 M003/M006/M018，SRC-005/006/010	只核原件及变更链；无校本确认不计算正式转正结论	POLICY	T02-T01	MITIGATED_MANUAL
+TA02-03	T02-T02	P2	REMEDY	§11/08 R029/R030	岗位、人事申诉和劳动争议不同法域，通知与签收时点不同	研究稿 §11、SRC-005/006/012	记录原正式通知与受理回执；救济期限待有权单位按法域核定	POLICY	T02-T12	MITIGATED_MANUAL
+TA02-04	T02-T02	P3	TRACEABILITY	原件 SHA 清单与 canonical	固定末尾 LF 差异不代表正文损坏	dispatch/00_统一审查标准.md；原始 SHA b4d1e13c241560633dd02693952f27f86677752420904a3685d2e777287a3041	追加 LF，保留来源 hash 并字节核验	QUALITY		FIXED
+TA03-01	T02-T03	P2	POLICY_CONFLICT	§00/04/08	2019 岗位聘用旧规与 2024 改革报道的聘期长度可能不同；现行修订原文未取得	研究稿 SRC-001/002/003/008；原稿 §00 明示冲突	不采用旧三年期限、比例和权限作为硬门槛，索取现行正式制度与过渡细则	POLICY		MITIGATED_MANUAL_POLICY_PENDING
+TA03-02	T02-T03	P2	CROSS_TEMPLATE	§02/08	本模板岗位等级决定不同于校内单位调动；T02-T08 正式稿仍缺	研究稿 §02 T02-T08 边界；base 无其 canonical/research-original	仅引用独立校内调动有效决定；取得完整 T02-T08 研究稿后补实现	QUALITY	T02-T08	PENDING_MISSING_SOURCE
+TA03-03	T02-T03	P2	AUTHORIZATION	§03/08	资格、名额、单位推荐与正式岗位聘任的授权主体和当前指标未核	研究稿 SRC-001/002/013、M011/M012	保持每条手工核验；不凭证书/空岗决定岗位或薪酬	POLICY	T02-T04;T02-T06	MITIGATED_MANUAL
+TA03-04	T02-T03	P3	TRACEABILITY	原件 SHA 清单与 canonical	固定末尾 LF 差异不代表正文损坏	dispatch/00_统一审查标准.md；原始 SHA 628279dfe6ad48343da1d8ffa728f0be6fa60b710f87a34098025cb94cc112a2	追加 LF，保留来源 hash 并字节核验	QUALITY		FIXED
+TA04-01	T02-T04	P2	POLICY_CURRENTITY	§00/04/08 R001/R004	2023 职称评审流程只代表历史批次，现行主校规/2026 截止点未核	原稿 SRC-001/002/009/010；人社部 https://www.mohrss.gov.cn/zyjsrygls/ZYJSRYGLSgongzuodongtai/201907/t20190718_324764.html	现行批次/系列/门槛由职改办核定；禁止以旧规则自动拒绝	POLICY		MITIGATED_MANUAL_POLICY_PENDING
+TA04-02	T02-T04	P2	RESTRICTED_DECISION	§08 R018/R019/R025	师德和科研诚信负面记录的存在性核验不能变成自动定性/处罚；专家票决不由模型生成	原稿 §05/08，SRC-003/020	R 仅返回事实核验建议；是否影响资格必须由原权威机关决定	QUALITY	T02-T05	MITIGATED_MANUAL
+TA04-03	T02-T04	P2	PRIVACY_AUTHORITY	§07 M011/M013/M014/M020/M028	匿名专家身份、回避信息及敏感评价不应普通上传；当届评委会核准备案未核	原稿 §05/07/08 R031/R035/R036，SRC-012/019	限制敏感槽上传；集成门禁与授权有效性需单独验收	QUALITY		MITIGATED_DEFINITION_INTEGRATION_PENDING
+TA04-04	T02-T04	P3	TRACEABILITY	原件 SHA 清单与 canonical	固定末尾 LF 差异不代表正文损坏	dispatch/00_统一审查标准.md；原始 SHA ff104145df658417296a8fa77f2757d4ffb42f33a8551ac055013209015e885e	追加 LF，保留来源 hash 并字节核验	QUALITY		FIXED
