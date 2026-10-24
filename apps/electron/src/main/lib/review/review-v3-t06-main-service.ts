@@ -26,6 +26,7 @@ import { createBatchV2 } from './batch-store'
 import { isNativeWorkspaceCaseV3, registerNativeWorkspaceMaterialV3 } from './native-workspace-case-v3'
 import { registerMaterial } from './material-service'
 import { decodeReviewB2Zip } from './review-zip-intake-v3-b2'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 /**
  * 与渲染层 `review-v3-t06-physical-intake` 的结构契约一一对应。
  *
@@ -174,6 +175,7 @@ function walkDirectory(root: string): Array<{ absolutePath: string; relativePath
  * 这样测试可以针对真实目录/ZIP 验证行为，而不必伪造 OS 弹窗。
  */
 export function buildT06SelectionFromPath(target: string, sourceKind: T06SourceKind): T06PhysicalSelection {
+  assertReviewPreuploadAllowed(sourceKind === 'zip' ? 'zip' : 'read')
   if (sourceKind !== 'folder' && sourceKind !== 'zip') throw new CommandValidationError('VALIDATION_FAILED', '来源类型非法')
 
   const warnings: string[] = []
@@ -227,6 +229,7 @@ export function buildT06SelectionFromPath(target: string, sourceKind: T06SourceK
 
 /** 真实 OS 选择器。必须由 Main 弹窗，渲染层不能自称路径。 */
 export async function pickT06PhysicalSource(sourceKind: T06SourceKind): Promise<T06PhysicalSelection | null> {
+  assertReviewPreuploadAllowed('picker')
   if (sourceKind !== 'folder' && sourceKind !== 'zip') throw new CommandValidationError('VALIDATION_FAILED', '来源类型非法')
   const window = BrowserWindow.getAllWindows().find((candidate) => !candidate.isDestroyed())
   if (!window) throw new CommandValidationError('INVALID_TRANSITION', '没有可用窗口，无法打开选择器')
@@ -234,10 +237,12 @@ export async function pickT06PhysicalSource(sourceKind: T06SourceKind): Promise<
     ? { title: '选择要入库的文件夹', properties: ['openDirectory'] }
     : { title: '选择要入库的 ZIP', properties: ['openFile'], filters: [{ name: 'ZIP', extensions: ['zip'] }] })
   if (picked.canceled || picked.filePaths.length === 0) return null
+  assertReviewPreuploadAllowed(sourceKind === 'zip' ? 'zip' : 'read')
   return buildT06SelectionFromPath(picked.filePaths[0]!, sourceKind)
 }
 
 function bytesOf(selection: StoredSelection, entry: StoredEntry): Uint8Array {
+  assertReviewPreuploadAllowed(selection.sourceKind === 'zip' ? 'zip' : 'read')
   let bytes: Uint8Array
   if (entry.absolutePath) {
     const raw = readFileSync(entry.absolutePath)
@@ -260,10 +265,12 @@ function bytesOf(selection: StoredSelection, entry: StoredEntry): Uint8Array {
 
 /** 把单个条目落成真实 DocumentVersion（走既有原生材料登记）。 */
 async function registerEntry(selection: StoredSelection, entry: StoredEntry, caseId: string): Promise<string> {
+  assertReviewPreuploadAllowed('persist', { caseId })
   const identity = `${selection.selectionId}\u0000${caseId}\u0000${entry.entryId}`
   const cached = registered.get(identity)
   if (cached) return cached
   const bytes = bytesOf(selection, entry)
+  assertReviewPreuploadAllowed('persist', { caseId })
   const tempPath = join(tmpdir(), `t06-${sha256(identity).slice(0, 24)}-${basename(entry.relativePath) || 'entry.bin'}`)
   writeFileSync(tempPath, bytes)
   try {
@@ -304,6 +311,10 @@ async function registerEntry(selection: StoredSelection, entry: StoredEntry, cas
  * 案卷才进入批次。
  */
 export async function commitT06PhysicalImport(request: T06PhysicalCommitRequest): Promise<T06CommitReceipt> {
+  // Before an idempotent receipt or Case/Batch writer: no unauthorised
+  // digital acceptance, even after a restart/retry or prior preview.
+  assertReviewPreuploadAllowed('restore')
+  assertReviewPreuploadAllowed('create-case')
   if (!request?.requestId?.trim()) throw new CommandValidationError('VALIDATION_FAILED', '缺少请求号')
   if (!request.batchName?.trim() || !Array.isArray(request.groups) || !request.groups.length) {
     throw new CommandValidationError('VALIDATION_FAILED', '批次名称无效或没有确认案卷')
@@ -351,6 +362,7 @@ export async function commitT06PhysicalImport(request: T06PhysicalCommitRequest)
         throw new CommandValidationError('DEPENDENCY_UNRESOLVED', `案卷“${group.groupId}”尚未匹配可用的已发布模板`)
       }
       if (group.action === 'create') {
+        assertReviewPreuploadAllowed('create-case')
         caseId = `case-${sha256(request.requestId + '\u0000' + group.groupId).slice(0, 24)}`
         const created = await createCaseFromTemplate(templateId!, templateVersion!, {
           title: group.title?.trim() || group.groupId,

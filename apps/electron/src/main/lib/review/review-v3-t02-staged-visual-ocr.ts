@@ -13,6 +13,7 @@ import {
   ReviewB2StagingService, type B2MainContext,
 } from './review-intake-adapter-v3-b2'
 import { parseT02VisualMaterialWithOcr } from './review-v3-t02-visual-ocr'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 
 export interface T02StagedVisualText {
   sourceBlockKey: string
@@ -45,9 +46,11 @@ export async function previewT02StagedVisualOcr(
   ocr: OcrPort,
   options: { maxPdfPages?: number; inspectPdfPages?: boolean } = {},
 ): Promise<T02StagedVisualOcrPreview> {
+  assertReviewPreuploadAllowed('ocr')
   staging.assertStillGranted(ctx)
   const source = staging.getCandidate(ctx, candidateId)
   const bytes = staging.read(ctx, candidateId)
+  assertReviewPreuploadAllowed('persist')
   if (bytes.byteLength !== source.byteLength ||
     createHash('sha256').update(bytes).digest('hex') !== source.rawSha256) {
     throw new Error('T02_STAGED_BYTES_CHANGED')

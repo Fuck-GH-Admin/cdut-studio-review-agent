@@ -10,6 +10,7 @@ import JSZip from 'jszip'
 import { createHash } from 'node:crypto'
 import { readFile, mkdir, writeFile } from 'node:fs/promises'
 import { dirname, join, posix } from 'node:path'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 
 export interface T02SlideImage {
   page: number
@@ -81,6 +82,7 @@ export async function extractT02PptxImages(
   filePath: string,
   destination?: { directory: string; relativeOriginalPath: string },
 ): Promise<T02SlideImagesResult> {
+  assertReviewPreuploadAllowed('parse')
   const warnings: string[] = []
   const zip = await JSZip.loadAsync(await readFile(filePath))
   const slides = await orderedSlideParts(zip)

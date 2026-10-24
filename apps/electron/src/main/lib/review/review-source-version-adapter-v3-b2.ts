@@ -10,6 +10,7 @@ import { tmpdir } from 'node:os'
 import { extname, join } from 'node:path'
 import { assertC0SourceIdentity, REVIEW_C0_SCHEMA_VERSION, type SourceIdentity } from '@profer/shared'
 import { parseFileIntoSourceDocument } from './document-service'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 import {
   ReviewB2StagingService, type B2MainContext, type B2MaterialCandidate,
 } from './review-intake-adapter-v3-b2'
@@ -200,6 +201,7 @@ export class ReviewB2SourceVersionAdapter {
   }
   /** Real input bytes are obtained from the owner-bound staging capability, not a provided path. */
   async parse(ctx: B2MainContext, candidate: B2MaterialCandidate): Promise<B2ParsedMaterial> {
+    assertReviewPreuploadAllowed('parse')
     this.staging.assertStillGranted(ctx)
     if (candidate.ownerId !== ctx.ownerId ||
         candidate.ownerGeneration !== ctx.ownerGeneration ||
@@ -229,9 +231,11 @@ export class ReviewB2SourceVersionAdapter {
 
     // Filename cannot escape staging directory. The parser receives original bytes
     // in an isolated temp file with a random basename and approved extension.
+    assertReviewPreuploadAllowed('persist')
     const directory = await mkdtemp(join(tmpdir(), 'review-b2-parser-'))
     const filePath = join(directory, randomBytes(10).toString('hex') + ext)
     try {
+      assertReviewPreuploadAllowed('persist')
       await writeFile(filePath, bytes, { flag: 'wx', mode: 0o600 })
       this.staging.assertStillGranted(ctx) // reject revoke during the write await
       const source = await parseFileIntoSourceDocument(

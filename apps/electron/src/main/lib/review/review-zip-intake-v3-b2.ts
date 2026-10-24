@@ -8,6 +8,7 @@
  */
 import { createHash } from 'node:crypto'
 import { inflateRawSync } from 'node:zlib'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 
 const SIG_EOCD = 0x06054b50
 const SIG_CENTRAL = 0x02014b50
@@ -112,6 +113,7 @@ function lastEOCD(bytes: Buffer): number {
 }
 /** Decode archives as sealed isolated entries; no unsafe partial extraction to disk. */
 export function decodeReviewB2Zip(raw: Uint8Array, limits: B2ZipLimits = {}): B2ZipDecodeResult {
+  assertReviewPreuploadAllowed('zip')
   const maxArchive = safeLimit(limits.maxArchiveBytes, MAX_ARCHIVE_BYTES)
   const maxEntry = safeLimit(limits.maxEntryBytes, MAX_ENTRY_BYTES)
   const maxTotal = safeLimit(limits.maxTotalBytes, MAX_TOTAL_BYTES)

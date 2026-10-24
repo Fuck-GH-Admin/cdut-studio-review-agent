@@ -44,6 +44,7 @@ import { isAbsolute, join } from 'node:path'
 import { getCase, getReviewCasesDir, listRuns, saveCase, updateCase } from './case-store'
 import { buildDemoCase } from './demo-fixtures/demo-case-fixture'
 import { runMockReview } from './mock-review-engine'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 import {
   REVIEW_RUN_TIMEOUT_MS,
   chatCompletion,
@@ -356,6 +357,7 @@ function isValidRuleConstraint(value: unknown): value is NonNullable<RuleOutline
 export async function generateRuleOutline(
   request: GenerateRuleOutlineRequest,
 ): Promise<RuleOutlineItem[]> {
+  assertReviewPreuploadAllowed('read', { caseId: request.caseId })
   const reviewCase = getCase(request.caseId)
   if (!reviewCase) throw new Error(`案卷不存在: ${request.caseId}`)
   if (!isKnownDomainPack(reviewCase.domainPackId)) {
@@ -493,6 +495,7 @@ function fallbackAnchor(reviewCase: ReviewCase, role: SourceDocument['role']): R
  * 降级：任何失败 → 返回 case.items 原样（fixture 已是识别好的演示条目）。
  */
 export async function extractItems(caseId: string): Promise<ReviewItem[]> {
+  assertReviewPreuploadAllowed('read', { caseId })
   const reviewCase = getCase(caseId)
   if (!reviewCase) throw new Error(`案卷不存在: ${caseId}`)
   if (!isKnownDomainPack(reviewCase.domainPackId)) {
@@ -801,6 +804,7 @@ export function buildSourceRegistry(reviewCase: ReviewCase): string {
 }
 
 export async function runAiReview(reviewCase: ReviewCase): Promise<AiReviewOutcome> {
+  assertReviewPreuploadAllowed('read', { caseId: reviewCase.id })
   if (!isKnownDomainPack(reviewCase.domainPackId)) {
     // M0/H14：未知领域不得悄悄按综测规则执行（K14）
     throw new Error(`审核领域未配置: ${String(reviewCase.domainPackId)}（请选择有效领域包）`)
@@ -1032,6 +1036,7 @@ function staticAssistantAnswer(
 export async function reviewAssistantChat(
   request: AssistantChatRequest,
 ): Promise<ReviewAssistantReply> {
+  assertReviewPreuploadAllowed('read', { caseId: request.caseId })
   const reviewCase = getCase(request.caseId)
   if (!reviewCase) throw new Error(`案卷不存在: ${request.caseId}`)
 

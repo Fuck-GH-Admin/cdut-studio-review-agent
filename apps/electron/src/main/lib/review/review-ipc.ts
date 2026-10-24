@@ -65,6 +65,7 @@ import { invalidateDerivedReviewInputs } from './input-invalidation'
 import { ensureWorkspaceAggregateV2, syncWorkspaceProjectionV2 } from './workspace-service-v2'
 import { readAggregate } from './case-store-v2'
 import { resolveCaseDocumentPreviewPath } from './document-preview-path'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 
 /** 来源角色枚举（IMPORT_DOCUMENT 入参白名单） */
 const SOURCE_ROLES: ReadonlySet<string> = new Set(['rule', 'application', 'evidence'])
@@ -138,6 +139,7 @@ export function registerReviewIpc(): void {
       },
     ): Promise<ReviewCase> => {
       assertC0ReviewMainSender(event)
+      assertReviewPreuploadAllowed('create-case')
       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
       if (!CASE_TYPES.has(input.type)) throw new Error(`参数 type 非法：${String(input.type)}`)
       // 明示未知领域由 C native creator 拒绝；不静默安装缺省审核政策
@@ -377,6 +379,7 @@ export function registerReviewIpc(): void {
   ipcMain.handle(
     REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT,
     async (_event, input: { caseId: string; role: SourceDocument['role']; requestId?: string }): Promise<ImportDocumentsResult> => {
+      assertReviewPreuploadAllowed('picker', { caseId: input?.caseId })
       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
       if (!SOURCE_ROLES.has(input.role)) throw new Error(`参数 role 非法：${String(input.role)}`)
       const caseId = requireString(input.caseId, 'caseId')
@@ -422,6 +425,7 @@ export function registerReviewIpc(): void {
   ipcMain.handle(
     REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT_FROM_PATH,
     async (_event, input: { caseId: string; sourcePath: string; role: SourceDocument['role']; requestId?: string }): Promise<SourceDocument> => {
+      assertReviewPreuploadAllowed('drop', { caseId: input?.caseId })
       if (app.isPackaged) throw new Error('路径直导仅在开发版可用')
       if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
       if (!SOURCE_ROLES.has(input.role)) throw new Error(`参数 role 非法：${String(input.role)}`)
@@ -447,6 +451,7 @@ export function registerReviewIpc(): void {
   )
 
   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_IMAGE_PREVIEW_PATH, (_event, input: { caseId: string; documentId: string; blockId: string }): string | null => {
+    assertReviewPreuploadAllowed('read', { caseId: input?.caseId })
     if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
     const caseId = requireString(input.caseId, 'caseId')
     const documentId = requireString(input.documentId, 'documentId')
@@ -476,6 +481,7 @@ export function registerReviewIpc(): void {
   })
 
   ipcMain.handle(REVIEW_IPC_CHANNELS.GET_WORKSPACE_DOCUMENT_PREVIEW_PATH, (_event, input: { caseId: string; documentVersionId: string }): string | null => {
+    assertReviewPreuploadAllowed('read', { caseId: input?.caseId })
     if (!input || typeof input !== 'object') throw new Error('参数 input 缺失或类型非法')
     const caseId = requireString(input.caseId, 'caseId')
     const documentVersionId = requireString(input.documentVersionId, 'documentVersionId')
@@ -625,6 +631,7 @@ export function registerReviewIpc(): void {
   ipcMain.handle(REVIEW_IPC_CHANNELS.CREATE_CASE_V2, (event, input: { caseId: string; templateId: string; version: number; payload: unknown; actor?: import('@profer/shared').Actor; requestId?: string; expectedRevision?: number }) => {
     if (!input?.templateId) throw new Error('参数非法')
     assertSafeReviewStorageId(input?.caseId, 'caseId')
+    assertReviewPreuploadAllowed('create-case')
     const command = bindC0LocalCreateIntent(event, input)
     const { createCaseC0 } = require('./review-c0-case-service') as typeof import('./review-c0-case-service')
     return createCaseC0(command as Parameters<typeof createCaseC0>[0], input.templateId, input.version)
@@ -778,6 +785,7 @@ export function registerReviewIpc(): void {
     caseId: string; supplementId: string; recipientId: string
   }) => {
     assertC0ReviewMainSender(event)
+    assertReviewPreuploadAllowed('read', { caseId: input?.caseId })
     if (!input?.caseId || !input.supplementId || !input.recipientId) throw new Error('参数非法')
     const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
     const aggregate = getCaseV2Aggregate(input.caseId)
@@ -796,6 +804,7 @@ export function registerReviewIpc(): void {
     caseId: string; batchId: string; assignmentId: string
   }) => {
     assertC0ReviewMainSender(event)
+    assertReviewPreuploadAllowed('read', { caseId: input?.caseId })
     if (!input?.caseId || !input.batchId || !input.assignmentId) throw new Error('评委任务参数非法')
     const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
     const aggregate = getCaseV2Aggregate(input.caseId)
@@ -807,6 +816,7 @@ export function registerReviewIpc(): void {
     caseId: string; packageJson: string
   }) => {
     assertC0ReviewMainSender(event)
+    assertReviewPreuploadAllowed('clipboard', { caseId: input?.caseId })
     if (!input?.caseId || typeof input.packageJson !== 'string') throw new Error('参数非法')
     const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
     const aggregate = getCaseV2Aggregate(input.caseId)
@@ -826,6 +836,7 @@ export function registerReviewIpc(): void {
     caseId: string; packageJson: string
   }) => {
     assertC0ReviewMainSender(event)
+    assertReviewPreuploadAllowed('clipboard', { caseId: input?.caseId })
     if (!input?.caseId || typeof input.packageJson !== 'string') throw new Error('参数非法')
     const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
     const { readT09File } = require('./review-v3-t09-offline-codec') as typeof import('./review-v3-t09-offline-codec')
@@ -873,6 +884,7 @@ export function registerReviewIpc(): void {
       deps: {
         readAggregate: (caseId) => getCaseV2Aggregate(caseId),
         registerAsset: async (caseId, name, _mimeType, bytes) => {
+          assertReviewPreuploadAllowed('persist', { caseId })
           // 附件必须成为真实原件：先落临时文件，再走原生材料登记
           const safeName = String(name).replace(/[^A-Za-z0-9._-]/g, '_').slice(-120) || 'offline-asset.bin'
           const path = join(t09AssetTempRoot(), `${randomUUID()}-${safeName}`)
@@ -929,6 +941,7 @@ export function registerReviewIpc(): void {
     caseId: string; phase?: 'submission' | 'decision'
   }) => {
     assertC0ReviewMainSender(event)
+    assertReviewPreuploadAllowed('read', { caseId: input?.caseId })
     if (!input?.caseId) throw new Error('参数 caseId 非法')
     if (input.phase && input.phase !== 'submission' && input.phase !== 'decision') throw new Error('参数 phase 非法')
     const { runTemplateRuleReview } = require('./review-v3-main-template-run') as typeof import('./review-v3-main-template-run')
@@ -945,12 +958,14 @@ export function registerReviewIpc(): void {
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.T06_PICK_PHYSICAL_SOURCE, async (event, input: { sourceKind?: string }) => {
     assertC0ReviewMainSender(event)
+    assertReviewPreuploadAllowed('picker')
     if (input?.sourceKind !== 'folder' && input?.sourceKind !== 'zip') throw new Error('来源类型非法')
     const { pickT06PhysicalSource } = require('./review-v3-t06-main-service') as typeof import('./review-v3-t06-main-service')
     return pickT06PhysicalSource(input.sourceKind)
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.T06_COMMIT_PHYSICAL_IMPORT, async (event, input: unknown) => {
     assertC0ReviewMainSender(event)
+    assertReviewPreuploadAllowed('restore')
     const request = input as import('./review-v3-t06-main-service').T06PhysicalCommitRequest
     if (!request?.requestId || !request.selectionId || !Array.isArray(request.groups)) throw new Error('参数非法')
     const { commitT06PhysicalImport } = require('./review-v3-t06-main-service') as typeof import('./review-v3-t06-main-service')
@@ -1012,6 +1027,7 @@ export function registerReviewIpc(): void {
   })
   // ===== G02：V2 批次复用 Pi 审核 Agent 与同一审核工具链 =====
   ipcMain.handle(REVIEW_IPC_CHANNELS.RUN_BATCH_V2, async (_e, batchId: string) => {
+    assertReviewPreuploadAllowed('read')
     if (typeof batchId !== 'string' || !batchId) throw new Error('参数 batchId 非法')
     const { runBatchQueue } = require('./batch-store') as typeof import('./batch-store')
     const { assembleAndRunReview } = require('./run-async-service') as typeof import('./run-async-service')
@@ -1030,11 +1046,13 @@ export function registerReviewIpc(): void {
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.RUN_REVIEW_V2, async (_e, caseId: string) => {
     assertSafeReviewStorageId(caseId, 'caseId')
+    assertReviewPreuploadAllowed('read', { caseId })
     // 薄委托共享运行服务（08 设计：IPC 与 Agent 工具同服务函数；人工发起 local-user）
     const { assembleAndRunReview } = require('./run-async-service') as typeof import('./run-async-service')
     return assembleAndRunReview(caseId)
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.PREPARE_PI_REVIEW_V2, (_event, input: { caseId: string; sessionId: string; turnId: string; resumeRunId?: string; inheritReadReceipts?: boolean }) => {
+    assertReviewPreuploadAllowed('read', { caseId: input?.caseId })
     if (!input || typeof input.caseId !== 'string' || typeof input.sessionId !== 'string' || typeof input.turnId !== 'string'
       || (input.resumeRunId !== undefined && typeof input.resumeRunId !== 'string')
       || (input.inheritReadReceipts !== undefined && typeof input.inheritReadReceipts !== 'boolean')) {
@@ -1060,6 +1078,7 @@ export function registerReviewIpc(): void {
   // 后台启动/停止只接受当前主窗口，内部归属与指派均由 Main 建立。
   ipcMain.handle(REVIEW_IPC_CHANNELS.START_BACKGROUND_PI_REVIEW_V2, (event, input: import('@profer/shared').ReviewBackgroundPiStartRequest) => {
     assertMainWindowSender(event, getMainWindow)
+    assertReviewPreuploadAllowed('read', { caseId: input?.caseId })
     const { startBackgroundPiReview } = require('./review-pi-run-bridge') as typeof import('./review-pi-run-bridge')
     return startBackgroundPiReview(input, event.sender)
   })
@@ -1191,6 +1210,7 @@ export function registerReviewIpc(): void {
   // ===== G01：材料登记与提交 =====
   ipcMain.handle(REVIEW_IPC_CHANNELS.PICK_REGISTER_MATERIAL_V2, async (_e, input: { caseId: string; role: 'application' | 'evidence' | 'rule' | 'attachment'; materialSlotId?: string }) => {
     assertC0ReviewMainSender(_e)
+    assertReviewPreuploadAllowed('picker', { caseId: input?.caseId })
     if (!input?.caseId) throw new Error('参数 caseId 非法')
         const { BrowserWindow, dialog } = require('electron') as typeof import('electron')
     const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
@@ -1224,6 +1244,7 @@ export function registerReviewIpc(): void {
   // 拖拽登记：渲染层经 webUtils.getPathForFile 拿到本地路径后逐个登记（同一事务链）
   ipcMain.handle(REVIEW_IPC_CHANNELS.REGISTER_MATERIAL_PATH_V2, async (_e, input: { caseId: string; sourcePath: string; role: 'application' | 'evidence' | 'rule' | 'attachment'; materialSlotId?: string; fileName?: string; replacesVersionIds?: string[] }) => {
     assertC0ReviewMainSender(_e)
+    assertReviewPreuploadAllowed('drop', { caseId: input?.caseId })
     if (!input || typeof input.sourcePath !== 'string' || !input.sourcePath) throw new Error('参数 sourcePath 非法')
     // Electron's existing webUtils.getPathForFile resolves the dropped OS
     // file in Preload. Route native V3 cases through the SAME C-owned physical
@@ -1311,6 +1332,7 @@ export function registerReviewIpc(): void {
     caseId: string; expectedRevision: number; reason: string
   }): Promise<import('@profer/shared').ReviewCommandResult> => {
     assertC0ReviewMainSender(event)
+    assertReviewPreuploadAllowed('restore', { caseId: input?.caseId })
     if (!input || typeof input !== 'object' || Array.isArray(input) ||
         Object.prototype.hasOwnProperty.call(input, 'actor') ||
         Object.prototype.hasOwnProperty.call(input, 'requestId')) {
@@ -1382,6 +1404,7 @@ export function registerReviewIpc(): void {
    */
   ipcMain.handle(REVIEW_IPC_CHANNELS.RUN_REVIEW, (_event, caseId: string): Promise<ReviewRun> => {
     caseId = requireString(caseId, 'caseId')
+    assertReviewPreuploadAllowed('read', { caseId })
     if (isNativeWorkspaceCaseV3(readAggregate(caseId)))
       throw new Error('NATIVE_C2_RUN_REQUIRED: 原生案卷不得使用旧模拟运行冒充正式 ReviewRun')
     const engine = getReviewModelGatewayStatus().available ? 'ai' : 'mock-engine'

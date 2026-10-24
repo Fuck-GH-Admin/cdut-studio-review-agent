@@ -6,6 +6,7 @@
  */
 import {createHash} from 'node:crypto'
 import {readFileSync} from 'node:fs'
+import {assertReviewPreuploadAllowed} from './review-preupload-gate'
 import {resolve} from 'node:path'
 import {ipcMain,type IpcMainInvokeEvent} from 'electron'
 import {REVIEW_IPC_CHANNELS} from '@profer/shared'
@@ -87,6 +88,7 @@ function sameScope(a:B20MainReadScope,b:B20MainReadScope):boolean {
     a.frameId===b.frameId&&a.ownerGeneration===b.ownerGeneration
 }
 function stageOriginals(aggregate:Snapshot,ctx:B20MainReadScope,staging:ReviewB2StagingService):void {
+  assertReviewPreuploadAllowed('read', { caseId: aggregate.caseV2.id })
   const active=aggregate.caseV2.documents.filter(doc=>doc.active!==false)
   if(active.length>500)throw new Error('C11_NATIVE_MORE_THAN_500_CURRENT_MATERIALS')
   // A native Case has no real Subject until its Plan is fixed. For a single

@@ -14,6 +14,7 @@ import {constants,openSync,closeSync,fstatSync,lstatSync,readFileSync,realpathSy
 import type {Stats} from 'node:fs'
 import {dialog} from 'electron'
 import {getMainWindow} from '../main-window-state'
+import {assertReviewPreuploadAllowed} from './review-preupload-gate'
 
 export interface CMainPhysicalArchiveScope {
   readonly principalId:string
@@ -70,6 +71,7 @@ function validateArchive(e:CMainNativeArchiveExpectation):CMainNativeArchiveExpe
   return structuredClone(e)
 }
 function physicalRead(filePath:string):{bytesSha:string;size:number;dev:number;ino:number;path:string} {
+  assertReviewPreuploadAllowed('zip')
   if(typeof filePath!=='string'||!filePath||filePath.includes('\0'))
     refuse('OS_PATH_INVALID')
   // Only a trusted native chooser can supply filePath, never IPC. Even then
@@ -130,6 +132,7 @@ export class CMainNativeArchiveRegistry {
   /** The OS picker is the only physical path authority. */
   private pickPhysical(expectedValue:CMainNativeArchiveExpectation,
     nativeKey:string):void {
+    assertReviewPreuploadAllowed('picker')
     if(this.closed)refuse('REGISTRY_CLOSED')
     const expected=validateArchive(expectedValue)
     const initial=validateScope(this.source.currentScope())

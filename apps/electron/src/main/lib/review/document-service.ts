@@ -27,6 +27,7 @@ import { extractDocxReviewContent, extractSpreadsheetReviewContent, extractTextF
 import { parseCsvRows } from './source-index'
 import { extractT02PptxImages, type T02SlideImage } from './review-v3-t02-pptx-visual-assets'
 import { inspectF04RasterOriginal } from './review-v3-f04-raster-integrity'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 
 /** 支持直接按文本切块的扩展名 */
 const TEXT_EXTENSIONS = new Set(['.md', '.txt', '.csv', '.json', '.html', '.htm', '.eml'])
@@ -470,6 +471,8 @@ export async function parseFileIntoSourceDocument(
   assetRelativePath?: string,
   assetDirectory?: string,
 ): Promise<SourceDocument> {
+  // 含 PDF/Office 嵌图解析与缩略图写入；必须先于 stat/文件读取。
+  assertReviewPreuploadAllowed('parse')
   const ext = extname(fileName).toLowerCase()
   const now = new Date().toISOString()
   const slug = slugifyFileName(fileName)

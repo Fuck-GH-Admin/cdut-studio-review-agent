@@ -18,6 +18,7 @@ import { getEffectiveProxyUrl } from '../proxy-settings-service'
 import { resolveOpenAIChatCompletionsUrl } from '@profer/core'
 import { getReviewModuleSettings } from './module-settings-store'
 import { extractJson } from './review-json'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 export { extractJson } from './review-json'
 
 /**
@@ -305,6 +306,9 @@ async function performChatCompletion(
   messages: ReviewChatMessage[],
   options?: ReviewChatOptions,
 ): Promise<ReviewChatCompletionResponse> {
+  // Trust boundary before constructing a provider payload or opening a socket.
+  // The destination is derived from Main's configured channel, not the prompt.
+  assertReviewPreuploadAllowed('model', { modelDestination: `${channel.provider}:${channel.baseUrl ?? ''}` })
   // 白名单强制：任何调用路径都先过这道闸
   if (!isAllowedProvider(channel.provider)) {
     console.warn(`[审核专区] 已拒绝非白名单出口: ${channel.provider}（渠道 ${channel.name}）`)

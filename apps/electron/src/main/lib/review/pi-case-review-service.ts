@@ -19,6 +19,7 @@ import { actorOfAssignment, bindRunToAssignment, checkAssignment, createAssignme
 import { DocumentCapabilityLibrary } from './document-capability-library'
 import { finalizePiDocumentCoverage } from './pi-document-coverage'
 import { validateD2OperationEvidence, verifyD2InstalledPlan } from './review-d2-runtime'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 
 export interface PiReviewBinding {
   assignmentId: string
@@ -449,6 +450,7 @@ function continuationPrompt(aggregate: CaseAggregateV2, template: TemplateVersio
 }
 
 export function preparePiReviewRunV2(input: { caseId: string; sessionId: string; turnId: string; resumeRunId?: string; inheritReadReceipts?: boolean }): PiReviewPrepareResult {
+  assertReviewPreuploadAllowed('read', { caseId: input?.caseId })
   if (!input.sessionId || !input.turnId) throw new Error('普通 Pi 审核必须绑定真实会话与用户消息')
   const aggregate = getCaseV2Aggregate(input.caseId)
   if (!aggregate) throw new Error(`案卷不存在或未初始化：${input.caseId}`)
