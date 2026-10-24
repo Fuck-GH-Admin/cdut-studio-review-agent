@@ -6,9 +6,9 @@ export const templateVersion: TemplateVersion = {
   "version": 1,
   "schemaVersion": 2,
   "name": "横向科研合同立项与研究合同内容审核",
-  "description": "本地研究模板 · 非校方正式模板。适用于“横向科研合同立项与研究合同内容审核”的材料、事实与风险核对；政策适用、校内授权及正式决定均须由有权人员确认。",
+  "description": "本地研究模板 · 非校方正式模板；ROUND3_DRAFT，政策证据部分确认。仅作横向科研合同材料事实核对与风险提示；校内法审、签约及用印授权未核，必须人工有权确认，不得输出正式批准或拒绝。",
   "catalogKind": "builtin",
-  "sourceNote": "R02_RESEARCH_TEMPLATE_NONOFFICIAL: 本地研究模板，非校方正式模板。来源文档 docs/design/review-agent/business-templates/R02/T03-T03.md；源文档 SHA-256 85e3a2b66ec72c5cfe1610176378cf93395a720de76b2111c912770956a08393；政策证据状态 PARTIAL；不得将 SRC 研究来源伪装为案卷 SourceRef 或正式 PolicyVersion。",
+  "sourceNote": "R02_RESEARCH_TEMPLATE_NONOFFICIAL: 本地研究模板，非校方正式模板；ROUND3_DRAFT。审阅文档 docs/design/review-agent/business-templates/R02/T03-T03.md；审阅稿 SHA-256 774fc620b867ee2bb6a85a97edd499bb3d8b51e35e6a9531a2920e30c4d257b2；研究原件归一化 SHA-256 85e3a2b66ec72c5cfe1610176378cf93395a720de76b2111c912770956a08393；政策证据状态 PARTIAL。横向办法、2024 合同办法原件、2026 签署授权未闭环，R003/R004/R017–R020/R024 必须人工确认，不得据事实初核生成学校批准、拒绝、签字或用印决定；SRC 非案卷 SourceRef，也非 PolicyVersion。",
   "objectType": "project",
   "displayName": {
     "template": "{{f002}}"
@@ -849,7 +849,7 @@ export const templateVersion: TemplateVersion = {
     {
       "id": "review-rules",
       "name": "原研究模板审核规则",
-      "description": "逐条投影源文档 R001…规则；模板内审查标准不等同校方正式政策。来源及证据状态见 r02Metadata。",
+      "description": "逐条投影源文档 R001…规则；模板内审查标准不等同校方正式政策。T03-A-005 的校本权限缺证一律 POLICY_UNCONFIRMED + NEEDS_HUMAN_DECISION；事实 PASS_FACT 不等于学校批准，签约及用印必须另行核权。来源及证据状态见 r02Metadata。",
       "order": 0,
       "required": true,
       "criteria": [
@@ -870,14 +870,14 @@ export const templateVersion: TemplateVersion = {
         {
           "id": "R003",
           "title": "负责人独立承接资格",
-          "requirement": "P1–P3；T＝需核拟负责人是否可主持；F＝仅作为非主责团队成员；U＝身份类别／资格政策未定；SRC-003/004/007；F007–F008,F010；M002/M001；查有效校本横向主持资格规则与 A 层任职，现只有经费负责人责任原则，没有足以硬判博士后／学生／外聘等资格的现行条文；不得以同名或学校邮箱推出有权主持；F NOTAPPLICABLE；U 或现有政策不足 POLICYUNCONFIRMED，资格例外请有权人 NEEDSHUMANDECISION。下一：科发院／人事",
+          "requirement": "P1–P3；T＝需核拟负责人是否可主持；F＝仅作为非主责团队成员；U＝身份类别／资格政策未定；SRC-003/004/007；F007–F008,F010；M002/M001；查有效校本横向主持资格规则与 A 层任职，现只有经费负责人责任原则，没有足以硬判博士后／学生／外聘等资格的现行条文；不得以同名或学校邮箱推出有权主持；F NOT_APPLICABLE；2017横向办法现行资格条件未核时 POLICY_UNCONFIRMED + NEEDS_HUMAN_DECISION，不得给主持资格合格结论。下一：科发院／人事",
           "execution": "manual",
           "targetScope": "group"
         },
         {
           "id": "R004",
           "title": "经办／代签代理范围",
-          "requirement": "P1/P3/P5；T＝代理发起或代签；F＝确为本人操作且无代理；U＝权限链或作用范围未知；SRC-005/006/008；F005,F009–F010；M002/M003；校方受权委托 A/B 层核签发者、代理事项、时限、撤销及当前合同关联；经办代理不自动享有学校签约权；签章图片不验真；F NOTAPPLICABLE；权限对象不合 CONFLICT；权威不可读 UNREADABLE／失联 SOURCEUNAVAILABLE；校本权限条件不全 POLICYUNCONFIRMED。下一：授权管理／合同有权人",
+          "requirement": "P1/P3/P5；T＝代理发起或代签；F＝确为本人操作且无代理；U＝权限链或作用范围未知；SRC-005/006/008；F005,F009–F010；M002/M003；校方受权委托 A/B 层核签发者、代理事项、时限、撤销及当前合同关联；经办代理不自动享有学校签约权；签章图片不验真；F NOT_APPLICABLE；权限对象不合 CONFLICT；权威不可读 UNREADABLE／失联 SOURCE_UNAVAILABLE；签署授权清册或代理范围未核时 POLICY_UNCONFIRMED + NEEDS_HUMAN_DECISION，不得准予代签或用印。下一：授权管理／合同有权人",
           "execution": "manual",
           "targetScope": "case"
         },
@@ -968,28 +968,28 @@ export const templateVersion: TemplateVersion = {
         {
           "id": "R017",
           "title": "所在单位与科研归口初审",
-          "requirement": "P3；T＝校本当前流程要求单位／科研审签；F＝P1/P2 尚未走审签；U＝是否必经、实际签发者权限不明；SRC-002/003/005/006；F033,F036；M012/M001；对照可信校内审批事件 A：审签者、权限、案卷、所审合同哈希、撤销有效期；旧流程不可替换当期授权；缺现行校本程序先停止硬判；F NOTAPPLICABLE；有事件且版本匹配仅事实 PASSFACT；错签发者/版本 CONFLICT；制度未核 POLICYUNCONFIRMED。下一：所属单位／科研归口",
+          "requirement": "P3；T＝校本当前流程要求单位／科研审签；F＝P1/P2 尚未走审签；U＝是否必经、实际签发者权限不明；SRC-002/003/005/006；F033,F036；M012/M001；对照可信校内审批事件 A：审签者、权限、案卷、所审合同哈希、撤销有效期；旧流程不可替换当期授权；缺现行校本程序先停止硬判；F NOT_APPLICABLE；有事件且版本匹配仅事实 PASS_FACT；错签发者/版本 CONFLICT；2017横向办法及2024合同办法的现行适用程序未核时 POLICY_UNCONFIRMED + NEEDS_HUMAN_DECISION，不可形成校内初审通过结论。下一：所属单位／科研归口",
           "execution": "manual",
           "targetScope": "case"
         },
         {
           "id": "R018",
           "title": "专家／法务有权前置审查",
-          "requirement": "P3；T＝当期有效校规及合同风险触发专门审查；F＝尚在起草或经权威认定不触发；U＝审查门槛／角色不明；SRC-005/006/012；F034,F042；M013/M019；A/B 层意见核专家／法务真实身份、审查事项、当前合同版本及撤销状态；AI 风险提示≠法务意见，金额触发线不得猜；F NOTAPPLICABLE；可信意见存在 PASSFACT（仅证已出具）；错版 CONFLICT；是否强制未知 POLICYUNCONFIRMED。下一：法务／专业评审",
+          "requirement": "P3；T＝当期有效校规及合同风险触发专门审查；F＝尚在起草或经权威认定不触发；U＝审查门槛／角色不明；SRC-005/006/012；F034,F042；M013/M019；A/B 层意见核专家／法务真实身份、审查事项、当前合同版本及撤销状态；AI 风险提示≠法务意见，金额触发线不得猜；F NOT_APPLICABLE；可信意见存在 PASS_FACT（仅证已出具）；错版 CONFLICT；2024合同办法完整法审触发条件未核时 POLICY_UNCONFIRMED + NEEDS_HUMAN_DECISION，不得据模型意见推断法审已通过。下一：法务／专业评审",
           "execution": "manual",
           "targetScope": "case"
         },
         {
           "id": "R019",
           "title": "校内批准与对外签约授权",
-          "requirement": "P5；T＝拟由学校有权人决定或签署；F＝仅 P0–P4 事实预审；U＝授权公告／变更名单无法核；SRC-005/006/008；F035–F036,F043；M014/M012；A 层真实审批决策 ID、批准角色及其权能、合同版本哈希和当日有效授权；2026 公告目前只见目录；本 R 不签发批准、只验证来源；F NOTAPPLICABLE；已核真实批准存在仅 PASSFACT（“决定记录存在且匹配”，不等同 AI 批准）；权能未核 POLICYUNCONFIRMED；错版 CONFLICT。下一：校合同有权审批人",
+          "requirement": "P5；T＝拟由学校有权人决定或签署；F＝仅 P0–P4 事实预审；U＝授权公告／变更名单无法核；SRC-005/006/008；F035–F036,F043；M014/M012；A 层真实审批决策 ID、批准角色及其权能、合同版本哈希和签发当日有效授权/变更；2026 公告目前只见目录，未经原始清册核验时必须 POLICY_UNCONFIRMED + NEEDS_HUMAN_DECISION；本 R 不签发批准、拒绝、签字或用印许可，只验证来源；F NOT_APPLICABLE；已核真实批准存在仅 PASS_FACT（决定记录存在且匹配，不等同 AI 批准）；错版 CONFLICT。下一：校合同有权审批人及用印管理 Owner",
           "execution": "manual",
           "targetScope": "case"
         },
         {
           "id": "R020",
           "title": "正式签约文本与批准版本关联",
-          "requirement": "P5/P6；T＝已有签署并需验证；F＝未到签约；U＝正式文本真实性／生效条件不明；SRC-005/012；F015,F035–F037,F043–F044；M006/M014/M015；将签署原件 B、各方签署者权限 A/B、学校批准对象 A 与合同全文哈希及签署日期匹配；扫描件签名图片不是密码学验签或法律生效结论；F NOTAPPLICABLE；事实匹配 PASSFACT；签约后版本不符 CONFLICT；合法生效效力 NEEDSHUMANDECISION。下一：签约管理／学校法务",
+          "requirement": "P5/P6；T＝已有签署并需验证；F＝未到签约；U＝正式文本真实性／生效条件不明；SRC-005/006/008/012；F015,F035–F037,F043–F044；M006/M014/M015；将签署原件 B、各方签署者权限 A/B、学校批准对象 A、有效授权变更、用印记录与合同全文哈希及签署日期匹配；扫描件签名图片不是密码学验签或法律生效结论；F NOT_APPLICABLE；事实匹配仅 PASS_FACT；签约后版本不符 CONFLICT；学校签约/盖章授权未核时 POLICY_UNCONFIRMED + NEEDS_HUMAN_DECISION，不得推断合同被合法批准或已生效。下一：签约管理／学校法务／用印 Owner",
           "execution": "manual",
           "targetScope": "case"
         },
@@ -1017,7 +1017,7 @@ export const templateVersion: TemplateVersion = {
         {
           "id": "R024",
           "title": "签前撤回、重提与复核意愿",
-          "requirement": "P4/P7；T＝发生撤回／复核请求；F＝没有请求；U＝申请人资格、已签约或处理权限不明；SRC-002/005/006/013；F002,F037,F040–F041；M001/M015/M018；可信事件 A 区分 REQUESTED 与 DECIDED；以申请时点判断签前或签后，签后不自动解除；校内申诉渠道及期限仍未核，外部登记复核只归 SRC-013；F NOTAPPLICABLE；请求被记录 PASSFACT（仅提交事实）；越权修改 CONFLICT；能否撤销／复核 POLICYUNCONFIRMED+人工。下一：原有权审核人／法务／登记机构（分流）",
+          "requirement": "P4/P7；T＝发生撤回／复核请求；F＝没有请求；U＝申请人资格、已签约或处理权限不明；SRC-002/005/006/013；F002,F037,F040–F041；M001/M015/M018；可信事件 A 区分 REQUESTED 与 DECIDED；以申请时点判断签前或签后，签后不自动解除；校内申诉渠道及期限仍未核，外部登记复核只归 SRC-013；F NOT_APPLICABLE；请求被记录仅 PASS_FACT（提交事实）；越权修改 CONFLICT；撤销／复核权限未核时 POLICY_UNCONFIRMED + NEEDS_HUMAN_DECISION，不得直接批准或拒绝撤回。下一：原有权审核人／法务／登记机构（分流）",
           "execution": "manual",
           "targetScope": "case"
         },
@@ -1083,7 +1083,7 @@ export const templateVersion: TemplateVersion = {
     },
     {
       "id": "stage-p5",
-      "name": "有权人工决定／签署",
+      "name": "待校本授权核验／有权人工决定（不得自动签署用印）",
       "kind": "manual-review",
       "executorRole": "reviewer",
       "nextStageId": "stage-p6",
@@ -1129,12 +1129,23 @@ export const r02Metadata = {
   "name": "横向科研合同立项与研究合同内容审核",
   "sourceDocumentPath": "docs/design/review-agent/business-templates/R02/T03-T03.md",
   "sourceOriginalPath": "docs/design/review-agent/business-templates/R02/research-original/T03-T03.md",
-  "sourceDocumentSha256": "85e3a2b66ec72c5cfe1610176378cf93395a720de76b2111c912770956a08393",
-  "sourceDocumentBytes": 118808,
+  "sourceDocumentSha256": "774fc620b867ee2bb6a85a97edd499bb3d8b51e35e6a9531a2920e30c4d257b2",
+  "sourceDocumentBytes": 123990,
+  "sourceOriginalNormalizedSha256": "85e3a2b66ec72c5cfe1610176378cf93395a720de76b2111c912770956a08393",
   "officialSchoolTemplate": false,
   "researchEvidenceStatus": "PARTIAL",
   "policyEvidenceStatus": "PARTIAL",
   "authoringStatus": "ROUND3_DRAFT",
+  "policySafetyGate": {
+    "mode": "DRAFT_FACT_REVIEW_ONLY",
+    "unconfirmedSourceIds": ["SRC-002", "SRC-003", "SRC-004", "SRC-006", "SRC-008"],
+    "humanOnlyCriterionIds": ["R003", "R004", "R017", "R018", "R019", "R020", "R024"],
+    "unknownAuthorityResult": "POLICY_UNCONFIRMED",
+    "finalDecisionOwner": "VERIFIED_SCHOOL_AUTHORITY_ONLY",
+    "signatureAndSeal": "HUMAN_VERIFICATION_REQUIRED",
+    "allowedOutputs": ["FACT_FINDINGS", "RISK_NOTES", "SUPPLEMENT_SUGGESTIONS", "HUMAN_REVIEW_TASKS"],
+    "forbiddenOutputs": ["FORMAL_APPROVAL", "FORMAL_REJECTION", "SIGNATURE_AUTHORIZATION", "SEAL_AUTHORIZATION"]
+  },
   "criteria": [
     {
       "sectionId": "review-rules",
@@ -1317,9 +1328,11 @@ export const r02Metadata = {
       "criterionId": "R020",
       "srcIds": [
         "SRC-005",
+        "SRC-006",
+        "SRC-008",
         "SRC-012"
       ],
-      "evidenceStatus": "PARTIAL"
+      "evidenceStatus": "UNCONFIRMED"
     },
     {
       "sectionId": "review-rules",
