@@ -268,6 +268,25 @@ export async function resolveSupplementV2(caseId: string, command: { requestId: 
       throw new CommandValidationError('INVALID_TRANSITION', '可信阶段补件必须先由提交方回复，再由审核员判定满足或不足')
     }
     if (payload.outcome === 'cancelled' && !payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '取消补件必须说明理由')
+    if (payload.outcome === 'satisfied' && target.materialSlotId) {
+      // Material-slot supplements are evidence claims, not merely comments.
+      // The reviewer cannot close a still-missing slot as "satisfied"; cancellation
+      // remains an explicit, reasoned waiver, and final-decision gates stay active.
+      if (target.status !== 'responded') {
+        throw new CommandValidationError('INVALID_TRANSITION', '材料槽补件必须先由提交方回复，不能直接核结为已满足')
+      }
+      const { getTemplate } = require('./template-store') as typeof import('./template-store')
+      const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
+      const slot = template?.materialSlots.find((candidate) => candidate.id === target.materialSlotId)
+      if (!slot) {
+        throw new CommandValidationError('STALE_INPUT', '当前模板已经不存在该补件材料槽，不能核结为已满足')
+      }
+      const assessment = assessMaterialSlotV2(aggregate, slot)
+      if (assessment.status !== 'compliant') {
+        throw new CommandValidationError('DEPENDENCY_UNRESOLVED',
+          `材料槽补件仍未满足：${assessment.reason}；请补充或正确归类材料，再由审核员核结。`)
+      }
+    }
     return {
       summary: `补件判定：${payload.outcome}`,
       mutate: (draft) => {

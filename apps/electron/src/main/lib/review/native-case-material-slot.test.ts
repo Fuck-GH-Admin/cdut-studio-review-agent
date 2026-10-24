@@ -13,7 +13,7 @@ const { createNativeWorkspaceCaseV3, registerNativeWorkspaceMaterialV3, reclassi
   await import('./native-workspace-case-v3')
 const { readAggregate } = await import('./case-store-v2')
 const { saveDraft, publishTemplate } = await import('./template-store')
-const { submitCaseV2, recordStageDecision } = await import('./stage-workflow')
+const { submitCaseV2, recordStageDecision, respondSupplementV2, resolveSupplementV2 } = await import('./stage-workflow')
 
 const actor = { actorId: 'local-reviewer', actorSource: 'local' as const, role: 'reviewer' as const }
 const templateId = 'slot-template'
@@ -101,6 +101,94 @@ describe('原生案卷材料槽', () => {
     expect(legacyDecision.ok).toBeFalse()
     if (!legacyDecision.ok) expect(legacyDecision.message).toContain('T05 可信阶段决定')
     expect(readAggregate(completeCaseId)?.decisions).toHaveLength(0)
+  })
+
+
+  test('材料槽补件：仅有回复不能假称已满足；补齐且绑定正确槽位后才恢复来源任务', async () => {
+    const applicationFile = join(configDir, 'supplement-application.txt')
+    const proofFile = join(configDir, 'supplement-plan.txt')
+    writeFileSync(applicationFile, '申请事项：真实实验项目', 'utf8')
+    writeFileSync(proofFile, '实验计划及证明', 'utf8')
+    const caseId = await createCase('材料槽真实补件核结')
+    await registerNativeWorkspaceMaterialV3(caseId, applicationFile, 'application', actor)
+    const submitted = await submitCaseV2(caseId)
+    expect(submitted.ok).toBe(true)
+    if (!submitted.ok) throw new Error(submitted.message)
+
+    const { submitCommand, readAggregate: current } = await import('./case-store-v2')
+    const initial = current(caseId)!
+    const sourceTask = initial.tasks.find((task) => task.status === 'open')!
+    const supplementId = 'sup-slot-' + caseId
+    const requestSnapshot = initial.caseV2.documents.map((document) => document.versionId)
+    const opened = await submitCommand(caseId, {
+      requestId: 'slot-open-' + caseId,
+      actor, expectedRevision: initial.caseV2.revision,
+      type: 'TestOpenMaterialSlotSupplement', payload: {},
+    }, () => ({
+      summary: '构造 Main 已关联真实槽位的补件请求',
+      mutate: (draft) => {
+        draft.caseV2.stage = 'awaiting-supplement'
+        draft.tasks = draft.tasks.map((task) => task.id === sourceTask.id
+          ? { ...task, status: 'completed' as const } : task)
+        draft.supplements.push({
+          id: supplementId, caseId,
+          originFindingKeys: ['system:material-slot:plan'],
+          materialSlotId: 'plan',
+          requiredElements: ['实验计划'], reason: '缺少实验计划',
+          responsibleRole: 'student', status: 'open', responses: [],
+          createdAt: new Date().toISOString(),
+          originTaskId: sourceTask.id, originStageId: sourceTask.stageId,
+          documentVersionIdsAtRequest: requestSnapshot,
+        })
+      },
+    }))
+    expect(opened.ok).toBeTrue()
+    if (!opened.ok) return
+    const student = { actorId: 'student-slot', actorSource: 'local' as const, role: 'student' as const }
+    const noteOnly = await respondSupplementV2(caseId, {
+      requestId: 'slot-note-' + caseId, actor: student,
+      expectedRevision: opened.aggregate.caseV2.revision,
+      payload: { supplementId, note: '我已经交过计划了' },
+    })
+    expect(noteOnly.ok).toBeTrue()
+    if (!noteOnly.ok) return
+
+    const denied = await resolveSupplementV2(caseId, {
+      requestId: 'slot-deny-' + caseId, actor,
+      expectedRevision: noteOnly.aggregate.caseV2.revision,
+      payload: { supplementId, outcome: 'satisfied', reason: '仅凭说明误判为已齐全' },
+    })
+    expect(denied.ok).toBeFalse()
+    if (!denied.ok) expect(denied.code).toBe('DEPENDENCY_UNRESOLVED')
+    expect(current(caseId)!.supplements.find((item) => item.id === supplementId)?.status).toBe('responded')
+    expect(current(caseId)!.caseV2.stage).toBe('awaiting-supplement')
+
+    // The new evidence must be bound to the actual template slot; merely adding
+    // an arbitrary attachment must not satisfy the supplement.
+    await registerNativeWorkspaceMaterialV3(caseId, proofFile, 'evidence', actor, undefined, 'plan')
+    const withProof = current(caseId)!
+    const proof = withProof.caseV2.documents.find((document) =>
+      document.fileName === 'supplement-plan.txt' && document.active !== false)!
+    const proofReply = await respondSupplementV2(caseId, {
+      requestId: 'slot-proof-' + caseId, actor: student,
+      expectedRevision: withProof.caseV2.revision,
+      payload: { supplementId, note: '上传补件计划', documentVersionIds: [proof.versionId] },
+    })
+    expect(proofReply.ok).toBeTrue()
+    if (!proofReply.ok) return
+
+    const accepted = await resolveSupplementV2(caseId, {
+      requestId: 'slot-accept-' + caseId, actor,
+      expectedRevision: proofReply.aggregate.caseV2.revision,
+      payload: { supplementId, outcome: 'satisfied', reason: '核对材料类别和数量均已满足' },
+    })
+    expect(accepted.ok).toBeTrue()
+    if (accepted.ok) {
+      expect(accepted.aggregate.supplements.find((item) => item.id === supplementId)?.status).toBe('satisfied')
+      expect(accepted.aggregate.caseV2.stage).toBe('reviewing')
+      expect(accepted.aggregate.tasks.some((task) =>
+        task.stageId === sourceTask.stageId && task.status === 'open')).toBeTrue()
+    }
   })
 
   test('AI 分类批次以单次事务原子应用，且不能把全部申报材料改成其他类别', async () => {
