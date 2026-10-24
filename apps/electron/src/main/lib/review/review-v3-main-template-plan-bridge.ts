@@ -12,8 +12,9 @@
  * - **不建第二套 PlanStore**：产物只是入参，安装与 Run 写入仍走
  *   `case-store-v2` / `run-store-v2` 的既有 writer。
  */
-import type {
-  CaseAggregateV2, TemplateVersion, TemplateCriterionSpec, RuleSpec,
+import {
+  REVIEW_V3_OTHER_MATERIAL_SLOT_ID,
+  type CaseAggregateV2, type TemplateVersion, type TemplateCriterionSpec, type RuleSpec,
 } from '@profer/shared'
 import {
   compilePublishedTemplateReviewPlan,
@@ -154,10 +155,15 @@ export function buildT04TargetFromCase(
     }
   }
   const materialSlots: T04PublishedTarget['materialSlots'] = {}
+  const validSlotIds=new Set((template.materialSlots??[]).map(slot=>slot.id))
+  // Empty slot counts are authoritative only after every current material has an
+  // explicit slot or the user has explicitly marked it as unrelated to this template.
+  const classificationComplete=active.length>0&&active.every(document=>
+    document.materialSlotId===REVIEW_V3_OTHER_MATERIAL_SLOT_ID||
+    (typeof document.materialSlotId==='string'&&validSlotIds.has(document.materialSlotId)))
   for (const slot of template.materialSlots ?? []) {
     const ids = active.filter((document) => document.materialSlotId === slot.id).map((document) => document.versionId)
-    // confirmed=false 表示「未核实」，与「已确认缺件」不同，不能混为 0
-    materialSlots[slot.id] = { documentVersionIds: ids, confirmed: true }
+    materialSlots[slot.id] = { documentVersionIds: ids, confirmed: classificationComplete }
   }
   return {
     scope: 'case',

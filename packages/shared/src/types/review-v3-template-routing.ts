@@ -3,6 +3,9 @@
  * JEV and the currently configured generic model implement the same deep-match port.
  * Routing is technical guidance only; it never grants policy or Case-write authority.
  */
+/** Explicit user-confirmed classification for a material that belongs to no template slot. */
+export const REVIEW_V3_OTHER_MATERIAL_SLOT_ID = '__review_other__'
+
 export type TemplateRouteTier = 'exact' | 'keyword'
 export type TemplateDeepMatchScope = 'matched' | 'out-of-scope' | 'uncertain'
 

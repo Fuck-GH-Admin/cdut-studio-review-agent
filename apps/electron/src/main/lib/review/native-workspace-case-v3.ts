@@ -4,6 +4,8 @@
  * A displayed legacy shape is NEVER a second writer or a published Plan.
  */
 import { createHash, randomUUID } from 'node:crypto'
+import { basename, join } from 'node:path'
+import { existsSync } from 'node:fs'
 import type {
   Actor, CaseAggregateV2, DocumentVersion, ReviewCase, ReviewCaseType,
   ReviewCaseV2, SourceDocument, UpdateCaseSettingsRequest, UpdateReviewItemRequest, ReviewItem, CreateNativeReviewItemV3Request,
@@ -12,9 +14,9 @@ import { createAggregate, payloadHash, readAggregate, submitCommand, CommandVali
 import { mapDomainToTemplate } from './migration'
 import { ensureBuiltinTemplateDrafts } from './builtin-templates'
 import { getTemplate, saveDraft } from './template-store'
-import { registerMaterial } from './material-service'
+import { materialsDirCaseId, registerMaterial } from './material-service'
 import { revokeCurrentSourceValidity } from './source-current-validity-v3'
-import { isKnownDomainPack, resolveDomainPack } from '@profer/shared'
+import { isKnownDomainPack, resolveDomainPack, REVIEW_V3_OTHER_MATERIAL_SLOT_ID } from '@profer/shared'
 
 export const NATIVE_CREATE_RECEIPT_V3 = 'CreateNativeWorkspaceCaseV3'
 const PENDING_TEMPLATE = 'pending-template-v3'
@@ -399,6 +401,8 @@ export async function registerNativeWorkspaceMaterialV3(
    * （提交时按槽位核对 active 材料数，槽位恒为 0）。这里补上透传。
    */
   materialSlotId?: string,
+  replacesVersionIds?: string[],
+  fileName?: string,
 ): Promise<SourceDocument> {
   const current = readAggregate(caseId)
   if (!isNativeWorkspaceCaseV3(current) || !current || current.caseV2.stage === 'archived')
@@ -407,7 +411,12 @@ export async function registerNativeWorkspaceMaterialV3(
   const result = await registerMaterial(caseId, {
     requestId: `native-register-${randomUUID().replace(/-/g, '')}`,
     actor, expectedRevision: current.caseV2.revision,
-    payload: { sourcePath, role, ...(materialSlotId ? { materialSlotId } : {}) },
+    payload: {
+      sourcePath, role,
+      ...(materialSlotId ? { materialSlotId } : {}),
+      ...(replacesVersionIds?.length ? { replacesVersionIds } : {}),
+      ...(fileName ? { fileName } : {}),
+    },
   }, authorizeAtCommit)
   if (!result.ok) throw new CommandValidationError(result.code, result.message)
   const doc = result.entity
@@ -415,6 +424,45 @@ export async function registerNativeWorkspaceMaterialV3(
   const found = view?.documents.find(candidate => candidate.id === doc?.documentId)
   if (!found) throw new Error('原生材料已写入但只读兼容投影失败，请通过 V2 材料列表查看')
   return found
+}
+
+/** Reclassify an already imported native material by creating a new immutable version.
+ * The renderer supplies only the current version ID and confirmed labels; Main resolves
+ * the stored original path, rehashes bytes and retires exactly the selected active version.
+ */
+export async function classifyNativeWorkspaceMaterialV3(input:{
+  caseId:string
+  documentVersionId:string
+  role:SourceDocument['role']
+  materialSlotId:string
+},authorizeAtCommit?:()=>void):Promise<SourceDocument>{
+  const current=readAggregate(input.caseId)
+  if(!isNativeWorkspaceCaseV3(current)||!current||current.caseV2.stage==='archived')
+    throw new CommandValidationError('INVALID_TRANSITION','案卷不存在、已归档或不是原生 V2 案卷')
+  if(!['application','evidence','rule'].includes(input.role))
+    throw new CommandValidationError('VALIDATION_FAILED','材料角色非法')
+  const document=current.caseV2.documents.find(item=>item.versionId===input.documentVersionId&&item.active!==false)
+  if(!document)throw new CommandValidationError('STALE_INPUT','材料版本已变化或不再有效，请刷新后重新分类')
+  const template=getTemplate(current.caseV2.templateId,current.caseV2.templateVersion)
+  if(!template||template.status!=='published')
+    throw new CommandValidationError('DEPENDENCY_UNRESOLVED','当前案卷没有可用于材料分类的已发布模板')
+  const slotId=input.materialSlotId
+  if(typeof slotId!=='string'||!slotId.trim()||
+      (slotId!==REVIEW_V3_OTHER_MATERIAL_SLOT_ID&&!(template.materialSlots??[]).some(slot=>slot.id===slotId)))
+    throw new CommandValidationError('VALIDATION_FAILED','材料槽位不属于当前已发布模板')
+  if(document.role===input.role&&document.materialSlotId===slotId){
+    const projected=nativeWorkspaceProjectionV3(current)?.documents.find(item=>item.versionId===document.versionId)
+    if(projected)return projected
+  }
+  if(!document.assetPath.startsWith('source-docs/'+document.versionId+'/'))
+    throw new CommandValidationError('VALIDATION_FAILED','材料原件路径与当前版本身份不一致')
+  const assetName=basename(document.assetPath)
+  const sourcePath=join(materialsDirCaseId(input.caseId),document.versionId,assetName)
+  if(!existsSync(sourcePath))throw new CommandValidationError('NOT_FOUND','案卷中找不到当前材料的已存原件')
+  return registerNativeWorkspaceMaterialV3(
+    input.caseId,sourcePath,input.role,MAIN_ACTOR,authorizeAtCommit,
+    slotId,[document.versionId],document.fileName,
+  )
 }
 
 export async function removeNativeWorkspaceDocumentsV3(
