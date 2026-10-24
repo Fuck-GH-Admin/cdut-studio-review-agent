@@ -12,3 +12,5 @@ export * from './constants/permission-rules'
 export * from './constants/browser-file-sentinels'
 export * from './constants/ofv-theme-bridge'
 export * from './constants/session-storage'
+
+export * from './review/t08-report'

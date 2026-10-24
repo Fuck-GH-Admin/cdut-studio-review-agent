@@ -4686,8 +4686,16 @@ const reviewAPI = {
   getAggregateV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_AGGREGATE_V2, caseId) as Promise<import('@profer/shared').CaseAggregateV2 | undefined>,
   updateFieldsV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.UPDATE_FIELDS_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
-  exportReportV2: (caseId: string) =>
-    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.EXPORT_REPORT_V2, caseId) as Promise<{ file: string; decision: { result: string; reason: string; at: string } | null }>,
+  getT08ReportPreviewV3: (input: { caseId: string; runId: string; audience: import('@profer/shared').T08Audience }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_T08_REPORT_PREVIEW_V3, input) as Promise<import('@profer/shared').T08ReportProjection>,
+  listT08ReportArchivesV3: (caseId: string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_T08_REPORT_ARCHIVES_V3, caseId) as Promise<import('@profer/shared').T08ReportArchiveSummary[]>,
+  getT08ReportArchiveV3: (input: { caseId: string; reportId: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_T08_REPORT_ARCHIVE_V3, input) as Promise<import('@profer/shared').T08ReportSnapshot>,
+  exportT08ReportV3: (input: { caseId: string; runId: string; audience: import('@profer/shared').T08Audience; format: import('@profer/shared').T08ReportExportFormat; expectedProjectionHash: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.EXPORT_T08_REPORT_V3, input) as Promise<import('@profer/shared').T08ReportExportReceipt>,
+  exportT08ReportArchiveV3: (input: { caseId: string; reportId: string; format: import('@profer/shared').T08ReportExportFormat }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.EXPORT_T08_REPORT_ARCHIVE_V3, input) as Promise<import('@profer/shared').T08ReportExportReceipt>,
   createAssignmentV2: (input: { sessionId: string; turnId: string; caseId?: string; templateId?: string; templateVersion?: number; actions: string[]; workRole?: 'reviewer' | 'student' }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.ASSIGNMENT_CREATE_V2, input) as Promise<{ id: string }>,
   revokeAssignmentV2: (assignmentId: string) =>

@@ -1,164 +1,224 @@
-/** T08 report workbench: no Main write, no actor spoofing, and no mixed historical runs. */
+/** T08/F16 report workbench. Only Main-projected reports cross this component boundary. */
 import * as React from 'react'
-import type { CaseAggregateV2, ReviewRunV2, TemplateVersion } from '@profer/shared'
-import { makeT08CaseReport, type T08Audience, type T08Report } from './review-v3-t08-case-report'
-import { renderT08ReportPdf } from './review-v3-t08-pdf'
-import { encodeF16ReportBundle, encodeF16ReportWorkbook, f16TextBytes } from './review-v3-f16-report-delivery'
+import type {
+  T08Audience, T08ReportArchiveSummary, T08ReportExportFormat,
+  T08ReportProjection, T08ReportSnapshot, T08ReportExportReceipt,
+} from '@profer/shared'
 
-interface Props {
-  aggregate: CaseAggregateV2 | null
-  currentRun: ReviewRunV2 | null
-  currentStale: boolean
-  template: TemplateVersion | null
-}
+interface Props { caseId: string; currentRunId?: string }
 
-function safeFilename(name: string): string {
-  return name.replace(/[^\p{L}\p{N}._-]+/gu, '_').slice(0, 80)
-}
-function htmlReport(body: string): string {
-  const encoded = body.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-  return '<!doctype html><html lang="zh"><meta charset="utf-8"><title>审核报告</title>' +
-    '<style>body{font:14px/1.65 system-ui,sans-serif;max-width:850px;margin:40px auto;padding:0 24px;white-space:pre-wrap}'+
-    '@page{size:A4;margin:18mm}@media print{body{margin:0;padding:0}}</style><body>'+encoded+'</body></html>'
-}
-function saveBlob(data: Blob, filename: string): void {
-  const url = URL.createObjectURL(data)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = filename
-  document.body.appendChild(link)
-  link.click()
-  link.remove()
-  window.setTimeout(() => URL.revokeObjectURL(url), 60_000)
+const formats: Array<{ value: T08ReportExportFormat; label: string }> = [
+  { value: 'md', label: 'Markdown 报告' },
+  { value: 'json', label: 'JSON 结构化报告' },
+  { value: 'xlsx', label: 'XLSX 检查与来源表' },
+  { value: 'html', label: 'HTML 可打印版' },
+  { value: 'pdf', label: 'PDF（可检索文字）' },
+  { value: 'bundle', label: '只读交接 ZIP（含哈希清单）' },
+]
+
+function isArchivedProjection(value: T08ReportProjection | T08ReportSnapshot): value is T08ReportSnapshot {
+  return 'reportId' in value && 'snapshotHash' in value
 }
 
-async function reportBundle(report: T08Report): Promise<Blob> {
-  const workbook = await encodeF16ReportWorkbook(report)
-  const pdf = renderT08ReportPdf(report.markdown, '审核报告 · ' + report.runId)
-  const files = [
-    { name: 'report.md', bytes: f16TextBytes(report.markdown) },
-    { name: 'report.json', bytes: f16TextBytes(report.json) },
-    { name: 'report.html', bytes: f16TextBytes(htmlReport(report.markdown)) },
-    { name: 'report.xlsx', bytes: workbook },
-    { name: 'report.pdf', bytes: pdf },
-  ]
-  const bytes = await encodeF16ReportBundle(report, files)
-  const buffer = new ArrayBuffer(bytes.byteLength)
-  new Uint8Array(buffer).set(bytes)
-  return new Blob([buffer], { type: 'application/zip' })
+function receiptNotice(receipt: T08ReportExportReceipt): string {
+  if (receipt.status === 'cancelled') {
+    return '已保留不可变报告档案 ' + receipt.reportId + '，但你取消了外部保存；未将其标记为已导出。档案位置：' + receipt.archivePath
+  }
+  return '报告已保存：' + receipt.filePath + '。档案 ID：' + receipt.reportId + '；快照哈希：' + receipt.snapshotHash
 }
 
-export function ReviewV3T08ReportPanel({ aggregate, currentRun, currentStale, template }: Props): React.ReactElement {
-  const [runs, setRuns] = React.useState<ReviewRunV2[]>([])
-  const [selectedId, setSelectedId] = React.useState('')
+export function ReviewV3T08ReportPanel({ caseId, currentRunId }: Props): React.ReactElement {
+  const [runs, setRuns] = React.useState<Array<{ id: string; status: string; startedAt: string }>>([])
+  const [selectedRunId, setSelectedRunId] = React.useState(currentRunId ?? '')
   const [audience, setAudience] = React.useState<T08Audience>('student')
-  const [format, setFormat] = React.useState<'md' | 'json' | 'xlsx' | 'html' | 'pdf' | 'bundle'>('md')
+  const [format, setFormat] = React.useState<T08ReportExportFormat>('md')
+  const [projection, setProjection] = React.useState<T08ReportProjection | T08ReportSnapshot | null>(null)
+  const [archives, setArchives] = React.useState<T08ReportArchiveSummary[]>([])
+  const [selectedArchiveId, setSelectedArchiveId] = React.useState('')
+  const [viewingArchive, setViewingArchive] = React.useState(false)
   const [busy, setBusy] = React.useState(false)
+  const [previewError, setPreviewError] = React.useState('')
   const [notice, setNotice] = React.useState('')
-  const caseId = aggregate?.caseV2.id ?? ''
+
+  const refreshArchives = React.useCallback(async (): Promise<void> => {
+    if (!caseId) { setArchives([]); return }
+    try {
+      setArchives(await window.reviewAPI.listT08ReportArchivesV3(caseId))
+    } catch (error) {
+      setNotice('报告档案列表读取失败：' + (error instanceof Error ? error.message : String(error)))
+    }
+  }, [caseId])
 
   React.useEffect(() => {
-    setRuns(currentRun ? [currentRun] : [])
-    setSelectedId(currentRun?.id ?? '')
+    setProjection(null)
+    setPreviewError('')
     setNotice('')
-    if (!caseId) return
+    setViewingArchive(false)
+    setSelectedRunId(currentRunId ?? '')
+    if (!caseId) { setRuns([]); setArchives([]); return }
     let active = true
-    void window.reviewAPI.listRunsV2(caseId).then((history) => {
+    void Promise.all([
+      window.reviewAPI.listRunsV2(caseId),
+      window.reviewAPI.listT08ReportArchivesV3(caseId),
+    ]).then(([history, saved]) => {
       if (!active) return
-      setRuns((previous) => [...new Map([...history, ...previous].map((run) => [run.id, run])).values()])
+      setRuns(history.map((run) => ({ id: run.id, status: run.status, startedAt: run.startedAt })))
+      setArchives(saved)
+      if (!currentRunId) setSelectedRunId(history[0]?.id ?? '')
+      setSelectedArchiveId(saved.find((item) => item.valid)?.reportId ?? '')
     }).catch((error) => {
-      if (active) setNotice('历史运行列表暂不可用：' + String(error))
+      if (active) setPreviewError('历史记录加载失败：' + (error instanceof Error ? error.message : String(error)))
     })
     return () => { active = false }
-  }, [caseId, currentRun?.id])
+  }, [caseId, currentRunId])
 
-  const run = runs.find((item) => item.id === selectedId) ?? currentRun
-  const isHistorical = !!run && (run.id !== currentRun?.id || currentStale)
-  const report = React.useMemo(() => {
-    if (!aggregate || !run) return null
-    try { return makeT08CaseReport({ aggregate, run, audience, template, stale: isHistorical }) }
-    catch { return null }
-  }, [aggregate, run, audience, template, isHistorical])
+  React.useEffect(() => {
+    if (!caseId || !selectedRunId || viewingArchive) {
+      if (!viewingArchive) setProjection(null)
+      return
+    }
+    let active = true
+    setProjection(null)
+    setPreviewError('')
+    void window.reviewAPI.getT08ReportPreviewV3({ caseId, runId: selectedRunId, audience })
+      .then((value) => { if (active) setProjection(value) })
+      .catch((error) => {
+        if (active) {
+          setProjection(null)
+          setPreviewError('无法生成受控报告预览：' + (error instanceof Error ? error.message : String(error)))
+        }
+      })
+    return () => { active = false }
+  }, [caseId, selectedRunId, audience, viewingArchive])
 
-  const exportFile = async (): Promise<void> => {
-    if (!report) return
+  const report = projection?.report ?? null
+  const archived = projection ? isArchivedProjection(projection) : false
+  const archivePath = archived ? archives.find((item) => item.reportId === projection.reportId)?.archivePath : undefined
+
+  const openArchive = async (): Promise<void> => {
+    if (!caseId || !selectedArchiveId) return
     setBusy(true)
     setNotice('')
     try {
-      const filename = safeFilename(report.caseId + '-' + report.runId + '-' + audience)
-      if (format === 'bundle') {
-        saveBlob(await reportBundle(report), filename + '-delivery.zip')
-      } else if (format === 'pdf') {
-        const pdf = renderT08ReportPdf(report.markdown, '审核报告 · ' + report.runId)
-        const buffer = new ArrayBuffer(pdf.length)
-        new Uint8Array(buffer).set(pdf)
-        saveBlob(new Blob([buffer], { type: 'application/pdf' }), filename + '.pdf')
-      } else if (format === 'xlsx') {
-        const workbook = await encodeF16ReportWorkbook(report)
-        const buffer = new ArrayBuffer(workbook.length)
-        new Uint8Array(buffer).set(workbook)
-        saveBlob(new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }), filename + '.xlsx')
-      } else {
-        const text = format === 'json' ? report.json : format === 'html' ? htmlReport(report.markdown) : report.markdown
-        const mime = format === 'json' ? 'application/json' : format === 'html' ? 'text/html' : 'text/markdown'
-        saveBlob(new Blob([text], { type: mime + ';charset=utf-8' }), filename + '.' + format)
-      }
-      setNotice(format === 'pdf' ? '已生成真实 PDF 文件并请求下载。此版本以图片页保留中文，不支持选中文字；请确认文件保存。' :
-        format === 'html' ? '已请求保存可打印 HTML；打开后可打印为可检索文字的 PDF。' :
-        format === 'bundle' ? '已请求下载只读交接 ZIP（含五种报告格式与 SHA-256 清单）；请确认文件保存。' :
-          '已向系统提交文件下载，请确认保存结果。')
+      const snapshot = await window.reviewAPI.getT08ReportArchiveV3({ caseId, reportId: selectedArchiveId })
+      setProjection(snapshot)
+      setSelectedRunId(snapshot.runId)
+      setAudience(snapshot.audience)
+      setViewingArchive(true)
+      setPreviewError('')
+      setNotice('已打开不可变报告档案 ' + snapshot.reportId + '；显示的是当时保存的报告内容，不会用当前案卷重新拼装。')
     } catch (error) {
-      setNotice('导出未完成：' + (error instanceof Error ? error.message : String(error)))
+      setPreviewError('归档报告无法验证或打开：' + (error instanceof Error ? error.message : String(error)))
     } finally { setBusy(false) }
   }
+
+  const exportFile = async (): Promise<void> => {
+    if (!projection || !report || !caseId) return
+    setBusy(true)
+    setNotice('')
+    try {
+      const receipt = archived
+        ? await window.reviewAPI.exportT08ReportArchiveV3({ caseId, reportId: projection.reportId, format })
+        : await window.reviewAPI.exportT08ReportV3({
+          caseId, runId: projection.runId, audience: projection.audience, format,
+          expectedProjectionHash: projection.projectionHash,
+        })
+      setNotice(receiptNotice(receipt))
+      if (!archived) {
+        const snapshot = await window.reviewAPI.getT08ReportArchiveV3({ caseId, reportId: receipt.reportId })
+        setProjection(snapshot)
+        setSelectedArchiveId(snapshot.reportId)
+        setViewingArchive(true)
+      }
+      await refreshArchives()
+    } catch (error) {
+      setNotice('报告导出未完成：' + (error instanceof Error ? error.message : String(error)) + '。若档案已创建，可在报告档案列表中重新打开。')
+      await refreshArchives()
+    } finally { setBusy(false) }
+  }
+
   const copy = async (): Promise<void> => {
     if (!report) return
-    try { await navigator.clipboard.writeText(report.markdown); setNotice('已复制所选报告的 Markdown 文本。') }
-    catch (error) { setNotice('复制失败：' + String(error)) }
+    try {
+      await navigator.clipboard.writeText(report.markdown)
+      setNotice('已复制当前受众投影的 Markdown；复制不代表正式签发或外部送达。')
+    } catch (error) {
+      setNotice('复制失败：' + (error instanceof Error ? error.message : String(error)))
+    }
   }
 
   return <section className="space-y-3 text-xs" aria-label="案卷报告">
-    {!aggregate || !run || !report
-      ? <p className="rounded border border-border p-3 text-muted-foreground">当前案卷还没有可用的审核运行。</p>
+    {!caseId
+      ? <p className="rounded border border-border p-3 text-muted-foreground">请先打开一份原生案卷。</p>
       : <>
-        <div className="rounded-md bg-muted/50 p-2 leading-5">
-          <strong className="block">所选运行 {run.id}</strong>
-          <span>状态：{run.status} · 有效判断 {run.coverage.effectiveVerdicts}/{run.coverage.plannedChecks} · 待处理 {run.coverage.pendingChecks}</span>
-          <p className="text-muted-foreground">输出绑定该 Run 的 inputManifest；模型意见不等于正式决定。</p>
-          {report.stale && <p className="text-amber-700 dark:text-amber-400">历史/过期运行：未冻结的当前案卷字段及补件不会混入该次报告。</p>}
+        <div className="space-y-2 rounded-md bg-muted/50 p-2 leading-5">
+          <strong className="block">T08 / F16 报告工作台</strong>
+          <p className="text-muted-foreground">报告内容由 Main 从所选 Run、模板版本和关联决定生成。技术检查、模型意见与业务决定分别呈现；导出只读，不会写入或替代决定。</p>
+          {projection && <>
+            <p>案卷：{projection.caseTitle} · revision {projection.caseRevision}</p>
+            <p>Run：{projection.runId} · {report?.status} · {report?.rows.length ?? 0} 条报告记录</p>
+            <p>受众：{projection.audience} · 输入：{projection.inputHash.slice(0, 16)}…</p>
+            <p>关联决定：{projection.decisionIds.length} 条 · {projection.historical ? '历史/过期' : '当前输入'}</p>
+            {archived
+              ? <p>报告档案：{projection.reportId} · 快照哈希 {projection.snapshotHash.slice(0, 16)}…</p>
+              : <p>预览指纹：{projection.projectionHash.slice(0, 16)}…；导出前 Main 会重新计算并拒绝过期预览。</p>}
+            {projection.historical && <p className="text-amber-700 dark:text-amber-400">该报告是历史或过期输入的只读记录，不代表案卷当前状态。</p>}
+            {archived && archivePath && <p>本地档案位置：{archivePath}</p>}
+          </>}
         </div>
+
         <label className="block space-y-1">选择运行
-          <select className="w-full rounded border border-border bg-background p-2" value={run.id} onChange={(event) => setSelectedId(event.target.value)}>
-            {runs.map((entry) => <option value={entry.id} key={entry.id}>{entry.id} / {entry.status} / {entry.startedAt}</option>)}
+          <select className="w-full rounded border border-border bg-background p-2" value={selectedRunId}
+            onChange={(event) => { setViewingArchive(false); setProjection(null); setSelectedRunId(event.target.value) }}>
+            {runs.map((run) => <option value={run.id} key={run.id}>{run.id} / {run.status} / {run.startedAt}</option>)}
           </select>
         </label>
-        <label className="block space-y-1">查看角色
-          <select className="w-full rounded border border-border bg-background p-2" value={audience} onChange={(event) => setAudience(event.target.value as T08Audience)}>
-            <option value="student">学生 / 申请人（不含内部意见）</option>
-            <option value="reviewer">审核人（含内部核对）</option>
-            <option value="organizer">组织者（含内部核对）</option>
+        <label className="block space-y-1">报告受众
+          <select className="w-full rounded border border-border bg-background p-2" value={audience}
+            onChange={(event) => { setViewingArchive(false); setProjection(null); setAudience(event.target.value as T08Audience) }}>
+            <option value="student">学生 / 申请人（公开投影）</option>
+            <option value="reviewer">审核人（内部核对）</option>
+            <option value="organizer">组织者（内部核对）</option>
           </select>
         </label>
-        <div className="space-y-1">
-          <label htmlFor="t08-export-format">导出格式</label>
-          <select id="t08-export-format" className="w-full rounded border border-border bg-background p-2" value={format} onChange={(event) => setFormat(event.target.value as typeof format)}>
-            <option value="md">Markdown 报告</option>
-            <option value="json">JSON 结构化交接</option>
-            <option value="xlsx">XLSX 检查与来源表</option>
-            <option value="html">HTML 打印版（可打印为 PDF）</option>
-            <option value="pdf">PDF 文件（A4 分页，中文图片页）</option>
-            <option value="bundle">只读交接 ZIP（报告 + 哈希清单）</option>
+        <label className="block space-y-1">导出格式
+          <select className="w-full rounded border border-border bg-background p-2" value={format}
+            onChange={(event) => setFormat(event.target.value as T08ReportExportFormat)}>
+            {formats.map((item) => <option value={item.value} key={item.value}>{item.label}</option>)}
           </select>
+        </label>
+        <div className="flex flex-wrap gap-2">
+          <button type="button" disabled={busy || !report} onClick={() => void exportFile()}
+            className="rounded bg-primary px-3 py-2 text-primary-foreground disabled:opacity-50">导出并归档</button>
+          <button type="button" disabled={!report} onClick={() => void copy()}
+            className="rounded border border-border px-3 py-2 disabled:opacity-50">复制 MD</button>
         </div>
-        <div className="flex gap-2">
-          <button type="button" disabled={busy} onClick={() => void exportFile()} className="rounded bg-primary px-3 py-2 text-primary-foreground disabled:opacity-50">导出所选版本</button>
-          <button type="button" onClick={() => void copy()} className="rounded border border-border px-3 py-2">复制 MD</button>
+
+        <div className="space-y-2 rounded border border-border p-2">
+          <strong>历史报告档案</strong>
+          <label className="block space-y-1">选择已归档报告
+            <select className="w-full rounded border border-border bg-background p-2" value={selectedArchiveId}
+              onChange={(event) => setSelectedArchiveId(event.target.value)}>
+              <option value="">选择一个档案</option>
+              {archives.map((item) => <option value={item.reportId} key={item.reportId} disabled={!item.valid}>
+                {item.createdAt} · {item.runId} · {item.audience} · {item.valid ? '可验证' : '损坏'}
+              </option>)}
+            </select>
+          </label>
+          <div className="flex flex-wrap gap-2">
+            <button type="button" disabled={busy || !selectedArchiveId || !archives.some((item) => item.reportId === selectedArchiveId && item.valid)}
+              onClick={() => void openArchive()} className="rounded border border-border px-3 py-2 disabled:opacity-50">打开归档报告</button>
+            {viewingArchive && <button type="button" disabled={busy} onClick={() => { setViewingArchive(false); setProjection(null) }}
+              className="rounded border border-border px-3 py-2">返回当前预览</button>}
+          </div>
         </div>
-        {notice && <p role="status" className="text-muted-foreground">{notice}</p>}
-        <details>
-          <summary className="cursor-pointer">预览报告（{report.rows.length} 条记录）</summary>
-          <pre className="max-h-72 overflow-auto whitespace-pre-wrap break-words rounded bg-muted p-2 text-[11px]">{report.markdown}</pre>
-        </details>
+
+        {previewError && <p role="alert" className="rounded border border-destructive/40 p-2 text-destructive">{previewError}</p>}
+        {notice && <p role="status" className="rounded border border-border p-2 text-muted-foreground">{notice}</p>}
+        {report && <details open className="rounded border border-border">
+          <summary className="cursor-pointer p-2">报告预览（{report.rows.length} 条记录）</summary>
+          <pre className="max-h-96 overflow-auto whitespace-pre-wrap break-words border-t border-border bg-muted/30 p-3 text-[11px]">{report.markdown}</pre>
+        </details>}
       </>}
   </section>
 }
