@@ -113,6 +113,9 @@ export function ReviewV3UnifiedRun({ caseId, stage, documentCount, technicalPlan
       // Create the durable request BEFORE importing, so its material-version
       // baseline excludes the incoming file and F12 can verify the response.
       await createInitialSupplementRequests()
+      // Refresh the durable request before opening the picker, so cancellation
+      // does not leave a newly-created request invisible until a manual refresh.
+      await onUpdated()
       const imported=await window.reviewAPI.pickRegisterMaterialV2({
         caseId,role:'evidence',materialSlotId:slotId,
       })
@@ -120,6 +123,8 @@ export function ReviewV3UnifiedRun({ caseId, stage, documentCount, technicalPlan
         setRunStale(true)
         setMessage('补件请求已持久化，原件已登记。请在下方“补件周期”将新材料关联为回复并等待人工核验，再更新审核生成新 Run。')
         await onUpdated()
+      }else{
+        setMessage('补件请求已持久化；本次未选择新材料。可稍后在下方“补件周期”提交回复。')
       }
     }catch(cause){setPiError(cause instanceof Error?cause.message:String(cause))}
     finally{setSupplementBusy(false)}
