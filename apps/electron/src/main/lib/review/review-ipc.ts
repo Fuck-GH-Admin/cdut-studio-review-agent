@@ -639,11 +639,36 @@ export function registerReviewIpc(): void {
     const { updateFieldsC0 } = require('./review-c0-case-service') as typeof import('./review-c0-case-service')
     return updateFieldsC0(command as Parameters<typeof updateFieldsC0>[0])
   })
-  ipcMain.handle(REVIEW_IPC_CHANNELS.EXPORT_REPORT_V2, (_e, caseId: string) => {
-    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
-    // 薄委托共享导出服务（08 设计：IPC 与 Agent 工具同服务函数）
-    const { exportCaseReport } = require('./report-export-v2-service') as typeof import('./report-export-v2-service')
-    return exportCaseReport(caseId)
+  // T08/F16: Main owns source selection, audience projection, immutable snapshots and native file delivery.
+  ipcMain.handle(REVIEW_IPC_CHANNELS.GET_T08_REPORT_PREVIEW_V3, (event, input: { caseId: string; runId: string; audience: import('@profer/shared').T08Audience }) => {
+    assertC0ReviewMainSender(event)
+    const { getT08ReportPreviewV3 } = require('./review-v3-report-service') as typeof import('./review-v3-report-service')
+    return getT08ReportPreviewV3(input)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_T08_REPORT_ARCHIVES_V3, (event, caseId: string) => {
+    assertC0ReviewMainSender(event)
+    const { listT08ReportArchivesV3 } = require('./review-v3-report-service') as typeof import('./review-v3-report-service')
+    return listT08ReportArchivesV3(caseId)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.GET_T08_REPORT_ARCHIVE_V3, (event, input: { caseId: string; reportId: string }) => {
+    assertC0ReviewMainSender(event)
+    const { getT08ReportArchiveV3 } = require('./review-v3-report-service') as typeof import('./review-v3-report-service')
+    return getT08ReportArchiveV3(input)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.EXPORT_T08_REPORT_V3, async (event, input: {
+    caseId: string; runId: string; audience: import('@profer/shared').T08Audience;
+    format: import('@profer/shared').T08ReportExportFormat; expectedProjectionHash: string
+  }) => {
+    assertC0ReviewMainSender(event)
+    const { exportT08ReportV3 } = require('./review-v3-report-service') as typeof import('./review-v3-report-service')
+    return exportT08ReportV3(input)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.EXPORT_T08_REPORT_ARCHIVE_V3, async (event, input: {
+    caseId: string; reportId: string; format: import('@profer/shared').T08ReportExportFormat
+  }) => {
+    assertC0ReviewMainSender(event)
+    const { exportT08ReportArchiveV3 } = require('./review-v3-report-service') as typeof import('./review-v3-report-service')
+    return exportT08ReportArchiveV3(input)
   })
   // ===== C1：审核操作可信指派（显式指派是 Agent 写权限唯一来源） =====
   ipcMain.handle(REVIEW_IPC_CHANNELS.ASSIGNMENT_CREATE_V2, (_e, input: { sessionId: string; turnId: string; caseId?: string; templateId?: string; templateVersion?: number; actions: string[]; workRole?: 'reviewer' | 'student' }) => {

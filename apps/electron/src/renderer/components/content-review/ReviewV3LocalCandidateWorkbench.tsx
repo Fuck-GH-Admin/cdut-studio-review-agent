@@ -242,8 +242,19 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
       const fresh=await window.reviewAPI.getAggregateV2(localCaseId)
       if(!fresh||fresh.caseV2.id!==localCaseId)
         throw new Error('案卷不存在；请重新读取当前原生案卷')
-      const exported=await window.reviewAPI.exportReportV2(localCaseId)
-      setCaseNotice('已生成本地 Markdown 报告：'+exported.file)
+      const runs=await window.reviewAPI.listRunsV2(localCaseId)
+      const selectedRun=nativeRun??runs[0]
+      if(!selectedRun)throw new Error('当前案卷还没有可导出的审核运行')
+      const projection=await window.reviewAPI.getT08ReportPreviewV3({
+        caseId:localCaseId,runId:selectedRun.id,audience:'reviewer',
+      })
+      const receipt=await window.reviewAPI.exportT08ReportV3({
+        caseId:localCaseId,runId:selectedRun.id,audience:'reviewer',format:'md',
+        expectedProjectionHash:projection.projectionHash,
+      })
+      setCaseNotice(receipt.status==='saved'
+        ? '已保存本地 Markdown 报告：'+receipt.filePath
+        : '报告已归档，但外部保存已取消：'+receipt.archivePath)
     }catch(e){setCaseError(e instanceof Error?e.message:String(e))}
     finally{setCaseBusy(false)}
   }
@@ -434,7 +445,7 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
         <button type="button" className="rounded border border-primary/50 px-3 py-2 text-sm disabled:opacity-50"
           disabled={caseBusy} onClick={()=>void openCase()}>打开本案复核与人工办理</button>
       </div>
-      {nativeRun&&<ReviewV3T08ReportPanel aggregate={nativeAggregate} currentRun={nativeRun} currentStale={nativeRunStale} template={null}/>}
+      {nativeRun&&<ReviewV3T08ReportPanel caseId={localCaseId} currentRunId={nativeRun?.id}/>}
       {!nativeRun&&<p className="text-xs text-muted-foreground">本案尚无真实运行，完成审核后可在这里直接下载报告。</p>}
     </div>}
     <details className="rounded-lg border border-border px-3 py-2">

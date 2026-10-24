@@ -138,7 +138,7 @@ Electron 窗口与所有未保存状态一起丢失。
 
 判定口径（不混用）：**PASS_SCOPED** = 代码已合入 + 该功能定向测试在新 main 通过；
 **WIRED** = 有真实用户入口且 Main 端口接通；**JOURNEY_VERIFIED** = 真机 Electron 走过完整用户路径；
-**BLOCKED_EXTERNAL** = 需学校正式接口；**NOT_RUN** = 未实测。
+**BLOCKED_EXTERNAL** = 需学校正式接口；**NOT_RUN** = 未实测；\n**PR_CI_PASS** = 当前 PR 分支定向 CI 与类型/构建通过，但尚未合入 main；不等于 GUI 用户旅程验收通过。
 
 | F | 功能 | 代码位置 | 定向测试 | 入口 | 状态 |
 |---|---|---|---|---|---|
@@ -157,7 +157,7 @@ Electron 窗口与所有未保存状态一起丢失。
 | F13 | 申诉、撤回与独立复审 | `review-v3-f13-*` | 2 个 `review-v3-f13-*` 测试 | 案卷办理 | PASS_SCOPED；**正式申诉 Main 端口仍 CONTRACT_BLOCKED**（改判需 teacher，本地无此身份） |
 | F14 | 批次工作清单 | `review-v3-f14-batch-worklist.ts` | `review-v3-f14-batch-worklist.test.ts` | 批次管理 | PASS_SCOPED / WIRED |
 | F15 | 独立评委、回避、排名、定稿 | `review-v3-t07-*` + `review-v3-t07-main-service.ts` | `review-v3-t07-rating-workflow/round-setup/main-service` | 批次区评委工作台 | **JOURNEY_VERIFIED**（双评委→排名→定稿真机 + 冷重启） |
-| F16 | 报告格式与投递 | `content-review/review-v3-f16-report-delivery.ts` | `review-v3-f16-report-delivery.test.ts` | 导出报告 | PASS_SCOPED |
+| F16 | 报告格式与投递 | `review-v3-report-service.ts` + `packages/shared/src/review/t08-report.ts` | `review-v3-report-service.test.ts` + `review-v3-t08-case-report.test.ts` | T08 Main 快照 / 归档 / 原生导出 | **PR_CI_PASS / WIRED**（PR #250；CI 全绿；真实 Electron GUI / 原生保存对话框 NOT_RUN） |
 | F17 | 助手建议与来源落地 | `review-v3-f17-grounding/patch` | 2 个 `review-v3-f17-*` 测试 | 审核助手 | PASS_SCOPED |
 | F18 | 离线往返与 SchoolPort | `review-v3-t09-*`、`review-v3-f18-school-profile.ts` | `review-v3-t09-offline-codec/main-service`、`review-v3-f18-school-profile` | 离线任务包 | PASS_SCOPED / WIRED；**学校正式联调 S01–S03 BLOCKED_EXTERNAL** |
 

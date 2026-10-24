@@ -520,19 +520,22 @@ export function buildReviewOpsTools(sdk: PiSdk, ctx: ReviewOpsToolsContext): Too
     tools.push(sdk.defineTool({
       name: 'review_export_report',
       label: '导出审核报告',
-      description: '导出案卷审核报告（MD）到案卷受控目录 reports/，返回文件路径。产物经应用内入口查看。',
+      description: '将指定 Run 的审核人版报告投影并归档到 reports-v3/，返回只读档案与 Markdown 文件路径；不触发 GUI 保存对话框。',
       parameters: Type.Object({
         ...AssignmentParam,
         caseId: Type.String({ minLength: 4 }),
+        runId: Type.String({ minLength: 4 }),
       }),
       async execute(_id, params) {
         try {
-          const input = params as { assignmentId: string; caseId: string }
+          const input = params as { assignmentId: string; caseId: string; runId: string }
           const guard = requireAssignment(input.assignmentId, 'export-report')
           const assignment = guard.assignment!
           if (assignment.caseId && assignment.caseId !== input.caseId) return result({ error: `指派绑定的是案卷 ${assignment.caseId}` }, true)
-          const { exportCaseReport } = require('../review/report-export-v2-service') as typeof import('../review/report-export-v2-service')
-          return result(exportCaseReport(input.caseId))
+          const { archiveT08ReportV3 } = require('../review/review-v3-report-service') as typeof import('../review/review-v3-report-service')
+          return result(archiveT08ReportV3({ caseId: input.caseId, runId: input.runId, audience: 'reviewer' }, {
+            createdBy: { actorId: 'agent-assignment:' + input.assignmentId, actorSource: 'agent', role: 'reviewer' },
+          }))
         } catch (error) {
           return result({ error: error instanceof Error ? error.message : String(error) }, true)
         }

@@ -476,7 +476,7 @@ export function V2CasePanel({ onCaseOpened }: { onCaseOpened?: (caseId: string) 
             />
             {latestRun && <details className="rounded-md border border-border/60 px-3 py-2">
               <summary className="cursor-pointer text-xs font-semibold">查看与导出本案审核报告</summary>
-              <ReviewV3T08ReportPanel aggregate={current} currentRun={latestRun} currentStale={latestRunStale} template={currentTemplate ?? null} />
+              <ReviewV3T08ReportPanel caseId={current.caseV2.id} currentRunId={latestRun.id} />
             </details>}
             <ReviewV3T05HumanWorkflow
               aggregate={current}
