@@ -82,15 +82,22 @@ export function RunResultPanel({ caseId, refreshNonce }: { caseId: string; refre
   useEffect(() => { void load() }, [load, refreshNonce])
 
   /** 触发真实审核运行（RUN_REVIEW_V2 四层：真实渠道 + 真实执行器） */
-  /** 导出报告：真实调用 EXPORT_REPORT_V2（公开反馈投影 + 检查结果落盘 MD） */
+  /** 导出所选最新 Run：使用 Main-owned T08 预览指纹与原生保存回执。 */
   const exportReport = useCallback(async (): Promise<void> => {
     try {
-      const result = await window.reviewAPI.exportReportV2(caseId)
-      toast.success(`报告已导出：${result.file}`)
+      const run = runs[0]
+      if (!run) throw new Error('当前案卷没有可导出的审核运行')
+      const audience = 'student' as const
+      const projection = await window.reviewAPI.getT08ReportPreviewV3({ caseId, runId: run.id, audience })
+      const receipt = await window.reviewAPI.exportT08ReportV3({
+        caseId, runId: run.id, audience, format: 'md', expectedProjectionHash: projection.projectionHash,
+      })
+      if (receipt.status === 'saved') toast.success('报告已保存：' + receipt.filePath)
+      else toast.info('报告已归档，但外部保存已取消：' + receipt.archivePath)
     } catch (error) {
       toast.error(`导出失败：${error instanceof Error ? error.message : String(error)}`)
     }
-  }, [caseId])
+  }, [caseId, runs])
 
   const startRun = useCallback(async (): Promise<void> => {
     setRunning(true)

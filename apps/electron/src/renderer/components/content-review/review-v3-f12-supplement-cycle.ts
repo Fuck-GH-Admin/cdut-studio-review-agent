@@ -51,8 +51,10 @@ export function buildF12SupplementCycle(aggregate: CaseAggregateV2): F12Suppleme
     awaitingReply: unresolved.filter((request) => request.status !== 'responded'),
     awaitingVerification: unresolved.filter((request) => request.status === 'responded'),
     checklist: [...byElement.values()],
-    readyForReview: allClosed && ['reviewing', 'awaiting-review'].includes(aggregate.caseV2.stage)
-      && requests.some((request) => request.status === 'satisfied'),
+    readyForReview: allClosed && (
+      ['reviewing', 'awaiting-review'].includes(aggregate.caseV2.stage)
+      || requests.some((request) => Boolean(request.originRunId))
+    ) && requests.some((request) => request.status === 'satisfied'),
     stageStillAwaitingSupplement: allClosed && aggregate.caseV2.stage === 'awaiting-supplement',
   }
 }

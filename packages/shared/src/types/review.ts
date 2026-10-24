@@ -516,6 +516,7 @@ export const REVIEW_IPC_CHANNELS = {
   AUTHOR_FREEZE_LOCAL_V3: 'review-v3:author-freeze-local',
   /** Real Main-scoped native Case physical B2/B30 materials + B3 candidate routing. */
   LOCAL_PRODUCT_CURRENT_V3: 'review-v3:local-product-current',
+  LOCAL_PRODUCT_DEEP_MATCH_V3: 'review-v3:local-product-deep-match',
   LOCAL_PRODUCT_INTERRUPT_V3: 'review-v3:local-product-interrupt',
   LOCAL_PRODUCT_MANUAL_CHOICE_V3: 'review-v3:local-product-manual-choice',
   LOCAL_PRODUCT_UNMATCHED_V3: 'review-v3:local-product-unmatched',
@@ -575,10 +576,15 @@ export const REVIEW_IPC_CHANNELS = {
   SEED_FIXTURE_V2: 'review-v2:seed-fixture',
   CREATE_CASE_V2: 'review-v2:create-case',
   GET_AGGREGATE_V2: 'review-v2:get-aggregate',
+  /** T08/F16 Main-owned, audience-filtered report snapshot and immutable archive. */
+  GET_T08_REPORT_PREVIEW_V3: 'review-v3:t08-report-preview',
+  LIST_T08_REPORT_ARCHIVES_V3: 'review-v3:t08-report-archives-list',
+  GET_T08_REPORT_ARCHIVE_V3: 'review-v3:t08-report-archive-get',
+  EXPORT_T08_REPORT_V3: 'review-v3:t08-report-export',
+  EXPORT_T08_REPORT_ARCHIVE_V3: 'review-v3:t08-report-archive-export',
   UPDATE_FIELDS_V2: 'review-v2:update-fields',
   CORRECT_OBSERVATION_V2: 'review-v2:correct-observation',
   GET_RUN_OBSERVATIONS_V2: 'review-v2:get-run-observations',
-  EXPORT_REPORT_V2: 'review-v2:export-report',
   ASSIGNMENT_CREATE_V2: 'review-v2:assignment-create',
   ASSIGNMENT_REVOKE_V2: 'review-v2:assignment-revoke',
   ASSIGNMENT_LIST_V2: 'review-v2:assignment-list',
@@ -654,6 +660,13 @@ export const REVIEW_IPC_CHANNELS = {
   SUBMIT_CASE_V2: 'review-v2:submit-case',
   PICK_REGISTER_MATERIAL_V2: 'review-v2:pick-register-material',
   REGISTER_MATERIAL_PATH_V2: 'review-v2:register-material-path',
+  /** 兼容入口：Main 以已有版本的原子分类回执记录变更，不覆盖原件字节。 */
+  CLASSIFY_NATIVE_MATERIAL_V3: 'review-v3:classify-native-material',
+  /** 初审材料缺件转为持久补件请求，不改变正式业务阶段。 */
+  OPEN_INITIAL_REVIEW_SUPPLEMENT_V3: 'review-v3:open-initial-review-supplement',
+  /** 批量原子改类：保留物理原件版本并记录分类修改回执。 */
+  RECLASSIFY_NATIVE_MATERIAL_V3: 'review-v3:reclassify-native-material',
+  RECLASSIFY_NATIVE_MATERIALS_V3: 'review-v3:reclassify-native-materials',
   /** 助手对话 */
   ASSISTANT_CHAT: 'review:assistant-chat',
   /** 导出预审报告 */

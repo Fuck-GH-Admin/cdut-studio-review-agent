@@ -15,7 +15,8 @@ process.env.PROFER_CONFIG_DIR = configDir
 afterAll(() => rmSync(configDir, { recursive: true, force: true }))
 
 const { saveDraft, publishTemplate } = await import('./template-store')
-const { adaptT01ConstraintsToT04, compileTemplatePlanForCase } = await import('./review-v3-main-template-plan-bridge')
+const { adaptT01ConstraintsToT04, buildT04TargetFromCase, compileTemplatePlanForCase } = await import('./review-v3-main-template-plan-bridge')
+const { REVIEW_V3_OTHER_MATERIAL_SLOT_ID } = await import('@profer/shared')
 const { evaluateT04Plan } = await import('./review-v3-t04-rules-scoring')
 const { resolveEffectiveRules } = await import('./effective-rules')
 
@@ -109,6 +110,41 @@ describe('A15 S2 四案例', () => {
     const material = proposals.find((item) => item.ruleId.includes('required-material'))!
     expect(material.outcome.status).not.toBe('compliant')
     expect(material.sourceVersionIds.length).toBe(0)
+  })
+
+  test('未分类材料不等于已确认缺件；明确标记其他后才确认空槽', () => {
+    const template=buildTemplate()
+    template.status='published'
+    const aggregate=caseWith(18,true)
+    aggregate.caseV2.documents[0]!.materialSlotId=undefined
+    const unclassified=buildT04TargetFromCase(aggregate,template)
+    expect(unclassified.materialSlots['lab-use-plan']?.confirmed).toBe(false)
+    aggregate.caseV2.documents[0]!.materialSlotId=REVIEW_V3_OTHER_MATERIAL_SLOT_ID
+    const classified=buildT04TargetFromCase(aggregate,template)
+    expect(classified.materialSlots['lab-use-plan']?.confirmed).toBe(true)
+    expect(classified.materialSlots['lab-use-plan']?.documentVersionIds).toHaveLength(0)
+  })
+
+  test('主体级模板规则使用真实 Subject target，而不是错误地只编译案卷 target', () => {
+    const template=buildTemplate()
+    template.status='published'
+    template.fields[1]!.scope='subject'
+    const criterion=template.sections![0]!.criteria[0] as unknown as {
+      targetScope:'subject'|'case'
+      deterministicConstraint:{fieldScope:string}
+    }
+    criterion.targetScope='subject'
+    criterion.deterministicConstraint.fieldScope='subject'
+    const aggregate=caseWith(18,true)
+    aggregate.caseV2.subjects=[{
+      id:'subject-s2-1',type:'item',title:'申报事项',sectionId:'lab',
+      fields:{applicantCount:{kind:'number',value:18}},
+      sourceRefs:[{caseId:'case-s2',documentVersionId:'ver-1',parseRevision:1,location:{kind:'file'}}],
+      correction:'user-confirmed',status:'confirmed',
+    }]
+    const result=compileTemplatePlanForCase({aggregate,template})
+    expect(result.compiled).toBeDefined()
+    expect(result.compiled?.bindings.some(binding=>binding.binding.subjectId==='subject-s2-1'&&binding.rule.targetScope==='subject')).toBe(true)
   })
 
   test('gte 下限规则编译为 field-minimum，不能误用上限算子', () => {

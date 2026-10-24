@@ -291,7 +291,7 @@ export function AssistantDrawer({ actions }: AssistantDrawerProps): React.ReactE
             onClose={() => setDraftOpinionId(null)}
           />}
         </>}
-        {tab === 'reports' && <ReviewV3T08ReportPanel aggregate={aggregate} currentRun={currentRun} currentStale={workspaceRunStale} template={workspaceTemplate} />}
+        {tab === 'reports' && <ReviewV3T08ReportPanel caseId={aggregate?.caseV2.id ?? ''} currentRunId={currentRun?.id} />}
         {tab === 'chat' && pending && (
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <Spinner size="sm" />

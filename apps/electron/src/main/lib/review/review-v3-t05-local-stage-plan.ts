@@ -224,6 +224,9 @@ export function applyT05LocalStageProposal(
       responsibleRole: 'student',
       status: 'open', responses: [],
       createdAt: ids.at,
+      // Freeze every existing version when the T05 request is created. An old
+      // document cannot be submitted as a new attachment to satisfy this request.
+      documentVersionIdsAtRequest: (aggregate.caseV2.documents ?? []).map(doc => doc.versionId),
       originTaskId: task.id,
       originStageId: task.stageId,
     }

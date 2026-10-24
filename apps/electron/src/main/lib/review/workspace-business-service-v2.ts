@@ -1,7 +1,7 @@
 /**
  * 单案工作台业务动作：待办处置、补件和人工最终决定均走 V2 聚合事务。
  */
-import { assessDecisionReadiness } from '@profer/shared'
+import { assessDecisionReadiness, assessMaterialSlotV2 } from '@profer/shared'
 import type { Actor, BusinessDecision, CaseAggregateV2, FieldValue, ReviewCommandResult, ReviewRunV2, SubjectAdjudication, SupplementRequest } from '@profer/shared'
 import { CommandValidationError, submitCommand } from './case-store-v2'
 import { getRunV2, readArtifact } from './run-store-v2'
@@ -139,15 +139,18 @@ export function openWorkspaceSupplementV2(
 ): Promise<ReviewCommandResult<SupplementRequest>> {
   return submitCommand(caseId, { ...command, type: 'OpenWorkspaceSupplement' }, (aggregate, payload) => {
     const run = assertCurrentRun(aggregate, payload.runId, payload.inputHash)
-    const slotMatch = payload.findingKey.match(/^material-slot:(.+)$/)
+    const slotMatch = payload.findingKey.match(/^(?:system:)?material-slot:(.+)$/)
+    let materialSlotId: string | undefined
     if (slotMatch) {
       const { getTemplate } = require('./template-store') as typeof import('./template-store')
       const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
       const slot = template?.materialSlots.find((candidate) => candidate.id === slotMatch[1])
       if (!slot) throw new CommandValidationError('NOT_FOUND', `材料槽不存在: ${slotMatch[1]}`)
-      if ((slot.requiredAt ?? 'submission') !== 'decision') throw new CommandValidationError('VALIDATION_FAILED', `材料槽 ${slot.id} 不是最终决定必需材料`)
-      const activeCount = aggregate.caseV2.documents.filter((document) => document.active !== false && document.materialSlotId === slot.id).length
-      if (activeCount >= slot.minCount) throw new CommandValidationError('INVALID_TRANSITION', `材料槽 ${slot.name} 已满足数量要求，无需补件`)
+      const assessment = assessMaterialSlotV2(aggregate, slot)
+      if (assessment.status !== 'awaiting-supplement') {
+        throw new CommandValidationError('INVALID_TRANSITION', `材料槽「${slot.name}」当前不是可补件状态：${assessment.reason}`)
+      }
+      materialSlotId = slot.id
     } else if (!run.checks.some((check) => check.checkId === payload.findingKey || check.ruleId === payload.findingKey)
       && !run.opinions.some((opinion) => opinion.id === payload.findingKey || opinion.checkId === payload.findingKey)) {
       throw new CommandValidationError('NOT_FOUND', `本次运行中不存在待办: ${payload.findingKey}`)
@@ -162,6 +165,7 @@ export function openWorkspaceSupplementV2(
           id: `sup-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
           caseId,
           originFindingKeys: [payload.findingKey],
+          ...(materialSlotId ? { materialSlotId } : {}),
           requiredElements,
           reason: payload.reason.trim(),
           responsibleRole: 'student',

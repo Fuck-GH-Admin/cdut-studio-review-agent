@@ -119,6 +119,53 @@ describe('D3 按动作适格判定', () => {
     expect(e.allowed['return-to-previous-stage']).toBe(true)
   })
 
+  test('重复 checkId 即使列表长度等于计划数量，也不能冒充独立检查后阶段通过', () => {
+    const duplicated = run([
+      { checkId: 'same-check', ruleId: 'r1', status: 'compliant' },
+      { checkId: 'same-check', ruleId: 'r1', status: 'compliant' },
+    ])
+    const eligibility = t05ActionEligibility(aggregate(), duplicated)
+    expect(eligibility.allowed['stage-pass']).toBe(false)
+    expect(eligibility.blockers.join()).toContain('重复的 checkId')
+    expect(eligibility.allowed['final-reject']).toBe(true)
+  })
+
+  test('Run 仍为部分完成或覆盖账本未完成时，不允许靠全合规数组通过', () => {
+    const check = [{ checkId: 'c1', ruleId: 'r1', status: 'compliant' }]
+    const partiallyCompleted = run(check, { status: 'partially-completed' })
+    const partial = t05ActionEligibility(aggregate(), partiallyCompleted)
+    expect(partial.allowed['stage-pass']).toBe(false)
+    expect(partial.blockers.join()).toContain('尚未完整结束')
+    expect(partial.allowed['final-reject']).toBe(true)
+
+    const misleadingCoverage = run(check, {
+      coverage: { plannedChecks: 1, completedChecks: 0, pendingChecks: 1, documents: [] },
+    })
+    const mismatch = t05ActionEligibility(aggregate(), misleadingCoverage)
+    expect(mismatch.allowed['stage-pass']).toBe(false)
+    expect(mismatch.blockers.join()).toContain('检查账本尚未完整覆盖')
+  })
+
+  test('伪造规则的额外检查与全部不适用不得冒充有效通过结果', () => {
+    const original = run([
+      { checkId: 'valid-1', ruleId: 'r1', status: 'compliant' },
+      { checkId: 'fake-2', ruleId: 'FAKE', status: 'compliant' },
+    ], { inputManifest: {
+      hash: computeRunInputHash(aggregate().caseV2, [], []), templateVersion: 1,
+      policyVersions: [], documentVersions: [], observationIds: [], evidenceLinkIds: [],
+      effectiveRuleIds: ['r1'],
+    } })
+    const withUnknown = t05ActionEligibility(aggregate(), original)
+    expect(withUnknown.allowed['stage-pass']).toBe(false)
+    expect(withUnknown.blockers.join()).toContain('不属于当前 Run 冻结的有效规则集')
+
+    const noApplicable = t05ActionEligibility(aggregate(), run([
+      { checkId: 'not-applicable', ruleId: 'r1', status: 'not-applicable' },
+    ]))
+    expect(noApplicable.allowed['stage-pass']).toBe(false)
+    expect(noApplicable.blockers.join()).toContain('全部不适用')
+  })
+
   test('21 人超限（non-compliant）不能仅凭 Run completed 通过', () => {
     const e = t05ActionEligibility(aggregate(), run([{ checkId: 'headcount', ruleId: 'r1', status: 'non-compliant' }]))
     expect(e.readiness).toBe('blocked')
@@ -132,10 +179,56 @@ describe('D3 按动作适格判定', () => {
   test('具名例外（waived）后非合规项不再阻断通过', () => {
     const persisted = run([{ checkId: 'headcount', ruleId: 'r1', status: 'non-compliant' }])
     const e = t05ActionEligibility(
-      aggregate({ dispositions: [{ findingKey: 'headcount', disposition: 'waived', actor: 'local-reviewer', reason: '具名例外', at: '', runId: persisted.id }] }),
+      aggregate({ dispositions: [{ findingKey: 'headcount', disposition: 'waived', actor: 'local-reviewer', reason: '具名例外', at: '', runId: persisted.id, inputHash: persisted.inputManifest.hash }] }),
       persisted)
     expect(e.readiness).toBe('ready')
     expect(e.allowed['stage-pass']).toBe(true)
+  })
+
+  test('旧输入哈希或无运行绑定的例外不能解除当前检查', () => {
+    const persisted = run([{ checkId: 'headcount', ruleId: 'r1', status: 'non-compliant' }])
+    const disposition = { findingKey: 'headcount', disposition: 'waived', actor: 'local-reviewer',
+      reason: '原审核例外', at: '', runId: persisted.id }
+    const stale = t05ActionEligibility(
+      aggregate({ dispositions: [{ ...disposition, inputHash: 'stale-input' }] }), persisted)
+    expect(stale.allowed['stage-pass']).toBe(false)
+    const missing = t05ActionEligibility(
+      aggregate({ dispositions: [disposition] }), persisted)
+    expect(missing.allowed['stage-pass']).toBe(false)
+    const matching = t05ActionEligibility(
+      aggregate({ dispositions: [{ ...disposition, inputHash: persisted.inputManifest.hash }] }), persisted)
+    expect(matching.allowed['stage-pass']).toBe(true)
+  })
+
+  test('一条规则多个目标时不能用规则 ID 一次豁免所有检查', () => {
+    const persisted = run([
+      { checkId: 'r1-subject-1', ruleId: 'r1', status: 'non-compliant' },
+      { checkId: 'r1-subject-2', ruleId: 'r1', status: 'non-compliant' },
+    ])
+    const staleScope = t05ActionEligibility(aggregate({ dispositions: [{
+      findingKey: 'r1', disposition: 'waived', actor: 'local-reviewer',
+      reason: '不明确是哪一项', at: '', runId: persisted.id, inputHash: persisted.inputManifest.hash,
+    }] }), persisted)
+    expect(staleScope.allowed['stage-pass']).toBe(false)
+    const specific = t05ActionEligibility(aggregate({ dispositions: [
+      { findingKey: 'r1-subject-1', disposition: 'waived', actor: 'local-reviewer',
+        reason: '第一项例外', at: '', runId: persisted.id, inputHash: persisted.inputManifest.hash },
+      { findingKey: 'r1-subject-2', disposition: 'waived', actor: 'local-reviewer',
+        reason: '第二项例外', at: '', runId: persisted.id, inputHash: persisted.inputManifest.hash },
+    ] }), persisted)
+    expect(specific.allowed['stage-pass']).toBe(true)
+  })
+
+  test('同 Run/inputHash 的人工确认可以解除待确认项，不被原始 pendingChecks 统计误拦截', () => {
+    const persisted = run([
+      { checkId: 'needs-human', ruleId: 'r1', status: 'awaiting-confirmation' },
+    ], { coverage: { plannedChecks: 1, completedChecks: 1, pendingChecks: 1, documents: [] } })
+    const resolved = t05ActionEligibility(aggregate({ dispositions: [{
+      findingKey: 'needs-human', disposition: 'human-confirmed-compliant',
+      actor: 'local-reviewer', reason: '人工核对原件并确认符合', at: '',
+      runId: persisted.id, inputHash: persisted.inputManifest.hash,
+    }] }), persisted)
+    expect(resolved.allowed['stage-pass']).toBe(true)
   })
 
   test('计划覆盖不足阻断通过', () => {

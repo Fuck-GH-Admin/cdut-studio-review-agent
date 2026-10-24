@@ -14,6 +14,8 @@ export interface B3RouteSuggestion {
   /** Not inferred authorization. Trusted catalog must supply status. */
   availability: 'authorized-for-technical-selection' | 'candidate-held'
   confidence: number
+  /** Stable order from the unified matcher when confidence values tie. */
+  rank?: number
   evidence: Array<{ materialCandidateId: string; rawSha256: string; reason: string }>
   /** Supplied by conservative classifier; no role guessing or hidden Subject. */
   caseCandidateId: string
@@ -28,10 +30,18 @@ export interface B3RoutingInput {
   materialCandidates: B2MaterialCandidate[]
   suggestions: B3RouteSuggestion[]
 }
+export interface B3RouteCandidate {
+  templateId: string
+  templateVersion: string
+  confidence: number
+  reason: string
+}
 export interface B3RouteState {
   status: 'awaiting-evidence' | 'unmatched' | 'countdown' | 'needs-user-confirmation' | 'manually-selected' | 'default-selected'
   remainingMs: number
   chosen?: { templateId: string; templateVersion: string }
+  /** Ranked, evidence-validated candidates; the first is the timeout default. */
+  candidates?: B3RouteCandidate[]
   reason: string
 }
 const SHA = /^[a-f0-9]{64}$/
@@ -39,7 +49,8 @@ const validTime = (x: number): boolean => Number.isFinite(x) && x >= 0
 const confident = (score: number): boolean => Number.isFinite(score) && score >= 0.95 && score <= 1
 /**
  * This only chooses a technical template suggestion; no CurrentCase is created.
- * Any multiple business type, unclear case/Subject/role or unresolved file stays manual.
+ * Unclear case/Subject/owner scope or unresolved file stays manual. The number
+ * of documents provisionally labeled "application" is not a business identity.
  */
 export function planB3ConservativeRouting(input: B3RoutingInput): B3RouteState {
   if (!input || !validTime(input.startedAtMs) || !validTime(input.nowMs) ||
@@ -61,7 +72,8 @@ export function planB3ConservativeRouting(input: B3RoutingInput): B3RouteState {
     },reason:'Manual selection; Dev-C must still authorize and create Case'}
   }
   if (input.userInterrupted || !input.automaticSelectionEnabled) return {
-    status:'needs-user-confirmation',remainingMs,reason:'User interrupted or auto-selection disabled',
+    status:'needs-user-confirmation',remainingMs,
+    reason:'User interrupted or auto-selection disabled',
   }
   const owners = new Set(input.materialCandidates.map(m=>m.ownerId+'::'+m.ownerGeneration))
   const scopes = new Set(input.materialCandidates.map(m=>m.caseCandidateId))
@@ -70,46 +82,61 @@ export function planB3ConservativeRouting(input: B3RoutingInput): B3RouteState {
     status:'needs-user-confirmation',remainingMs,
     reason:'File role, subject or owner scope ambiguous',
   }
+  if (new Set(input.materialCandidates.map(m=>m.subjectId)).size!==1) return {
+    status:'needs-user-confirmation',remainingMs,
+    reason:'Multiple Subjects require manual business confirmation',
+  }
   if (input.suggestions.length===0) return {
     status:'unmatched',remainingMs:0,
     reason:'No evidenced template match; user must confirm a business category or author a held candidate',
   }
-  // Even if every file has a technically valid role, more than one applicant
-  // or more than one Subject is a business decision, never an auto route.
-  const applications=input.materialCandidates.filter(m=>m.role==='application')
-  if (applications.length!==1 ||
-      new Set(input.materialCandidates.map(m=>m.subjectId)).size!==1) return {
-    status:'needs-user-confirmation',remainingMs,
-    reason:'Multiple application owners, Subjects or no application require manual business confirmation',
-  }
-  const unique = new Set(input.suggestions.map(s=>s.templateId+'@'+s.templateVersion))
   const evidenceValid = (suggestion:B3RouteSuggestion):boolean => {
-    // Every staged source must be accounted for, not just a convenient first
-    // attachment. A missing/extra/duplicate physical source is not a match.
     if (!Array.isArray(suggestion.evidence) ||
         suggestion.evidence.length!==materials.size ||
-        suggestion.caseCandidateId!==input.materialCandidates[0]!.caseCandidateId) return false
+        suggestion.caseCandidateId!==input.materialCandidates[0]!.caseCandidateId ||
+        !suggestion.templateId?.trim() || !suggestion.templateVersion?.trim()) return false
     const covered=new Set<string>()
     return suggestion.evidence.every(e=>{
       if (!e || covered.has(e.materialCandidateId)) return false
       covered.add(e.materialCandidateId)
       const material=materials.get(e.materialCandidateId)
       return Boolean(material && e.rawSha256===material.rawSha256 && e.reason?.trim())
-    })
+    }) && covered.size===materials.size
   }
-  if (unique.size!==1 || input.suggestions.length!==1 ||
-      input.suggestions.some(s=> !confident(s.confidence) ||
-        s.availability !== 'authorized-for-technical-selection' || !evidenceValid(s))) return {
+  // Keep all authorized, high-confidence, fully evidenced candidates. Multiple
+  // matches are a ranked choice, not an "unmatched" result.
+  const byKey=new Map<string,B3RouteSuggestion>()
+  for(const suggestion of input.suggestions){
+    if(!confident(suggestion.confidence) ||
+       suggestion.availability!=='authorized-for-technical-selection' ||
+       !evidenceValid(suggestion)) continue
+    const key=JSON.stringify([suggestion.templateId,suggestion.templateVersion])
+    const prior=byKey.get(key)
+    if(!prior || suggestion.confidence>prior.confidence)byKey.set(key,suggestion)
+  }
+  const candidates=[...byKey.values()].sort((a,b)=>
+    b.confidence-a.confidence ||
+    (b.rank??0)-(a.rank??0) ||
+    a.templateId.localeCompare(b.templateId) ||
+    a.templateVersion.localeCompare(b.templateVersion)).map(item=>({
+      templateId:item.templateId,templateVersion:item.templateVersion,
+      confidence:item.confidence,
+      reason:item.evidence.map(e=>e.reason).filter(Boolean).join('；'),
+    }))
+  if(!candidates.length) return {
     status:'needs-user-confirmation',remainingMs,
-    reason:'Non-unique, low confidence, unsupported evidence or unauthorized candidate',
+    reason:'No candidate has both authorized template status and complete, high-confidence source evidence',
   }
-  if (remainingMs>0) return {
-    status:'countdown',remainingMs,reason:'Single evidenced, technically authorized suggestion; user may interrupt',
+  if(remainingMs>0) return {
+    status:'countdown',remainingMs,candidates,
+    reason:candidates.length===1
+      ? 'Single evidenced, technically authorized suggestion; user may interrupt'
+      : 'Multiple evidenced templates ranked by confidence; the first is the 20-second default',
   }
-  const only=input.suggestions[0]!
-  return {status:'default-selected',remainingMs:0,
-    chosen:{templateId:only.templateId,templateVersion:only.templateVersion},
-    reason:'Technical route selected, not a Case/Run/administrative decision',
+  const first=candidates[0]!
+  return {status:'default-selected',remainingMs:0,candidates,
+    chosen:{templateId:first.templateId,templateVersion:first.templateVersion},
+    reason:'First ranked technical candidate selected after countdown; this is not a Case/Run/administrative decision',
   }
 }
 
@@ -119,6 +146,9 @@ export interface B3ManualCatalogEntry {
   templateVersion: string
   name: string
   availability: B3RouteSuggestion['availability']
+  keywords?: string[]
+  aliases?: string[]
+  description?: string
 }
 /** Caller cannot inject a startedAtMs or reset a user cancellation via UI refresh. */
 export interface B3OwnerRouteInput extends Omit<
