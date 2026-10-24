@@ -253,9 +253,9 @@ export function t05ActionEligibility(
       (typeof completed !== 'number' || !Number.isSafeInteger(completed) || completed < required)) {
     blockers.push('本次运行的检查账本尚未完整覆盖计划目标')
   }
-  if ((run.coverage?.pendingChecks ?? 0) > 0) {
-    blockers.push('检查账本仍有待处理或未执行项')
-  }
+  // Pending totals are computed before human dispositions. They cannot be used
+  // as an unconditional blocker: a reviewer may explicitly resolve an
+  // awaiting-confirmation item for this exact Run/inputHash below.
   // Run 本身已经冻结原件使用账本；未完成的原件不等同于通过。
   const unread = (run.coverage?.documents ?? []).filter((item) => item.status !== 'read')
   if (unread.length) blockers.push(`${unread.length} 份原件缺少完整读取或人工核对回执`)
