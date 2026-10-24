@@ -1117,9 +1117,10 @@ export function submitPiReviewResultV2(input: {
     run.opinions = [opinion]
     run.status = 'completed'
     run.completedAt = new Date().toISOString()
-    run.diagnostics = [
+    run.diagnostics = [...new Set([
+      ...run.diagnostics,
       '由项目普通 Pi 会话直接审核；未启动第二个审核模型会话。',
-    ]
+    ])].slice(-50)
     recalculateCoverage(run, aggregate, rules, template, unified.coverageRules)
     saveArtifact(input.binding.caseId, run.id, 'node-auto-check-extract', { observations: mergedObservations })
     saveArtifact(input.binding.caseId, run.id, 'node-auto-check-summarize', { summary: opinion.detail, checks: run.checks, agentActivity: run.agentActivity ?? [] })

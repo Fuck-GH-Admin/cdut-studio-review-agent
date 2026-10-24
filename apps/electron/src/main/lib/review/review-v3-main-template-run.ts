@@ -52,7 +52,7 @@ export interface TemplateRuleEvaluation {
 export function templateRuleSpecializedRuleIds(template:TemplateVersion):string[] {
   const constraintIds=(template.sections??[]).flatMap(section=>section.criteria.flatMap(criterion=>{
     const raw=(criterion as typeof criterion & {deterministicConstraint?:{kind?:string}}).deterministicConstraint
-    return raw?.kind==='field-number-limit'?[\`section-\${section.id}-\${criterion.id}\`]:[]
+    return raw?.kind==='field-number-limit'?[`section-${section.id}-${criterion.id}`]:[]
   }))
   const materialIds=(template.materialSlots??[]).filter(slot=>slot.minCount>0)
     .map(slot=>'required-material-'+slot.id)
