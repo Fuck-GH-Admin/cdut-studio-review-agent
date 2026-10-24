@@ -153,7 +153,7 @@ export async function registerMaterial(caseId: string, command: { requestId: str
         .find((candidate) => candidate.id === payload.materialSlotId)
       if (slot?.acceptedRoles?.length && !slot.acceptedRoles.includes(payload.role)) {
         throw new CommandValidationError('VALIDATION_FAILED',
-          `材料槽「${slot.name}」只接受 ${slot.acceptedRoles.join('、')} 类材料，当前类别为 ${payload.role}`)
+          `材料类别不匹配：材料槽「${slot.name}」只接受 ${slot.acceptedRoles.join('、')} 类材料，当前类别为 ${payload.role}`)
       }
     }
     const sourcePath = payload.sourcePath

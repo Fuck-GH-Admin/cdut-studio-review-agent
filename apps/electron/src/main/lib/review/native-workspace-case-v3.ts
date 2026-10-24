@@ -409,7 +409,7 @@ export async function registerNativeWorkspaceMaterialV3(
       .find((candidate) => candidate.id === materialSlotId)
     if (slot?.acceptedRoles?.length && !slot.acceptedRoles.includes(role)) {
       throw new CommandValidationError('VALIDATION_FAILED',
-        `材料槽「${slot.name}」只接受 ${slot.acceptedRoles.join('、')} 类材料，当前类别为 ${role}`)
+        `材料类别不匹配：材料槽「${slot.name}」只接受 ${slot.acceptedRoles.join('、')} 类材料，当前类别为 ${role}`)
     }
   }
   const result = await registerMaterial(caseId, {

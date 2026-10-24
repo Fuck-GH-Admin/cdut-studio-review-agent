@@ -63,12 +63,18 @@ describe('提交案卷的原子事务', () => {
     await submitCommand('legacy', { requestId: 'legacy-submit', actor, expectedRevision: 2, type: 'SubmitCase', payload: {} }, () => ({
       summary: '模拟旧实现的中间状态', mutate: draft => { draft.caseV2.stage = 'submitted' },
     }))
+    const beforeRecovery = readAggregate('legacy')!
+    expect(beforeRecovery.caseV2.stage).toBe('submitted')
+    expect(beforeRecovery.tasks).toHaveLength(0)
     const result = await submitCaseV2('legacy')
     expect(result.ok).toBe(true)
     const after = readAggregate('legacy')!
     expect(after.tasks).toHaveLength(1)
     expect(after.caseV2.documents).toHaveLength(2)
-    expect(after.caseV2.revision).toBe(3) // 双材料登记 r2 + 恢复提交合并一次 r3
+    // The simulated legacy write is itself a committed revision. Recovery must
+    // atomically add exactly one task, without recreating either material.
+    expect(after.caseV2.revision).toBe(beforeRecovery.caseV2.revision + 1)
+    expect(after.receiptLog.at(-1)?.type).toBe('SubmitCase')
   })
 
   test('Given 提交重试 When 连续调用 Then 只有一个首任务和一次业务 revision', async () => {
