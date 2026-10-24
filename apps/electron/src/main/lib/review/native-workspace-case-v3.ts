@@ -404,6 +404,14 @@ export async function registerNativeWorkspaceMaterialV3(
   if (!isNativeWorkspaceCaseV3(current) || !current || current.caseV2.stage === 'archived')
     throw new CommandValidationError('INVALID_TRANSITION', '案卷不存在、已归档或不是原生 V2 案卷')
   authorizeAtCommit?.()
+  if (materialSlotId) {
+    const slot = getTemplate(current.caseV2.templateId, current.caseV2.templateVersion)?.materialSlots
+      .find((candidate) => candidate.id === materialSlotId)
+    if (slot?.acceptedRoles?.length && !slot.acceptedRoles.includes(role)) {
+      throw new CommandValidationError('VALIDATION_FAILED',
+        `材料槽「${slot.name}」只接受 ${slot.acceptedRoles.join('、')} 类材料，当前类别为 ${role}`)
+    }
+  }
   const result = await registerMaterial(caseId, {
     requestId: `native-register-${randomUUID().replace(/-/g, '')}`,
     actor, expectedRevision: current.caseV2.revision,
@@ -420,7 +428,7 @@ export async function registerNativeWorkspaceMaterialV3(
 /** Reclassify one existing physical document without changing its immutable version identity. */
 export async function reclassifyNativeWorkspaceMaterialV3(
   caseId: string,
-  input: { documentVersionId: string; role: 'rule' | 'application' | 'evidence'; materialSlotId?: string },
+  input: { documentVersionId: string; role: 'rule' | 'application' | 'evidence' | 'attachment'; materialSlotId?: string },
   actor: Actor = MAIN_ACTOR,
   authorizeAtCommit?: () => void,
 ): Promise<ReviewCase> {
@@ -434,13 +442,13 @@ export async function reclassifyNativeWorkspaceMaterialV3(
  */
 export async function reclassifyNativeWorkspaceMaterialsV3(
   caseId: string,
-  inputs: Array<{ documentVersionId: string; role: 'rule' | 'application' | 'evidence'; materialSlotId?: string }>,
+  inputs: Array<{ documentVersionId: string; role: 'rule' | 'application' | 'evidence' | 'attachment'; materialSlotId?: string }>,
   actor: Actor = MAIN_ACTOR,
   authorizeAtCommit?: () => void,
 ): Promise<ReviewCase> {
   if (!Array.isArray(inputs) || inputs.length === 0 || inputs.length > 500
     || inputs.some((input) => !input || typeof input.documentVersionId !== 'string' || !input.documentVersionId.trim()
-      || !['rule', 'application', 'evidence'].includes(input.role)
+      || !['rule', 'application', 'evidence', 'attachment'].includes(input.role)
       || (input.materialSlotId !== undefined &&
         (typeof input.materialSlotId !== 'string' || !input.materialSlotId.trim() || input.materialSlotId.length > 160)))
     || new Set(inputs.map((input) => input.documentVersionId)).size !== inputs.length) {
@@ -469,8 +477,13 @@ export async function reclassifyNativeWorkspaceMaterialsV3(
     if (!activeByVersion.has(item.documentVersionId)) {
       throw new CommandValidationError('STALE_INPUT', `材料版本不存在、已归档或不属于当前案卷：${item.documentVersionId}`)
     }
-    if (item.materialSlotId !== null && !template?.materialSlots.some((slot) => slot.id === item.materialSlotId)) {
-      throw new CommandValidationError('VALIDATION_FAILED', `材料槽不存在于当前模板：${item.materialSlotId}`)
+    if (item.materialSlotId !== null) {
+      const slot = template?.materialSlots.find((candidate) => candidate.id === item.materialSlotId)
+      if (!slot) throw new CommandValidationError('VALIDATION_FAILED', `材料槽不存在于当前模板：${item.materialSlotId}`)
+      if (slot.acceptedRoles?.length && !slot.acceptedRoles.includes(item.role)) {
+        throw new CommandValidationError('VALIDATION_FAILED',
+          `材料槽「${slot.name}」只接受 ${slot.acceptedRoles.join('、')} 类材料，当前类别为 ${item.role}`)
+      }
     }
   }
   const proposedRoles = new Map(normalized.map((item) => [item.documentVersionId, item.role]))
@@ -507,8 +520,10 @@ export async function reclassifyNativeWorkspaceMaterialsV3(
       }
       if (item.materialSlotId !== null) {
         const currentTemplate = getTemplate(snapshot.caseV2.templateId, snapshot.caseV2.templateVersion)
-        if (!currentTemplate?.materialSlots.some((slot) => slot.id === item.materialSlotId)) {
-          throw new CommandValidationError('STALE_INPUT', `模板或材料槽已变化：${item.materialSlotId}`)
+        const slot = currentTemplate?.materialSlots.find((candidate) => candidate.id === item.materialSlotId)
+        if (!slot) throw new CommandValidationError('STALE_INPUT', `模板或材料槽已变化：${item.materialSlotId}`)
+        if (slot.acceptedRoles?.length && !slot.acceptedRoles.includes(item.role)) {
+          throw new CommandValidationError('VALIDATION_FAILED', '所选材料类别不符合该材料槽的角色约束')
         }
       }
     }
