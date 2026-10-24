@@ -11,10 +11,26 @@ import { ReviewV3LocalPiControls } from './ReviewV3LocalPiControls'
 import { ReviewV3UnifiedRun } from './ReviewV3UnifiedRun'
 import { ReviewV3T08ReportPanel } from './ReviewV3T08ReportPanel'
 import { ReviewV3TemplateRoutingAssistant } from './ReviewV3TemplateRoutingAssistant'
-import type { CaseAggregateV2, ReviewRunV2 } from '@profer/shared'
+import { REVIEW_V3_OTHER_MATERIAL_SLOT_ID, type CaseAggregateV2, type ReviewRunV2, type TemplateVersion } from '@profer/shared'
 import { ReviewV3AuthorWizard, emptyB1AuthorDocument } from '../review-v3-dev-b/ReviewV3AuthorWizard'
 import type { B1AuthorDocument } from '../../../main/lib/review/review-template-plan-adapter-v3-b1'
 import type { B1CandidateReadResponse } from '../review-v3-dev-b/review-v3-author-revision-read'
+
+type ClassifiedMaterialRole='application'|'evidence'|'rule'
+type MaterialClassificationDraft={role:ClassifiedMaterialRole;materialSlotId:string}
+function normalizedMaterialLabel(value:string):string {
+  return value.toLocaleLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/gi,'')
+}
+function suggestMaterialSlot(fileName:string,template:TemplateVersion):TemplateVersion['materialSlots'][number]|undefined {
+  const stem=fileName.replace(/\.[^.]+$/,'')
+  const normalized=normalizedMaterialLabel(stem)
+  if(normalized.length<3)return undefined
+  const matches=(template.materialSlots??[]).filter(slot=>{
+    const name=normalizedMaterialLabel(slot.name)
+    return name.length>=3&&(normalized.includes(name)||name.includes(normalized))
+  })
+  return matches.length===1?matches[0]:undefined
+}
 
 export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:string}={}):React.ReactElement {
   const goToCase=useSetAtom(reviewWorkspaceSectionAtom)
@@ -35,6 +51,11 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
     templateId:string;templateVersion:number;checks:number;fingerprint:string
   }|null>(null)
   const [nativeAggregate,setNativeAggregate]=React.useState<CaseAggregateV2|null>(null)
+  const [currentTemplate,setCurrentTemplate]=React.useState<TemplateVersion|null>(null)
+  const [materialDrafts,setMaterialDrafts]=React.useState<Record<string,MaterialClassificationDraft>>({})
+  const [classificationBusy,setClassificationBusy]=React.useState(false)
+  const [classificationError,setClassificationError]=React.useState('')
+  const [classificationNotice,setClassificationNotice]=React.useState('')
   const [nativeRun,setNativeRun]=React.useState<ReviewRunV2|null>(null)
   const [nativeRunStale,setNativeRunStale]=React.useState(true)
   const [runEpoch,setRunEpoch]=React.useState(0)
@@ -82,6 +103,29 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
   const [caseBusy,setCaseBusy]=React.useState(false)
   const [caseNotice,setCaseNotice]=React.useState('')
   const [caseError,setCaseError]=React.useState('')
+  React.useEffect(()=>{
+    setCurrentTemplate(null)
+    if(!nativeAggregate||nativeAggregate.d2RuntimePlan||nativeAggregate.caseV2.templateVersion<1)return
+    let live=true
+    void window.reviewAPI.getTemplateV2(nativeAggregate.caseV2.templateId,nativeAggregate.caseV2.templateVersion)
+      .then(template=>{if(live)setCurrentTemplate(template??null)})
+      .catch(cause=>{if(live)setClassificationError(cause instanceof Error?cause.message:String(cause))})
+    return()=>{live=false}
+  },[nativeAggregate?.caseV2.templateId,nativeAggregate?.caseV2.templateVersion,Boolean(nativeAggregate?.d2RuntimePlan)])
+  React.useEffect(()=>{
+    if(!nativeAggregate){setMaterialDrafts({});return}
+    const validSlots=new Set([
+      REVIEW_V3_OTHER_MATERIAL_SLOT_ID,
+      ...(currentTemplate?.materialSlots??[]).map(slot=>slot.id),
+    ])
+    const active=nativeAggregate.caseV2.documents.filter(document=>document.active!==false)
+    setMaterialDrafts(Object.fromEntries(active.map(document=>{
+      const role:ClassifiedMaterialRole=document.role==='application'||document.role==='rule'?document.role:'evidence'
+      const materialSlotId=document.materialSlotId&&validSlots.has(document.materialSlotId)?document.materialSlotId:''
+      return [document.versionId,{role,materialSlotId}]
+    })))
+    setClassificationError('')
+  },[nativeAggregate?.caseV2.id,nativeAggregate?.caseV2.revision,currentTemplate?.templateId,currentTemplate?.version])
   const [templateId,setTemplateId]=React.useState('')
   const [loaded,setLoaded]=React.useState<{document:B1AuthorDocument;revision:number}|null>(null)
   const [key,setKey]=React.useState(0)
@@ -220,6 +264,48 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
     if(loaded && !window.confirm('新建编辑器会舍弃尚未保存的修改，确定继续？'))return
     setLoaded(null);setKey(k=>k+1);setError('');setMessage('本地未发布候选草稿')
   }
+  const activeMaterialDocs=nativeAggregate?.caseV2.documents.filter(document=>document.active!==false)??[]
+  const validMaterialSlotIds=new Set((currentTemplate?.materialSlots??[]).map(slot=>slot.id))
+  const classificationComplete=!!currentTemplate&&currentTemplate.status==='published'&&activeMaterialDocs.length>0&&
+    activeMaterialDocs.every(document=>document.materialSlotId===REVIEW_V3_OTHER_MATERIAL_SLOT_ID||
+      (typeof document.materialSlotId==='string'&&validMaterialSlotIds.has(document.materialSlotId)))&&
+    activeMaterialDocs.filter(document=>document.role==='application').length===1
+  const draftClassificationReady=!!currentTemplate&&activeMaterialDocs.length>0&&
+    activeMaterialDocs.every(document=>{
+      const draft=materialDrafts[document.versionId]
+      return !!draft?.materialSlotId&&(draft.materialSlotId===REVIEW_V3_OTHER_MATERIAL_SLOT_ID||
+        validMaterialSlotIds.has(draft.materialSlotId))
+    })&&activeMaterialDocs.filter(document=>materialDrafts[document.versionId]?.role==='application').length===1
+  const saveMaterialClassification=async():Promise<void>=>{
+    if(classificationBusy||!localCaseId||!currentTemplate||!nativeAggregate)return
+    if(!draftClassificationReady){
+      setClassificationError('请为每份当前材料选择一个模板槽位或“其他/通用附件”，并且恰好保留一份申请主件。')
+      return
+    }
+    setClassificationBusy(true);setClassificationError('');setClassificationNotice('')
+    try{
+      for(const document of activeMaterialDocs){
+        const draft=materialDrafts[document.versionId]!
+        const oldRole:ClassifiedMaterialRole=document.role==='application'||document.role==='rule'?document.role:'evidence'
+        if(draft.role===oldRole&&draft.materialSlotId===(document.materialSlotId??''))continue
+        await window.reviewAPI.classifyNativeMaterialV3({
+          caseId:localCaseId,documentVersionId:document.versionId,
+          role:draft.role,materialSlotId:draft.materialSlotId,
+        })
+      }
+      const refreshed=await window.reviewAPI.getAggregateV2(localCaseId)
+      if(refreshed)setNativeAggregate(refreshed)
+      setMaterialsEpoch(epoch=>epoch+1)
+      setClassificationNotice('材料分类已保存为可追溯的新材料版本。现在可以按当前模板判断哪些槽位确实缺件；原有运行会因输入变化而过期。')
+    }catch(cause){
+      setClassificationError(cause instanceof Error?cause.message:String(cause))
+      try{
+        const refreshed=await window.reviewAPI.getAggregateV2(localCaseId)
+        if(refreshed)setNativeAggregate(refreshed)
+        setMaterialsEpoch(epoch=>epoch+1)
+      }catch{/* 保留原始分类错误 */}
+    }finally{setClassificationBusy(false)}
+  }
   return <div className="mx-auto max-w-5xl space-y-4 px-4 pb-8">
     <div className="space-y-3 rounded-lg border border-border p-4">
       <h2 className="text-base font-semibold">新建本地审核案卷与原件导入</h2>
@@ -284,6 +370,82 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
       }}
       onTemplateBound={()=>setMaterialsEpoch(x=>x+1)}
     />}
+    {localCaseId&&nativeAggregate&&!nativeAggregate.d2RuntimePlan&&currentTemplate?.status==='published'&&<section
+      className="space-y-3 rounded-lg border border-border p-4" aria-label="模板驱动材料分类">
+      <div>
+        <h2 className="text-base font-semibold">材料分类与缺件核对 · {currentTemplate.name}</h2>
+        <p className="mt-1 text-xs text-muted-foreground">
+          按当前模板把每份原件归入对应材料槽位；文件名只给出可选提示，必须由你确认。
+          未分类前不会把空槽误判成缺件。确认分类后，少量缺件可以进入初审并形成待补件项。
+        </p>
+      </div>
+      {activeMaterialDocs.map(document=>{
+        const draft=materialDrafts[document.versionId]??{
+          role:document.role==='application'||document.role==='rule'?document.role:'evidence',
+          materialSlotId:document.materialSlotId??'',
+        }
+        const suggestion=suggestMaterialSlot(document.fileName,currentTemplate)
+        return <div key={document.versionId} className="space-y-2 rounded-md border border-border p-3">
+          <div className="flex flex-wrap items-start justify-between gap-2">
+            <div className="min-w-0">
+              <p className="break-all text-sm font-medium">{document.fileName}</p>
+              <p className="text-xs text-muted-foreground">{document.versionId} · {document.parseStatus}</p>
+            </div>
+            <span className="text-xs text-muted-foreground">当前原件</span>
+          </div>
+          <div className="grid gap-2 md:grid-cols-2">
+            <label className="text-xs">材料用途
+              <select className="mt-1 w-full rounded border border-border bg-background px-2 py-2 text-sm"
+                value={draft.role} onChange={event=>setMaterialDrafts(current=>({...current,[document.versionId]:{
+                  ...draft,role:event.target.value as ClassifiedMaterialRole,
+                }}))}>
+                <option value="application">申请主件</option>
+                <option value="evidence">证明/提交材料</option>
+                <option value="rule">规则/办理依据</option>
+              </select>
+            </label>
+            <label className="text-xs">对应模板材料槽位
+              <select className="mt-1 w-full rounded border border-border bg-background px-2 py-2 text-sm"
+                value={draft.materialSlotId} onChange={event=>setMaterialDrafts(current=>({...current,[document.versionId]:{
+                  ...draft,materialSlotId:event.target.value,
+                }}))}>
+                <option value="">待分类（必须确认）</option>
+                {(currentTemplate.materialSlots??[]).map(slot=><option key={slot.id} value={slot.id}>
+                  {slot.name}{slot.minCount>0?' · 至少 '+slot.minCount+' 份':''}
+                </option>)}
+                <option value={REVIEW_V3_OTHER_MATERIAL_SLOT_ID}>其他/通用附件（确认不对应模板槽位）</option>
+              </select>
+            </label>
+          </div>
+          {suggestion&&draft.materialSlotId===''&&<p className="text-xs text-muted-foreground">
+            文件名建议：{suggestion.name}。这只是提示，不会自动绑定。
+            <button type="button" className="ml-2 underline" onClick={()=>setMaterialDrafts(current=>({...current,[document.versionId]:{
+              ...draft,materialSlotId:suggestion.id,
+            }}))}>采用建议</button>
+          </p>}
+          {draft.materialSlotId&&draft.materialSlotId!==REVIEW_V3_OTHER_MATERIAL_SLOT_ID&&
+            <p className="text-xs text-muted-foreground">
+              {currentTemplate.materialSlots.find(slot=>slot.id===draft.materialSlotId)?.purpose}
+            </p>}
+        </div>
+      })}
+      <div className="flex flex-wrap items-center gap-2">
+        <button type="button" className="rounded border border-primary/50 px-3 py-2 text-sm disabled:opacity-50"
+          disabled={classificationBusy||!draftClassificationReady} onClick={()=>void saveMaterialClassification()}>
+          {classificationBusy?'正在保存分类…':'确认并保存材料分类'}
+        </button>
+        <span className="text-xs text-muted-foreground">
+          {classificationComplete?'已确认当前材料分类':('仍有 '+activeMaterialDocs.filter(document=>
+            !document.materialSlotId||(!validMaterialSlotIds.has(document.materialSlotId)&&document.materialSlotId!==REVIEW_V3_OTHER_MATERIAL_SLOT_ID)
+          ).length+' 份材料尚未完成分类')}
+        </span>
+      </div>
+      {classificationNotice&&<p role="status" className="text-xs text-green-700">{classificationNotice}</p>}
+      {classificationError&&<p role="alert" className="text-xs text-red-600">{classificationError}</p>}
+      {currentTemplate.materialSlots.some(slot=>slot.minCount>0)&&<p className="text-xs text-muted-foreground">
+        缺件数量与关键性由该模板的材料槽位和办理阶段决定；本界面不硬编码任何单一业务规则。
+      </p>}
+    </section>}
     {activePlan&&<div className="space-y-2 rounded-lg border border-border p-4">
       <h2 className="text-base font-semibold">本案已绑定审核计划</h2>
       <p className="text-sm">{activePlan.templateId}@{activePlan.templateVersion} · 已固定 {activePlan.checks} 项检查</p>
@@ -321,7 +483,7 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
       stage={nativeAggregate?.caseV2.stage??'draft'}
       documentCount={nativeAggregate?.caseV2.documents.filter(item=>item.active!==false).length??0}
       technicalPlan={!!nativeAggregate?.d2RuntimePlan}
-      canRun={!!activePlan||!!nativeAggregate?.d2RuntimePlan}
+      canRun={!!activePlan||!!nativeAggregate?.d2RuntimePlan||classificationComplete}
       onUpdated={refreshNativeAggregate}
     />}
     {localCaseId&&<div className="space-y-2 rounded-lg border border-border p-3">
