@@ -270,8 +270,9 @@ export function reconcilePiReviewRunsWithReadReceipts(caseId: string, runs: Revi
 
 function materialSlotRules(aggregate: CaseAggregateV2, template: TemplateVersion): RuleSpec[] {
   return (template.materialSlots ?? [])
-    .filter((slot) => (slot.requiredAt ?? 'submission') === 'submission'
-      && (slot.requiredElements?.length ?? 0) > 0
+    // Decision-stage materials are checked semantically once present. While
+    // absent, they remain a final-decision gate rather than blocking initial review.
+    .filter((slot) => (slot.requiredElements?.length ?? 0) > 0
       && assessMaterialSlotV2(aggregate, slot).status === 'compliant')
     .map((slot, index) => ({
       id: `material-slot:${slot.id}`,
@@ -313,7 +314,8 @@ function effectiveRulesFor(aggregate: CaseAggregateV2, template: TemplateVersion
 function materialSlotChecks(aggregate: CaseAggregateV2, template: TemplateVersion, rules: RuleSpec[]): CheckResult[] {
   const now = new Date().toISOString()
   const activeSlots = (template.materialSlots ?? []).filter((slot) =>
-    (slot.requiredAt ?? 'submission') === 'submission')
+    (slot.requiredAt ?? 'submission') === 'submission'
+    || assessMaterialSlotV2(aggregate, slot).status === 'compliant')
   return activeSlots.map((slot) => {
     const assessment = assessMaterialSlotV2(aggregate, slot)
     const semanticRuleId = `material-slot:${slot.id}`
