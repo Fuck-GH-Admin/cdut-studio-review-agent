@@ -5,7 +5,7 @@ import { afterAll, describe, expect, test } from 'bun:test'
 import { rmSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ReviewCaseV2, TemplateVersion } from '@profer/shared'
-import { createAggregate, readAggregate } from './case-store-v2'
+import { createAggregate, readAggregate, writeAggregate } from './case-store-v2'
 import { ensureInitialTask, recordStageDecision, resolveAppealV2, resolveFinalDecisionProjection, resolveSupplementV2, respondSupplementV2, type StageDecisionPayload } from './stage-workflow'
 import { submitAppeal } from './business-workflow'
 
@@ -36,6 +36,24 @@ async function seed(flowTemplate: TemplateVersion = template): Promise<{ caseId:
 }
 
 describe('阶段推进（R07，修正误判 6）', () => {
+  test('Given 迁移案卷已绑定 CanonicalPlan When 旧 V2 决定 Then 拒绝虚拟 run@rev 且不改写', async () => {
+    const { caseId, firstTaskId } = await seed()
+    const current = readAggregate(caseId)!
+    writeAggregate({ ...current, canonicalPlan: {
+      schemaVersion: 'review-c0/1', planId: 'persisted-plan', fingerprint: 'f'.repeat(64),
+      templateId: current.caseV2.templateId, templateVersion: String(current.caseV2.templateVersion),
+      moduleDigests: [], bindings: [],
+    } })
+    const before = JSON.stringify(readAggregate(caseId))
+    const blocked = await recordStageDecision(caseId, {
+      requestId: nextReq(), actor, expectedRevision: current.caseV2.revision,
+      payload: { action: 'stage-pass', taskId: firstTaskId, reason: '试图使用旧入口通过' },
+    }, template)
+    expect(blocked.ok).toBe(false)
+    if (!blocked.ok) expect(blocked.code).toBe('INVALID_TRANSITION')
+    expect(JSON.stringify(readAggregate(caseId))).toBe(before)
+  })
+
   test('Given 三阶段审核且时钟不前进 When 连续通过 Then 每个阶段任务仍有唯一 ID 并可终审', async () => {
     const threeStageTemplate = {
       ...template,

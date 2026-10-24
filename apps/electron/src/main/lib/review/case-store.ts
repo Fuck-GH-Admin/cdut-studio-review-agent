@@ -210,6 +210,14 @@ function assertWritableLegacyProjection(caseId: string): void {
   if (!isLegacyProjectionAllowed(caseId)) {
     throw new Error('原生审核案卷禁止通过旧版案卷写入口修改；请使用可信 V2 业务命令')
   }
+  // 迁移来的 V1 案卷仍可只读展示历史原件；一旦进入冻结 Plan/Run
+  // 及业务决定阶段，旧 V1 写入口便不再有修改当前业务事实的资格。
+  const aggregate = readAggregate(caseId)
+  if (aggregate && (aggregate.canonicalPlan || aggregate.d2RuntimePlan ||
+    aggregate.v3ReviewRun || aggregate.v3TechnicalExecution ||
+    aggregate.localBusinessConfirmation || aggregate.decisions?.length)) {
+    throw new Error('审核案卷已有权威 Plan/Run/决定，旧版写入口仅允许历史读取')
+  }
 }
 
 /** 保存案卷（原子写；目录不存在则创建） */
@@ -367,6 +375,9 @@ export function deleteCase(caseId: string): void {
 
 /** 保存一次审核运行（原子写 runs/{runId}.json） */
 export function saveRun(caseId: string, run: ReviewRun): void {
+  // 旧 V1 运行文件不得覆盖/竞争原生 V3 的权威 Run 解释。
+  // 在建 runs/ 目录之前检查，拒绝时不留下任何影子记录。
+  assertWritableLegacyProjection(caseId)
   assertSafeId(run.id)
   const filePath = join(ensureRunsDir(caseId), `${run.id}.json`)
   try {

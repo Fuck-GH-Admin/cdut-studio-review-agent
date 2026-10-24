@@ -91,8 +91,9 @@ export function recordStageDecision(
     // coverage and trusted stage authority. The legacy N3 writer below records
     // a synthetic run@rev reference; it may not decide a native V3 case.
     const { isNativeWorkspaceCaseV3 } = require('./native-workspace-case-v3') as typeof import('./native-workspace-case-v3')
-    if (isNativeWorkspaceCaseV3(aggregate)) {
-      throw new CommandValidationError('INVALID_TRANSITION', 'V3 原生案卷必须使用 T05 可信阶段决定，不允许旧 V2 决定入口生成伪 Run 引用')
+    if (isNativeWorkspaceCaseV3(aggregate) || aggregate.canonicalPlan ||
+      aggregate.v3ReviewRun || aggregate.v3TechnicalExecution) {
+      throw new CommandValidationError('INVALID_TRANSITION', '已有 V3 权威 Plan/Run 的案卷必须使用 T05 可信阶段决定，不允许旧 V2 决定入口生成伪 Run 引用')
     }
     if (aggregate.d2RuntimePlan) throw new CommandValidationError('AGENT_DECISION_DISABLED', 'D2 技术预审案卷无权进入正式阶段决定')
     const task = aggregate.tasks.find((candidate) => candidate.id === payload.taskId && candidate.status === 'open')
