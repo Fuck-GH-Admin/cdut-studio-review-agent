@@ -155,3 +155,34 @@
 ### 后续验收记录位置
 
 请在本小节下续写最新 HEAD 的全量 PR CI / 专项结果、失败日志、剩余问题、是否仍为 Draft；不得删掉历史失败记录。
+
+
+## 10. 2026-10-24 09:46（UTC+8）续审进度核对
+
+### 权威版本及变更
+
+- 本次重新读取远端分支 HEAD：`53b3eed910853f30d1bb4bd43133715f66a7b432`；其最后提交为 `docs(review-v3): record run continuity fixes and native V2 decision fence`。
+- 草稿 PR [#249](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/249) 仍为 OPEN / Draft，变更文件 **32 个**。与第 8 节 31 个文件的历史快照不同，后续核验必须固定本轮新 HEAD。
+- `5866ffdb`、`d0b694c`、`53b3eed` 的修复与进度已经在第 9 节交代，此处不重复声称已经通过全量验收。
+
+### 最新 HEAD 的 CI 状态（本次读取）
+
+| Workflow | Run ID | 读取时状态 |
+| --- | --- | --- |
+| Review batch focused tests | `40051238093` | **success** |
+| Review Baseline CI | `40051238095` | **success** |
+| D2 Scoped Pi Review Tests | `40051238072` | **in_progress** |
+| D1 Review Authoring Tests | `40051238080` | **in_progress** |
+| D0.5 Semantic Module Tests | `40051238142` | **in_progress** |
+| PR CI | `40051238122` | **in_progress** |
+
+这里的绿灯只属于 **53b3eed** 在查询时已完成的两套检查。完整 CI 尚未有本轮最终结论，不能沿用此前 SHA 的测试结果替代。
+
+### 继续实施的工作点
+
+1. 先分析最新 CI 完成后的具体失败；不要因为上一轮的 F09/旧案 revision 失败修过就假定不再回归。
+2. 对 `stage-workflow`、`review-v3-t05-main-service`、`review-pi-run-bridge`、`pi-case-review-service` 继续做 V3 单一 Run + T05 决定链路核对，重点关注数据身份（`runId`、`inputHash`、案卷 revision、材料槽、补件请求）。
+3. 继续排查 `material-slot-readiness-v2` 的 applicability 与所选模板的 `requiredAt` 边界，最终决定不能因为初审允许缺件而放行。
+4. 以新增的小范围回归防止修一处破另一处，再以同一个最新 commit 读取 CI 才能对外报告完成度。
+5. 继续保留 Draft、保留历史失败与修复证据；后续新提交的准确 SHA 与验证结果写入下一节。
+
