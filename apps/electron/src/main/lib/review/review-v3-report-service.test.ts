@@ -7,6 +7,7 @@ import { join } from 'node:path'
 import type { T08Report, T08ReportProjection } from '@profer/shared'
 import {
   assertT08ExportDestination, calculateT08ProjectionHash, encodeT08ReportFormat, exportT08ReportProjectionV3, getT08ReportArchiveV3,
+  exportT08ReportArchiveV3, findT08ReportAmendments, listT08LocalSaveRecordsV3,
   listT08ReportArchivesV3, makeT08ReportSnapshot, persistT08ReportSnapshot,
   renderT08ReportHtml, verifyT08ReportSnapshot,
 } from './review-v3-report-service'
@@ -60,6 +61,29 @@ test('T08 snapshot rejects changed report bytes and changed binding metadata', (
   expect(verifyT08ReportSnapshot({ ...snapshot, inputHash: 'different-input' })).toBe(false)
 })
 
+test('T08 report type is hash-bound, while existing snapshots without the optional type remain readable', () => {
+  const legacySnapshot = makeT08ReportSnapshot(fixtureProjection(), { reportId: 'old-report' })
+  expect(verifyT08ReportSnapshot(legacySnapshot)).toBe(true)
+  const projection = fixtureProjection()
+  const newProjection = { ...projection, reportKind: 'preliminary' as const, report: {
+    ...projection.report, kind: 'preliminary' as const,
+    json: JSON.stringify({ ...JSON.parse(projection.report.json), reportKind: 'preliminary' }),
+  } }
+  newProjection.projectionHash = calculateT08ProjectionHash(newProjection)
+  const snapshot = makeT08ReportSnapshot(newProjection, { reportId: 'new-report' })
+  expect(verifyT08ReportSnapshot(snapshot)).toBe(true)
+  expect(verifyT08ReportSnapshot({ ...snapshot, reportKind: 'decided' })).toBe(false)
+})
+
+test('T08 amendment indicator is derived without rewriting old report contents', () => {
+  expect(findT08ReportAmendments(['decision-old'], [
+    { id: 'decision-old' }, { id: 'decision-other' },
+    { id: 'decision-third', amendsDecisionId: 'decision-new' },
+    { id: 'decision-new', amendsDecisionId: 'decision-old' },
+  ])).toEqual(['decision-new', 'decision-third'])
+  expect(findT08ReportAmendments(['decision-old'], [{ id: 'another', amendsDecisionId: 'unrelated' }])).toEqual([])
+})
+
 test('T08 HTML is text-searchable content with no script execution or remote resource dependency', () => {
   const html = renderT08ReportHtml(fixtureReport())
   expect(html).toContain('default-src \'none\'')
@@ -99,6 +123,8 @@ test('F16 cancellation keeps the immutable archive but does not claim an externa
   expect(existsSync(join(receipt.archivePath, 'snapshot.json'))).toBe(true)
   expect(existsSync(receipt.archiveFilePath!)).toBe(true)
   expect(listT08ReportArchivesV3(receipt.caseId, rootDir)[0]?.valid).toBe(true)
+  const snapshot = getT08ReportArchiveV3({ caseId: receipt.caseId, reportId: receipt.reportId }, rootDir)
+  expect(listT08LocalSaveRecordsV3(snapshot, rootDir).map((item) => item.status)).toEqual(['cancelled'])
 })
 
 test('F16 successful save returns the actual destination and saved bytes', async () => {
@@ -110,6 +136,16 @@ test('F16 successful save returns the actual destination and saved bytes', async
   expect(receipt.status).toBe('saved')
   expect(receipt.filePath).toBe(destination)
   expect(readFileSync(destination, 'utf-8')).toBe(fixtureReport().markdown)
+  const snapshot = getT08ReportArchiveV3({ caseId: receipt.caseId, reportId: receipt.reportId }, rootDir)
+  const saved = listT08LocalSaveRecordsV3(snapshot, rootDir)
+  expect(saved).toHaveLength(1)
+  expect(saved[0]).toMatchObject({ status: 'saved', filePath: destination, fileHash: expect.any(String) })
+  // 冷重开后重导出，独立追加第二条本机记录，不改变快照 hash 或原始正文。
+  await exportT08ReportArchiveV3({ caseId: receipt.caseId, reportId: receipt.reportId, format: 'json' }, {
+    rootDir, chooseDestination: async () => undefined,
+  })
+  expect(listT08LocalSaveRecordsV3(snapshot, rootDir).map((item) => item.status).sort()).toEqual(['cancelled', 'saved'])
+  expect(getT08ReportArchiveV3({ caseId: receipt.caseId, reportId: receipt.reportId }, rootDir).snapshotHash).toBe(snapshot.snapshotHash)
 })
 
 test('T08 archive cannot be overwritten; a changed baseline invalidates its index and cold-open', () => {
@@ -148,4 +184,22 @@ test('F16 failed external Save As leaves the archived report intact and returns 
   const archived = listT08ReportArchivesV3('case-1', rootDir)
   expect(archived).toHaveLength(1)
   expect(archived[0]?.valid).toBe(true)
+  const snapshot = getT08ReportArchiveV3({ caseId: archived[0]!.caseId, reportId: archived[0]!.reportId }, rootDir)
+  expect(listT08LocalSaveRecordsV3(snapshot, rootDir)[0]?.status).toBe('failed')
+})
+
+test('T08 local save record tampering is reported without corrupting the immutable report snapshot', async () => {
+  const rootDir = root()
+  const receipt = await exportT08ReportProjectionV3(fixtureProjection(), 'md', {
+    rootDir, chooseDestination: async () => undefined,
+  })
+  const snapshot = getT08ReportArchiveV3({ caseId: receipt.caseId, reportId: receipt.reportId }, rootDir)
+  const recordsDir = join(receipt.archivePath, 'local-save-records')
+  const record = listT08LocalSaveRecordsV3(snapshot, rootDir)[0]!
+  writeFileSync(join(recordsDir, record.id + '.json'), JSON.stringify({ ...record, status: 'saved' }))
+  const summary = listT08ReportArchivesV3(receipt.caseId, rootDir)[0]!
+  expect(summary.valid).toBe(true)
+  expect(summary.localSaveError).toContain('完整性校验失败')
+  expect(getT08ReportArchiveV3({ caseId: receipt.caseId, reportId: receipt.reportId }, rootDir).snapshotHash)
+    .toBe(snapshot.snapshotHash)
 })

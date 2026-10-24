@@ -7,6 +7,8 @@ import type { DocumentVersion, ReviewRunV2, SourceRef, TemplateVersion } from '.
 import type { CaseAggregateV2 } from '../types/review-v2-contracts'
 
 export type T08Audience = 'student' | 'reviewer' | 'organizer'
+/** 报告性质，不等于校方身份认证、正式签章或外部送达。 */
+export type T08ReportKind = 'preliminary' | 'supplement-needed' | 'decided' | 'historical'
 export interface T08ResolvedSource {
   ref: SourceRef
   document: DocumentVersion | null
@@ -17,6 +19,8 @@ export interface T08ResolvedSource {
 }
 export interface T08Report {
   audience: T08Audience
+  /** 旧归档没有这个字段，读取时保持兼容。 */
+  kind?: T08ReportKind
   runId: string
   caseId: string
   status: string
@@ -41,6 +45,8 @@ export interface T08ReportProjection {
   decisionIds: string[]
   decisionDigest: string
   historical: boolean
+  /** 可选以兼容已经生成的 /2 版不可变归档。 */
+  reportKind?: T08ReportKind
   renderVersion: 't08-report-renderer/2'
   projectionHash: string
   report: T08Report
@@ -64,12 +70,33 @@ export interface T08ReportArchiveSummary {
   templateId: string
   templateVersion: number
   historical: boolean
+  reportKind?: T08ReportKind
+  /** 读取时派生的更正关系，不回写旧报告快照。 */
+  amendedByDecisionIds?: string[]
+  /** 动态提示：创建快照后案卷已有更新的 Run；不改变原归档正文。 */
+  noLongerCurrent?: boolean
+  localSaveRecords?: T08LocalSaveRecord[]
+  localSaveError?: string
   createdAt: string
   snapshotHash: string
   archivePath: string
   files: string[]
   valid: boolean
   error?: string
+}
+
+/** 仅记录本机另存为结果；saved 不代表收件人已收到。 */
+export interface T08LocalSaveRecord {
+  id: string
+  reportId: string
+  snapshotHash: string
+  format: T08ReportExportFormat
+  status: 'saved' | 'cancelled' | 'failed'
+  at: string
+  fileHash?: string
+  filePath?: string
+  error?: string
+  recordHash: string
 }
 
 export type T08ReportExportFormat = 'md' | 'json' | 'html' | 'xlsx' | 'pdf' | 'bundle'
@@ -154,8 +181,9 @@ function escaped(value: unknown): string {
   return String(value ?? '').replace(/\r?\n/g, ' ').replace(/\|/g, '\\|')
 }
 
-function sourceSummary(refs: SourceRef[], aggregate: CaseAggregateV2): string {
+function sourceSummary(refs: SourceRef[], aggregate: CaseAggregateV2, historical = false): string {
   return refs.map((ref) => {
+    if (historical) return ref.documentVersionId + ' · ' + locationLabel(ref) + '〔历史来源位置未复核〕'
     const source = resolveT08Source(ref, aggregate)
     return source.label + (source.state === 'located' ? '' : '〔' + source.state + '，未验证精确落点〕')
   }).join('；') || '无可核查引用'
@@ -184,6 +212,11 @@ export function makeT08CaseReport(input: {
   )
   const decisions = historical ? [] : aggregate.decisions.filter((item) => item.basedOnRunId === run.id).sort((a, b) => a.at.localeCompare(b.at))
   const supersededDecisionIds = new Set(aggregate.decisions.flatMap((item) => item.amendsDecisionId ? [item.amendsDecisionId] : []))
+  const activeSupplement = !historical && aggregate.supplements.some((item) =>
+    item.status === 'open' || item.status === 'responded' || item.status === 'insufficient')
+  const effectiveFinalDecision = decisions.some((item) => item.finality === 'final' && !supersededDecisionIds.has(item.id))
+  const kind: T08ReportKind = historical ? 'historical' : activeSupplement ? 'supplement-needed'
+    : effectiveFinalDecision && (run.status === 'completed' || run.status === 'partially-completed') ? 'decided' : 'preliminary'
   const decision = [...decisions].reverse().find((item) => !supersededDecisionIds.has(item.id))
     ?? [...decisions].reverse()[0] ?? null
   const runDispositions = historical ? [] : aggregate.dispositions.filter((item) => item.runId === run.id && item.inputHash === manifest.hash)
@@ -193,8 +226,9 @@ export function makeT08CaseReport(input: {
     .filter((item) => !supersededAdjudicationIds.has(item.id) && item.basedOnRunId === run.id && item.inputHash === manifest.hash)
     .sort((a, b) => a.at.localeCompare(b.at))
   const docs = manifest.documentVersions.map((v) => {
-    const original = aggregate.caseV2.documents.find((d) => d.versionId === v.versionId)
-    return { versionId: v.versionId, name: original?.fileName ?? '历史原件（本地版本不可用）', contentHash: v.contentHash, role: original?.role ?? null }
+    // 未归档历史 Run 不能从当前聚合取可能已改名/重分类的文件元数据。
+    const original = historical ? null : aggregate.caseV2.documents.find((d) => d.versionId === v.versionId)
+    return { versionId: v.versionId, name: original?.fileName ?? '历史原件（名称快照不可用）', contentHash: v.contentHash, role: original?.role ?? null }
   }).filter((doc) => internal || (doc.role !== null && doc.role !== 'rule'))
   const lines = [
     '# 审核结果 · ' + (audience === 'student' ? '申请人版' : audience === 'reviewer' ? '审核人版' : '组织者版'),
@@ -204,6 +238,8 @@ export function makeT08CaseReport(input: {
     '- 模板：' + run.templateId + '@' + run.templateVersion,
     '- 输入快照：' + manifest.hash,
     '- 执行状态：' + run.status,
+    '- 报告性质：' + (kind === 'historical' ? '历史版本' : kind === 'supplement-needed' ? '待补件初审'
+      : kind === 'decided' ? '已形成最终决定（本地报告，非学校签发）' : '初审报告（未形成有效最终决定）'),
     '- 有效判断：' + run.coverage.effectiveVerdicts + ' / ' + run.coverage.plannedChecks,
     '- 待处理检查：' + run.coverage.pendingChecks,
     '- 快照提示：' + (historical ? '历史或非当前输入；不使用当前案卷字段重建历史结果' : '以所选运行输入快照为准'),
@@ -216,7 +252,7 @@ export function makeT08CaseReport(input: {
   ]
   const rows: T08Report['rows'] = []
   for (const check of run.checks) {
-    const source = internal ? sourceSummary(check.sourceRefs, aggregate) : '来源详情仅供审核人员核对'
+    const source = internal ? sourceSummary(check.sourceRefs, aggregate, historical) : '来源详情仅供审核人员核对'
     const detail = internal ? check.reason : '检查说明需由审核人员确认后反馈'
     lines.push('- ' + check.checkId + ' / ' + check.ruleId + '：' + check.status + '；' + detail)
     if (internal) lines.push('  - 来源：' + source)
@@ -295,7 +331,7 @@ export function makeT08CaseReport(input: {
   if (internal) {
     lines.push('', '## 内部核对与模型建议（不等于业务决定）')
     for (const opinion of run.opinions) {
-      const source = sourceSummary(opinion.sourceRefs, aggregate)
+      const source = sourceSummary(opinion.sourceRefs, aggregate, historical)
       lines.push('- ' + opinion.title + '：' + opinion.detail + '；建议：' + opinion.suggestionText)
       lines.push('  - 核验状态：' + opinion.verification + '；来源：' + source)
       rows.push({ kind: 'opinion', id: opinion.id, status: opinion.verification, detail: opinion.detail, source })
@@ -315,6 +351,7 @@ export function makeT08CaseReport(input: {
   const data = {
     schema: 'review-v3-t08-report/2',
     audience,
+    reportKind: kind,
     caseId: aggregate.caseV2.id,
     run: {
       id: run.id, status: run.status, templateId: run.templateId, templateVersion: run.templateVersion,
@@ -331,7 +368,7 @@ export function makeT08CaseReport(input: {
       checkId: c.checkId, ruleId: c.ruleId, status: c.status,
       ...(internal ? {
         reason: c.reason,
-        references: c.sourceRefs.map((ref) => ({ ...ref, resolution: resolveT08Source(ref, aggregate).state })),
+        references: c.sourceRefs.map((ref) => ({ ...ref, resolution: historical ? 'file-only' : resolveT08Source(ref, aggregate).state })),
         calculation: c.calculation, executedBy: c.executedBy,
       } : {}),
     })),
@@ -374,7 +411,7 @@ export function makeT08CaseReport(input: {
     }),
     ...(internal ? { opinions: run.opinions, dispositions: runDispositions, diagnostics: run.diagnostics, error: run.error } : {}),
   }
-  return { audience, runId: run.id, caseId: run.caseId, status: run.status, stale: historical, markdown: lines.join('\n'), json: JSON.stringify(data, null, 2), rows }
+  return { audience, kind, runId: run.id, caseId: run.caseId, status: run.status, stale: historical, markdown: lines.join('\n'), json: JSON.stringify(data, null, 2), rows }
 }
 
 /** UTF-8 spreadsheet input; actual XLSX serialization is delegated to the owning UI. */
@@ -396,7 +433,7 @@ export function t08ReportWorkbookSheets(report: T08Report): T08WorkbookSheet[] {
   const summary: string[][] = [
     ['项目', '值'], ['案卷 ID', report.caseId], ['运行 ID', report.runId], ['受众', report.audience],
     ['模板版本', data.run.templateId + '@' + data.run.templateVersion], ['输入哈希', data.run.inputHash],
-    ['运行状态', report.status], ['历史/过期', report.stale ? '是' : '否'],
+    ['运行状态', report.status], ['报告性质', report.kind ?? '旧版未记录'], ['历史/过期', report.stale ? '是' : '否'],
     ['计划检查', String(data.run.coverage.plannedChecks)], ['完成检查', String(data.run.coverage.completedChecks)],
     ['有效判断', String(data.run.coverage.effectiveVerdicts)], ['待处理', String(data.run.coverage.pendingChecks)],
     ['业务决定', data.decision?.result ?? '无'], ['决定理由', data.decision?.reason ?? '未记录'],

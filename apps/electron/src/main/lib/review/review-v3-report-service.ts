@@ -3,7 +3,7 @@ import { createHash, randomUUID } from 'node:crypto'
 import { existsSync, linkSync, mkdirSync, readdirSync, readFileSync, realpathSync, renameSync, unlinkSync, writeFileSync } from 'node:fs'
 import { basename, dirname, join, relative, resolve, sep, isAbsolute } from 'node:path'
 import type {
-  T08Audience, T08Report, T08ReportArchiveSummary,
+  T08Audience, T08LocalSaveRecord, T08Report, T08ReportArchiveSummary,
   T08ReportExportFormat, T08ReportExportReceipt, T08ReportProjection, T08ReportSnapshot,
 } from '@profer/shared'
 import { makeT08CaseReport, t08ReportWorkbookSheets } from '@profer/shared'
@@ -47,13 +47,15 @@ function sha256(value: string | Uint8Array): string { return createHash('sha256'
 export function calculateT08ProjectionHash(value: Pick<T08ReportProjection,
   'caseId' | 'caseTitle' | 'caseRevision' | 'runId' | 'audience' | 'inputHash' |
   'templateId' | 'templateVersion' | 'templateDigest' | 'decisionIds' | 'decisionDigest' |
-  'historical' | 'renderVersion' | 'report'>): string {
+  'historical' | 'reportKind' | 'renderVersion' | 'report'>): string {
   return sha256(canonicalJson({
     caseId: value.caseId, caseTitle: value.caseTitle, caseRevision: value.caseRevision,
     runId: value.runId, audience: value.audience, inputHash: value.inputHash,
     templateId: value.templateId, templateVersion: value.templateVersion,
     templateDigest: value.templateDigest, decisionIds: value.decisionIds,
     decisionDigest: value.decisionDigest, historical: value.historical,
+    // 可选字段：旧版归档缺失时 JSON.stringify 省略，保留原有哈希校验语义。
+    reportKind: value.reportKind,
     renderVersion: value.renderVersion, report: value.report,
   }))
 }
@@ -99,6 +101,7 @@ export function getT08ReportPreviewV3(input: {
     decisionIds: decisions.map((item) => item.id),
     decisionDigest: sha256(canonicalJson(decisions)),
     historical,
+    reportKind: report.kind,
     renderVersion: REPORT_RENDER_VERSION,
     report,
   }
@@ -125,13 +128,15 @@ export function verifyT08ReportSnapshot(snapshot: T08ReportSnapshot): boolean {
     !snapshot.caseId || !snapshot.runId || !snapshot.snapshotHash || !snapshot.projectionHash ||
     !snapshot.report || snapshot.report.caseId !== snapshot.caseId ||
     snapshot.report.runId !== snapshot.runId || snapshot.report.audience !== snapshot.audience ||
-    snapshot.report.stale !== snapshot.historical) return false
-  let reportData: { caseId?: string; audience?: string; historical?: boolean; run?: { id?: string; inputHash?: string; status?: string; templateId?: string; templateVersion?: number } }
+    snapshot.report.stale !== snapshot.historical ||
+    (snapshot.reportKind !== undefined && snapshot.report.kind !== snapshot.reportKind)) return false
+  let reportData: { caseId?: string; audience?: string; historical?: boolean; reportKind?: string; run?: { id?: string; inputHash?: string; status?: string; templateId?: string; templateVersion?: number } }
   try { reportData = JSON.parse(snapshot.report.json) as typeof reportData } catch { return false }
   if (reportData.caseId !== snapshot.caseId || reportData.audience !== snapshot.audience ||
     reportData.historical !== snapshot.historical || reportData.run?.id !== snapshot.runId ||
     reportData.run?.inputHash !== snapshot.inputHash || reportData.run?.status !== snapshot.report.status ||
-    reportData.run?.templateId !== snapshot.templateId || reportData.run?.templateVersion !== snapshot.templateVersion) return false
+    reportData.run?.templateId !== snapshot.templateId || reportData.run?.templateVersion !== snapshot.templateVersion ||
+    (snapshot.reportKind !== undefined && reportData.reportKind !== snapshot.reportKind)) return false
   if (snapshot.projectionHash !== calculateT08ProjectionHash(snapshot)) return false
   const { snapshotHash, ...snapshotBase } = snapshot
   return snapshotHash === sha256(canonicalJson(snapshotBase))
@@ -194,20 +199,86 @@ export function getT08ReportArchiveV3(
   return snapshot
 }
 
-export function listT08ReportArchivesV3(caseId: string, rootDir = getConfigDir()): T08ReportArchiveSummary[] {
-  const root = reportRoot(rootDir, caseId)
+/** 原始快照永不修改；每次本机保存结果以独立文件追加。 */
+function persistT08LocalSaveRecord(
+  snapshot: T08ReportSnapshot,
+  record: Omit<T08LocalSaveRecord, 'id' | 'reportId' | 'snapshotHash' | 'recordHash'>,
+  rootDir: string,
+): T08LocalSaveRecord {
+  const base = {
+    ...record, id: 'save-' + randomUUID(), reportId: snapshot.reportId, snapshotHash: snapshot.snapshotHash,
+  }
+  const result = { ...base, recordHash: sha256(canonicalJson(base)) }
+  const directory = join(reportArchivePath(rootDir, snapshot.caseId, snapshot.reportId), 'local-save-records')
+  mkdirSync(directory, { recursive: true, mode: 0o700 })
+  writeAtomicNewFile(join(directory, result.id + '.json'), JSON.stringify(result, null, 2) + '\n')
+  return result
+}
+
+export function listT08LocalSaveRecordsV3(snapshot: T08ReportSnapshot, rootDir = getConfigDir()): T08LocalSaveRecord[] {
+  const directory = join(reportArchivePath(rootDir, snapshot.caseId, snapshot.reportId), 'local-save-records')
+  if (!existsSync(directory)) return []
+  return readdirSync(directory, { withFileTypes: true }).filter((entry) => entry.isFile() && entry.name.endsWith('.json'))
+    .map((entry) => {
+      const value = JSON.parse(readFileSync(join(directory, entry.name), 'utf8')) as T08LocalSaveRecord
+      if (!value || value.id + '.json' !== entry.name || value.reportId !== snapshot.reportId ||
+        value.snapshotHash !== snapshot.snapshotHash || !FORMATS.has(value.format) ||
+        !['saved', 'cancelled', 'failed'].includes(value.status)) {
+        throw new Error('本地保存记录与报告档案不匹配：' + entry.name)
+      }
+      const { recordHash, ...base } = value
+      if (!recordHash || recordHash !== sha256(canonicalJson(base))) {
+        throw new Error('本地保存记录完整性校验失败：' + entry.name)
+      }
+      return value
+    }).sort((a, b) => a.at.localeCompare(b.at))
+}
+
+/** 更正关系只从案卷当前的追加式决定记录派生，不回写签发时的旧报告。 */
+export function findT08ReportAmendments(
+  decisionIds: readonly string[],
+  decisions: readonly { id: string; amendsDecisionId?: string }[],
+): string[] {
+  const relatedIds = new Set(decisionIds)
+  const result: string[] = []
+  // 连续更正 d1→d2→d3 时显示完整后续链，旧快照仍保持不变。
+  for (let changed = true; changed;) {
+    changed = false
+    for (const item of decisions) {
+      if (!item.amendsDecisionId || !relatedIds.has(item.amendsDecisionId) || relatedIds.has(item.id)) continue
+      relatedIds.add(item.id)
+      result.push(item.id)
+      changed = true
+    }
+  }
+  return result
+}
+
+export function listT08ReportArchivesV3(caseId: string, rootDir?: string): T08ReportArchiveSummary[] {
+  const actualRoot = rootDir ?? getConfigDir()
+  const root = reportRoot(actualRoot, caseId)
   if (!existsSync(root)) return []
+  // 注入隔离根目录的测试/诊断不应意外访问真实用户配置目录。
+  const aggregate = rootDir === undefined ? getCaseV2Aggregate(caseId) : null
+  const currentRunId = aggregate ? listRunsV2(caseId)[0]?.id : undefined
   return readdirSync(root, { withFileTypes: true }).filter((entry) => entry.isDirectory()).map((entry) => {
     const archivePath = join(root, entry.name)
     try {
-      const snapshot = getT08ReportArchiveV3({ caseId, reportId: entry.name }, rootDir)
+      const snapshot = getT08ReportArchiveV3({ caseId, reportId: entry.name }, actualRoot)
       const files = readdirSync(archivePath).filter((name) => name !== 'snapshot.json').sort()
       const hasBaseFiles = files.includes('report.md') && files.includes('report.json')
+      let localSaveRecords: T08LocalSaveRecord[] = []
+      let localSaveError: string | undefined
+      try { localSaveRecords = listT08LocalSaveRecordsV3(snapshot, actualRoot) }
+      catch (error) { localSaveError = error instanceof Error ? error.message : String(error) }
       return {
         reportId: snapshot.reportId, caseId: snapshot.caseId, caseTitle: snapshot.caseTitle,
         runId: snapshot.runId, audience: snapshot.audience, inputHash: snapshot.inputHash,
         templateId: snapshot.templateId, templateVersion: snapshot.templateVersion,
-        historical: snapshot.historical, createdAt: snapshot.createdAt,
+        historical: snapshot.historical, reportKind: snapshot.reportKind, createdAt: snapshot.createdAt,
+        amendedByDecisionIds: findT08ReportAmendments(snapshot.decisionIds, aggregate?.decisions ?? []),
+        noLongerCurrent: !!currentRunId && currentRunId !== snapshot.runId,
+        localSaveRecords, ...(localSaveError ? { localSaveError } : {}),
         snapshotHash: snapshot.snapshotHash, archivePath, files,
         valid: hasBaseFiles, ...(!hasBaseFiles ? { error: '报告档案缺少 MD/JSON 基线文件' } : {}),
       }
@@ -409,23 +480,51 @@ export async function exportT08ReportProjectionV3(
   const snapshot = makeT08ReportSnapshot(projection, snapshotOptions)
   const rootDir = dependencies.rootDir ?? getConfigDir()
   const archivePath = persistT08ReportSnapshot(snapshot, rootDir)
-  const renderPdf = dependencies.renderPdf ?? renderPdfWithBrowserWindow
-  const bytes = await encodeT08ReportFormat(snapshot.report, format, renderPdf, snapshot)
-  const archiveFilePath = join(archivePath, 'delivery.' + EXTENSION[format])
-  writeAtomicNewFile(archiveFilePath, bytes)
-  const destination = await (dependencies.chooseDestination ?? chooseDestination)(
-    safeFilename(snapshot.caseId + '-' + snapshot.runId + '-' + snapshot.audience) + '.' + EXTENSION[format], format,
-  )
-  if (!destination) {
-    return { status: 'cancelled', reportId: snapshot.reportId, snapshotHash: snapshot.snapshotHash,
-      caseId: snapshot.caseId, runId: snapshot.runId, audience: snapshot.audience, format,
-      archivePath, archiveFilePath }
+  return saveT08ReportLocally(snapshot, format, archivePath, rootDir, dependencies, true)
+}
+
+/** 统一新导出/历史重导出的本机保存及事实回执，不冒充收件或正式签发。 */
+async function saveT08ReportLocally(
+  snapshot: T08ReportSnapshot, format: T08ReportExportFormat,
+  archivePath: string, rootDir: string, dependencies: T08ReportServiceDependencies,
+  createArchiveDelivery: boolean,
+): Promise<T08ReportExportReceipt> {
+  const now = dependencies.now ?? (() => new Date().toISOString())
+  const baseReceipt = {
+    reportId: snapshot.reportId, snapshotHash: snapshot.snapshotHash, caseId: snapshot.caseId,
+    runId: snapshot.runId, audience: snapshot.audience, format, archivePath,
   }
-  assertT08ExportDestination(rootDir, destination)
-  writeExportedFile(destination, bytes)
-  return { status: 'saved', reportId: snapshot.reportId, snapshotHash: snapshot.snapshotHash,
-    caseId: snapshot.caseId, runId: snapshot.runId, audience: snapshot.audience, format,
-    archivePath, archiveFilePath, filePath: destination, savedAt: (dependencies.now ?? (() => new Date().toISOString()))() }
+  let fileHash: string | undefined
+  let savedPath: string | undefined
+  try {
+    const bytes = await encodeT08ReportFormat(snapshot.report, format, dependencies.renderPdf ?? renderPdfWithBrowserWindow, snapshot)
+    fileHash = sha256(bytes)
+    const archiveFilePath = createArchiveDelivery ? join(archivePath, 'delivery.' + EXTENSION[format]) : undefined
+    if (archiveFilePath) writeAtomicNewFile(archiveFilePath, bytes)
+    const destination = await (dependencies.chooseDestination ?? chooseDestination)(
+      safeFilename(snapshot.caseId + '-' + snapshot.runId + '-' + snapshot.audience) + '.' + EXTENSION[format], format,
+    )
+    if (!destination) {
+      persistT08LocalSaveRecord(snapshot, { format, status: 'cancelled', at: now(), fileHash }, rootDir)
+      return { ...baseReceipt, status: 'cancelled', ...(archiveFilePath ? { archiveFilePath } : {}) }
+    }
+    assertT08ExportDestination(rootDir, destination)
+    writeExportedFile(destination, bytes)
+    savedPath = destination
+    const savedAt = now()
+    persistT08LocalSaveRecord(snapshot, { format, status: 'saved', at: savedAt, fileHash, filePath: destination }, rootDir)
+    return { ...baseReceipt, status: 'saved', ...(archiveFilePath ? { archiveFilePath } : {}), filePath: destination, savedAt }
+  } catch (error) {
+    // 已实际保存但记录失败时不能再写“保存失败”，错误消息须明确告知文件可能已在目标位置。
+    if (savedPath) throw new Error('报告已保存至 ' + savedPath + '，但本地保存回执记录失败：' + String(error))
+    try {
+      persistT08LocalSaveRecord(snapshot, {
+        format, status: 'failed', at: now(), ...(fileHash ? { fileHash } : {}),
+        error: error instanceof Error ? error.message : String(error),
+      }, rootDir)
+    } catch { /* 原始失败原因优先返回，归档记录不可用将在后续审计中发现。 */ }
+    throw error
+  }
 }
 
 
@@ -456,18 +555,5 @@ export async function exportT08ReportArchiveV3(
   const rootDir = dependencies.rootDir ?? getConfigDir()
   const snapshot = getT08ReportArchiveV3(input, rootDir)
   const archivePath = reportArchivePath(rootDir, input.caseId, input.reportId)
-  const renderPdf = dependencies.renderPdf ?? renderPdfWithBrowserWindow
-  const bytes = await encodeT08ReportFormat(snapshot.report, input.format, renderPdf, snapshot)
-  const destination = await (dependencies.chooseDestination ?? chooseDestination)(
-    safeFilename(snapshot.caseId + '-' + snapshot.runId + '-' + snapshot.audience) + '.' + EXTENSION[input.format], input.format,
-  )
-  if (!destination) {
-    return { status: 'cancelled', reportId: snapshot.reportId, snapshotHash: snapshot.snapshotHash,
-      caseId: snapshot.caseId, runId: snapshot.runId, audience: snapshot.audience, format: input.format, archivePath }
-  }
-  assertT08ExportDestination(rootDir, destination)
-  writeExportedFile(destination, bytes)
-  return { status: 'saved', reportId: snapshot.reportId, snapshotHash: snapshot.snapshotHash,
-    caseId: snapshot.caseId, runId: snapshot.runId, audience: snapshot.audience, format: input.format,
-    archivePath, filePath: destination, savedAt: (dependencies.now ?? (() => new Date().toISOString()))() }
+  return saveT08ReportLocally(snapshot, input.format, archivePath, rootDir, dependencies, false)
 }

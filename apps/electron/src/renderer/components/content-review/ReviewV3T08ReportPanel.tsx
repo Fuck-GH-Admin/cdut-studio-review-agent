@@ -27,6 +27,13 @@ function receiptNotice(receipt: T08ReportExportReceipt): string {
   return '报告已保存：' + receipt.filePath + '。档案 ID：' + receipt.reportId + '；快照哈希：' + receipt.snapshotHash
 }
 
+const reportKindLabels = {
+  preliminary: '初审报告',
+  'supplement-needed': '待补件初审报告',
+  decided: '已决定报告（非校方签发）',
+  historical: '历史报告',
+} as const
+
 export function ReviewV3T08ReportPanel({ caseId, currentRunId }: Props): React.ReactElement {
   const [runs, setRuns] = React.useState<Array<{ id: string; status: string; startedAt: string }>>([])
   const [selectedRunId, setSelectedRunId] = React.useState(currentRunId ?? '')
@@ -95,6 +102,7 @@ export function ReviewV3T08ReportPanel({ caseId, currentRunId }: Props): React.R
   const archivedProjection = projection && isArchivedProjection(projection) ? projection : null
   const archived = archivedProjection !== null
   const archivePath = archivedProjection ? archives.find((item) => item.reportId === archivedProjection.reportId)?.archivePath : undefined
+  const archiveDetails = archivedProjection ? archives.find((item) => item.reportId === archivedProjection.reportId) : undefined
 
   const openArchive = async (): Promise<void> => {
     if (!caseId || !selectedArchiveId) return
@@ -158,13 +166,18 @@ export function ReviewV3T08ReportPanel({ caseId, currentRunId }: Props): React.R
           {projection && <>
             <p>案卷：{projection.caseTitle} · 生成时 revision {projection.caseRevision}</p>
             <p>Run：{projection.runId} · {report?.status} · {report?.rows.length ?? 0} 条报告记录</p>
+            <p>报告性质：{projection.reportKind ? reportKindLabels[projection.reportKind] : '旧版报告（未记录性质）'}</p>
             <p>受众：{projection.audience} · 输入：{projection.inputHash.slice(0, 16)}…</p>
             <p>关联决定：{projection.decisionIds.length} 条 · {projection.historical ? '历史/过期' : '当前输入'}</p>
             {archived
               ? <p>报告档案：{archivedProjection!.reportId} · 快照哈希 {archivedProjection!.snapshotHash.slice(0, 16)}…</p>
               : <p>预览指纹：{projection.projectionHash.slice(0, 16)}…；导出前 Main 会重新计算并拒绝过期预览。</p>}
             {projection.historical && <p className="text-amber-700 dark:text-amber-400">该报告是历史或过期输入的只读记录，不代表案卷当前状态。</p>}
+            {archiveDetails?.noLongerCurrent && <p className="text-amber-700 dark:text-amber-400">归档后已有更新的审核 Run；本报告不再代表当前审核输入。</p>}
+            {!!archiveDetails?.amendedByDecisionIds?.length && <p className="text-amber-700 dark:text-amber-400">归档关联决定后来被更正：{archiveDetails.amendedByDecisionIds.join('、')}。原始报告仍按生成时内容保留。</p>}
             {archived && archivePath && <p>本地档案位置：{archivePath}</p>}
+            {archived && archiveDetails && <p>本机另存为记录：{archiveDetails.localSaveRecords?.length ?? 0} 次（成功、取消和失败均仅代表本机操作，不代表外部送达）。</p>}
+            {archiveDetails?.localSaveError && <p role="alert" className="text-destructive">保存记录校验异常：{archiveDetails.localSaveError}</p>}
           </>}
         </div>
 
@@ -202,7 +215,7 @@ export function ReviewV3T08ReportPanel({ caseId, currentRunId }: Props): React.R
               onChange={(event) => setSelectedArchiveId(event.target.value)}>
               <option value="">选择一个档案</option>
               {archives.map((item) => <option value={item.reportId} key={item.reportId} disabled={!item.valid}>
-                {item.createdAt} · {item.runId} · {item.audience} · {item.valid ? '可验证' : '损坏'}
+                {item.createdAt} · {item.runId} · {item.audience} · {item.amendedByDecisionIds?.length ? '决定已更正' : item.noLongerCurrent ? '旧运行' : '存档'} · {item.valid ? '可验证' : '损坏'}
               </option>)}
             </select>
           </label>

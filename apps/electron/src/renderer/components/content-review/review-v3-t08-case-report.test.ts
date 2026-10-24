@@ -43,6 +43,31 @@ test('T08 student report renders public field key-values, not object placeholder
   expect(reviewer.markdown).toContain('internalNote：内部核验说明')
 })
 
+test('T08 distinguishes preliminary, pending supplement, final decision and historical without claiming school issuance', () => {
+  const base = {
+    caseV2: { id: 'case-kind', documents: [], subjects: [] }, decisions: [], dispositions: [], supplements: [],
+  } as unknown as CaseAggregateV2
+  const run = {
+    id: 'run-kind', caseId: 'case-kind', templateId: 't', templateVersion: 1,
+    inputManifest: { hash: 'input-kind', documentVersions: [] }, status: 'completed',
+    coverage: { effectiveVerdicts: 1, plannedChecks: 1, pendingChecks: 0 }, checks: [], opinions: [],
+  } as unknown as ReviewRunV2
+  const make = (aggregate: CaseAggregateV2, stale = false) =>
+    makeT08CaseReport({ aggregate, run, audience: 'student', stale })
+  expect(make(base).kind).toBe('preliminary')
+  const pending = { ...base, supplements: [{ id: 's', status: 'open', reason: '缺件', requiredElements: ['附件'] }] } as CaseAggregateV2
+  expect(make(pending).kind).toBe('supplement-needed')
+  const decided = { ...base, decisions: [{
+    id: 'final', basedOnRunId: run.id, finality: 'final', at: '2026-10-24T00:00:00Z', result: 'pass',
+    reason: '符合', stageId: 'final', basedOnRevision: 1, actor: { actorId: 'local', actorSource: 'local', role: 'reviewer' },
+    scope: { kind: 'case', ids: [] },
+  }] } as CaseAggregateV2
+  expect(make(decided).kind).toBe('decided')
+  expect(make(decided).markdown).toContain('非学校签发')
+  expect(make(decided, true).kind).toBe('historical')
+  expect(make(pending).json).toContain('"reportKind": "supplement-needed"')
+})
+
 test('F16 student report does not disclose internal check reasons, source quotes or full run manifest', () => {
   const aggregate = {
     caseV2: {
@@ -119,6 +144,29 @@ test('F16 historical report never mixes later decisions, dispositions or adjudic
   }
   expect(report.markdown).toContain('不混入这些数据')
   expect(report.json).not.toContain('later-decision')
+})
+
+test('T08 unarchived historical Run does not borrow renamed file metadata or re-parsed current source locations', () => {
+  const aggregate = {
+    caseV2: { id: 'historical-source', subjects: [], documents: [{
+      documentId: 'doc-1', versionId: 'version-1', fileName: '后来重命名的秘密.pdf',
+      role: 'rule', parseRevision: 2, blocks: [{ blockId: 'new-block', text: '后来重新解析的文字' }],
+    }] },
+    decisions: [], dispositions: [], supplements: [],
+  } as unknown as CaseAggregateV2
+  const ref = { caseId: 'historical-source', documentVersionId: 'version-1', parseRevision: 1,
+    location: { kind: 'paragraph' as const, index: 0 } }
+  const run = {
+    id: 'old-source', caseId: 'historical-source', status: 'completed', templateId: 't', templateVersion: 1,
+    inputManifest: { hash: 'old-hash', documentVersions: [{ documentId: 'doc-1', versionId: 'version-1', contentHash: 'old-content' }] },
+    coverage: { effectiveVerdicts: 1, plannedChecks: 1, pendingChecks: 0 },
+    checks: [{ checkId: 'c', ruleId: 'r', reason: '旧检查', status: 'compliant', sourceRefs: [ref] }], opinions: [],
+  } as unknown as ReviewRunV2
+  const report = makeT08CaseReport({ aggregate, run, audience: 'reviewer', stale: true })
+  expect(report.markdown).toContain('历史来源位置未复核')
+  expect(report.markdown + report.json).not.toContain('后来重命名的秘密')
+  expect(report.markdown + report.json).not.toContain('后来重新解析的文字')
+  expect(report.json).toContain('"resolution": "file-only"')
 })
 
 test('T08 student decision and supplement projection defaults to private; internal reviewer retains full decision evidence', () => {
