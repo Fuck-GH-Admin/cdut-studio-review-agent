@@ -1,0 +1,4 @@
+template_id	issue_id	severity	category	location	finding	why_it_matters	evidence	action	policy_confirmation_required	cross_template	status
+S01-T04	S01-C-001	P2	POLICY_CURRENTITY	§04 SRC-003/004/005/013/015; §08 R004/R005/R006/R010/R016/R027	2026校级通知全文、接收指标和各学院细则尚未完整取得	不能用历史阈值自动判定资格/录取	研究稿 SRC-003 INDEX-ONLY; SRC-004 BLOCKED; SRC-005 限特定学院批次	F022/M021保持政策未确认；取得本期有权全文后再版本化配置	true	false	OPEN_HUMAN_CONFIRMATION
+S01-T04	S01-C-002	P2	SPECIAL_TRACK_AUTHORITY	§02 C06/C08; §03 C06/C08; §04 SRC-004/009	合作办学专项附件、研究生现行性及审批权限未闭合	套用本科流程会产生身份路由与权责错误	研究稿 SRC-004 页面/附件未读; SRC-009 2021办法现行性不明	保持人工路由与未确认门禁；校方主管部门确认适用范围	true	true	OPEN_HUMAN_CONFIRMATION
+S01-T04	S01-C-003	P2	INTEGRATION_HANDOFF	r02-template-catalog/index.ts; review-v3-main-template-plan-bridge.ts	本批定义未接入统一注册及真实 V3 Plan/Run	独立 TemplateVersion 文件并不等于用户界面可用	feat/v3-r02-template-library@150acfe7; 本批所有权限制	集成Owner注册candidate-held模板并完成Plan/Run与人工门禁验收	false	true	OPEN_INTEGRATION
