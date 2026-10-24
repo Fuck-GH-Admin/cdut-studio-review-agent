@@ -13,7 +13,7 @@ const { createNativeWorkspaceCaseV3, registerNativeWorkspaceMaterialV3, reclassi
   await import('./native-workspace-case-v3')
 const { readAggregate } = await import('./case-store-v2')
 const { saveDraft, publishTemplate } = await import('./template-store')
-const { submitCaseV2 } = await import('./stage-workflow')
+const { submitCaseV2, recordStageDecision } = await import('./stage-workflow')
 
 const actor = { actorId: 'local-reviewer', actorSource: 'local' as const, role: 'reviewer' as const }
 const templateId = 'slot-template'
@@ -85,6 +85,22 @@ describe('原生案卷材料槽', () => {
     expect(completeSubmission.ok).toBe(true)
     if (!completeSubmission.ok) throw new Error(completeSubmission.message)
     expect(completeSubmission.receipt.summary).not.toContain('待补材料')
+
+    // The legacy stage writer used run@rev even without a verified ReviewRun.
+    // Native V3 must reject that writer rather than silently fabricate approval.
+    const beforeDecision = readAggregate(completeCaseId)!
+    const legacyDecision = await recordStageDecision(completeCaseId, {
+      requestId: 'legacy-native-decision-blocked', actor,
+      expectedRevision: beforeDecision.caseV2.revision,
+      payload: {
+        action: 'stage-pass',
+        taskId: beforeDecision.tasks.find((task) => task.status === 'open')!.id,
+        reason: '尝试走旧 V2 入口',
+      },
+    }, (await import('./template-store')).getTemplate(templateId, 1)!)
+    expect(legacyDecision.ok).toBeFalse()
+    if (!legacyDecision.ok) expect(legacyDecision.message).toContain('T05 可信阶段决定')
+    expect(readAggregate(completeCaseId)?.decisions).toHaveLength(0)
   })
 
   test('AI 分类批次以单次事务原子应用，且不能把全部申报材料改成其他类别', async () => {
