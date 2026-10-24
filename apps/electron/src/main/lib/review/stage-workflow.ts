@@ -72,6 +72,32 @@ export interface StageDecisionPayload {
   supplementReason?: string
 }
 
+/** Native V3 stage decisions must reference an actual, current terminal Pi Run.
+ * Legacy non-native cases retain their old migration behavior, but cannot be
+ * used to promote a fabricated run@rev into an actual native V3 decision.
+ */
+function nativeStageDecisionRunId(aggregate: CaseAggregateV2): string | undefined {
+  const { isNativeWorkspaceCaseV3 } = require('./native-workspace-case-v3') as typeof import('./native-workspace-case-v3')
+  if (!isNativeWorkspaceCaseV3(aggregate)) return undefined
+  const { listRunsV2 } = require('./run-store-v2') as typeof import('./run-store-v2')
+  const { isWorkspaceRunStaleV2 } = require('./workspace-business-service-v2') as typeof import('./workspace-business-service-v2')
+  const runs = listRunsV2(aggregate.caseV2.id)
+  if (runs.some(run => run.status === 'queued' || run.status === 'running')) {
+    throw new CommandValidationError('INVALID_TRANSITION', '当前审核仍在运行，请等待完成后再作出阶段决定')
+  }
+  const latest = runs.find(run =>
+    run.id.startsWith('run-pi-') &&
+    run.caseId === aggregate.caseV2.id &&
+    run.templateId === aggregate.caseV2.templateId &&
+    run.templateVersion === aggregate.caseV2.templateVersion &&
+    (run.status === 'completed' || run.status === 'partially-completed') &&
+    !isWorkspaceRunStaleV2(aggregate, run.id))
+  if (!latest) {
+    throw new CommandValidationError('STALE_INPUT', '当前案卷没有与现有材料匹配的真实已完成初审 Run；请先运行或更新审核')
+  }
+  return latest.id
+}
+
 const isFinalStage = (aggregate: CaseAggregateV2, stageId: string, template: TemplateVersion): boolean => {
   const stage = template.stages.find((candidate) => candidate.id === stageId)
   return stage?.nextStageId === undefined
@@ -111,6 +137,9 @@ export function recordStageDecision(
     if (typeof payload.reason !== 'string' || !payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '决定必须附理由')
     if (!aggregate.decisions.every((decision) => decision.taskId !== task.id)) throw new CommandValidationError('INVALID_TRANSITION', '该任务已有决定')
 
+    // Resolve the Run within the same serialized Case transaction: a renderer
+    // cannot choose a stale or foreign run, and native cases never use run@rev.
+    const nativeRunId = nativeStageDecisionRunId(aggregate)
     const now = new Date().toISOString()
     const finality: BusinessDecision['finality'] = payload.action === 'final-reject' || (payload.action === 'stage-pass' && isFinalStage(aggregate, task.stageId, template)) ? 'final' : 'stage'
     return {
@@ -131,7 +160,7 @@ export function recordStageDecision(
           result,
           finalScores: payload.finalScores,
           reason: payload.reason.trim(),
-          basedOnRunId: `run@rev${aggregate.caseV2.revision}`,
+          basedOnRunId: nativeRunId ?? `run@rev${aggregate.caseV2.revision}`,
           basedOnRevision: aggregate.caseV2.revision,
           at: now,
           finality,
