@@ -16,6 +16,7 @@ import { validatePolicyRef } from './policy-store'
 import { CommandValidationError, createAggregate, payloadHash, readAggregate, submitCommand } from './case-store-v2'
 import { assertSafeReviewStorageId } from './review-storage-id'
 import type { CaseAggregateV2, ReviewCommandResult } from '@profer/shared'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 
 // ===== CreateCaseFromTemplate =====
 
@@ -95,6 +96,7 @@ export async function createCaseFromTemplate(
   actor: Actor,
   caseId: string,
 ): Promise<ReviewCommandResult<ReviewCaseV2>> {
+  assertReviewPreuploadAllowed('create-case', { caseId })
   assertSafeReviewStorageId(caseId, 'caseId')
   const template = getTemplate(templateId, version)
   if (!template) throw new CommandValidationError('NOT_FOUND', `模板不存在: ${templateId}@${version}`)

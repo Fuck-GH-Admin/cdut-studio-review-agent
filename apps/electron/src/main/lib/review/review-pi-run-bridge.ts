@@ -16,12 +16,14 @@ import { listRunsV2 } from './run-store-v2'
 import { assertSafeReviewStorageId } from './review-storage-id'
 import { isWorkspaceRunStaleV2 } from './workspace-business-service-v2'
 import { getCase } from './case-store'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 
 /** 仅保护准备/停止的短临界区，持久运行记录仍以 V2 为准。 */
 const busyCases = new Set<string>()
 
 export async function startBackgroundPiReview(input: ReviewBackgroundPiStartRequest, webContents: WebContents): Promise<ReviewBackgroundPiRunState> {
   assertSafeReviewStorageId(input?.caseId, 'caseId')
+  assertReviewPreuploadAllowed('read', { caseId: input.caseId })
   if (input.mode !== undefined && input.mode !== 'update' && input.mode !== 'restart') throw new Error('审核启动模式非法')
   if (!webContents || webContents.isDestroyed()) throw new Error('审核窗口已关闭，无法受理本次启动')
   if (busyCases.has(input.caseId)) throw new Error('该案卷正在启动或停止，请稍后再试')

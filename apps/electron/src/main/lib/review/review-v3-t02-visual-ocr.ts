@@ -14,6 +14,7 @@ import { basename, extname, join, posix } from 'node:path'
 import type { ReviewDocumentBlock, SourceDocument } from '@profer/shared'
 import type { OcrPort, OcrResult } from './ocr-port'
 import { parseFileIntoSourceDocument } from './document-service'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 
 export interface T02OcrInput {
   /** Main-verified original path; never accept arbitrary Renderer paths. */
@@ -138,6 +139,8 @@ async function readImage(
  * source.parseStatus intentionally stays partial until a reviewer verifies it.
  */
 export async function parseT02VisualMaterialWithOcr(input: T02OcrInput): Promise<T02OcrOutcome> {
+  assertReviewPreuploadAllowed('ocr')
+  assertReviewPreuploadAllowed('parse')
   const source = await parseFileIntoSourceDocument(
     input.filePath, input.fileName, input.role,
     input.assetRelativePath, input.assetDirectory,

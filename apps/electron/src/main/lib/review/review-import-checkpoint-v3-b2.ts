@@ -16,6 +16,7 @@ import { getConfigDir } from '../config-paths'
 import { type B2MainContext, ReviewB2StagingService } from './review-intake-adapter-v3-b2'
 import { stageReviewB2TrustedZip, type B2TrustedZipInput, type B2ZipImportPreview } from './review-zip-staging-v3-b2'
 import { decodeReviewB2Zip, type B2ZipLimits, type B2ZipFileReceipt } from './review-zip-intake-v3-b2'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 
 const sha256 = (bytes: Uint8Array | string): string => createHash('sha256').update(bytes).digest('hex')
 const code = (s: string): never => { throw new Error('B2_ARCHIVE_' + s) }
@@ -127,6 +128,7 @@ export class ReviewB2ArchiveVault {
     }
   }
   private readVerified(ctx: B2MainContext, archiveId: string): {checkpoint:B2ArchiveCheckpoint; bytes:Buffer} {
+    assertReviewPreuploadAllowed('restore')
     this.staging.assertStillGranted(ctx)
     const dir=this.safeArchiveDirectory(archiveId)
     let checkpoint:B2ArchiveCheckpoint, bytes:Buffer
@@ -191,6 +193,8 @@ export class ReviewB2ArchiveVault {
    */
   saveAndStage(ctx:B2MainContext, input:B2TrustedZipInput, limits?:B2ZipLimits):
     { checkpoint:B2ArchiveCheckpoint; preview:B2ZipImportPreview } {
+    assertReviewPreuploadAllowed('persist')
+    assertReviewPreuploadAllowed('zip')
     this.staging.assertStillGranted(ctx)
     // Hold one root lease from quota check through committed checkpoint rename:
     // independent ZIP archives cannot both observe the same remaining budget.

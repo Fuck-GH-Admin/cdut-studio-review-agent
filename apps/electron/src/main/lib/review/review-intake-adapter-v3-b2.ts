@@ -5,6 +5,7 @@
  * C0 adapter integration and durable checkpoint are pending Dev-C approval.
  */
 import { createHash, randomBytes } from 'node:crypto'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 import {
   REVIEW_C0_SCHEMA_VERSION, assertC0ImportBatch,
   type ImportBatch,
@@ -140,6 +141,7 @@ export class ReviewB2StagingService {
     input: { requestId: string; fileName: string; physicalSourceKey: string;
       bytes: Uint8Array; role: B2MaterialCandidate['role']; subjectId?: string | null },
   ): B2MaterialCandidate {
+    assertReviewPreuploadAllowed('persist')
     this.requireContext(ctx)
     const grant = this.grants.get(token)
     if (!grant || grant.consumed || grant.expiresAt <= this.now()) throw new Error('B2_TOKEN_INVALID_OR_CONSUMED')
@@ -213,6 +215,7 @@ export class ReviewB2StagingService {
   }
   /** Material bytes can only be fetched by same live owner; reading returns a copy. */
   read(ctx: B2MainContext, candidateId: string): Buffer {
+    assertReviewPreuploadAllowed('read')
     this.requireContext(ctx)
     const stored = this.materials.get(candidateId)
     if (!stored || stored.material.ownerId !== ctx.ownerId ||

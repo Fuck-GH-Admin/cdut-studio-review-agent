@@ -13,6 +13,7 @@ import {
   ReviewB2StagingService, type B2MainContext,
 } from './review-intake-adapter-v3-b2'
 import { parseFileIntoSourceDocument } from './document-service'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 
 export interface T02SourceBlockPreview {
   /** Unique within the B2 document version; stable across repeat previews. */
@@ -55,6 +56,8 @@ export async function previewT02StagedSource(
   staging: ReviewB2StagingService,
   candidateId: string,
 ): Promise<T02StagedSourcePreview> {
+  assertReviewPreuploadAllowed('parse')
+  assertReviewPreuploadAllowed('persist')
   staging.assertStillGranted(ctx)
   const source = staging.getCandidate(ctx, candidateId)
   const bytes = staging.read(ctx, candidateId)

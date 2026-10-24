@@ -14,6 +14,7 @@ import { getConfigDir } from '../config-paths'
 import { createPiReviewModelClient } from './pi-review-agent-client'
 import { join } from 'node:path'
 import type { ReviewImageInspector } from './v2-executor-factory'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 
 /** 异步运行登记表项：进程内保留后台 promise 与取消控制器 */
 interface ActiveRun {
@@ -71,6 +72,7 @@ async function assembleReviewClient(caseId: string): Promise<{ client: import('.
 
 /** 同步执行一次真实审核（原 RUN_REVIEW_V2 handler 逻辑；调用方自行处理长等待） */
 export async function assembleAndRunReview(caseId: string, options: { signal?: AbortSignal; initiatedBy?: Actor } = {}): Promise<ReviewRunV2> {
+  assertReviewPreuploadAllowed('read', { caseId })
   const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
   const { getTemplate } = require('./template-store') as typeof import('./template-store')
   const { assembleV2Executors } = require('./v2-executor-factory') as typeof import('./v2-executor-factory')
@@ -112,6 +114,7 @@ export interface StartRunAsyncResult {
  * 调用方（IPC 或 Agent 工具）拿 runId 轮询 getRunV2 即可，不挂长连接。
  */
 export function startReviewRunAsync(caseId: string, initiatedBy: Actor, source?: CommandSourceMeta, input?: { runId?: string }): StartRunAsyncResult {
+  assertReviewPreuploadAllowed('read', { caseId })
   const { getCaseV2Aggregate } = require('./application-service') as typeof import('./application-service')
   const { getTemplate } = require('./template-store') as typeof import('./template-store')
   const { assembleV2Executors } = require('./v2-executor-factory') as typeof import('./v2-executor-factory')

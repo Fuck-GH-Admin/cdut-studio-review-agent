@@ -15,6 +15,7 @@ import { getCase, saveCase, updateCase, assertSafeId, getReviewCasesDir } from '
 import { parseFileIntoSourceDocument } from './document-service'
 import { invalidateDerivedReviewInputs } from './input-invalidation'
 import { syncWorkspaceProjectionV2 } from './workspace-service-v2'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 
 /** 单文件大小上限（50MB，超过直接拒绝） */
 const MAX_IMPORT_BYTES = 50 * 1024 * 1024
@@ -46,6 +47,7 @@ export async function renderPdfImageBlocks(input: {
   assetDirectoryPrefix?: string
   onProgress?: (progress: { phase: 'scanning-pdf' | 'rendering-pdf'; page: number; totalPages: number }) => void
 }): Promise<{ blocks: ReviewDocumentBlock[]; warnings: string[] }> {
+  assertReviewPreuploadAllowed('parse')
   const pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs') as unknown as {
     OPS: Record<string, number>
     GlobalWorkerOptions: { workerSrc: string }
@@ -134,6 +136,7 @@ export async function importDocumentsIntoCase(input: {
   requestId?: string
   onProgress?: (event: ReviewImportProgressEvent) => void
 }): Promise<ImportDocumentsResult> {
+  assertReviewPreuploadAllowed('picker', { caseId: input.caseId })
   const { dialog, BrowserWindow } = require('electron') as typeof import('electron')
   assertSafeId(input.caseId)
   const reviewCase = getCase(input.caseId)
@@ -209,6 +212,8 @@ export async function importDocumentFromPath(input: {
   fileIndex?: number
   fileCount?: number
 }): Promise<SourceDocument> {
+  assertReviewPreuploadAllowed('read', { caseId: input.caseId })
+  assertReviewPreuploadAllowed('persist', { caseId: input.caseId })
   assertSafeId(input.caseId)
   const reviewCase = getCase(input.caseId)
   if (!reviewCase) throw new Error(`案卷不存在: ${input.caseId}`)

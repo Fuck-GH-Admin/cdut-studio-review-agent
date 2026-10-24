@@ -16,6 +16,7 @@ import {
 } from 'node:fs'
 import { join } from 'node:path'
 import { getConfigDir } from '../config-paths'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 import { type B2MainContext, ReviewB2StagingService } from './review-intake-adapter-v3-b2'
 import { type B2ArchiveCheckpoint, ReviewB2ArchiveVault } from './review-import-checkpoint-v3-b2'
 
@@ -226,6 +227,7 @@ export class ReviewB2InputLedger {
     return parsed!
   }
   private write(ctx:B2MainContext, record:B2InputBatchLedger):void {
+    assertReviewPreuploadAllowed('persist')
     const dir=this.folder(ctx,record.archiveId)
     mkdirSync(dir,{recursive:true,mode:0o700})
     const temp=join(dir,'ledger-'+randomBytes(10).toString('hex')+'.tmp')

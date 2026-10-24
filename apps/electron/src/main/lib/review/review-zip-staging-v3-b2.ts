@@ -10,6 +10,7 @@ import {
   ReviewB2StagingService, type B2MainContext, type B2MaterialCandidate, type B2ImportReceipt,
 } from './review-intake-adapter-v3-b2'
 import { decodeReviewB2Zip, type B2ZipLimits, type B2ZipDecodeResult } from './review-zip-intake-v3-b2'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 
 const sha = (value: string): string => createHash('sha256').update(value, 'utf8').digest('hex')
 export interface B2TrustedZipInput {
@@ -35,6 +36,7 @@ export function stageReviewB2TrustedZip(
   archive: B2TrustedZipInput,
   limits?: B2ZipLimits,
 ): B2ZipImportPreview {
+  assertReviewPreuploadAllowed('zip')
   staging.assertStillGranted(ctx)
   if (!archive || !archive.physicalArchiveKey?.trim() || !archive.requestId?.trim() ||
       archive.physicalArchiveKey.length > 256 || archive.requestId.length > 128) {

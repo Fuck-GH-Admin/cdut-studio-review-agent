@@ -7,6 +7,7 @@ import type { Channel, SDKMessage } from '@profer/shared'
 import type { PiAgentQueryOptions } from '../adapters/pi-agent-adapter'
 import type { ReviewModelClient } from './pi-review-executor'
 import { buildPiReviewToolDefinitions } from './pi-review-executor'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 
 type ReviewPiQuery = (input: PiAgentQueryOptions) => AsyncIterable<SDKMessage>
 type ReviewPiAbort = (sessionId: string) => void
@@ -79,6 +80,9 @@ export function createPiReviewModelClient(options: PiReviewModelClientOptions): 
   const configuredModel = options.channel.models.find((item) => item.id.toLowerCase() === options.model.toLowerCase())
 
   const runPi = async (request: Parameters<ReviewModelClient['complete']>[0], images: string[], deadlineAt: number): Promise<string> => {
+    assertReviewPreuploadAllowed('model', {
+      modelDestination: `${options.channel.provider}:${options.channel.baseUrl ?? ''}`,
+    })
     if (request.signal?.aborted) throw new Error('审核已取消')
     const sdk = await (options.loadSdk ?? (() => import('@earendil-works/pi-coding-agent')))()
     let completedReviewToolAttempt = false

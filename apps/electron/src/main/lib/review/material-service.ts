@@ -17,12 +17,14 @@ import { revokeCurrentSourceValidity } from './source-current-validity-v3'
 import { getConfigDir } from '../config-paths'
 import { extractDocxReviewContent, extractSpreadsheetReviewContent, extractTextFromFile, type DocxReviewContent, type XlsxReviewContent } from '../document-parser'
 import { extractReviewableTextFile } from './document-service'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 
 const IMAGE_MIME_PREFIX = 'image/'
 const MAX_MATERIAL_BYTES = 50 * 1024 * 1024
 
 /** 复制原件进案卷并返回字节 hash 与相对 assetKey */
 function copyAsset(caseId: string, versionId: string, sourcePath: string): { byteHash: string; assetKey: string; sizeBytes: number; assetDirectory: string } {
+  assertReviewPreuploadAllowed('persist', { caseId })
   if (!existsSync(sourcePath)) throw new CommandValidationError('VALIDATION_FAILED', `源文件不存在: ${sourcePath}`)
   const dir = join(getConfigDir(), 'review-cases', caseId, 'source-docs', versionId)
   mkdirSync(dir, { recursive: true })
@@ -85,6 +87,8 @@ export interface RegisterMaterialPayload {
 
 /** 登记材料（命令事务）：新 DocumentVersion 进聚合；同名再登记产生新版本 */
 export async function registerMaterial(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: RegisterMaterialPayload }, authorizeAtCommit?: () => void): Promise<ReviewCommandResult<DocumentVersion>> {
+  assertReviewPreuploadAllowed('read', { caseId })
+  assertReviewPreuploadAllowed('parse', { caseId })
   if (!readAggregate(caseId)) throw new CommandValidationError('NOT_FOUND', `案卷聚合不存在: ${caseId}`)
   if (!command.payload.sourcePath || !existsSync(command.payload.sourcePath)) throw new CommandValidationError('VALIDATION_FAILED', '材料文件不存在')
   const inputSize = statSync(command.payload.sourcePath).size
@@ -142,10 +146,14 @@ export async function registerMaterial(caseId: string, command: { requestId: str
     catch (error) { fallbackParseError = error instanceof Error ? error.message : String(error) }
   }
   try {
+    // DOCX/PDF/Office parsing can suspend; an expired grant must not survive
+    // into the serialized copy/write transaction.
+    assertReviewPreuploadAllowed('persist', { caseId })
     return await submitCommand<RegisterMaterialPayload, DocumentVersion>(caseId, { ...command, type: 'RegisterMaterial' }, (aggregate, payload) => {
     // Re-check the live Main window after parsing/Host awaits and immediately
     // inside the serialized command, before any physical asset is copied.
     authorizeAtCommit?.()
+    assertReviewPreuploadAllowed('persist', { caseId })
     if (aggregate.caseV2.stage === 'archived') throw new CommandValidationError('INVALID_TRANSITION', '已归档案卷不可登记材料')
     const sourcePath = payload.sourcePath
     if (!sourcePath) throw new CommandValidationError('VALIDATION_FAILED', '缺少源文件路径')

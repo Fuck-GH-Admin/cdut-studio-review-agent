@@ -15,6 +15,7 @@ import { getTemplate, saveDraft } from './template-store'
 import { registerMaterial } from './material-service'
 import { revokeCurrentSourceValidity } from './source-current-validity-v3'
 import { isKnownDomainPack, resolveDomainPack } from '@profer/shared'
+import { assertReviewPreuploadAllowed } from './review-preupload-gate'
 
 export const NATIVE_CREATE_RECEIPT_V3 = 'CreateNativeWorkspaceCaseV3'
 const PENDING_TEMPLATE = 'pending-template-v3'
@@ -247,6 +248,7 @@ export async function createNativeWorkspaceCaseV3(input: NativeCreateWorkspaceIn
   if (domainRequiresAcademicYear(domain) && !academicYear) {
     throw new CommandValidationError('VALIDATION_FAILED', '该审核领域按学年组织评审，必须填写适用学年')
   }
+  assertReviewPreuploadAllowed('create-case')
   const template = input.reviewTemplate === null ? undefined : resolvedTemplate(domain, input.reviewTemplate)
   const caseId = `case-${randomUUID().replace(/-/g, '')}`
   const now = new Date().toISOString()
