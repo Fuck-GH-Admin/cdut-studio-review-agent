@@ -31,7 +31,7 @@ function assertStageGraph(template: TemplateVersion): void {
     const stage = byId.get(current)
     expect(stage).toBeDefined()
     expect(stage?.workflowOwner).toBe('local')
-    expect(['system', 'reviewer', 'teacher']).toContain(stage?.executorRole)
+    expect(['system', 'reviewer', 'teacher'].includes(stage?.executorRole ?? '')).toBe(true)
     if (stage?.returnToStageId) expect(byId.has(stage.returnToStageId)).toBe(true)
     current = stage?.nextStageId
   }
