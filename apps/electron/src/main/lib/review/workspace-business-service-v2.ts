@@ -265,6 +265,8 @@ export function decideWorkspaceCaseV2(
   command: { requestId: string; actor: Actor; expectedRevision: number; payload: { result: WorkspaceDecision; reason: string; basedOnRunId: string; inputHash: string; requiredElements?: string[]; supplementReason?: string } },
 ): Promise<ReviewCommandResult<BusinessDecision>> {
   return submitCommand(caseId, { ...command, type: 'RecordWorkspaceBusinessDecision' }, (aggregate, payload) => {
+    const { assertLegacyDecisionWritable } = require('./review-v3-legacy-decision-gate') as typeof import('./review-v3-legacy-decision-gate')
+    assertLegacyDecisionWritable(aggregate)
     // D2 候选为技术预审：普通 Pi 的完成回执不能获取校方行政决定权限。
     if (aggregate.d2RuntimePlan) throw new CommandValidationError('AGENT_DECISION_DISABLED', 'D2 技术预审案卷不能形成正式批准，需另走有权业务流程')
     // A bound CanonicalPlan must be reviewed by the verified C2 Run writer.

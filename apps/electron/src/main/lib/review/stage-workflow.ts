@@ -17,6 +17,7 @@ import { randomUUID } from 'node:crypto'
 import { CommandValidationError, submitCommand, type CommandSourceMeta } from './case-store-v2'
 import type { Actor } from '@profer/shared'
 import { assessMaterialSlotV2 } from '@profer/shared'
+import { assertLegacyDecisionWritable } from './review-v3-legacy-decision-gate'
 
 const newWorkflowTaskId = (): string => `task-${randomUUID()}`
 
@@ -90,11 +91,7 @@ export function recordStageDecision(
     // Native V3 must go through T05, which verifies the real Run, input hash,
     // coverage and trusted stage authority. The legacy N3 writer below records
     // a synthetic run@rev reference; it may not decide a native V3 case.
-    const { isNativeWorkspaceCaseV3 } = require('./native-workspace-case-v3') as typeof import('./native-workspace-case-v3')
-    if (isNativeWorkspaceCaseV3(aggregate)) {
-      throw new CommandValidationError('INVALID_TRANSITION', 'V3 原生案卷必须使用 T05 可信阶段决定，不允许旧 V2 决定入口生成伪 Run 引用')
-    }
-    if (aggregate.d2RuntimePlan) throw new CommandValidationError('AGENT_DECISION_DISABLED', 'D2 技术预审案卷无权进入正式阶段决定')
+    assertLegacyDecisionWritable(aggregate)
     const task = aggregate.tasks.find((candidate) => candidate.id === payload.taskId && candidate.status === 'open')
     if (!task) throw new CommandValidationError('INVALID_TRANSITION', '当前阶段没有开放任务（或已处理）')
     if (aggregate.caseV2.templateId !== template.templateId || aggregate.caseV2.templateVersion !== template.version
@@ -322,7 +319,7 @@ export async function resolveSupplementV2(caseId: string, command: { requestId: 
 
 export function resolveAppealV2(caseId: string, command: { requestId: string; actor: Actor; expectedRevision: number; payload: { appealId: string; resolution: Appeal['resolution'] & ('maintain-original' | 'amend-original' | 'withdrawn'); reason: string; amendedResult?: BusinessDecision['result'] } }): Promise<ReviewCommandResult<Appeal>> {
   return submitCommand<{ appealId: string; resolution: string; reason: string; amendedResult?: BusinessDecision['result'] }, Appeal>(caseId, { ...command, type: 'ResolveAppeal' } as never, (aggregate, payload) => {
-    if (aggregate.d2RuntimePlan) throw new CommandValidationError('AGENT_DECISION_DISABLED', 'D2 技术预审不支持冒充正式申诉改判')
+    assertLegacyDecisionWritable(aggregate)
     const appeal = aggregate.appeals.find((candidate) => candidate.id === payload.appealId)
     if (!appeal) throw new CommandValidationError('NOT_FOUND', `申诉不存在: ${payload.appealId}`)
     if (command.actor.role !== 'teacher') {

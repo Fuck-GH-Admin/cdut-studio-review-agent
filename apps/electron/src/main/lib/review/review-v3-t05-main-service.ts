@@ -62,39 +62,68 @@ export type T05BusinessMode = 'local-business' | 'technical-pre-review'
  * 本地业务资格必须来自 Main 可复核的来源：已发布模板 + 明确确认记录，
  * 绝不能因为「案卷里有 canonicalPlan」就自动获得。
  */
-export interface T05LocalBusinessConfirmation {
+export type T05LocalBusinessConfirmation = NonNullable<CaseAggregateV2['localBusinessConfirmation']>
+
+/**
+ * Explicit Main-only confirmation, committed together with the Case receipt.
+ * Never infer this from Plan existence or accept Renderer-supplied actor/time.
+ * No IPC is exposed: the independent local publisher must call this only
+ * after its own human confirmation and published-template verification.
+ */
+export function confirmT05LocalBusinessPublication(input: {
   caseId: string
-  planFingerprint: string
-  templateId: string
-  templateVersion: number
-  /** 确认来源：本地业务发布（本机审核员），或学校授权（本机无此能力） */
-  confirmedBy: 'local-organizer' | 'school-authorized'
-  confirmedAt: string
+  expectedRevision: number
+  requestId: string
   reason: string
-}
-
-/** 进程内确认登记（Phase 2 由 Plan 安装事务写入；重启后按需重建）。 */
-const localBusinessConfirmations = new Map<string, T05LocalBusinessConfirmation>()
-
-/** 登记一次本地业务发布确认（只应由 Main 的 Plan 安装事务调用）。 */
-export function registerT05LocalBusinessConfirmation(record: T05LocalBusinessConfirmation): void {
-  if (record.confirmedBy !== 'local-organizer') {
-    throw new CommandValidationError('INVALID_TRANSITION', '学校授权模式不在本地能力范围内')
-  }
-  if (!record.planFingerprint) {
-    throw new CommandValidationError('VALIDATION_FAILED', '确认记录缺少计划指纹')
-  }
-  localBusinessConfirmations.set(record.caseId, record)
+}): Promise<import('@profer/shared').ReviewCommandResult<T05LocalBusinessConfirmation>> {
+  const actor = LOCAL_ACTORS.reviewer
+  return submitCommand<{ reason: string }, T05LocalBusinessConfirmation>(input.caseId, {
+    requestId: input.requestId,
+    actor,
+    expectedRevision: input.expectedRevision,
+    type: 'ConfirmT05LocalBusinessPublication',
+    payload: { reason: input.reason },
+  }, (aggregate, payload) => {
+    if (aggregate.d2RuntimePlan || !aggregate.canonicalPlan) {
+      throw new CommandValidationError('INVALID_TRANSITION', '没有可供本地业务确认的冻结 CanonicalPlan')
+    }
+    const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
+    if (!template || template.status !== 'published') {
+      throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '模板尚未发布，不得作出本地业务确认')
+    }
+    if (!payload.reason?.trim()) {
+      throw new CommandValidationError('VALIDATION_FAILED', '本地业务确认必须有明确理由')
+    }
+    const plan = aggregate.canonicalPlan
+    if (!plan.planId || !plan.fingerprint ||
+        plan.templateId !== aggregate.caseV2.templateId ||
+        plan.templateVersion !== String(aggregate.caseV2.templateVersion)) {
+      throw new CommandValidationError('STALE_INPUT', '冻结计划与当前案卷模板不一致')
+    }
+    return {
+      summary: `本地业务发布确认：${plan.planId}@${plan.fingerprint}`,
+      mutate: (draft) => {
+        const confirmation: T05LocalBusinessConfirmation = {
+          schemaVersion: 'review-v3-local-business-confirmation/1',
+          caseId: draft.caseV2.id,
+          planId: plan.planId,
+          planFingerprint: plan.fingerprint,
+          templateId: draft.caseV2.templateId,
+          templateVersion: draft.caseV2.templateVersion,
+          confirmedBy: 'local-organizer',
+          confirmedAt: new Date().toISOString(),
+          reason: payload.reason.trim(),
+        }
+        draft.localBusinessConfirmation = confirmation
+        return confirmation
+      },
+    }
+  })
 }
 
 /** 读取某案卷已登记的本地业务确认。 */
 export function readT05LocalBusinessConfirmation(caseId: string): T05LocalBusinessConfirmation | undefined {
-  return localBusinessConfirmations.get(caseId)
-}
-
-/** 测试用：清除登记。生产代码不应调用。 */
-export function clearT05LocalBusinessConfirmations(): void {
-  localBusinessConfirmations.clear()
+  return readAggregate(caseId)?.localBusinessConfirmation
 }
 
 /**
@@ -114,9 +143,16 @@ export function resolveT05BusinessMode(aggregate: CaseAggregateV2): {
     return { mode: 'technical-pre-review', reason: 'D2 技术预审案卷不具备正式业务决定权' }
   }
   if (aggregate.canonicalPlan) {
-    const confirmation = localBusinessConfirmations.get(aggregate.caseV2.id)
+    const confirmation = aggregate.localBusinessConfirmation
     if (!confirmation) {
       return { mode: 'technical-pre-review', reason: '计划尚未经 Main 确认本地业务发布' }
+    }
+    if (confirmation.schemaVersion !== 'review-v3-local-business-confirmation/1' ||
+        confirmation.caseId !== aggregate.caseV2.id ||
+        confirmation.planId !== aggregate.canonicalPlan.planId ||
+        confirmation.confirmedBy !== 'local-organizer' ||
+        !confirmation.reason?.trim() || !Number.isFinite(Date.parse(confirmation.confirmedAt))) {
+      return { mode: 'technical-pre-review', reason: '本地业务确认记录不完整或与当前案卷不匹配' }
     }
     if (confirmation.planFingerprint !== aggregate.canonicalPlan.fingerprint) {
       return { mode: 'technical-pre-review', reason: '计划指纹与本地业务确认不一致' }

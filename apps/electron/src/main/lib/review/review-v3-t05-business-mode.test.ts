@@ -7,13 +7,12 @@
  * - 非合规项不能靠 Run completed 直接 stage-pass；
  * - 计划覆盖不足、执行失败、未执行都阻断通过，但允许退回/拒绝。
  */
-import { afterAll, afterEach, describe, expect, test } from 'bun:test'
+import { afterAll, describe, expect, test } from 'bun:test'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import {
-  resolveT05BusinessMode, t05ActionEligibility, registerT05LocalBusinessConfirmation,
-  clearT05LocalBusinessConfirmations,
+  resolveT05BusinessMode, t05ActionEligibility,
 } from './review-v3-t05-main-service'
 import type { CaseAggregateV2, ReviewCaseV2, ReviewRunV2 } from '@profer/shared'
 import { saveRunV2 } from './run-store-v2'
@@ -23,7 +22,6 @@ import { computeRunInputHash } from './run-service-v2'
 const configDir = mkdtempSync(join(tmpdir(), 't05arch-'))
 process.env.PROFER_CONFIG_DIR = configDir
 afterAll(() => rmSync(configDir, { recursive: true, force: true }))
-afterEach(() => { clearT05LocalBusinessConfirmations() })
 
 let runSeq = 0
 
@@ -42,6 +40,13 @@ function aggregate(overrides: Record<string, unknown> = {}): CaseAggregateV2 {
     observations: [], evidenceLinks: [],
     ...overrides,
   } as unknown as CaseAggregateV2
+}
+
+const confirmation = {
+  schemaVersion: 'review-v3-local-business-confirmation/1' as const,
+  caseId: 'case-arch', planId: 'p', planFingerprint: 'fp-1', templateId: 'tpl-arch',
+  templateVersion: 1, confirmedBy: 'local-organizer' as const,
+  confirmedAt: '2026-10-24T00:00:00.000Z', reason: '本地业务发布',
 }
 
 function run(checks: Array<Record<string, unknown>>, extra: Record<string, unknown> = {}) {
@@ -83,20 +88,16 @@ describe('D2 可信业务模式', () => {
   })
 
   test('CanonicalPlan + 指纹与模板版本相符的本地业务确认 → local-business', () => {
-    registerT05LocalBusinessConfirmation({
-      caseId: 'case-arch', planFingerprint: 'fp-1', templateId: 'tpl-arch',
-      templateVersion: 1, confirmedBy: 'local-organizer', confirmedAt: '', reason: '本地业务发布',
-    })
-    const result = resolveT05BusinessMode(aggregate({ canonicalPlan: { fingerprint: 'fp-1', planId: 'p' } }))
+    const result = resolveT05BusinessMode(aggregate({
+      canonicalPlan: { fingerprint: 'fp-1', planId: 'p' }, localBusinessConfirmation: confirmation,
+    }))
     expect(result.mode).toBe('local-business')
   })
 
   test('计划指纹变化后确认失效（升版必须重新确认）', () => {
-    registerT05LocalBusinessConfirmation({
-      caseId: 'case-arch', planFingerprint: 'fp-1', templateId: 'tpl-arch',
-      templateVersion: 1, confirmedBy: 'local-organizer', confirmedAt: '', reason: '本地业务发布',
-    })
-    const result = resolveT05BusinessMode(aggregate({ canonicalPlan: { fingerprint: 'fp-2', planId: 'p' } }))
+    const result = resolveT05BusinessMode(aggregate({
+      canonicalPlan: { fingerprint: 'fp-2', planId: 'p' }, localBusinessConfirmation: confirmation,
+    }))
     expect(result.mode).toBe('technical-pre-review')
     expect(result.reason).toContain('指纹')
   })
