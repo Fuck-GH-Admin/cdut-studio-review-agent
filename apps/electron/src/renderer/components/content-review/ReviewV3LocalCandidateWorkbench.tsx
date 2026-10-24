@@ -484,6 +484,7 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
       documentCount={nativeAggregate?.caseV2.documents.filter(item=>item.active!==false).length??0}
       technicalPlan={!!nativeAggregate?.d2RuntimePlan}
       canRun={!!activePlan||!!nativeAggregate?.d2RuntimePlan||classificationComplete}
+      materialSlots={currentTemplate?.materialSlots}
       onUpdated={refreshNativeAggregate}
     />}
     {localCaseId&&<div className="space-y-2 rounded-lg border border-border p-3">
