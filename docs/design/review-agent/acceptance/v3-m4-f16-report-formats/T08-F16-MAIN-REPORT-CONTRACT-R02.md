@@ -3,7 +3,7 @@
 更新日期：2026-10-24
 实现分支：fix/v3-t08-f16-main-report-contract-20261024
 基线：150acfe761cb7ad0424a2ca009fd57f12dbfddfd
-状态：PR CI PASS；真实 Electron GUI / 原生保存对话框验收仍未执行
+状态：代码 SHA 4d35f38 PR CI 全绿（含 T08/F16 专用与全量测试）；真实 Electron GUI / 原生保存对话框验收尚未执行
 
 ## 1. 本次范围
 
@@ -39,12 +39,12 @@
 ## 4. 格式与安全
 
 - MD、JSON、HTML、XLSX、PDF、ZIP 均消费同一份已投影报告。
-- XLSX 将疑似公式前缀的外部文本转为纯文本。
+- XLSX 将疑似公式前缀的外部文本转为纯文本。\n- 申请人版决定理由、原始 finalScores、内部补件原因及申诉详细文字默认不公开；申请人仍可见决定状态和需要补交的材料要求。
 - PDF 由 Main 使用隐藏的 Electron BrowserWindow + printToPDF 从无远端资源 HTML 生成；正文是可选择、可搜索的文本，而不是图片页。
 - ZIP 包含报告文件、README 与 F16 SHA-256 清单；不包含原件本体，也不宣称哈希等于数字签名。
 - 学生版只有精确匹配的模板 public 字段可见；未知字段默认不公开。内部检查、原文引用、完整输入清单不进入学生版。
-- 档案使用安全案卷 ID / 报告 ID 作为路径片段，快照和基线文件创建后不覆盖；读取时验证快照哈希及 JSON 与元数据绑定。
-- 原生保存取消、写入失败和成功分别处理；外部保存失败不会删除已创建的内部快照。
+- 档案使用安全案卷 ID / 报告 ID 作为路径片段；同目录临时文件 + 原子硬链接拒绝覆盖已有快照，读取时同时核验快照哈希与 MD/JSON 基线一致性。
+- 原生保存取消、写入失败和成功分别处理；另存为不能覆盖任意案卷数据及符号链接指向的报告档案。导出临时写入再原子替换，失败不删除内部快照或截断原有外部报告。
 
 ## 5. 决定和历史语义
 
@@ -66,7 +66,7 @@
 
 ## 7. 验收状态
 
-**CI：PASS**（提交 `eaa942cc1e4e24922c60ddb3652d683c9586b9cb`，2026-10-24）。
+**CI：PASS**（最新验证代码 `4d35f38f15ae45d5e5d314cc068a74207e5d58ea`，2026-10-24；详细阶段账见 `T08-F16-STAGE-PROGRESS-20261024-R03.md`）。
 
 - PR CI：workspace typecheck、package boundary check、Main / Preload / Renderer build、unit and regression tests 全部通过。
 - Review Baseline CI：PASS。
