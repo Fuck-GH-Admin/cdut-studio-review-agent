@@ -264,11 +264,22 @@ export function t05ActionEligibility(
   const plannedRuleIds = run.inputManifest?.effectiveRuleIds ?? []
   if (plannedRuleIds.length > 0) {
     coverage.planned = plannedRuleIds.length
+    const plannedRuleSet = new Set(plannedRuleIds)
     const produced = new Set(checks.map((check) => check.ruleId))
     coverage.missing = plannedRuleIds.filter((ruleId) => !produced.has(ruleId))
     if (coverage.missing.length > 0) {
       blockers.push(`计划覆盖不足：${coverage.missing.length} 条规则没有检查结果`)
     }
+    // Check results with a fabricated ruleId must not inflate the count of
+    // completed bindings. Main-owned "system:" checks are an explicit exception.
+    const unexpected = checks.filter((check) =>
+      !plannedRuleSet.has(check.ruleId) && !check.ruleId.startsWith('system:'))
+    if (unexpected.length > 0) {
+      blockers.push(`${unexpected.length} 项检查不属于当前 Run 冻结的有效规则集`)
+    }
+  }
+  if (checks.length > 0 && checks.every((check) => check.status === 'not-applicable')) {
+    blockers.push('本次没有任何适用的检查，不能把全部不适用当作审核通过')
   }
 
   // 处置必须绑定当前 Run（换输入后旧处置自然失效）

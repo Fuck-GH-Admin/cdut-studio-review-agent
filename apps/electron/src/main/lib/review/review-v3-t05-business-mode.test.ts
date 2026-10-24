@@ -146,6 +146,26 @@ describe('D3 按动作适格判定', () => {
     expect(mismatch.blockers.join()).toContain('检查账本尚未完整覆盖')
   })
 
+  test('伪造规则的额外检查与全部不适用不得冒充有效通过结果', () => {
+    const original = run([
+      { checkId: 'valid-1', ruleId: 'r1', status: 'compliant' },
+      { checkId: 'fake-2', ruleId: 'FAKE', status: 'compliant' },
+    ], { inputManifest: {
+      hash: computeRunInputHash(aggregate().caseV2, [], []), templateVersion: 1,
+      policyVersions: [], documentVersions: [], observationIds: [], evidenceLinkIds: [],
+      effectiveRuleIds: ['r1'],
+    } })
+    const withUnknown = t05ActionEligibility(aggregate(), original)
+    expect(withUnknown.allowed['stage-pass']).toBe(false)
+    expect(withUnknown.blockers.join()).toContain('不属于当前 Run 冻结的有效规则集')
+
+    const noApplicable = t05ActionEligibility(aggregate(), run([
+      { checkId: 'not-applicable', ruleId: 'r1', status: 'not-applicable' },
+    ]))
+    expect(noApplicable.allowed['stage-pass']).toBe(false)
+    expect(noApplicable.blockers.join()).toContain('全部不适用')
+  })
+
   test('21 人超限（non-compliant）不能仅凭 Run completed 通过', () => {
     const e = t05ActionEligibility(aggregate(), run([{ checkId: 'headcount', ruleId: 'r1', status: 'non-compliant' }]))
     expect(e.readiness).toBe('blocked')
