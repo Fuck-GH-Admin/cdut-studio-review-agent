@@ -128,9 +128,13 @@ export function assessMaterialSlotV2(
   const assigned = aggregate.caseV2.documents.filter((document) =>
     document.active !== false && document.materialSlotId === slot.id)
   const acceptedKinds = slot.acceptedKinds ?? []
-  const accepted = acceptedKinds.length === 0
+  const acceptedRoles = slot.acceptedRoles ?? []
+  const roleAccepted = acceptedRoles.length === 0
     ? assigned
-    : assigned.filter((document) => {
+    : assigned.filter((document) => acceptedRoles.includes(document.role))
+  const accepted = acceptedKinds.length === 0
+    ? roleAccepted
+    : roleAccepted.filter((document) => {
       const kind = materialKind(document)
       return kind !== undefined && acceptedKinds.includes(kind)
     })
@@ -152,7 +156,10 @@ export function assessMaterialSlotV2(
   if (accepted.length < minimum) return {
     slotId: slot.id, status: 'awaiting-supplement', count: accepted.length, assignedCount: assigned.length,
     reason: assigned.length > accepted.length
-      ? `材料槽「${slot.name}」需要至少 ${minimum} 份符合类型的材料，当前只有 ${accepted.length} 份可用（已绑定 ${assigned.length} 份，存在类型不匹配）。`
+      ? `材料槽「${slot.name}」需要至少 ${minimum} 份符合类别和文件类型的材料，当前只有 ${accepted.length} 份可用（已绑定 ${assigned.length} 份；${[
+        roleAccepted.length < assigned.length ? '材料类别不匹配' : '',
+        accepted.length < roleAccepted.length ? '文件类型不匹配' : '',
+      ].filter(Boolean).join('且') || '材料不可用'}）。`
       : `材料槽「${slot.name}」缺少材料：需要至少 ${minimum} 份，当前 ${accepted.length} 份。`,
   }
   return {
