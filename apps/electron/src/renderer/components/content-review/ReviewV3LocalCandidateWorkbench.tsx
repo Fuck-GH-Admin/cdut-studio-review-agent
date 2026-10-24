@@ -100,7 +100,7 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
     let live=true
     void (async()=>{
       const runs=await window.reviewAPI.listRunsV2(localCaseId)
-      const latest=[...runs].filter(run=>!run.id.startsWith('run-tpl-')).sort((a,b)=>b.startedAt.localeCompare(a.startedAt))[0]??null
+      const latest=[...runs].filter(run=>run.id.startsWith('run-pi-')).sort((a,b)=>b.startedAt.localeCompare(a.startedAt))[0]??null
       if (!live) return
       setNativeRun(latest)
       if (!latest || latest.status==='queued' || latest.status==='running') return
@@ -327,7 +327,7 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
       {caseNotice&&<p role="status" className="text-xs">{caseNotice}</p>}
       {caseError&&<p role="alert" className="text-xs text-red-600">{caseError}</p>}
     </div>
-    {localCaseId&&nativeAggregate&&<ReviewV3MaterialClassification
+    {localCaseId&&nativeAggregate&&nativeAggregate.caseV2.templateVersion>0&&(!!activePlan||!!nativeAggregate.d2RuntimePlan||publishedTemplateBound)&&<ReviewV3MaterialClassification
       caseId={localCaseId}
       aggregate={nativeAggregate}
       confirmed={classificationConfirmed}
@@ -338,10 +338,11 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
       }}
       onUpdated={refreshNativeAggregate}
     />}
-    {localCaseId&&!activePlan&&!nativeAggregate?.d2RuntimePlan&&!publishedTemplateBound&&classificationConfirmed&&<ReviewV3TemplateRoutingAssistant
+    {localCaseId&&!activePlan&&!nativeAggregate?.d2RuntimePlan&&!publishedTemplateBound&&<ReviewV3TemplateRoutingAssistant
       caseId={localCaseId}
       onPlanInstalled={plan=>{
         setActivePlan(plan)
+        setClassificationConfirmed(false)
         setMaterialsEpoch(x=>x+1)
       }}
       onTemplateBound={()=>{
@@ -355,7 +356,7 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
       <p className="break-all text-xs text-muted-foreground">任务指纹：{activePlan.fingerprint}</p>
       <p className="text-xs">不必重新选择模板。继续导入材料、在下方启动 Pi，或打开案卷进行人工复核。</p>
     </div>}
-    {localCaseId&&!activePlan&&!nativeAggregate?.d2RuntimePlan&&!publishedTemplateBound&&classificationConfirmed&&<div className="space-y-3 rounded-lg border border-border p-4">
+    {localCaseId&&!activePlan&&!nativeAggregate?.d2RuntimePlan&&!publishedTemplateBound&&<div className="space-y-3 rounded-lg border border-border p-4">
       <h2 className="text-base font-semibold">使用已有 50 套 D4 模板生成本案审核任务</h2>
       <p className="text-xs text-muted-foreground">选择方案并确认对象/场景后，把检查方案写入当前案卷；不另外创建案卷。已添加人工事项或已固定方案的案卷请另建新案卷。</p>
       <D4CaseSetup onChange={setD4Selection} suggestedTemplateId={routedD4TemplateId}/>
@@ -388,7 +389,7 @@ export function ReviewV3LocalCandidateWorkbench({initialCaseId}:{initialCaseId?:
       {message&&<p role="status" className="text-xs">{message}</p>}
       {error&&<p role="alert" className="text-xs text-red-600">{error}</p>}
     </div>
-    {localCaseId&&!activePlan&&!nativeAggregate?.d2RuntimePlan&&!publishedTemplateBound&&classificationConfirmed&&<div className="space-y-2">
+    {localCaseId&&!activePlan&&!nativeAggregate?.d2RuntimePlan&&!publishedTemplateBound&&<div className="space-y-2">
       {productError&&<p role="alert" className="text-xs text-red-600">
         当前材料 Main 读取失败：{productError}（未返回候选结果）
       </p>}

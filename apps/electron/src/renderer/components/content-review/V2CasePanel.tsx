@@ -261,7 +261,7 @@ export function V2CasePanel({ onCaseOpened }: { onCaseOpened?: (caseId: string) 
     void (async () => {
       const runs = await window.reviewAPI.listRunsV2(caseId)
       // 当前 Run 只从持久账本取得，不凭渲染端的运行按钮猜测状态。
-      const newest = [...runs].filter((run) => !run.id.startsWith('run-tpl-')).sort((a,b) => b.startedAt.localeCompare(a.startedAt))[0] ?? null
+      const newest = [...runs].filter((run) => run.id.startsWith('run-pi-')).sort((a,b) => b.startedAt.localeCompare(a.startedAt))[0] ?? null
       if (!active) return
       setLatestRun(newest)
       if (!newest || newest.status === 'running' || newest.status === 'queued') { setLatestRunStale(true); return }

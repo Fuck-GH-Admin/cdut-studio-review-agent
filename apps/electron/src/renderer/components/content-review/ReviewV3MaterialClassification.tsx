@@ -50,6 +50,9 @@ export function ReviewV3MaterialClassification({
   React.useEffect(() => {
     let live = true
     setTemplate(null)
+    setSuggestions(null)
+    setError('')
+    setMessage('')
     if (aggregate.caseV2.templateVersion < 1) return () => { live = false }
     void window.reviewAPI.getTemplateV2(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
       .then((value) => { if (live) setTemplate(value ?? null) })
@@ -145,28 +148,37 @@ export function ReviewV3MaterialClassification({
 
   const applySuggestions = async (): Promise<void> => {
     if (!suggestions || busy || frozenPlan) return
+    const changedSuggestions = suggestions.filter((suggestion) => {
+      const current = activeDocuments.find((document) => document.versionId === suggestion.documentVersionId)
+      return !!current && (current.role !== suggestion.role
+        || (current.materialSlotId ?? '') !== (suggestion.materialSlotId ?? ''))
+    })
+    if (suggestions.some((suggestion) => !activeDocuments.some((document) => document.versionId === suggestion.documentVersionId))) {
+      setError('材料清单在 AI 建议生成后发生变化；请刷新并重新生成建议')
+      return
+    }
+    if (changedSuggestions.length === 0) {
+      setSuggestions(null)
+      setMessage('建议与当前分类一致，没有需要写入的变化。')
+      return
+    }
     setBusy(true)
     setError('')
-    let changed = 0
     try {
-      for (const suggestion of suggestions) {
-        const current = activeDocuments.find((document) => document.versionId === suggestion.documentVersionId)
-        if (!current || (current.role === suggestion.role
-          && (current.materialSlotId ?? '') === (suggestion.materialSlotId ?? ''))) continue
-        await window.reviewAPI.reclassifyNativeMaterialV3({
-          caseId, documentVersionId: suggestion.documentVersionId,
+      await window.reviewAPI.reclassifyNativeMaterialsV3({
+        caseId,
+        items: changedSuggestions.map((suggestion) => ({
+          documentVersionId: suggestion.documentVersionId,
           role: suggestion.role,
           ...(suggestion.materialSlotId ? { materialSlotId: suggestion.materialSlotId } : {}),
-        })
-        changed += 1
-      }
+        })),
+      })
       setSuggestions(null)
       await onUpdated()
       onClassificationChanged()
-      setMessage(changed ? `已应用 ${changed} 份材料的分类建议；请重新确认分类。` : '建议与当前分类一致，没有需要写入的变化。')
+      setMessage(`已在一次事务中应用 ${changedSuggestions.length} 份材料的分类建议；请重新确认分类。`)
     } catch (cause) {
-      setError((cause instanceof Error ? cause.message : String(cause))
-        + (changed ? `（此前已保存 ${changed} 份，请刷新后继续）` : ''))
+      setError(cause instanceof Error ? cause.message : String(cause))
       await onUpdated().catch(() => undefined)
       onClassificationChanged()
     } finally {
@@ -214,12 +226,12 @@ export function ReviewV3MaterialClassification({
     </div>
   )
 
-  const confirmDisabled = busy || aiBusy || activeDocuments.length === 0 || applicationCount !== 1
+  const confirmDisabled = busy || aiBusy || activeDocuments.length === 0 || applicationCount < 1
   return <section aria-label="材料分类与槽位分配" className="space-y-3 rounded-lg border border-primary/30 bg-primary/[0.02] p-4">
     <div className="flex flex-wrap items-start justify-between gap-2">
       <div className="space-y-1">
         <h2 className="text-base font-semibold">第一步：材料分类与槽位分配</h2>
-        <p className="text-xs text-muted-foreground">先确认哪一份是申报材料，再区分审核依据和证明材料。绑定模板后可按模板槽位分配。分类修改保留原件版本，但会使旧审核结果失效。</p>
+        <p className="text-xs text-muted-foreground">先确认哪些原件属于申报材料、审核依据和证明材料。申报材料可以由多份原件组成；模板已选定后再按其材料槽位分配。分类修改保留原件版本，但会使旧审核结果失效。</p>
       </div>
       <Button size="sm" variant="outline" disabled={aiBusy || busy || activeDocuments.length === 0 || frozenPlan} onClick={() => void suggestWithAI()}>
         {aiBusy ? 'AI 正在分类…' : 'AI 生成分类建议'}
@@ -255,8 +267,8 @@ export function ReviewV3MaterialClassification({
     <div className="flex flex-wrap items-center gap-2">
       <Button size="sm" disabled={confirmDisabled} onClick={() => {
         onConfirmed()
-        setMessage('材料分类已确认。可以继续匹配模板或启动本案审核；缺少关键规则或申报事项时 Main 仍会阻断。')
-      }}>{confirmed ? '重新确认材料分类' : (template ? '确认分类与槽位' : '确认分类并匹配模板')}</Button>
+        setMessage('材料分类已确认。可以开始审核；缺少有效审核规则或真实申报材料时 Main 仍会阻断。')
+      }}>{confirmed ? '重新确认材料分类' : '确认分类与槽位'}</Button>
       <span className="text-xs text-muted-foreground">当前有效材料 {activeDocuments.length} 份 · 申报材料 {applicationCount} 份 · 模板槽位 {slots.length} 个</span>
     </div>
     {message && <p role="status" className="text-xs">{message}</p>}
