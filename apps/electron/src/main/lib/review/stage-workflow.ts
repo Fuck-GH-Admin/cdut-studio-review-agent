@@ -135,6 +135,9 @@ export function recordStageDecision(
     if (!allowedActions.includes(payload?.action)) {
       throw new CommandValidationError('VALIDATION_FAILED', `未知的阶段决定动作：${String(payload?.action)}`)
     }
+    // Resolve the Run inside the serialized Case transaction, before any
+    // completeness or template-decision gates inspect it.
+    const nativeRunId = nativeStageDecisionRunId(aggregate)
     // A completed-but-incomplete review may open a supplement request or
     // record a partial/manual response; it must not silently become an approval.
     // This gate concerns coverage/unknowns, not the human's discretion over
@@ -160,9 +163,6 @@ export function recordStageDecision(
     if (typeof payload.reason !== 'string' || !payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '决定必须附理由')
     if (!aggregate.decisions.every((decision) => decision.taskId !== task.id)) throw new CommandValidationError('INVALID_TRANSITION', '该任务已有决定')
 
-    // Resolve the Run within the same serialized Case transaction: a renderer
-    // cannot choose a stale or foreign run, and native cases never use run@rev.
-    const nativeRunId = nativeStageDecisionRunId(aggregate)
     const now = new Date().toISOString()
     const finality: BusinessDecision['finality'] = payload.action === 'final-reject' || (payload.action === 'stage-pass' && isFinalStage(aggregate, task.stageId, template)) ? 'final' : 'stage'
     return {
