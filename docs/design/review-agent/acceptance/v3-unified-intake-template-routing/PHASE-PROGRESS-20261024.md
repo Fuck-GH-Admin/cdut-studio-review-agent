@@ -239,3 +239,12 @@
 - 正式提交/决定材料校验现在按模板定义及三值条件运行；条件需要的字段如果尚未确认，系统会阻断正式提交或批准，并要求人工核实。
 - 还未完成真实 Electron 操作验收、真实模型测试、初审结果到持久 `SupplementRequest` 的事务投影、完整多主体/Group T04 判定、跨重启的 20 秒规则/AI 候选计时统一以及 T08 导出回归。
 - 后续优先：复查最新 CI，处理失败原因；然后继续补充持久补件合同和全链路人工验收。不能把按钮文案当作完整业务完成证据。
+
+
+## 11. 第七次增量：部分 Run 不能被误用为整案通过
+
+- 对应源码提交：`58ae25cac09310dd38f06010a9acba63bb0f4ff6`、`b8856fb1e95a9a469153bef5a735bdf5d628b4ab`。
+- 在 `stage-workflow.ts` 原生 V3 阶段决定事务中新增通过门禁：`stage-pass`、`item-pass` 若当前真实 Pi Run 的 `coverage.pendingChecks>0`，或仍存在 `awaiting-supplement`、`awaiting-confirmation`、`not-executed`、`execution-failed`，则拒绝直接通过。具体的有证据不合规判断仍留给有权人工决定；`return-for-supplement` 与明确的部分决定不会被简单的“检查未完成”门禁阻断。
+- 中间构建曾发现 `nativeRunId` 使用早于声明，导致 D0.5/D1/D2 TypeScript 错误及批次历史阶段测试异常。已将真实 Run 的解析提前至同一 Case 事务中的所有门禁之前，提交 `b8856fb`。
+- `b8856fb` 的 `Review Baseline CI` 和 `Review batch focused tests` 已 success；其余 D0.5、D1、D2、PR CI 在此记录时还未结束。**不能宣称最新全部 CI 已通过。**
+- 下一阶段需要专门增加“原生案卷部分 Run 不可整案批准 / 补件后新 Run 可批准”的事务级回归，并用实际 Electron 桌面流程核实初审缺件与正式办理是独立步骤。持久的初审补件任务、跨重启计时器统一、Group target 覆盖、T08 报告仍是未完成项。
