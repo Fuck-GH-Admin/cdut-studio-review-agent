@@ -25,6 +25,23 @@ import { reconcileF07PublishedPlan } from './review-v3-f07-plan-coverage'
 
 const MAIN_ACTOR: Actor = { actorId: 'local-reviewer', actorSource: 'local', role: 'reviewer' }
 
+/** A source is accepted only when backed by an active version in this Case. */
+function sourceRefsOf(aggregate:CaseAggregateV2):SourceRef[] {
+  return (aggregate.caseV2.documents??[])
+    .filter(document=>document.active!==false)
+    .map(document=>({
+      caseId:aggregate.caseV2.id,
+      documentVersionId:document.versionId,
+      parseRevision:document.parseRevision??0,
+      location:{kind:'file' as const},
+    }))
+}
+function fingerprintOf(planFingerprint:string,ruleIds:readonly string[]):string {
+  return createHash('sha256')
+    .update(planFingerprint+'|'+[...ruleIds].sort().join(','))
+    .digest('hex')
+}
+
 export interface TemplateRuleRunResult {
   runId: string
   planFingerprint: string

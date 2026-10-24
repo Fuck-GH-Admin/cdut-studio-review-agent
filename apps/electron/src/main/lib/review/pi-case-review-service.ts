@@ -249,7 +249,7 @@ interface UnifiedDeterministicCheckSet {
  */
 function unifiedDeterministicChecks(
   aggregate:CaseAggregateV2,template:TemplateVersion,rules:RuleSpec[],
-  observations:Array<Record<string,unknown>>,evidence:Array<Record<string,unknown>>,
+  observations:Array<Record<string,unknown>>,evidence:CaseAggregateV2['evidenceLinks'],
 ):UnifiedDeterministicCheckSet {
   const generic=buildDeterministicRuleChecks(aggregate,rules,observations,evidence)
   const specializedIds=template.status==='published'&&!aggregate.d2RuntimePlan

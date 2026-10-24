@@ -144,7 +144,7 @@ describe('A15 S2 四案例', () => {
     }]
     const result=compileTemplatePlanForCase({aggregate,template})
     expect(result.compiled).toBeDefined()
-    expect(result.compiled?.bindings.some(binding=>binding.target.scope==='subject'&&binding.target.subjectId==='subject-s2-1')).toBe(true)
+    expect(result.compiled?.bindings.some(binding=>binding.binding.subjectId==='subject-s2-1'&&binding.rule.targetScope==='subject')).toBe(true)
   })
 
   test('gte 下限规则编译为 field-minimum，不能误用上限算子', () => {

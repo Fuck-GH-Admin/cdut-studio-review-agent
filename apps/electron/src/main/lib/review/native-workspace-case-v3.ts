@@ -457,7 +457,7 @@ export async function classifyNativeWorkspaceMaterialV3(input:{
       (slotId!==REVIEW_V3_OTHER_MATERIAL_SLOT_ID&&!(template.materialSlots??[]).some(slot=>slot.id===slotId)))
     throw new CommandValidationError('VALIDATION_FAILED','材料槽位不属于当前已发布模板')
   if(document.role===input.role&&document.materialSlotId===slotId){
-    const projected=nativeWorkspaceProjectionV3(current)?.documents.find(item=>item.versionId===document.versionId)
+    const projected=nativeWorkspaceProjectionV3(current)?.documents.find(item=>item.id===document.documentId)
     if(projected)return projected
   }
   if(!document.assetPath.startsWith('source-docs/'+document.versionId+'/'))
