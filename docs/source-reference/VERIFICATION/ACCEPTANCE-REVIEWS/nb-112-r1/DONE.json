@@ -1,0 +1,17 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-112-r1",
+ "revisionOf": "nb-112",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-qa-extra-05-20261024",
+ "reviewedAtUtc": "2026-10-23T20:33:45Z",
+ "status": "REVIEW_COMPLETE",
+ "batchVerdict": "accepted",
+ "fileVerdictsCount": {"accepted": 18, "revision_required": 0},
+ "findingsClosed": ["F-1"],
+ "deliverySeal": {"sealId": "seal-03a993464a709291", "manifestSha256": "50ab3c0efbd4ae8b0248ff3231bb996d0430e487b2a0e7adcbb3891dfe633873", "zipSha256": "13f8d6aea75135d846fe8a48d7d388f3ac7ddedd11ce2faaed9ee25eadd3e1b4"},
+ "artifacts": ["reviews/nb-112-r1/RESULT.json", "reviews/nb-112-r1/RESULT.md", "reviews/nb-112-r1/REVIEWED-HASHES.json", "reviews/nb-112-r1/TO-AUTHOR.md", "reviews/nb-112-r1/TO-LEAD.md"],
+ "notRun": ["product tests (11 cases)", "typecheck", "build", "Electron/GUI", "real IPC/download/import"],
+ "next": "nb-112 全批闭环；lead 按 r1 hash 合入 AutomationFormView.tsx.md；QA 继续盯 nb-143-r1（WIP 25 文件）",
+ "note": "D0 自洽；17 篇=父版字节。"
+}

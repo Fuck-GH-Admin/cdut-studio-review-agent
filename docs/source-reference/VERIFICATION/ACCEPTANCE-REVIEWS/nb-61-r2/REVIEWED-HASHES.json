@@ -1,0 +1,37 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-61-r2",
+  "revisionOf": "nb-61-r1",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T19:25:00Z",
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/__init__.py.md": "f83a275946a12605f0da68012d83d18d9826e79b7940c1813cb43fb2bde0a0d1",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/add_slide.py.md": "44878896839468c054ecb0dee91ee741e5ee0f2f75e7b5e1c5929d531b04b77b",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/chartlib.py.md": "f0fe4ca4dea8e611fb282c14fb840a2a418a568be366aa6deadd557a2601f051",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/clean.py.md": "b006a32b5c58ddb97ce82a0317b31e5e381b8d89a4295d87601ef3b66e859389",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/gradient.js.md": "991fb1d20c5a8e135ec4f83319637fbd55a95b5d7469e2d471dae1258ca8b8df",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/helpers/__init__.py.md": "100968170367ed13ef048ee5f63d8588face3e4c0a19f23f373f70fbf958e48c",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/helpers/merge_runs.py.md": "73aaa07fa1ca7dfb8ff30170d6a99b3beab554a76520296fd614edbf2ca875c3",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/helpers/simplify_redlines.py.md": "52c0d25f5c3c222412b3945350f7543cd6c054bf9ac1f26836a033621ba28781",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/pack.py.md": "c87839c74f29e944c3c5b9de5b7ad62ae5a1c263c2f109109a1a754527ac483c",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/pptx2png.ps1.md": "c8611e16c40ba17b4ea44389590b562d2cc9cb2d5bd1b1cb561a3be2cc022b49",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/soffice.py.md": "14907ba46eb75c12d144fe1795bc789d0e8ca102e0b0bd603d60a6022da1ba50",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/unpack.py.md": "5692f9243c5ed6e5054c0f21c39f4d8719456798cda109864c322d83ecb857f7",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/validate.py.md": "368027d4f8e75f0a7b24aedfcd193d00ff21105ea5c30ce39b7ba3ecb30f3818",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/validators/__init__.py.md": "63a04a26abf282ce3dbeb4320710b44bf9e1e5a98542630b5a8223d42c097462",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/validators/base.py.md": "a93597ce4d74083f6684c0a545421459750e90fb5d4fdfc8f3dd74fc8fe14e4f",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/validators/docx.py.md": "c8cfbce090f14bbf6e838618ee2ccb3d794454d5bf89b7b9c2eada00157dad7a",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/validators/pptx.py.md": "33db0749f7f40fbb6e705fd24a3249dc8cbb3275e4483023d24411231389a371",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/validators/redlining.py.md": "f5463f2f3ae8f2725161e40015f187fe9b5d4ba54bfc4b298f7ad6200e99200d"
+  },
+  "revisionRequiredHashes": {},
+  "rejectedHashes": {},
+  "chain": {
+    "sealId": "seal-83f905f6ad193c57",
+    "manifestSha256": "c0643d49d362afe9db5703e44b875f0e11e45c5a6731a0ec04b52de14b0ba388",
+    "readySha256": "86c7c119dab66f4f9b922a3680331b4440561a12aca8ef3cd6349fcf6e48ad4f",
+    "zipSha256": "f542f283f1fcc7e48bc1ab544b61343b1c2b5c55bef9de3f88cddbcafd3557b0"
+  }
+}

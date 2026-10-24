@@ -1,0 +1,201 @@
+{
+ "schema": "dsh-r07-index-review-result/1",
+ "batch": "index-p02-agent-runtime__vendor-xsd__ecma-r1",
+ "groupId": "p02-agent-runtime__vendor-xsd__ecma",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-03-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T21:30:00Z",
+ "sealedAtUtc": "2026-10-23T19:56:50+00:00",
+ "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+ "artifactSha256": "39340c0cb9f33bf7535a918ed344e1c98d8a9b537948ddaaebadfcc500e67404",
+ "revisionOf": "index-p02-agent-runtime__vendor-xsd__ecma",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 12,
+  "accepted": 12,
+  "revision_required": 0,
+  "unknown": 0,
+  "blocking": 0,
+  "nonBlocking": 0
+ },
+ "gates": {
+  "G0_INDEX": "PASS",
+  "G1_INDEPENDENT_SOURCE_REVIEW": "PASS",
+  "G2_SEAL_CONSISTENCY": "PASS",
+  "note": "G0 等价检查全对（artifact=39340c0c…/manifest/ready 自洽、12/12 锚点@声明行、源绑定 12/12）。G1：ECMA-F-01 修复逐行复核属实（:7-8/:19/:27-32/:29/:30 全中）；11 个已 accepted 小节与 r0 逐字节一致（diff 全文仅第 69 行）。ECMA-F-01 关闭。"
+ },
+ "g0Evidence": {
+  "stockScript": "ERRATA-E1 沿登记；等价检查 PASS"
+ },
+ "errataCarry": [
+  "ERRATA-E1",
+  "ERRATA-E2",
+  "ERRATA-E3"
+ ],
+ "findingsClosure": [
+  {
+   "id": "ECMA-F-01",
+   "closure": "resolved",
+   "verify": "r1 第 69 行括注改为「元素（源文件 :7-8）、TargetMode 属性（:19）与 ST_TargetMode 枚举（:27-32，External :29/Internal :30）；全文 33 行」，与 QA 实测逐行一致；FINDINGS-RESPONSE 程序化 diff 核实 r0→r1 仅 1 行，其余 11 文件小节零字节变动（QA diff 复核一致）。"
+  }
+ ],
+ "files": [
+  {
+   "path": "apps/electron/default-skills/docx/scripts/office/schemas/ecma/fouth-edition/opc-contentTypes.xsd",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--docx--scripts--office--schemas--ecma--fouth-edition--opc-contentTypes.xsd",
+   "line": 37,
+   "sourceBlob": "a6de9d2733d3f0eea12ae87b24122495df1f0928",
+   "sourceSha256": "9e0b7209fc69ab11987900404540969976000c5ebe4d4f58c43dc3842886bf3a",
+   "manualSha256": "39340c0cb9f33bf7535a918ed344e1c98d8a9b537948ddaaebadfcc500e67404",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 修复行（docx 份 opc-relationships.xsd 职责行）已复核；本文件其余行与 r0 一致。"
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/office/schemas/ecma/fouth-edition/opc-coreProperties.xsd",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--docx--scripts--office--schemas--ecma--fouth-edition--opc-coreProperties.xsd",
+   "line": 47,
+   "sourceBlob": "10e978b661fc291cbeea9ab0c248601cf216f96d",
+   "sourceSha256": "451958454e8588dfc7cd945981ada142ca06ff3307937f5700df059c2b307fa8",
+   "manualSha256": "39340c0cb9f33bf7535a918ed344e1c98d8a9b537948ddaaebadfcc500e67404",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 修复行（docx 份 opc-relationships.xsd 职责行）已复核；本文件其余行与 r0 一致。"
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/office/schemas/ecma/fouth-edition/opc-digSig.xsd",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--docx--scripts--office--schemas--ecma--fouth-edition--opc-digSig.xsd",
+   "line": 57,
+   "sourceBlob": "4248bf7a39c793c9f319bae7d09f92983efe5368",
+   "sourceSha256": "6de111e11403f7cd49027400755bae0ea1cabef2815f09bd40a24f0017613b24",
+   "manualSha256": "39340c0cb9f33bf7535a918ed344e1c98d8a9b537948ddaaebadfcc500e67404",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 修复行（docx 份 opc-relationships.xsd 职责行）已复核；本文件其余行与 r0 一致。"
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/office/schemas/ecma/fouth-edition/opc-relationships.xsd",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--docx--scripts--office--schemas--ecma--fouth-edition--opc-relationships.xsd",
+   "line": 67,
+   "sourceBlob": "56497467120b52b742756379959d4b2536be6df7",
+   "sourceSha256": "f565adfef5a502044abc3a9153e157edc25af78304d335994afb958874b15e26",
+   "manualSha256": "39340c0cb9f33bf7535a918ed344e1c98d8a9b537948ddaaebadfcc500e67404",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 修复行（docx 份 opc-relationships.xsd 职责行）已复核；本文件其余行与 r0 一致。"
+  },
+  {
+   "path": "apps/electron/default-skills/pptx/scripts/office/schemas/ecma/fouth-edition/opc-contentTypes.xsd",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--pptx--scripts--office--schemas--ecma--fouth-edition--opc-contentTypes.xsd",
+   "line": 77,
+   "sourceBlob": "a6de9d2733d3f0eea12ae87b24122495df1f0928",
+   "sourceSha256": "9e0b7209fc69ab11987900404540969976000c5ebe4d4f58c43dc3842886bf3a",
+   "manualSha256": "39340c0cb9f33bf7535a918ed344e1c98d8a9b537948ddaaebadfcc500e67404",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 修复行（docx 份 opc-relationships.xsd 职责行）已复核；本文件其余行与 r0 一致。"
+  },
+  {
+   "path": "apps/electron/default-skills/pptx/scripts/office/schemas/ecma/fouth-edition/opc-coreProperties.xsd",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--pptx--scripts--office--schemas--ecma--fouth-edition--opc-coreProperties.xsd",
+   "line": 87,
+   "sourceBlob": "10e978b661fc291cbeea9ab0c248601cf216f96d",
+   "sourceSha256": "451958454e8588dfc7cd945981ada142ca06ff3307937f5700df059c2b307fa8",
+   "manualSha256": "39340c0cb9f33bf7535a918ed344e1c98d8a9b537948ddaaebadfcc500e67404",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 修复行（docx 份 opc-relationships.xsd 职责行）已复核；本文件其余行与 r0 一致。"
+  },
+  {
+   "path": "apps/electron/default-skills/pptx/scripts/office/schemas/ecma/fouth-edition/opc-digSig.xsd",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--pptx--scripts--office--schemas--ecma--fouth-edition--opc-digSig.xsd",
+   "line": 97,
+   "sourceBlob": "4248bf7a39c793c9f319bae7d09f92983efe5368",
+   "sourceSha256": "6de111e11403f7cd49027400755bae0ea1cabef2815f09bd40a24f0017613b24",
+   "manualSha256": "39340c0cb9f33bf7535a918ed344e1c98d8a9b537948ddaaebadfcc500e67404",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 修复行（docx 份 opc-relationships.xsd 职责行）已复核；本文件其余行与 r0 一致。"
+  },
+  {
+   "path": "apps/electron/default-skills/pptx/scripts/office/schemas/ecma/fouth-edition/opc-relationships.xsd",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--pptx--scripts--office--schemas--ecma--fouth-edition--opc-relationships.xsd",
+   "line": 107,
+   "sourceBlob": "56497467120b52b742756379959d4b2536be6df7",
+   "sourceSha256": "f565adfef5a502044abc3a9153e157edc25af78304d335994afb958874b15e26",
+   "manualSha256": "39340c0cb9f33bf7535a918ed344e1c98d8a9b537948ddaaebadfcc500e67404",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 修复行（docx 份 opc-relationships.xsd 职责行）已复核；本文件其余行与 r0 一致。"
+  },
+  {
+   "path": "apps/electron/default-skills/xlsx/scripts/office/schemas/ecma/fouth-edition/opc-contentTypes.xsd",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--xlsx--scripts--office--schemas--ecma--fouth-edition--opc-contentTypes.xsd",
+   "line": 117,
+   "sourceBlob": "a6de9d2733d3f0eea12ae87b24122495df1f0928",
+   "sourceSha256": "9e0b7209fc69ab11987900404540969976000c5ebe4d4f58c43dc3842886bf3a",
+   "manualSha256": "39340c0cb9f33bf7535a918ed344e1c98d8a9b537948ddaaebadfcc500e67404",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 修复行（docx 份 opc-relationships.xsd 职责行）已复核；本文件其余行与 r0 一致。"
+  },
+  {
+   "path": "apps/electron/default-skills/xlsx/scripts/office/schemas/ecma/fouth-edition/opc-coreProperties.xsd",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--xlsx--scripts--office--schemas--ecma--fouth-edition--opc-coreProperties.xsd",
+   "line": 127,
+   "sourceBlob": "10e978b661fc291cbeea9ab0c248601cf216f96d",
+   "sourceSha256": "451958454e8588dfc7cd945981ada142ca06ff3307937f5700df059c2b307fa8",
+   "manualSha256": "39340c0cb9f33bf7535a918ed344e1c98d8a9b537948ddaaebadfcc500e67404",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 修复行（docx 份 opc-relationships.xsd 职责行）已复核；本文件其余行与 r0 一致。"
+  },
+  {
+   "path": "apps/electron/default-skills/xlsx/scripts/office/schemas/ecma/fouth-edition/opc-digSig.xsd",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--xlsx--scripts--office--schemas--ecma--fouth-edition--opc-digSig.xsd",
+   "line": 137,
+   "sourceBlob": "4248bf7a39c793c9f319bae7d09f92983efe5368",
+   "sourceSha256": "6de111e11403f7cd49027400755bae0ea1cabef2815f09bd40a24f0017613b24",
+   "manualSha256": "39340c0cb9f33bf7535a918ed344e1c98d8a9b537948ddaaebadfcc500e67404",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 修复行（docx 份 opc-relationships.xsd 职责行）已复核；本文件其余行与 r0 一致。"
+  },
+  {
+   "path": "apps/electron/default-skills/xlsx/scripts/office/schemas/ecma/fouth-edition/opc-relationships.xsd",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__ecma.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--xlsx--scripts--office--schemas--ecma--fouth-edition--opc-relationships.xsd",
+   "line": 147,
+   "sourceBlob": "56497467120b52b742756379959d4b2536be6df7",
+   "sourceSha256": "f565adfef5a502044abc3a9153e157edc25af78304d335994afb958874b15e26",
+   "manualSha256": "39340c0cb9f33bf7535a918ed344e1c98d8a9b537948ddaaebadfcc500e67404",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 修复行（docx 份 opc-relationships.xsd 职责行）已复核；本文件其余行与 r0 一致。"
+  }
+ ]
+}

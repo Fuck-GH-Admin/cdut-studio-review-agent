@@ -1,0 +1,278 @@
+{
+  "schema": "dsh-r07-review-result/2",
+  "batch": "nb-94",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-09-20261023",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-24T00:40:00Z",
+  "sealId": "seal-a76d4becbd9b0a1f",
+  "sealedAtUtc": "2026-10-23T19:03:28Z",
+  "batchVerdict": "revision_required",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0,
+    "blocking": 1,
+    "nonBlocking": 1,
+    "contentErrors": 0
+  },
+  "gates": {
+    "G0": "FAIL",
+    "G1": "PASS",
+    "G2": "PASS_WITH_NOTES",
+    "note": "G0 机械缺陷：changes.diff 过期草稿 2/18 重放≠stage（stage/ZIP/MANIFEST/READY 四方一致，仅审计 diff 断裂）→ 机械返修；内容 G1/G2 18/18 无误"
+  },
+  "deliveryDefects": [
+    {
+      "id": "NB94-F-01",
+      "severity": "blocking",
+      "scope": "delivery-mechanics",
+      "claim": "changes.diff 对 thinking-tag-parser.test.ts.md 与 tool-phrase.test.ts.md 两篇为过期草稿：diff 内为旧稿文本（「如 §2 表（逐条读自 :6-…）」），stage/ZIP/MANIFEST/READY 四方一致的新稿文本（「逐条读自 :6-51，代表性…」）——空树重放 16/18 匹配、2 篇 mismatch（replayed 1894/1744 B vs stage 2578/2125 B）。审计重放链断裂；内容字节权威链（四 hash）完整。",
+      "sourceEvidence": "git apply 空树重放逐字节比对：2 文件 first-diff 定位在 §3 行；changes.diff 共 18 diff 段；MANIFEST==READY==ZIP==stage 全一致。",
+      "action": "r1 仅重生成 changes.diff（empty-tree→stage 全量，或补 2 篇正确段）并随附 after-hash 表；内容字节不得变动（sealed 已锁）"
+    }
+  ],
+  "files": [
+    {
+      "path": "apps/electron/src/renderer/components/agent/live-group-set.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/live-group-set.ts.md",
+      "sourceBlob": "f4ecefeafdcffcefa6a021c8a9bbf9e1ab8d0101",
+      "sourceSha256": "f5c583f58735095ed6810354445e0aacd2eb5c188eec22cc03c607cefd70c100",
+      "manualSha256": "cc633c8f5535a1d811abb27b7adb614b255218042d4a070021dee2f09e2ca30f",
+      "verdict": "accepted",
+      "findings": [
+        "NB94-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/mention-popup-utils.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/mention-popup-utils.ts.md",
+      "sourceBlob": "ac33f7a5544c9cae1f796f1f45167db4f3dc966a",
+      "sourceSha256": "1438ca1a32ea63c6b5491e48a0beb072c0e516b9f0c7cc99d6d97894a9044f6b",
+      "manualSha256": "2531ba1d07507ee55f60cce44969d939182480a694936c9711267d365d670d3a",
+      "verdict": "accepted",
+      "findings": [
+        "NB94-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/mention-query-utils.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/mention-query-utils.test.ts.md",
+      "sourceBlob": "f2c08cd6da799166c19f8d6e8a32a49494a6877d",
+      "sourceSha256": "7515924182b983ba6ec28072ad9316e83fe430bbce9f96f6317275614879ede1",
+      "manualSha256": "ed4e33af1c8ce757340cb0a381fdacc132dede9788a19f89bc2cb7212b6263f4",
+      "verdict": "accepted",
+      "findings": [
+        "NB94-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/mention-query-utils.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/mention-query-utils.ts.md",
+      "sourceBlob": "64b9de56d1a20124843050b8b84362e9c589438b",
+      "sourceSha256": "f3ee5d98e975f96e7cb89acac635fa8daea47eb93b7a0029b1a110aa848fa179",
+      "manualSha256": "4d556ff2fd07d114537666853cb698def4a65652a4125d60f97133bb597d096d",
+      "verdict": "accepted",
+      "findings": [
+        "NB94-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/mention-suggestions.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/mention-suggestions.tsx.md",
+      "sourceBlob": "0065677fdbb743527f79889da4af970f68f03ffc",
+      "sourceSha256": "460fa8d33631e127bef8f5a0e633629cebc0f96fcc0b3669355edc292d8f10ef",
+      "manualSha256": "08c86e21f4d48209d443c50f052b515d6abcbc42acf62d3a87481c6d07e0d94b",
+      "verdict": "accepted",
+      "findings": [
+        "NB94-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/permission-mode-selector-utils.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/permission-mode-selector-utils.test.ts.md",
+      "sourceBlob": "3521d6b0802e2de589bd8951426bb7a15ee0f187",
+      "sourceSha256": "940931adec096d28aff4ec9dbca8ad7f9d5507b1521c59188c2272bbea26490f",
+      "manualSha256": "36d4be921a1a5046cec90326ac56e4fea148055724d24bdb15fb285d1e07d7a9",
+      "verdict": "accepted",
+      "findings": [
+        "NB94-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/permission-mode-selector-utils.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/permission-mode-selector-utils.ts.md",
+      "sourceBlob": "3188ab66e961a3f94fc2a2c78f310bc5d777d78c",
+      "sourceSha256": "e9a602006149bffd7fe93f2920a9a9f335eadbe3e5e5f082c69261123218ca41",
+      "manualSha256": "d1fb3b55d9991de29bc2d0e93fc5c37015fd07b2cf3ecb0421457b02a1657757",
+      "verdict": "accepted",
+      "findings": [
+        "NB94-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/preset-selector-utils.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/preset-selector-utils.test.ts.md",
+      "sourceBlob": "98ed04340e4a04ed3a4e0d74f561b3f0c9a064fb",
+      "sourceSha256": "c7232aa215b700288a55dfd4b2de0b82758b7030eb52c52b69e9b49b82b5cf41",
+      "manualSha256": "dc55d542dc513d7ce72165c575c928daf070c4bca24339735eccd23deb8db2a1",
+      "verdict": "accepted",
+      "findings": [
+        "NB94-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/preset-selector-utils.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/preset-selector-utils.ts.md",
+      "sourceBlob": "388e8c5c41c46ce8ae5217100247c54a9fefaada",
+      "sourceSha256": "22c5861c5327a32b2290ea609cb0e4cf574fb91e010e4f674295ee5c0f2e38f1",
+      "manualSha256": "c228232d0a3fa6527e85973176aef19fb25e462d4d0b871b23199f70df901aaa",
+      "verdict": "accepted",
+      "findings": [
+        "NB94-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/render-window.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/render-window.test.ts.md",
+      "sourceBlob": "ff38fd955064a7818ff9fc76436e5c58f7586c74",
+      "sourceSha256": "9511b2afe8317920073f8d63b4df9352acb69f9df08c5826a09190a5bc90c16b",
+      "manualSha256": "33648a0d2b925996e81f4c82fa373cfe173ef79390b425eb3701906519a343d8",
+      "verdict": "accepted",
+      "findings": [
+        "NB94-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/render-window.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/render-window.ts.md",
+      "sourceBlob": "e7a1181a44cb7842df32cb801518980cce32549f",
+      "sourceSha256": "95eea430fb51cff6dfff947c019a44ce7ae550a537967e8cf0d29298961b8e4b",
+      "manualSha256": "81761d90c668648ca9b5f551e768b04cefa4ef9cb8ae338eb13d9eaf9edf2082",
+      "verdict": "accepted",
+      "findings": [
+        "NB94-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/task-progress.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/task-progress.test.ts.md",
+      "sourceBlob": "f74bb4ab12456999f30248aa6f809aa97bbe173a",
+      "sourceSha256": "7faa19e80b687cc583ed133c5e40290eec47e5df4eea57f4d33b363973813be2",
+      "manualSha256": "4cb4dfc9e4ba305e0fefcc1161a83d1ca6996ad2ed01024d7868ac6d6804a77c",
+      "verdict": "accepted",
+      "findings": [
+        "NB94-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/task-progress.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/task-progress.ts.md",
+      "sourceBlob": "1b03c72454f8e0a5d98202a2da4e030ef964744f",
+      "sourceSha256": "1d88a0c273fcffae65a1b2317fae33c7dd6a1655181ded00a5cc0438bdece6d3",
+      "manualSha256": "f5af5431f24e226b64deeb7029c50958c4e0745ede0ca1354e6c846f010f344d",
+      "verdict": "accepted",
+      "findings": [
+        "NB94-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/thinking-tag-parser.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/thinking-tag-parser.test.ts.md",
+      "sourceBlob": "afc0882f9dbbb508e4a46375e095ac19fcd1b995",
+      "sourceSha256": "aa18002d8d4e073d981336ea9ccb6e873702b6ee47bb136f7c3a979bfda17f37",
+      "manualSha256": "565dade501717be7e586a19517c874e43cbb27096e1e5dedcedeacbc9551a9fd",
+      "verdict": "accepted",
+      "findings": [
+        "NB94-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/thinking-tag-parser.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/thinking-tag-parser.ts.md",
+      "sourceBlob": "732978a6c8ab85eda4061ac6ad8ae8a2c20afdbe",
+      "sourceSha256": "47bb6c62ac29f548a15a92d21cc94314734b4f2991ad170fc656b93206409477",
+      "manualSha256": "31d76b22b9e193d6e2d4cf30cfc7d01b918c6d70ba0da7062410880b1ffaf862",
+      "verdict": "accepted",
+      "findings": [
+        "NB94-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/tool-phrase.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-phrase.test.ts.md",
+      "sourceBlob": "578483f3b4c62a64a92d562e3ff185fa84f41e34",
+      "sourceSha256": "2858fe612473871141cad98503b18533c3f807f9729bf17149ea13c3980075b9",
+      "manualSha256": "b13f1084bad321d460e1bf412aa6731735e2bc71464edb0deb623b1d301d9710",
+      "verdict": "accepted",
+      "findings": [
+        "NB94-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/tool-phrase.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-phrase.ts.md",
+      "sourceBlob": "d9ebc45e80b9bedc092896663c5f62d5fd33876f",
+      "sourceSha256": "5d14f40034cc84f3f32d5ddf7ce2a5a39e6412e1525c0c6b341ce3a5ed98fc63",
+      "manualSha256": "e21b08eef6c2c8dd441f87b2d449127c595b3655c0cd0167a10b42e69139ffb7",
+      "verdict": "accepted",
+      "findings": [
+        "NB94-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/tool-result-renderers/bash-result.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/bash-result.tsx.md",
+      "sourceBlob": "112785b4da6cc4ed0a09f8a28905809e9a6d4b21",
+      "sourceSha256": "eeb948c11e730fb208327ff0418b5ce561fa2713728ad95d8ae05c197b48730f",
+      "manualSha256": "2b5a86e8d9b122127c549573a9a4ca8ddd43103481960073b2f5b4b9267c0e8f",
+      "verdict": "accepted",
+      "findings": [
+        "NB94-N-01"
+      ]
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/live-group-set.ts.md": "cc633c8f5535a1d811abb27b7adb614b255218042d4a070021dee2f09e2ca30f",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/mention-popup-utils.ts.md": "2531ba1d07507ee55f60cce44969d939182480a694936c9711267d365d670d3a",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/mention-query-utils.test.ts.md": "ed4e33af1c8ce757340cb0a381fdacc132dede9788a19f89bc2cb7212b6263f4",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/mention-query-utils.ts.md": "4d556ff2fd07d114537666853cb698def4a65652a4125d60f97133bb597d096d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/mention-suggestions.tsx.md": "08c86e21f4d48209d443c50f052b515d6abcbc42acf62d3a87481c6d07e0d94b",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/permission-mode-selector-utils.test.ts.md": "36d4be921a1a5046cec90326ac56e4fea148055724d24bdb15fb285d1e07d7a9",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/permission-mode-selector-utils.ts.md": "d1fb3b55d9991de29bc2d0e93fc5c37015fd07b2cf3ecb0421457b02a1657757",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/preset-selector-utils.test.ts.md": "dc55d542dc513d7ce72165c575c928daf070c4bca24339735eccd23deb8db2a1",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/preset-selector-utils.ts.md": "c228232d0a3fa6527e85973176aef19fb25e462d4d0b871b23199f70df901aaa",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/render-window.test.ts.md": "33648a0d2b925996e81f4c82fa373cfe173ef79390b425eb3701906519a343d8",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/render-window.ts.md": "81761d90c668648ca9b5f551e768b04cefa4ef9cb8ae338eb13d9eaf9edf2082",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/task-progress.test.ts.md": "4cb4dfc9e4ba305e0fefcc1161a83d1ca6996ad2ed01024d7868ac6d6804a77c",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/task-progress.ts.md": "f5af5431f24e226b64deeb7029c50958c4e0745ede0ca1354e6c846f010f344d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/thinking-tag-parser.test.ts.md": "565dade501717be7e586a19517c874e43cbb27096e1e5dedcedeacbc9551a9fd",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/thinking-tag-parser.ts.md": "31d76b22b9e193d6e2d4cf30cfc7d01b918c6d70ba0da7062410880b1ffaf862",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-phrase.test.ts.md": "b13f1084bad321d460e1bf412aa6731735e2bc71464edb0deb623b1d301d9710",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-phrase.ts.md": "e21b08eef6c2c8dd441f87b2d449127c595b3655c0cd0167a10b42e69139ffb7",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/bash-result.tsx.md": "2b5a86e8d9b122127c549573a9a4ca8ddd43103481960073b2f5b4b9267c0e8f"
+  },
+  "findings": [
+    {
+      "id": "NB94-N-01",
+      "severity": "minor",
+      "files": "all-18",
+      "claim": "各篇 §2 行号小漂移 ±1~3（例：isSuggestionTriggerPresent :23-28 实 :26-35、createMentionPopup :31-45 实 :38-51、getSelectablePresetScope :4-6 实 :3-5、BashResultRenderer :37-80 实 :34-80、ToolPhrase :9-17 实 :11-19、TASK_TOOL_NAMES :6 实 :5）；且文首「r1 校订说明：行号经源文件逐行读取核对」表述过强。行为/测试结论不受影响。",
+      "sourceEvidence": "grep -n \"^export \" 逐符号抽核（含 QA 自身基线两轮校正记录）。",
+      "action": "r1 顺带按 grep 实测重导行号并软化校订注（或留行号类 errata 合并修）"
+    }
+  ],
+  "notRun": [
+    "product tests (45 declarations / 50 runtime)",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "verificationNotes": [
+    "G0：18 源绑定脚本实算==SCOPE==MANIFEST；18 手册 hash 磁盘=MANIFEST=READY=ZIP 条目；ZIP 21 条目安全逐字节一致；仅 changes.diff 重放 16/18（F-01）。",
+    "G2：18 篇对照预读清单（reviews/nb-94/SOURCE-CHECKLIST.md，QA 基线已两轮 grep 实测校正并留痕）：不变量 A-H 全对（live 三条件/权限上限门禁在渲染层/弹窗竞态防御/思考标签双阶段/渲染窗口只裁剪/任务解析三兜底/mention 30s 缓存+35ms 去抖+最新胜出/CRLF 与 revealStep=50）；测试计数 45 声明（task-progress 9 含 test.each×3 展开 14，手册「14 用例」=运行口径正确）。",
+    "QA 自查留痕：预读基线合并 cat 显示偏移曾致行号错记，G2 前按 grep 实测校正（清单含校订注）；测试声明计数口径补 test.each 展开。NOT_RUN；哈希脚本生成。"
+  ]
+}

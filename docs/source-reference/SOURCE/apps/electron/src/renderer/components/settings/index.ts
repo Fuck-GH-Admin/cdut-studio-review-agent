@@ -1,0 +1,14 @@
+/**
+ * Settings 模块导出索引
+ */
+
+export * from './SettingsPanel'
+export * from './SettingsDialog'
+export * from './ChannelSettings'
+export * from './ChannelForm'
+export * from './GeneralSettings'
+export * from './UsageSettings'
+export * from './AppearanceSettings'
+export * from './AboutSettings'
+export * from './DeveloperSettings'
+export * from './primitives'

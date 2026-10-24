@@ -1,0 +1,104 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "nb-119",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T21:40:00Z",
+ "sealId": "seal-d9643962dbfd5f7a",
+ "note": "18/18 accepted on content; batchVerdict revision_required only for D0 chain mislabel (B-01) + UNVERIFIED aggregate count errata (N-01). Merge after nb-119-r1 reseal, hash re-check per this table.",
+ "acceptedManuals": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/channel-health-aggregation.ts.md": "10e656f3f127262af20230469d170d4428270f5fed197de6ca13adc42d732c78",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/channel-manual-model.test.ts.md": "659ffccba6b723343c516840031b030a4aa2ae3d2f8b431ffac7058e90d231c2",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/channel-manual-model.ts.md": "c81d924697365fcf89d6f6134cf5bf9482ad7042f710e6b527393b0f35c9af94",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/channel-model-discovery.test.ts.md": "d92bc172f83d8e5f993daaac16780b128296f95864b99dff37d6d839dd08018c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/channel-model-discovery.ts.md": "3bbd9b3f3f9fad5c1081c0c1abdf6d00c2636a5a06154736d124244fdc7027e7",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/channel-model-groups.test.ts.md": "b284b5fd611a6bcc2682cf92fbaf6fccea14976672219d065955d0c9ba8965ee",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/channel-model-groups.ts.md": "57d1d4700e79a49e46161ad17e687faa04de4d5f993c4c30563c023a438ef650",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/channel-plan-quota.test.ts.md": "5d25cbf428a568e50ee9be66582c0e3fd62691ee5c1d32602349989e4658db0b",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/channel-plan-quota.ts.md": "e2f55dccc97ae7cbad1d9c3cf637790b42b8ca7dd4779bc347771513f81e1fd2",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/clipboard-text-attachment.test.ts.md": "3e698e2b14f521269f63b1810b0f420c701f8e88115dfee4b0c7b46d950e5725",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/clipboard-text-attachment.ts.md": "76c2fc0ac2ee97735bb24dce30ffc709f1c7a2c8d587ee0c7b23423881f408d6",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/composer-compact-height.test.ts.md": "b6ab1d21f969b23df3563f49f083c621588218e7f891aff268d4c59b07633caf",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/composer-compact-height.ts.md": "c9505ff38e6b989433a584dad272130c3e3b19a3a276c88528e9fd65b9c312a8",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/cslab/cslab-snapshot-registry.ts.md": "0f04c79edf1a5c0c5e1b0c4c523201b255915259c6e613b0e58fda4db2da2076",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/cslab/cslab-worker-client.ts.md": "a6a88dc5b6185595e2d57941084ece54570390752a4a9c4da3a57052ed7760e0",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/cslab/cslab-worker-protocol.ts.md": "70fe1f6de9488d4298a4617539130cc2c73a53c2033f97dd1fc14972eaef21aa",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/debounce.test.ts.md": "929071f183269c4983c652e600664ab97def097d822b7990c072b98bc4090387",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/debounce.ts.md": "5ffda372e0c8aa44b180b38e47698a6fdf44c022be13156fb5c2b55e2f815fb0"
+ },
+ "revisionRequiredManuals": {},
+ "reviewedSourceBindings": {
+  "apps/electron/src/renderer/lib/channel-health-aggregation.ts": {
+   "blob": "9a8abcf4338a1ac96b40d2455cd7360f0aacd5ca",
+   "sha256": "842ec43bff595e2330521b1d6cec17c66f61ad8f4d73d3c7b7863f4c4ce66ca8"
+  },
+  "apps/electron/src/renderer/lib/channel-manual-model.test.ts": {
+   "blob": "408647df3b5a211edf9d9a80762c22aacda9a247",
+   "sha256": "f03dca723f1349c4ed6e80e446086c0e4fdc76317286d1390a12f594f2242506"
+  },
+  "apps/electron/src/renderer/lib/channel-manual-model.ts": {
+   "blob": "d5176b403bfb02adf810a8dafc3408fc9d245a1c",
+   "sha256": "a340492eaf794d5b38661eea8a2a4d9036cf6a1d556833ec93e364f7cc5227cf"
+  },
+  "apps/electron/src/renderer/lib/channel-model-discovery.test.ts": {
+   "blob": "f6f24b759a5398a4a517e68a217c4c0b204993c7",
+   "sha256": "b37b47607d0f645947f7d0baf526cd2954bf6c2263f4d08f19a529f9e1b5c028"
+  },
+  "apps/electron/src/renderer/lib/channel-model-discovery.ts": {
+   "blob": "e3a9c1a3df13e67aefc5080f62a3409d5ebc6e0e",
+   "sha256": "7143dedfcd68ec0db2442aaa6d014422c375474d6f7cea2dcc2de139f909e631"
+  },
+  "apps/electron/src/renderer/lib/channel-model-groups.test.ts": {
+   "blob": "79a938582524a903de26cff111ac7bda99dbb084",
+   "sha256": "d7c46182862b34a98d9aca9d1a491102fc26dd9e8c925f96cd6236457a77112b"
+  },
+  "apps/electron/src/renderer/lib/channel-model-groups.ts": {
+   "blob": "9982e761392687583a307eb31c77958b5b8eb6f2",
+   "sha256": "49a3d0789415a05737e915015482ac20fdd90a7ecaa3e5fe8fa004ddb63a6a40"
+  },
+  "apps/electron/src/renderer/lib/channel-plan-quota.test.ts": {
+   "blob": "3c44e100a1e86c701938d6d459bdd46afff3da64",
+   "sha256": "94bc5dec44df5e507e14aa41f5cfbc51d9ca50eb13c19ad54c3118cd2bb6a920"
+  },
+  "apps/electron/src/renderer/lib/channel-plan-quota.ts": {
+   "blob": "e338ad94e3994ef1923b9ab770580469c4027865",
+   "sha256": "9889ba7d156054f2acf013c2ed594d8db1abf42240cea3d81378cd2937298b63"
+  },
+  "apps/electron/src/renderer/lib/clipboard-text-attachment.test.ts": {
+   "blob": "184a9cf59a3fe67d30f4b7252fafed587397a105",
+   "sha256": "3699cc14ba605bb465fb778b61caed0b5bae788e3bd5fa5fe5ccdac9abdf3520"
+  },
+  "apps/electron/src/renderer/lib/clipboard-text-attachment.ts": {
+   "blob": "4b478a0e52fbd0464faad56e70649d59aed91840",
+   "sha256": "4cc042d45e98842663050e3a0103c5176ce1ee19bf1b66398f0486ecaa436890"
+  },
+  "apps/electron/src/renderer/lib/composer-compact-height.test.ts": {
+   "blob": "f2fc38ddcc84704f7e6d49b5fc62959d3d25efdf",
+   "sha256": "92e2dd37ed1c47073814c90df9659c1a6df456462438b21e5684f692d4e64e5d"
+  },
+  "apps/electron/src/renderer/lib/composer-compact-height.ts": {
+   "blob": "c048fdb40468c08ea75e7d52a333ece5c773d94a",
+   "sha256": "b0a19653f874343798cbe64069fdc62fa0f28de895493aed0b8ed24ea152370a"
+  },
+  "apps/electron/src/renderer/lib/cslab/cslab-snapshot-registry.ts": {
+   "blob": "37b39fd3e1840228937c0fe3c3e1ba9a83ee3fc1",
+   "sha256": "5d08397178d229f82fbb4b22ba33524d7b06b216f3115472c40e6850c48dff5d"
+  },
+  "apps/electron/src/renderer/lib/cslab/cslab-worker-client.ts": {
+   "blob": "ee678798cbaca3b009868e2fc3a659e4c4bb6330",
+   "sha256": "c580862a0bce20cb01072362f35930da2dfe9ee8ea20a781911c11aaa66f349b"
+  },
+  "apps/electron/src/renderer/lib/cslab/cslab-worker-protocol.ts": {
+   "blob": "5d486710980f92e4463dd414a9b0dc880c2ae89d",
+   "sha256": "dcd537de0b138e39ddfa7b417fecee38543aac426db74a719c5cdda4b4430024"
+  },
+  "apps/electron/src/renderer/lib/debounce.test.ts": {
+   "blob": "5206119877e58437939b5de476b355b935a830cf",
+   "sha256": "fc1ea3bddb46e333a52e44014ac89285747f3f81007d93d1f18f8ccb4bd48659"
+  },
+  "apps/electron/src/renderer/lib/debounce.ts": {
+   "blob": "12f6ed5a3adf3bbccb418fcb6d5678da2de4784d",
+   "sha256": "a345f9cde59fc782e5a3e678a0ddce7aeca2814b193791f068bedcb0f95fa90c"
+  }
+ }
+}

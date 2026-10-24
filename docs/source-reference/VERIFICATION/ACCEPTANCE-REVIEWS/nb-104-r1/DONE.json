@@ -1,0 +1,41 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-104-r1",
+ "revisionOf": "nb-104",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-01-20261024",
+ "reviewerSession": "docs-r07-qa-extra-01-20261024",
+ "reviewedAtUtc": "2026-10-23T20:16:45Z",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "files": 16,
+ "accepted": 16,
+ "revision_required": 0,
+ "unknown": 0,
+ "sealId": "seal-93a7782c22f19564",
+ "resultSha256": "83c6be6df8b3bdcc3dcaac1023ddc956a6b2ee5f15b77d82060ea34c7bdda2aa",
+ "resultMdSha256": "e7b31803ef7d5581486ab3abbb00bf1f707923f5b6c3a905c1d752de0ca2ede2",
+ "reviewedHashesSha256": "ec448b25de299fa15e0cc0d4bb34bb2d82cb3d3ace19bffe7c62ccbda0c87a3a",
+ "toAuthorSha256": "1825f1f1f9a3e39910d3e6fc64ab4ae4fc71248afc8dd810444a61d07ed4d0d1",
+ "toLeadSha256": "bf46fe2b9a1f32d13750076173283ec22360e5a37f91d45646d198853233e353",
+ "findingsOpen": [],
+ "findingsClosed": [
+  "NB104-F-01（计数 9→8+set 键删区分，变更面 2 行实测）",
+  "NB104-N-02（拆分 4537/258 双处更正）"
+ ],
+ "registrationNotes": [
+  "NB104-N-01 归属字段交 lead 合入登记（与 NB130-N-01 一并）"
+ ],
+ "notRun": [
+  "产品测试",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "真实模型/CDUT 登录/CSLab/桌宠",
+  "WebGL",
+  "bun test（34 用例断言级阅读）",
+  "多窗口实测"
+ ],
+ "declaredScope": "仅 nb-104-r1 修订面（16 篇当前字节）的复验；不含 nb-133、不含运行验证",
+ "note": "nb-104 链闭环：15 篇 hash 等价沿用 + 1 篇修复重验；最终合入以本批 acceptedHashes 为准，父批 use-left-sidebar 旧 hash c6083de4… 作废"
+}

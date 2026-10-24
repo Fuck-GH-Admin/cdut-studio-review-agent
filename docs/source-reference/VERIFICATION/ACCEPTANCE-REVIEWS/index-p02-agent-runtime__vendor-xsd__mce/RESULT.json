@@ -1,0 +1,77 @@
+{
+ "schema": "dsh-r07-index-review-result/1",
+ "batch": "index-p02-agent-runtime__vendor-xsd__mce",
+ "groupId": "p02-agent-runtime__vendor-xsd__mce",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-03-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T20:50:00Z",
+ "sealedAtUtc": "2026-10-23T19:29:27+00:00",
+ "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__mce.md",
+ "artifactSha256": "5fb854dc17e363e369466f7e05cb9215cbfa731c6af88ed59743a7738417892b",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 3,
+  "accepted": 3,
+  "revision_required": 0,
+  "unknown": 0,
+  "blocking": 0,
+  "nonBlocking": 0
+ },
+ "gates": {
+  "G0_INDEX": "PASS",
+  "G1_INDEPENDENT_SOURCE_REVIEW": "PASS",
+  "G2_SEAL_CONSISTENCY": "PASS",
+  "note": "G0 等价检查全对。G1 vendor XSD 专项四要素全真：家族说明（MC 2006 最小 XSD，出处注释逐行命中）、三副本映射（QA 实算逐字节同）、校验加载映射（wml.xsd:12 唯一直接入口+传递链+SCHEMA_MAPPINGS :44/:52-55 触发+base.py MC 处理）、失败影响（wml 编译异常→退出码 1 链路实读；xlsx CLI 未接线如实）。作者对预读线索的两处勘正（pml/sml 不 import mc、:95 非失败路径）均经 QA 独立复核属实。"
+ },
+ "g0Evidence": {
+  "stockScript": "ERRATA-E1 沿登记；等价检查 PASS"
+ },
+ "errataCarry": [
+  "ERRATA-E1",
+  "ERRATA-E2",
+  "ERRATA-E3",
+  "IDX-QA-E02-N-01/N-02/N-03（沿登记）"
+ ],
+ "files": [
+  {
+   "path": "apps/electron/default-skills/docx/scripts/office/schemas/mce/mc.xsd",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__mce.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__mce.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--docx--scripts--office--schemas--mce--mc.xsd",
+   "line": 21,
+   "sourceBlob": "ef725457cf39116672e285d021be69b7ad022574",
+   "sourceSha256": "3a37e461ecf5a8670fdec34029703401f8728ab9c96ec1739a6ae58d55212413",
+   "manualSha256": "5fb854dc17e363e369466f7e05cb9215cbfa731c6af88ed59743a7738417892b",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "加载链逐行实测：wml.xsd:12 xs:import ../mce/mc.xsd（三树逐一核实）+wml.xsd:3631 attribute ref=mc:Ignorable 精确命中；传递到达者抽查命中（wml-2012.xsd:2、wml-cex-2018.xsd:3、dml-wordprocessingDrawing.xsd:12、shared-math.xsd:9-10）；**作者「实测更正预读线索」QA 复核属实**——pml.xsd（:10/:12/:14 三条 import）与 sml.xsd（:9/:11/:13 三条）均不 import mc.xsd；mc.xsd 内部引证实测：targetNamespace :2-5、头部注释 :7-25（docx4j 修改版 :8-9、双目标 :13/:20-21、ECMA-376 4th Part 3 :23-24）、Ignorable :28/MustUnderstand :31/ProcessContent :32、AlternateContent :37、注释 :34-36/:66-69；MC 处理 base.py:61/:742-748（:767 调用）；SCHEMA_MAPPINGS :44/:52-55 触发点精确；失败链 base.py:784-785→validate.py:102/:107 退出 1（:93-95 兜底勘正同 ecma 组属实）；三副本 sha 实算一致（3a37e461…/ef725457…=manifest）；打包链 electron-builder.yml:70-75→config-paths.ts:770-776/:956→~/.cdutai 实测。"
+  },
+  {
+   "path": "apps/electron/default-skills/pptx/scripts/office/schemas/mce/mc.xsd",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__mce.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__mce.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--pptx--scripts--office--schemas--mce--mc.xsd",
+   "line": 31,
+   "sourceBlob": "ef725457cf39116672e285d021be69b7ad022574",
+   "sourceSha256": "3a37e461ecf5a8670fdec34029703401f8728ab9c96ec1739a6ae58d55212413",
+   "manualSha256": "5fb854dc17e363e369466f7e05cb9215cbfa731c6af88ed59743a7738417892b",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "加载链逐行实测：wml.xsd:12 xs:import ../mce/mc.xsd（三树逐一核实）+wml.xsd:3631 attribute ref=mc:Ignorable 精确命中；传递到达者抽查命中（wml-2012.xsd:2、wml-cex-2018.xsd:3、dml-wordprocessingDrawing.xsd:12、shared-math.xsd:9-10）；**作者「实测更正预读线索」QA 复核属实**——pml.xsd（:10/:12/:14 三条 import）与 sml.xsd（:9/:11/:13 三条）均不 import mc.xsd；mc.xsd 内部引证实测：targetNamespace :2-5、头部注释 :7-25（docx4j 修改版 :8-9、双目标 :13/:20-21、ECMA-376 4th Part 3 :23-24）、Ignorable :28/MustUnderstand :31/ProcessContent :32、AlternateContent :37、注释 :34-36/:66-69；MC 处理 base.py:61/:742-748（:767 调用）；SCHEMA_MAPPINGS :44/:52-55 触发点精确；失败链 base.py:784-785→validate.py:102/:107 退出 1（:93-95 兜底勘正同 ecma 组属实）；三副本 sha 实算一致（3a37e461…/ef725457…=manifest）；打包链 electron-builder.yml:70-75→config-paths.ts:770-776/:956→~/.cdutai 实测。"
+  },
+  {
+   "path": "apps/electron/default-skills/xlsx/scripts/office/schemas/mce/mc.xsd",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__mce.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__mce.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--xlsx--scripts--office--schemas--mce--mc.xsd",
+   "line": 41,
+   "sourceBlob": "ef725457cf39116672e285d021be69b7ad022574",
+   "sourceSha256": "3a37e461ecf5a8670fdec34029703401f8728ab9c96ec1739a6ae58d55212413",
+   "manualSha256": "5fb854dc17e363e369466f7e05cb9215cbfa731c6af88ed59743a7738417892b",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "加载链逐行实测：wml.xsd:12 xs:import ../mce/mc.xsd（三树逐一核实）+wml.xsd:3631 attribute ref=mc:Ignorable 精确命中；传递到达者抽查命中（wml-2012.xsd:2、wml-cex-2018.xsd:3、dml-wordprocessingDrawing.xsd:12、shared-math.xsd:9-10）；**作者「实测更正预读线索」QA 复核属实**——pml.xsd（:10/:12/:14 三条 import）与 sml.xsd（:9/:11/:13 三条）均不 import mc.xsd；mc.xsd 内部引证实测：targetNamespace :2-5、头部注释 :7-25（docx4j 修改版 :8-9、双目标 :13/:20-21、ECMA-376 4th Part 3 :23-24）、Ignorable :28/MustUnderstand :31/ProcessContent :32、AlternateContent :37、注释 :34-36/:66-69；MC 处理 base.py:61/:742-748（:767 调用）；SCHEMA_MAPPINGS :44/:52-55 触发点精确；失败链 base.py:784-785→validate.py:102/:107 退出 1（:93-95 兜底勘正同 ecma 组属实）；三副本 sha 实算一致（3a37e461…/ef725457…=manifest）；打包链 electron-builder.yml:70-75→config-paths.ts:770-776/:956→~/.cdutai 实测。 xlsx 树 CLI 未装配 XLSX validator（validate.py :80-95 落兜底、pack.py :78-94 静默跳过）如实标注 NOT_RUN/推断，诚实。"
+  }
+ ]
+}

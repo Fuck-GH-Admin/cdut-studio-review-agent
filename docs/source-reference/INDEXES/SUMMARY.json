@@ -1,0 +1,71 @@
+{
+  "atUtc": "2026-10-23T21:46:51.255169+00:00",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "inventoryRows": 3083,
+  "inventoryUnique": 3083,
+  "actualFrozenFiles": 3083,
+  "trackedSnapshotFiles": 3083,
+  "actualNotInventory": [],
+  "inventoryNotActual": [],
+  "trackedNotInventory": [],
+  "states": {
+    "ACCEPTED": 2965,
+    "STAGED_UNACCEPTED": 118
+  },
+  "deepStates": {
+    "ACCEPTED": 2260,
+    "STAGED_UNACCEPTED": 118
+  },
+  "indexStates": {
+    "ACCEPTED": 705
+  },
+  "duplicateSourcePaths": {},
+  "duplicateCurrentDocumentAnchors": {},
+  "issueCounts": {},
+  "owners": {
+    "p01-app-shell": {
+      "ACCEPTED": 736,
+      "index": 439,
+      "deep": 297
+    },
+    "p02-agent-runtime": {
+      "ACCEPTED": 511,
+      "index": 173,
+      "deep": 355,
+      "STAGED_UNACCEPTED": 17
+    },
+    "p03-integrations": {
+      "ACCEPTED": 245,
+      "deep": 272,
+      "STAGED_UNACCEPTED": 34,
+      "index": 7
+    },
+    "p05-review-engine": {
+      "ACCEPTED": 187,
+      "deep": 191,
+      "STAGED_UNACCEPTED": 7,
+      "index": 3
+    },
+    "p06-review-batch": {
+      "ACCEPTED": 80,
+      "deep": 80
+    },
+    "p04-review-case-core": {
+      "ACCEPTED": 108,
+      "deep": 108
+    },
+    "p08-renderer-ui": {
+      "ACCEPTED": 837,
+      "deep": 781,
+      "index": 83,
+      "STAGED_UNACCEPTED": 27
+    },
+    "p07-shared-libs": {
+      "ACCEPTED": 261,
+      "deep": 294,
+      "STAGED_UNACCEPTED": 33
+    }
+  },
+  "legacyAuthority": "EXCLUDED: only exact FILES.tsv paths and current accepted records count; historical MODULE-REFERENCE/g* and old922 not authority",
+  "runtime": "NOT_RUN: static path/hash/ownership/anchor checks only"
+}

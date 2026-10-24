@@ -1,0 +1,258 @@
+{
+  "schema": "r07-review-result/1",
+  "batch": "nb-64-r3",
+  "revisionOf": "nb-64-r2",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-07-20261023",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "reviewedAtUtc": "2026-10-23T21:11:59Z",
+  "sealId": "seal-da0909a0776ec70b",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "g0": {
+    "result": "PASS",
+    "hashChain": "DONE/READY/ZIP 实算一致（zipPath 实取）",
+    "sourceBinding": "18/18",
+    "manualBinding": "无 drift",
+    "unchanged16": "字节==r2"
+  },
+  "g1": {
+    "result": "PASS",
+    "lineRefs": "新增引用 run_loop.py:18/:151/:317/:321、SKILL.md:234 逐一核实在范围"
+  },
+  "g2": {
+    "result": "FULL",
+    "method": "差量 2 册逐字 diff + 新行号抽查（run_loop generate_html 调用点 grep 精确命中）",
+    "closedFindings": [
+      "F-NB64R2-01 已闭合：generate_report.py.md §4 改登 run_loop.py:18 import（调用点 :151/:317/:321 实测精确）+§8 依赖方向校正（标注 QA 校正来源）",
+      "N-NB64R2-01 已闭合：aggregate_benchmark.py.md §4 补 SKILL.md:234 指令点名（非代码调用）"
+    ],
+    "findingsTotal": 0,
+    "notesTotal": 0
+  },
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/guizang-ppt-skill/assets/motion.min.js.md": "cb15ea6fec8d80a245b9332bc66720dd00f9e08e23f9a1f63c0c4413e3c01e79",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/guizang-ppt-skill/assets/template-swiss.html.md": "93e32b15235c280c9e9bfad47747945b25509c12a21c5c5e78e7d54d38d9dc29",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/guizang-ppt-skill/assets/template.html.md": "627577dbd51440dbad6880c5270cc6f2a81a7c46886bf70eb8fbb9ba2b415b62",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/guizang-ppt-skill/scripts/validate-swiss-deck.mjs.md": "0986daeb35ab2e9ec4b839fbf02838296c31b0334b154dd19f34d690535aac43",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pdf/scripts/check_bounding_boxes.py.md": "1bb851126d81072e95b7e4f846f084049e0c6d5a8a5f0e6fa07e212f2ba0cd9b",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pdf/scripts/check_fillable_fields.py.md": "5df2e6ab1caab2e87a0aaa515eb8428ac37a1b2e86f814e12ba70609f83e6a08",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pdf/scripts/convert_pdf_to_images.py.md": "ef91bcb7f76c5e420b7b8be9198612f7b4092b4b1c810a61fbf182fc305ba565",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pdf/scripts/create_validation_image.py.md": "18bf517e0afe8496eef4f59c934a437861535a5bec8cc99fcc8f65952b712a6d",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pdf/scripts/extract_form_field_info.py.md": "97b624864c9e4972f4323afbd1c745d258fba57951e9f179ade658dff389cc64",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pdf/scripts/extract_form_structure.py.md": "508ee07aa3e9087de820b15348889ad51cf853963ed387c2070d6ba55e76849d",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pdf/scripts/fill_fillable_fields.py.md": "e18276ee98e8ca9117fa589dc5b8e37e2f7418b8b135709028ee2bdd5660d1ef",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pdf/scripts/fill_pdf_form_with_annotations.py.md": "6b02af1cbe26e5c97c7406de3a8855a908f5432e209970c873058d32a92c0324",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/assets/eval_review.html.md": "0df4198746268a112eed43b6276e69e87e21895aadbbc57a892606aa6900e557",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/eval-viewer/generate_review.py.md": "8ebe4ba7005bc9c76b1534d5e3be36fc55d9d63d1aba018c6cea594b3321abb3",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/eval-viewer/viewer.html.md": "e53f6dbe099ad7a19a144091bcf1687713b21cb6dc9a48fd340658b8ee6325a3",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/__init__.py.md": "3b819137d4d3958342f9cbcd7d270535a2a70f00595f3a2ac7c9cbff1d82ce7d",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/aggregate_benchmark.py.md": "b499e7f48458761f5d4afca4cfb0af70fa35cb23fa879831dbaa2efed8460522",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/generate_report.py.md": "467d193355a0d889f0fe4d468cbc886d4033ae0bccbe46de997c336fb8aefcc5"
+  },
+  "files": [
+    {
+      "path": "apps/electron/default-skills/guizang-ppt-skill/assets/motion.min.js",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/guizang-ppt-skill/assets/motion.min.js.md",
+      "sourceBlob": "2474e1545753d27ae9ee9d1e31d84b47be75a50d",
+      "sourceSha256": "45615c1e7639fb9828942d0689c897e745690b0f6df13022223c9409fc01557c",
+      "sourceLines": 8,
+      "manualSha256": "cb15ea6fec8d80a245b9332bc66720dd00f9e08e23f9a1f63c0c4413e3c01e79",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/default-skills/guizang-ppt-skill/assets/template-swiss.html",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/guizang-ppt-skill/assets/template-swiss.html.md",
+      "sourceBlob": "26a2eb30567ba93caa015da0c8ff60372dc6c47e",
+      "sourceSha256": "1b44bfae65a7db462722e3a2431f3f9cd046ca4f50999b3156c3ca6df518dd7a",
+      "sourceLines": 2417,
+      "manualSha256": "93e32b15235c280c9e9bfad47747945b25509c12a21c5c5e78e7d54d38d9dc29",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/default-skills/guizang-ppt-skill/assets/template.html",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/guizang-ppt-skill/assets/template.html.md",
+      "sourceBlob": "3140850f2c2b9132df738b168da4ca3cc3c0530d",
+      "sourceSha256": "a78c2375d8edf444269f57d4e8f67d9c6fa6b8be8e20528d5a91b0ec3c3a964e",
+      "sourceLines": 858,
+      "manualSha256": "627577dbd51440dbad6880c5270cc6f2a81a7c46886bf70eb8fbb9ba2b415b62",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/default-skills/guizang-ppt-skill/scripts/validate-swiss-deck.mjs",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/guizang-ppt-skill/scripts/validate-swiss-deck.mjs.md",
+      "sourceBlob": "c378476c3b4c595b424f586bd71db06c7dcdd205",
+      "sourceSha256": "66158ce5ce763b5886567a073a15d9b189521e5ac8e109782cb2451686dbeca1",
+      "sourceLines": 110,
+      "manualSha256": "0986daeb35ab2e9ec4b839fbf02838296c31b0334b154dd19f34d690535aac43",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/default-skills/pdf/scripts/check_bounding_boxes.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pdf/scripts/check_bounding_boxes.py.md",
+      "sourceBlob": "2cc5e348f359b7aa7179e6a26772dacfdbbeba53",
+      "sourceSha256": "0ced522402dd7b3c82a0be9518cf4e485fa9cc0467d7beab6ddb04cb36fcc3e1",
+      "sourceLines": 65,
+      "manualSha256": "1bb851126d81072e95b7e4f846f084049e0c6d5a8a5f0e6fa07e212f2ba0cd9b",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/default-skills/pdf/scripts/check_fillable_fields.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pdf/scripts/check_fillable_fields.py.md",
+      "sourceBlob": "36dfb9513e2f54e051820b58c3cdd1f09bc6ff37",
+      "sourceSha256": "1fe10b9980a5493c9bbec8c20630c603eaa475b45403751c08f26738736647b8",
+      "sourceLines": 11,
+      "manualSha256": "5df2e6ab1caab2e87a0aaa515eb8428ac37a1b2e86f814e12ba70609f83e6a08",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/default-skills/pdf/scripts/convert_pdf_to_images.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pdf/scripts/convert_pdf_to_images.py.md",
+      "sourceBlob": "7939cef56c1220dd9dd0d04ec9594b2fe089ee74",
+      "sourceSha256": "7f58e292a67e18a8ff000d30bad2469389546731f7e8a698cc1d0aed001ea15d",
+      "sourceLines": 33,
+      "manualSha256": "ef91bcb7f76c5e420b7b8be9198612f7b4092b4b1c810a61fbf182fc305ba565",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/default-skills/pdf/scripts/create_validation_image.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pdf/scripts/create_validation_image.py.md",
+      "sourceBlob": "10eadd8124b1f94f9b1a78708c2d947a3f6773e7",
+      "sourceSha256": "8fa9fd7962c9f940045b81cf6b991e7c1057c1838e3f9cc6d305007a222ffebf",
+      "sourceLines": 37,
+      "manualSha256": "18bf517e0afe8496eef4f59c934a437861535a5bec8cc99fcc8f65952b712a6d",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/default-skills/pdf/scripts/extract_form_field_info.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pdf/scripts/extract_form_field_info.py.md",
+      "sourceBlob": "64cd4703a4af80bf6abe16f4c3065d8abd55d173",
+      "sourceSha256": "bb235b36f497bbb1c7c6821cecf527bbba7213520de11219da99f7b13a38c109",
+      "sourceLines": 122,
+      "manualSha256": "97b624864c9e4972f4323afbd1c745d258fba57951e9f179ade658dff389cc64",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/default-skills/pdf/scripts/extract_form_structure.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pdf/scripts/extract_form_structure.py.md",
+      "sourceBlob": "f219e7d5b5e30616b2259abb924253afd0240aee",
+      "sourceSha256": "6814e3fe8f78c2b16d766c132b5a727ff7a31b71d76a7d46bd6e40fe50bc97c5",
+      "sourceLines": 115,
+      "manualSha256": "508ee07aa3e9087de820b15348889ad51cf853963ed387c2070d6ba55e76849d",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/default-skills/pdf/scripts/fill_fillable_fields.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pdf/scripts/fill_fillable_fields.py.md",
+      "sourceBlob": "51c2600f3895723cac15ec3ffcd8a482e42f95d7",
+      "sourceSha256": "d140872c2e92e41b1e05370ae8d270c5b7f5ebdf55d9905f03bc974a9c708ff5",
+      "sourceLines": 98,
+      "manualSha256": "e18276ee98e8ca9117fa589dc5b8e37e2f7418b8b135709028ee2bdd5660d1ef",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/default-skills/pdf/scripts/fill_pdf_form_with_annotations.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pdf/scripts/fill_pdf_form_with_annotations.py.md",
+      "sourceBlob": "b430069fd016cff11560d0f2b95c63074736e5e4",
+      "sourceSha256": "8a56e063a49ed53c0b0e1d312ecf8023af76816ed139486ec3b539873de202fd",
+      "sourceLines": 107,
+      "manualSha256": "6b02af1cbe26e5c97c7406de3a8855a908f5432e209970c873058d32a92c0324",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/default-skills/skill-creator/assets/eval_review.html",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/assets/eval_review.html.md",
+      "sourceBlob": "938ff32aed9bffabf723bd5492d720f4736c8e4d",
+      "sourceSha256": "ce477dcc74dc1c0d1d3352646a79167b5a63634e936b1019160025065974e452",
+      "sourceLines": 146,
+      "manualSha256": "0df4198746268a112eed43b6276e69e87e21895aadbbc57a892606aa6900e557",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/default-skills/skill-creator/eval-viewer/generate_review.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/eval-viewer/generate_review.py.md",
+      "sourceBlob": "7fa5978631fed1ed545591dbb2b0eb21ce3f3d08",
+      "sourceSha256": "fc9d1b9243fe5ab6012ebd579bd76d0035de1b79fd3b969de114defab26478fb",
+      "sourceLines": 471,
+      "manualSha256": "8ebe4ba7005bc9c76b1534d5e3be36fc55d9d63d1aba018c6cea594b3321abb3",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/default-skills/skill-creator/eval-viewer/viewer.html",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/eval-viewer/viewer.html.md",
+      "sourceBlob": "6d8e96348a02e66c3363d2ff3b3ae58ac11e6382",
+      "sourceSha256": "a53213426ee1100441d701a3a0d49cda7a842f992d2c36463f4d3cc0258575fa",
+      "sourceLines": 1325,
+      "manualSha256": "e53f6dbe099ad7a19a144091bcf1687713b21cb6dc9a48fd340658b8ee6325a3",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/default-skills/skill-creator/scripts/__init__.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/__init__.py.md",
+      "sourceBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceLines": 0,
+      "manualSha256": "3b819137d4d3958342f9cbcd7d270535a2a70f00595f3a2ac7c9cbff1d82ce7d",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/default-skills/skill-creator/scripts/aggregate_benchmark.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/aggregate_benchmark.py.md",
+      "sourceBlob": "3e66e8c105be9bab9f0e9c61f0d1482619401580",
+      "sourceSha256": "123ef128ea5ccc01a4b1ac212ef5567f21e9c13d3d240609780beeb3200c49aa",
+      "sourceLines": 401,
+      "manualSha256": "b499e7f48458761f5d4afca4cfb0af70fa35cb23fa879831dbaa2efed8460522",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/default-skills/skill-creator/scripts/generate_report.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/generate_report.py.md",
+      "sourceBlob": "959e30a0014ec165c41a2bb7420b7dfe1416bbac",
+      "sourceSha256": "13df7118a3c50c83c4c3250a606d5f2b20b25a3d44cbc392b3d669ec75281453",
+      "sourceLines": 326,
+      "manualSha256": "467d193355a0d889f0fe4d468cbc886d4033ae0bccbe46de997c336fb8aefcc5",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    }
+  ]
+}

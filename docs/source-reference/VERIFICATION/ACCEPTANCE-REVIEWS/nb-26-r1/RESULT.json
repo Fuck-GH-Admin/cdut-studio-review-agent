@@ -1,0 +1,188 @@
+{
+  "schema": "dsh-r07-independent-review/1",
+  "batch": "nb-26-r1",
+  "revisionOf": "nb-26",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-03-20261023",
+  "reviewerSession": "docs-r07-qa-nb-03-20261023",
+  "batchVerdict": "accepted",
+  "generatedAtUtc": "2026-10-23T17:33:37Z",
+  "delivery": {
+    "sealId": "seal-3e2cb4d895b6a8aa",
+    "zipSha256": "b74fa4c0ed78a86e822103b769d897f83b684128540759782e88907fee17d565",
+    "manifestSha256": "e9b720ed71a09abb69c10cd316ed76bc775639d11b84d0b11a5ee3448a374e43",
+    "readySha256": "12e23bac99dd631ba978e91b475ed72ec6e8349920aaf6838125f4fe4082c6a5",
+    "doneSha256": "b48e22a37f31ead6d5ef98094f3c518a953d89e772bc2a27f765787c2b0b356b",
+    "sealedAtUtc": "2026-10-23T17:24:05Z"
+  },
+  "gates": {
+    "G0": "pass — 全部 blob+sha256+lines 对冻结树；manual sha256 stage==MANIFEST==READY；MANIFEST→READY→DONE 链互洽；sealId 重算一致。",
+    "G1": "pass — FINDINGS-RESPONSE.md 逐条 before→after 与变更字节一致；父批 sealed 字节未动（before/ 保留）。",
+    "G2": "pass — 变更文件恰为 findings 对象（review-v3-t09-offline-codec.ts.md），逐条回源闭合；未变文件与父批逐字节一致。"
+  },
+  "notRun": [
+    "bun test NOT_RUN",
+    "tsc/build NOT_RUN",
+    "GUI NOT_RUN",
+    "模型/产品调用 NOT_RUN"
+  ],
+  "counts": {
+    "files": 14,
+    "accepted": 14,
+    "revision_required": 0,
+    "findings": 1,
+    "optionalNotes": 0
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t09-asset-registration.test.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t09-asset-registration.test.ts.md",
+      "sourceBlob": "69649a8f3a0f38f3fe6a9cf83b343c2968e19aeb",
+      "sourceSha256": "403014dd00c9e09383ccecb4f7d28fcef195355de9b8e1a055cdaa98471a6238",
+      "manualSha256": "54b1072a91b10fa4d1ed7b4a05991e9782716d7a78e6d8368d308eb3d54b4a01",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t09-asset-registration.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t09-asset-registration.ts.md",
+      "sourceBlob": "aa2d2a6ffdc436cfa13f62182ac5b661835af24a",
+      "sourceSha256": "f538db14367322e0230dc8cdde33ea2f706cf201cc5b1afc52183b00fa7140d4",
+      "manualSha256": "df243be27e3ef8b301c8a50ec050c80505b75df1adcf274cc79e3a63593733b9",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t09-judge-adapter.test.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t09-judge-adapter.test.ts.md",
+      "sourceBlob": "01e891ee5e743c91902029b9f0f5723b4b944824",
+      "sourceSha256": "3b9276cd85e18666891a2e27314dba8cc8e1cf82d728270c998180466249eca6",
+      "manualSha256": "e19a9b93d46f880484710d575d788e2f6beb8cdce1267b628cb2e31f44097457",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t09-judge-adapter.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t09-judge-adapter.ts.md",
+      "sourceBlob": "908407df7698772b4ce34e6b77060ed95c9a0f2a",
+      "sourceSha256": "85b652cc6d4445507378dc200bfb929a33df7e7a72dc052704f9af1e35818b7e",
+      "manualSha256": "88a7ba17243a8197a9e3b48f32f993a1305eaed8351822dbd2612aafdff9357a",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t09-main-service.test.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t09-main-service.test.ts.md",
+      "sourceBlob": "0df9c7e77f7a6709a1fa81933705080c9699a665",
+      "sourceSha256": "35b86bed13a0dc4ab52812788fb1b27f5c4271639451b67a53cd1fa4676c838e",
+      "manualSha256": "593db2d178c1a87d9c3e8d0d77cc9d57d9fbb8b55c10790af6cea77fff211fa5",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t09-main-service.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t09-main-service.ts.md",
+      "sourceBlob": "7fa4be00c6a1de55a15c45588ce7357e5341ecd8",
+      "sourceSha256": "bb3c5b751edbf3c1570b7cce099ac5829313a27da2badeb5e9a1e968daff408e",
+      "manualSha256": "f1d350d087ad707d9d5ba5cf7f4bbe898f716942dabec605c9b37714b46ee4cc",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t09-offline-codec.test.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t09-offline-codec.test.ts.md",
+      "sourceBlob": "966d5d309d78be36477b7de0943feb5d094be6c6",
+      "sourceSha256": "000876aa4ce9e5d911450ee33815aff015d661d51a60ae5f3f8293e26385d0fe",
+      "manualSha256": "85c896cdcd26f9778751aa47ddb01e35ad16a57b15c7fb80c8f43f5d74985805",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t09-offline-codec.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t09-offline-codec.ts.md",
+      "sourceBlob": "8bc03c19946e9b942913936a7650c4da0757c969",
+      "sourceSha256": "e6b20bec309a14d1570aee54ffe6a4db396f7ce002f8d89866f81ac2fc9e0cf1",
+      "manualSha256": "cc024f90ea8fecfdd8e808897fd370e9035a94f3976f17c6be1131700176140a",
+      "verdict": "accepted",
+      "findings": [
+        {
+          "id": "NB26-EXP-01",
+          "severity": "low",
+          "claim": "§2 改为“函数 9 个”——与源 9 函数 export 及表一致，闭合。",
+          "sourceEvidence": "回源逐行复验（frozen apps/electron/src/main/lib/review/review-v3-t09-offline-codec.ts 与相关 review-ipc 行）；FINDINGS-RESPONSE.md 记录 before→after sha256，before/ 保留父批字节",
+          "action": "已闭合，无需再改。"
+        }
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t09-offline-issuer.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t09-offline-issuer.ts.md",
+      "sourceBlob": "5e65f750e181f2351ddf043a1b56977dc3d85ca9",
+      "sourceSha256": "db87e32dc8c1e5c37df5061fa5ede13cb787ba7b448eb9bd48a8575d31841526",
+      "manualSha256": "b7e16f8bafa0b2edc9a651103aa58f88d902f9dfaa84663a2e9359c139b17ae2",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t09-visibility.test.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t09-visibility.test.ts.md",
+      "sourceBlob": "6f5eb09641a701e3b259ec04ec8487a7ca4630e9",
+      "sourceSha256": "a720bc66fd0a76916ee1e68bc1f1c74249d4933ba02996e9a6aab35ba922fd71",
+      "manualSha256": "3ead45ba121e3c919a39b120b6e8c0ad76e55ed35790bc0101f18dfc2189e0ad",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/material-lifecycle-v3.test.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/material-lifecycle-v3.test.ts.md",
+      "sourceBlob": "380ce364fefa7fda4ecabfd155a79b797b826898",
+      "sourceSha256": "6fd08351b1cad467ca3ffa01eb3f49bc1ee399d988613c2862c602e227eea691",
+      "manualSha256": "e76e3514745b5810c19b9624f546003b3a0fdf841f3d6351176bfc69ac90d312",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/material-lifecycle-v3.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/material-lifecycle-v3.ts.md",
+      "sourceBlob": "d8534c0d7a52b15cb69fe1e1a4e82d2e7a8186f3",
+      "sourceSha256": "cfd6ac55b2d4d5345c96e83090cb254c38c3c041cac6beacbfee5604afa041da",
+      "manualSha256": "71362b58873bb0a57422f94dca34b21b921ffdccd5bef9d4608eae1387782a8e",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/material-service.test.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/material-service.test.ts.md",
+      "sourceBlob": "ed7269a064b6d19aa5f78a9a67e542158d2b5797",
+      "sourceSha256": "2379f2d2b8e13bade1539fcf557b2e50568ce130129d74e8e6355bb41e881063",
+      "manualSha256": "2239af1a0a073eb58cf3acc3dacbd2465ee48e98b9017fa6d050f55e9631fe08",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/material-service.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/material-service.ts.md",
+      "sourceBlob": "6e1ec463a51f1b0e933c90e06570a7f88a9deb0a",
+      "sourceSha256": "8b9d556954c488eb5eff0992a7a5d45cc13d4d84e11d9b2d1ebc8b2d9bd1fbd3",
+      "manualSha256": "32ba2f5967ca38eca8fb4cd7c1e93906ef9177820da45f0dea9eedbc9a54130c",
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t09-asset-registration.test.ts.md": "54b1072a91b10fa4d1ed7b4a05991e9782716d7a78e6d8368d308eb3d54b4a01",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t09-asset-registration.ts.md": "df243be27e3ef8b301c8a50ec050c80505b75df1adcf274cc79e3a63593733b9",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t09-judge-adapter.test.ts.md": "e19a9b93d46f880484710d575d788e2f6beb8cdce1267b628cb2e31f44097457",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t09-judge-adapter.ts.md": "88a7ba17243a8197a9e3b48f32f993a1305eaed8351822dbd2612aafdff9357a",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t09-main-service.test.ts.md": "593db2d178c1a87d9c3e8d0d77cc9d57d9fbb8b55c10790af6cea77fff211fa5",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t09-main-service.ts.md": "f1d350d087ad707d9d5ba5cf7f4bbe898f716942dabec605c9b37714b46ee4cc",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t09-offline-codec.test.ts.md": "85c896cdcd26f9778751aa47ddb01e35ad16a57b15c7fb80c8f43f5d74985805",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t09-offline-codec.ts.md": "cc024f90ea8fecfdd8e808897fd370e9035a94f3976f17c6be1131700176140a",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t09-offline-issuer.ts.md": "b7e16f8bafa0b2edc9a651103aa58f88d902f9dfaa84663a2e9359c139b17ae2",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t09-visibility.test.ts.md": "3ead45ba121e3c919a39b120b6e8c0ad76e55ed35790bc0101f18dfc2189e0ad",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/material-lifecycle-v3.test.ts.md": "e76e3514745b5810c19b9624f546003b3a0fdf841f3d6351176bfc69ac90d312",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/material-lifecycle-v3.ts.md": "71362b58873bb0a57422f94dca34b21b921ffdccd5bef9d4608eae1387782a8e",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/material-service.test.ts.md": "2239af1a0a073eb58cf3acc3dacbd2465ee48e98b9017fa6d050f55e9631fe08",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/material-service.ts.md": "32ba2f5967ca38eca8fb4cd7c1e93906ef9177820da45f0dea9eedbc9a54130c"
+  }
+}

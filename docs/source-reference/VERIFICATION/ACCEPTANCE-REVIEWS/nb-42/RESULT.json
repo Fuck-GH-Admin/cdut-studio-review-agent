@@ -1,0 +1,369 @@
+{
+ "schema": "dsh-r07-qa-result/1",
+ "batch": "nb-42",
+ "id": "NB-42",
+ "revisionOf": null,
+ "reviewRoot": "reviews/nb-42",
+ "priorReviewRoots": [
+  "reviews/nb-42/SOURCE-CHECKLIST.md",
+  "reviews/nb-42/PRE_READ_DONE.json"
+ ],
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "sourceHeadVerified": true,
+ "sourceWorktreeClean": true,
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewedAtUtc": "2026-10-23T21:35:00Z",
+ "scopeSource": "manager/assignments/nb-42-SCOPE.json",
+ "scopeFileCount": 18,
+ "scopeLines": 2794,
+ "deliveryRoot": "deliveries/nb-42",
+ "sealSpec": "seal_delivery.py/1（v2）",
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "real model/network"
+ ],
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PARTIAL",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 13,
+  "revision_required": 5,
+  "unknown": 0
+ },
+ "batchVerdict": "revision_required",
+ "files": [
+  {
+   "path": "packages/project-core/src/graph-state.ts",
+   "kind": "source",
+   "package": "p07-shared-libs",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/graph-state.ts.md",
+   "sourceBlob": "e63d5da48f3612eafee199ba1a4c0b93bafbf8ad",
+   "sourceSha256": "edd63b6ae034a11bbad013121bc223bee6878e0449cefc0baae1aeb7ccfc7492",
+   "sourceLines": 480,
+   "manualSha256": "331145ae43cace9c47e5a8467376c38b09732053d305862f799c23d28301e986",
+   "manualLines": 96,
+   "verdict": "revision_required",
+   "findings": [
+    {
+     "id": "F-02",
+     "severity": "minor_factual",
+     "claim": "§10「graph-parser 实现 | 未知（同批另一文件，索引导出）」——graph-parser.ts 不在 nb-42 18 文件清单（index.ts.md §2 正确标注「18 清单外模块」，两手册矛盾）。未知定级正确，仅「同批」归属错。",
+     "sourceEvidence": "MANIFEST 18 清单无 graph-parser.ts",
+     "action": "rN 改为「批外文件（未在本批清单），实现未知」"
+    }
+   ]
+  },
+  {
+   "path": "packages/project-core/src/harness-query.test.ts",
+   "kind": "test",
+   "package": "p07-shared-libs",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/harness-query.test.ts.md",
+   "sourceBlob": "b26dbe080d87ef1b256656bb5b2633a2528b4736",
+   "sourceSha256": "37e29f6e945b93fa153f7b4724919909cc6e30481f3aba97479deca91e4bfca2",
+   "sourceLines": 59,
+   "manualSha256": "1dffe6bb845b5da1f1c68599679c3bcf9d35376cda563d74f46616d5c9854854",
+   "manualLines": 51,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/project-core/src/harness-query.ts",
+   "kind": "source",
+   "package": "p07-shared-libs",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/harness-query.ts.md",
+   "sourceBlob": "066a1c3b4c8f6c1146f3b6487f585198c4d4e77d",
+   "sourceSha256": "513dbced6bea69dbaba821453d71af4a0b8cd32a4cca9eeac58821657887b034",
+   "sourceLines": 98,
+   "manualSha256": "6db86a1ff25797772315bc764b00407fda39f73b7b7c6783d9b73dccaf1488e7",
+   "manualLines": 80,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/project-core/src/index.ts",
+   "kind": "source",
+   "package": "p07-shared-libs",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/index.ts.md",
+   "sourceBlob": "13f0cd0cae07d3969e19245a26d5866859694865",
+   "sourceSha256": "0d39218ef24c5e3b6dd72f18c8d3753828cefbc0b60a370639e39b61ce4268cb",
+   "sourceLines": 118,
+   "manualSha256": "68dacf96c2ca7f75b00575c5758da8de4fc93e3099b118b87d7acde675e6dbc8",
+   "manualLines": 62,
+   "verdict": "revision_required",
+   "findings": [
+    {
+     "id": "F-04",
+     "severity": "minor_factual",
+     "claim": "§2「./types 36 类型」应为 33（同 F-01）；「./harness-query 4+4」应为 3 函数+4 类型（selectHarnessFocus/getHarnessBlockedTasks/getTaskVerificationContext）。",
+     "sourceEvidence": "types.ts 33 导出；index.ts:94-102 再导出逐项",
+     "action": "rN 修正两处计数"
+    }
+   ]
+  },
+  {
+   "path": "packages/project-core/src/project-core.test.ts",
+   "kind": "test",
+   "package": "p07-shared-libs",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/project-core.test.ts.md",
+   "sourceBlob": "0b3f5792a120aee4f9b6698f6dc43d89a85191ba",
+   "sourceSha256": "4ae6c6707910a814d0e2334c0473f00e99ad1881443a495387a7151a823687ef",
+   "sourceLines": 864,
+   "manualSha256": "a71f22a5a2062d1df6adf38ce025e32e37862f114d33a9bc6891716bd7851891",
+   "manualLines": 49,
+   "verdict": "revision_required",
+   "findings": [
+    {
+     "id": "F-05",
+     "severity": "minor_factual",
+     "claim": "§2 多处计数错+自相矛盾：「5 个顶层 describe」实为 7（其自身随后列了 7 组）；graph-parser「12 用例」实为 17（细分 4+2+1+2+3+4=16 且漏「stripMetaTags with forkFrom」:118）；graph-state「11 用例」实为 12（自列 12 项）。另 §1「引 35 符号」实为 33（import 块 :8-42 逐项）。70 总数与其余分组正确。",
+     "sourceEvidence": "describe=7、test(=70、import 逐项 33",
+     "action": "rN 修正 4 处计数"
+    }
+   ]
+  },
+  {
+   "path": "packages/project-core/src/project-meta.ts",
+   "kind": "source",
+   "package": "p07-shared-libs",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/project-meta.ts.md",
+   "sourceBlob": "6e5a4e90ef751b7fa28470f6ff220a7372ef7214",
+   "sourceSha256": "6f18d77d1454d5a4182ba53cd74062d49d22dea08135e0e02a5ed3032ba0c105",
+   "sourceLines": 150,
+   "manualSha256": "7c6abf303d69efebd8504ce1e13ca340450fd91d17b177edec8f1d165a7be6ff",
+   "manualLines": 77,
+   "verdict": "revision_required",
+   "findings": [
+    {
+     "id": "F-03",
+     "severity": "minor_factual",
+     "claim": "§2 称「导出 11 条」，实际 12 条（其自身枚举的 export 位置也是 12 个：:19/:38/:54/:61/:68/:77/:84/:91/:100/:108/:137/:141）。",
+     "sourceEvidence": "grep \"^export\" project-meta.ts = 12",
+     "action": "rN 修正为 12"
+    }
+   ]
+  },
+  {
+   "path": "packages/project-core/src/task-tool-names.test.ts",
+   "kind": "test",
+   "package": "p07-shared-libs",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/task-tool-names.test.ts.md",
+   "sourceBlob": "7ffb3929d71262123639a23c66b0e5ae0c3f8718",
+   "sourceSha256": "7438071164ceb9f5150d9d101f405bc68c5918bb891268acb2283466fc9cbadc",
+   "sourceLines": 23,
+   "manualSha256": "98c235a0a62f5b49010a7a850430c4d96cdd1572d3588b0c9b2b3e4367917172",
+   "manualLines": 46,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/project-core/src/task-tool-names.ts",
+   "kind": "source",
+   "package": "p07-shared-libs",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/task-tool-names.ts.md",
+   "sourceBlob": "982e6b1887c3b66e0df66b24d05f5316d70f207e",
+   "sourceSha256": "a2da9f3b99b7c694b6b4d418a7dcd776cdf6d031d726b2e90060d6509ca0d613",
+   "sourceLines": 32,
+   "manualSha256": "dac0c0b4d1ec1b228cb930c24b1d8f056d7fe5a880c09f164235b094c0dd2596",
+   "manualLines": 65,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/project-core/src/types.ts",
+   "kind": "source",
+   "package": "p07-shared-libs",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/types.ts.md",
+   "sourceBlob": "c0e4c1fa39ccf04e3d69e66c1e35e4df91813254",
+   "sourceSha256": "79a509b17343de740e03753d3a9f96e9a69844d73c1671d3500a157c9781ea70",
+   "sourceLines": 384,
+   "manualSha256": "0c38893265ee2ef9b6eee8a912b1e4f69ded9e37954ec0adb35a85a3d4b5c622",
+   "manualLines": 70,
+   "verdict": "revision_required",
+   "findings": [
+    {
+     "id": "F-01",
+     "severity": "minor_factual",
+     "claim": "§1/§2/§10 三处称「36 个 type/interface（导出）」，实际 `^export type|^export interface` 恰 33 条（自身列举也是 33 个符号）。",
+     "sourceEvidence": "grep -c \"^export type|^export interface\" types.ts = 33",
+     "action": "rN 修正为 33"
+    }
+   ]
+  },
+  {
+   "path": "packages/project-core/tsconfig.json",
+   "kind": "config",
+   "package": "p07-shared-libs",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/tsconfig.json.md",
+   "sourceBlob": "73a65ef2ef6e5658643310ffc67e5391df2cbbc1",
+   "sourceSha256": "1de5fbec4888f903fd7d0695642e6c2cb46ae9f5e944df0d93a4fd1aaa2325d6",
+   "sourceLines": 5,
+   "manualSha256": "d16ec99ead0a4053502b71d49894a09fb753eab49428bbd938d7dd80db8bdb65",
+   "manualLines": 48,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/session-core/package.json",
+   "kind": "config",
+   "package": "p07-shared-libs",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/package.json.md",
+   "sourceBlob": "155b81fc3ac11b69262efa6a18bbfb0f56d67f8c",
+   "sourceSha256": "3aa11612edf06da7097bb97494abda9a8126f3c06e7fda76dad2292f1f73ad4f",
+   "sourceLines": 23,
+   "manualSha256": "471836f373ef52611be2a1ce3882971bf21f6d3aed639fbbf630dabae6bb8383",
+   "manualLines": 61,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/session-core/src/group.ts",
+   "kind": "source",
+   "package": "p07-shared-libs",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/group.ts.md",
+   "sourceBlob": "a90ec9d588823da196af073f988eb4e297ba965a",
+   "sourceSha256": "7c12b4275ae97abdf4e0aec43279a88e99a38f505ce0ae58bd01de805f1317f1",
+   "sourceLines": 294,
+   "manualSha256": "40688e2bb524b41d5216f355217f21973b8c85d59595a4c54d53fd86bfa853ec",
+   "manualLines": 80,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/session-core/src/index.ts",
+   "kind": "source",
+   "package": "p07-shared-libs",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/index.ts.md",
+   "sourceBlob": "9d300039f2ee422267dfb68a0eefe877d328e60d",
+   "sourceSha256": "f2cd2c60e6e5a501fcdd850b1154f7c467a02baba31711c0072dfe86d5c6a966",
+   "sourceLines": 53,
+   "manualSha256": "16f8949304d6f03b9c8fff523cd1f7ed1e38d8aa63420679c7c6689bee383b24",
+   "manualLines": 61,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/session-core/src/node.ts",
+   "kind": "source",
+   "package": "p07-shared-libs",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/node.ts.md",
+   "sourceBlob": "7fa8e9937e8039b89083c628202cb7467a792431",
+   "sourceSha256": "f47cad2966e1a6d707a27d9e9615f5a9ba3130ddfdcbdba1fd5dad66bee01616",
+   "sourceLines": 8,
+   "manualSha256": "b0bd9dffbd88894f64d50b49d6ea6667ab72f346568118bde86d5aa05c0fa22a",
+   "manualLines": 57,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/session-core/src/outline.ts",
+   "kind": "source",
+   "package": "p07-shared-libs",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/outline.ts.md",
+   "sourceBlob": "ae42cdccf9cda5709a1006d8898eb24e07e7bd57",
+   "sourceSha256": "b548b93dbb7297ceda8e147041278332168212db7e6924567e89925360f50009",
+   "sourceLines": 43,
+   "manualSha256": "c9269989badbf27e027c6f389aa7d8a40de386cf15c86edecf56600057250b1c",
+   "manualLines": 65,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/session-core/src/read-fs.ts",
+   "kind": "source",
+   "package": "p07-shared-libs",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/read-fs.ts.md",
+   "sourceBlob": "c9cbe17e940f2bf7b1d52e89f3d3cb8631e82580",
+   "sourceSha256": "f74acdf7cd5d6a048364724683336ede2ed6bf84745ed5e26b59fde36ee7d089",
+   "sourceLines": 17,
+   "manualSha256": "8470068722b0a134fd3de59f438fface05c0973607d020eb6b27f1fea780693f",
+   "manualLines": 65,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/session-core/src/read.ts",
+   "kind": "source",
+   "package": "p07-shared-libs",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/read.ts.md",
+   "sourceBlob": "a57730489e081ec96c3168e144ad5e312d45ea37",
+   "sourceSha256": "eb4e5b4d4d0e4e8297761b7c06474640d8cfb35d0b034326364423eadb068040",
+   "sourceLines": 99,
+   "manualSha256": "44d1624505e75d12dfab2d6fd79c845c8835b26d7a9d118d9c3e36e14ce19f4c",
+   "manualLines": 69,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/session-core/src/render-markdown.ts",
+   "kind": "source",
+   "package": "p07-shared-libs",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/render-markdown.ts.md",
+   "sourceBlob": "8a5498d682b018c808e0e5e3dea2ec3fe5dc6e65",
+   "sourceSha256": "6100120439ca44275b814b43d0b2abaacab3aa9aab759ee6faba7d4341890535",
+   "sourceLines": 44,
+   "manualSha256": "305653cfd5a89cea7fc9a179fa68c18ffaf32c0b2f9ca373a4e2ac097d4b5669",
+   "manualLines": 65,
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/harness-query.test.ts.md": "1dffe6bb845b5da1f1c68599679c3bcf9d35376cda563d74f46616d5c9854854",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/harness-query.ts.md": "6db86a1ff25797772315bc764b00407fda39f73b7b7c6783d9b73dccaf1488e7",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/task-tool-names.test.ts.md": "98c235a0a62f5b49010a7a850430c4d96cdd1572d3588b0c9b2b3e4367917172",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/task-tool-names.ts.md": "dac0c0b4d1ec1b228cb930c24b1d8f056d7fe5a880c09f164235b094c0dd2596",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/tsconfig.json.md": "d16ec99ead0a4053502b71d49894a09fb753eab49428bbd938d7dd80db8bdb65",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/package.json.md": "471836f373ef52611be2a1ce3882971bf21f6d3aed639fbbf630dabae6bb8383",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/group.ts.md": "40688e2bb524b41d5216f355217f21973b8c85d59595a4c54d53fd86bfa853ec",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/index.ts.md": "16f8949304d6f03b9c8fff523cd1f7ed1e38d8aa63420679c7c6689bee383b24",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/node.ts.md": "b0bd9dffbd88894f64d50b49d6ea6667ab72f346568118bde86d5aa05c0fa22a",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/outline.ts.md": "c9269989badbf27e027c6f389aa7d8a40de386cf15c86edecf56600057250b1c",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/read-fs.ts.md": "8470068722b0a134fd3de59f438fface05c0973607d020eb6b27f1fea780693f",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/read.ts.md": "44d1624505e75d12dfab2d6fd79c845c8835b26d7a9d118d9c3e36e14ce19f4c",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/render-markdown.ts.md": "305653cfd5a89cea7fc9a179fa68c18ffaf32c0b2f9ca373a4e2ac097d4b5669"
+ },
+ "rejectedHashes": {
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/graph-state.ts.md": "331145ae43cace9c47e5a8467376c38b09732053d305862f799c23d28301e986",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/index.ts.md": "68dacf96c2ca7f75b00575c5758da8de4fc93e3099b118b87d7acde675e6dbc8",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/project-core.test.ts.md": "a71f22a5a2062d1df6adf38ce025e32e37862f114d33a9bc6891716bd7851891",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/project-meta.ts.md": "7c6abf303d69efebd8504ce1e13ca340450fd91d17b177edec8f1d165a7be6ff",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/types.ts.md": "0c38893265ee2ef9b6eee8a912b1e4f69ded9e37954ec0adb35a85a3d4b5c622"
+ },
+ "batchFindings": [
+  {
+   "id": "M-01",
+   "severity": "info",
+   "claim": "正面确认（QA 独立预读全部回源为真）：graph-state 8 事件分支语义（dependsOn 替换 vs 合并、abandon 保守 cancelled、deleted 真删清引用、status_changed fallback 重建、reconcile）逐条吻合；harness 焦点四级优先与 @verify 仅显式标记；task-tool-names 前缀兼容；project-meta 路径安全白名单；group 五规则+mergeAdjacentSameModelTurns 阻断链+countTurns 水位口径；read 旧格式检测/坏行容错；双入口浏览器安全边界（node.ts/read-fs.ts）。多篇精确否定（countTurns/extractMeta/convertLegacyMessage 无外部消费者、agent-session-manager:1350 为本地同名函数）照实记录。13 篇 accepted 手册语义无误。",
+   "sourceEvidence": "逐篇对读 + grep/sed 实测",
+   "action": "记录"
+  },
+  {
+   "id": "M-02",
+   "severity": "info",
+   "claim": "批内 77 测试用例（70+5+2）NOT_RUN；批外模块（graph-parser/graph-query/thinking-tags/transcript/search/select/tokens/session-core.test）各手册均已如实限定为未知/批外——除 F-02 一处。",
+   "sourceEvidence": "全树检索",
+   "action": "记录"
+  }
+ ],
+ "zip": {
+  "path": "deliveries/nb-42/R07-nb-42-05fb2565.zip",
+  "sha256": "590f7af11ca9c6c829de5cd1adc607f17cd15ab9caa42a68971b00bf79fcdf6d",
+  "entries": 21,
+  "note": "18 手册+MANIFEST+2 mechanical TSV；不含 READY/DONE（v2）；无穿越/0 mismatch"
+ },
+ "diffReplay": "changes.diff new-file 补丁与 stage 字节一致",
+ "parentPreserved": null,
+ "notClaimed": [
+  "测试运行结果",
+  "typecheck/build 结果",
+  "G3 跨模块",
+  "批外模块实现"
+ ]
+}

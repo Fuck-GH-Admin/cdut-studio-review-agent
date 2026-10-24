@@ -1,0 +1,14 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "index-p02-agent-runtime__apps__electron__default-skills__pptx",
+ "groupId": "p02-agent-runtime__apps__electron__default-skills__pptx",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-index-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T19:15:00Z",
+ "sealedAtUtc": "2026-10-23T19:01:26+00:00",
+ "artifactSha256": "cf0b2a4f2f6d1ef4a4b761d2bf22fc391475aa23041d2719ea76f029ffce8cf8",
+ "note": "QA 实算封版链全对（MANIFEST/READY/DONE artifactSha256 == stage sha == manualHashes）。1/1 accepted；3 条非阻断 findings 已登记。",
+ "acceptedManuals": {
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__pptx.md@apps/electron/default-skills/pptx/scripts/chartlib.md": "cf0b2a4f2f6d1ef4a4b761d2bf22fc391475aa23041d2719ea76f029ffce8cf8"
+ }
+}

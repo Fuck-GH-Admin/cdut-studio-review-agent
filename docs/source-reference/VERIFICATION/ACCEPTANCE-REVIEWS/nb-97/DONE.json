@@ -1,0 +1,57 @@
+{
+  "schema": "dsh-r07-review-done/1",
+  "batch": "nb-97",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "sealId": "seal-8e1d1524f3ea34e5",
+  "reviewedAtUtc": "2026-10-24T21:30:00Z",
+  "batchVerdict": "accepted",
+  "fileVerdicts": {
+    "apps/electron/src/renderer/components/settings/ShortcutSettings.tsx": "accepted",
+    "apps/electron/src/renderer/components/settings/SkillFilesPanel.tsx": "accepted",
+    "apps/electron/src/renderer/components/settings/SkinManager.tsx": "accepted",
+    "apps/electron/src/renderer/components/settings/StorageSettings.tsx": "accepted",
+    "apps/electron/src/renderer/components/settings/UsageSettings.tsx": "accepted",
+    "apps/electron/src/renderer/components/settings/WeChatSettings.tsx": "accepted",
+    "apps/electron/src/renderer/components/settings/YanhuPetModelSettings.tsx": "accepted",
+    "apps/electron/src/renderer/components/settings/index.ts": "accepted",
+    "apps/electron/src/renderer/components/settings/primitives/SettingsCard.tsx": "accepted",
+    "apps/electron/src/renderer/components/settings/primitives/SettingsInput.tsx": "accepted",
+    "apps/electron/src/renderer/components/settings/primitives/SettingsRow.tsx": "accepted",
+    "apps/electron/src/renderer/components/settings/primitives/SettingsSecretInput.tsx": "accepted",
+    "apps/electron/src/renderer/components/settings/primitives/SettingsSection.tsx": "accepted",
+    "apps/electron/src/renderer/components/settings/primitives/SettingsSegmentedControl.tsx": "accepted",
+    "apps/electron/src/renderer/components/settings/primitives/SettingsSelect.tsx": "accepted",
+    "apps/electron/src/renderer/components/settings/primitives/SettingsTextarea.tsx": "accepted",
+    "apps/electron/src/renderer/components/settings/primitives/SettingsToggle.tsx": "accepted",
+    "apps/electron/src/renderer/components/settings/primitives/SettingsUIConstants.ts": "accepted"
+  },
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0,
+    "findings": 3
+  },
+  "findingsIndex": [
+    "NB97-N1",
+    "NB97-N2",
+    "NB97-N3"
+  ],
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass_with_findings"
+  },
+  "runStatus": "NOT_RUN",
+  "artifacts": [
+    "reviews/nb-97/RESULT.json",
+    "reviews/nb-97/RESULT.md",
+    "reviews/nb-97/REVIEWED-HASHES.json",
+    "handoffs/nb-97-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-97-REVIEW-TO-LEAD.md"
+  ],
+  "mergeRule": "全 18 篇 acceptedHashes 可合；3 findings 入 ACCEPTED-ERRATA G4 前关闭。",
+  "note": "已 seal D0 不回写；本批为 author-nb-06 清单（14 批）末批。"
+}

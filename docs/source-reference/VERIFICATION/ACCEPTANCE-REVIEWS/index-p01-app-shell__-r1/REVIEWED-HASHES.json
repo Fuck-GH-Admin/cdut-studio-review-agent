@@ -1,0 +1,29 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "index-p01-app-shell__-r1",
+  "groupId": "p01-app-shell__",
+  "revisionOf": "index-p01-app-shell__",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T22:20:00Z",
+  "sealedAtUtc": "2026-10-23T19:09:24Z",
+  "artifactSha256": "dc783a517280018f9e78c26faab1ada4b017caf2ab325d0e4213484f81f5cde5",
+  "note": "r1 合入以本表为准（r0 acceptedHashes 中本批 revision 项不再使用）。2/2 accepted。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__.md@LICENSE": "dc783a517280018f9e78c26faab1ada4b017caf2ab325d0e4213484f81f5cde5",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__.md@README.md": "dc783a517280018f9e78c26faab1ada4b017caf2ab325d0e4213484f81f5cde5"
+  },
+  "revisionRequiredManuals": {},
+  "sourceHashes": {
+    "LICENSE": {
+      "sourceBlob": "be3f7b28e564e7dd05eaf59d64adba1a4065ac0e",
+      "sourceSha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0",
+      "verifiedAgainstFrozenTree": true
+    },
+    "README.md": {
+      "sourceBlob": "6d85b0dfdfad714f25339ace4e8ad11f52897bcb",
+      "sourceSha256": "7f2477f6b813b36ca5fe8f4b82c82bdb632534e08894856518d3076de5671539",
+      "verifiedAgainstFrozenTree": true
+    }
+  }
+}

@@ -1,0 +1,635 @@
+{
+  "schema": "dsh-r07-stage2-exit/3",
+  "stage": "STAGE2_ONLY",
+  "atUtc": "2026-10-23T22:53:25Z",
+  "stage3Gate": "2378 deep+705 index独立验收、四轨交叉核对、三个分区冲突有归属与证据、无未处理真实性阻塞，才写CODEBASE-MAP；map独立通过后再编架构等",
+  "stage2Verdict": "CANNOT_PASS",
+  "pass": false,
+  "coverage": {
+    "deep": {
+      "planned": 2378,
+      "uniqueTarget": "FILES.tsv manual 唯一目标",
+      "withLatestIndependentAcceptance": 2360,
+      "withoutAcceptance": 18,
+      "missing": [
+        {
+          "path": "apps/electron/src/main/lib/browser-controller.ts",
+          "batch": "nb-80",
+          "latestReviewChain": "nb-80",
+          "state": "REVISION_REQUIRED",
+          "author": "docs-r07-author-nb-09-20261023",
+          "qa": "docs-r07-qa-nb-09-20261023"
+        },
+        {
+          "path": "apps/electron/src/renderer/components/agent/tool-supplemental-images.ts",
+          "batch": "nb-100",
+          "latestReviewChain": "nb-100",
+          "state": "NO_REVIEW_YET",
+          "author": "docs-r07-author-nb-09-20261023",
+          "qa": "docs-r07-qa-nb-09-20261023"
+        },
+        {
+          "path": "apps/electron/src/renderer/components/agent/tool-utils.ts",
+          "batch": "nb-100",
+          "latestReviewChain": "nb-100",
+          "state": "NO_REVIEW_YET",
+          "author": "docs-r07-author-nb-09-20261023",
+          "qa": "docs-r07-qa-nb-09-20261023"
+        },
+        {
+          "path": "apps/electron/src/renderer/components/cdut-science/crystal/CsLabVestaCrystalPane.tsx",
+          "batch": "nb-100",
+          "latestReviewChain": "nb-100",
+          "state": "NO_REVIEW_YET",
+          "author": "docs-r07-author-nb-09-20261023",
+          "qa": "docs-r07-qa-nb-09-20261023"
+        },
+        {
+          "path": "apps/electron/src/renderer/components/cdut-science/cslab-capability.ts",
+          "batch": "nb-100",
+          "latestReviewChain": "nb-100",
+          "state": "NO_REVIEW_YET",
+          "author": "docs-r07-author-nb-09-20261023",
+          "qa": "docs-r07-qa-nb-09-20261023"
+        },
+        {
+          "path": "apps/electron/src/renderer/components/cdut-science/cslab-capsule-node.ts",
+          "batch": "nb-100",
+          "latestReviewChain": "nb-100",
+          "state": "NO_REVIEW_YET",
+          "author": "docs-r07-author-nb-09-20261023",
+          "qa": "docs-r07-qa-nb-09-20261023"
+        },
+        {
+          "path": "apps/electron/src/renderer/components/cdut-science/cslab-dnd.ts",
+          "batch": "nb-100",
+          "latestReviewChain": "nb-100",
+          "state": "NO_REVIEW_YET",
+          "author": "docs-r07-author-nb-09-20261023",
+          "qa": "docs-r07-qa-nb-09-20261023"
+        },
+        {
+          "path": "apps/electron/src/renderer/components/cdut-science/cslab-molstar-state.ts",
+          "batch": "nb-100",
+          "latestReviewChain": "nb-100",
+          "state": "NO_REVIEW_YET",
+          "author": "docs-r07-author-nb-09-20261023",
+          "qa": "docs-r07-qa-nb-09-20261023"
+        },
+        {
+          "path": "apps/electron/src/renderer/components/cdut-science/cslab-track-changes-extension.ts",
+          "batch": "nb-100",
+          "latestReviewChain": "nb-100",
+          "state": "NO_REVIEW_YET",
+          "author": "docs-r07-author-nb-09-20261023",
+          "qa": "docs-r07-qa-nb-09-20261023"
+        },
+        {
+          "path": "apps/electron/src/renderer/components/cdut-science/cslab-vibrational.ts",
+          "batch": "nb-100",
+          "latestReviewChain": "nb-100",
+          "state": "NO_REVIEW_YET",
+          "author": "docs-r07-author-nb-09-20261023",
+          "qa": "docs-r07-qa-nb-09-20261023"
+        },
+        {
+          "path": "apps/electron/src/renderer/components/cdut-science/origin/CsLabPeakFitDrawer.tsx",
+          "batch": "nb-100",
+          "latestReviewChain": "nb-100",
+          "state": "NO_REVIEW_YET",
+          "author": "docs-r07-author-nb-09-20261023",
+          "qa": "docs-r07-qa-nb-09-20261023"
+        },
+        {
+          "path": "apps/electron/src/renderer/components/cdut-science/origin/CsLabPlotExportDialog.tsx",
+          "batch": "nb-100",
+          "latestReviewChain": "nb-100",
+          "state": "NO_REVIEW_YET",
+          "author": "docs-r07-author-nb-09-20261023",
+          "qa": "docs-r07-qa-nb-09-20261023"
+        },
+        {
+          "path": "apps/electron/src/renderer/components/cdut-science/origin/canvas-plot-renderer.ts",
+          "batch": "nb-100",
+          "latestReviewChain": "nb-100",
+          "state": "NO_REVIEW_YET",
+          "author": "docs-r07-author-nb-09-20261023",
+          "qa": "docs-r07-qa-nb-09-20261023"
+        },
+        {
+          "path": "apps/electron/src/renderer/components/cdut-science/origin/cslab-plot-export.ts",
+          "batch": "nb-100",
+          "latestReviewChain": "nb-100",
+          "state": "NO_REVIEW_YET",
+          "author": "docs-r07-author-nb-09-20261023",
+          "qa": "docs-r07-qa-nb-09-20261023"
+        },
+        {
+          "path": "apps/electron/src/renderer/components/cdut-science/origin/cslab-plot-render-model.ts",
+          "batch": "nb-100",
+          "latestReviewChain": "nb-100",
+          "state": "NO_REVIEW_YET",
+          "author": "docs-r07-author-nb-09-20261023",
+          "qa": "docs-r07-qa-nb-09-20261023"
+        },
+        {
+          "path": "apps/electron/src/renderer/components/cdut-science/use-cslab-events.ts",
+          "batch": "nb-100",
+          "latestReviewChain": "nb-100",
+          "state": "NO_REVIEW_YET",
+          "author": "docs-r07-author-nb-09-20261023",
+          "qa": "docs-r07-qa-nb-09-20261023"
+        },
+        {
+          "path": "apps/electron/src/renderer/components/cdut-science/use-cslab-vault.ts",
+          "batch": "nb-100",
+          "latestReviewChain": "nb-100",
+          "state": "NO_REVIEW_YET",
+          "author": "docs-r07-author-nb-09-20261023",
+          "qa": "docs-r07-qa-nb-09-20261023"
+        },
+        {
+          "path": "apps/electron/src/renderer/components/settings/primitives/index.ts",
+          "batch": "nb-100",
+          "latestReviewChain": "nb-100",
+          "state": "NO_REVIEW_YET",
+          "author": "docs-r07-author-nb-09-20261023",
+          "qa": "docs-r07-qa-nb-09-20261023"
+        }
+      ],
+      "missingByState": {
+        "REVISION_REQUIRED": 1,
+        "NO_REVIEW_YET": 17
+      }
+    },
+    "index": {
+      "planned": 705,
+      "groups": 37,
+      "accepted": 705,
+      "artifactHashByGroup": {
+        "p01-app-shell__": "dc783a517280018f9e78c26faab1ada4b017caf2ab325d0e4213484f81f5cde5",
+        "p01-app-shell____pycache__": "386e2267f3f7dc8ced32ceafcd24d8a52c87d59a0cb17ae6c42556dfa4d2050c",
+        "p01-app-shell___context": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+        "p01-app-shell___cursor": "7649d9905e0efca7aaa9eaa53e918e76bf24a4a84982ebd228732c4aaf1345a7",
+        "p01-app-shell__apps": "7ae04e2705414a7b1d01d6bbd81553aebb5c9acecdb1ac36ecaf94bf32ef5cd7",
+        "p01-app-shell__apps__electron": "7374ec6ade25e245c93f70858875d071c11fabc4c6939927c244a32edf17cdf2",
+        "p01-app-shell__apps__electron__resources": "d09a1e91bb3a5666ab751bba1709eec2842d502b16a6ab616439df995ba93db4",
+        "p01-app-shell__apps__electron__resources__cslab": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+        "p01-app-shell__apps__electron__resources__ppt-style-packs": "6c45f5b0a01f28b38799cb914e4de3efed27a49ac7c73ceaf953d5f5615c7461",
+        "p01-app-shell__assets": "c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd",
+        "p01-app-shell__assets__CDUT": "ac71296502f94a3013c6eac0b83b78d8a786eb177dd54151ca4471514b395b9f",
+        "p01-app-shell__assets__IP": "3e70fdf2120fe296c31c56391e976b97ceb18015c84769f1243f2ef89e5a733b",
+        "p01-app-shell__docs": "abe5439be233f78fb14687fc7de1717b2b2fdc7060b6273c3a49276d6fa41e57",
+        "p01-app-shell__docs__assets": "03fdaa25b2fd791971b2d7d59319f1f8fee45066352af61bb0fd6e3a94a1ea2a",
+        "p01-app-shell__docs__design__review-agent": "decb0f9ee1102bbf40b3620af68f617daaf5a8f4905aeb2849d71665b065cd57",
+        "p01-app-shell__release-notes": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+        "p01-app-shell__skins": "fc1f204048ef451282e291eec135367a553facca5f21b4a6e86f1d6060e96e49",
+        "p01-app-shell__specs__gui": "49e14980170896bd9da41be0686fea4e264c49caf6041d35a4068ab5adba2337",
+        "p01-app-shell__tutorial": "f9dc461cd9f3dc9e5ae68b590a727f57db44b7888504ecbfcf88c39b017c6b3a",
+        "p01-app-shell__work": "31dc856985df75345255af178abfea1364136b417c47fa42d83d0c8d919813b3",
+        "p01-app-shell__work__reports": "e66ba9d0ee8e53f12a6691b46a063f443c624ebc1645da6bd31613847dc78c3e",
+        "p02-agent-runtime__apps__electron__default-skills": "e050bae07399674926952c4b9b624505d4ed7ec31f82317ce23325640641792c",
+        "p02-agent-runtime__apps__electron__default-skills__docx__scripts": "bd7ceb42ab30136d2312ac5e6a51c0e401e40f97897a3b529ed3ea5429ca55fb",
+        "p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+        "p02-agent-runtime__apps__electron__default-skills__pptx": "cf0b2a4f2f6d1ef4a4b761d2bf22fc391475aa23041d2719ea76f029ffce8cf8",
+        "p02-agent-runtime__apps__electron__default-skills__session-cleaner": "7cdb81fe35eb1fcedf3021d7e86b06eaaed6da281a8149631b8a843a0fcd668c",
+        "p02-agent-runtime__apps__electron__default-skills__skill-creator": "11b02deba71110d677d2359c5648d4c0edad7cb0fd99e823c908afaf42efac12",
+        "p02-agent-runtime__apps__electron__src__main__lib__pi-harness": "547759b81a7d7004abf543c14320bb0d31bbf5d984aded2bab3d49c51db7069e",
+        "p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals": "0349d9e468d1ae1a31ec0b98082b7e299de84af9d5a21a7dde4fa066fe846f5f",
+        "p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016": "1098f132f6729671c9fe7ffe35ae29fcf002b1c919808361165bc346ca204e4b",
+        "p02-agent-runtime__vendor-xsd__ecma": "39340c0cb9f33bf7535a918ed344e1c98d8a9b537948ddaaebadfcc500e67404",
+        "p02-agent-runtime__vendor-xsd__mce": "5fb854dc17e363e369466f7e05cb9215cbfa731c6af88ed59743a7738417892b",
+        "p02-agent-runtime__vendor-xsd__microsoft": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+        "p03-integrations__demo-data": "63f9fef6a940cb3137654472c42c523da8d27859a1e680d0d1f0e78763bf90d6",
+        "p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case": "b84b7019ce3b1f24d5a52715751b4af0fa6b29051001bebc605cb16263ccb046",
+        "p08-renderer-ui__apps__electron__src__renderer__components__onboarding": "d507ee7978e408289224735cb9c2031f25221e14dce517431ee2b16b4214f256",
+        "p08-renderer-ui__renderer-assets": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba"
+      }
+    },
+    "legacy": {
+      "count": 922,
+      "note": "旧 legacy 不计入 R07；用户备份保留；不与当前新文档混作唯一主责"
+    }
+  },
+  "candidateHashMismatches": [],
+  "crossModuleTracks": {
+    "review-business": {
+      "role": "index-qa",
+      "state": "DONE",
+      "files": [
+        "CHAIN-REGISTER.tsv",
+        "CHAINS.md",
+        "CONFLICTS.json",
+        "DONE.json",
+        "RESULT.json"
+      ]
+    },
+    "runtime-permission": {
+      "role": "index-qa-extra-01",
+      "state": "DONE",
+      "files": [
+        "CHAIN-REGISTER.tsv",
+        "CHAINS.md",
+        "CONFLICTS.json",
+        "DONE.json",
+        "EVIDENCE-gateway-review-bypass-raw.md",
+        "RESULT.json"
+      ]
+    },
+    "lab-files": {
+      "role": "index-qa-extra-02",
+      "state": "DONE",
+      "files": [
+        "CHAIN-REGISTER.tsv",
+        "CHAINS.md",
+        "CONFLICTS.json",
+        "DONE.json",
+        "RESULT.json"
+      ]
+    },
+    "app-ipc-config": {
+      "role": "index-qa-extra-03",
+      "state": "DONE",
+      "files": [
+        "CHAIN-REGISTER.tsv",
+        "CHAINS.md",
+        "CONFLICTS.json",
+        "DONE.json",
+        "RESULT.json"
+      ]
+    },
+    "issues-p01-p03": {
+      "role": "qa-extra-04",
+      "state": "DONE",
+      "files": [
+        "DONE.json",
+        "RECONCILIATION.json",
+        "RESULT.json",
+        "SUMMARY.md",
+        "TO-AUTHORS.md"
+      ]
+    },
+    "issues-p04-p06": {
+      "role": "qa-extra-05",
+      "state": "DONE",
+      "files": [
+        "DONE.json",
+        "RECONCILIATION.json",
+        "RESULT.json",
+        "SUMMARY.md",
+        "TO-AUTHORS.md"
+      ]
+    },
+    "issues-p07-p08": {
+      "role": "qa-extra-06",
+      "state": "DONE",
+      "files": [
+        ".work",
+        "DONE.json",
+        "RECONCILIATION.json",
+        "RESULT.json",
+        "SUMMARY.md",
+        "TO-AUTHORS.md"
+      ]
+    },
+    "app-ipc-config-r1": {
+      "role": "(revision)",
+      "state": "DONE",
+      "files": [
+        "CHAIN-REGISTER.tsv",
+        "CHAINS.md",
+        "CONFLICTS.json",
+        "DONE.json",
+        "RESULT.json"
+      ]
+    }
+  },
+  "chainEvidence": {
+    "review-business": [
+      {
+        "file": "manager/STAGE2/review-business/CHAINS.md",
+        "lines": 100
+      },
+      {
+        "file": "manager/STAGE2/review-business/CHAIN-REGISTER.tsv",
+        "lines": 10
+      }
+    ],
+    "runtime-permission": [
+      {
+        "file": "manager/STAGE2/runtime-permission/CHAINS.md",
+        "lines": 61
+      },
+      {
+        "file": "manager/STAGE2/runtime-permission/CHAIN-REGISTER.tsv",
+        "lines": 38
+      }
+    ],
+    "lab-files": [
+      {
+        "file": "manager/STAGE2/lab-files/CHAINS.md",
+        "lines": 118
+      },
+      {
+        "file": "manager/STAGE2/lab-files/CHAIN-REGISTER.tsv",
+        "lines": 15
+      }
+    ],
+    "app-ipc-config": [
+      {
+        "file": "manager/STAGE2/app-ipc-config/CHAINS.md",
+        "lines": 88
+      },
+      {
+        "file": "manager/STAGE2/app-ipc-config/CHAIN-REGISTER.tsv",
+        "lines": 10
+      }
+    ],
+    "app-ipc-config-r1": [
+      {
+        "file": "manager/STAGE2/app-ipc-config-r1/CHAINS.md",
+        "lines": 78
+      },
+      {
+        "file": "manager/STAGE2/app-ipc-config-r1/CHAIN-REGISTER.tsv",
+        "lines": 10
+      }
+    ]
+  },
+  "issueLedger": {
+    "actions": 494,
+    "designDifference": 17,
+    "unknown": 260,
+    "silentDrops": 0,
+    "mergedEvidenceRows": 6,
+    "note": "历史重复按原 record→新证据归并；真实文档错误/实现差距/未知已区分；未并入 OPEN-ISSUES 历史总账"
+  },
+  "docAuthenticityBlockers": [
+    {
+      "kind": "actions_open",
+      "detail": "真实文档错误 494 条未修（31 条未绑主责）",
+      "owner": "handoffs/stage2/*.md"
+    }
+  ],
+  "blockers": [
+    {
+      "kind": "source_incomplete",
+      "detail": "deep 未合 18 文件：{'REVISION_REQUIRED': 1, 'NO_REVIEW_YET': 17}（未审不合，未交不伪报）",
+      "owner": "8 组作者/QA"
+    },
+    {
+      "kind": "actions_open",
+      "detail": "真实文档错误 494 条未修（31 条未绑主责）",
+      "owner": "handoffs/stage2/*.md"
+    },
+    {
+      "kind": "design_difference_open",
+      "detail": "实现差距 17 条（设计差异待办，不当产品修复要求）",
+      "owner": "阶段三设计差异对账"
+    },
+    {
+      "kind": "unknown_open",
+      "detail": "未知 260 条未定性",
+      "owner": "需 source-level 证据"
+    }
+  ],
+  "notMet": [
+    {
+      "requirement": "逐文件 2378 deep 最新独立接受",
+      "status": "PARTIAL",
+      "detail": "2360/2378；未合 18 = {'REVISION_REQUIRED': 1, 'NO_REVIEW_YET': 17}",
+      "owner": "8 组作者/QA"
+    },
+    {
+      "requirement": "705 index 全闭",
+      "status": "MET",
+      "detail": "705/705、37/37 组",
+      "owner": "index author/qa"
+    },
+    {
+      "requirement": "四轨入口→存储链证据+范围明示",
+      "status": "MET",
+      "detail": "4/4 轨交 CHAINS.md+CHAIN-REGISTER.tsv（runtime-permission 另附 EVIDENCE-gateway-review-bypass-raw.md）",
+      "owner": "index-qa 系"
+    },
+    {
+      "requirement": "三区问题台账零静默丢弃",
+      "status": "MET",
+      "detail": "494/17/260，silentDrops=0",
+      "owner": "lead"
+    },
+    {
+      "requirement": "历史重复/真实文档错误/实现差距/未知准确区分",
+      "status": "MET",
+      "detail": "原 record→新证据归并 6 证据行；四类分列",
+      "owner": "lead"
+    },
+    {
+      "requirement": "真正文档真实性阻塞已关闭",
+      "status": "NOT_MET",
+      "detail": "494 条未修（31 条未绑主责）",
+      "owner": "handoffs/stage2/*.md"
+    },
+    {
+      "requirement": "三区全部交付",
+      "status": "MET",
+      "detail": "issues-p01-p03:DONE,issues-p04-p06:DONE,issues-p07-p08:DONE",
+      "owner": "qa-extra-04/05/06"
+    },
+    {
+      "requirement": "独立跨模块审查",
+      "status": "PARTIAL",
+      "detail": "四轨/三区全交，交叉结论待 lead 归并复核",
+      "owner": "7 根请求"
+    },
+    {
+      "requirement": "CODEBASE-MAP 前置 / 不写阶段三",
+      "status": "ENFORCED",
+      "detail": "本报告不含阶段三内容",
+      "owner": "lead"
+    }
+  ],
+  "stage3Forbidden": true,
+  "artifacts": [
+    {
+      "path": "manager/STAGE2/app-ipc-config/CHAIN-REGISTER.tsv",
+      "sha256_16": "45baa68c3ca3ebcb"
+    },
+    {
+      "path": "manager/STAGE2/app-ipc-config/CHAINS.md",
+      "sha256_16": "979dab34318f53f3"
+    },
+    {
+      "path": "manager/STAGE2/app-ipc-config/CONFLICTS.json",
+      "sha256_16": "741d5d17278d2033"
+    },
+    {
+      "path": "manager/STAGE2/app-ipc-config/DONE.json",
+      "sha256_16": "199357c087cf844b"
+    },
+    {
+      "path": "manager/STAGE2/app-ipc-config/RESULT.json",
+      "sha256_16": "242793515858435f"
+    },
+    {
+      "path": "manager/STAGE2/app-ipc-config-r1/CHAIN-REGISTER.tsv",
+      "sha256_16": "cafc77bdbef6b112"
+    },
+    {
+      "path": "manager/STAGE2/app-ipc-config-r1/CHAINS.md",
+      "sha256_16": "843178c9dd02acac"
+    },
+    {
+      "path": "manager/STAGE2/app-ipc-config-r1/CONFLICTS.json",
+      "sha256_16": "433eaf0426d53871"
+    },
+    {
+      "path": "manager/STAGE2/app-ipc-config-r1/DONE.json",
+      "sha256_16": "c647855102ce457d"
+    },
+    {
+      "path": "manager/STAGE2/app-ipc-config-r1/RESULT.json",
+      "sha256_16": "632a569eff3b428b"
+    },
+    {
+      "path": "manager/STAGE2/issues-p01-p03/DONE.json",
+      "sha256_16": "1b6cfdfbd36ec0d3"
+    },
+    {
+      "path": "manager/STAGE2/issues-p01-p03/RECONCILIATION.json",
+      "sha256_16": "f13cef5e70ed2cee"
+    },
+    {
+      "path": "manager/STAGE2/issues-p01-p03/RESULT.json",
+      "sha256_16": "2e812e119131d87f"
+    },
+    {
+      "path": "manager/STAGE2/issues-p01-p03/SUMMARY.md",
+      "sha256_16": "8fa598fd5658252f"
+    },
+    {
+      "path": "manager/STAGE2/issues-p01-p03/TO-AUTHORS.md",
+      "sha256_16": "b6cc470350876aaa"
+    },
+    {
+      "path": "manager/STAGE2/issues-p04-p06/DONE.json",
+      "sha256_16": "c099882951072b43"
+    },
+    {
+      "path": "manager/STAGE2/issues-p04-p06/RECONCILIATION.json",
+      "sha256_16": "52f7641e3d25346c"
+    },
+    {
+      "path": "manager/STAGE2/issues-p04-p06/RESULT.json",
+      "sha256_16": "6487c08e437e01ed"
+    },
+    {
+      "path": "manager/STAGE2/issues-p04-p06/SUMMARY.md",
+      "sha256_16": "fd1063af6d2391a0"
+    },
+    {
+      "path": "manager/STAGE2/issues-p04-p06/TO-AUTHORS.md",
+      "sha256_16": "9ffb7334e0ffbd5c"
+    },
+    {
+      "path": "manager/STAGE2/issues-p07-p08/DONE.json",
+      "sha256_16": "787e43431a2bd888"
+    },
+    {
+      "path": "manager/STAGE2/issues-p07-p08/RECONCILIATION.json",
+      "sha256_16": "a6b34b4cc8ece4a4"
+    },
+    {
+      "path": "manager/STAGE2/issues-p07-p08/RESULT.json",
+      "sha256_16": "429764813a765c47"
+    },
+    {
+      "path": "manager/STAGE2/issues-p07-p08/SUMMARY.md",
+      "sha256_16": "b97abfd681e4cece"
+    },
+    {
+      "path": "manager/STAGE2/issues-p07-p08/TO-AUTHORS.md",
+      "sha256_16": "a2ec91822be40134"
+    },
+    {
+      "path": "manager/STAGE2/lab-files/CHAIN-REGISTER.tsv",
+      "sha256_16": "29e0a7a570b50ae3"
+    },
+    {
+      "path": "manager/STAGE2/lab-files/CHAINS.md",
+      "sha256_16": "d28db3d8b90f15b7"
+    },
+    {
+      "path": "manager/STAGE2/lab-files/CONFLICTS.json",
+      "sha256_16": "2943164dce9b2e2f"
+    },
+    {
+      "path": "manager/STAGE2/lab-files/DONE.json",
+      "sha256_16": "cb68d80178eab933"
+    },
+    {
+      "path": "manager/STAGE2/lab-files/RESULT.json",
+      "sha256_16": "26b0175db37b1714"
+    },
+    {
+      "path": "manager/STAGE2/review-business/CHAIN-REGISTER.tsv",
+      "sha256_16": "771bf26a11ab1e4b"
+    },
+    {
+      "path": "manager/STAGE2/review-business/CHAINS.md",
+      "sha256_16": "b3891095b74e8072"
+    },
+    {
+      "path": "manager/STAGE2/review-business/CONFLICTS.json",
+      "sha256_16": "954d8cf298ddd1b9"
+    },
+    {
+      "path": "manager/STAGE2/review-business/DONE.json",
+      "sha256_16": "18250f009feaef54"
+    },
+    {
+      "path": "manager/STAGE2/review-business/RESULT.json",
+      "sha256_16": "81254335e7adb08c"
+    },
+    {
+      "path": "manager/STAGE2/runtime-permission/CHAIN-REGISTER.tsv",
+      "sha256_16": "5e45e94810c32c1d"
+    },
+    {
+      "path": "manager/STAGE2/runtime-permission/CHAINS.md",
+      "sha256_16": "6b70d48d2be972a2"
+    },
+    {
+      "path": "manager/STAGE2/runtime-permission/CONFLICTS.json",
+      "sha256_16": "5201a32758d14e99"
+    },
+    {
+      "path": "manager/STAGE2/runtime-permission/DONE.json",
+      "sha256_16": "b8928d700a2bdf87"
+    },
+    {
+      "path": "manager/STAGE2/runtime-permission/EVIDENCE-gateway-review-bypass-raw.md",
+      "sha256_16": "6e3fbd336cc60ccb"
+    },
+    {
+      "path": "manager/STAGE2/runtime-permission/RESULT.json",
+      "sha256_16": "74a4739c2197a5b5"
+    }
+  ],
+  "open": {
+    "openIssues": 760,
+    "unverifiedTimestamps": 328,
+    "deepUnmerged": 18,
+    "stage2UnassignedActions": 31,
+    "deepUnmergedByState": {
+      "REVISION_REQUIRED": 1,
+      "NO_REVIEW_YET": 17
+    }
+  },
+  "notes": [
+    "实际 UTC 取 date -u",
+    "不宣称全项目完成",
+    "产品测试 NOT_RUN（用户实测）",
+    "未建 ACP、未改恢复器、不动产品/测试依赖/用户窗口、不 push"
+  ]
+}

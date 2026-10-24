@@ -1,0 +1,307 @@
+{
+  "schema": "dsh-r07-review-result/1",
+  "batch": "nb-113",
+  "revisionOf": null,
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T21:05:00Z",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass"
+  },
+  "g0Evidence": {
+    "chain": "READY/DONE/MANIFEST/ZIP 交叉一致（sealId seal-422fb49f69f039a1）；18 manualHashes=磁盘 0 mismatch；ZIP 21 条目 0 穿越/符号链接/字节 mismatch；18/18 源绑定==SCOPE==MANIFEST（独立实算）；非返修批"
+  },
+  "g1Evidence": {
+    "sections": "18/18 章节齐备；行号引用抽查进 G2（吻合）；frontmatter 问题记 N-01"
+  },
+  "g2Evidence": {
+    "coverage": "QA 全量逐行读毕 18 源（3919 行：markdown-preview-extensions 1068/SessionMiniMapPopover 576/NavigationInputProvider 375/ScratchPadView 304/UsageHeatmap 234/GlobalShortcuts 214/BeijingAnalogClock 203/WelcomeEmptyState 190/preview-opener 156/SelectionActionPopover 122/TutorialBanner 105/preview-open-path 88/WelcomeView 92/ShortcutKeycaps 42/preview-viewport-context 53/diff-scroll.css 22/两测试 75）+18 手册（1216 行）逐篇；独立基线 reviews/nb-113/SOURCE-CHECKLIST.md（18 组源事实+4 观察点）；机械核 test( 10+2",
+    "verifiedTrue": "行为语义全对：视口控制器契约与回退语义、路径归一三步（含 cdutai 变体）、SelectionActionPopover 钳制/避让算法（10 测试断言逐条吻合）、preview-opener 绝不插 Tab+严格只读+归属门禁、GlobalShortcuts 九注册+浮窗优先关闭链、WelcomeView 复用或 draft、BeijingAnalogClock 锚点纯推导+重锚矩阵、UsageHeatmap 网格算法、ScratchPad 死循环规避/粘贴自管/导出三目标、NavigationInputProvider 七段路由+capture、SessionMiniMap 触屏长按状态机+分组同源、markdown-preview-extensions Shiki 节流矩阵/清洗白名单/媒体解析链；**两篇手册主动照实记录注释-实现差异**（preview-opener cdutai 正则不一致、UsageHeatmap 53 列 vs WEEKS=26）",
+    "problems": "5 条 minor（frontmatter 模板残留×18、3 处计数小偏差、2 篇章节编号重复）"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/renderer/components/navigation/NavigationInputProvider.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/navigation/NavigationInputProvider.tsx.md",
+      "sourceBlob": "39d61fbcae4d529d995538f0fa7c9fce47dc6835",
+      "sourceSha256": "632a57ff7fb41ace9fdef395587d81571d7a0f10cbe3f3c0c233b99e8feeea85",
+      "manualSha256": "83791705a86a14f483ff845a0851256e178d2da77545e50c897533d31b491748",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/scratch-pad/ScratchPadView.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/scratch-pad/ScratchPadView.tsx.md",
+      "sourceBlob": "9aee2869062394e80c06610cad415a1550aac09f",
+      "sourceSha256": "8d553049e89072c29a4285c3fb95a32cfe83b8bd8adae9f763ef41857ede287b",
+      "manualSha256": "570790cc7cf90b1d290659f1436e6fde35f2545f3301d2ab862d9e52528f5e50",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/selection/SelectionActionPopover.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/selection/SelectionActionPopover.test.ts.md",
+      "sourceBlob": "8c5539088e30f3b9dfa4b7d753554adba47a1899",
+      "sourceSha256": "6b25491cc78b472897789ba7d48002aefc927d12fbbf8f7543edb61f4ce814e1",
+      "manualSha256": "3a0ed7be92d8091562983d9813f96c61aa13276f0651a2892b63be406576726f",
+      "verdict": "accepted",
+      "findings": [
+        "N-01",
+        "N-05"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/selection/SelectionActionPopover.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/selection/SelectionActionPopover.tsx.md",
+      "sourceBlob": "bc8df7f6e9144fcf2c9a5f8b38641bc92440b20a",
+      "sourceSha256": "8f193c3e70be87db89de0e9ca3946eacc74fe5fa5c56c57c8e6cd73a018b0f35",
+      "manualSha256": "414bb54b19135a6391113ef1bf33c7bab4e604a57f03df1f1235dc0f3d1ce131",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/session-preview/SessionMiniMapPopover.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/session-preview/SessionMiniMapPopover.tsx.md",
+      "sourceBlob": "2c3b3e010a58097b372edab1fbd02a80eb6422af",
+      "sourceSha256": "1c4f0635bc3da33a566b49e6ebbe5867b0e6f76c078b564849c3d821e9974277",
+      "manualSha256": "9286ef0976505ef3006ee2dd00d56e308ddfbbbc2d0e43f63681e892a7842257",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/shortcuts/GlobalShortcuts.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/shortcuts/GlobalShortcuts.tsx.md",
+      "sourceBlob": "96fd0df27d1b0b00e805237c6dc1cb7e4c138d8d",
+      "sourceSha256": "640c0e26a427d14f48e21dfff903aaff199b4cdf6e57141c1f06fffa6217c49c",
+      "manualSha256": "cc80e069c0b12d90997d50d0555c6e61e0492d4c15f2ea4dae172450375ece9d",
+      "verdict": "accepted",
+      "findings": [
+        "N-01",
+        "N-02"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/shortcuts/ShortcutKeycaps.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/shortcuts/ShortcutKeycaps.tsx.md",
+      "sourceBlob": "9a6e8fe9b47b9767d4f6d43838e9c97474fe760d",
+      "sourceSha256": "4a45c57ec9c784bfba91121d2c2b426f2425002faaee04e4e1afb9790844a2b0",
+      "manualSha256": "a72a6b048ba707435b13197db69553c5756b6327160be6d5e9a0d551c84dcf97",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/tutorial/TutorialBanner.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tutorial/TutorialBanner.tsx.md",
+      "sourceBlob": "1d063f06d75adb10a80b2725cc706182aefcbea0",
+      "sourceSha256": "f19db54d056c6ea67d5c9bc4d6d632f50124adc1620754b9eefb0fc44e848c09",
+      "manualSha256": "b5582feaa5b5b1082c7d5ec4cb6fd4381568a30229a9360a6649d7267470b733",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/welcome/BeijingAnalogClock.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/welcome/BeijingAnalogClock.tsx.md",
+      "sourceBlob": "f1e7c8042bbd72d1d0704b9e41ac15291bab1f1f",
+      "sourceSha256": "137642b044d03fee455b81a59b3067fbed2f626eb0621cf432b94ac7c01d177f",
+      "manualSha256": "9d7cc7232f8d2f1d82925d1eb88a7e73603eae50e64de7deda5d08f4d6ad9b9c",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/welcome/UsageHeatmap.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/welcome/UsageHeatmap.tsx.md",
+      "sourceBlob": "32fe6105f2dc0fedc16468d01538723bfd102a88",
+      "sourceSha256": "cf97f47491bad1b6e3d87543fbfa8123d414783993f25380bcbd5680b8ca575f",
+      "manualSha256": "da59b4aed304b207af0458aa1afc5dea0c957beb25de19b8344bb1150752eb81",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/welcome/WelcomeEmptyState.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/welcome/WelcomeEmptyState.tsx.md",
+      "sourceBlob": "9a5545e0ec6e9427d7852836732256fb491f5362",
+      "sourceSha256": "d1b84c1202aa657b0188b3f00c4d339828633a83632e07d6f3392da62c689e60",
+      "manualSha256": "3697603f143317a6130d81db68f719b3315ad93072a543f7190b2eb1779a7c13",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/welcome/WelcomeView.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/welcome/WelcomeView.tsx.md",
+      "sourceBlob": "889a4ecaf9cc22dafffe4e295b2f44741ddfea18",
+      "sourceSha256": "75fabb61c388e5c028084e87a7faa8170f2854dccecfdce2e2185ebab806a254",
+      "manualSha256": "e1597524aa76fd9946ab6460e2e901b3b9179c772733aca0454fb6c36fca48a0",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/diff/diff-scroll.css",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/diff/diff-scroll.css.md",
+      "sourceBlob": "47d34a34ec64e0c6b7c40189ba92cec15ece8946",
+      "sourceSha256": "08cd73723664cc39595eb10160d42656e2328d8e0e594353b09a12d4319e1482",
+      "manualSha256": "17570ac71774cf4876774c456b92e219099be8ec1ff7a4809c286cf42fb228cb",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/diff/markdown-preview-extensions.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/diff/markdown-preview-extensions.tsx.md",
+      "sourceBlob": "a4247de260061e045246739279187ccdece4fc86",
+      "sourceSha256": "846c421d3b89319ca8b6fb7f259af3883f5eb85921e20b3559065f125d116644",
+      "manualSha256": "952788fd7d4ea049610378d9f696d7c7a128cb88fa3110a4890c64b1d44712a6",
+      "verdict": "accepted",
+      "findings": [
+        "N-01",
+        "N-04"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/diff/preview-open-path.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/diff/preview-open-path.test.ts.md",
+      "sourceBlob": "1c8dcb0c8e520c8827c544882f4e44d219c6fde1",
+      "sourceSha256": "4605d10fea915c6450fcab88dcaa092c8e59764f7ee38a392d79e816e1c579a2",
+      "manualSha256": "5462caabf56b5701154472eee24888bc141cae4c9589af28fd7db87261b16f71",
+      "verdict": "accepted",
+      "findings": [
+        "N-01",
+        "N-05"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/diff/preview-open-path.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/diff/preview-open-path.ts.md",
+      "sourceBlob": "52f9b10143b14608933bc5df27c3c55ddae421e3",
+      "sourceSha256": "b888af1eb72d1571736c68876926cba5de28d5fe998ff31294e9fc546d70dc9a",
+      "manualSha256": "d01210fedd1e4b1e36e381de53969431cbc9d67f66b7be8b5225c9d8c8463c5e",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/diff/preview-opener.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/diff/preview-opener.ts.md",
+      "sourceBlob": "b2cef2b735cfba062f7388c0cf87c2aef4f26b8d",
+      "sourceSha256": "aa8d908066756c983539abef37b2d657e913a4b22ef1bddfcc241baca5e9dfe5",
+      "manualSha256": "05d88c6e5aa7ac717aa00cc79a703311dc433dd9e020ca9c2f34b9bf464d2ad5",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/diff/preview-viewport-context.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/diff/preview-viewport-context.ts.md",
+      "sourceBlob": "17594c68e119a3e966c468678de2ffd358d5e8a8",
+      "sourceSha256": "05f14443ae2c5891b911cdebcdf4229683a030128147e2bc9261056a7730ced3",
+      "manualSha256": "49b1260d0b87f9a0e04febd664f0443aea829488923d24466a96a8d009dc1c4d",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/navigation/NavigationInputProvider.tsx.md": "83791705a86a14f483ff845a0851256e178d2da77545e50c897533d31b491748",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/scratch-pad/ScratchPadView.tsx.md": "570790cc7cf90b1d290659f1436e6fde35f2545f3301d2ab862d9e52528f5e50",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/selection/SelectionActionPopover.test.ts.md": "3a0ed7be92d8091562983d9813f96c61aa13276f0651a2892b63be406576726f",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/selection/SelectionActionPopover.tsx.md": "414bb54b19135a6391113ef1bf33c7bab4e604a57f03df1f1235dc0f3d1ce131",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/session-preview/SessionMiniMapPopover.tsx.md": "9286ef0976505ef3006ee2dd00d56e308ddfbbbc2d0e43f63681e892a7842257",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/shortcuts/GlobalShortcuts.tsx.md": "cc80e069c0b12d90997d50d0555c6e61e0492d4c15f2ea4dae172450375ece9d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/shortcuts/ShortcutKeycaps.tsx.md": "a72a6b048ba707435b13197db69553c5756b6327160be6d5e9a0d551c84dcf97",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tutorial/TutorialBanner.tsx.md": "b5582feaa5b5b1082c7d5ec4cb6fd4381568a30229a9360a6649d7267470b733",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/welcome/BeijingAnalogClock.tsx.md": "9d7cc7232f8d2f1d82925d1eb88a7e73603eae50e64de7deda5d08f4d6ad9b9c",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/welcome/UsageHeatmap.tsx.md": "da59b4aed304b207af0458aa1afc5dea0c957beb25de19b8344bb1150752eb81",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/welcome/WelcomeEmptyState.tsx.md": "3697603f143317a6130d81db68f719b3315ad93072a543f7190b2eb1779a7c13",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/welcome/WelcomeView.tsx.md": "e1597524aa76fd9946ab6460e2e901b3b9179c772733aca0454fb6c36fca48a0",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/diff/diff-scroll.css.md": "17570ac71774cf4876774c456b92e219099be8ec1ff7a4809c286cf42fb228cb",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/diff/markdown-preview-extensions.tsx.md": "952788fd7d4ea049610378d9f696d7c7a128cb88fa3110a4890c64b1d44712a6",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/diff/preview-open-path.test.ts.md": "5462caabf56b5701154472eee24888bc141cae4c9589af28fd7db87261b16f71",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/diff/preview-open-path.ts.md": "d01210fedd1e4b1e36e381de53969431cbc9d67f66b7be8b5225c9d8c8463c5e",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/diff/preview-opener.ts.md": "05d88c6e5aa7ac717aa00cc79a703311dc433dd9e020ca9c2f34b9bf464d2ad5",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/diff/preview-viewport-context.ts.md": "49b1260d0b87f9a0e04febd664f0443aea829488923d24466a96a8d009dc1c4d"
+  },
+  "findings": [
+    {
+      "id": "N-01",
+      "severity": "minor",
+      "file": "（全 18 篇 frontmatter）",
+      "claim": "frontmatter `reviewer: p03-integrations` 18/18——模板残留（比照 nb-30 'reviewer 标 p03-qa-08=轮次模板残留' 先例记 N）；author 字段正确。",
+      "sourceEvidence": "grep -h '^reviewer:' stage/**/ = 18×p03-integrations",
+      "action": "任一 rN 批量更正或去除。"
+    },
+    {
+      "id": "N-02",
+      "severity": "minor",
+      "file": "apps/electron/src/renderer/components/shortcuts/GlobalShortcuts.tsx.md",
+      "claim": "§2 'useShortcut 绑 8 个'→实 **9**（自列表即 9：close-tab/open-settings/global-search/new-session/toggle-sidebar/toggle-mode/clear-context/focus-input/stop-generation）。",
+      "sourceEvidence": "GlobalShortcuts.tsx 9 处 useShortcut 调用",
+      "action": "改计数 9。"
+    },
+    {
+      "id": "N-03",
+      "severity": "minor",
+      "file": "apps/electron/src/renderer/components/diff/preview-opener.tsx.md",
+      "claim": "§11 '5 导出'→实 **6**（SidebarPreviewOptions/openSidebarFilePreview/openFilePreviewTab/OpenAuthorized/ForSession/useOpenPreview）；§3 '`revoekdAgentSessionIds`' 笔误（实 `revokedAgentSessionIdsAtom`）。",
+      "sourceEvidence": "preview-opener.tsx 6 条 export 语句",
+      "action": "改计数 6+修笔误。"
+    },
+    {
+      "id": "N-04",
+      "severity": "minor",
+      "file": "apps/electron/src/renderer/components/diff/markdown-preview-extensions.tsx.md",
+      "claim": "§11 '11 导出'→实 **10** 条 export 语句（createMarkdownImage/Video、RawHtmlBlock/Inline、MathInline/Block、createShikiCodeBlock、TaskList/TaskItem、tableExtensions）。",
+      "sourceEvidence": "markdown-preview-extensions.tsx export 计数 10",
+      "action": "改计数 10。"
+    },
+    {
+      "id": "N-05",
+      "severity": "minor",
+      "file": "preview-open-path.test.ts.md + SelectionActionPopover.test.ts.md",
+      "claim": "两篇测试手册重复 '## 4' 章节编号（§4 测试替身与依赖 / §4 未覆盖 并列）。",
+      "sourceEvidence": "手册文本",
+      "action": "重排编号。"
+    }
+  ],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network",
+    "bun 测试运行"
+  ],
+  "notes": "判定口径一致（N=正确枚举在场的小偏差/模板残留）。5 条 N 不阻断，18 篇全部可合。"
+}

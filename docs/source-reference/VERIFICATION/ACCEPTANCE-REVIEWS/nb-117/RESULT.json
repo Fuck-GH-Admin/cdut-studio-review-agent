@@ -1,0 +1,361 @@
+{
+ "schema": "dsh-r07-qa-result/1",
+ "batch": "nb-117",
+ "id": "NB-117",
+ "revisionOf": null,
+ "reviewRoot": "reviews/nb-117",
+ "priorReviewRoots": [
+  "reviews/nb-117/SOURCE-CHECKLIST.md",
+  "reviews/nb-117/PRE_READ_DONE.json"
+ ],
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "sourceHeadVerified": true,
+ "sourceWorktreeClean": true,
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewedAtUtc": "2026-10-24T14:25:00Z",
+ "scopeSource": "manager/assignments/nb-117-SCOPE.json",
+ "scopeFileCount": 18,
+ "scopeLines": 1130,
+ "deliveryRoot": "deliveries/nb-117",
+ "sealSpec": "seal_delivery.py/1（v2）",
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "GUI"
+ ],
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PARTIAL",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 14,
+  "revision_required": 4,
+  "unknown": 0
+ },
+ "batchVerdict": "revision_required",
+ "files": [
+  {
+   "path": "apps/electron/src/renderer/lib/active-tab-content.test.ts",
+   "kind": "test",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/active-tab-content.test.ts.md",
+   "sourceBlob": "351e2e3d72006a72c1f208f0b30d72ba7671cac9",
+   "sourceSha256": "8ab7588e42ebf853577a1dad74aa3e58ec7db782c7f64012212f2dc913157e42",
+   "sourceLines": 64,
+   "manualSha256": "21ce8d2732d62656d9956daa7126b2fb2adde1c4bd4e8e41deb0faf4844a8f63",
+   "manualLines": 46,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/active-tab-content.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/active-tab-content.ts.md",
+   "sourceBlob": "d4abae5cc6b24f1ab136da2f18b83fa5d41e9fe5",
+   "sourceSha256": "4e41389d8bf8730d1db99760b9929e5745e87b86ed8a7cca9f8c6334bdc6511f",
+   "sourceLines": 32,
+   "manualSha256": "34c2eb800a93fc79d521ea690d9778b72762cc623f75cced725c9faf62398a94",
+   "manualLines": 60,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/active-tab-side-effects.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/active-tab-side-effects.ts.md",
+   "sourceBlob": "ea38d9305efec37067fdd13befb847fee3c161ce",
+   "sourceSha256": "e2ef69987f7574c1f807774069e005d57fe65b4e293efa166b7662f206c0bea3",
+   "sourceLines": 80,
+   "manualSha256": "315ae851f2eb2d82f06a6e0da51768abd47a61a0d09255476ccd203d3c8f681a",
+   "manualLines": 70,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-autosend-turn.test.ts",
+   "kind": "test",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-autosend-turn.test.ts.md",
+   "sourceBlob": "1c3ecea52f92fec29e87df42be2fb07c21105af0",
+   "sourceSha256": "cd22a85242dd23a5346d17df76303f85cb9a11beaf4753b082dbc33301e620d4",
+   "sourceLines": 142,
+   "manualSha256": "81e7ad9b9241ccf1ae3138e97e231f4298ef8e6ccf744a9610dc42b6c8feca64",
+   "manualLines": 48,
+   "verdict": "revision_required",
+   "findings": [
+    {
+     "id": "F-01",
+     "severity": "minor_factual",
+     "claim": "§2 称「17 用例，2 describe」——实际 **16 用例**（grep test( = 16）。",
+     "sourceEvidence": "grep -c test( = 16",
+     "action": "rN 修正为 16"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-autosend-turn.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-autosend-turn.ts.md",
+   "sourceBlob": "d8a35796839bfe44fd788b1ef26e32e4142ab590",
+   "sourceSha256": "c26444ee14cd6bb4edefd0d330f0cd9e02875dbb50594fd4226940d580a9f78c",
+   "sourceLines": 56,
+   "manualSha256": "da56bc13a130c3b03dc33ac2f5808e8a56fd306cb24f1b15c033671d3d115fba",
+   "manualLines": 58,
+   "verdict": "revision_required",
+   "findings": [
+    {
+     "id": "F-02",
+     "severity": "minor_factual",
+     "claim": "§2 称「导出 3 条（:8/:11/:41）」——实际 **4 条**（`AutoSendTurnState` 接口 :25 也是 export，其正文已提及 :25-39 却未计）。",
+     "sourceEvidence": "grep -c ^export = 4（AutoSendTurnDecision/shouldStartAutoSendFromIdle/AutoSendTurnState/evaluateAutoSendTurn）",
+     "action": "rN 修正为 4"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-channel-selection.test.ts",
+   "kind": "test",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-channel-selection.test.ts.md",
+   "sourceBlob": "a6ca3df8ffa0c50d17b1ca3ae996574091b38cb3",
+   "sourceSha256": "90e123608ed4eb51e406c4eb35964d28be0ab6a5c49874a2043eef680032dad3",
+   "sourceLines": 94,
+   "manualSha256": "ef7f7bbbb878251fe948eac60adfa9261a39ea74672185181fbdfedf37072ded",
+   "manualLines": 46,
+   "verdict": "revision_required",
+   "findings": [
+    {
+     "id": "F-03",
+     "severity": "minor_factual",
+     "claim": "§2 称「11 用例，2 describe」——实际 **10 用例**（grep test( = 10）。",
+     "sourceEvidence": "grep -c test( = 10",
+     "action": "rN 修正为 10"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-channel-selection.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-channel-selection.ts.md",
+   "sourceBlob": "f438c147f426df88fd677d196f3264ccb2804bf9",
+   "sourceSha256": "59ad2c13d48e858f6c03439dd634717d2c5b00e37d98d56e656429f27a5aabcd",
+   "sourceLines": 61,
+   "manualSha256": "3800f28e84638b626f7d024cdd780579a0e98648d5ed504effc5aa7c9db1b436",
+   "manualLines": 61,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-completion-presence.test.ts",
+   "kind": "test",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-completion-presence.test.ts.md",
+   "sourceBlob": "fe07a744d21fc1bbba1976e429c84ab6bd8f2c9b",
+   "sourceSha256": "09b9fea117b36e9146051e6680492c3ccaf94e81391d3ceb2e076073f886b816",
+   "sourceLines": 72,
+   "manualSha256": "76c7ad444381e00cbe720b9e438da2c163a66eab16ec648576325be6f4bb671d",
+   "manualLines": 48,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-completion-presence.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-completion-presence.ts.md",
+   "sourceBlob": "6dd932fec94fe459c2db4473c6a8c402c3973df3",
+   "sourceSha256": "f1f79e3fe643a42f2a831c090f029ac7c271c053f0843821a82c52730deae663",
+   "sourceLines": 42,
+   "manualSha256": "71d95e1497f6f9689ee7a1f3fa0a12d12297756c9a954c239f8173052197582e",
+   "manualLines": 58,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-live-message-upsert.test.ts",
+   "kind": "test",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-live-message-upsert.test.ts.md",
+   "sourceBlob": "90b2fa1265b350ed4856273e0fce789cc063f945",
+   "sourceSha256": "70de435fa5dd9bb1532129d4effd565547836e9b42367796678d256ff5073bda",
+   "sourceLines": 41,
+   "manualSha256": "05f686a62f9315aaf7467d875a5fed66018c24a5224a1c9c11e948f132e81e7c",
+   "manualLines": 49,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-live-message-upsert.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-live-message-upsert.ts.md",
+   "sourceBlob": "d2e14ad9ddec9dee52b2662b0b316b96844cd9a4",
+   "sourceSha256": "fbe822faee4603ca8e60779d05739d31fe5551f610e520400db25e9cb65f26d4",
+   "sourceLines": 40,
+   "manualSha256": "f4baddb54d2fba3878cd8e787e29e5dd300b79a8022b49f0bad4360124ec9538",
+   "manualLines": 58,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-message-merge.test.ts",
+   "kind": "test",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-message-merge.test.ts.md",
+   "sourceBlob": "97c762fe9d825d6fcb63f14f620de9dc3ef7e867",
+   "sourceSha256": "cc96402210cbf4c7cbc477460bf5f9f0b47c954c44e619f24f76b3a1d001e703",
+   "sourceLines": 34,
+   "manualSha256": "e6d805719516e306e9408fd2a08c21ff8ca9d8665ae85834c390630567ced5bc",
+   "manualLines": 49,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-message-merge.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-message-merge.ts.md",
+   "sourceBlob": "0cc56ec2510388b17f647965d9012a32184a17ad",
+   "sourceSha256": "cb6790f29c384dbdeee435c21803918cb9f75a9d81f3af7668460454069ee1f0",
+   "sourceLines": 35,
+   "manualSha256": "3f0d84edf43d5423f8e684b06d0005687fed00c2ea2ef331b4f09bd78440b5bf",
+   "manualLines": 58,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-message-queue.test.ts",
+   "kind": "test",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-message-queue.test.ts.md",
+   "sourceBlob": "7b16d7840d42d0411055eb6c21627abeaed1e1ab",
+   "sourceSha256": "5ceccb176d7c20bd0d60eb531eb9fd639de362a8fe721e3282c73708530fc072",
+   "sourceLines": 52,
+   "manualSha256": "f1cd6b7a69dc8fc73af0959e19b8eaa24d4aa964f49440da88f8a9b8686ee4d8",
+   "manualLines": 53,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-message-queue.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-message-queue.ts.md",
+   "sourceBlob": "ba3f498a4fb7122ab637103d5429b8a5d093a80b",
+   "sourceSha256": "1f9e2f061777132990341aca6f27c8239cec4fe988bd11d0f44227dfdb63a6f9",
+   "sourceLines": 172,
+   "manualSha256": "fa25339a26230b4e99ea4e093f49f123f62042304d5e554c4593e133ec3ef5fe",
+   "manualLines": 77,
+   "verdict": "revision_required",
+   "findings": [
+    {
+     "id": "F-04",
+     "severity": "minor_factual",
+     "claim": "§2 称「导出 12 条」——实际 **14 条**（grep ^export = 14：:3/:5/:12/:27/:35/:43/:51/:74/:81/:102/:108/:125/:137/:157）。",
+     "sourceEvidence": "grep -c ^export = 14",
+     "action": "rN 修正为 14"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-plan-mode.test.ts",
+   "kind": "test",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-plan-mode.test.ts.md",
+   "sourceBlob": "d9da647e88e34c281992dc8b697564ea89ff8e59",
+   "sourceSha256": "5235e40f420a2a59f4983885a27bc359436eab2228fea78b93ac16ecb3c8793c",
+   "sourceLines": 42,
+   "manualSha256": "6307cfdc3a068a503c8381e103b58c2ee164aa1ca33ce178e559bf6b402f0979",
+   "manualLines": 54,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-plan-mode.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-plan-mode.ts.md",
+   "sourceBlob": "039b50d8c9a9d35cfce3edd87a4adedb270e9e25",
+   "sourceSha256": "2c276907eeac6e6d2f26d13ecff899eba75727af954772677202a48f5e40b074",
+   "sourceLines": 35,
+   "manualSha256": "493635cd647c7dff8ec3fa4bb4228312b46994e5b377ebc9479910918c9f7277",
+   "manualLines": 59,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-running-indicator.test.ts",
+   "kind": "test",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-running-indicator.test.ts.md",
+   "sourceBlob": "07967e4fa5be5f739a02d172f88567196ee9f448",
+   "sourceSha256": "3d1fe360e93207a064a18ecea6e94ef5e86bcc3d27fb6b10e40e574878619de1",
+   "sourceLines": 36,
+   "manualSha256": "86149ff0d59ccf12d6632252a319035118b1714ccd87eaff274a9a311756bb3c",
+   "manualLines": 49,
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/active-tab-content.test.ts.md": "21ce8d2732d62656d9956daa7126b2fb2adde1c4bd4e8e41deb0faf4844a8f63",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/active-tab-content.ts.md": "34c2eb800a93fc79d521ea690d9778b72762cc623f75cced725c9faf62398a94",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/active-tab-side-effects.ts.md": "315ae851f2eb2d82f06a6e0da51768abd47a61a0d09255476ccd203d3c8f681a",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-channel-selection.ts.md": "3800f28e84638b626f7d024cdd780579a0e98648d5ed504effc5aa7c9db1b436",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-completion-presence.test.ts.md": "76c7ad444381e00cbe720b9e438da2c163a66eab16ec648576325be6f4bb671d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-completion-presence.ts.md": "71d95e1497f6f9689ee7a1f3fa0a12d12297756c9a954c239f8173052197582e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-live-message-upsert.test.ts.md": "05f686a62f9315aaf7467d875a5fed66018c24a5224a1c9c11e948f132e81e7c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-live-message-upsert.ts.md": "f4baddb54d2fba3878cd8e787e29e5dd300b79a8022b49f0bad4360124ec9538",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-message-merge.test.ts.md": "e6d805719516e306e9408fd2a08c21ff8ca9d8665ae85834c390630567ced5bc",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-message-merge.ts.md": "3f0d84edf43d5423f8e684b06d0005687fed00c2ea2ef331b4f09bd78440b5bf",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-message-queue.test.ts.md": "f1cd6b7a69dc8fc73af0959e19b8eaa24d4aa964f49440da88f8a9b8686ee4d8",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-plan-mode.test.ts.md": "6307cfdc3a068a503c8381e103b58c2ee164aa1ca33ce178e559bf6b402f0979",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-plan-mode.ts.md": "493635cd647c7dff8ec3fa4bb4228312b46994e5b377ebc9479910918c9f7277",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-running-indicator.test.ts.md": "86149ff0d59ccf12d6632252a319035118b1714ccd87eaff274a9a311756bb3c"
+ },
+ "rejectedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-autosend-turn.test.ts.md": "81e7ad9b9241ccf1ae3138e97e231f4298ef8e6ccf744a9610dc42b6c8feca64",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-autosend-turn.ts.md": "da56bc13a130c3b03dc33ac2f5808e8a56fd306cb24f1b15c033671d3d115fba",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-channel-selection.test.ts.md": "ef7f7bbbb878251fe948eac60adfa9261a39ea74672185181fbdfedf37072ded",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-message-queue.ts.md": "fa25339a26230b4e99ea4e093f49f123f62042304d5e554c4593e133ec3ef5fe"
+ },
+ "batchFindings": [
+  {
+   "id": "M-01",
+   "severity": "info",
+   "claim": "正面确认（QA 独立预读回源为真）：7 条契约注释锚点——教程空态历史缺陷注释（shouldShowWelcomeLauncher）、ExitPlanMode 审批门（不算退出）、/compact 原位覆盖（mergeMessagesByUuid）、Pi partial 累计帧规则（live-upsert）、documentHasFocus 一律未查看（completion-presence）、陈旧信号消费（autosend evaluate 决策链）、agentRuntimes 迁移兜底（channel-selection）；另 active-tab-side-effects 单一事实源（React hook 委托）+团队/个人 scratch 语义。58 用例总量（8/16/10/4/3/3/5/6/3）分文件口径除 F-01/F-03 两处外一致。",
+   "sourceEvidence": "逐篇对读+grep 实测",
+   "action": "记录"
+  },
+  {
+   "id": "M-02",
+   "severity": "info",
+   "claim": "如实标注良好：running-indicator.test 测批外源（running-indicator.ts 不在批）已限定；active-tab-side-effects 无测试如实。诚实降级合规。58 用例 NOT_RUN。",
+   "sourceEvidence": "对照",
+   "action": "记录"
+  }
+ ],
+ "zip": {
+  "path": "deliveries/nb-117/R07-nb-117-05fb2565.zip",
+  "sha256": "9b2891cc5b2f5b0b045b7518c06f6d4e6ba3490298b782763e1f519519a176e0",
+  "entries": 21,
+  "note": "18 手册+MANIFEST+2 mechanical TSV；不含 READY/DONE（v2）；无穿越/0 mismatch"
+ },
+ "diffReplay": "changes.diff new-file 补丁与 stage 字节一致",
+ "parentPreserved": null,
+ "notClaimed": [
+  "测试运行结果",
+  "typecheck/build 结果",
+  "G3 跨模块",
+  "批外模块实现"
+ ]
+}

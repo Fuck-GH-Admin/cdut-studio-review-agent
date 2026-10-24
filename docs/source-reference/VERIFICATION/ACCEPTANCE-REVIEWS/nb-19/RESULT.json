@@ -1,0 +1,406 @@
+{
+ "schema": "dsh-r07-qa-result/1",
+ "batch": "nb-19",
+ "id": "NB-19",
+ "revisionOf": null,
+ "reviewRoot": "reviews/nb-19",
+ "priorReviewRoots": [],
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "sourceHeadVerified": true,
+ "sourceWorktreeClean": true,
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewedAtUtc": "2026-10-23T16:55:00Z",
+ "scopeSource": "manager/assignments/nb-19-SCOPE.json",
+ "scopeFileCount": 18,
+ "scopeLines": 3706,
+ "deliveryRoot": "deliveries/nb-19",
+ "sealSpec": "seal_delivery.py/1（v2：ZIP 不含 READY/DONE，按 MANIFEST/READY/DONE/ZIP 实链绑定）",
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PASS",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "findingResolution": {},
+ "verdictCounts": {
+  "accepted": 18,
+  "revision_required": 0,
+  "unknown": 0
+ },
+ "batchVerdict": "accepted",
+ "files": [
+  {
+   "path": "apps/electron/src/main/lib/review/review-v3-b4-r25-raw-clause-condition.ts",
+   "kind": "source",
+   "package": "p05-review-engine",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-b4-r25-raw-clause-condition.ts.md",
+   "sourceBlob": "43b3b1dc825f9e22596ba9ff1823e908a046a3ee",
+   "sourceSha256": "ee2777180b0e7fe2e5279c13a7ab2c124503d33e3fac5b52936d992982cd2f17",
+   "sourceLines": 275,
+   "manualSha256": "c12895c858ac3c08df6fc7ad5914d29dbf2164949a317f72870f2541e399579d",
+   "manualLines": 110,
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "N-03",
+     "severity": "non_blocking",
+     "claim": "6 处行号引用偏移（覆盖封口 :204-205→实为:202；G06 例外 :158-160→:157-158/校验:161；raw 头 :99-107→:99-108；grantId 首条 :109-110→:118-120；sealed :109→:120/:130；:133→:132；:126-127→:127-128）。9 导出、32/1/32 封口、逐字节校验、五字段回执语义与源码一致。",
+     "sourceEvidence": "grep -n 实测：exceptional :157、additional 校验 :161、CLAUSE_COVERAGE :202",
+     "action": "可选 r1 修正行号；不阻断"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-v3-b4-rule-source-diff.ts",
+   "kind": "source",
+   "package": "p05-review-engine",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-b4-rule-source-diff.ts.md",
+   "sourceBlob": "d725f339ac37b5974dbef039252418e81ec9a381",
+   "sourceSha256": "f7cdb5c9a2d61bbf5ab2c5d19b9106f1281ed66402ad0e22fd546732728c3370",
+   "sourceLines": 101,
+   "manualSha256": "4dfd4a072606ed1c22fb34f485c5985a426cee672e83a2217683c1370a4bba92",
+   "manualLines": 95,
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "N-02",
+     "severity": "non_blocking",
+     "claim": "7 处行号引用偏 1-2 行（头校验 :45-49→:47-51；frozenD4GitSHA :46→:48；模板步 :53-65→:54-63；规则步 :67-79→:67-78；全序号覆盖 :94-95→:95-96；封口 :97→:98；返回 :98-100→:99-100）。导出 4 条位置、107/3 封口、G04 特例、错误码矩阵与源码一致。",
+     "sourceEvidence": "grep -n 实测：b68443b2 :48、fail HEADER :51、TEMPLATE :63、RULE :78、MISSING :96、COVERAGE :98",
+     "action": "可选 r1 修正行号；不阻断"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-v3-background-technical-coordinator.ts",
+   "kind": "source",
+   "package": "p05-review-engine",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-background-technical-coordinator.ts.md",
+   "sourceBlob": "58f825a6468ee3c8d00283d579bf336cdb1034f4",
+   "sourceSha256": "aa92a17985db691c3bc5ce633ff3e9f0c80266a442b16f34a8ae412502cf3e55",
+   "sourceLines": 305,
+   "manualSha256": "c13d60f13c9b1e5052f4e30d2ca7c524d52025a175560e6f682f8ce7a4c0744e",
+   "manualLines": 134,
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "N-01",
+     "severity": "non_blocking",
+     "claim": "中段多处行号引用偏移 1-5 行（容量256 :116→实为:115；compareAndWrite :119-120→:117-119；afterTurn :218-223→:222-228；stopped-deny :221→:224；结束校验 :227-230→:230-233；结果映射 :231-242→:234-246；错误分类 :243-265→:247-270；CAS抛错 :258-265→:262-270；finally :266-270→:271-275）。语义/状态机/错误分类/冷读/幂等描述与源码一致；§3.4.1-4 与 :278-304 引用准确。",
+     "sourceEvidence": "grep -n 实测：capacity :115、compareAndWrite :117、driver :220、deny :224、assertCurrent :230、catch :247、finally :271、stop :278、stopSession :296",
+     "action": "可选 r1 统一修正上述行号；不阻断合入"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-v3-core-t03-run-gate.test.ts",
+   "kind": "test",
+   "package": "p05-review-engine",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-core-t03-run-gate.test.ts.md",
+   "sourceBlob": "5da151c023e564752418d02f7bb969087e1ffa51",
+   "sourceSha256": "d6d2159d4f5ef546fa797c438a63bfc3c4e2382052a8b70f94ffc8eb36179f75",
+   "sourceLines": 232,
+   "manualSha256": "b35b17c141e0c8989262444974fdb8bb9429d79564ba02000a2ba7c60e4549c4",
+   "manualLines": 80,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-v3-core-t03-run-gate.ts",
+   "kind": "source",
+   "package": "p05-review-engine",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-core-t03-run-gate.ts.md",
+   "sourceBlob": "cec63549653e3e22c4510365878e28e619dbcf45",
+   "sourceSha256": "a7b3be7a5b935f236b87a4170e186c5170d4d05794ca0a21cfcf857c1687ba5d",
+   "sourceLines": 285,
+   "manualSha256": "1d30767c91517cec08cbe3f5bf1cac0002291714064d4ee3901f8e833602ff21",
+   "manualLines": 127,
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "N-05",
+     "severity": "non_blocking",
+     "claim": "3 处行号偏 1-3（run@rev :192→:189；runCurrent :216→:215；return-for-supplement :178-183→:181-183）。6 导出、16 用例引用、awaiting 双计、stage-pass 逐 check 分支、selectT03CurrentRun 无生产调用者均与源码一致。",
+     "sourceEvidence": "grep/逐行读核 :189/:181/:215；runtime-contract.ts:16 调用 :161/:185 实测吻合",
+     "action": "可选 r1 修正；不阻断"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-v3-d4-catalog-attach.test.ts",
+   "kind": "test",
+   "package": "p05-review-engine",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-d4-catalog-attach.test.ts.md",
+   "sourceBlob": "ddbad3e50297f6c4f6009eac4688acd2cc082371",
+   "sourceSha256": "d5af91d9140f2496a8cbf64a1502150e35fa558776e50bee0ae3f598c8f7d566",
+   "sourceLines": 80,
+   "manualSha256": "6cd35bdb9e679f58ec6a901606f5e1f2a48dd3b2e93ad08f23f56933472e79f8",
+   "manualLines": 61,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-v3-d4-demo-publish.ts",
+   "kind": "source",
+   "package": "p05-review-engine",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-d4-demo-publish.ts.md",
+   "sourceBlob": "c81c77af873375ac0e12580031e9cdbd7c492382",
+   "sourceSha256": "33dae9bb9e4984e2aa0d0c117bf556b7bab8c67e757d930375ddba9e367609ab",
+   "sourceLines": 170,
+   "manualSha256": "60d1f3dcdbba7197f6d9d9c9f01c3f364009fd5e3e18534b137b8dc4f75a593f",
+   "manualLines": 115,
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "N-07",
+     "severity": "non_blocking",
+     "claim": "§4 IPC 注册行 :961→实为:960（:962 require/:963 调用准确；preload :4932、ContentReviewView :168 三链抽验全中）。8 导出、TAR-01/02/11、政策引用恒空、semantic 判据、publishD4Templates/isCleanName 无直接测试（否定）均与源码一致。",
+     "sourceEvidence": "grep review-ipc :960/:962/:963、preload :4932、ContentReviewView :168",
+     "action": "可选 r1 修正；不阻断"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-v3-execution-contract.test.ts",
+   "kind": "test",
+   "package": "p05-review-engine",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-execution-contract.test.ts.md",
+   "sourceBlob": "7a12de582b376f3ea6fa83c34e990aaaeebee1ba",
+   "sourceSha256": "a4c37fb6b15ab5d719385dd22f0197c5892fc91ed837e543422fa40050bc9948",
+   "sourceLines": 130,
+   "manualSha256": "40ad756d9f9fd41d01af9c7cc1fe514417f0a51ce2cf6b9f036404b294e2c129",
+   "manualLines": 68,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-v3-execution-contract.ts",
+   "kind": "source",
+   "package": "p05-review-engine",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-execution-contract.ts.md",
+   "sourceBlob": "1b05a8c29c972b8902b2ece742260a0dc019be6b",
+   "sourceSha256": "6b6e83307518b1e5118237e4a56a51d2b0b904951610ad3d8f407166987fae67",
+   "sourceLines": 134,
+   "manualSha256": "10455223e9e6cf92a937b86a6957ff4ff418b4a0a2669c6243828fbcab6e8192",
+   "manualLines": 105,
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "N-06",
+     "severity": "non_blocking",
+     "claim": "3 处行号偏 2（source 活性 :85-87→:87-89；摘要自洽 :88-91→:90-92；可信回执 :92-95→:93-96）。8 步校验语义、replay 语义、双端摘要契约与源码一致；调用链抽验（technical-ledger :107/:269）准确。",
+     "sourceEvidence": "逐行读 :68-134 + grep technical-ledger :107/:269",
+     "action": "可选 r1 修正；不阻断"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-v3-execution-proposal-producer.ts",
+   "kind": "source",
+   "package": "p05-review-engine",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-execution-proposal-producer.ts.md",
+   "sourceBlob": "c4eb67ff185ecd889864431a898bee77c352fc84",
+   "sourceSha256": "53c3edb1607eb10f89b93acd39cb44403906e42b8d97fec111276e398037b631",
+   "sourceLines": 447,
+   "manualSha256": "2d031dc6dc82ebc6dc2daab5243deed141644de3edfddde0df4e3f2f83678c35",
+   "manualLines": 150,
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "N-04",
+     "severity": "non_blocking",
+     "claim": "§3.1 引用偏差最大 8-11 行（首条 grantId :109-110→实为:118-120；sealed :109→:120；terminal chain :133→:132）；§3.2 步号若干 ±1-3（busy :225-227→:227-228；fresh :229→:233；receiptId :261-263→:258-260；链初始化 :245-256→:244-252）。8 导出、append 11 步语义、receipt 幂等/REQUEST_ID_COLLISION、旧 grant 不计覆盖、双 assertAuthorized 观察与源码一致。",
+     "sourceEvidence": "对照逐行读 :90-135/:224-333 与 grep 复核；语义0误差",
+     "action": "可选 r1 修正行号；不阻断"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-v3-execution-turn-budget.ts",
+   "kind": "source",
+   "package": "p05-review-engine",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-execution-turn-budget.ts.md",
+   "sourceBlob": "34d52ebb9716fd964aa3e9a82e7f3f5671d2e221",
+   "sourceSha256": "c0944a7daecccf9e3ca7f1775793e4837e75868857aae349b550338f9c4957ce",
+   "sourceLines": 185,
+   "manualSha256": "b99a79cb03b7100c542fb1ecdd40f7e95a36e0f73a40211816a9f4b0fc69ec58",
+   "manualLines": 102,
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "N-08",
+     "severity": "non_blocking",
+     "claim": "2 处行号偏 1-2（+1 并 write :171-179→:172-180；旧 grant 注释 :137-142→:139-142）。3 导出、maxTurns=24、receiptIds 幂等、耗尽禁记、CAS 写与源码一致。",
+     "sourceEvidence": "逐行读 :143-184；r22 测试 new :82 引用准确",
+     "action": "可选 r1 修正；不阻断"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-v3-fallback-chain.test.ts",
+   "kind": "test",
+   "package": "p05-review-engine",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-fallback-chain.test.ts.md",
+   "sourceBlob": "c34e3f29843d337f02896df38b3a384451e2e2d0",
+   "sourceSha256": "faefaa82dbdc2e093d03f9c750c90ec1997113c5a1963587022c3be70b436412",
+   "sourceLines": 86,
+   "manualSha256": "f5469ef74715a06c8aa7a9fefe8854e5edad28fa1e204b56d84d653e9f5e8c8c",
+   "manualLines": 67,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-v3-pi-http-provider-engine.ts",
+   "kind": "source",
+   "package": "p05-review-engine",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-pi-http-provider-engine.ts.md",
+   "sourceBlob": "029419de63dd1974c262f59dc80fc8d9b559004d",
+   "sourceSha256": "0feba9659cee7e295ee51adcf722a15886e97b255e8ea0196431332a5e8b8e2b",
+   "sourceLines": 341,
+   "manualSha256": "4bd9e8966ab309fe39a01caa15644e32a863e14c3bc0736be51b9c64c3a02d38",
+   "manualLines": 117,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-v3-r22-cold-background.worker.ts",
+   "kind": "source",
+   "package": "p05-review-engine",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-r22-cold-background.worker.ts.md",
+   "sourceBlob": "21a7455f3c88ed6e4413c16b03800d0ca76d9c88",
+   "sourceSha256": "9a2c24e79fd982284df3a67f31ec3b01f1b956be0bdf913f929f5841c99396df",
+   "sourceLines": 21,
+   "manualSha256": "102158ebac2b7c83e37a21eda5474a989a6f9bd61dbf340104c0b89a63b4d6f3",
+   "manualLines": 75,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-v3-r22-concentrated.test.ts",
+   "kind": "test",
+   "package": "p05-review-engine",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-r22-concentrated.test.ts.md",
+   "sourceBlob": "4b4f28b1978c3ce42401af43a100e413e02760c8",
+   "sourceSha256": "e5d122da874772e3faa01a6f2cc4d9eceaba3a05a9b03944d98c76c3368e8e59",
+   "sourceLines": 297,
+   "manualSha256": "07863c05464f4c5cb045449c75562ae90a255fac0c3fe97e132e4807d2581a65",
+   "manualLines": 69,
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "N-09",
+     "severity": "non_blocking",
+     "claim": "fixture 区段行号偏 2-5（fixture :38-113→:40-118；coldWorker :114-116→:119-120；Store :30-37→:31-39）。5 用例计数/断言行（:122/:168/:201/:231/:270 及各断言行）与源码逐行一致，linux-only 边界与 mock/真实边界表述准确。",
+     "sourceEvidence": "逐行读 :30-120 复核",
+     "action": "可选 r1 修正；不阻断"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-v3-r23-r24-concentrated.test.ts",
+   "kind": "test",
+   "package": "p05-review-engine",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-r23-r24-concentrated.test.ts.md",
+   "sourceBlob": "02fbab9f19211731b39d72ecc811810137578c78",
+   "sourceSha256": "09c56b0b17b1dd36d07be088a226f978fc065bf7076142bf86d2ac116015c080",
+   "sourceLines": 265,
+   "manualSha256": "2f377cc99b6fa278517961c308f9fb1ccf082ef662962f9c83f54726c7fb38f5",
+   "manualLines": 80,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-v3-report-snapshot.test.ts",
+   "kind": "test",
+   "package": "p05-review-engine",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-report-snapshot.test.ts.md",
+   "sourceBlob": "5dd832e02c677d511ef69d637b2474dab92d58dd",
+   "sourceSha256": "16bd042842bb182b155c87a29893b607b219f3c012eb7831e32359041733658b",
+   "sourceLines": 139,
+   "manualSha256": "ad9b3c63c6bd334c182bf84dfb0c0debbc5a490ffc29a6bfade04e945effddb8",
+   "manualLines": 78,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-v3-report-snapshot.ts",
+   "kind": "source",
+   "package": "p05-review-engine",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-report-snapshot.ts.md",
+   "sourceBlob": "c57efc8ebfdb369d0d830ecf0b92be4869e96f18",
+   "sourceSha256": "71b44592d5012a04426aac3d67f01284b44ee8a68d53106b276c45818ea395c3",
+   "sourceLines": 213,
+   "manualSha256": "939a6801af0d7852bbba352c4642e5d15cfca04f2448bcbe566fc4420c23c36e",
+   "manualLines": 127,
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-b4-r25-raw-clause-condition.ts.md": "c12895c858ac3c08df6fc7ad5914d29dbf2164949a317f72870f2541e399579d",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-b4-rule-source-diff.ts.md": "4dfd4a072606ed1c22fb34f485c5985a426cee672e83a2217683c1370a4bba92",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-background-technical-coordinator.ts.md": "c13d60f13c9b1e5052f4e30d2ca7c524d52025a175560e6f682f8ce7a4c0744e",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-core-t03-run-gate.test.ts.md": "b35b17c141e0c8989262444974fdb8bb9429d79564ba02000a2ba7c60e4549c4",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-core-t03-run-gate.ts.md": "1d30767c91517cec08cbe3f5bf1cac0002291714064d4ee3901f8e833602ff21",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-d4-catalog-attach.test.ts.md": "6cd35bdb9e679f58ec6a901606f5e1f2a48dd3b2e93ad08f23f56933472e79f8",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-d4-demo-publish.ts.md": "60d1f3dcdbba7197f6d9d9c9f01c3f364009fd5e3e18534b137b8dc4f75a593f",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-execution-contract.test.ts.md": "40ad756d9f9fd41d01af9c7cc1fe514417f0a51ce2cf6b9f036404b294e2c129",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-execution-contract.ts.md": "10455223e9e6cf92a937b86a6957ff4ff418b4a0a2669c6243828fbcab6e8192",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-execution-proposal-producer.ts.md": "2d031dc6dc82ebc6dc2daab5243deed141644de3edfddde0df4e3f2f83678c35",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-execution-turn-budget.ts.md": "b99a79cb03b7100c542fb1ecdd40f7e95a36e0f73a40211816a9f4b0fc69ec58",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-fallback-chain.test.ts.md": "f5469ef74715a06c8aa7a9fefe8854e5edad28fa1e204b56d84d653e9f5e8c8c",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-pi-http-provider-engine.ts.md": "4bd9e8966ab309fe39a01caa15644e32a863e14c3bc0736be51b9c64c3a02d38",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-r22-cold-background.worker.ts.md": "102158ebac2b7c83e37a21eda5474a989a6f9bd61dbf340104c0b89a63b4d6f3",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-r22-concentrated.test.ts.md": "07863c05464f4c5cb045449c75562ae90a255fac0c3fe97e132e4807d2581a65",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-r23-r24-concentrated.test.ts.md": "2f377cc99b6fa278517961c308f9fb1ccf082ef662962f9c83f54726c7fb38f5",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-report-snapshot.test.ts.md": "ad9b3c63c6bd334c182bf84dfb0c0debbc5a490ffc29a6bfade04e945effddb8",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-report-snapshot.ts.md": "939a6801af0d7852bbba352c4642e5d15cfca04f2448bcbe566fc4420c23c36e"
+ },
+ "rejectedHashes": {},
+ "batchFindings": [
+  {
+   "id": "M-01",
+   "severity": "info",
+   "claim": "STATUS.json 的 status 字段为 \"AUTHOR_DRAFT_COMPLETE_PRE_SEAL\"，落后于实际封版状态（MANIFEST/READY/DONE sealedAt 16:29:09Z）；STATUS 不在 seal v2 哈希链内，链自洽不受影响。",
+   "sourceEvidence": "deliveries/nb-19/STATUS.json 与 MANIFEST/READY/DONE 对读",
+   "action": "作者 rN 时同步 STATUS；lead 层序口径一并记录"
+  },
+  {
+   "id": "M-02",
+   "severity": "info",
+   "claim": "QA 预读 SOURCE-CHECKLIST 散文计「12 源+6 测试」为 QA 侧笔误（SCOPE kind 实为 11 源+7 测试）；作者按 SCOPE 记录并在 STATUS.qaPreReadNote/UNVERIFIED §三7 如实更正——处理正确，本条为 reviewer 侧更正记录。",
+   "sourceEvidence": "manager/assignments/nb-19-SCOPE.json kinds 计数 11/7；deliveries/nb-19/STATUS.json qaPreReadNote",
+   "action": "QA 预读清单不改已写文件，此记录为准"
+  },
+  {
+   "id": "M-03",
+   "severity": "info",
+   "claim": "18 篇手册 YAML reviewer 字段填包名 p05-review-engine（FILES.tsv 领域配对惯例），非独立 QA 会话名；与既有批次惯例一致。",
+   "sourceEvidence": "18 篇手册 frontmatter",
+   "action": "无需修改"
+  }
+ ],
+ "zip": {
+  "path": "deliveries/nb-19/R07-nb-19-05fb2565.zip",
+  "sha256": "a88612f8fcd740fdbf5ecce2e7f2f7fc4497fcdb2ad837a766dd86a644bde59c",
+  "entries": 21,
+  "note": "18 stage 手册 + MANIFEST + 2 mechanical TSV；无穿越/符号链接；逐条目与磁盘 0 mismatch"
+ },
+ "diffReplay": "changes.diff 1868 行 new-file 补丁（18 篇），与 stage 字节一致",
+ "parentPreserved": null,
+ "notClaimed": [
+  "测试运行结果",
+  "typecheck/build 结果",
+  "G3 跨模块（未运行）",
+  "922 legacy 手册未继承"
+ ]
+}

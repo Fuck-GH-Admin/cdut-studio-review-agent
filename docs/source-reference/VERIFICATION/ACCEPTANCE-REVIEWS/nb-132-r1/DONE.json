@@ -1,0 +1,17 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-132-r1",
+ "revisionOf": "nb-132",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-qa-extra-05-20261024",
+ "reviewedAtUtc": "2026-10-23T20:28:29Z",
+ "status": "REVIEW_COMPLETE",
+ "batchVerdict": "accepted",
+ "fileVerdictsCount": {"accepted": 18, "revision_required": 0},
+ "findingsClosed": ["F-1", "F-2", "F-3"],
+ "deliverySeal": {"sealId": "seal-1fa23608fdc044f2", "manifestSha256": "2d220b5ceb91742a14a086ec89649cfe50a24d23fc0ca17d2e2f1f04b0e4e79b", "zipSha256": "c62152463234fe13988f650c1167caafec21650840738595464c270444c8221f"},
+ "artifacts": ["reviews/nb-132-r1/RESULT.json", "reviews/nb-132-r1/RESULT.md", "reviews/nb-132-r1/REVIEWED-HASHES.json", "reviews/nb-132-r1/TO-AUTHOR.md", "reviews/nb-132-r1/TO-LEAD.md"],
+ "notRun": ["product tests (40+32 cases)", "typecheck", "build", "Electron/GUI", "real LLM/network/IPC"],
+ "next": "nb-132 全批闭环；lead 按 r1 acceptedHashes 合入 3 篇修订；QA 继续盯 nb-112-r1（WIP）/nb-143-r1",
+ "note": "D0 自洽；15 篇=父版字节。"
+}

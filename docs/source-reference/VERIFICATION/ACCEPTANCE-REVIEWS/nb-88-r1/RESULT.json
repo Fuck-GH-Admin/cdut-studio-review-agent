@@ -1,0 +1,267 @@
+{
+ "schema": "r07-review-result/2",
+ "batch": "nb-88-r1",
+ "revisionOf": "nb-88",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-ui-20261023",
+ "reviewerSession": "docs-r07-qa-ui-20261023",
+ "reviewedAtUtc": "2026-10-24T01:00:00Z",
+ "batchVerdict": "accepted",
+ "verdictNote": "返修复验：N88-1 覆盖补齐（trialT01Template §2 行已加、7/7 全提及）但行段残留「:212-…」省略号（低级）；N88-2/3 closed（9 test/7 test）。3 篇变更、15 篇未变。accepted 仅限静态文档 scope；NOT_RUN。",
+ "scope": "manager/assignments/nb-88-SCOPE.json",
+ "sealed": {
+  "root": "deliveries/nb-88-r1",
+  "revisionOf": "nb-88",
+  "readySha256": "90dad1bff07c0171be69b82b907fc88d95f289b9e876475ae315d6ccf3eddd38",
+  "doneSha256": "7f58f5d713d074cc7e178661ec4804792b84c68bbe09562e678160b26f301faa",
+  "manifestSha256": "775bb9814d51c5f9399346c95ab3d343e862ba03ca981da3dca5256cc338ff2f",
+  "zipSha256": "b3c96ce3821a2013377e6ad8b35676e0be07b5fa2ded77b06f34809e6231f246"
+ },
+ "gates": {
+  "G0": "PASS",
+  "G1": "PASS",
+  "G2": "ACCEPTED"
+ },
+ "g0Evidence": [
+  "18 篇四方哈希一致；源 18/18 blob 一致；15 篇未变逐字节；before/=r0"
+ ],
+ "g2Evidence": [
+  "N88-1 覆盖 closed：trialT01Template 行已列（:212 起、注明被 checkT01ExampleForm :101/:105 调用）、7/7 导出全提及；行段尾「…」不可解析（残留）",
+  "N88-2 closed：1 describe/9 test；N88-3 closed：1 describe/7 test"
+ ],
+ "files": [
+  {
+   "path": "apps/electron/src/renderer/components/content-review/review-v3-fallback-executable-plan.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-fallback-executable-plan.ts.md",
+   "sourceBlob": "a09772020cb65fe05c43b0aeb1127326ea4438c6",
+   "sourceSha256": "dde8a008d84f7cd5392a055768b1d8ff9be448230d10f5ad93cb64673471c317",
+   "manualSha256": "11fa0df38702a7532ef1e6d16e36a7de1c418f3918dcc105f2f92bb51c6f9a3a",
+   "parentSha256": "11fa0df38702a7532ef1e6d16e36a7de1c418f3918dcc105f2f92bb51c6f9a3a",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/content-review/review-v3-source-navigation.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-source-navigation.test.ts.md",
+   "sourceBlob": "8a2071f54c44ec19a7d377dcb796b92f0460671b",
+   "sourceSha256": "b73cc9b4a4689f139f6382fdb990fead67640ac74a8a3d8bc11770931c5d8542",
+   "manualSha256": "600ea5e8c10d5a1f6d60ab58351db7acfb1964139fe6b6850787393ba8521913",
+   "parentSha256": "600ea5e8c10d5a1f6d60ab58351db7acfb1964139fe6b6850787393ba8521913",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/content-review/review-v3-source-navigation.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-source-navigation.ts.md",
+   "sourceBlob": "e4b628d805d15c4664cf738502201b0c7ce4a132",
+   "sourceSha256": "838cd557e28a6cea6362b77b1d137922bf07ba446bab5a95d20952c99dc3231a",
+   "manualSha256": "13ce11d50f97a6076ea1f7c521e9a01bb8ab001fd1f1b538add8e370ae56da8e",
+   "parentSha256": "13ce11d50f97a6076ea1f7c521e9a01bb8ab001fd1f1b538add8e370ae56da8e",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/content-review/review-v3-t01-brief-authoring.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-brief-authoring.test.ts.md",
+   "sourceBlob": "39a954b4db6637b21f217811291df20cce063dfa",
+   "sourceSha256": "a185ee45574539a81840d554314be9311d2bcdc7e90a6bdf84f6fdf7a2f97953",
+   "manualSha256": "4375424402833b8fc0015a0cc3f25ac987cc4cb14ab3320a8326c46f29c4621c",
+   "parentSha256": "b3be779d6362ee7ad7deeaaabf4824f0039bbc52b05cf349529609f326fddea2",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/content-review/review-v3-t01-brief-authoring.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-brief-authoring.ts.md",
+   "sourceBlob": "888f7bb09c76c3320ecf85e0e714d399e5dc93c8",
+   "sourceSha256": "40b7f7518cc4892d770881e2c320c9f4338e5a39337f6594a7fae376056ec750",
+   "manualSha256": "bcc34d91dff809434303be2509a2029e9567855976828e62643dbd18af242c16",
+   "parentSha256": "bcc34d91dff809434303be2509a2029e9567855976828e62643dbd18af242c16",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/content-review/review-v3-t01-business-presets.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-business-presets.test.ts.md",
+   "sourceBlob": "bb260efc247bcf01a51512ba7adf2c1b643da01e",
+   "sourceSha256": "dd0b083e91cf3de73e0de59d728501d203ed9b45f312f34ae2a5ba0eb6afdea3",
+   "manualSha256": "e9b3f64ddaf26e98693c53816411ffabacf0d1c637c1af7c007f2d66d00b1885",
+   "parentSha256": "3ad0993374053edf6b2a604cbe57ecdd6796532384ce60aae3f73f2f868a8575",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/content-review/review-v3-t01-business-presets.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-business-presets.ts.md",
+   "sourceBlob": "19dbb9804361afe64a9408bec2cb4459c2c535a9",
+   "sourceSha256": "b4baa3e033709277c1c98f31b076136e2dcb92996db4e5aa6abbc818ecb538ab",
+   "manualSha256": "9ce2fc8e78368930505d1dfd1da461c28e51e36d83e5979511f0b8a5119b9662",
+   "parentSha256": "0cdf98d37aa351d3705cef4f3915a2f506597cf165421d49abffbd52293c7037",
+   "verdict": "accepted",
+   "findings": [
+    "N88R-1"
+   ]
+  },
+  {
+   "path": "apps/electron/src/renderer/components/content-review/review-v3-t01-example-packs.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-example-packs.test.ts.md",
+   "sourceBlob": "709ac817f448825c0814652bc83618fe7c2d7a16",
+   "sourceSha256": "465f84fdc754b6a043251ada0e7d1f415d17a1666c1fa2bdf85bf1518c803ec0",
+   "manualSha256": "5a3b45ebc818eaa10441bc2c80a3e39eac8bb4ab0099e737242628bdead13d5d",
+   "parentSha256": "5a3b45ebc818eaa10441bc2c80a3e39eac8bb4ab0099e737242628bdead13d5d",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/content-review/review-v3-t01-example-packs.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-example-packs.ts.md",
+   "sourceBlob": "f04346eae4e177bc079e528044f7298b1c0239b4",
+   "sourceSha256": "a95e60a2b2cbce1aad5a39977fec0c538ef36463bfba98cfb2ff6b995dba4061",
+   "manualSha256": "6e296f0830a56219acb025b46e152b16f9275f767fd4550f53f39b761c702335",
+   "parentSha256": "6e296f0830a56219acb025b46e152b16f9275f767fd4550f53f39b761c702335",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/content-review/review-v3-t01-model-draft-port.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-model-draft-port.test.ts.md",
+   "sourceBlob": "7c62b3b5b38dfa4a2f66654f463505f477473b45",
+   "sourceSha256": "be30d835e4ec15f363a9f9e83fa52c872e9a8f7b201063910b6058a08ee4677f",
+   "manualSha256": "ed0e064a7561eeeb51bd2bfdeb33b199571ec14b8c2647536daa2f16fdf05314",
+   "parentSha256": "ed0e064a7561eeeb51bd2bfdeb33b199571ec14b8c2647536daa2f16fdf05314",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/content-review/review-v3-t01-model-draft-port.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-model-draft-port.ts.md",
+   "sourceBlob": "0ec9c910a9f2e78983c1f4f113373d1a48788bbd",
+   "sourceSha256": "cb562fd7749a50a105c686bd48e345c79a62c6225a180e849653626e4dddd41d",
+   "manualSha256": "fac5f4f3222ce363c7b24fa2447e8385081d17c3e796c408f36ffc62e5f2fdcf",
+   "parentSha256": "fac5f4f3222ce363c7b24fa2447e8385081d17c3e796c408f36ffc62e5f2fdcf",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/content-review/review-v3-t01-template-portability.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-template-portability.test.ts.md",
+   "sourceBlob": "4f5d28d95323ab1d907494908d8e71e43381ae6f",
+   "sourceSha256": "b2ad21f6a68c85f110dccee3b871b8afdd9a16ff72956a1aa10a5a3b841772ac",
+   "manualSha256": "74a4e4f2d7752cb34f202b14a347a4fda1ff280b80db06176e16b40b40bdbcf1",
+   "parentSha256": "74a4e4f2d7752cb34f202b14a347a4fda1ff280b80db06176e16b40b40bdbcf1",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/content-review/review-v3-t01-template-portability.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-template-portability.ts.md",
+   "sourceBlob": "eb2b68684bcfc69d693b88b5b29da1d9824aa7cc",
+   "sourceSha256": "86ed7a4d5cdfd601d54374a192c78a364bed953a6cd1ba51f3465152f742d6dc",
+   "manualSha256": "9b021f46ec7dedf80125ea8fee6e40ba1e7f4ff472a58b14f56fec930887f981",
+   "parentSha256": "9b021f46ec7dedf80125ea8fee6e40ba1e7f4ff472a58b14f56fec930887f981",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/content-review/review-v3-t01-typed-criteria.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-typed-criteria.test.ts.md",
+   "sourceBlob": "763cf39f9f63bde242edd5b1fec2b024a1a195fd",
+   "sourceSha256": "b7744a52641310e3d5aa8c5bb21b6b5fb9dee1634f3fb1f92c009c8d378c0de9",
+   "manualSha256": "76c3d106f8a9f7688dbcc3d1a5e9c2f5034e125dd354a10594b9303324c83a09",
+   "parentSha256": "76c3d106f8a9f7688dbcc3d1a5e9c2f5034e125dd354a10594b9303324c83a09",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/content-review/review-v3-t01-typed-criteria.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-typed-criteria.ts.md",
+   "sourceBlob": "f12cc4455ab3adbf71ad21f44ea23d205e397050",
+   "sourceSha256": "fe595ec9a8f85ec311f91bb53d7673775ad73e570d103fc0d45ad6b97fb95816",
+   "manualSha256": "3c75723019810f542d52103ad684b358a336aa5ac7afad92262f806d03876423",
+   "parentSha256": "3c75723019810f542d52103ad684b358a336aa5ac7afad92262f806d03876423",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/content-review/review-v3-t01-versioning.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-versioning.test.ts.md",
+   "sourceBlob": "5a88799d499a49f87b5d2d3cdcdb303a4ca1306f",
+   "sourceSha256": "98036f8f1516b00d5f943d8e9aca57b5955eb7f199c4b03e34cfa8b126519cec",
+   "manualSha256": "f6e35d89fbaf3948fd59f75e41629dc4bf36869ed3f601ded0a9d6f7d32fd955",
+   "parentSha256": "f6e35d89fbaf3948fd59f75e41629dc4bf36869ed3f601ded0a9d6f7d32fd955",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/content-review/review-v3-t01-versioning.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-versioning.ts.md",
+   "sourceBlob": "e7b2054e19bca88894ef29d6ee1d08b2a9052b52",
+   "sourceSha256": "27aa99748cecf17ddbcdd5602b72c785644bc9c0081a5257f60cce9a1ba2d80f",
+   "manualSha256": "95b8db7e8031e3eb99e91393b94e4aee9a005df506e4af3f2967a8dd16fe2ca4",
+   "parentSha256": "95b8db7e8031e3eb99e91393b94e4aee9a005df506e4af3f2967a8dd16fe2ca4",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/content-review/review-v3-t05-stage-actions.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t05-stage-actions.test.ts.md",
+   "sourceBlob": "d75043f315ef76b9807eb0f4880a4b3bfe187849",
+   "sourceSha256": "3d3571c5179e00537d322d2436e9244722dbe9cf74047152febe05a905459c63",
+   "manualSha256": "f8609a3089cd472b26330d8488ffdc5a4c8c5145fcfe190c25140e9e67ad7098",
+   "parentSha256": "f8609a3089cd472b26330d8488ffdc5a4c8c5145fcfe190c25140e9e67ad7098",
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-fallback-executable-plan.ts.md": "11fa0df38702a7532ef1e6d16e36a7de1c418f3918dcc105f2f92bb51c6f9a3a",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-source-navigation.test.ts.md": "600ea5e8c10d5a1f6d60ab58351db7acfb1964139fe6b6850787393ba8521913",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-source-navigation.ts.md": "13ce11d50f97a6076ea1f7c521e9a01bb8ab001fd1f1b538add8e370ae56da8e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-brief-authoring.test.ts.md": "4375424402833b8fc0015a0cc3f25ac987cc4cb14ab3320a8326c46f29c4621c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-brief-authoring.ts.md": "bcc34d91dff809434303be2509a2029e9567855976828e62643dbd18af242c16",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-business-presets.test.ts.md": "e9b3f64ddaf26e98693c53816411ffabacf0d1c637c1af7c007f2d66d00b1885",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-business-presets.ts.md": "9ce2fc8e78368930505d1dfd1da461c28e51e36d83e5979511f0b8a5119b9662",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-example-packs.test.ts.md": "5a3b45ebc818eaa10441bc2c80a3e39eac8bb4ab0099e737242628bdead13d5d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-example-packs.ts.md": "6e296f0830a56219acb025b46e152b16f9275f767fd4550f53f39b761c702335",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-model-draft-port.test.ts.md": "ed0e064a7561eeeb51bd2bfdeb33b199571ec14b8c2647536daa2f16fdf05314",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-model-draft-port.ts.md": "fac5f4f3222ce363c7b24fa2447e8385081d17c3e796c408f36ffc62e5f2fdcf",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-template-portability.test.ts.md": "74a4e4f2d7752cb34f202b14a347a4fda1ff280b80db06176e16b40b40bdbcf1",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-template-portability.ts.md": "9b021f46ec7dedf80125ea8fee6e40ba1e7f4ff472a58b14f56fec930887f981",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-typed-criteria.test.ts.md": "76c3d106f8a9f7688dbcc3d1a5e9c2f5034e125dd354a10594b9303324c83a09",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-typed-criteria.ts.md": "3c75723019810f542d52103ad684b358a336aa5ac7afad92262f806d03876423",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-versioning.test.ts.md": "f6e35d89fbaf3948fd59f75e41629dc4bf36869ed3f601ded0a9d6f7d32fd955",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t01-versioning.ts.md": "95b8db7e8031e3eb99e91393b94e4aee9a005df506e4af3f2967a8dd16fe2ca4",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t05-stage-actions.test.ts.md": "f8609a3089cd472b26330d8488ffdc5a4c8c5145fcfe190c25140e9e67ad7098"
+ },
+ "findings": [
+  {
+   "id": "N88R-1",
+   "severity": "low",
+   "type": "unresolvable_ref",
+   "status": "open",
+   "file": "apps/electron/src/renderer/components/content-review/review-v3-t01-business-presets.ts",
+   "manualLines": "§2 trialT01Template 行",
+   "claim": "行段「:212-…」尾省略号应改实值",
+   "sourceEvidence": [
+    "函数 :212 起，止于文件尾段实测可定"
+   ],
+   "action": "下次触碰改实值"
+  }
+ ],
+ "closedFindings": {
+  "N88-1": "closed（覆盖）",
+  "N88-2": "closed",
+  "N88-3": "closed"
+ },
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "boundaries": [
+  "未改源码/作者正文/candidate/全局总账；旧 seal 不回写；NOT_RUN 不等于测试通过",
+  "accepted 仅限静态文档 scope"
+ ]
+}

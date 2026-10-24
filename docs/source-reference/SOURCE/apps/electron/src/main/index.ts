@@ -1,0 +1,1282 @@
+// 彻底抑制开发环境下控制台 Electron Security Warning 输出，避免被瑞数等反爬脚本通过 console.warn 探针识破
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'
+
+import { app, BrowserWindow, dialog, Menu, powerMonitor, protocol, screen, session as electronSession, shell } from 'electron'
+import { join } from 'path'
+import { createConnection } from 'net'
+import { existsSync } from 'fs'
+import { getDevInstanceId, resolveDevAppName, resolveDevUserDataPath } from './lib/dev-instance'
+import { appendDevDiagnostic } from './lib/dev-diagnostics-log'
+import { isCdutDomain } from './lib/cdut/yanhu/yanhu-domain-gatekeeper'
+import { CDUT_AUTH_CERT_SESSION_ID, CDUT_AUTH_PARTITION } from './lib/cdut/cdut-auth-manager'
+import { installCertificateSecurityPolicy, isCompromisedEmudhraCertificate } from './lib/security/cert-blacklist'
+import { confirmExecutableFileOpen } from './lib/security/executable-open-guard'
+
+/**
+ * dev 模式下等待 Vite dev server 就绪的轮询参数。
+ *
+ * 冷启动实测耗时极不稳定（同机同仓库观测到 416ms / 510ms / 645ms / 1238ms / 5102ms / 9240ms），
+ * 而主窗口的 loadURL 固定发生在启动约第 5s。若早于 dev server 监听端口导航，
+ * Chromium 会直接返回 ERR_CONNECTION_REFUSED 且**不会自动重试**：页面停在加载态，
+ * renderer 永远不会执行 notifyRendererReady()（它要等 getSettings() 成功），
+ * 启动页因此一直不撤——表现为「初始界面加载很久」或彻底卡死。
+ */
+const DEV_SERVER_READY_TIMEOUT_MS = 30_000
+const DEV_SERVER_READY_POLL_MS = 200
+const DEV_SERVER_PROBE_TIMEOUT_MS = 1_000
+const DEV_SERVER_LOAD_MAX_RETRIES = 5
+
+/** 探测 TCP 端口是否已可连接（不经过 HTTP，不触碰 dev server 的变换流程）。 */
+function probeDevServerPort(hostname: string, port: number): Promise<boolean> {
+  return new Promise((resolve) => {
+    const socket = createConnection({ host: hostname, port })
+    const finish = (ok: boolean): void => {
+      socket.destroy()
+      resolve(ok)
+    }
+    socket.setTimeout(DEV_SERVER_PROBE_TIMEOUT_MS)
+    socket.once('connect', () => finish(true))
+    socket.once('timeout', () => finish(false))
+    socket.once('error', () => finish(false))
+  })
+}
+
+// userData 和单实例锁必须在任何会读取 userData 的模块加载前隔离。
+// PROFER_DEV_INSTANCE / PROFER_USER_DATA_DIR 仅对开发版生效，正式版忽略这些参数。
+const devInstanceId = getDevInstanceId()
+if (!app.isPackaged) app.setName(resolveDevAppName())
+app.setPath('userData', resolveDevUserDataPath(app.getPath('appData'), app.isPackaged, process.env))
+if (devInstanceId) {
+  console.log(`[启动] 开发隔离实例: ${devInstanceId}，userData=${app.getPath('userData')}`)
+}
+
+// 品牌已切换为 CDUT Studio：userData 迁移逻辑移除，新软件从干净目录开始，不读取 @profer 遗留数据。
+
+// 仅正式 Windows 安装版声明 AUMID，使任务栏与 CDUT Studio.exe / 开始菜单快捷方式绑定。
+// 开发版由裸 electron.exe 承载，刻意不声明 AUMID：任务栏使用 Electron 默认图标，
+// 避免开发环境向 Windows Shell 注册或污染生产 com.cdutai.studio 身份。
+if (process.platform === 'win32' && app.isPackaged) {
+  app.setAppUserModelId('com.cdutai.studio')
+}
+
+
+// 单实例锁：防止重复启动同一个版本
+if (!app.requestSingleInstanceLock()) {
+  console.warn(
+    '[启动] 已有 CDUT Studio 进程持有单实例锁，本次启动将退出。\n' +
+      '  如果窗口未出现，可能旧进程已卡死。请运行 `killall "CDUT Studio"` 后重试。',
+  )
+  app.quit()
+} else {
+  // 主流程：正常启动（单实例锁已获取）
+  registerProtocolsAndHandlers()
+}
+
+function registerProtocolsAndHandlers(): void {
+  // 注册自定义协议方案为“特权”（必须在 app ready 之前）
+  // 用于内联预览本地文件（renderer 用 iframe 加载 cdut-file:// 资源）
+  protocol.registerSchemesAsPrivileged([
+    { scheme: 'cdut-file', privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
+    { scheme: 'cdut-skin', privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
+    { scheme: 'cdut-resource', privileges: { standard: true, secure: true, supportFetchAPI: true, corsEnabled: true, stream: true } },
+  ])
+
+  // 智联万站多层框架白屏根除（引擎级隐身，须在 app ready 前注入）：
+  // C++ Blink 引擎原生将 navigator.webdriver 置为 false，其访问器为原生 native code，
+  // 通过瑞数所有 Function.prototype.toString / Realm 对比检测（取代脆弱的 JS 原型链劫持）。
+  app.commandLine.appendSwitch('disable-blink-features', 'AutomationControlled')
+  // 优化同站多框架/frameset 内存通道与凭据共享，规避严格 OOPIF（站点隔离）导致
+  // 内层子框架跨框架 Cookie 断层、动态签名缺失而遭瑞数 WAF 返回 HTTP 400 空包。
+  app.commandLine.appendSwitch('disable-features', 'IsolateOrigins,site-per-process')
+
+  // Windows: 禁用 LCD 次像素抗锯齿（ClearType），改用灰度 AA。
+  // ClearType 是为浅色背景+深色文字设计的，在深色代码块背景下会产生彩色边缘，导致文字模糊。
+  if (process.platform === 'win32') {
+    app.commandLine.appendSwitch('disable-lcd-text')
+    // 原始动态 Splash 在部分 NVIDIA + D3D11 环境闪动；D3D11on12 后端已在受影响
+    // RTX 3060 Windows 环境完整显示且不闪，同时启动后的主页面正常。保留环境变量覆盖，便于其他机器 A/B。
+    const angleBackend = process.env.PROFER_ANGLE_BACKEND ?? 'd3d11on12'
+    if (['d3d11', 'd3d9', 'd3d11on12', 'gl', 'swiftshader'].includes(angleBackend)) {
+      app.commandLine.appendSwitch('use-angle', angleBackend)
+      console.info(`[图形] ANGLE backend: ${angleBackend}`)
+    }
+    // 视频绿屏规避：部分 Windows 显卡/驱动在「窗口内合成」路径下，硬件视频解码经
+    // DirectComposition 覆盖层呈现会失败，非全屏时整帧为绿色（进入原生全屏后切换到
+    // 独立呈现路径才恢复正常）。改用软件解码可从根上规避该问题，会话内联短视频性能无感。
+    // 需要恢复硬件解码（如笔记本省电场景）时，设 PROFER_ENABLE_HW_VIDEO_DECODE=1。
+    if (process.env.PROFER_ENABLE_HW_VIDEO_DECODE !== '1') {
+      app.commandLine.appendSwitch('disable-accelerated-video-decode')
+      console.info('[图形] 已禁用视频硬件解码（规避非全屏绿屏）')
+    }
+    // 叠加关闭 DirectComposition 视频覆盖层：该硬件覆盖层在部分 Windows 驱动下会把
+    // 页面内合成的视频整帧呈成绿色/花屏，改回普通纹理合成即可规避（保留硬件解码）。
+    app.commandLine.appendSwitch('disable-direct-composition-video-overlays')
+  }
+
+  // macOS 文件关联：在 app ready 之前注册 open-file 事件
+  app.on('open-file', (event, filePath) => {
+    event.preventDefault()
+    handleMigrationFileOpen(filePath)
+  })
+
+  // Windows 文件关联：当用户双击文件时，新实例的参数会通过 second-instance 传给已有实例
+  app.on('second-instance', (_event, argv) => {
+    showAndFocusMainWindow()
+    const fileArg = argv.find((arg) => arg.endsWith('.profer-backup') || arg.endsWith('.profer-share'))
+    if (fileArg) {
+      handleMigrationFileOpen(fileArg)
+    }
+  })
+
+  // 智联万站内网白屏根除：校内站点普遍使用内网中间证书/自签名证书，
+  // 一律信任 *.cdut.edu.cn，避免证书校验失败把整页拦成白屏；站外域名保持默认拒绝策略。
+  // eMudhra 泄露链（2026-10 事件）红线：校内/外网命中泄露链证书一律拒绝，
+  // 此判定严格先于校内豁免（顺序即安全）。已装 verifyProc 的会话不会走到本兜底。
+  app.on('certificate-error', (event, _webContents, url, _error, certificate, callback) => {
+    // 防御性包裹：Chromium 一次性回调若已被别处消费，再次调用会抛致命异常，
+    // 进而触发 Electron 默认的 Win32 同步模态错误弹窗并冻结整个主进程消息泵。
+    const safeCallback = (allow: boolean): void => {
+      try {
+        callback(allow)
+      } catch (err) {
+        console.warn('[安全策略] 证书错误回调执行异常（已防御）:', err)
+      }
+    }
+    if (isCompromisedEmudhraCertificate(certificate)) {
+      event.preventDefault()
+      safeCallback(false)
+      return
+    }
+    if (isCdutDomain(url)) {
+      event.preventDefault()
+      safeCallback(true)
+      return
+    }
+    safeCallback(false)
+  })
+}
+
+
+
+import { getSettings, updateSettings } from './lib/settings-service'
+import { resolveAppThemeIsDark } from './lib/app-theme-service'
+import { createCenteredStartupSplashBounds, createStartupSplashHtml } from './lib/startup-splash'
+import { handleProferFileRequest } from './lib/local-file-protocol'
+import { handleProferSkinRequest } from './lib/skin-service'
+import { disposeAgentPreviewRenderer } from './lib/agent-preview-renderer'
+
+// 处理 EPIPE 错误：当 stdout/stderr 管道被关闭时（如 electronmon 重启），忽略写入错误
+// 这在开发环境热重载时经常发生，不影响应用功能
+process.stdout?.on?.('error', (err: NodeJS.ErrnoException) => {
+  if (err.code === 'EPIPE') return
+  throw err
+})
+process.stderr?.on?.('error', (err: NodeJS.ErrnoException) => {
+  if (err.code === 'EPIPE') return
+  throw err
+})
+
+// 清理本地环境中的 ANTHROPIC_* 变量，防止干扰应用的认证流程
+// Electron 桌面应用通过渠道系统管理 API Key，不应受终端环境变量影响
+// 注意：此操作必须在 initializeRuntime()（loadShellEnv）之前执行
+for (const key of Object.keys(process.env)) {
+  if (key.startsWith('ANTHROPIC_')) {
+    delete process.env[key]
+  }
+}
+
+import { createApplicationMenu, installTextContextMenus } from './menu'
+import { registerIpcHandlers, setRendererReadyHandler, stopAllGoalsForProcessExit } from './ipc'
+import { installC11LocalAuthorWorkbench } from './lib/review/review-v3-main-local-author-workbench'
+import { installC11LocalNativeProductIntake } from './lib/review/review-v3-main-local-product-intake'
+import { installC11NativeD4TechnicalPlan } from './lib/review/review-v3-main-d4-local-plan'
+import { installC11NativeB1TechnicalPlan } from './lib/review/review-v3-main-b1-local-plan'
+import { setRemoteServiceEnabled, startRemoteService, stopRemoteService } from './lib/remote-service'
+import { startAgentFabricService, stopAgentFabricService } from './lib/agent-fabric/agent-fabric-service'
+import { createTray, destroyTray, getTray } from './tray'
+import { initializeRuntime } from './lib/runtime-init'
+import { seedDefaultSkills, VITE_DEV_SERVER_URL } from './lib/config-paths'
+import { configureGlobalSkillSystem, ensureGlobalSkillSystemReady } from './lib/global-skill-manager'
+import { ensurePresetSystemReady } from './lib/agent-preset-manager'
+import { handleProferResourceRequest } from './lib/local-resource-protocol'
+import { getMainWindow, setMainWindow } from './lib/main-window-state'
+import { stopAllAgents, killOrphanedClaudeSubprocesses } from './lib/agent-service'
+import { disposePiMcpConnections } from './lib/adapters/pi-mcp-tools'
+import { disposeLarkCliService } from './lib/lark-cli-service'
+import { disposeLarkMcpService } from './lib/lark-mcp-service'
+import { browserController } from './lib/browser-controller'
+import { yanhuExpressManager } from './lib/cdut/yanhu/yanhu-express-manager'
+import { yanhuPetWindowManager } from './lib/cdut/yanhu/yanhu-pet-window-manager'
+import { startStudyBenchmarkServer, stopStudyBenchmarkServer } from './lib/study/study-benchmark-server'
+import { startWorkspaceWatcher, stopWorkspaceWatcher } from './lib/workspace-watcher'
+import { closeAllLabToolWatchers } from './lib/cslab/cslab-tool-registry'
+import { closeAllVaultWatchers } from './lib/cslab/cslab-canvas-sync'
+import { closeAllCsLabVaultCaches } from './lib/cslab/cslab-vault-cache'
+import { stopAllShareWatchers } from './lib/cslab/cslab-share-watcher'
+import { closeAllShareDatabases } from './lib/cslab/cslab-share-db'
+import { stopAllHpcBridges } from './lib/cslab/cslab-hpc'
+import { closeAllHpcDatabases } from './lib/cslab/cslab-hpc-db'
+import { closeAllCsLabDatabases } from './lib/cslab/cslab-db'
+import { stopAllZoteroWatchers } from './lib/cslab/cslab-zotero'
+import { getIsQuitting, setQuitting } from './lib/app-lifecycle'
+import {
+  registerBridge,
+  startAllBridges,
+  startBridgeSelfHealing,
+  stopAllBridges,
+  stopBridgeSelfHealing,
+} from './lib/bridge-registry'
+import { startScheduler, stopScheduler } from './lib/automation-scheduler'
+import { startPlanningReminderScheduler, stopPlanningReminderScheduler } from './lib/planning-reminder-scheduler'
+import { startLongTermMemoryConsolidator } from './lib/longterm-memory/longterm-memory-reflector'
+import { destroyPlanningWindow } from './lib/planning-window'
+import { destroyCsLabAgentWindow } from './lib/cslab/cslab-window-manager'
+import { getWindowFrameColor, updateWindowFrameAppearance } from './lib/titlebar-overlay'
+import { feishuBridgeManager } from './lib/feishu-bridge-manager'
+import { getFeishuMultiBotConfig } from './lib/feishu-config'
+import { stopFeishuSyncSleepBlocker, syncFeishuSyncSleepBlocker } from './lib/feishu-sleep-blocker'
+import { dingtalkBridgeManager } from './lib/dingtalk-bridge-manager'
+import { getDingTalkMultiBotConfig } from './lib/dingtalk-config'
+import { wechatBridge } from './lib/wechat-bridge'
+import { getWeChatConfig } from './lib/wechat-config'
+import { registerGlobalShortcut, unregisterAllGlobalShortcuts } from './lib/global-shortcut-service'
+import { maintainDevShellShortcut } from './lib/dev-shell-shortcut'
+import { setProferVersion } from '@profer/core'
+import { IPC_CHANNELS } from '@profer/shared'
+import { TRAY_IPC_CHANNELS } from '../types'
+import {
+  DEFAULT_MAIN_WINDOW_ZOOM_FACTOR,
+  DEFAULT_TRAFFIC_LIGHT_POSITION,
+  installMacTrafficLightZoomSync,
+} from './lib/mac-traffic-light'
+
+const MIGRATION_IPC_OPEN = 'migration:open-import-file'
+
+/** 检查文件路径是否为迁移文件，如果是则通知渲染进程打开导入流程 */
+function handleMigrationFileOpen(filePath: string): void {
+  if (filePath.endsWith('.profer-backup') || filePath.endsWith('.profer-share')) {
+    sendToMainWindow(MIGRATION_IPC_OPEN, { filePath })
+  }
+}
+
+// ===== Bridge 注册（新增 Bridge 只需在此添加一个 registerBridge 调用） =====
+
+registerBridge({
+  name: '飞书 BridgeManager',
+  shouldAutoStart: () => {
+    const config = getFeishuMultiBotConfig()
+    return config.bots.some((b) => b.enabled && b.appId && b.appSecret)
+  },
+  needsRecovery: () => {
+    const config = getFeishuMultiBotConfig()
+    const states = feishuBridgeManager.getStates()
+    return config.bots.some((bot) => (
+      bot.enabled &&
+      !!bot.appId &&
+      !!bot.appSecret &&
+      states.bots[bot.id]?.status === 'error'
+    ))
+  },
+  start: () => feishuBridgeManager.startAll(),
+  stop: () => feishuBridgeManager.stopAll(),
+  recover: () => recoverEnabledFeishuBots(),
+})
+
+registerBridge({
+  name: '钉钉 BridgeManager',
+  shouldAutoStart: () => {
+    const config = getDingTalkMultiBotConfig()
+    return config.bots.some((b) => b.enabled && b.clientId && b.clientSecret)
+  },
+  needsRecovery: () => {
+    const config = getDingTalkMultiBotConfig()
+    const states = dingtalkBridgeManager.getStates()
+    return config.bots.some((bot) => (
+      bot.enabled &&
+      !!bot.clientId &&
+      !!bot.clientSecret &&
+      states.bots[bot.id]?.status === 'error'
+    ))
+  },
+  start: () => dingtalkBridgeManager.startAll(),
+  stop: () => dingtalkBridgeManager.stopAll(),
+  recover: () => recoverEnabledDingTalkBots(),
+})
+
+registerBridge({
+  name: '微信 Bridge',
+  shouldAutoStart: () => {
+    const config = getWeChatConfig()
+    return !!(config.enabled && config.credentials)
+  },
+  needsRecovery: () => wechatBridge.getStatus().status === 'error',
+  start: () => wechatBridge.start(),
+  stop: () => wechatBridge.stop(),
+})
+
+async function recoverEnabledFeishuBots(): Promise<void> {
+  const config = getFeishuMultiBotConfig()
+  let failedCount = 0
+  for (const bot of config.bots) {
+    if (!bot.enabled || !bot.appId || !bot.appSecret) continue
+    try {
+      await feishuBridgeManager.restartBot(bot.id)
+    } catch (error) {
+      failedCount++
+      console.error(`[飞书 BridgeManager] Bot "${bot.name}" 自愈恢复失败:`, error)
+    }
+  }
+  if (failedCount > 0) {
+    throw new Error(`${failedCount} 个飞书 Bot 自愈恢复失败`)
+  }
+}
+
+async function recoverEnabledDingTalkBots(): Promise<void> {
+  const config = getDingTalkMultiBotConfig()
+  let failedCount = 0
+  for (const bot of config.bots) {
+    if (!bot.enabled || !bot.clientId || !bot.clientSecret) continue
+    try {
+      await dingtalkBridgeManager.restartBot(bot.id)
+    } catch (error) {
+      failedCount++
+      console.error(`[钉钉 BridgeManager] Bot "${bot.name}" 自愈恢复失败:`, error)
+    }
+  }
+  if (failedCount > 0) {
+    throw new Error(`${failedCount} 个钉钉 Bot 自愈恢复失败`)
+  }
+}
+
+let mainWindow: BrowserWindow | null = null
+
+/** 长期记忆睡眠整合定时器的停止句柄 */
+let stopLongTermMemoryConsolidator: (() => void) | null = null
+
+/** 诊断 payload 解析失败时保留原始字符串，避免整条记录因解析异常而丢失。 */
+function parseDiagnosticPayload(raw: string): unknown {
+  try {
+    return JSON.parse(raw)
+  } catch {
+    return raw
+  }
+}
+let startupSplashWindow: BrowserWindow | null = null
+
+// CSS 圆环会在约 2.4 秒内陆续扩散；保留足够展示时间以便用户观察启动反馈。
+const STARTUP_SPLASH_MIN_MS = 2400
+
+/** 启动闪屏的背景明暗：与「Agent 打开的本地预览」共用同一套解析（皮肤 tone 优先于 id 后缀启发式） */
+const resolveStartupSplashDark = resolveAppThemeIsDark
+
+/** 获取主窗口实例（供其他模块使用）。 */
+export { getMainWindow }
+
+function installWindowsZoomInFallback(win: BrowserWindow): void {
+  if (process.platform !== 'win32') return
+
+  win.webContents.on('before-input-event', (event, input) => {
+    if (input.type !== 'keyDown' || !input.control || input.alt || input.meta) return
+
+    // Windows 下主键盘的 Ctrl++ 常会以 Ctrl+= 上报；小键盘加号也需要兜底。
+    const key = input.key.toLowerCase()
+    if (!['=', '+', 'numadd', 'add'].includes(key)) return
+
+    event.preventDefault()
+    const currentZoomLevel = win.webContents.getZoomLevel()
+    win.webContents.setZoomLevel(Math.min(currentZoomLevel + 0.5, 9))
+  })
+}
+
+/**
+ * 检查窗口是否在可用显示器范围内
+ * 处理外接显示器断开后窗口位于不可见区域的情况
+ */
+function ensureWindowOnScreen(win: BrowserWindow): void {
+  const bounds = win.getBounds()
+  const displays = screen.getAllDisplays()
+  // 检查窗口中心点是否在任一显示器范围内
+  const centerX = bounds.x + bounds.width / 2
+  const centerY = bounds.y + bounds.height / 2
+  const isOnScreen = displays.some((display) => {
+    const { x, y, width, height } = display.workArea
+    return centerX >= x && centerX <= x + width && centerY >= y && centerY <= y + height
+  })
+  if (!isOnScreen) {
+    // 窗口不在任何屏幕内，移动到主显示器居中位置
+    const primary = screen.getPrimaryDisplay()
+    const { x, y, width, height } = primary.workArea
+    win.setBounds({
+      x: x + Math.round((width - bounds.width) / 2),
+      y: y + Math.round((height - bounds.height) / 2),
+      width: bounds.width,
+      height: bounds.height,
+    })
+    console.log('[窗口] 窗口已重新定位到主显示器')
+  }
+}
+
+/** 显示并聚焦主窗口，确保窗口在可见区域；若窗口已销毁则重新创建 */
+function showAndFocusMainWindow(): void {
+  if (process.platform === 'darwin') {
+    if (app.dock) app.dock.show()
+    app.show()
+  }
+
+  if (!mainWindow || mainWindow.isDestroyed()) {
+    createWindow()
+    return
+  }
+  ensureWindowOnScreen(mainWindow)
+  if (mainWindow.isMinimized()) {
+    mainWindow.restore()
+  }
+  mainWindow.show()
+  mainWindow.focus()
+}
+
+/**
+ * Get the appropriate app icon path for the current platform
+ */
+function getIconPath(): string {
+  // 开发模式：resources/ 在 dist/ 下，通过 build:resources 复制
+  // 打包模式：resources/ 在 process.resourcesPath（app.asar 同级）
+  const resourcesDir = app.isPackaged
+    ? process.resourcesPath
+    : join(__dirname, 'resources')
+
+  if (process.platform === 'darwin') {
+    return join(resourcesDir, 'icon.icns')
+  } else if (process.platform === 'win32') {
+    return join(resourcesDir, 'icon.ico')
+  } else {
+    return join(resourcesDir, 'icon.png')
+  }
+}
+
+function saveMainWindowState(): void {
+  if (!mainWindow || mainWindow.isDestroyed()) return
+  const isMaximized = mainWindow.isMaximized()
+  const isFullScreen = mainWindow.isFullScreen()
+  // 最大化/全屏时用 getNormalBounds() 保存恢复后的尺寸，
+  // 避免 macOS 全屏关闭后下次启动用全屏坐标恢复导致黑屏（Proma PR #1119）
+  const bounds = (isMaximized || isFullScreen) ? mainWindow.getNormalBounds() : mainWindow.getBounds()
+  updateSettings({
+    mainWindowState: {
+      width: bounds.width,
+      height: bounds.height,
+      x: bounds.x,
+      y: bounds.y,
+      isMaximized,
+    },
+  })
+}
+
+function createWindow(): void {
+  const iconPath = getIconPath()
+  const iconExists = existsSync(iconPath)
+
+  if (!iconExists) {
+    console.warn('App icon not found at:', iconPath)
+  }
+
+  const isMac = process.platform === 'darwin'
+  const isWindows = process.platform === 'win32'
+
+  const titleBarOptions = isMac
+    ? {
+        // 使用完整隐藏标题栏：hiddenInset 即使隐藏原生按钮仍保留系统标题栏命中区，
+        // 会吞掉自定义红绿灯的 hover/click。
+        titleBarStyle: 'hidden' as const,
+        trafficLightPosition: DEFAULT_TRAFFIC_LIGHT_POSITION,
+        vibrancy: 'under-window' as const,
+        visualEffectState: 'followWindow' as const,
+      }
+    : isWindows
+      ? { titleBarStyle: 'hidden' as const }
+      : {}
+
+  const savedState = getSettings().mainWindowState
+  const initialBounds = savedState
+    ? { width: savedState.width, height: savedState.height, x: savedState.x, y: savedState.y }
+    : { width: 1400, height: 900 }
+
+  mainWindow = new BrowserWindow({
+    ...initialBounds,
+    minWidth: 800,
+    minHeight: 600,
+    icon: iconExists ? iconPath : undefined,
+    // Windows 非客户区/DWM 在静止窗口时也可能露出 BrowserWindow 底色。
+    // 显式使用当前主题框架色，避免 Electron 默认白色形成一圈白边。
+    backgroundColor: getWindowFrameColor(),
+    show: false,
+    webPreferences: {
+      preload: join(__dirname, 'preload.cjs'),
+      contextIsolation: true,
+      nodeIntegration: false,
+    },
+    ...titleBarOptions,
+  })
+  // 主界面默认放大到 110%；使用 webContents 缩放，避免 CSS zoom 破坏有限布局区域。
+  mainWindow.webContents.setZoomFactor(DEFAULT_MAIN_WINDOW_ZOOM_FACTOR)
+  // 开发版将 renderer Console 直接镜像到 supervisor 日志，白屏/模块加载失败可无需手动打开 DevTools 即定位。
+  // 对话 resize 调试日志额外落盘（异步写入）。终端 scrollback（例如 Ghostty）不可由自动化稳定回放，
+  // 只持久化带专用前缀的结构化诊断，避免把正常 renderer 日志无限写入用户目录。
+  if (!app.isPackaged) {
+    const diagnosticsDir = join(app.getPath('userData'), 'diagnostics')
+
+    mainWindow.webContents.on('console-message', (_event, level, message, line, sourceId) => {
+      const severity = ['verbose', 'info', 'warning', 'error'][level] ?? String(level)
+      console.log(`[renderer:${severity}] ${sourceId}:${line} ${message}`)
+
+      if (message.startsWith('[CONVERSATION-SCROLL-DEBUG] ') && process.env.PROFER_DEV_DIAGNOSTICS === '1') {
+        appendDevDiagnostic(diagnosticsDir, 'conversation-scroll-debug.jsonl', {
+          timestamp: new Date().toISOString(),
+          severity,
+          sourceId,
+          line,
+          payload: parseDiagnosticPayload(message.slice('[CONVERSATION-SCROLL-DEBUG] '.length)),
+        })
+      }
+    })
+
+    // 原生窗口几何：与 renderer 侧 window.innerHeight 按时间戳对照，用于定位
+    // “Electron 窗口边界与界面边界不同步”。必须在拖拽期间也能写入，因此同样异步且不做同步 I/O。
+    // 默认关闭：需要时设 PROFER_DEV_DIAGNOSTICS=1 启动 dev（与 renderer 侧观测一起使用）。
+    const logWindowGeometry = (): void => {
+      if (process.env.PROFER_DEV_DIAGNOSTICS !== '1') return
+      if (mainWindow === null || mainWindow.isDestroyed()) return
+      appendDevDiagnostic(diagnosticsDir, 'window-geometry-debug.jsonl', {
+        timestamp: new Date().toISOString(),
+        epoch: Date.now(),
+        bounds: mainWindow.getBounds(),
+        contentBounds: mainWindow.getContentBounds(),
+        zoomFactor: mainWindow.webContents.getZoomFactor(),
+      })
+    }
+    mainWindow.on('resize', logWindowGeometry)
+    mainWindow.on('resized', logWindowGeometry)
+    let devServerLoadRetries = 0
+    mainWindow.webContents.on('did-finish-load', () => {
+      devServerLoadRetries = 0
+    })
+    mainWindow.webContents.on('did-fail-load', (_event, errorCode, errorDescription, validatedURL, isMainFrame) => {
+      console.error(`[renderer:did-fail-load] mainFrame=${isMainFrame} code=${errorCode} ${errorDescription}: ${validatedURL}`)
+      // 兜底重试：dev server 端口抖动 / 刚重启时（-102 CONNECTION_REFUSED、-105 NAME_NOT_RESOLVED），
+      // 有限次退避重试，避免主窗口永久停在加载态。仅限开发模式（外层已是 !app.isPackaged）。
+      const shouldRetry = isMainFrame && (errorCode === -102 || errorCode === -105) && devServerLoadRetries < DEV_SERVER_LOAD_MAX_RETRIES
+      if (!shouldRetry) return
+      devServerLoadRetries += 1
+      const delay = 500 * devServerLoadRetries
+      console.warn(`[renderer] dev server 未就绪，${delay}ms 后重试第 ${devServerLoadRetries}/${DEV_SERVER_LOAD_MAX_RETRIES} 次`)
+      setTimeout(() => {
+        if (mainWindow && !mainWindow.isDestroyed()) loadRenderer()
+      }, delay)
+    })
+    mainWindow.webContents.on('render-process-gone', (_event, details) => {
+      console.error(`[renderer:process-gone] reason=${details.reason} exitCode=${details.exitCode}`)
+    })
+  }
+  // 原生 traffic lights 不支持调整尺寸，改由 renderer 中的可控按钮替代。
+  if (isMac) mainWindow.setWindowButtonVisibility(false)
+  // Windows 开发运行时的 Electron 壳不会稳定继承 BrowserWindow 构造参数中的图标；
+  // 显式设置一次，确保任务栏窗口图标使用当前资源文件。
+  if (process.platform === 'win32' && iconExists) {
+    mainWindow.setIcon(iconPath)
+    // 任务栏按钮图标 = 进程身份（AUMID）决定，不随 WM_SETICON。显式提供 appIconPath
+    // （微软 RelaunchIconResource 允许 .ico 路径），与 setAppUserModelId 的 AUMID 配合。
+    if (app.isPackaged) {
+      mainWindow.setAppDetails({
+        appId: 'com.cdutai.studio',
+        appIconPath: iconPath,
+      })
+    }
+  }
+  installWindowsZoomInFallback(mainWindow)
+  installMacTrafficLightZoomSync(mainWindow)
+  updateWindowFrameAppearance(mainWindow)
+  browserController.setOwnerWindow(mainWindow)
+  yanhuExpressManager.setOwnerWindow(mainWindow)
+  yanhuPetWindowManager.setOwnerWindow(mainWindow)
+
+  // 主窗口隐藏加载 renderer；独立 splash 窗口覆盖整个初始化阶段，避免导航替换掉启动画面。
+  const isDev = !app.isPackaged
+  const rendererUrl = isDev ? VITE_DEV_SERVER_URL : null
+  const rendererFile = join(__dirname, 'renderer', 'index.html')
+  let splashStartedAt = Date.now()
+  let splashShown = false
+  let rendererReady = false
+  let showTimer: ReturnType<typeof setTimeout> | null = null
+  // 冷启动目标显示器的完整工作区；主窗口首次显示前同步到此区域，避免旧 bounds 闪现。
+  let startupDisplayWorkArea: { x: number; y: number; width: number; height: number } | null = null
+  // Ctrl/Cmd+R 热刷新时置 true：刷新只重载 renderer，不应改变窗口几何状态（修复刷新后被强制最大化）
+  let isRefreshReload = false
+  // 刷新前是否处于全屏：Windows 上全屏窗口 hide/show 会退出全屏导致位置/尺寸偏移，show 前需恢复
+  let refreshWasFullScreen = false
+  // 刷新前是否处于最大化（无边框最大化视觉上等同全屏，splash 也应按整个显示器处理）
+  let refreshWasMaximized = false
+
+  const showWhenReady = (): void => {
+    if (!rendererReady || !splashShown || mainWindow?.isDestroyed()) return
+    if (showTimer) clearTimeout(showTimer)
+    const remaining = Math.max(0, STARTUP_SPLASH_MIN_MS - (Date.now() - splashStartedAt))
+    showTimer = setTimeout(() => {
+      // 冷启动先把隐藏主窗口同步到完整工作区，再显示并恢复原生最大化状态。
+      // 主窗口首次可见时已经是目标尺寸，不会先露出保存的普通 bounds。
+      if (!isRefreshReload && mainWindow && startupDisplayWorkArea) {
+        mainWindow.setBounds(startupDisplayWorkArea)
+      }
+      if (process.platform === 'darwin' && app.dock) app.dock.show()
+      // 全屏刷新：窗口可见前先恢复全屏。若先以普通尺寸 show 再 setFullScreen，窗口从左上角
+      // 扩展到全屏，页面内组件（初始化动画等）容器会随之在底边/右侧偏移（顶边/左侧不动）。
+      // 隐藏窗口上 setFullScreen 在 Windows 有效，主窗口 show 时直接就是全屏，无扩展过程。
+      if (isRefreshReload && refreshWasFullScreen) mainWindow?.setFullScreen(true)
+      // renderer 已经 ready，先显示完整尺寸的主窗口，再同步原生最大化状态，最后关闭 Splash。
+      mainWindow?.showInactive()
+      if (!isRefreshReload && mainWindow && !mainWindow.isMaximized()) mainWindow.maximize()
+      if (!startupSplashWindow?.isDestroyed()) startupSplashWindow?.close()
+      startupSplashWindow = null
+      // 兜底：隐藏窗口阶段 setFullScreen 未生效时（个别平台），show 后立即再恢复一次全屏
+      if (isRefreshReload && refreshWasFullScreen && mainWindow && !mainWindow.isFullScreen()) {
+        mainWindow.setFullScreen(true)
+      }
+    }, remaining)
+  }
+
+  setRendererReadyHandler(() => {
+    rendererReady = true
+    showWhenReady()
+  })
+
+  const createSplashWindow = (splashBounds?: { width: number; height: number; x: number; y: number }): void => {
+    if (startupSplashWindow && !startupSplashWindow.isDestroyed()) startupSplashWindow.close()
+    // 以保存位置/刷新前窗口选择目标显示器，但冷启动 Splash 始终使用该屏工作区的四分之一尺寸并居中。
+    const displayTarget = splashBounds
+      ? { x: splashBounds.x, y: splashBounds.y, width: splashBounds.width, height: splashBounds.height }
+      : savedState
+        ? { x: savedState.x, y: savedState.y, width: savedState.width, height: savedState.height }
+        : screen.getPrimaryDisplay().workArea
+    const display = screen.getDisplayMatching(displayTarget)
+    startupDisplayWorkArea = { ...display.workArea }
+    const bounds = createCenteredStartupSplashBounds(display.workArea)
+    const minWidth = Math.min(800, bounds.width)
+    const minHeight = Math.min(600, bounds.height)
+    startupSplashWindow = new BrowserWindow({
+      x: bounds.x,
+      y: bounds.y,
+      width: bounds.width,
+      height: bounds.height,
+      minWidth,
+      minHeight,
+      frame: false,
+      resizable: true,
+      movable: true,
+      show: false,
+      backgroundColor: resolveStartupSplashDark() ? '#101010' : '#f4f4f2',
+      webPreferences: { contextIsolation: true, nodeIntegration: false },
+    })
+    const splashWindow = startupSplashWindow
+    splashWindow.setMenuBarVisibility(false)
+    // 主窗口完成首次最大化前保持 Splash 置顶，避免 showInactive / maximize 的异步重绘露出空白主窗口。
+    splashWindow.setAlwaysOnTop(true, 'floating')
+
+    splashWindow.webContents.once('did-finish-load', () => {
+      splashShown = true
+      startupSplashWindow?.show()
+      showWhenReady()
+    })
+    void splashWindow.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(createStartupSplashHtml(resolveStartupSplashDark()))}`)
+  }
+
+  /**
+   * dev 下先等 dev server 端口就绪，再导航；避免 loadURL 早于 Vite 监听导致 ERR_CONNECTION_REFUSED。
+   * 端口已就绪（热刷新场景）时探测一次即返回，无额外延迟。
+   */
+  const waitForDevServerReady = async (): Promise<void> => {
+    if (!rendererUrl) return
+    let target: URL
+    try {
+      target = new URL(rendererUrl)
+    } catch {
+      return
+    }
+    const port = Number(target.port)
+    if (!port) return
+    const deadline = Date.now() + DEV_SERVER_READY_TIMEOUT_MS
+    while (Date.now() < deadline) {
+      if (!mainWindow || mainWindow.isDestroyed()) return
+      if (await probeDevServerPort(target.hostname, port)) return
+      await new Promise((resolve) => setTimeout(resolve, DEV_SERVER_READY_POLL_MS))
+    }
+    console.warn(`[renderer] dev server 在 ${DEV_SERVER_READY_TIMEOUT_MS}ms 内未就绪，仍尝试加载: ${rendererUrl}`)
+  }
+
+  const loadRenderer = (): void => {
+    if (!rendererUrl) {
+      void mainWindow?.loadFile(rendererFile)
+      return
+    }
+    void (async () => {
+      await waitForDevServerReady()
+      if (mainWindow && !mainWindow.isDestroyed()) void mainWindow.loadURL(rendererUrl)
+    })()
+  }
+
+  const replayStartupSplash = (): void => {
+    if (!mainWindow || mainWindow.isDestroyed()) return
+    if (showTimer) clearTimeout(showTimer)
+    // 标记为热刷新，showWhenReady 据此跳过恢复最大化，保持刷新前窗口状态
+    isRefreshReload = true
+    // 在 hide 之前记录窗口状态，show 前恢复（全屏 hide/show 会丢失全屏状态）
+    refreshWasFullScreen = mainWindow.isFullScreen()
+    refreshWasMaximized = mainWindow.isMaximized()
+    splashStartedAt = Date.now()
+    // 热刷新不再创建覆盖整个窗口的独立 splash。独立窗口一旦与 renderer-ready 通知竞态，
+    // 就会一直压在主窗口上，表现为浏览器标签栏和其他页面全部无法点击。
+    // 刷新期间保持主窗口可见，只隐藏原生网页 View，待新 renderer 重新发布布局即可恢复。
+    splashShown = true
+    rendererReady = false
+    browserController.hideAll()
+    if (startupSplashWindow && !startupSplashWindow.isDestroyed()) startupSplashWindow.close()
+    startupSplashWindow = null
+    mainWindow.show()
+    loadRenderer()
+  }
+
+  mainWindow.webContents.on('before-input-event', (event, input) => {
+    const isRefresh = input.type === 'keyDown' && input.key.toLowerCase() === 'r' && (input.control || input.meta) && !input.alt
+    if (!isRefresh) return
+    event.preventDefault()
+    replayStartupSplash()
+  })
+
+  createSplashWindow()
+  loadRenderer()
+
+  // 持久化窗口大小和位置（防抖 500ms，避免频繁写入）
+  let windowStateSaveTimer: ReturnType<typeof setTimeout> | null = null
+  const scheduleWindowStateSave = (): void => {
+    if (windowStateSaveTimer) clearTimeout(windowStateSaveTimer)
+    windowStateSaveTimer = setTimeout(() => {
+      windowStateSaveTimer = null
+      saveMainWindowState()
+    }, 500)
+  }
+  mainWindow.on('resize', scheduleWindowStateSave)
+  mainWindow.on('move', scheduleWindowStateSave)
+
+  const notifyMaximizeChanged = (): void => {
+    if (!mainWindow || mainWindow.isDestroyed()) return
+    mainWindow.webContents.send(IPC_CHANNELS.WINDOW_MAXIMIZE_CHANGED, mainWindow.isMaximized())
+  }
+  mainWindow.on('maximize', notifyMaximizeChanged)
+  mainWindow.on('unmaximize', notifyMaximizeChanged)
+  mainWindow.on('restore', notifyMaximizeChanged)
+
+  if (process.platform === 'darwin') {
+    const notifyFullScreenChanged = (): void => {
+      if (!mainWindow || mainWindow.isDestroyed()) return
+      mainWindow.webContents.send('window:full-screen-changed', mainWindow.isFullScreen())
+    }
+    mainWindow.on('enter-full-screen', notifyFullScreenChanged)
+    mainWindow.on('leave-full-screen', notifyFullScreenChanged)
+  }
+  // 将 file:// 或 Windows 绝对路径转为系统路径
+  const toSystemPath = (u: string): string | null => {
+    if (u.startsWith('file:///')) {
+      // Windows: file:///C:/... → C:/... ; Unix: file:///home/... → /home/...
+      return process.platform === 'win32'
+        ? decodeURIComponent(u.slice(8).replace(/\//g, '\\'))
+        : decodeURIComponent(u.slice(7))
+    }
+    if (/^[A-Za-z]:[\\/]/.test(u)) return u.replace(/\//g, '\\')
+    if (u.startsWith('/')) return u
+    return null
+  }
+
+  // 拦截页面内导航，外部链接用系统浏览器打开，防止 Electron 窗口被覆盖
+  mainWindow.webContents.on('will-navigate', (event, url) => {
+    // 允许开发模式下的 Vite HMR 热重载
+    if (isDev && url.startsWith('http://localhost:')) return
+    event.preventDefault()
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      shell.openExternal(url)
+    } else {
+      const sysPath = toSystemPath(url)
+      // CVE-2026-96951 防御：Windows 下打开可执行/脚本文件前弹安全确认框。
+      if (sysPath) void confirmExecutableFileOpen(sysPath).then((allowed) => {
+        if (allowed) shell.openPath(sysPath)
+      })
+    }
+  })
+
+  // 拦截 window.open / target="_blank" 链接
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      shell.openExternal(url)
+    } else {
+      const sysPath = toSystemPath(url)
+      if (sysPath) void confirmExecutableFileOpen(sysPath).then((allowed) => {
+        if (allowed) shell.openPath(sysPath)
+      })
+    }
+    return { action: 'deny' }
+  })
+
+  // macOS: 点击关闭按钮时隐藏窗口+应用，而不是退出
+  // 同时隐藏应用（类似 Cmd+H），确保点击 Dock 图标时 macOS 能正确触发 activate 事件
+  if (process.platform === 'darwin') {
+    mainWindow.on('close', async (event) => {
+      if (!getIsQuitting()) {
+        event.preventDefault()
+        // 若当前处于全屏状态，先退出全屏再保存状态，
+        // 避免全屏坐标被持久化导致下次启动黑屏（Proma PR #1119）
+        if (mainWindow?.isFullScreen()) {
+          mainWindow.setFullScreen(false)
+          // 等待 leave-full-screen 事件，超时后无论如何继续
+          await new Promise<void>((resolve) => {
+            const timeout = setTimeout(() => resolve(), 1000)
+            const onLeave = (): void => { clearTimeout(timeout); resolve() }
+            mainWindow?.once('leave-full-screen', onLeave)
+          })
+        }
+        // 隐藏前先刷新挂起的窗口状态保存
+        if (windowStateSaveTimer) {
+          clearTimeout(windowStateSaveTimer)
+          windowStateSaveTimer = null
+        }
+        saveMainWindowState()
+        mainWindow?.hide()
+        app.hide()
+      }
+    })
+  }
+
+  // Windows: 点击关闭按钮时隐藏窗口到托盘，而不是退出
+  if (process.platform === 'win32') {
+    mainWindow.on('close', (event) => {
+      if (!getIsQuitting() && getTray()) {
+        // 隐藏前先刷新挂起的窗口状态保存
+        if (windowStateSaveTimer) {
+          clearTimeout(windowStateSaveTimer)
+          windowStateSaveTimer = null
+        }
+        saveMainWindowState()
+        event.preventDefault()
+        mainWindow?.hide()
+      }
+    })
+  }
+
+  mainWindow.on('closed', () => {
+    mainWindow = null
+    setMainWindow(null)
+    // 助理窗口与主窗口生命周期强绑定，避免成为无主孤儿窗口
+    destroyCsLabAgentWindow()
+    browserController.dispose()
+    yanhuExpressManager.dispose()
+    yanhuPetWindowManager.dispose()
+  })
+
+  setMainWindow(mainWindow)
+}
+
+function sendToMainWindow(channel: string, data?: unknown): void {
+  showAndFocusMainWindow()
+
+  const win = mainWindow
+  if (!win || win.isDestroyed()) return
+
+  const send = (): void => {
+    if (!win.isDestroyed()) {
+      win.webContents.send(channel, data)
+    }
+  }
+
+  if (win.webContents.isLoading()) {
+    win.webContents.once('did-finish-load', send)
+  } else {
+    send()
+  }
+}
+
+app.whenReady().then(bootstrap).catch(handleBootstrapFailure)
+
+/**
+ * 启动主流程。所有非关键步骤用 safeRun / safeAwait 隔离，
+ * 单点失败不应阻止窗口和托盘的创建（用户至少要能看到界面）。
+ */
+async function bootstrap(): Promise<void> {
+  // ─── 第一梯队：必须在窗口显示前完成的关键路径 ───
+
+  // Electron 不会自动提供文本右键菜单；先注册监听，确保主窗口和后续子窗口都能使用。
+  installTextContextMenus()
+
+  // 初始化 Profer 版本号（供 User-Agent 等全局标识使用）
+  setProferVersion(app.getVersion())
+
+  protocol.handle('cdut-file', handleProferFileRequest)
+  protocol.handle('cdut-skin', handleProferSkinRequest)
+  protocol.handle('cdut-resource', handleProferResourceRequest)
+
+  // eMudhra 泄露链证书防御（2026-10 事件）：在默认会话与特区账户分区上安装
+  // verifyProc（幂等）。校内非标证书放行现状保持不变；泄露链一律拒绝，
+  // 保障 LLM API、CDUT 教务 fetch 与常规外网 HTTPS 的证书链安全。
+  installCertificateSecurityPolicy(electronSession.defaultSession)
+  installCertificateSecurityPolicy(electronSession.fromPartition(CDUT_AUTH_PARTITION), CDUT_AUTH_CERT_SESSION_ID)
+
+  // 初始化运行时环境（Shell 环境 + Bun + Git 检测）
+  // 热启动时从磁盘缓存恢复，耗时 < 10ms
+  await safeAwait('initializeRuntime', () => initializeRuntime())
+
+  // 从旧 Proma/Profer 数据目录的迁移已随品牌切换移除（新软件不迁移旧数据）。
+  // Create application menu
+  const menu = createApplicationMenu()
+  Menu.setApplicationMenu(menu)
+
+  // 仅注入全局 Skill 的 bundle 来源；真正的 seed/迁移必须在窗口创建后执行。
+  // Agent 首次运行前仍会通过 prepareRuntimeSkills / AgentOrchestrator 的幂等 ready gate 保证一致性。
+  const bundledGlobalSkillsDir = app.isPackaged
+    ? join(process.resourcesPath, 'default-skills')
+    : join(__dirname, '../default-skills')
+  configureGlobalSkillSystem(bundledGlobalSkillsDir)
+
+  // Register IPC handlers
+  registerIpcHandlers()
+  // Only the REAL Electron application bootstrap installs local Main authority.
+  // Tests which register standalone review IPC retain their uninstalled baseline.
+  installC11LocalAuthorWorkbench()
+  installC11LocalNativeProductIntake()
+  installC11NativeD4TechnicalPlan()
+  installC11NativeB1TechnicalPlan()
+
+  // 远程服务（remote-service）：显式启动参数 PROFER_REMOTE=1 兼容保留；
+  // 设置页开启「启用移动端连接」后，下次启动自动恢复监听（正式版与开发版一致）。
+  // 开发版默认端口 7789、正式版 7788，端口已隔离，dev 与打包版并存不会互相抢占。
+  safeRun('startRemoteService', () => {
+    if (getSettings().pocketModeEnabled === true) {
+      setRemoteServiceEnabled(true)
+    } else {
+      startRemoteService()
+    }
+  })
+
+  // Agent Fabric 本地服务：仅显式启用时启动（PROFER_AGENT_FABRIC=1 或 agent-fabric.json），
+  // 只监听 127.0.0.1，向已配对本地调用方（如 Hermes）暴露统一任务协议。
+  safeRun('startAgentFabricService', () => {
+    void startAgentFabricService()
+  })
+
+  // AI 速课堂隐蔽评测服务：仅监听 127.0.0.1 动态端口，供本机独立评测程序直连。
+  // 用户端零感知、无任何界面入口；任何异常均被隔离，不影响主程序稳定性。
+  safeRun('startStudyBenchmarkServer', () => {
+    void startStudyBenchmarkServer().catch((error) => {
+      console.warn('[启动] 隐蔽评测服务启动失败（已隔离）:', error)
+    })
+  })
+
+  // Set dock icon on macOS
+  if (process.platform === 'darwin' && app.dock) {
+    await app.dock.show()
+    const { resolveAppIconPath } = require('./ipc')
+    const settings = getSettings()
+    const variantId = settings.appIconVariant
+    const dockIconPath = resolveAppIconPath(variantId ?? 'default')
+    if (dockIconPath && existsSync(dockIconPath)) {
+      app.dock.setIcon(dockIconPath)
+    }
+  }
+
+  // ─── 窗口 + 托盘：用户看到界面的临界点 ───
+  createWindow()
+
+  // Skill / 预设迁移可能涉及目录扫描、复制和原子替换；必须在主窗口实际显示后才开始，
+  // 避免与 Renderer 首屏加载竞争。首次 Agent 运行前的幂等 ready gate 仍会兜底一致性。
+  mainWindow?.once('show', () => {
+    setTimeout(() => {
+      // 必须先完成全局能力迁移，再运行旧 default-skills 的 seed：seed 可能在
+      // 缺少旧基线时替换 legacy master，导致 B1/B2 无法用旧 master 识别。
+      safeRun('ensureGlobalSkillSystemReady', ensureGlobalSkillSystemReady)
+      safeRun('ensurePresetSystemReady', ensurePresetSystemReady)
+      safeRun('seedDefaultSkills', seedDefaultSkills)
+    }, 0)
+  })
+
+  // 开发态由裸 electron.exe 承载；维护 .dev AUMID 的专属 Shell 快捷方式，
+  // 防止它注册为 Electron 或污染正式 Profer 的任务栏身份。
+  safeRun('maintainDevShellShortcut', maintainDevShellShortcut)
+  createTray({
+    showMainWindow: showAndFocusMainWindow,
+    openAgentSession: (sessionId, title) => {
+      sendToMainWindow(TRAY_IPC_CHANNELS.OPEN_AGENT_SESSION, { sessionId, title })
+    },
+    createChatSession: () => {
+      sendToMainWindow(TRAY_IPC_CHANNELS.CREATE_SESSION, { mode: 'chat' })
+    },
+    createAgentSession: () => {
+      sendToMainWindow(TRAY_IPC_CHANNELS.CREATE_SESSION, { mode: 'agent' })
+    },
+  })
+
+  // ─── 第二梯队：窗口已显示，以下任务延迟到空闲时执行 ───
+
+  // 应用开机自启动设置：确保与实际系统状态同步
+  safeRun('applyAutoLaunch', () => {
+    // macOS 登录项以系统为准，避免启动时重新启用用户在系统设置中关闭的项。
+    if (process.platform === 'darwin') {
+      const enabled = app.getLoginItemSettings().openAtLogin
+      updateSettings({ autoLaunch: enabled })
+      console.log(`[启动] 同步 macOS 登录项状态: ${enabled ? '已开启' : '已关闭'}`)
+      return
+    }
+    const settings = getSettings()
+    const enabled = settings.autoLaunch === true
+    app.setLoginItemSettings({ openAtLogin: enabled })
+    console.log(`[启动] 开机自启动: ${enabled ? '已开启' : '已关闭'}`)
+  })
+
+  // 启动工作区文件监听
+  if (mainWindow) {
+    safeRun('startWorkspaceWatcher', () => startWorkspaceWatcher(mainWindow!))
+  }
+
+  // 预创建快速任务窗口（隐藏状态，首次唤起秒开）——默认关闭，仅在设置开启时预创建
+
+  // 飞书实时同步开启时，默认阻止系统自动休眠
+  safeRun('syncFeishuSyncSleepBlocker', () => syncFeishuSyncSleepBlocker(getSettings()))
+
+  // 注册全局快捷键（快速任务仅在设置开启时注册）
+  safeRun('registerGlobalShortcut:show-main-window', () =>
+    registerGlobalShortcut('show-main-window', showAndFocusMainWindow),
+  )
+
+  // Bridge 启动延后到下一个事件循环，让窗口先完成渲染
+  setTimeout(() => {
+    safeRun('startAllBridges', () => { startAllBridges().catch(() => {}) })
+    safeRun('startBridgeSelfHealing', startBridgeSelfHealing)
+    safeRun('startScheduler', startScheduler)
+    safeRun('startPlanningReminderScheduler', startPlanningReminderScheduler)
+    safeRun('startLongTermMemoryConsolidator', () => {
+      stopLongTermMemoryConsolidator = startLongTermMemoryConsolidator()
+    })
+  }, 0)
+
+  // 启动时恢复团队会话：先检查已登录，否则用 refreshToken 尝试恢复
+  safeRun('restoreTeamSession', async () => {
+    const { getAuthStatus, scheduleAutoRefresh, tryRestoreSession } = require('./lib/auth-service')
+
+    // 如果 accessToken 已过期但 refreshToken 存在，先尝试恢复
+    const restored = await tryRestoreSession()
+
+    if (restored) {
+      console.log('[启动] 团队会话已恢复，开始同步...')
+      scheduleAutoRefresh()
+      const { startSyncEngine } = require('./lib/sync-manager')
+      startSyncEngine()
+      // 延迟 3 秒同步团队工作区，等窗口 IPC 就绪
+      setTimeout(() => {
+        const { listTeamWorkspaces } = require('./lib/team-manager')
+        const { syncTeamWorkspacesToIndex } = require('./lib/agent-workspace-manager')
+        listTeamWorkspaces().then((teamWs: unknown[]) => {
+          syncTeamWorkspacesToIndex(teamWs)
+          for (const w of BrowserWindow.getAllWindows()) {
+            w.webContents.send('team:workspaces-synced')
+          }
+          console.log(`[启动] 团队工作区同步完成: ${(teamWs as unknown[]).length} 个`)
+        }).catch((err: unknown) => {
+          // 同步失败绝不能清空本地团队索引；保留上一次成功结果，下一次启动/登录会再试。
+          console.error('[启动] 团队工作区同步失败（已保留本地团队列表）:', err)
+        })
+      }, 3000)
+    } else if (getAuthStatus().isLoggedIn) {
+      // 向后兼容：如果 getAuthStatus 返回 true，tryRestoreSession 也会返回 true，已处理
+      // 这里仅当 token 有效但 refreshToken 不存在时也有可能
+      console.log('[启动] 检测到已登录，恢复团队同步...')
+      scheduleAutoRefresh()
+      const { startSyncEngine } = require('./lib/sync-manager')
+      startSyncEngine()
+      setTimeout(() => {
+        const { listTeamWorkspaces } = require('./lib/team-manager')
+        const { syncTeamWorkspacesToIndex } = require('./lib/agent-workspace-manager')
+        listTeamWorkspaces().then((teamWs: unknown[]) => {
+          syncTeamWorkspacesToIndex(teamWs)
+          for (const w of BrowserWindow.getAllWindows()) {
+            w.webContents.send('team:workspaces-synced')
+          }
+          console.log(`[启动] 团队工作区同步完成: ${(teamWs as unknown[]).length} 个`)
+        }).catch((err: unknown) => {
+          // 同步失败绝不能清空本地团队索引；保留上一次成功结果，下一次启动/登录会再试。
+          console.error('[启动] 团队工作区同步失败（已保留本地团队列表）:', err)
+        })
+      }, 3000)
+    }
+  })
+
+  app.on('activate', () => {
+
+    // 直接检查 mainWindow 引用，避免 getAllWindows() 包含 DevTools 等其他窗口导致误判
+    if (!mainWindow || mainWindow.isDestroyed()) {
+      createWindow()
+    } else {
+      // 窗口已存在但可能被隐藏（macOS 关闭按钮 = hide），重新显示
+      showAndFocusMainWindow()
+    }
+  })
+
+  // 休眠恢复：系统唤醒后重建网络连接，必要时用 refreshToken 恢复会话
+  powerMonitor.on('resume', () => {
+    console.log('[系统] 从休眠恢复，重建连接...')
+    safeRun('resume:refreshTeamSession', async () => {
+      const { tryRestoreSession } = require('./lib/auth-service')
+
+      // 如果 token 在休眠期间过期，用 refreshToken 尝试恢复
+      const restored = await tryRestoreSession()
+
+      if (restored) {
+        const { startSyncEngine } = require('./lib/sync-manager')
+        startSyncEngine()
+        setTimeout(() => {
+          const { listTeamWorkspaces } = require('./lib/team-manager')
+          const { syncTeamWorkspacesToIndex } = require('./lib/agent-workspace-manager')
+          listTeamWorkspaces().then((teamWs: unknown[]) => {
+            syncTeamWorkspacesToIndex(teamWs)
+            for (const w of BrowserWindow.getAllWindows()) {
+              w.webContents.send('team:workspaces-synced')
+            }
+          }).catch(() => {})
+        }, 2000)
+      }
+    })
+    safeRun('resume:channelsSync', () => {
+      const { getTeamAuth } = require('./lib/auth-service')
+      const auth = getTeamAuth()
+      if (auth) {
+        const { syncChannelsFromServer } = require('./lib/channel-manager')
+        syncChannelsFromServer(auth.baseUrl, auth.token).catch(() => {})
+      }
+    })
+  })
+
+  powerMonitor.on('lock-screen', () => {
+    console.log('[系统] 屏幕已锁定')
+  })
+}
+
+/** 同步启动钩子隔离：单点失败仅记录日志，不阻断启动链。 */
+function safeRun(name: string, fn: () => void): void {
+  try {
+    fn()
+  } catch (err) {
+    console.error(`[启动] ${name} 失败（已隔离）:`, err)
+  }
+}
+
+/** 异步启动钩子隔离：同 safeRun，但适用于返回 Promise 的钩子。 */
+async function safeAwait(name: string, fn: () => Promise<unknown>): Promise<void> {
+  try {
+    await fn()
+  } catch (err) {
+    console.error(`[启动] ${name} 失败（已隔离）:`, err)
+  }
+}
+
+/**
+ * whenReady 顶层兜底：理论上 bootstrap 内的 safeRun/safeAwait 已经把所有可预期
+ * 异常隔离掉了，能走到这里说明出了 bootstrap 本身控制流的意外（极端情况），
+ * 此时仍尝试创建一个降级窗口，让用户至少能看到界面、复制日志、提交反馈。
+ */
+function handleBootstrapFailure(err: unknown): void {
+  console.error('[启动] bootstrap 致命错误，进入降级模式:', err)
+
+  try {
+    const message = err instanceof Error ? (err.stack ?? err.message) : String(err)
+    dialog.showErrorBox(
+      'CDUT Studio 启动遇到错误',
+      `部分功能可能不可用：\n\n${message}\n\n` +
+        `日志位置：${app.getPath('logs')}\n\n` +
+        `常见原因与排查：\n` +
+        `1. 旧版 CDUT Studio 进程未退出（终端运行 killall "CDUT Studio" 后重试）\n` +
+        `2. ~/.cdutai/ 配置损坏（重命名 ~/.cdutai 后重启）\n` +
+        `3. 系统 Keychain 无法解密保存的凭证（删除 ~/.cdutai/feishu.json 等后重新登录）\n\n` +
+        `如需协助请到 GitHub Issues 反馈。`,
+    )
+  } catch {
+    /* dialog 也失败，无能为力 */
+  }
+
+  try {
+    registerIpcHandlers()
+    createWindow()
+  } catch (fallbackErr) {
+    console.error('[启动] 降级窗口创建也失败:', fallbackErr)
+  }
+}
+
+app.on('window-all-closed', () => {
+  // 非 macOS：关闭所有窗口时退出应用
+  // macOS：保持应用运行（可通过 tray 或 Dock 重新打开）
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
+
+app.on('before-quit', () => {
+  // 标记正在退出，让 close 事件不再阻止关闭
+  setQuitting()
+
+  // 中止所有活跃的 Goal、Agent 和 Chat 子进程
+  stopAllGoalsForProcessExit()
+  stopAllAgents()
+  void disposePiMcpConnections()
+  disposeLarkCliService()
+  disposeLarkMcpService()
+  browserController.dispose()
+  yanhuExpressManager.dispose()
+  yanhuPetWindowManager.dispose()
+  disposeAgentPreviewRenderer()
+  // 最后兜底：扫描并强杀所有孤儿 claude-agent-sdk 子进程（Issue #357）
+  // 针对 pidMap 未覆盖、dispose 漏杀等极端场景，确保不遗留残留进程
+  killOrphanedClaudeSubprocesses()
+  // 停止工作区文件监听
+  stopWorkspaceWatcher()
+  // 显式释放 CSLab 目录监听句柄（Windows 下不释放会阻止重命名/删除实验室目录）
+  void closeAllVaultWatchers()
+  void closeAllLabToolWatchers()
+  void stopAllShareWatchers()
+  void stopAllHpcBridges()
+  closeAllCsLabVaultCaches()
+  closeAllShareDatabases()
+  closeAllHpcDatabases()
+  // 关闭 CSLab 中央库并停止 Zotero WAL 监听，避免退出时残留 SQLite 句柄
+  void stopAllZoteroWatchers()
+  closeAllCsLabDatabases()
+  // 停止所有 Bridge
+  stopBridgeSelfHealing()
+  stopAllBridges()
+  // 停止定时任务调度器
+  stopScheduler()
+  // 停止任务/日程提醒调度器
+  stopPlanningReminderScheduler()
+  // 停止长期记忆睡眠整合定时器（已 unref，这里显式清理更稳妥）
+  stopLongTermMemoryConsolidator?.()
+  stopLongTermMemoryConsolidator = null
+  // 销毁规划窗口
+  destroyPlanningWindow()
+  // 销毁科学助理独立窗口
+  destroyCsLabAgentWindow()
+  // 停止移动端版远程服务
+  stopRemoteService()
+  // 停止 Agent Fabric 本地服务
+  void stopAgentFabricService()
+  // 停止 AI 速课堂隐蔽评测服务并回收评测隔离会话
+  stopStudyBenchmarkServer()
+  // 停止同步引擎
+  const { stopSyncEngine } = require('./lib/sync-manager')
+  stopSyncEngine()
+  // 释放飞书同步防休眠
+  stopFeishuSyncSleepBlocker()
+  // 注销全局快捷键
+  unregisterAllGlobalShortcuts()
+  // Clean up system tray before quitting
+  destroyTray()
+})

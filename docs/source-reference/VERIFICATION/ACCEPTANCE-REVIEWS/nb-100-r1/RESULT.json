@@ -1,0 +1,285 @@
+{
+  "schema": "dsh-r07-review-result/2",
+  "batch": "nb-100-r1",
+  "revisionOf": "nb-100",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-09-20261023",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-23T23:25:00Z",
+  "sealId": "seal-67f861f96e6ac0b4",
+  "sealedAtUtc": "2026-10-23T23:15:11Z",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 17,
+    "accepted": 17,
+    "revision_required": 0,
+    "unknown": 0,
+    "blocking": 0,
+    "nonBlocking": 0
+  },
+  "gates": {
+    "G0": "PASS",
+    "G1": "PASS",
+    "G2": "PASS",
+    "note": "16 篇定点修订逐条对源独立复验（12 blocking 语义修正+4 minor 指针收口全落实）；1 篇 barrel 逐字节保留"
+  },
+  "revisionVerification": {
+    "changedManuals": 16,
+    "unchangedManuals": 1,
+    "findingsClosure": "reviews/nb-100-codex-r1 的 12 revision_required + 4 minor 全部关闭（逐项见 verificationNotes）；nb-80 browser 修订（NB80R1-F-01）为独立交付另行复验"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/renderer/components/cdut-science/crystal/CsLabVestaCrystalPane.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/crystal/CsLabVestaCrystalPane.tsx.md",
+      "sourceBlob": "59068cad96a102e0d1508d273eef421051b94f85",
+      "sourceSha256": "fb1b29ecdb9bf759c21cbee5c275741c0de6aa87dd84473b883870c1dcfd0a1f",
+      "manualSha256": "d0064990528fbd64ebe008dbfe90ccfad02ba65fa7f915cf2d91a1f372c7c5fc",
+      "verdict": "accepted",
+      "note": "revised in r1; corrections verified against source"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-science/cslab-capability.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/cslab-capability.ts.md",
+      "sourceBlob": "5f61f7702a8f348839f0d54fe585aba50eadf717",
+      "sourceSha256": "2e39bc53bcc6889fc530f3fdf88bfa086890de2453c1999c41a1f9c726950e7f",
+      "manualSha256": "fdb8b67816c986777206d44ccfcd892f7493320fc0def693e9449bb5c5562eaf",
+      "verdict": "accepted",
+      "note": "revised in r1; corrections verified against source"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-science/cslab-capsule-node.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/cslab-capsule-node.ts.md",
+      "sourceBlob": "b99c45e1541ce594a7612a4c784fdc79eba8e592",
+      "sourceSha256": "e3c5d83d58ac058a1fa828476de8ed7f34f9037319826b87e23efe4c10818265",
+      "manualSha256": "47b85e85c0e85b215bb833c02af22a8be2b961e2dd4d54236025e30513f4b472",
+      "verdict": "accepted",
+      "note": "revised in r1; corrections verified against source"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-science/cslab-dnd.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/cslab-dnd.ts.md",
+      "sourceBlob": "32f48f957dd3512f2753f1016c86aca337fb6fb6",
+      "sourceSha256": "406b11efb6ad10d2f42dd6d94353b0b602945595bf096a6d73d1eb897f32458c",
+      "manualSha256": "b27904b93c6ea2efa68c4736c803f15eadf057730ea00ccb4c875e428cea658a",
+      "verdict": "accepted",
+      "note": "revised in r1; corrections verified against source"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-science/cslab-molstar-state.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/cslab-molstar-state.ts.md",
+      "sourceBlob": "e40d23481d24cacd7111b04dfd10bf85b0f466eb",
+      "sourceSha256": "6f9738bf7e294a161a8a66de70430837e4a16f3fe3c32be99b2c5afe78c909c6",
+      "manualSha256": "08c5d7e78e8f83d8c20c727e84e554effe8d2d6f52c1965f0c487ebdb6e357b6",
+      "verdict": "accepted",
+      "note": "revised in r1; corrections verified against source"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-science/cslab-track-changes-extension.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/cslab-track-changes-extension.ts.md",
+      "sourceBlob": "bc80dcc7b59d0bdeecad6f396431cb6013fc0569",
+      "sourceSha256": "c5d14355cc76106dc025f96e494d058572f5a4c8a85faf260206b2b6ce9882a5",
+      "manualSha256": "2965ad3976c1015ec0724efea9e1413da0b9e96e37b51e0f25ec4209621c89a8",
+      "verdict": "accepted",
+      "note": "revised in r1; corrections verified against source"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-science/cslab-vibrational.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/cslab-vibrational.ts.md",
+      "sourceBlob": "0288e867100c99ba4ab2de5950e4e3bebaf17710",
+      "sourceSha256": "34c9f8d27ba3f4678df799f836f84252f5ea5a46a64da233dfad02bcfd27de8e",
+      "manualSha256": "9652ca2e35e5e7b294450fe5da40e24ca01867aa239d369fb1e26e1cf73f28c3",
+      "verdict": "accepted",
+      "note": "revised in r1; corrections verified against source"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-science/origin/CsLabPeakFitDrawer.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/origin/CsLabPeakFitDrawer.tsx.md",
+      "sourceBlob": "57f8641c7e2834e7eb1ee720f04888fd61ba7f84",
+      "sourceSha256": "21ddadf5286b057f53cd6b7b4f04cf0201356457c2461f5892d9c6533b6f9635",
+      "manualSha256": "69a50313288755b133363a2cac6f0637179b5a1a7f4f5d7dd8445e01526e4b04",
+      "verdict": "accepted",
+      "note": "revised in r1; corrections verified against source"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-science/origin/CsLabPlotExportDialog.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/origin/CsLabPlotExportDialog.tsx.md",
+      "sourceBlob": "f2a68998224f73c6a167ecee80e5f65725849fcc",
+      "sourceSha256": "e8ad468235a69384858ceb27ee525abfa0fc937dab15ec9592c3a6676f1649a9",
+      "manualSha256": "9468cd2f80b04ed40b77783c91ffd36c48d1f521cec75e8772b68997ad79e65a",
+      "verdict": "accepted",
+      "note": "revised in r1; corrections verified against source"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-science/origin/canvas-plot-renderer.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/origin/canvas-plot-renderer.ts.md",
+      "sourceBlob": "e4306601e483abdb06ef16d3dcc7b2ca7ec14889",
+      "sourceSha256": "17d23089f187f91d3b33d7298bad25b3939d91cf122fcca046164db1d891a55c",
+      "manualSha256": "60e06306c94c5e8c861015bd4ac97ad0863e7334a62ed1f2b58067b73b275504",
+      "verdict": "accepted",
+      "note": "revised in r1; corrections verified against source"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-science/origin/cslab-plot-export.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/origin/cslab-plot-export.ts.md",
+      "sourceBlob": "db1e01219a1492a694d0594805ebcd430f380bb5",
+      "sourceSha256": "a1c9ef04b98cc6affc6534a8d13301e593b5e4ce9b34b4385a51044b94960eba",
+      "manualSha256": "5555cdd7bebdfa3ec79ff0694ab3f526a08f87099a634947085511e2ff233559",
+      "verdict": "accepted",
+      "note": "revised in r1; corrections verified against source"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-science/origin/cslab-plot-render-model.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/origin/cslab-plot-render-model.ts.md",
+      "sourceBlob": "842017d3eb7dc3c5538103c6013871c5369d95ff",
+      "sourceSha256": "f0c9497556a93d48092d8f88baae0de65913da85745df6bf21b5221ee254478e",
+      "manualSha256": "f38fe2c7903c3c29fbb6eeb7544fa69ed09be45a1f8b535294ea96f11fb0e6f0",
+      "verdict": "accepted",
+      "note": "revised in r1; corrections verified against source"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-science/use-cslab-events.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/use-cslab-events.ts.md",
+      "sourceBlob": "129b5c1c3d444c926e961cc5c04c76e1659f9385",
+      "sourceSha256": "d3f08ff2a1bb99d8af57db7fdfa1eb25abd2a20246a192f58c83f4bc29238697",
+      "manualSha256": "1f380d61b543e64fc8bd39bf0cd12664ec794c433751801b77e58899ed5af851",
+      "verdict": "accepted",
+      "note": "revised in r1; corrections verified against source"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-science/use-cslab-vault.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/use-cslab-vault.ts.md",
+      "sourceBlob": "29df5bff83a22d0815a7549881bc3ec3e433709f",
+      "sourceSha256": "80d35f5b28a11f06714d4ee1986a907800b369f7e1748549ca6bb06c12f283e3",
+      "manualSha256": "d6e35c120afcd8cd2b7038d54c385e261ffad87e656e56756d89a70b51332484",
+      "verdict": "accepted",
+      "note": "revised in r1; corrections verified against source"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/primitives/index.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/index.ts.md",
+      "sourceBlob": "2133878402defed6dd7a61375d9d721cf8be42ee",
+      "sourceSha256": "7b3fb9876b7f7f228f78e3d7a934dc912aae71f7d77f2ce9d8d59e0873a9b6c4",
+      "manualSha256": "61be3efd0c050a00b41fba7c03619e6639e4e46a292c896393d058ccd4cd52e3",
+      "verdict": "accepted",
+      "note": "inherited: byte-identical to parent, evidence inherited from reviews/nb-100-codex-r1 + independent spot-check"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/tool-supplemental-images.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-supplemental-images.ts.md",
+      "sourceBlob": "0836ff2776a47603165d5423f20d6d35a0c5e813",
+      "sourceSha256": "6c34138803ab773a95866f0c04291ed63ede55de9e62a0d9c7a9d0b56018c929",
+      "manualSha256": "1dd85aab72c6aa9b69f30d710a7711b6cd9fb340da8c8438d8b36773be1b5589",
+      "verdict": "accepted",
+      "note": "revised in r1; corrections verified against source"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/tool-utils.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-utils.ts.md",
+      "sourceBlob": "b4d1f062d2b7f2d3a902638c6ea01ba6a47782d2",
+      "sourceSha256": "cb7f7f04ef3075fcd636ecb850aebf3025d5d0e71707657ecb0fb24e33d74c0f",
+      "manualSha256": "8733ed27f9fbecb654812b7e87ee9ed842587c4ceab36fb9ef55a337694418c5",
+      "verdict": "accepted",
+      "note": "revised in r1; corrections verified against source"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/crystal/CsLabVestaCrystalPane.tsx.md": "d0064990528fbd64ebe008dbfe90ccfad02ba65fa7f915cf2d91a1f372c7c5fc",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/cslab-capability.ts.md": "fdb8b67816c986777206d44ccfcd892f7493320fc0def693e9449bb5c5562eaf",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/cslab-capsule-node.ts.md": "47b85e85c0e85b215bb833c02af22a8be2b961e2dd4d54236025e30513f4b472",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/cslab-dnd.ts.md": "b27904b93c6ea2efa68c4736c803f15eadf057730ea00ccb4c875e428cea658a",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/cslab-molstar-state.ts.md": "08c5d7e78e8f83d8c20c727e84e554effe8d2d6f52c1965f0c487ebdb6e357b6",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/cslab-track-changes-extension.ts.md": "2965ad3976c1015ec0724efea9e1413da0b9e96e37b51e0f25ec4209621c89a8",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/cslab-vibrational.ts.md": "9652ca2e35e5e7b294450fe5da40e24ca01867aa239d369fb1e26e1cf73f28c3",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/origin/CsLabPeakFitDrawer.tsx.md": "69a50313288755b133363a2cac6f0637179b5a1a7f4f5d7dd8445e01526e4b04",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/origin/CsLabPlotExportDialog.tsx.md": "9468cd2f80b04ed40b77783c91ffd36c48d1f521cec75e8772b68997ad79e65a",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/origin/canvas-plot-renderer.ts.md": "60e06306c94c5e8c861015bd4ac97ad0863e7334a62ed1f2b58067b73b275504",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/origin/cslab-plot-export.ts.md": "5555cdd7bebdfa3ec79ff0694ab3f526a08f87099a634947085511e2ff233559",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/origin/cslab-plot-render-model.ts.md": "f38fe2c7903c3c29fbb6eeb7544fa69ed09be45a1f8b535294ea96f11fb0e6f0",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/use-cslab-events.ts.md": "1f380d61b543e64fc8bd39bf0cd12664ec794c433751801b77e58899ed5af851",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/use-cslab-vault.ts.md": "d6e35c120afcd8cd2b7038d54c385e261ffad87e656e56756d89a70b51332484",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/index.ts.md": "61be3efd0c050a00b41fba7c03619e6639e4e46a292c896393d058ccd4cd52e3",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-supplemental-images.ts.md": "1dd85aab72c6aa9b69f30d710a7711b6cd9fb340da8c8438d8b36773be1b5589",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-utils.ts.md": "8733ed27f9fbecb654812b7e87ee9ed842587c4ceab36fb9ef55a337694418c5"
+  },
+  "changedFromParent": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/crystal/CsLabVestaCrystalPane.tsx.md": {
+      "before": "d2fc9f4fee9d2b13f44042f50a3a9599f1b0f72edf0ac6ceb65cc510d41b471a",
+      "after": "d0064990528fbd64ebe008dbfe90ccfad02ba65fa7f915cf2d91a1f372c7c5fc"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/cslab-capability.ts.md": {
+      "before": "a5dd558b56e0ea0b6801626f8ed3abb1a131c9ca51756fc4ad78ae4484887522",
+      "after": "fdb8b67816c986777206d44ccfcd892f7493320fc0def693e9449bb5c5562eaf"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/cslab-capsule-node.ts.md": {
+      "before": "aebdcbff4893638f05c7e6c1f4ad92511e8c48bfd8b7fcf11d5ff996e61352e3",
+      "after": "47b85e85c0e85b215bb833c02af22a8be2b961e2dd4d54236025e30513f4b472"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/cslab-dnd.ts.md": {
+      "before": "d7a30bcc2b4fcb3435621627a8725c565fb906dd4aa26af9c2036dfd5f7ff131",
+      "after": "b27904b93c6ea2efa68c4736c803f15eadf057730ea00ccb4c875e428cea658a"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/cslab-molstar-state.ts.md": {
+      "before": "db11b9e17c4a8e718212ca01f39976cb62c3e7570de7cacacfad6589043e84ea",
+      "after": "08c5d7e78e8f83d8c20c727e84e554effe8d2d6f52c1965f0c487ebdb6e357b6"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/cslab-track-changes-extension.ts.md": {
+      "before": "3c99170e3ba08a1e826d319e2a450bec1415755bc376b4e4d99dee27dc61a71d",
+      "after": "2965ad3976c1015ec0724efea9e1413da0b9e96e37b51e0f25ec4209621c89a8"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/cslab-vibrational.ts.md": {
+      "before": "82a4a7062de9c554ba695438c94d80dfc3777579623af0234edcb57fc6712b43",
+      "after": "9652ca2e35e5e7b294450fe5da40e24ca01867aa239d369fb1e26e1cf73f28c3"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/origin/CsLabPeakFitDrawer.tsx.md": {
+      "before": "ce8118fddb4ebfa5259e50082d80d003a9e26dc382478ac3da24a3a29da4943c",
+      "after": "69a50313288755b133363a2cac6f0637179b5a1a7f4f5d7dd8445e01526e4b04"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/origin/CsLabPlotExportDialog.tsx.md": {
+      "before": "2551b4e1d11efb74de68cf28b33668300987d79549cac65038346b28b38a572d",
+      "after": "9468cd2f80b04ed40b77783c91ffd36c48d1f521cec75e8772b68997ad79e65a"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/origin/canvas-plot-renderer.ts.md": {
+      "before": "22f08db726a2a6b2086c30ccd7b92b6283264fb1cd6ed6f999b2f4220de17197",
+      "after": "60e06306c94c5e8c861015bd4ac97ad0863e7334a62ed1f2b58067b73b275504"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/origin/cslab-plot-export.ts.md": {
+      "before": "600f3fdd369d318983ca94102eee96d2ceb28f18ce86df1ad131a75601ee90f7",
+      "after": "5555cdd7bebdfa3ec79ff0694ab3f526a08f87099a634947085511e2ff233559"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/origin/cslab-plot-render-model.ts.md": {
+      "before": "5b5b2de7f23fbb04c297cde09da691acf09f802ebeb62b9224e0acf32aa2e86a",
+      "after": "f38fe2c7903c3c29fbb6eeb7544fa69ed09be45a1f8b535294ea96f11fb0e6f0"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/use-cslab-events.ts.md": {
+      "before": "65e357b6472a9a51e700928d9e23b6ceee13c3f01cbbfdef8b196ab2b7945114",
+      "after": "1f380d61b543e64fc8bd39bf0cd12664ec794c433751801b77e58899ed5af851"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/use-cslab-vault.ts.md": {
+      "before": "484ee15356d39010fe0fd03e50f46a78415a192c1643189c06a9f210808e0fce",
+      "after": "d6e35c120afcd8cd2b7038d54c385e261ffad87e656e56756d89a70b51332484"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-supplemental-images.ts.md": {
+      "before": "7879c9b14468ac6451cd61117fe2a0b36cb7c2c7c6e49bf8165cf306f8a2c217",
+      "after": "1dd85aab72c6aa9b69f30d710a7711b6cd9fb340da8c8438d8b36773be1b5589"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-utils.ts.md": {
+      "before": "bac04255122c2891b34cf66fe840fbd4578aaca11a6433fe93e00491f021131d",
+      "after": "8733ed27f9fbecb654812b7e87ee9ed842587c4ceab36fb9ef55a337694418c5"
+    }
+  },
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network",
+    "scientific compute"
+  ],
+  "verificationNotes": [
+    "G0：17 源绑定脚本实算==SCOPE==MANIFEST；17 手册 hash 磁盘=MANIFEST=READY；链一致；ZIP 20 条目安全逐字节一致；before/ 16 篇==父 nb-100 stage（37ffd93b 版）；changes.diff 重放 16/16；settings/primitives/index.ts.md 与父逐字节同（61be3efd…，证据继承）。",
+    "独立回源复验（不盲信前审，抽 20+ 关键声明全部吻合）：events 零 try/catch（grep=0）；vault cancelled 仅 :47/:52/:68；dnd value==null?'':String(:78)；isovalue 非负 max(abs)*0.6+toExponential(2)（:190-191）；track-changes acceptAll 无 setNodeMarkup（:485-525）+命令起点 380/431/474/506/546/559；vibrational 唯一直接消费者 CsLabMolstarViewer.tsx；canvas drawPlotToCanvas 自 setTransform(:118)；capability 声明 :31/38/49/51/57；TOOL_ICONS 58 键；capsule 12/24/105/143/155/181/188；molstar 21/30/138/205/288/299；dialog props 非导出；render-model 17/25/34/56/96+双界限才直用(:39)；extractFilePath nullish 后置类型检(:511-512)；diffStats=行总数；PeakFit busy 仅按钮禁用。",
+    "修订内容核验：12 项 blocking 语义修正与 4 项 minor 指针逐篇落实（events 无吞错/vault 取消口径/dnd 窄校验/isovalue 非负/track-changes 非对称+补导出/vibrational 直接边/canvas dpr 合同/capability 重定位/tool-utils 58 键+8 导出/capsule+molstar AST 范围/PeakFit+Dialog+plot-export+render-model 指针与细节）。",
+    "NOT_RUN 不变；哈希脚本生成；未改作者手册/产品/全局账。"
+  ]
+}

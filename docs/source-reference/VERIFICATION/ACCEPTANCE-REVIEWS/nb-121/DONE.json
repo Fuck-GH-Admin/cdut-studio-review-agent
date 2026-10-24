@@ -1,0 +1,35 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-121",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-06-20261024",
+ "reviewerSession": "docs-r07-qa-extra-06-20261024",
+ "reviewedSealId": "seal-bdf6c0926e739f28",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 18,
+  "accepted": 18,
+  "revision_required": 0,
+  "unknown": 0,
+  "minorErrata": 2
+ },
+ "sealedAtUtc": "2026-10-23T20:27:15Z",
+ "resultSha256": "8b05cd521c46bc52ace47e6ca85cd91f32da86f411a26037bc90ce7578563252",
+ "resultMdSha256": "08177df8fbf0c6ea974d92056a320179f715471d764319df02b8b45890710192",
+ "reviewedHashesSha256": "56e5d4a1406a279c8e15a19d5f117d33564786dc81fbf6402a5cf3755ad80609",
+ "artifacts": [
+  "reviews/nb-121/RESULT.json",
+  "reviews/nb-121/RESULT.md",
+  "reviews/nb-121/REVIEWED-HASHES.json",
+  "handoffs/nb-121-REVIEW-TO-AUTHOR-LEAD.md"
+ ],
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real rendering"
+ ],
+ "note": "18/18 accepted；2 minor 转 ERRATA（NB121-N-01 分组计数、NB121-N-02 引用路径）；无阻断"
+}

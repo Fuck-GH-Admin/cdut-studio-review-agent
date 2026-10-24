@@ -1,0 +1,69 @@
+{
+  "schema": "r07-reviewed-hashes/2",
+  "batch": "pilot-ui-r2",
+  "revisionOf": "pilot-ui-r1",
+  "reviewer": "docs-r07-qa-ui-20261023",
+  "reviewedAtUtc": "2026-10-23T15:40:25Z",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "sourceWorktreeClean": true,
+  "sourceFiles": [
+    {"path": "apps/electron/src/renderer/components/content-review/ContentReviewView.tsx", "blob": "0d400888e8a90529cf93d70b30ec4efdc73aea03", "sha256": "7b7ed76e47983f14f90b4149aed909f4a413ccbc2aa95b7951825eb9b67871af", "lines": 551},
+    {"path": "apps/electron/src/renderer/components/content-review/ReviewSettingsPanel.tsx", "blob": "4f99087cf684428626b97f225412d1749066455f", "sha256": "14c4c78507220085bbe6b1f58c588d1fa74f8c1c79ed2f402e5caed1f7b59f8d", "lines": 12},
+    {"path": "apps/electron/src/renderer/components/content-review/ReviewV3CaseTaskView.tsx", "blob": "2d15ed7f25a035fdeb7c05c77e34ef055cb930cf", "sha256": "aad89408bcd054855ca937f20512537d1d3ac2c849757578ea5770b11c9d5d54", "lines": 204},
+    {"path": "apps/electron/src/renderer/components/content-review/ReviewV3LocalCandidateWorkbench.tsx", "blob": "d7937a001bb35a9439bbc1836724d642274eef35", "sha256": "606f641069b01f56ef6e42d35651e4b3edbdbb09a0217721f1a914004b17b823", "lines": 463},
+    {"path": "apps/electron/src/renderer/components/content-review/review-error-text.ts", "blob": "b3aca15c799303c2eec541f3b45befdad1008948", "sha256": "58d1c094ce5f1f270652077798bf17b953b780a9f2e00393ff9fa7ea6e0b1b16", "lines": 55},
+    {"path": "apps/electron/src/renderer/components/content-review/review-error-text.test.ts", "blob": "4d8173000e07bb7c34eb9118ce44f7e59bafa16b", "sha256": "e449f1db34f3e9df542c06ce759b18cf83f843dbe1cd6188637f499a6b16df21", "lines": 46},
+    {"path": "apps/electron/src/renderer/atoms/review-atoms.ts", "blob": "ae7a6951592e3f0e8234d1613152909c5dd98d52", "sha256": "2beced7231b51177f663df5f8fde460dddee4f51332f8b8bd2885796c3cf1c45", "lines": 317},
+    {"path": "apps/electron/src/renderer/components/onboarding/ReviewFirstUseReadiness.tsx", "blob": "6a464b734466f3bae6d59852ada50f56bba5d2cc", "sha256": "3d3d25ae2c8f3b7f67206727d8d127974cc3baf44a6ae5c1f1bb8175f2e8975f", "lines": 155}
+  ],
+  "manuals": [
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ContentReviewView.tsx.md", "sha256": "57fed7cbc24e43ca73987e810b30bb9e021df78b69d39ee0e3d06b6690939841", "parentSha256": "27db9bc726d2cc92e9c12bc08bc88cac17e87617f8d9be0896a7e2b0dc30272f", "changed": true, "verdict": "accepted"},
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewSettingsPanel.tsx.md", "sha256": "56bba7fcfb708381122db63e5df713e8685ac2cb26f1ff14a0a048513341b95d", "parentSha256": "56bba7fcfb708381122db63e5df713e8685ac2cb26f1ff14a0a048513341b95d", "changed": false, "verdict": "accepted"},
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewV3CaseTaskView.tsx.md", "sha256": "b6143d346ee879932aaefc16cc8331230d3d4e0d5c792464d3f53eb78f780df6", "parentSha256": "42d9e1d2c324721f4d634b3db2593a68ccfc82fb2b4c2b33df4889d61a81eafe", "changed": true, "verdict": "accepted"},
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewV3LocalCandidateWorkbench.tsx.md", "sha256": "fce7fdea1d6884f8a4d2643523fc3d5957db762fbdd5dacd1f66908e69bcd26d", "parentSha256": "7c383df266d2015ab80bd4f77527c958b523cf6e6a33f682caf4fa8da1e1fe37", "changed": true, "verdict": "accepted"},
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-error-text.ts.md", "sha256": "f372235da13ba91a2fa3bc2463cbd1454c7183dad21b0c817ff6436ba86a2f6b", "parentSha256": "711d7be663d5fd9a48fabefc36c5a5d00919d7fb11dae6a51b81495b9def3e50", "changed": true, "verdict": "accepted"},
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-error-text.test.ts.md", "sha256": "9f03da5ff12055305ad1f9a097231fddc56ff6576d47aac5c4e6a675fee9415d", "parentSha256": "9f03da5ff12055305ad1f9a097231fddc56ff6576d47aac5c4e6a675fee9415d", "changed": false, "verdict": "accepted"},
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/review-atoms.ts.md", "sha256": "908d1a9d64c3e0a748f34f75d05e617d88f0756f5bf98bcde7f01b6cf575c2e8", "parentSha256": "908d1a9d64c3e0a748f34f75d05e617d88f0756f5bf98bcde7f01b6cf575c2e8", "changed": false, "verdict": "accepted"},
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/ReviewFirstUseReadiness.tsx.md", "sha256": "fa012e6b7301b1c0cfd9d31d4e5330d558ce5f5fa5f99f5fd5fd402be7c88848", "parentSha256": "fa012e6b7301b1c0cfd9d31d4e5330d558ce5f5fa5f99f5fd5fd402be7c88848", "changed": false, "verdict": "accepted"}
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ContentReviewView.tsx.md": "57fed7cbc24e43ca73987e810b30bb9e021df78b69d39ee0e3d06b6690939841",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewSettingsPanel.tsx.md": "56bba7fcfb708381122db63e5df713e8685ac2cb26f1ff14a0a048513341b95d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewV3CaseTaskView.tsx.md": "b6143d346ee879932aaefc16cc8331230d3d4e0d5c792464d3f53eb78f780df6",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewV3LocalCandidateWorkbench.tsx.md": "fce7fdea1d6884f8a4d2643523fc3d5957db762fbdd5dacd1f66908e69bcd26d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-error-text.ts.md": "f372235da13ba91a2fa3bc2463cbd1454c7183dad21b0c817ff6436ba86a2f6b",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-error-text.test.ts.md": "9f03da5ff12055305ad1f9a097231fddc56ff6576d47aac5c4e6a675fee9415d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/review-atoms.ts.md": "908d1a9d64c3e0a748f34f75d05e617d88f0756f5bf98bcde7f01b6cf575c2e8",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/ReviewFirstUseReadiness.tsx.md": "fa012e6b7301b1c0cfd9d31d4e5330d558ce5f5fa5f99f5fd5fd402be7c88848"
+  },
+  "before": [
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewV3LocalCandidateWorkbench.tsx.md", "sha256": "7c383df266d2015ab80bd4f77527c958b523cf6e6a33f682caf4fa8da1e1fe37", "equalsParent": true},
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ContentReviewView.tsx.md", "sha256": "27db9bc726d2cc92e9c12bc08bc88cac17e87617f8d9be0896a7e2b0dc30272f", "equalsParent": true},
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewV3CaseTaskView.tsx.md", "sha256": "42d9e1d2c324721f4d634b3db2593a68ccfc82fb2b4c2b33df4889d61a81eafe", "equalsParent": true},
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-error-text.ts.md", "sha256": "711d7be663d5fd9a48fabefc36c5a5d00919d7fb11dae6a51b81495b9def3e50", "equalsParent": true}
+  ],
+  "sealedArtifacts": {
+    "READY.json": "a3ab402930a6e8f8a3ae7b4fb76253a62d00aa1a9964a39548135d6144790f6e",
+    "DONE.json": "4d83f3d8bd67eaf1aeac764bc27f6161cf06d856e3769629b7182220698f3d6f",
+    "MANIFEST.json": "7682bbc417891be62711cf4bbbd1286ff0d15768d6c930cd27677fd9e03b7a9d",
+    "R07-pilot-ui-r2-05fb2565.zip": "e93cf9316fa992febf2b7b235ececd7e8871b5ddcb2b9e301e9e1f84b8aa6b3e"
+  },
+  "zipChecks": {
+    "entries": 44, "unsafePaths": 0, "symlinks": 0,
+    "integrity": "unzip -t: No errors detected",
+    "stageManuals": 8, "beforeManuals": 4,
+    "stageDriftVsLive": "none", "metadataFilesMatchLive": true
+  },
+  "changesDiffReplay": {"base": "deliveries/pilot-ui-r1/stage", "patchExit": 0, "result": "8/8 sha256 equal r2 READY", "replayAllOk": true},
+  "parentPreserved": {
+    "deliveries/pilot-ui-r1/READY.json": "c913ce964986781a76114bc6b993b97e11051f1f278ee8d04b7aba5faf40f4fc",
+    "deliveries/pilot-ui-r1/DONE.json": "45e8b914304f01e7bf3768b57e70a108a8bc2ba19640871d9a5c2bcebd7b946e",
+    "deliveries/pilot-ui-r1/ZIP": "6c5c83592162324e2f1841f5f6084bc7ed626022d7ca351db2e86bad8a2efdef",
+    "note": "r1/r0 交付与 QA 报告字节未改"
+  },
+  "errataClosure": {
+    "N-WB-1": "closed", "N-WB-2": "closed", "N-CV-1": "closed", "N-CT-1": "closed",
+    "N-META-1": "closed", "PUI-ET-N1": "closed", "PUI-ET-N2": "closed（主断言；限定语见 N-R2-2）"
+  },
+  "openNotes": ["N-R2-1", "N-R2-2"]
+}

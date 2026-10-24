@@ -1,0 +1,58 @@
+{
+  "schema": "dsh-r07-review-done/2",
+  "batch": "pilot-ui-r2",
+  "revisionOf": "pilot-ui-r1",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-ui-20261023",
+  "reviewerSession": "docs-r07-qa-ui-20261023",
+  "reviewedAtUtc": "2026-10-23T15:40:25Z",
+  "state": "QA_COMPLETE",
+  "batchVerdict": "accepted",
+  "counts": {
+    "filesReviewed": 8,
+    "accepted": 8,
+    "revisionRequired": 0,
+    "errataClosed": 7,
+    "openNonBlocking": 2
+  },
+  "reviewedSeal": {
+    "READY.json": "a3ab402930a6e8f8a3ae7b4fb76253a62d00aa1a9964a39548135d6144790f6e",
+    "DONE.json": "4d83f3d8bd67eaf1aeac764bc27f6161cf06d856e3769629b7182220698f3d6f",
+    "MANIFEST.json": "7682bbc417891be62711cf4bbbd1286ff0d15768d6c930cd27677fd9e03b7a9d",
+    "zip": "e93cf9316fa992febf2b7b235ececd7e8871b5ddcb2b9e301e9e1f84b8aa6b3e",
+    "zipBytes": 128004,
+    "zipEntries": 44
+  },
+  "errataClosure": {
+    "closed": ["N-WB-1", "N-WB-2", "N-CV-1", "N-CT-1", "N-META-1", "PUI-ET-N1", "PUI-ET-N2"],
+    "openNonBlocking": ["N-R2-1", "N-R2-2"]
+  },
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ContentReviewView.tsx.md": "57fed7cbc24e43ca73987e810b30bb9e021df78b69d39ee0e3d06b6690939841",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewSettingsPanel.tsx.md": "56bba7fcfb708381122db63e5df713e8685ac2cb26f1ff14a0a048513341b95d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewV3CaseTaskView.tsx.md": "b6143d346ee879932aaefc16cc8331230d3d4e0d5c792464d3f53eb78f780df6",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewV3LocalCandidateWorkbench.tsx.md": "fce7fdea1d6884f8a4d2643523fc3d5957db762fbdd5dacd1f66908e69bcd26d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-error-text.ts.md": "f372235da13ba91a2fa3bc2463cbd1454c7183dad21b0c817ff6436ba86a2f6b",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-error-text.test.ts.md": "9f03da5ff12055305ad1f9a097231fddc56ff6576d47aac5c4e6a675fee9415d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/review-atoms.ts.md": "908d1a9d64c3e0a748f34f75d05e617d88f0756f5bf98bcde7f01b6cf575c2e8",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/ReviewFirstUseReadiness.tsx.md": "fa012e6b7301b1c0cfd9d31d4e5330d558ce5f5fa5f99f5fd5fd402be7c88848"
+  },
+  "outputs": {
+    "RESULT.json": "fe00b363c08185310e6e194eca371d06092a70e228d3e9b4e96a39c33c88b9c4",
+    "RESULT.md": "c10227acbc1a046f4e664199711c8e0750060ab46cd54c0358a5de929195f963",
+    "SOURCE-CHECKLIST.md": "1d3de240c9e380a6c5762713fd9830ab0f5276822eec8907df05981121f9f4e5",
+    "REVIEWED-HASHES.json": "61abe6304d9c77ef01a31257f48b0f4a58ed525928409a2138a26765a654e854"
+  },
+  "notRun": ["bun test", "typecheck", "build", "Electron/GUI", "real model/network"],
+  "semanticsCheck": "1 次独立 Node 语言语义复核（非产品运行）",
+  "boundaries": [
+    "未改源码/测试/依赖/作者正文/candidate/全局 FILES/COVERAGE/MANIFEST/INDEX",
+    "未回写任何旧 seal（r0/r1 交付与 QA 报告字节保留）",
+    "NOT_RUN 不等于测试通过；accepted 仅限静态文档 scope",
+    "运行期行为保持未知（重试环次数、双 AuthorWizard 交互、String 例外频率）"
+  ],
+  "notes": [
+    "N-R2-1（String(error ?? ) 引号残缺）、N-R2-2（Error 子类 getter 需限定）为低级非阻断，G4 前关闭",
+    "本批为勘误闭合批：ACCEPTED-ERRATA 7 条全部 closed；不阻断 candidate 合入"
+  ]
+}

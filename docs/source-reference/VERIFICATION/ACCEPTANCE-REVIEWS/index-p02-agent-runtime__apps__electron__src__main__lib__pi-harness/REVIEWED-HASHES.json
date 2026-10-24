@@ -1,0 +1,20 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness",
+ "groupId": "p02-agent-runtime__apps__electron__src__main__lib__pi-harness",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T19:25:00Z",
+ "sealedAtUtc": "2026-10-23T19:14:06Z",
+ "artifactSha256": "547759b81a7d7004abf543c14320bb0d31bbf5d984aded2bab3d49c51db7069e",
+ "note": "QA 实算封版链全对。1/1 accepted，0 findings。",
+ "acceptedManuals": {
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__src__main__lib__pi-harness.md@apps/electron/src/main/lib/pi-harness/evals/README.md": "547759b81a7d7004abf543c14320bb0d31bbf5d984aded2bab3d49c51db7069e"
+ },
+ "sourceBindings": {
+  "apps/electron/src/main/lib/pi-harness/evals/README.md": {
+   "sourceBlob": "25233e786783972f2e4949708d15eedcd3136682",
+   "sourceSha256": "f02f904fbc862b0fd6e4c26d622997b275f4b60a7b3a490f7038ddec450f905a"
+  }
+ }
+}

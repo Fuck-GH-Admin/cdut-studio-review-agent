@@ -1,0 +1,177 @@
+{
+ "schema": "dsh-r07-index-review-result/1",
+ "batch": "index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill-r1",
+ "groupId": "p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-03-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T21:30:00Z",
+ "sealedAtUtc": "2026-10-23T19:33:22+00:00",
+ "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md",
+ "artifactSha256": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+ "revisionOf": "index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 9,
+  "accepted": 9,
+  "revision_required": 0,
+  "unknown": 0,
+  "blocking": 0,
+  "nonBlocking": 0
+ },
+ "gates": {
+  "G0_INDEX": "PASS",
+  "G1_INDEPENDENT_SOURCE_REVIEW": "PASS",
+  "G2_SEAL_CONSISTENCY": "PASS",
+  "note": "G0 等价检查全对（artifact=295ae77c…/manifest/ready 自洽、9/9 锚点@声明行、源绑定 9/9）。G1：3 条 minor 全部关闭且改值与 QA 实测一致；r0→r1 diff 共 20 行（10 对），全部为引证行修正/自纠，无内容回退。"
+ },
+ "g0Evidence": {
+  "stockScript": "ERRATA-E1 沿登记；等价检查 PASS"
+ },
+ "errataCarry": [
+  "ERRATA-E1",
+  "ERRATA-E2",
+  "ERRATA-E3"
+ ],
+ "findingsClosure": [
+  {
+   "id": "GUZ-N-01",
+   "closure": "resolved",
+   "verify": "image-prompts 杂志信息图 :72→:74，与实测一致。"
+  },
+  {
+   "id": "GUZ-N-02",
+   "closure": "resolved",
+   "verify": "validate-swiss-deck.mjs 白名单引证改 :17-21（Set :17-21 精确，优于 QA 建议的 :17-20）。"
+  },
+  {
+   "id": "GUZ-N-03",
+   "closure": "resolved",
+   "verify": ":227→:224（「## The 22 registered layouts」节起点，版式标题 :226 起，口径成立）。"
+  },
+  {
+   "id": "GUZ-SELF",
+   "closure": "verified",
+   "verify": "随 r1 顺带自纠 3 处并经 QA 实测属实：config-paths 注释块 :946-955（:946 '/**' 实测）、DEFAULT_SKILL_COPY_BLOCKLIST :681-690（:690 ']' 实测）、LEGACY 常量 :848 起（注释 :840-847，:848 const 实测）。"
+  }
+ ],
+ "files": [
+  {
+   "path": "apps/electron/default-skills/guizang-ppt-skill/references/checklist.md",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--guizang-ppt-skill--references--checklist.md",
+   "line": 16,
+   "sourceBlob": "34719d78c3a0a0c8dc5cfa0152c675537a60a910",
+   "sourceSha256": "7328767e6ca6b4916a0ce20883d6982cc389f959357e73037299cdf0a31a3085",
+   "manualSha256": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 引证修正已复核；本文件小节其余内容与 r0 一致。"
+  },
+  {
+   "path": "apps/electron/default-skills/guizang-ppt-skill/references/components.md",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--guizang-ppt-skill--references--components.md",
+   "line": 26,
+   "sourceBlob": "54c98ecbd3df27cd9f6955ebb839bd761deadda4",
+   "sourceSha256": "0f6e7207399df8b3920954dfc7364e4182f52d4b418f317ef0147d51a660459d",
+   "manualSha256": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 引证修正已复核；本文件小节其余内容与 r0 一致。"
+  },
+  {
+   "path": "apps/electron/default-skills/guizang-ppt-skill/references/image-prompts.md",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--guizang-ppt-skill--references--image-prompts.md",
+   "line": 36,
+   "sourceBlob": "a13b01104e39765c9eb548d6ed52369517c193c5",
+   "sourceSha256": "5dc354f19955352e63550a935dfc5c9cd7a8e26e1aecf00883108bd627853aca",
+   "manualSha256": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 引证修正已复核；本文件小节其余内容与 r0 一致。"
+  },
+  {
+   "path": "apps/electron/default-skills/guizang-ppt-skill/references/layouts-swiss.md",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--guizang-ppt-skill--references--layouts-swiss.md",
+   "line": 46,
+   "sourceBlob": "ee3512665364b39861811698dcf5983615ea3262",
+   "sourceSha256": "de01ce9c78805c7b8744af44cf2e3d18c48d65c0ad3f1a88afce7ccbbaff6ad8",
+   "manualSha256": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 引证修正已复核；本文件小节其余内容与 r0 一致。"
+  },
+  {
+   "path": "apps/electron/default-skills/guizang-ppt-skill/references/layouts.md",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--guizang-ppt-skill--references--layouts.md",
+   "line": 56,
+   "sourceBlob": "3ea2f63708393cdbf2180e62c43dc1254b446ad4",
+   "sourceSha256": "9a57faaa937722b7d15725a6cebebc071f8c9431aaaf82e2584a9966bffa7f6e",
+   "manualSha256": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 引证修正已复核；本文件小节其余内容与 r0 一致。"
+  },
+  {
+   "path": "apps/electron/default-skills/guizang-ppt-skill/references/swiss-layout-lock.md",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--guizang-ppt-skill--references--swiss-layout-lock.md",
+   "line": 66,
+   "sourceBlob": "8a4f582dfe3399bf822b43acacb7793a43c05d95",
+   "sourceSha256": "035f40c1c758e5b0a9af98536abaca74c9216124d0f74ea136f5798907c30476",
+   "manualSha256": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 引证修正已复核；本文件小节其余内容与 r0 一致。"
+  },
+  {
+   "path": "apps/electron/default-skills/guizang-ppt-skill/references/swiss-map-component.md",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--guizang-ppt-skill--references--swiss-map-component.md",
+   "line": 76,
+   "sourceBlob": "5716d43f37aecca2edf6f2782e9ab9292d3dfe66",
+   "sourceSha256": "0b870a75c7dea7f22f84d9a5f64289b87c12dbcd89d567304e239081d3f07a1e",
+   "manualSha256": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 引证修正已复核；本文件小节其余内容与 r0 一致。"
+  },
+  {
+   "path": "apps/electron/default-skills/guizang-ppt-skill/references/themes-swiss.md",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--guizang-ppt-skill--references--themes-swiss.md",
+   "line": 86,
+   "sourceBlob": "b7d1ca30f6f4d6fc87e91e24281c026de476d9aa",
+   "sourceSha256": "7151260f2ab25b3502733299707ac0abe23a8c5a9e63c47b26ee8ee0074a1f01",
+   "manualSha256": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 引证修正已复核；本文件小节其余内容与 r0 一致。"
+  },
+  {
+   "path": "apps/electron/default-skills/guizang-ppt-skill/references/themes.md",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--guizang-ppt-skill--references--themes.md",
+   "line": 96,
+   "sourceBlob": "b33190e9708e154dbb4acc60962974d4b5428342",
+   "sourceSha256": "a4c7ccdd992118589a62d5ea214996d76d0d5c4d45c9653b9bfca9200f2d7e77",
+   "manualSha256": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "r1 引证修正已复核；本文件小节其余内容与 r0 一致。"
+  }
+ ]
+}

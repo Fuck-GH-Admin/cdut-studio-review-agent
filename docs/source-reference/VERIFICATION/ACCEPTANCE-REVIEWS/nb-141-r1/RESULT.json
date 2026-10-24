@@ -1,0 +1,228 @@
+{
+ "schema": "dsh-r07-review-result/1",
+ "batch": "nb-141-r1",
+ "revisionOf": "nb-141",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-05-20261024",
+ "reviewerSession": "docs-r07-qa-extra-05-20261024",
+ "reviewedAtUtc": "2026-10-23T20:23:47Z",
+ "parentReview": "reviews/nb-141/RESULT.json",
+ "deliverySeal": {
+  "sealId": "seal-bcb469a58e01e570",
+  "sealedAtUtc": "2026-10-23T19:50:09Z",
+  "readySha256": "6fad6e594909ce5c1a977b1b39541b1daf9b27a43565d4d2704ccf49639c562b",
+  "doneSha256": "6b3fa113f44e11cfa02a37a3e47cbea8af750bfbe4532fecf3dee510a8057ea0",
+  "manifestSha256": "c47c33a02cc28af12aaa1d7f51207620a3065eba3567a2493dd70fe87cc14c4f",
+  "zipSha256": "4b06114f54e776b2ec1e5ff1b161aeaa5b0e8c18eaac364b30a26a7ad11b6d3f"
+ },
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "gatesNote": "r1 复验：触发=作者自查 g0_check 严口径 G1-MISSING-SECTION×2（config 手册缺『结论与边界』，QA 原 G0 对 config 用要素口径判过——QA 口径差异自省入账）；修复=2 篇 config 手册补章对齐 11 章（config 变体章名映射 MANUAL-FORMAT §4.2 要素）、事实/行号不变（行号引用集合 diff 仅新增 package.json:5=description 行，回源核正确）；after-hash=FINDINGS-RESPONSE=READY 双向一致；14 篇与父版逐字节相同沿用 accepted。QA F-1（父版 DONE.note「12 source」计数）随 r1 note 重写移除错误声明而关闭（声明不复存在，不再误导）。",
+ "batchVerdict": "accepted",
+ "files": [
+  {
+   "path": "apps/cli/package.json",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/package.json.md",
+   "sourceBlob": "d1bfd8b283312978aa547125eb892e10d886d27d",
+   "sourceSha256": "2accf09dd0348f884d330828f735934240876ed85319943c716dd1f081ce52e1",
+   "lines": 22,
+   "manualSha256": "cfcc79bcacbc44411b3ba19426bb19f49f60d595bce1251af150c6f844a70314",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "补章对齐 11 章（『结论与边界』新增，事实/行号不变+新增 package.json:5 引用已回源核正确）"
+  },
+  {
+   "path": "apps/cli/src/args.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/args.test.ts.md",
+   "sourceBlob": "3fc6fb8307220eae160366c8e8b67be96ec97b97",
+   "sourceSha256": "f779be6ae4c7a7b5bda28b2f52af5c1c74cef856c016540d2be71626c08c84a5",
+   "lines": 44,
+   "manualSha256": "ec76770201c6db933fb73cf79698d8d1578eedec86cfaa9a8cff802a8d8dafae",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/cli/src/args.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/args.ts.md",
+   "sourceBlob": "d59fac3b135a06e5f57b27646fe72075dfa1b8b0",
+   "sourceSha256": "e91720b5f4da6d169a2341a32fb5b6548a72ebddc91011fe06e77352412fa974",
+   "lines": 74,
+   "manualSha256": "90d790fce064baba128e2ae52b84d0f75d9a077eefae87907dc621e62cc902f5",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/cli/src/commands/export.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/commands/export.test.ts.md",
+   "sourceBlob": "f0cd900738aa75bdf406c8fc7f7dfa7de03a7a87",
+   "sourceSha256": "15856da69a4c6c12265f6b0bb3437b6f6323e24ac7d87b2ff15facc251da313f",
+   "lines": 30,
+   "manualSha256": "c516d7b2e766fc89bd92c362fae1912243b06b8275c0f4a959c6708ccf615cd6",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/cli/src/commands/export.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/commands/export.ts.md",
+   "sourceBlob": "1b38e0d1fdd11088bef19495984bf5f3e1373aaa",
+   "sourceSha256": "25303a9f280585511998be18a7797b84d2ca9f2898792058caad0abeb2115a27",
+   "lines": 110,
+   "manualSha256": "d569f194e901fe7808114d4d696f38a058e483ed4f6f402231afa31cd5457da7",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/cli/src/commands/info.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/commands/info.ts.md",
+   "sourceBlob": "fe86c9ad44bcbe0b423f75123aa7fd525ccfed5b",
+   "sourceSha256": "fd90c3d707797334ced34e38c6b7555608d6a597cc9b25e43ed177141714f084",
+   "lines": 54,
+   "manualSha256": "88ec38e7c38efbaf866bdbb6bcef59c793382846f7719571221ff96a1dec0161",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/cli/src/commands/list.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/commands/list.ts.md",
+   "sourceBlob": "411e0b8c993c559d09199d11a8e900dff3aba00c",
+   "sourceSha256": "0fa6b4cefbb485122c7c8e695c53639a8a4d2a6a6dcb970a3634eb31a013bd79",
+   "lines": 52,
+   "manualSha256": "91599bed5a4b92ea5b9a3b32bc92eb10072b0e727b326700f2c0b5ee320d6d62",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/cli/src/commands/outline.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/commands/outline.ts.md",
+   "sourceBlob": "ea63f1af2255467b453be9f30211c912bc66a865",
+   "sourceSha256": "3d4641fb52be3fd6a8462b99e0dcc9c2d256def72a395d8f20c16cd7da65517d",
+   "lines": 40,
+   "manualSha256": "f16015a5f821a77f1e9e951e51629bbff6ac1beaf309c25a5de7337d6fe6c6d4",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/cli/src/commands/search.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/commands/search.ts.md",
+   "sourceBlob": "d26cb52ef571e291aae70a51851617609c5e6899",
+   "sourceSha256": "18ecee89961b2ff5b3f59b2564744ba007ccbc461cc0e8f56bd3164f20070d53",
+   "lines": 46,
+   "manualSha256": "e58b3365583922ab348dd818a1d781ccaa6f378047a6f98bdb7b8edd7a261c67",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/cli/src/index.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/index.ts.md",
+   "sourceBlob": "8c0e1e3ce51c62fee413e643b0bdeca738631133",
+   "sourceSha256": "d7513e00af84893ca17d221e6650d3625a796a525779245bf892ebe9dd9ea1ae",
+   "lines": 84,
+   "manualSha256": "64fd500412dfd899e36810a561729077c115fc1641a09db79a74dc850f45b9aa",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/cli/src/output.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/output.ts.md",
+   "sourceBlob": "0fbdb3a0678e9d67f04b516a0ca297852e8ae5ec",
+   "sourceSha256": "0f5dedee465bacb0dc4ba6bce668215fc31dd7ac58e2e757920ea5c37eb05cfc",
+   "lines": 38,
+   "manualSha256": "e2661f8281568cba1a80ad162dbdb398da2e3d716724e34eae8fd2c7cf4dec64",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/cli/src/paths.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/paths.test.ts.md",
+   "sourceBlob": "ec4e9c33993eb2c98086e43f56b0422be0917521",
+   "sourceSha256": "069fb654003fcd09f0aed89adaee61c8c8a1fc0862a2cab8c9b0ceb09fd1b524",
+   "lines": 36,
+   "manualSha256": "c88a64d27261534e66f6a0dd57b6f1b86d8dead0d89a9068a3a6999d6cd8b517",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/cli/src/paths.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/paths.ts.md",
+   "sourceBlob": "e3329e0eefd6152686881ba4f2df86f527b8f362",
+   "sourceSha256": "e6e1372a1d8db3a560324630339f1780e03c3aacaa04129af5c28e7950eb9caa",
+   "lines": 41,
+   "manualSha256": "3ae6ae7b74efba1430ecc9a9284df75d5dfa96823b9d9c4507626bf4cb311a59",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/cli/src/registry.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/registry.ts.md",
+   "sourceBlob": "1147d41a712d635a04a22b3c116835ee17f629de",
+   "sourceSha256": "8b158fde1169302a26ba447d5313911dda292b73da2f5516e8e5253af77c87f7",
+   "lines": 38,
+   "manualSha256": "47a2623b02789b4e10b608746cee0b80197c1e2e8833703e9544181ecdbd5362",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/cli/src/sessions.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/sessions.ts.md",
+   "sourceBlob": "578548350100e9300106f7fbc0d4f42321a35e78",
+   "sourceSha256": "71b4018d8f38dba7b5ec6affc2cd3f42d847d92aa6eff4a3ed686de32c808f6c",
+   "lines": 72,
+   "manualSha256": "923f288109af48a36e7d83703683ac009e868c987a04070d32f578659a3c11e3",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/cli/tsconfig.json",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/tsconfig.json.md",
+   "sourceBlob": "73a65ef2ef6e5658643310ffc67e5391df2cbbc1",
+   "sourceSha256": "1de5fbec4888f903fd7d0695642e6c2cb46ae9f5e944df0d93a4fd1aaa2325d6",
+   "lines": 5,
+   "manualSha256": "368fc0f6eac24fc3c80136ecdd15930c230deb9ad40168f241aceea192ad82cf",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "补章对齐 11 章（『结论与边界』新增，事实/行号不变+新增 package.json:5 引用已回源核正确）"
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/package.json.md": "cfcc79bcacbc44411b3ba19426bb19f49f60d595bce1251af150c6f844a70314",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/args.test.ts.md": "ec76770201c6db933fb73cf79698d8d1578eedec86cfaa9a8cff802a8d8dafae",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/args.ts.md": "90d790fce064baba128e2ae52b84d0f75d9a077eefae87907dc621e62cc902f5",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/commands/export.test.ts.md": "c516d7b2e766fc89bd92c362fae1912243b06b8275c0f4a959c6708ccf615cd6",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/commands/export.ts.md": "d569f194e901fe7808114d4d696f38a058e483ed4f6f402231afa31cd5457da7",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/commands/info.ts.md": "88ec38e7c38efbaf866bdbb6bcef59c793382846f7719571221ff96a1dec0161",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/commands/list.ts.md": "91599bed5a4b92ea5b9a3b32bc92eb10072b0e727b326700f2c0b5ee320d6d62",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/commands/outline.ts.md": "f16015a5f821a77f1e9e951e51629bbff6ac1beaf309c25a5de7337d6fe6c6d4",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/commands/search.ts.md": "e58b3365583922ab348dd818a1d781ccaa6f378047a6f98bdb7b8edd7a261c67",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/index.ts.md": "64fd500412dfd899e36810a561729077c115fc1641a09db79a74dc850f45b9aa",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/output.ts.md": "e2661f8281568cba1a80ad162dbdb398da2e3d716724e34eae8fd2c7cf4dec64",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/paths.test.ts.md": "c88a64d27261534e66f6a0dd57b6f1b86d8dead0d89a9068a3a6999d6cd8b517",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/paths.ts.md": "3ae6ae7b74efba1430ecc9a9284df75d5dfa96823b9d9c4507626bf4cb311a59",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/registry.ts.md": "47a2623b02789b4e10b608746cee0b80197c1e2e8833703e9544181ecdbd5362",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/sessions.ts.md": "923f288109af48a36e7d83703683ac009e868c987a04070d32f578659a3c11e3",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/tsconfig.json.md": "368fc0f6eac24fc3c80136ecdd15930c230deb9ad40168f241aceea192ad82cf"
+ },
+ "notRun": [
+  "product tests (17 cases)",
+  "typecheck",
+  "bun build --compile",
+  "CLI execution"
+ ],
+ "scopeBound": "nb-141-r1 返修复验（2 篇补章+14 篇不变性+F-1 关闭）"
+}

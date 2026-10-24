@@ -1,0 +1,18 @@
+{
+  "schema": "dsh-r07-qa-done/1",
+  "batch": "nb-78-r2",
+  "revisionOf": "nb-78",
+  "chain": "nb-78→nb-78-r1→nb-78-r2",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-30-20261023",
+  "reviewerSession": "docs-r07-qa-nb-30-20261023",
+  "status": "QA_COMPLETE",
+  "batchVerdict": "accepted",
+  "counts": { "files": 18, "accepted": 18, "revision_required": 0, "unknown": 0, "findingsBlocking": 0, "findingsRemark": 0 },
+  "reviewedSealId": "seal-26e8e696efe7ea61",
+  "reviewedAtUtc": "2026-10-23T22:03:53Z",
+  "parentReviews": ["reviews/nb-78/DONE.json (保留)", "reviews/nb-78-r1/DONE.json (保留)"],
+  "artifacts": ["reviews/nb-78-r2/RESULT.json", "reviews/nb-78-r2/RESULT.md", "reviews/nb-78-r2/REVIEWED-HASHES.json", "reviews/nb-78-r2/DONE.json", "handoffs/nb-78-r2-REVIEW-TO-AUTHOR.md", "handoffs/nb-78-r2-REVIEW-TO-LEAD.md"],
+  "notRun": ["product tests", "typecheck", "build", "Electron/GUI", "real model/network"],
+  "note": "变化 6 篇 r2-reverified（用例表行锚全准）；不变 12 篇 r1-bound（byte-identical 绑定证据）。NB78R-F01~F06 全闭环。整合由 lead；QA 未动 candidate/accepted/全局账。"
+}

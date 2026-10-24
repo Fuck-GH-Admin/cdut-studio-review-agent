@@ -1,0 +1,231 @@
+{
+ "schema": "dsh-r07-review-result/1",
+ "batch": "nb-115",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-06-20261024",
+ "reviewerSession": "docs-r07-qa-extra-06-20261024",
+ "reviewedSealId": "seal-0ed34e82325daaa3",
+ "reviewedAtUtc": "2026-10-23T20:34:17Z",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 18,
+  "accepted": 18,
+  "revision_required": 0,
+  "unknown": 0,
+  "findings": {
+   "blocking": 0,
+   "minor": 1
+  }
+ },
+ "g0": {
+  "mechanical": "PASS（链自洽、sealId 复算 seal-0ed34e82325daaa3 一致、18 manual 字节三方一致、源绑定 18/18==manager scope、ZIP 21 条目干净）",
+  "format": "PASS（18/18 front matter/章节/NOT_RUN 全合规）"
+ },
+ "g1": {
+  "unverified": "PASS（5 节披露与预读吻合：planningReminder 悬挂/桶零消费者/aggregateTaskItems 第二参不杜撰/localStorage 明文面）",
+  "evidence": "SOURCE-EVIDENCE.tsv 与预读独立真值一致；17 test 计数（15+2）一致"
+ },
+ "g2": {
+  "method": "18/18 手册对照预读 + 回源抽查（goal-atoms 4 处 throw 2 种文案 grep、10+1 overlay 消费点、7/4/3/2/1 调用方行号、环境 null=OK、markdown-font-size 非原子、identity localStorage）；断言≠运行 NOT_RUN"
+ },
+ "files": [
+  {
+   "path": "apps/electron/src/renderer/atoms/dingtalk-atoms.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/dingtalk-atoms.ts.md",
+   "sourceBlob": "ee42106d039d34685388289801a05809d0dcc7bb",
+   "sourceSha256": "7ee167e90177b6d1cddcf0f29064131bde892569ff5cfcc6bb666f40f0184746",
+   "manualSha256": "cc04c036746de8f5c7ffbc5bed9e0afb7e71f490eee832bb27939013ce502fae",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/draft-session-atoms.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/draft-session-atoms.ts.md",
+   "sourceBlob": "137356aa5f9b7c32632d68802c9df0cc407f8529",
+   "sourceSha256": "b15d3e7792c971ca40e20331978d06bccd29e72f572ef734810f4f82496dbf7f",
+   "manualSha256": "ed7f599aca2d4fcef4efe3a8aa332aed688bb4be39da66b78283415e9d3e791f",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/environment.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/environment.ts.md",
+   "sourceBlob": "5b3cbd2ed258f397a364adcc04fc5d93864b8c10",
+   "sourceSha256": "ef3bc8fffdf60c032ee7fa444558f8a19ae21393dda3a07de4e6b0f6747df7b8",
+   "manualSha256": "127263416f42b9bd7d5987ab8fb1d5f7875aa9370215d9761ae02a0629292f1c",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/feishu-atoms.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/feishu-atoms.ts.md",
+   "sourceBlob": "a42b0456a79798283df3e2cad8990cd72edf4330",
+   "sourceSha256": "e21271871eaf5844a04b97cabbe40441805acf0d5345abb85c678ed55dd68994",
+   "manualSha256": "467fdd58f565e72c8d7f6b811d829e3718fde341bda2d1c71efb03a7cecaf1f7",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/goal-atoms.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/goal-atoms.test.ts.md",
+   "sourceBlob": "6bb16f55804c7ef3fcb43b80d1be21d5570bd4c9",
+   "sourceSha256": "84689837cce9ba1bcbfc98662fc534ea57761e16a459e73e7414c3df2e3ec9c4",
+   "manualSha256": "6d6e63437e8e052deeb232fd93d3b8fab09c2a9710e9c7d7101392c40d026931",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/goal-atoms.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/goal-atoms.ts.md",
+   "sourceBlob": "3e9a57dcf1042805b5e344cbab2b8eac488958b8",
+   "sourceSha256": "74dd6a872dc53b8dd1294309f6d709e799b5cdebf2bb9605d8945160da2f8ea2",
+   "manualSha256": "73a38d80303bc4b1fba465fff9b68b7f47172144b21c9587d8b7e220272985c6",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB115-N-01",
+     "severity": "minor",
+     "claim": "§6 称 \"3 个 throw 点（:95/:98/:102/:103 共 4 处 throw 语句、3 种文案）：已变化/正在停止\"——实际 4 处 throw 仅 2 种文案（:95/:102 同为\"当前 Goal 已变化\"，:98/:103 同为\"Goal 正在停止\"），\"3 种文案\"与自列的两种矛盾",
+     "sourceEvidence": "goal-atoms.ts:95/:98/:102/:103 grep throw new Error — 2 distinct messages",
+     "action": "errata：改\"4 处 throw/2 种文案\""
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/graph-atoms.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/graph-atoms.ts.md",
+   "sourceBlob": "fe3fe46991648b543ae89189103ddc8e402e6b77",
+   "sourceSha256": "cd54a2c1c9411985b82602501845084cabf3ffa9239fed27d2e18da772acd721",
+   "manualSha256": "5e0ed096fa64add8ce3ae2af955efa2fbf09356da006fd019348f1853249c2c3",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/identity-atoms.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/identity-atoms.ts.md",
+   "sourceBlob": "e84caa0efa01347978165cdc82bd0e76aaaac705",
+   "sourceSha256": "c7fffa54ac12a183899ca34decf5eed213da95650ed046080c58c09784ff37c9",
+   "manualSha256": "fcc2c586a51fd22fdfa2172f939cacddedab460fabb1e89c554b7af121cb546d",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/index.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/index.ts.md",
+   "sourceBlob": "f3e12c9ea14cab80690838d9cf4c0cb49aa03c07",
+   "sourceSha256": "8a64580743e5d6a3cc7f2b4e0a2643b587c65c25687ad1758e5d3247528b5d66",
+   "manualSha256": "2f2cf32e623d8e65ce83007f1dfbc54fd9e609f9a55c700a4deef3c673862f5a",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/intro-atoms.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/intro-atoms.ts.md",
+   "sourceBlob": "0096a5ddbc5759fdbae3689885a9e09df46c8691",
+   "sourceSha256": "b7022b50ff89b338ffc52b7ef358d6aac8112837c9c1028a13142dc244e5b024",
+   "manualSha256": "067235bb824ecfb5b810369a2b3ba7303c9dc5e6d0cdf57e87027011519bf2c8",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/markdown-font-size.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/markdown-font-size.ts.md",
+   "sourceBlob": "693b0900230683d0d9dffc0f6bca6f525bb3d639",
+   "sourceSha256": "b29bb0438e5429180026871d0687d25b2b64e34e219f76f9b1b01d29dfaf016e",
+   "manualSha256": "1c2a85b697cb2d3d251a1c946206c278cf56b03371d014bef7c4416ca9d40a57",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/markdown-toc.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/markdown-toc.ts.md",
+   "sourceBlob": "2d18ea73b9a33f2eca7adb95b5befe3c98460730",
+   "sourceSha256": "589c6f119b522a9e00a9c7bf325cb0d014d123341c7d58f750f9ba58aac29ee0",
+   "manualSha256": "33bc56b3842a073236ead745b8d787ace42b1add35332049b1e3e86675b2193a",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/migration-atoms.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/migration-atoms.ts.md",
+   "sourceBlob": "87f9378e702ecb95d4bdc5995a3c5dbdaef10b52",
+   "sourceSha256": "423b825d7f42cdf15cead69e558c772a7daa6bb29b233afa7ae670c855da4b9d",
+   "manualSha256": "ff3025966d27fde1b8f21fc48080723682113875458102a78d3d740e889386aa",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/notifications.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/notifications.ts.md",
+   "sourceBlob": "d080b5d04aa6ea889db8a95b19fa1ea398eb3148",
+   "sourceSha256": "00081b4342db833238742e2bc3efbf4a3c5354b67e0982d7f3513e09a571c6b4",
+   "manualSha256": "0d16f54b0d88990c5d897d0e93a2d63e8f68987b0594d978ad140d1bc036789b",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/overlay-atoms.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/overlay-atoms.test.ts.md",
+   "sourceBlob": "0dfd633cc1f3dfe0b23c2a72351348234b2af3bd",
+   "sourceSha256": "1b3cb4d70bef93afa12fdba437ccb3bd89280214b2c336eba466ea4919cf1e61",
+   "manualSha256": "04b31217f1294e8c114f50e1b6d7041e69285b975649fca9102150cf1476b68c",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/overlay-atoms.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/overlay-atoms.ts.md",
+   "sourceBlob": "5ff7ad4b980822be4bc16b037b3e7eec4798d490",
+   "sourceSha256": "ed4c02a5a7ec244ff748375deb49d61da15eb98853d8495ff067b5acc6f566fb",
+   "manualSha256": "2017ccad407bbbfd19f2b9faa6dc8faaf50a958f5e0ad62778b105065d219308",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/panel-layout-atoms.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/panel-layout-atoms.ts.md",
+   "sourceBlob": "aa4daed4ef435453a069c261b62cb4b64aee911b",
+   "sourceSha256": "73133390a44d9e5963f225771c1ca98ac50524e20a61b8d39b45200871a1aa01",
+   "manualSha256": "024d8e30042539a46ea7737bae39522b9e2fc794819f8fc73da38c6072af7404",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/plan-quota-atoms.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/plan-quota-atoms.ts.md",
+   "sourceBlob": "114c424a4ea572fd9604ca82fc810c1fceda8d2e",
+   "sourceSha256": "6ab333070e0ec7dbdda88e59e90f382433ff2e2475d018443927fb53cf6e0815",
+   "manualSha256": "8c55fe942a81234d249c70d6f91a06dea9922604e6600c801f85340f92f39baf",
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/dingtalk-atoms.ts.md": "cc04c036746de8f5c7ffbc5bed9e0afb7e71f490eee832bb27939013ce502fae",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/draft-session-atoms.ts.md": "ed7f599aca2d4fcef4efe3a8aa332aed688bb4be39da66b78283415e9d3e791f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/environment.ts.md": "127263416f42b9bd7d5987ab8fb1d5f7875aa9370215d9761ae02a0629292f1c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/feishu-atoms.ts.md": "467fdd58f565e72c8d7f6b811d829e3718fde341bda2d1c71efb03a7cecaf1f7",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/goal-atoms.test.ts.md": "6d6e63437e8e052deeb232fd93d3b8fab09c2a9710e9c7d7101392c40d026931",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/goal-atoms.ts.md": "73a38d80303bc4b1fba465fff9b68b7f47172144b21c9587d8b7e220272985c6",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/graph-atoms.ts.md": "5e0ed096fa64add8ce3ae2af955efa2fbf09356da006fd019348f1853249c2c3",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/identity-atoms.ts.md": "fcc2c586a51fd22fdfa2172f939cacddedab460fabb1e89c554b7af121cb546d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/index.ts.md": "2f2cf32e623d8e65ce83007f1dfbc54fd9e609f9a55c700a4deef3c673862f5a",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/intro-atoms.ts.md": "067235bb824ecfb5b810369a2b3ba7303c9dc5e6d0cdf57e87027011519bf2c8",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/markdown-font-size.ts.md": "1c2a85b697cb2d3d251a1c946206c278cf56b03371d014bef7c4416ca9d40a57",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/markdown-toc.ts.md": "33bc56b3842a073236ead745b8d787ace42b1add35332049b1e3e86675b2193a",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/migration-atoms.ts.md": "ff3025966d27fde1b8f21fc48080723682113875458102a78d3d740e889386aa",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/notifications.ts.md": "0d16f54b0d88990c5d897d0e93a2d63e8f68987b0594d978ad140d1bc036789b",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/overlay-atoms.test.ts.md": "04b31217f1294e8c114f50e1b6d7041e69285b975649fca9102150cf1476b68c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/overlay-atoms.ts.md": "2017ccad407bbbfd19f2b9faa6dc8faaf50a958f5e0ad62778b105065d219308",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/panel-layout-atoms.ts.md": "024d8e30042539a46ea7737bae39522b9e2fc794819f8fc73da38c6072af7404",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/plan-quota-atoms.ts.md": "8c55fe942a81234d249c70d6f91a06dea9922604e6600c801f85340f92f39baf"
+ },
+ "errataQueue": [
+  "NB115-N-01"
+ ],
+ "notes": [
+  "重点语义全对：goal 归并/tombstone/替换守卫、graph null-fallback 链、notifications planningReminder 悬挂+焦点矩阵+单槽回调、index 桶零消费者（5 模式检索）、aggregateTaskItems 第二参标未知不杜撰",
+  "1 minor：goal-atoms throw 文案计数自相矛盾（3 vs 2）",
+  "NOT_RUN：产品测试/typecheck/build/GUI/真实通知音频；未改源码/测试/依赖/作者正文/candidate/全局总账"
+ ]
+}

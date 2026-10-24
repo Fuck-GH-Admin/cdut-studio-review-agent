@@ -1,0 +1,62 @@
+{
+  "schema": "dsh-r07-delivery-verification-notes/1",
+  "atUtc": "2026-10-23T23:05:27Z",
+  "runtime": "NOT_RUN",
+  "distinction": {
+    "sourceDefect": "源码缺陷——文档如实记录（如 STAGE4-FINDINGS S4-* 指出的实现行为），不当产品修复要求",
+    "docError": "文档真错——必须改（见 GATES/ROOT-DOC-ACTIONS.json，由 Codex 改 ROOT 正文）"
+  },
+  "issueLedger": {
+    "realDocErrors": 700,
+    "designDifference": 17,
+    "unknown": 260,
+    "note": "不重复计入历史问题；历史重复按原 record→新证据归并"
+  },
+  "copiedArtifacts": [
+    {
+      "src": "manager/ROOT-DOC-ACTIONS.json",
+      "dst": "final-hour/DELIVERY/VERIFICATION/GATES/ROOT-DOC-ACTIONS.json",
+      "sha256_16": "56552b77a3cf59ca"
+    },
+    {
+      "src": "manager/STAGE2-ACTIONS.json",
+      "dst": "final-hour/DELIVERY/VERIFICATION/ACCEPTANCE/STAGE2-ACTIONS.json",
+      "sha256_16": "cd9c86a5f8d2db2d"
+    },
+    {
+      "src": "manager/STAGE2-EXIT.json",
+      "dst": "final-hour/DELIVERY/VERIFICATION/ACCEPTANCE/STAGE2-EXIT.json",
+      "sha256_16": "9f3884bddb2f238c"
+    },
+    {
+      "src": "inventory/ACCEPTED.json",
+      "dst": "final-hour/DELIVERY/VERIFICATION/ACCEPTANCE/ACCEPTED.json",
+      "sha256_16": "4d26eea14aa701a0"
+    },
+    {
+      "src": "inventory/INDEX-ACCEPTED.json",
+      "dst": "final-hour/DELIVERY/VERIFICATION/ACCEPTANCE/INDEX-ACCEPTED.json",
+      "sha256_16": "a0df28afcfcc0165"
+    },
+    {
+      "src": "inventory/REPAIR-REGISTER.json",
+      "dst": "final-hour/DELIVERY/VERIFICATION/ACCEPTANCE/REPAIR-REGISTER.json",
+      "sha256_16": "02fc517db1fe9677"
+    },
+    {
+      "src": "inventory/UNVERIFIED-TIMESTAMPS.json",
+      "dst": "final-hour/DELIVERY/VERIFICATION/ACCEPTANCE/UNVERIFIED-TIMESTAMPS.json",
+      "sha256_16": "7d4e5a7821a57ddf"
+    },
+    {
+      "src": "inventory/SEAL-AUDIT.json",
+      "dst": "final-hour/DELIVERY/VERIFICATION/ACCEPTANCE/SEAL-AUDIT.json",
+      "sha256_16": "92fe10ec07a9a16c"
+    },
+    {
+      "src": "manager/PROGRESS.json",
+      "dst": "final-hour/DELIVERY/VERIFICATION/ACCEPTANCE/PROGRESS.json",
+      "sha256_16": "f962423486746352"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-130",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-01-20261024",
+ "reviewerSession": "docs-r07-qa-extra-01-20261024",
+ "reviewedAtUtc": "2026-10-23T19:39:13Z",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "files": 18,
+ "accepted": 18,
+ "revision_required": 0,
+ "unknown": 0,
+ "sealId": "seal-a7538012d1542f56",
+ "resultSha256": "684f35a48dd1803737d590e69a6e254eba6583408d4177c5580ca8201e4b2dbc",
+ "resultMdSha256": "17b732deb389d2d88a501958808415f1bfbf2c8c56f105724521da52497c19bf",
+ "reviewedHashesSha256": "283ad113a96aac10f446a2c82650f0eff265757ea8d1fae5f094cc963ad15aef",
+ "toAuthorSha256": "f8398f2396481db3d00d2eb79ad9363fd305babb92b6469601a0e16d66d6d3af",
+ "toLeadSha256": "0bce6bb0666d084daa49753031e4800855dc3c219c5033f850f329b8605ea888",
+ "findingsOpen": [],
+ "findingsClosed": [],
+ "minorNotes": [
+  "NB130-N-01（非阻断，归属元数据，lead 登记时按团队 JSON 更正）"
+ ],
+ "notRun": [
+  "产品测试",
+  "typecheck",
+  "build",
+  "Electron-GUI",
+  "真实网络",
+  "bun test（21 用例断言级阅读）",
+  "Windows/macOS 实机"
+ ],
+ "declaredScope": "仅 nb-130 批 18 文件的独立真值审查；不含 nb-104/nb-133、不含运行验证",
+ "note": "QA 读取时刻与封版字节 0 漂移；旧接受不套新字节，如作者开 rN 须按新 manualSha256 复验"
+}

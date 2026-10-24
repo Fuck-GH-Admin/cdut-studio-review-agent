@@ -1,0 +1,28 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "index-p01-app-shell__specs__gui",
+  "groupId": "p01-app-shell__specs__gui",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T21:40:00Z",
+  "sealedAtUtc": "2026-10-23T18:41:42Z",
+  "artifactSha256": "49e14980170896bd9da41be0686fea4e264c49caf6041d35a4068ab5adba2337",
+  "note": "QA 实算封版链全对。2/2 accepted。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__specs__gui.md@specs/gui/file-path-chip-search/design.md": "49e14980170896bd9da41be0686fea4e264c49caf6041d35a4068ab5adba2337",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__specs__gui.md@specs/gui/file-path-chip-search/requirements.md": "49e14980170896bd9da41be0686fea4e264c49caf6041d35a4068ab5adba2337"
+  },
+  "revisionRequiredManuals": {},
+  "sourceHashes": {
+    "specs/gui/file-path-chip-search/design.md": {
+      "sourceBlob": "886b31b03ae73857f3cf9d95f2fb846470a0804c",
+      "sourceSha256": "c83dfe599b86c7be5f4a3c56691b79a362bd51b712746fc73f46ae44e730a2f8",
+      "verifiedAgainstFrozenTree": true
+    },
+    "specs/gui/file-path-chip-search/requirements.md": {
+      "sourceBlob": "96b1b67b037158785cd567100dd1939e161b712b",
+      "sourceSha256": "4e5d7781b7b6ce165babd5a703f68d0cd6fb20a13666eea126b30a4de59067c8",
+      "verifiedAgainstFrozenTree": true
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+ "schema": "dsh-r07-index-review-result/1",
+ "batch": "index-p08-renderer-ui__apps__electron__src__renderer__components__onboarding",
+ "groupId": "p08-renderer-ui__apps__electron__src__renderer__components__onboarding",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-03-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T20:15:00Z",
+ "sealedAtUtc": "2026-10-23T19:24:02+00:00",
+ "targetMd": "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__apps__electron__src__renderer__components__onboarding.md",
+ "artifactSha256": "d507ee7978e408289224735cb9c2031f25221e14dce517431ee2b16b4214f256",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 1,
+  "accepted": 1,
+  "revision_required": 0,
+  "unknown": 0,
+  "blocking": 0,
+  "nonBlocking": 2
+ },
+ "gates": {
+  "G0_INDEX": "PASS",
+  "G1_INDEPENDENT_SOURCE_REVIEW": "PASS_WITH_NOTES",
+  "G2_SEAL_CONSISTENCY": "PASS",
+  "note": "G0 等价检查全对（哈希链自洽、锚点@声明行、源绑定与冻结源/lock 全等、targetMd 一致）。G1：LICENSE 内容实测（:1 标题/:3 归属声明含「不含上游 demo 页/GUI/分析/指针输入/截图逻辑/上游源码原文」/:5-:7 起 MIT 全文）；零代码消费者负向检索复核成立（QA 按作者检索式实测仅 IntroFluidBackground.tsx:4/:8 命中，文件名 grep 零命中）；伴生链 IntroFluidBackground.tsx:2-8 头注释（:4 上游声明、:8 URL、:5-6 不复制上游 demo/GUI/统计/交互）→IntroWaterRipple.tsx:9/:82→OnboardingView.tsx:24/:87、App.tsx:178/:194（replayIntroOpenAtom，另实测 intro-atoms.ts:13 定义）逐行命中；打包不进产物属实（build-renderer.mjs 包装 vite build、vite.config.ts:35 outDir=dist/renderer、electron-builder files: :44-68 无 src/renderer、无 import 入 bundle）。2 条 minor 见 ONB-N-01/02（非阻断≠已修）。"
+ },
+ "g0Evidence": {
+  "stockScript": "ERRATA-E1 沿登记；等价检查 PASS"
+ },
+ "errataCarry": [
+  "ERRATA-E1",
+  "ERRATA-E2",
+  "ERRATA-E3"
+ ],
+ "files": [
+  {
+   "path": "apps/electron/src/renderer/components/onboarding/third-party/PavelDoGreat-WebGL-Fluid-Simulation-LICENSE.md",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__apps__electron__src__renderer__components__onboarding.md",
+   "targetMd": "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__apps__electron__src__renderer__components__onboarding.md",
+   "anchor": "MODULE-REFERENCE/p08-renderer-ui/INDEX.md#apps--electron--src--renderer--components--onboarding--third-party--PavelDoGreat-WebGL-Fluid-Simulation-LICENSE.md",
+   "line": 8,
+   "sourceBlob": "1e6917692070a7e31f8e79c06ae1d8fa44cb7b5d",
+   "sourceSha256": "b120f6511b574836f07ababda59acc40a137d2a12a1893e12735b5574dc568da",
+   "manualSha256": "d507ee7978e408289224735cb9c2031f25221e14dce517431ee2b16b4214f256",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "ONB-N-01",
+     "severity": "low",
+     "type": "citation_precision",
+     "manualLines": "见 detail",
+     "detail": "来源行「Copyright (c) 2017 Pavel Dobryakov，:7」——实际版权行在 LICENSE :10（:7 是 ```text 围栏行；:5 为 Upstream project license: 标题）。",
+     "action": "版权行引证改 :10；不阻断"
+    },
+    {
+     "id": "ONB-N-02",
+     "severity": "low",
+     "type": "citation_precision",
+     "manualLines": "见 detail",
+     "detail": "消费行称 grep `PavelDoGreat|WebGL-Fluid|Fluid-Simulation|fluid-simulation` 命中「IntroFluidBackground.tsx:4/:8 与 IntroWaterRipple.tsx:3」——QA 按同模式实测仅 IntroFluidBackground.tsx:4/:8 两处命中；IntroWaterRipple.tsx:3 只含「IntroFluidBackground」字样，需更宽模式才命中。语义结论（伴生注释存在、零代码加载）无误，检索式与命中清单不一致。",
+     "action": "检索式与命中清单对齐；不阻断"
+    }
+   ],
+   "note": "许可证文本按法律归属口径如实适配七项（无代码消费者如实标注「加载者=人」，未套「无执行逻辑」空话；「衍生相似度/法务结论=未知」边界诚实）。MIT 全文收录与上游出处一致（QA 通读 29 行）。"
+  }
+ ]
+}

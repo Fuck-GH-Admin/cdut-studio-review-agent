@@ -1,0 +1,22 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "index-p01-app-shell__tutorial",
+  "groupId": "p01-app-shell__tutorial",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T21:40:00Z",
+  "sealedAtUtc": "2026-10-23T18:43:31Z",
+  "artifactSha256": "f9dc461cd9f3dc9e5ae68b590a727f57db44b7888504ecbfcf88c39b017c6b3a",
+  "note": "QA 实算封版链全对。1/1 accepted。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__tutorial.md@tutorial/tutorial-v2.md": "f9dc461cd9f3dc9e5ae68b590a727f57db44b7888504ecbfcf88c39b017c6b3a"
+  },
+  "revisionRequiredManuals": {},
+  "sourceHashes": {
+    "tutorial/tutorial-v2.md": {
+      "sourceBlob": "dfc5b059b39b3c6c2c360d958ee909bc4661beeb",
+      "sourceSha256": "76b14920902bd8e093c7497f260200159a6c0a30b1f8586a50483a578ebe5115",
+      "verifiedAgainstFrozenTree": true
+    }
+  }
+}

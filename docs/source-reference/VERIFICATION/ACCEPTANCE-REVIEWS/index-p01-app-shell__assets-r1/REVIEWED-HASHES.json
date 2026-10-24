@@ -1,0 +1,113 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "index-p01-app-shell__assets-r1",
+  "groupId": "p01-app-shell__assets",
+  "revisionOf": "index-p01-app-shell__assets",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T22:45:00Z",
+  "sealedAtUtc": "2026-10-23T19:09:24+00:00",
+  "artifactSha256": "c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd",
+  "note": "r1 合入以本表为准。16/16 accepted。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets.md@assets/CDUT/CDUT-CE-white.png": "c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets.md@assets/CDUT/CDUT-CE.png": "c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets.md@assets/IP/IP_1.jpg": "c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets.md@assets/MultiHop-RAG-Scores/multihop-rag-report.csv": "c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets.md@assets/MultiHop-RAG-Scores/multihop-rag-report.json": "c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets.md@assets/MultiHop-RAG-Scores/multihop-rag-report.md": "c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets.md@assets/README.svg": "c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets.md@assets/mascot_back.png": "c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets.md@assets/mascot_front.png": "c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets.md@assets/mascot_side.png": "c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets.md@assets/mascot_sitting.png": "c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets.md@assets/team/team-1.jpg": "c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets.md@assets/team/team-2.gif": "c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets.md@assets/team/team-3.png": "c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets.md@assets/team/team-4.png": "c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets.md@assets/team/team-5.jpg": "c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd"
+  },
+  "revisionRequiredManuals": {},
+  "sourceHashes": {
+    "assets/CDUT/CDUT-CE-white.png": {
+      "sourceBlob": "7dfb204e72472d0aa1eb179a9ef14a9a5f5d0fc9",
+      "sourceSha256": "ada60ea91d7f05735e520b2f3d9cea85e589729cdcc1d426705a9f61271010c4",
+      "verifiedAgainstFrozenTree": true
+    },
+    "assets/CDUT/CDUT-CE.png": {
+      "sourceBlob": "d1a83acee3b74c0293ef297695ee666e9bafef44",
+      "sourceSha256": "166c92e19320d595b8a5ac096f17a3256928d12a9cc0d7294f2dfc57a8d4cccc",
+      "verifiedAgainstFrozenTree": true
+    },
+    "assets/IP/IP_1.jpg": {
+      "sourceBlob": "769339f5d84b9fb80879c05d47ac9694060ca5cc",
+      "sourceSha256": "5e377f94533f70f59b1456cb4fd839a86e5013d9fe34936902c853c885f95faa",
+      "verifiedAgainstFrozenTree": true
+    },
+    "assets/MultiHop-RAG-Scores/multihop-rag-report.csv": {
+      "sourceBlob": "2e01a21a7f4760eacb763fcff0329d22068f0cf6",
+      "sourceSha256": "991b44e63666063c7c3df7028fb09fc6238c4588449a798e5cee31605fc08dba",
+      "verifiedAgainstFrozenTree": true
+    },
+    "assets/MultiHop-RAG-Scores/multihop-rag-report.json": {
+      "sourceBlob": "3e2328b1113af37118026975e3ef90bfe2cd2f8c",
+      "sourceSha256": "51249052ea792269b82fd2d24d61c52dd6f12c07799f6be1c702150ec25ae015",
+      "verifiedAgainstFrozenTree": true
+    },
+    "assets/MultiHop-RAG-Scores/multihop-rag-report.md": {
+      "sourceBlob": "55c94894eb21de08a3a10fe64e9413ccfa3ac64f",
+      "sourceSha256": "e3850b5523fc336d7e3d7e831c0b9effcfe60337a9104be6e74493445cca61b2",
+      "verifiedAgainstFrozenTree": true
+    },
+    "assets/README.svg": {
+      "sourceBlob": "68b1e55b147eb40a71afd537a61494983b17ac56",
+      "sourceSha256": "258c8a8b0ef15ad419ae32c93065c766b66e10b0bbf8f84087bc8eec0810fdc0",
+      "verifiedAgainstFrozenTree": true
+    },
+    "assets/mascot_back.png": {
+      "sourceBlob": "4107b77e8517e3d71b643a20980b5d08b81dec80",
+      "sourceSha256": "18f4fb675c09c3b0d90003ad7757352743bfa311e50487eaac98ad1bbf63f766",
+      "verifiedAgainstFrozenTree": true
+    },
+    "assets/mascot_front.png": {
+      "sourceBlob": "76a429d4a0c7abdd8e77586d808bd95311167e8e",
+      "sourceSha256": "5647494f15c96e58f76411fc74a22b90728b079b8bdac970b5361e64c1e66510",
+      "verifiedAgainstFrozenTree": true
+    },
+    "assets/mascot_side.png": {
+      "sourceBlob": "074fc2c6c6d4d78f59364220a72002da727547ed",
+      "sourceSha256": "700eea0c2c5de4834de60e137855091404683334abc1eb61cdec56056ad07c68",
+      "verifiedAgainstFrozenTree": true
+    },
+    "assets/mascot_sitting.png": {
+      "sourceBlob": "c6ac54befedc3d2f461d03eb42a645415e28c7c7",
+      "sourceSha256": "c10da064f37901e94f8063307b2b37a1ebf0a686f3ecb45b5d2c6cce98fd664e",
+      "verifiedAgainstFrozenTree": true
+    },
+    "assets/team/team-1.jpg": {
+      "sourceBlob": "e742f60da960bf412865e5af89be9ba613bca5cc",
+      "sourceSha256": "ad5b8ec9ec03e1e688b9c8867fb4c408d4d22a723a63c131f2e3647d3f4426fa",
+      "verifiedAgainstFrozenTree": true
+    },
+    "assets/team/team-2.gif": {
+      "sourceBlob": "0703eedaf086ae6dd967e45638ed55e79f29b260",
+      "sourceSha256": "789e58de2b7cff8ac7f7beb9f0d674b82cbbb94a3551de4f17fbebc92be4b84d",
+      "verifiedAgainstFrozenTree": true
+    },
+    "assets/team/team-3.png": {
+      "sourceBlob": "b2b48f55adb1b03e95c259e95753e6e909281e1a",
+      "sourceSha256": "d4b431c405a2f94da1e107ba0ff0f8e7877374341556ff690b498663039b7684",
+      "verifiedAgainstFrozenTree": true
+    },
+    "assets/team/team-4.png": {
+      "sourceBlob": "eb8fcdf985d903d4308e5c7443a5b953770a53f0",
+      "sourceSha256": "5fdf158fc9b14346e6c2a5e60624cd2c0708384afc2480c0a5dac8c0a4b4acf1",
+      "verifiedAgainstFrozenTree": true
+    },
+    "assets/team/team-5.jpg": {
+      "sourceBlob": "80ffc291a6ff30d11cf253d3f4efb7bc984ad826",
+      "sourceSha256": "27ab263cfaf9d56fe666b6a4f2c89720cd2b945e054218f39e2c97620cbc5543",
+      "verifiedAgainstFrozenTree": true
+    }
+  }
+}

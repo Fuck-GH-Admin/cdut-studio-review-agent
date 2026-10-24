@@ -1,0 +1,37 @@
+{
+ "schema": "dsh-r07-index-review-done/1",
+ "batch": "index-p08-renderer-ui__renderer-assets",
+ "groupId": "p08-renderer-ui__renderer-assets",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-03-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T21:13:00Z",
+ "sealedAtUtc": "2026-10-23T19:30:45+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 82,
+  "accepted": 82,
+  "revision_required": 0,
+  "unknown": 0,
+  "findingsBlocking": 0,
+  "findingsNonBlocking": 0
+ },
+ "artifactSha256": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+ "artifacts": [
+  "reviews/index-p08-renderer-ui__renderer-assets/RESULT.json",
+  "reviews/index-p08-renderer-ui__renderer-assets/REVIEWED-HASHES.json",
+  "reviews/index-p08-renderer-ui__renderer-assets/SOURCE-CHECKLIST.md",
+  "reviews/index-p08-renderer-ui__renderer-assets/DONE.json"
+ ],
+ "notRun": [
+  "产品测试",
+  "typecheck",
+  "构建",
+  "Electron/GUI",
+  "试听与目视（本轮统一 NOT_RUN）"
+ ],
+ "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/inventory/全局账/candidate；未 commit/push；结论只覆盖本批 82 文件（抽样范围见 SOURCE-CHECKLIST 声明）。",
+ "findingsSummary": "无 findings。零消费者 24 文件断言与 QA 独立负向检索一致；58/24 引用计数独立实测一致。勘误 ERRATA-E1/E2/E3 沿登记。G0/G1/G2 全 PASS。",
+ "next": "lead 按 REVIEWED-HASHES.json 合入（artifactSha256=960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba）；本团队 9 批全部审毕——待作者 ecma-r1（ECMA-F-01 越界引证修复，交付即优先复验）；其余 8 批 accepted 待 lead 合入。"
+}

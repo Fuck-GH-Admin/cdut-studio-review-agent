@@ -1,0 +1,35 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-115",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-06-20261024",
+ "reviewerSession": "docs-r07-qa-extra-06-20261024",
+ "reviewedSealId": "seal-0ed34e82325daaa3",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 18,
+  "accepted": 18,
+  "revision_required": 0,
+  "unknown": 0,
+  "minorErrata": 1
+ },
+ "sealedAtUtc": "2026-10-23T20:35:17Z",
+ "resultSha256": "cfe063930c5881b6c7f0f99d3826f555bb6cfc0367b14126f1d00b1226c39ec9",
+ "resultMdSha256": "926d2fe7763becd9a969e4f9dbd29233598441801e8fea0ac5867c0d34c681a6",
+ "reviewedHashesSha256": "162f10f77b3a37f5247cbd8ec222c6d7293944ae552b27d72ff225bd80c64d2d",
+ "artifacts": [
+  "reviews/nb-115/RESULT.json",
+  "reviews/nb-115/RESULT.md",
+  "reviews/nb-115/REVIEWED-HASHES.json",
+  "handoffs/nb-115-REVIEW-TO-AUTHOR-LEAD.md"
+ ],
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real notification/audio"
+ ],
+ "note": "18/18 accepted；1 minor ERRATA（NB115-N-01 throw 文案计数）；无阻断"
+}

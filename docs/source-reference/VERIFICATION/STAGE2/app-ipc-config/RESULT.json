@@ -1,0 +1,41 @@
+{
+ "schema": "dsh-r07-stage2-result/1",
+ "track": "app-ipc-config",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "DSH-MiMo-max（本轨执行根）",
+ "atUtc": "2026-10-23T21:34:18Z",
+ "window": "第一实物 CHAIN-REGISTER.tsv 于 21:44Z 前落盘（起点 21:29Z）；30 分钟窗口内完成 9 链核对+4 项 CONFLICTS",
+ "coverage": {
+  "chains": 9,
+  "chainsVerifiedMainEdges": "C1-C9 主边全实测",
+  "conflicts": 4,
+  "doc_error": 1,
+  "implementation_gap": 2,
+  "unknown": 1
+ },
+ "evidencePolicy": "全部 file:line 为冻结源实测（证实）；推断/未知逐项显式标注；真实运行 NOT_RUN；未把静态断言冒充实测；已 accepted 事实可复用但关键调用链均亲自重核 caller/callee/分支/读写副作用；未据同名/同目录推断调用",
+ "chainsSummary": {
+  "C1": "启动 bootstrap 链证实（whenReady→…→seed 顺序注释 :997 实证迁移先行）",
+  "C2": "dev/prod 加载分叉证实；bounds 持久化写点=未知（CONFLICTS-04）",
+  "C3": "IPC 契约=共享常量表机制证实（types/settings.ts:410+shared 族）；preload 3 暴露面（isMainFrame 权限边界证实）；590+105 通道全量逐对=缺口",
+  "C4": "配置权威=getConfigDir()+PROFER_CONFIG_DIR 覆盖证实；settings 读/缓存/写证实（写非原子=CONFLICTS-03）；迁移两类证实",
+  "C5": "workspace CRUD+renameSync 原子换入证实；index 路径常量=未知",
+  "C6": "session 创建/列表/删除序/fork 复制/快照恢复证实；并发互斥与取消-恢复=缺口",
+  "C7": "打包资源链证实（asar/files/extraResources→resourcesPath→seed）",
+  "C8": "构建链证实（esbuild main/vite renderer/copy-resources）",
+  "C9": "绕过入口 7 项静态全命中；cert 决策=未知"
+ },
+ "dedup": "跨模块符号唯一规范路径见 CHAIN-REGISTER.tsv（全路径）；CONFLICTS.symbolCollisionsNote 记录同名碰撞；未复制手册正文",
+ "reuseAndClues": "复用=已验收事实（如 renderer-assets/demo-data 组 QA 实测的 copy-resources/DEMO 覆盖结论），关键链均本轨重核；线索=nb-141 双配置根记录（已升级静态证实，影响仍 UNVERIFIED）、nb-135 ipc-sender-guard 记述（待验）",
+ "notRun": [
+  "产品测试",
+  "typecheck",
+  "构建",
+  "Electron/GUI 实跑",
+  "IPC 实际收发",
+  "seed/migration 实跑（本轮统一 NOT_RUN）"
+ ],
+ "boundaries": "未改产品/测试/依赖、作者 seal、已有 review、candidate；未写阶段三文档（CODEBASE-MAP/ARCHITECTURE 等）；未自覆盖主责文档；不宣称全仓通过；已证实实现缺陷（CONFLICTS-02/03）如实留阶段三设计差异报告，当前不修",
+ "uncoveredBoundaries": "见 CHAINS.md「覆盖边界」节：IPC 全量逐对配对、session/workspace 动态语义（取消/恢复/并发/崩溃一致性）、settings 缓存多窗一致性、bounds 写点、cert 决策、initializeRuntime 与三服务内部、renderer 状态层调用图",
+ "verdict": "TRACK_COMPLETE_WITH_GAPS"
+}

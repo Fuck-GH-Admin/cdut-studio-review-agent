@@ -1,0 +1,253 @@
+{
+ "schema": "dsh-r07-review-result/1",
+ "batch": "nb-112-r1",
+ "revisionOf": "nb-112",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-05-20261024",
+ "reviewerSession": "docs-r07-qa-extra-05-20261024",
+ "reviewedAtUtc": "2026-10-23T20:33:14Z",
+ "parentReview": "reviews/nb-112/RESULT.json",
+ "deliverySeal": {
+  "sealId": "seal-03a993464a709291",
+  "sealedAtUtc": "2026-10-23T20:24:42Z",
+  "manifestSha256": "50ab3c0efbd4ae8b0248ff3231bb996d0430e487b2a0e7adcbb3891dfe633873",
+  "readySha256": "3887d3d56c7d7402bf9dee9fb761f10a84819a9559bf3ef6227c64351c45ee6e",
+  "zipSha256": "13f8d6aea75135d846fe8a48d7d388f3ac7ddedd11ce2faaed9ee25eadd3e1b4",
+  "doneSha256": "378d80a8994f00f59403139ff6b79a91414877aff6b7eebc4c85a3c4f6138c95"
+ },
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "gatesNote": "r1 返修复验：G0 哈希链/sealId/ZIP 21 条目复算全对；F-1 before-hash=父版锚、after-hash=READY=stage 双向一致。G2：§2/§8 两处「18 字段」→「17 字段」按源码 :91-108（恰 17 键）落实；17 篇 accepted manualSha256 与父版逐字节相同，沿用原 accepted（旧接受不套新字节合规）。",
+ "batchVerdict": "accepted",
+ "files": [
+  {
+   "path": "apps/electron/src/renderer/components/UiScaleContainer.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/UiScaleContainer.tsx.md",
+   "sourceBlob": "7e1e4cfbf78d826233dc020597f8becb70be73ad",
+   "sourceSha256": "fb45c26eba193ef78d10e18ba3dbddc899136b12e14fde951a9d17fe2e3fccf9",
+   "lines": 42,
+   "manualSha256": "f6bb4d9ffea6164f5c06f9fbe8c1867697ea0d8737b58f2d43bc7d81e9f91fa6",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/WindowControls.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/WindowControls.tsx.md",
+   "sourceBlob": "ca2c8de7872fe4632483601cc776fbcf5581ee09",
+   "sourceSha256": "19fed40d74b2a3d5a4d81583e19549fcbe9a074afd71f84deea49c9e2db59577",
+   "lines": 90,
+   "manualSha256": "05d838ed7bb71e471269813adb3ae5c498044c648ce480604be28ad407027102",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/WindowControlsTemplate.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/WindowControlsTemplate.tsx.md",
+   "sourceBlob": "0829410af9f1343cecaf7a8fa15ffbc50507a999",
+   "sourceSha256": "7ab99b353bb0fec9e96d50b2332763429e40ed0e15134aa1955c7d1f161736f2",
+   "lines": 87,
+   "manualSha256": "142ecc2df0444b93f68e3f5abca4a28f16dc02a810ba28fb0a929100034675c6",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent-preview/AgentPreviewRenderer.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-preview/AgentPreviewRenderer.tsx.md",
+   "sourceBlob": "844dae30c4485cd2536494d130c37c20c4221d10",
+   "sourceSha256": "40cf16e7003cc207f88c5005b8d89cb0c1cae1da250d7ae9fc3b3f202e768405",
+   "lines": 200,
+   "manualSha256": "23ff6a6ebaa586bb6a93f1044f9c3fb3446ececcbae18a7c3bb1212704454295",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/auth/JoinWorkspaceDialog.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/auth/JoinWorkspaceDialog.tsx.md",
+   "sourceBlob": "39389198cc68fd1588293b62d8b7f513e4b7983d",
+   "sourceSha256": "b51cf7bf802e77274c9beb281012ff8e26f0faf8b4dc7cc2eba3e139d77fc021",
+   "lines": 105,
+   "manualSha256": "d97c8ef03d1298ff82004ba48248350b87adba17e09a121e018c1257a0a7326a",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/automation/AutomationFormView.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/automation/AutomationFormView.tsx.md",
+   "sourceBlob": "7441f3771d59b1785e441f83ddd6f6eeeeac80cc",
+   "sourceSha256": "630a852eff2e824bdb57475f213415db1126f2ea0d65f9630cc0b3d8b09665a8",
+   "lines": 1324,
+   "manualSha256": "ee63d1e35985978c563a8420d72755730228770eb99eec4ca0a022e46a9dced7",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "F-1 关闭：§2/§8 两处 getDraftSignature「18 字段」→「17 字段」（源码 :91-108 恰 17 键回源属实）"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/automation/AutomationRecommendations.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/automation/AutomationRecommendations.tsx.md",
+   "sourceBlob": "3169fc884d4c3b34d77ea89f1048b6d759999756",
+   "sourceSha256": "088bb8b76b1795e0e9a8a2e59263058ecd07af587f313a8aa4f85b3da556de99",
+   "lines": 36,
+   "manualSha256": "92a189a50aa6fc44536cfd0ece99a39a9076d6b77aca4b38746ec5840abc8121",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/automation/AutomationsListView.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/automation/AutomationsListView.tsx.md",
+   "sourceBlob": "f79a796bdea6915f0251d748416f8c87e02c3d52",
+   "sourceSha256": "7aee50fb133b0065b08fd487a7e1f31f7ab5067e77345cd7a3c62863f238e233",
+   "lines": 346,
+   "manualSha256": "359bd57944a26c4c5d0a26efe6bf0bba23aed7144019987a5fdc246232217b68",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/bulletin/BulletinDialog.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/bulletin/BulletinDialog.tsx.md",
+   "sourceBlob": "309ec561f341395715da2975bf01ecd79a6fd876",
+   "sourceSha256": "1a5c5ec640e7069980fa45cdd1590be66271a3db2919f047ca527d22e87c61ff",
+   "lines": 204,
+   "manualSha256": "d821ee70858cbfbb4f4a7fbbf29ab2a637124549db88ecd38a3bfeaed8714079",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/bulletin/bulletin-startup.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/bulletin/bulletin-startup.test.ts.md",
+   "sourceBlob": "270cafee450ceb41ed0517b57b059a5c2819bba5",
+   "sourceSha256": "9842d9648602473ae38cea383ee086c661b5a42ebfa9ff0393d6d2605083ac9d",
+   "lines": 101,
+   "manualSha256": "1aa61a6fe9e1c4c520ae12fe9c5a544b571ef690b8dac7ba5bd2908ffd30f97a",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/bulletin/bulletin-startup.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/bulletin/bulletin-startup.ts.md",
+   "sourceBlob": "71a1ad3c39ecc38ca9a5b0bbebae3dae4f40c7c2",
+   "sourceSha256": "25bda7302a7765025d10ab084fda99ed69ab760480b5da6c39944a7e3977690f",
+   "lines": 53,
+   "manualSha256": "2ef53a418c81430a4fe09112d596bd0c5feb345acf69019ee0adf6f513e8cd02",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/environment/EnvironmentCheckCard.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/environment/EnvironmentCheckCard.tsx.md",
+   "sourceBlob": "e65dd7f368ab7f769d2cc3bbb9f6a1db3542a356",
+   "sourceSha256": "dad0ce2eabf60a06303a732f3bb4a9b21e644228ed0b6301dad810df17918661",
+   "lines": 287,
+   "manualSha256": "75f49b3093d0844aed23edc89842595a78bb954e16a55be715d141682aba408d",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/environment/EnvironmentCheckDialog.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/environment/EnvironmentCheckDialog.tsx.md",
+   "sourceBlob": "8b8a9b7158e97b9a5941edc302fcefc760ef71b6",
+   "sourceSha256": "962b09b1d66b270eef04839c062db48305c88e3aa9c2500cf74220a269c9ac58",
+   "lines": 36,
+   "manualSha256": "e67cc26d480e5bfc90c6ad6f2c3d1821dc3d2b46d39a0da9e54923b4487eaca8",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/environment/EnvironmentCheckPanel.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/environment/EnvironmentCheckPanel.tsx.md",
+   "sourceBlob": "4ca781e3822e83b547c5760d5f8f5b82fd50cf4d",
+   "sourceSha256": "0a2d7a804ff44618cb67c09f29a1d89c9d412ecccf97b297b9b2202c23a767de",
+   "lines": 183,
+   "manualSha256": "9a3261decd19c7a2dd40bfe7de876e2e98d53a74f1b0d0bd9b0ace8a53b9cb11",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/knowledge-base/KnowledgePreviewPanel.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/knowledge-base/KnowledgePreviewPanel.tsx.md",
+   "sourceBlob": "fa2a9abc361df7058795a67394da0a6d48449801",
+   "sourceSha256": "8098839d7764fb4e03ed1c0360f3eb33fa1a953dd9f614bc5cf773c01daa433b",
+   "lines": 49,
+   "manualSha256": "c7784f273ab592e35657ee159293dd85bafa6695d2b352b5c25da3f243365c1f",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/knowledge-base/KnowledgeReferencePicker.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/knowledge-base/KnowledgeReferencePicker.tsx.md",
+   "sourceBlob": "478fbb82ee2861652814f65aacc94dd06b4e2e98",
+   "sourceSha256": "9f47f25ff47f1117fca15e3cc92662b38a4d579876c89bceea99661fe3ad4159",
+   "lines": 45,
+   "manualSha256": "f1c5654b924cac52d190593755ea1cf2b656e085db7290fa230d6de2509f314c",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/knowledge-base/knowledge-base-workbench-utils.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/knowledge-base/knowledge-base-workbench-utils.ts.md",
+   "sourceBlob": "df143b1fe1108602375304d1ab241d1e7abe0f7c",
+   "sourceSha256": "41ba5e79c127ebd18accbba1e109709db47b8b0a4a27600b55050dae8ef92929",
+   "lines": 26,
+   "manualSha256": "9bf6d21de706837aa917496bf9bbf221f591e939cd119ae6d5c69b68e249099e",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/migration/MigrationImportDialog.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/migration/MigrationImportDialog.tsx.md",
+   "sourceBlob": "4ed63fb6059a3fe22c7d75fac9d282f3269a73fc",
+   "sourceSha256": "93e2600e2c11e3aef605b242b9e44163048671081a30a4fa8a70da6683295f28",
+   "lines": 407,
+   "manualSha256": "2b29d1724f62b40bc1b208304be96803ea50635463316ed8ac87e9d089e9a7d4",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/UiScaleContainer.tsx.md": "f6bb4d9ffea6164f5c06f9fbe8c1867697ea0d8737b58f2d43bc7d81e9f91fa6",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/WindowControls.tsx.md": "05d838ed7bb71e471269813adb3ae5c498044c648ce480604be28ad407027102",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/WindowControlsTemplate.tsx.md": "142ecc2df0444b93f68e3f5abca4a28f16dc02a810ba28fb0a929100034675c6",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-preview/AgentPreviewRenderer.tsx.md": "23ff6a6ebaa586bb6a93f1044f9c3fb3446ececcbae18a7c3bb1212704454295",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/auth/JoinWorkspaceDialog.tsx.md": "d97c8ef03d1298ff82004ba48248350b87adba17e09a121e018c1257a0a7326a",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/automation/AutomationFormView.tsx.md": "ee63d1e35985978c563a8420d72755730228770eb99eec4ca0a022e46a9dced7",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/automation/AutomationRecommendations.tsx.md": "92a189a50aa6fc44536cfd0ece99a39a9076d6b77aca4b38746ec5840abc8121",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/automation/AutomationsListView.tsx.md": "359bd57944a26c4c5d0a26efe6bf0bba23aed7144019987a5fdc246232217b68",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/bulletin/BulletinDialog.tsx.md": "d821ee70858cbfbb4f4a7fbbf29ab2a637124549db88ecd38a3bfeaed8714079",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/bulletin/bulletin-startup.test.ts.md": "1aa61a6fe9e1c4c520ae12fe9c5a544b571ef690b8dac7ba5bd2908ffd30f97a",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/bulletin/bulletin-startup.ts.md": "2ef53a418c81430a4fe09112d596bd0c5feb345acf69019ee0adf6f513e8cd02",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/environment/EnvironmentCheckCard.tsx.md": "75f49b3093d0844aed23edc89842595a78bb954e16a55be715d141682aba408d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/environment/EnvironmentCheckDialog.tsx.md": "e67cc26d480e5bfc90c6ad6f2c3d1821dc3d2b46d39a0da9e54923b4487eaca8",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/environment/EnvironmentCheckPanel.tsx.md": "9a3261decd19c7a2dd40bfe7de876e2e98d53a74f1b0d0bd9b0ace8a53b9cb11",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/knowledge-base/KnowledgePreviewPanel.tsx.md": "c7784f273ab592e35657ee159293dd85bafa6695d2b352b5c25da3f243365c1f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/knowledge-base/KnowledgeReferencePicker.tsx.md": "f1c5654b924cac52d190593755ea1cf2b656e085db7290fa230d6de2509f314c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/knowledge-base/knowledge-base-workbench-utils.ts.md": "9bf6d21de706837aa917496bf9bbf221f591e939cd119ae6d5c69b68e249099e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/migration/MigrationImportDialog.tsx.md": "2b29d1724f62b40bc1b208304be96803ea50635463316ed8ac87e9d089e9a7d4"
+ },
+ "notRun": [
+  "product tests (11 cases)",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real IPC/download/import"
+ ],
+ "scopeBound": "nb-112-r1 返修复验（F-1 修正+17 篇不变性）"
+}

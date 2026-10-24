@@ -1,0 +1,56 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "pilot-models-r2",
+ "revisionOf": "pilot-models-r1",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T13:30:29.938425+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "files": 6,
+ "accepted": 6,
+ "revisionRequired": 0,
+ "unknown": 0,
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/module-settings-store.ts.md": "5c5732455f6b754d0e92a1e7ef78873f6117c4e55a12248efcb8ab21d8dcd777",
+  "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/module-settings-store.test.ts.md": "d5c5c571ee431b52df4507f0c313ec3de2cc9bd04a095c03981ffd96353290ed",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-model-gateway.ts.md": "19b7a4f994ca22e3925f76122311984bbe1df4adb0fb2af7161cedc0c5318cbe",
+  "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/run-async-service.ts.md": "86a9ecbdd9b95edb92adba51b90bb2252243b36691f4dc9f9b0251ad51b2e1d0",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-pi-run-bridge.ts.md": "95d398ae0f93265846ff4cf5e45d3576e78926300aeca96ee6ccd36c7b4931e4",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-pi-run-bridge.main.test.ts.md": "a8b8340c8113186f2034b03c38029dab5873fccbaa0009b2de31d5376416e116"
+ },
+ "revisionHashes": {},
+ "artifacts": {
+  "SOURCE-CHECKLIST.md": "ea0a5e47b42dac7530e5e715ec2339172e06ef0848fa3384edb6814004cb3689",
+  "RESULT.json": "7e45d967abcc3d2813f596b3253092bf83b10fba234ec7064c9cca311432be1b",
+  "RESULT.md": "8f619a00a3224cdc8a160bd8b859dc21ad08e3855543559fce7facc739ff651c",
+  "REVIEWED-HASHES.json": "ae37341789021019d589a0b46d69915374ae77e37b6ca44b2174edd6f59180e3"
+ },
+ "deliverySeal": {
+  "readySha256": "444312d81a5cccb15ac18368da9402a358a601a841f0a16ffa4429065a1b4c99",
+  "doneSha256": "ceac9af05d2eb15a83c03f16bd63d1c57340af4861bb07eac89ca897e05ef2b6",
+  "manifestSha256": "ec85933ffcd286971b2b79b4053cf0ec58d6d84e3f54736df6d06cf58cc40880",
+  "zipSha256": "8900673e9af5f6d4a296c35ef341ceda46eb353678dd0e7fc73ed51da74de1f6"
+ },
+ "processFindings": [
+  {
+   "id": "P-R2-01",
+   "severity": "process",
+   "fact": "实际写入序 MANIFEST/COVERAGE/STATUS/START(11:30:24Z)→DONE(11:30:33Z)→ZIP(11:30:42Z)→READY(11:30:51Z)，与 DELIVERY-CONTRACT「DONE 最后发布」及 seal 工具文档层序（MANIFEST→ZIP→READY→DONE）不一致；READY 含 doneSha256 使 READY 必然晚于 DONE，r0/r1/r2 三批同构。哈希链无自引用且全部与实际字节一致，不影响按 acceptedHashes 合入。",
+   "action": "lead 统一 seal 工具层序或修订合同表述；非内容阻断"
+  }
+ ],
+ "notRun": [
+  "bun test",
+  "typecheck",
+  "Electron/GUI",
+  "real model/network",
+  "build/package"
+ ],
+ "next": "lead 按 acceptedHashes 合入 6 篇；后续修订另开 r3"
+}

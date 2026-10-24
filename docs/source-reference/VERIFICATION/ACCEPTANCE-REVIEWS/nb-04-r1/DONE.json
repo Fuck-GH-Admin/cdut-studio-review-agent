@@ -1,0 +1,57 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-04-r1",
+ "revisionOf": "nb-04",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-models-20261023",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T16:50:51.663944+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "files": 9,
+ "accepted": 9,
+ "revisionRequired": 0,
+ "unknown": 0,
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/index.ts.md": "9110a846cfc34ae15738eb97e2413690774d9266b3be97fddb18e25fa7f4f2a2",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/longterm-memory.ts.md": "59f32323c316e272bc70b252f32ca217fb6c8ce6d7678163251115fb5a339720",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-fuzzy-search.ts.md": "f56c8aa5d788e108ab789a4b75b5810cb26020bb315994c6d5237d897075dd1b",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-fuzzy-search.test.ts.md": "a902db5cfe4ca0f7b96dc22b561ce0e6c9e977fc8f96fb2f81b590b733985108",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/types.ts.md": "d3a4cf99fcbbcadd6fe27026c404763e547520b186dd5ae0a235e9ed02c34b37",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/anthropic-adapter.ts.md": "37b1a8d02f60785f3c6a674aad82221723cc240a78090d5fc5332be8bf12386f",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/google-adapter.ts.md": "c87b7129d7b41bbe9f6630350bb10bcecb8005fbbed48d8f364ef88f3e409c8c",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/openai-adapter.ts.md": "2fdd86dd857d46e5dca605de4a59e1a9f057b01d29add405d623e020fbfe14ec",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/openai-responses-adapter.ts.md": "18dd98792a368db5cd0f04e4a1aa6ecbbe3bdde07f9b854d50c31a4d2ddbf177"
+ },
+ "revisionHashes": {},
+ "findings": {
+  "revision": [],
+  "notes": []
+ },
+ "deliverySeal": {
+  "sealId": "seal-4f23a5a95a8077f0",
+  "sealedAtUtc": "2026-10-23T16:38:19Z",
+  "readySha256": "2443acdbc45b01defa581aae57b8eaf065ffb9007cdfa7319d5a4552290ae2b8",
+  "doneSha256": "05f10684d0222887ccfb74c28ac089d3364ec99038c2ffdf2076f75daa5ace9d",
+  "manifestSha256": "18c1e094913913401b91d204706fb15931232afc985138f3aea025e9a5dad739",
+  "zipSha256": "3b1c3d53d21e60065a9b75a12332407b10773f00aa687ed8a977be7d3a5692d0"
+ },
+ "notRun": [
+  "bun test",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "artifacts": {
+  "RESULT.json": "aa64fe7f7284f81019ae75cb12e84e5172751a4e4c62372541fdfff1a8b936c2",
+  "RESULT.md": "c017aa05fb4eff33195a904ff606d8d1b5ce7e5f3b180150b22538a068ea98d0",
+  "REVIEWED-HASHES.json": "95e7aeb041d9034689f50385938360bb6cb6ec17a30ea51b06a54bcc1340e66f"
+ },
+ "next": "lead 合入 9 篇"
+}

@@ -1,0 +1,275 @@
+{
+  "schema": "dsh-r07-independent-review/1",
+  "batch": "nb-08-r1",
+  "revisionOf": "nb-08",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-03-20261023",
+  "reviewerSession": "docs-r07-qa-nb-03-20261023",
+  "batchVerdict": "accepted",
+  "generatedAtUtc": "2026-10-23T17:33:37Z",
+  "delivery": {
+    "sealId": "seal-a7f1d861be957b99",
+    "zipSha256": "ca8b1eb20177922a1b298b3892f7c3852d14964ca55f1ef1da111eec700f0b5f",
+    "manifestSha256": "9a463111573498908030c89fff570464a5be5a3d1c571ebc53eaeab9a63cf6d7",
+    "readySha256": "ddf3603b5d427e5c3cd5e4fe26681f494332540d2b7262ca9d245e56cef902e6",
+    "doneSha256": "70e787ecafe7699673452070439eddd93b1e13f38907363b32ffb105946138ee",
+    "sealedAtUtc": "2026-10-23T17:27:49Z"
+  },
+  "gates": {
+    "G0": "pass — 全部 blob+sha256+lines 对冻结树；manual sha256 stage==MANIFEST==READY；MANIFEST→READY→DONE 链互洽；sealId 重算一致。",
+    "G1": "pass — FINDINGS-RESPONSE.md 逐条 before→after 与变更字节一致；父批 sealed 字节未动（before/ 保留）。",
+    "G2": "pass — 变更文件恰为 findings 对象（decision-readiness-v2.test.ts.md, native-workspace-case-v3.ts.md, review-v3-t05-local-stage-plan.ts.md, review-v3-t05-main-service.ts.md, stage-workflow.test.ts.md, stage-workflow.ts.md），逐条回源闭合；未变文件与父批逐字节一致。"
+  },
+  "notRun": [
+    "bun test NOT_RUN",
+    "tsc/build NOT_RUN",
+    "GUI NOT_RUN",
+    "模型/产品调用 NOT_RUN"
+  ],
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "findings": 7,
+    "optionalNotes": 0
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/main/lib/review/native-case-academic-year.test.ts",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/native-case-academic-year.test.ts.md",
+      "sourceBlob": "a1670adb6448fb4e42bf86c9357d4a20a070c2d5",
+      "sourceSha256": "e09acff0bc4410db019371d3488d6488637d4d2af33a3724118e1419cb603a5b",
+      "manualSha256": "3589a48103fad1c2e7664db2e824c6dedd59bf46edfac6b1f5579bc6b9e50798",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/native-case-material-slot.test.ts",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/native-case-material-slot.test.ts.md",
+      "sourceBlob": "61c225d3adb8ac927553a3d48bac74fa70cbaf25",
+      "sourceSha256": "bad60bd1d2d0f872bd8b23b28ea8d4ac1fe7a563296ac8df36ca5bcf8ee7548d",
+      "manualSha256": "f46dcf3f1f3a17c7361efd8b6e99efb89d8eedb123fdfa88163886852a954116",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/native-workspace-case-v3.test.ts",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/native-workspace-case-v3.test.ts.md",
+      "sourceBlob": "f6b45748708fb8fc62eac36681a29baf47e44185",
+      "sourceSha256": "f763d5ffd40e8e4db791e3f5a94c0a26138b077712549e9601be5350025f51da",
+      "manualSha256": "222339affbcd64a9efac8aa30870ea776ca8b62ae356b1a81092a4415fbad73f",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/native-workspace-case-v3.ts",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/native-workspace-case-v3.ts.md",
+      "sourceBlob": "b670ce4ad0f078af9a5dd9eceed65512e1567052",
+      "sourceSha256": "4a9f2d2fb1bd283d20bdc66ce3c08fbc02bc3d9f1db6fec02ce3ab441d0a99c2",
+      "manualSha256": "7f469372abb452947f364298b80da48a380db1bc0ae9f648489d6a39038e5daf",
+      "verdict": "accepted",
+      "findings": [
+        {
+          "id": "NB08-EXP-01",
+          "severity": "low",
+          "claim": "§2 摘要改为“导出 13 项：1 const、10 function、2 type/interface”——与源 13 export 及表一致，闭合。",
+          "sourceEvidence": "回源逐行复验（frozen apps/electron/src/main/lib/review/native-workspace-case-v3.ts 与相关 review-ipc 行）；FINDINGS-RESPONSE.md 记录 before→after sha256，before/ 保留父批字节",
+          "action": "已闭合，无需再改。"
+        },
+        {
+          "id": "NB08-PERM-01",
+          "severity": "low",
+          "claim": "§4.1/§7 按实际消费者分列：:414/:1295-1302 传 authorizeAtCommit（提交时复核）；:451 未传、仅 :450/:452 前后断言（:444 app.isPackaged 拒绝）——与 review-ipc 源逐行一致，闭合。",
+          "sourceEvidence": "回源逐行复验（frozen apps/electron/src/main/lib/review/native-workspace-case-v3.ts 与相关 review-ipc 行）；FINDINGS-RESPONSE.md 记录 before→after sha256，before/ 保留父批字节",
+          "action": "已闭合，无需再改。"
+        }
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/workspace-business-service-v2.test.ts",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/workspace-business-service-v2.test.ts.md",
+      "sourceBlob": "1be52a832c6d6126a9f75f299a1b4557ac41a2cb",
+      "sourceSha256": "c011bb957f5e35188e6c63684f37f5bea2fbdb0fd98ca2a888110296975acd94",
+      "manualSha256": "cdfd14175c4e846812a2b21023860589e81c047dd4f8929faee290857b1a6736",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/workspace-business-service-v2.ts",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/workspace-business-service-v2.ts.md",
+      "sourceBlob": "ee86d1e97ef6d4d9dac24e0743a75e6fc646a6d3",
+      "sourceSha256": "64e31914bf91b2f8c39f1b1c26f65648cf991f86b5b7cb77b9ce646fdb9a1d99",
+      "manualSha256": "add848494b911aaed168b694f1dae78fa3afe7ff57eddb424421f95fcd4c1979",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/workspace-rule-compiler.test.ts",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/workspace-rule-compiler.test.ts.md",
+      "sourceBlob": "1ad32ad961011d1ef833db01a7f9f852cdac5d40",
+      "sourceSha256": "1adcd2a73177d427f2f6775c446d60c404d45e187217f03be934958cfa1855ca",
+      "manualSha256": "79ef8ab5e2c18169db8bddd4a3808fc9e520fb836f7425e95d65961283f79dfe",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/workspace-rule-compiler.ts",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/workspace-rule-compiler.ts.md",
+      "sourceBlob": "7c602f3a9eed94ca1239384937ea5b1ffde4da2a",
+      "sourceSha256": "1f3e8d4b5d31435a6ba294142e87606a8671faff3393c94e98ea20e58b874fc8",
+      "manualSha256": "39cce1c02b41ec580c51d3b3379517715579565f5f1312136da6ebef1fc4045f",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/workspace-service-v2.test.ts",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/workspace-service-v2.test.ts.md",
+      "sourceBlob": "1b5943998faaa9d640a3ada805ba573ccdd7040e",
+      "sourceSha256": "a5d3d71f90a3bb36a96a0535879b669de069927dfad1cc05f055723863a81013",
+      "manualSha256": "54327b490d5e0973db0949a16dd89986090a7ca909ccb54755c7386fca20002b",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/workspace-service-v2.ts",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/workspace-service-v2.ts.md",
+      "sourceBlob": "fd42cd48ad2a7531457d191fcfe6432d730a3f62",
+      "sourceSha256": "1048857dbf8d37eb7a9cf50916e6b5f3004e03828fb37e7cc8760ba1353ff934",
+      "manualSha256": "60cbf005d2454225a7555e003673fd01c707fce108a2c1f678e84f32ef91e862",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/decision-readiness-v2.test.ts",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/decision-readiness-v2.test.ts.md",
+      "sourceBlob": "0a4fa075ed234b4f6f72488190f9cd1765a0fd6b",
+      "sourceSha256": "7e20e510f4de931818a0854d04afdabb268ebd62f0c4d24f3ac8f4e3a6de98d2",
+      "manualSha256": "864bc3cb79acd5928c2710fafe1ad2f968692fadd8881bdcedd4a50e40ccb86a",
+      "verdict": "accepted",
+      "findings": [
+        {
+          "id": "NB08-NOTE-01",
+          "severity": "low",
+          "claim": "已补未类型化夹具标注（10 处 as unknown as），闭合。",
+          "sourceEvidence": "回源逐行复验（frozen apps/electron/src/main/lib/review/decision-readiness-v2.test.ts 与相关 review-ipc 行）；FINDINGS-RESPONSE.md 记录 before→after sha256，before/ 保留父批字节",
+          "action": "已闭合，无需再改。"
+        }
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/stage-workflow.test.ts",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/stage-workflow.test.ts.md",
+      "sourceBlob": "0f3c992fba9fb15ac9097506c57b164f329a97f3",
+      "sourceSha256": "0260b1c42c9f39474b6ce02188ceae09f94f29f58406f4f5cc70612a57407d13",
+      "manualSha256": "555e6a3a8591000c4e9455395403c666ee992da845209aa77419df0b79f517de",
+      "verdict": "accepted",
+      "findings": [
+        {
+          "id": "NB08-NOTE-02",
+          "severity": "low",
+          "claim": "已补未类型化夹具标注（2 处），闭合。",
+          "sourceEvidence": "回源逐行复验（frozen apps/electron/src/main/lib/review/stage-workflow.test.ts 与相关 review-ipc 行）；FINDINGS-RESPONSE.md 记录 before→after sha256，before/ 保留父批字节",
+          "action": "已闭合，无需再改。"
+        }
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/stage-workflow.ts",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/stage-workflow.ts.md",
+      "sourceBlob": "a46022bbc5d3889d5e69e4040c781db06db4f6b3",
+      "sourceSha256": "d66c646636e573c5a318224e9387afd663572540c0f55add485bd6d9cefafb03",
+      "manualSha256": "974fc8466c0d25f38e1277dafff8b84026ac685e902d7cb897296694bae17af7",
+      "verdict": "accepted",
+      "findings": [
+        {
+          "id": "NB08-EXP-04",
+          "severity": "low",
+          "claim": "§2 摘要改为“导出 9 项：7 function、2 type/interface”，闭合。",
+          "sourceEvidence": "回源逐行复验（frozen apps/electron/src/main/lib/review/stage-workflow.ts 与相关 review-ipc 行）；FINDINGS-RESPONSE.md 记录 before→after sha256，before/ 保留父批字节",
+          "action": "已闭合，无需再改。"
+        }
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t05-business-mode.test.ts",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t05-business-mode.test.ts.md",
+      "sourceBlob": "f286d1753bbb30f35efe66c261d5124c2a30d65f",
+      "sourceSha256": "94de6d9b0d6205121c4664b8b22fae0c3ceeba97698e09b2eb1b5bedfd307454",
+      "manualSha256": "d321fedc70b1c4c1a693871e65d9fa8912e02ad2510902bfe3a8d87c154b26fa",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t05-local-stage-plan.test.ts",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t05-local-stage-plan.test.ts.md",
+      "sourceBlob": "67976ac3c8e3acdff4284fe64795494ab71c9864",
+      "sourceSha256": "429add2d912b8d3eecb3fe8c1b82a190f944f96ec07fa82ebf50797d1458a0a3",
+      "manualSha256": "11e246bc358b882c52f592ef3ad406db0ec00965ed021eedb19cf2b39e6f81f5",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t05-local-stage-plan.ts",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t05-local-stage-plan.ts.md",
+      "sourceBlob": "29af8a0f9a91f14a89f701ae97c45ce0fab27a68",
+      "sourceSha256": "a7244d9551a6f81e2b86f1af73b71409bbf66ce524198d76ce1bd0f514da6864",
+      "manualSha256": "90e8340d6eb0c26d9634cbd694b1babb72964c68336b6dbd01f1b1c676398e95",
+      "verdict": "accepted",
+      "findings": [
+        {
+          "id": "NB08-EXP-02",
+          "severity": "low",
+          "claim": "§2 摘要改为“导出 9 项：3 function、6 type/interface”，闭合。",
+          "sourceEvidence": "回源逐行复验（frozen apps/electron/src/main/lib/review/review-v3-t05-local-stage-plan.ts 与相关 review-ipc 行）；FINDINGS-RESPONSE.md 记录 before→after sha256，before/ 保留父批字节",
+          "action": "已闭合，无需再改。"
+        }
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t05-main-service.test.ts",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t05-main-service.test.ts.md",
+      "sourceBlob": "a62d6e3c4cb18c0d5edc2eec4e31b573f0b5c16c",
+      "sourceSha256": "feba623e8127f650172fff68ae0b32dee98aa14b1aa1df75db862e99f7f37301",
+      "manualSha256": "456dae6dca9e6f7e3eba4c2bcd71ebceeb86fb83aecb54891b9fc2f0a12fd7dc",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t05-main-service.ts",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t05-main-service.ts.md",
+      "sourceBlob": "98e3332f52785dd8ed7b4ba855ff8b175e4814f6",
+      "sourceSha256": "7244be5c366a78d0b913f6736fd9a2375a5adb70438fbc0f1c17b8ae258ffb5f",
+      "manualSha256": "8aae38916360cf4a0d26aa22fe93b567f450fa083d0455f14138fe9ee8bd05af",
+      "verdict": "accepted",
+      "findings": [
+        {
+          "id": "NB08-EXP-03",
+          "severity": "low",
+          "claim": "§2 摘要改为“导出 24 项（function 15、type/interface 8，尾部 re-export type 含 2 名）”，闭合。",
+          "sourceEvidence": "回源逐行复验（frozen apps/electron/src/main/lib/review/review-v3-t05-main-service.ts 与相关 review-ipc 行）；FINDINGS-RESPONSE.md 记录 before→after sha256，before/ 保留父批字节",
+          "action": "已闭合，无需再改。"
+        }
+      ]
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/native-case-academic-year.test.ts.md": "3589a48103fad1c2e7664db2e824c6dedd59bf46edfac6b1f5579bc6b9e50798",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/native-case-material-slot.test.ts.md": "f46dcf3f1f3a17c7361efd8b6e99efb89d8eedb123fdfa88163886852a954116",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/native-workspace-case-v3.test.ts.md": "222339affbcd64a9efac8aa30870ea776ca8b62ae356b1a81092a4415fbad73f",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/native-workspace-case-v3.ts.md": "7f469372abb452947f364298b80da48a380db1bc0ae9f648489d6a39038e5daf",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/workspace-business-service-v2.test.ts.md": "cdfd14175c4e846812a2b21023860589e81c047dd4f8929faee290857b1a6736",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/workspace-business-service-v2.ts.md": "add848494b911aaed168b694f1dae78fa3afe7ff57eddb424421f95fcd4c1979",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/workspace-rule-compiler.test.ts.md": "79ef8ab5e2c18169db8bddd4a3808fc9e520fb836f7425e95d65961283f79dfe",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/workspace-rule-compiler.ts.md": "39cce1c02b41ec580c51d3b3379517715579565f5f1312136da6ebef1fc4045f",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/workspace-service-v2.test.ts.md": "54327b490d5e0973db0949a16dd89986090a7ca909ccb54755c7386fca20002b",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/workspace-service-v2.ts.md": "60cbf005d2454225a7555e003673fd01c707fce108a2c1f678e84f32ef91e862",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/decision-readiness-v2.test.ts.md": "864bc3cb79acd5928c2710fafe1ad2f968692fadd8881bdcedd4a50e40ccb86a",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/stage-workflow.test.ts.md": "555e6a3a8591000c4e9455395403c666ee992da845209aa77419df0b79f517de",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/stage-workflow.ts.md": "974fc8466c0d25f38e1277dafff8b84026ac685e902d7cb897296694bae17af7",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t05-business-mode.test.ts.md": "d321fedc70b1c4c1a693871e65d9fa8912e02ad2510902bfe3a8d87c154b26fa",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t05-local-stage-plan.test.ts.md": "11e246bc358b882c52f592ef3ad406db0ec00965ed021eedb19cf2b39e6f81f5",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t05-local-stage-plan.ts.md": "90e8340d6eb0c26d9634cbd694b1babb72964c68336b6dbd01f1b1c676398e95",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t05-main-service.test.ts.md": "456dae6dca9e6f7e3eba4c2bcd71ebceeb86fb83aecb54891b9fc2f0a12fd7dc",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t05-main-service.ts.md": "8aae38916360cf4a0d26aa22fe93b567f450fa083d0455f14138fe9ee8bd05af"
+  }
+}

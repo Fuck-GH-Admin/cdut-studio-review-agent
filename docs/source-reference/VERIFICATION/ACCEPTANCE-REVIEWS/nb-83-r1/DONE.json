@@ -1,0 +1,58 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-83-r1",
+ "revisionOf": "nb-83",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-models-20261023",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T18:04:44.388774+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "files": 10,
+ "accepted": 10,
+ "revisionRequired": 0,
+ "unknown": 0,
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/skin-preview-cache.test.ts.md": "eb86c0a4a3d4944150bb066178a49eb675f9a5a90a166dbb8301f31d10bf982e",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/skin-service.test.ts.md": "eb532b8df7ab81df660c37e3502f047922347cb42fa27f2b77ffacf2da604e5b",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/skin-service.ts.md": "d2cde9b5592d51213365165f0d0811eaa5a375629c968d1ac205a264ab8fc6e4",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/team-file-service.ts.md": "f74d4d820e133e0bd2ad9f6890281e812b10c90647170371ba33ff38c1c74e80",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/team-manager.ts.md": "8b9437bcaad5ee15910b4c5b268456f5ba61e29211159ad290d257019519d4c4",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/team-memory-agent-tools.ts.md": "de0773362bf8464b31fae4ff976d87fbdcd2f029628a5c0fd36b90d4ea699f0e",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/team-memory-service.ts.md": "49084bccc0d013e7b568dad7698728900f087c2d0ba77f60920c48e088fb923f",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/team-notification-service.ts.md": "e6bd4ef45c4452eed5f460e5796ead12d8d7214e26f45010133e1910512895a3",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/team-planning-service.ts.md": "34ddf782cf5a82cef34d2a3908da4a6ca3b97256950be75663480f3677fbaca8",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/demo-data/matlab-benchmarks/generate_max_mat.py.md": "d8c9d23fc8df7eec1a80ae020c78b6b59b2713928102794c1f7f83d4daf28ca1"
+ },
+ "revisionHashes": {},
+ "findings": {
+  "revision": [],
+  "notes": []
+ },
+ "deliverySeal": {
+  "sealId": "seal-76f882de54e90923",
+  "sealedAtUtc": "2026-10-23T17:59:56Z",
+  "readySha256": "c67b43fe0c66c6e480e1aaf77cc898a204502c463b7ad5b593a246d541239c19",
+  "doneSha256": "bef37533773621e901696c5202663db6b2f37eb346df883e3fefa433b1100852",
+  "manifestSha256": "ee7e5708e3b3a348e6d735ddcd6a5e0700a40019fbd422e5bbe0a9e5a06cb97a",
+  "zipSha256": "782e190502b26a588973c4d11cf93262f183d61ccedecc06f11f4606f38bec4d"
+ },
+ "notRun": [
+  "bun test",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "artifacts": {
+  "RESULT.json": "c6d9541b00e6ee6b390fa5df030ccb78f50add074a465d497fdf212e3ec6127e",
+  "RESULT.md": "4b910ad5628a3cb37cfa9a2f083f5ff51399ab85ae0cdeeea08f0f072a047e17",
+  "REVIEWED-HASHES.json": "6542b54ca0cbaa7418071f20fd2ee8c2ec59a72a0cbc1d2e3dd3b94a61c4f69c"
+ },
+ "next": "lead 合入"
+}

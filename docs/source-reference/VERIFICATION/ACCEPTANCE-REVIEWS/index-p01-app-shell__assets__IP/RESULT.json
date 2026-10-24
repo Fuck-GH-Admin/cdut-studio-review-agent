@@ -1,0 +1,86 @@
+{
+  "schema": "dsh-r07-index-review-result/1",
+  "batch": "index-p01-app-shell__assets__IP",
+  "groupId": "p01-app-shell__assets__IP",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-index-author-20261023",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T19:58:00Z",
+  "sealedAtUtc": "2026-10-23T17:57:43Z",
+  "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets__IP.md",
+  "artifactSha256": "3e70fdf2120fe296c31c56391e976b97ceb18015c84769f1243f2ef89e5a733b",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 4,
+    "accepted": 4,
+    "revision_required": 0,
+    "unknown": 0,
+    "blocking": 0,
+    "nonBlocking": 0
+  },
+  "gates": {
+    "G0_INDEX": "PASS",
+    "G1_INDEPENDENT_SOURCE_REVIEW": "PASS",
+    "G2_SEAL_CONSISTENCY": "PASS",
+    "note": "G0 等价全过；封版三方哈希全对；change 标注与锁一致；消费链 QA 逐点实证属实。"
+  },
+  "g0Evidence": {
+    "stockScript": "ERRATA-E1 沿登记；等价检查 PASS"
+  },
+  "files": [
+    {
+      "path": "assets/IP/Cute_IP/Blinking.png",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets__IP.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets__IP.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#assets--IP--Cute_IP--Blinking.png",
+      "line": 8,
+      "sourceBlob": "574cb933569dedffbaad68298b7c321647378690",
+      "sourceSha256": "a2a2eab67838503be1a508e9ff7b6e7f59de4a423e8996e6d03d22412782ef49",
+      "manualSha256": "3e70fdf2120fe296c31c56391e976b97ceb18015c84769f1243f2ef89e5a733b",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "YanhuPetAvatar.tsx:11/:17-22/:26/:33-34 链与 QA 实测一致。"
+    },
+    {
+      "path": "assets/IP/Cute_IP/Breathing.png",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets__IP.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets__IP.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#assets--IP--Cute_IP--Breathing.png",
+      "line": 18,
+      "sourceBlob": "8a42087aad5d39abec0efe7ae50fe35c453dd645",
+      "sourceSha256": "3e168e66d34c3d26cae5c8411b63b0b5c829fe018751e311beb25bd557782a43",
+      "manualSha256": "3e70fdf2120fe296c31c56391e976b97ceb18015c84769f1243f2ef89e5a733b",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "YanhuPetAvatar.tsx:12 链 + CdutWatermarkBackground.tsx:14 深色水印（QA grep 命中）一致。"
+    },
+    {
+      "path": "assets/IP/Cute_IP/Walking.png",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets__IP.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets__IP.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#assets--IP--Cute_IP--Walking.png",
+      "line": 28,
+      "sourceBlob": "615858c0f8bcbba6a8d118b611b82e5dec95e0d6",
+      "sourceSha256": "30baf58abc4a887e89d2fee48f0a037ec150c462e1d5cbd048dec760222219e9",
+      "manualSha256": "3e70fdf2120fe296c31c56391e976b97ceb18015c84769f1243f2ef89e5a733b",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "YanhuPetAvatar.tsx:13 链 + :35-36 忙碌 props 注释（实测命中）一致。"
+    },
+    {
+      "path": "assets/IP/Cute_IP/Yawning.png",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets__IP.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets__IP.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#assets--IP--Cute_IP--Yawning.png",
+      "line": 38,
+      "sourceBlob": "1fbb590ed82593b6198e8b00b4995b9767cc4c8d",
+      "sourceSha256": "1501b00ad96d124856b8b78b152c72ce2a5c8fe9da8482af50d0d2f1d1767258",
+      "manualSha256": "3e70fdf2120fe296c31c56391e976b97ceb18015c84769f1243f2ef89e5a733b",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "YanhuPetAvatar.tsx:14 链与 QA 实测一致。"
+    }
+  ],
+  "findings": [],
+  "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局账；未跑产品测试/typecheck/构建/GUI；未 commit/push；结论只覆盖本批。"
+}

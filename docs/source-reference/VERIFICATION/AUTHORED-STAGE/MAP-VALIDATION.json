@@ -1,0 +1,9 @@
+{
+  "atUtc": "2026-10-23T21:47:29.177478+00:00",
+  "sourceBaseline": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "mapSha256": "2cad6f0d171697fed62ceb252688f0a333a3c188db05aef3148ce590ac902b15",
+  "localLinks": 112,
+  "missingTargets": [],
+  "runtime": "NOT_RUN",
+  "scope": "Map local targets only; static citations manually checked; independent gate still required"
+}

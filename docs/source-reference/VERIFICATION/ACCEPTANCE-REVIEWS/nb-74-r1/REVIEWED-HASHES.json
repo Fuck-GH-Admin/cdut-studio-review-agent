@@ -1,0 +1,209 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-74-r1",
+  "revisionOf": "nb-74",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-01-20261023",
+  "authorSession": "docs-r07-author-nb-01-20261023",
+  "reviewedAtUtc": "2026-10-24T04:10:00Z",
+  "batchVerdict": "accepted",
+  "bindingNote": "18 篇当前字节 manual hash 全记录；16 篇同父 accepted，2 篇 r1 新 hash。",
+  "sourceBinding": [
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-literature.ts",
+      "sourceBlob": "db7d692f50d78bb548400ee880139d5ffe137588",
+      "sourceSha256": "f74f5743f274731cd043f76b1dcdff739eb0cae0ca603f1cd323168ff1e16dcf",
+      "lines": 235,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-literature.ts.md",
+      "manualSha256": "f871e4249526cee9d75f31e1267217c717cdd6725e3946feffce24bd5e939151",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-manuscript.test.ts",
+      "sourceBlob": "647c398fc554bb054cf75688c1532f7098cfdc7c",
+      "sourceSha256": "7a2392d3de0122f1f8e44608ae7f176b75e1dec53c51be1753ed5e8737b5a103",
+      "lines": 190,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-manuscript.test.ts.md",
+      "manualSha256": "a1c0261e04286cfba1d8bda7faa0614533d92b5d5a0cb7fd6d93dbaa55571fa3",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-manuscript.ts",
+      "sourceBlob": "bc53a315cacac33f1857b2529ccd7cd72f3d03f2",
+      "sourceSha256": "cb8404c048d4ab1d2456781a470f8d1b2ab2277bd8ed6caaa43163350634bb60",
+      "lines": 596,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-manuscript.ts.md",
+      "manualSha256": "5c2bdc6d50526bce1ba947bfdcaa24c269df68d844da2a1e6d79e1718c158f83",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-mol.ts",
+      "sourceBlob": "b5154ec0b96d6f09d3db9aea3a727ac50629db58",
+      "sourceSha256": "a41ba7579d5a4778a4752b8392ab93cd0c1414f0cabcd4be3b71d43747e8862f",
+      "lines": 236,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-mol.ts.md",
+      "manualSha256": "5a3e73d3f69b4e83dd7505b95b69fd44494e1df1fcb181c1ba306d0d5442a654",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-molstar-math.test.ts",
+      "sourceBlob": "63e2af7d40615ae4fffa880e8c4cdbf5ba9df8e3",
+      "sourceSha256": "ef071915797e82a4a5d002c7f80e506ae92b1eec6af11e47d51311ac49f9e925",
+      "lines": 175,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-molstar-math.test.ts.md",
+      "manualSha256": "5c63ce3e63ab154fadb7f3346ba225c99bb326f939646d4069d1caefbbcaf68b",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-ooxml-worker.ts",
+      "sourceBlob": "16a42b50d09a8946f13c6427e699b75e58f21f5b",
+      "sourceSha256": "a4dc62c734ebd21907f9034cf9772886bd57ee565f52665fa21f4194a4ffd42a",
+      "lines": 32,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-ooxml-worker.ts.md",
+      "manualSha256": "9919caed81db5d353a7dcfa987cdc112dced73233e186c69dc4e9c8a64823a6b",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-ooxml.test.ts",
+      "sourceBlob": "3e615156b70e76f9cb39c3c6caeeac9f145db3bf",
+      "sourceSha256": "ec3e01c1bd82d62ec42787d3405709828bfa9ba8e3edabfad0be3b80e1438b29",
+      "lines": 200,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-ooxml.test.ts.md",
+      "manualSha256": "1638d8625fe75e64dc26fa02bbb12726332e5ccc1f95452afee6e08d730de832",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-ooxml.ts",
+      "sourceBlob": "7584ac570da8464de528ae1f5e88cd10217ea3ec",
+      "sourceSha256": "5f5f382811e2d11f15acc0a0ccc1295b31c914830e6ae54fbd9cd9bb9bb120c1",
+      "lines": 1146,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-ooxml.ts.md",
+      "manualSha256": "3fa83fb0b9373f5da953de4b951561b634665cb85b2b5747661a3f359f9ddfe0",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-plot-digitizer.ts",
+      "sourceBlob": "84ca378912f1558b8bb5aa884dc2b92bfd0b7611",
+      "sourceSha256": "d3cb79cd56972e80fbd86ff518a506eb736ea2b1551af872cfba496b1f7fb2be",
+      "lines": 165,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-plot-digitizer.ts.md",
+      "manualSha256": "74378e2f531894ab7fabdba4b57572c1788c97cf3eb0b01d0cb120c975a6566b",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-plot-history.test.ts",
+      "sourceBlob": "206638c1b52e85c45720563a784a8fc9dd9aa424",
+      "sourceSha256": "2be059f3da0d17fcdfef02db998a95d0c41a924afbc311ee15a7a754c39c1bca",
+      "lines": 93,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-plot-history.test.ts.md",
+      "manualSha256": "f816b6173d1f8f39334c9ef3c4914e8a860a11b93b857784cdda1582e27bd903",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-plot-history.ts",
+      "sourceBlob": "921e425b3d3d5f537778704edf6bc5ac35b13e91",
+      "sourceSha256": "866505c95437385373089b84b17e09347b90e4bff82b9df61e93ff5f5f2e4d85",
+      "lines": 121,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-plot-history.ts.md",
+      "manualSha256": "707c670197fb49a7141cd5b0923cf102d7d775112185c40b587ec60d9a586d62",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-python-runtime.ts",
+      "sourceBlob": "d168b809f2ea10200d0c1515d885438b10397972",
+      "sourceSha256": "31f1533551dbe9c1c5c919ae31360fe05b5ea72aa722a892cbc669623ba335c9",
+      "lines": 409,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-python-runtime.ts.md",
+      "manualSha256": "a1c430b0aca51cdf242f62c8f480c7844436cbda3b96d3b73f7d059ff013dc0a",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-python.ts",
+      "sourceBlob": "e5fa5a08d38134ff8efc2932a989d8b409933578",
+      "sourceSha256": "73ed43b987d21f9901dc6ee0855d17c72433a0fd392eef49374c95fce9fc92cb",
+      "lines": 129,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-python.ts.md",
+      "manualSha256": "c7dc9e504304d23fb916ee3af287aca73841582ddcad0fb9d69a87d7b1d3c4d3",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-runs.test.ts",
+      "sourceBlob": "708f72b4b8792c6b24d75617c3eaa65cf73b0b14",
+      "sourceSha256": "7388f51979aad1f80a99d5c8f75fa64db8892b755d62bef14caf01af04b55d4d",
+      "lines": 154,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-runs.test.ts.md",
+      "manualSha256": "0c0b816557d2faaff2ddd6279654d5254abfdd86075c5427eb5f7f601d0b34d8",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-runs.ts",
+      "sourceBlob": "1dfff8b74e2f251ded5903ccde57334b78fc29ab",
+      "sourceSha256": "7105e794809bbaa9589bf239e612476399a098b0d2290881141824c136a8f6d4",
+      "lines": 595,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-runs.ts.md",
+      "manualSha256": "76bc54c88fa46bf1ae2b763edd4a0a68b07e373221150d224096b8bb8428e5bd",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-science.test.ts",
+      "sourceBlob": "2f118b370063dad893d1074e5de8da099f6f6761",
+      "sourceSha256": "97d06f4a9ea8b68ddcf3611f7a7635869742fb8703dd4bcdf3c654ffd3a680bf",
+      "lines": 160,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-science.test.ts.md",
+      "manualSha256": "f1a34dbdf2f67bfd0a9ed48b88554a91cf5c9fb4050492abeac1ab589ca577a6",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-science.ts",
+      "sourceBlob": "5cc260313518e8881df2948db0ee6d9d2dab08a1",
+      "sourceSha256": "fd85f37b7afe6bbc78ed1aa04707198de906021b5c9603695ef02caf7d9aec76",
+      "lines": 247,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-science.ts.md",
+      "manualSha256": "cc7515628a3e03e1f41f8f4aeb085d5bb71d90c63e060615a823d860c0c0cc70",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-scientific-tools.test.ts",
+      "sourceBlob": "c6e94557f8f048b36f9e0c7b8df5bef9fdf890b9",
+      "sourceSha256": "88164d33059db0a74242464e3647815c0dd356d9d42b2628df61cd7270b35a4c",
+      "lines": 172,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-scientific-tools.test.ts.md",
+      "manualSha256": "65309615dd6ffd039539a302608b796ddee1ff09b9acf2f39ce16c3cb259bdd8",
+      "verdict": "accepted"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-literature.ts.md": "f871e4249526cee9d75f31e1267217c717cdd6725e3946feffce24bd5e939151",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-manuscript.test.ts.md": "a1c0261e04286cfba1d8bda7faa0614533d92b5d5a0cb7fd6d93dbaa55571fa3",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-manuscript.ts.md": "5c2bdc6d50526bce1ba947bfdcaa24c269df68d844da2a1e6d79e1718c158f83",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-mol.ts.md": "5a3e73d3f69b4e83dd7505b95b69fd44494e1df1fcb181c1ba306d0d5442a654",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-molstar-math.test.ts.md": "5c63ce3e63ab154fadb7f3346ba225c99bb326f939646d4069d1caefbbcaf68b",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-ooxml-worker.ts.md": "9919caed81db5d353a7dcfa987cdc112dced73233e186c69dc4e9c8a64823a6b",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-ooxml.test.ts.md": "1638d8625fe75e64dc26fa02bbb12726332e5ccc1f95452afee6e08d730de832",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-ooxml.ts.md": "3fa83fb0b9373f5da953de4b951561b634665cb85b2b5747661a3f359f9ddfe0",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-plot-digitizer.ts.md": "74378e2f531894ab7fabdba4b57572c1788c97cf3eb0b01d0cb120c975a6566b",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-plot-history.test.ts.md": "f816b6173d1f8f39334c9ef3c4914e8a860a11b93b857784cdda1582e27bd903",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-plot-history.ts.md": "707c670197fb49a7141cd5b0923cf102d7d775112185c40b587ec60d9a586d62",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-python-runtime.ts.md": "a1c430b0aca51cdf242f62c8f480c7844436cbda3b96d3b73f7d059ff013dc0a",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-python.ts.md": "c7dc9e504304d23fb916ee3af287aca73841582ddcad0fb9d69a87d7b1d3c4d3",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-runs.test.ts.md": "0c0b816557d2faaff2ddd6279654d5254abfdd86075c5427eb5f7f601d0b34d8",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-runs.ts.md": "76bc54c88fa46bf1ae2b763edd4a0a68b07e373221150d224096b8bb8428e5bd",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-science.test.ts.md": "f1a34dbdf2f67bfd0a9ed48b88554a91cf5c9fb4050492abeac1ab589ca577a6",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-science.ts.md": "cc7515628a3e03e1f41f8f4aeb085d5bb71d90c63e060615a823d860c0c0cc70",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-scientific-tools.test.ts.md": "65309615dd6ffd039539a302608b796ddee1ff09b9acf2f39ce16c3cb259bdd8"
+  },
+  "rejectedHashes": {},
+  "deliveryHashes": {
+    "READY.json": "94bc94089f0152e980f9ee6548626d20227daea8723747b14aa98682a4e548a9",
+    "MANIFEST.json": "586800ac0d3db2ccc35dceb0a89649f904179cc9ce7d190d8d73cd7fca89b3b6",
+    "DONE.json": "6367cb30a78b17dec622422a9d7f266a0df4f5a64232b68eb1bfd674b803d5db",
+    "UNVERIFIED.md": "5c076a6cc865c05c8d6473a95b0915ad21ba90c6524c8cb5bbb0fb2bfe78033b"
+  },
+  "zip": {
+    "path": "deliveries/nb-74-r1/R07-nb-74-r1-05fb2565.zip",
+    "sha256": "75fa189cddb448212b1ac2899fa0a9bc6ffcaae25247ca610429ce9f4b8946b4",
+    "bytes": 56776,
+    "entries": 21,
+    "verified": "QA 独立复算：21 条目逐字节一致、0 mismatch、无穿越/符号链接、mtime 全 1980-01-01"
+  }
+}

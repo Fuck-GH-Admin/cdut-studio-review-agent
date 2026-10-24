@@ -1,0 +1,232 @@
+{
+ "schema": "dsh-r07-review-result/1",
+ "batch": "nb-104-r1",
+ "revisionOf": "nb-104",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-01-20261024",
+ "reviewerSession": "docs-r07-qa-extra-01-20261024",
+ "reviewedAtUtc": "2026-10-23T20:15:37Z",
+ "batchVerdict": "accepted",
+ "g0": {
+  "verdict": "PASS",
+  "details": "revisionOf=nb-104 链正确；MANIFEST→READY→DONE→ZIP 复算全对；sealId 按 batch=nb-104-r1 复算一致（seal-93a7782c22f19564）；16/16 源绑定=scope；ZIP 19 条目干净 0 漂移；before/ 快照与父批 accepted 字节 0 差异"
+ },
+ "g1": {
+  "verdict": "PASS",
+  "details": "FINDINGS-RESPONSE.md 逐条承认并回源（F-01/N-02/N-01）；UNVERIFIED.md §6 登记 N-01 归属机制性偏差交 lead；START.json changedManuals/unchangedManuals=1/15 与实测一致"
+ },
+ "g2": {
+  "verdict": "PASS",
+  "details": "变更面=仅 use-left-sidebar.ts.md 两行（§5/:89、§10/:133，diff 实测）：计数改为「.remove(id) 8 个」并逐一列名，:494 store.set(tabMinimapCacheAtom, deleteKey) 标注 set 语义键删、合计 9 项缓存清理——与源码 :487-495 实测完全一致，F-01 关闭；N-02 拆分 4537/258 更正（UNVERIFIED/START 双处）；其余 15 篇 hash 与父批 accepted 逐位一致、未触碰面无漂移，沿用 reviews/nb-104 既有 G2 结论"
+ },
+ "files": [
+  {
+   "path": "apps/electron/src/renderer/components/app-shell/left-sidebar/use-left-sidebar.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/left-sidebar/use-left-sidebar.ts.md",
+   "sourceBlob": "23362ffec136254d235088773d295cb38c789275",
+   "sourceSha256": "04ff0869f0024d95506dfa6569798d47c855f5c8127f3b8af10e94bf31d5b1e9",
+   "manualSha256": "392a3a72ad37c1916a5c05a7c0eb28a02822d2cab23cc9874d9279d49ce19e27",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "r1 修复后全文重读对照源码（F-01 计数 8+1 语义正确）"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/onboarding/FeatureTour.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/FeatureTour.tsx.md",
+   "sourceBlob": "12d89b3f09e3c1701b096b9b2c5119713a078c29",
+   "sourceSha256": "afbe78d8b5d1be32e1b5288cef3ff83de5cf98a6129afeecdc1048361ca560c9",
+   "manualSha256": "890392db9de90ebd94edd73406330ef2fd96ea7f5a2ac2335eb2195264395948",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "字节与父批 accepted 逐位一致（diff/hash 双证），沿用父批 G2 结论"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/onboarding/IntroFluidBackground.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/IntroFluidBackground.tsx.md",
+   "sourceBlob": "24fe3923822188e9d6589453f8455fa761eed890",
+   "sourceSha256": "cb895d564c1f4b7251c74cb800290382287f1de56a247796114545068a688d71",
+   "manualSha256": "e9b4d293f32f3230e6f1935592b5070fde421854d3c52f59bf8bfc2728361d9c",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "字节与父批 accepted 逐位一致（diff/hash 双证），沿用父批 G2 结论"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/onboarding/IntroWaterRipple.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/IntroWaterRipple.tsx.md",
+   "sourceBlob": "c93408f50a64349e91a6ab3e9dad33c9ca224f0a",
+   "sourceSha256": "a1a5d9c68b45d82862d6d70756008681f63cb7532dffb87edf2dde8764d707bd",
+   "manualSha256": "af91ed273be96c431bd7a5f978873097d1b5f2613940d91cfe749bd8d5f9047f",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "字节与父批 accepted 逐位一致（diff/hash 双证），沿用父批 G2 结论"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/onboarding/OnboardingView.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/OnboardingView.tsx.md",
+   "sourceBlob": "300a16626aa04a5593963b0c82520ac71a696b70",
+   "sourceSha256": "65df549b01d006c5303d3289e90f1fb3768b53d95712f59b4c7c99122b995a03",
+   "manualSha256": "0f0664ed974dd9fe4c7dad01532b80bf7f8962c1cd1e73f18fe255d2ec881378",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "字节与父批 accepted 逐位一致（diff/hash 双证），沿用父批 G2 结论"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/onboarding/coach-tour/CoachTourOverlay.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/coach-tour/CoachTourOverlay.tsx.md",
+   "sourceBlob": "a2243d812fdb5ce2345428d20a269ae1895c3899",
+   "sourceSha256": "da8d3a847ca711f26c58fd2828d2bf09dbd7d3cf69831aa22d6ef0830af74c3b",
+   "manualSha256": "afdeae52b56a355b67fb5d618ffb02266ffe3de4b11146040a02e5f13087df5a",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "字节与父批 accepted 逐位一致（diff/hash 双证），沿用父批 G2 结论"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-owner.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-owner.ts.md",
+   "sourceBlob": "0f54af9424792eba2bb5f572002dcdae81de82b1",
+   "sourceSha256": "a97256e6ba5e40ead88e200ba9ce326a6bd90f5fc66a99f5512823073905d898",
+   "manualSha256": "f749941201290ca584aa362081fd58cfef642dbc5f747798ba0536e0554763c3",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "字节与父批 accepted 逐位一致（diff/hash 双证），沿用父批 G2 结论"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-position.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-position.test.ts.md",
+   "sourceBlob": "600f79d079367b1e65f96caefdc69efce37b6173",
+   "sourceSha256": "3d3ed6e18356f79a793831ef4d2c27f89e695ae08dc81fd3be226924749e8ca9",
+   "manualSha256": "5f0893c5fa02331974e4a0ab0fae10947a7d85d7dee5deb34d0ed7abed074e9b",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "字节与父批 accepted 逐位一致（diff/hash 双证），沿用父批 G2 结论"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-position.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-position.ts.md",
+   "sourceBlob": "9a23e07f7fa83f34f8c44c2025ade7164318e7a9",
+   "sourceSha256": "bbac996ddaf82644fc4014f6f5f3c5ecbc1ee30233960fa57b1271e0da5e0c54",
+   "manualSha256": "a858ee4e34890a82d0c5575403a586fc4f04541905163470cd967320bdb266df",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "字节与父批 accepted 逐位一致（diff/hash 双证），沿用父批 G2 结论"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-runner.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-runner.ts.md",
+   "sourceBlob": "6ed9d91cda41dcb2e6c3b3b047f5c93d345c697f",
+   "sourceSha256": "6d0e03e737cdc50414feabb46bbe445787b5b7c9611fe5bdf0a1531ddaa058c4",
+   "manualSha256": "55c7d1570cc377622efde8a58185c9a2703362c04b4b9c017ff9cdfc78737e01",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "字节与父批 accepted 逐位一致（diff/hash 双证），沿用父批 G2 结论"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-steps.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-steps.test.ts.md",
+   "sourceBlob": "0744dbca9fa29de4c63598a5219df5ee335b0414",
+   "sourceSha256": "cdc869bf67798cafec224dfaba9cd45281d1880f3d6408881ecd811831a52d34",
+   "manualSha256": "e1a16b2f9e3e5525d14acdb1c9fdc40909d51760db6c15fa205be1a908002989",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "字节与父批 accepted 逐位一致（diff/hash 双证），沿用父批 G2 结论"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-steps.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-steps.ts.md",
+   "sourceBlob": "ffbda0e82999ea8cc702bbf3fc4bba92417d8b39",
+   "sourceSha256": "ade0e8da940df2e19236c0cbaf5f15d72fdc51e9b780fa9594210644ea3cf59c",
+   "manualSha256": "75c8e765bd65bb368b6d07d65d762ba3cdde7483b93afdb04c1815d1eefe7312",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "字节与父批 accepted 逐位一致（diff/hash 双证），沿用父批 G2 结论"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-wait.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-wait.test.ts.md",
+   "sourceBlob": "0d48137ec6aa537441546dafcdcd5a1a4b86e3e5",
+   "sourceSha256": "81fe44c8ee29001f8f2c7a8d16646cf7862fcf13e0f260879198280e0cbc13e3",
+   "manualSha256": "82a07d38a4abbbe8f862ae74af2cb396dea890eb481d9ed557cc48d67b6bba64",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "字节与父批 accepted 逐位一致（diff/hash 双证），沿用父批 G2 结论"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-wait.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-wait.ts.md",
+   "sourceBlob": "34bcbd58190c0c1cb6f59a88f6812df990195304",
+   "sourceSha256": "90ec4c861fcf31cd9f3200aaf7f0d4e7e73851745b353dbc939b7680fc92fdfe",
+   "manualSha256": "4346510bf911045e1ab4078e091fd79cef1f365e4f0669d59a2cf7a04de3d6c0",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "字节与父批 accepted 逐位一致（diff/hash 双证），沿用父批 G2 结论"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/onboarding/review-first-use-readiness.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/review-first-use-readiness.test.ts.md",
+   "sourceBlob": "9ded25405b91dd1179615174f2f8e2a7ce2f17be",
+   "sourceSha256": "9b7f00f945045edb23d0e0e87110444b3658b102d75027e900f25825e57a810e",
+   "manualSha256": "2ccbca4f163d8eb1c2830d40fb8617da30c3b0577a2ba056defc9283241a9b8e",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "字节与父批 accepted 逐位一致（diff/hash 双证），沿用父批 G2 结论"
+  },
+  {
+   "path": "apps/electron/src/renderer/components/onboarding/review-first-use-readiness.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/review-first-use-readiness.ts.md",
+   "sourceBlob": "e46341a3eafe6882481c180db109a61af3595ca2",
+   "sourceSha256": "c7ed32f902868d010c30dffc03a531304f9aee3d0d4d531800895b7fbed5fbb8",
+   "manualSha256": "17eb5ddf68caa4eb8ae9ef696b0b7b2566a2ffcd063a89aa6547071906cfb200",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "字节与父批 accepted 逐位一致（diff/hash 双证），沿用父批 G2 结论"
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/left-sidebar/use-left-sidebar.ts.md": "392a3a72ad37c1916a5c05a7c0eb28a02822d2cab23cc9874d9279d49ce19e27",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/FeatureTour.tsx.md": "890392db9de90ebd94edd73406330ef2fd96ea7f5a2ac2335eb2195264395948",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/IntroFluidBackground.tsx.md": "e9b4d293f32f3230e6f1935592b5070fde421854d3c52f59bf8bfc2728361d9c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/IntroWaterRipple.tsx.md": "af91ed273be96c431bd7a5f978873097d1b5f2613940d91cfe749bd8d5f9047f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/OnboardingView.tsx.md": "0f0664ed974dd9fe4c7dad01532b80bf7f8962c1cd1e73f18fe255d2ec881378",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/coach-tour/CoachTourOverlay.tsx.md": "afdeae52b56a355b67fb5d618ffb02266ffe3de4b11146040a02e5f13087df5a",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-owner.ts.md": "f749941201290ca584aa362081fd58cfef642dbc5f747798ba0536e0554763c3",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-position.test.ts.md": "5f0893c5fa02331974e4a0ab0fae10947a7d85d7dee5deb34d0ed7abed074e9b",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-position.ts.md": "a858ee4e34890a82d0c5575403a586fc4f04541905163470cd967320bdb266df",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-runner.ts.md": "55c7d1570cc377622efde8a58185c9a2703362c04b4b9c017ff9cdfc78737e01",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-steps.test.ts.md": "e1a16b2f9e3e5525d14acdb1c9fdc40909d51760db6c15fa205be1a908002989",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-steps.ts.md": "75c8e765bd65bb368b6d07d65d762ba3cdde7483b93afdb04c1815d1eefe7312",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-wait.test.ts.md": "82a07d38a4abbbe8f862ae74af2cb396dea890eb481d9ed557cc48d67b6bba64",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/coach-tour/coach-tour-wait.ts.md": "4346510bf911045e1ab4078e091fd79cef1f365e4f0669d59a2cf7a04de3d6c0",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/review-first-use-readiness.test.ts.md": "2ccbca4f163d8eb1c2830d40fb8617da30c3b0577a2ba056defc9283241a9b8e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/onboarding/review-first-use-readiness.ts.md": "17eb5ddf68caa4eb8ae9ef696b0b7b2566a2ffcd063a89aa6547071906cfb200"
+ },
+ "findingsClosed": [
+  {
+   "id": "NB104-F-01",
+   "status": "closed",
+   "evidence": "use-left-sidebar.ts.md 新字节 392a3a72…（:89/:133 两行），8 remove 逐名列举+set 键删区分，与源码实测一致"
+  },
+  {
+   "id": "NB104-N-02",
+   "status": "closed",
+   "evidence": "UNVERIFIED.md:3 与 START.json:24 均改 4537/258"
+  }
+ ],
+ "findingsOpen": [],
+ "registrationNotes": [
+  "NB104-N-01（READY/DONE 归属取自 scope 旧波次）维持登记级：UNVERIFIED §6 已声明真实归属以 manager/teams/author-extra-01.json 为准，交 lead 合入登记（与 NB130-N-01 一并裁决）"
+ ],
+ "notRun": [
+  "产品测试",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "真实模型/CDUT 登录/CSLab/桌宠",
+  "WebGL",
+  "bun test（34 用例断言级阅读）",
+  "多窗口实测"
+ ],
+ "notes": [
+  "nb-104 链闭环：r0 15 accepted（未触碰）+ r1 1 accepted（修复）→ 16/16 当前字节全部 accepted",
+  "旧 accepted 不套新字节：r1 未触碰 15 篇以 hash 等价沿用，触碰 1 篇按新 manualSha256 全文重验"
+ ]
+}

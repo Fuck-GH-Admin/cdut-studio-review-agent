@@ -1,0 +1,41 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-106",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-24T04:50:00Z",
+  "sealId": "seal-37377d40fcb344b5",
+  "note": "17/17 accepted（NB106-N-01 行号漂移并行号类 errata）。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/SkillDetailSheetFrame.tsx.md": "fba58734b581ddb3c1d0a1247a9a6e5a3e171469ae09d4bbca72315d799d90ce",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/SyncMasterSkillDialog.tsx.md": "aa7a1b7637ca6a5acc7f3bcf5d4baecc7b24b0a1b4d05658ba310dea2371267d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/WorkspaceMemoryTab.tsx.md": "1a01339168b29522160916d45670c501513233b2efb728eb3cfbe3ffe62b494f",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/WorkspaceScopeSelectDialog.tsx.md": "ce719352469168152e36cae2547837151bcd4318e99c33052e14e23ade89d903",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/global-capability-adapter.test.ts.md": "40cf9745a28a06c1444fb8e7c13318cce864b78159b8b58bfce596fcc88ab0d4",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/global-capability-adapter.ts.md": "996ba357d98896ec52d98d2027848be53448e7f198f0c9e4cb7cae4eb1f4f32d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/skillMdUtils.ts.md": "6e929fc1d63aae4e4af22ea737e1b730d9592cf5c7113a16d42271c20b3a5d0a",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/useAgentSkillsData.ts.md": "e5e22d8c5effbfcb6ff3a2f9e03d84fc16d599665d22c1768caac2d52f2eb0b8",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/YanhuExpressView.tsx.md": "e39fa1e7bc866fa7c9dd49acff83cb53a22cbb5dd9024a3d7a8126419b723239",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/YanhuNavBar.tsx.md": "be45737ccb870f1cc4624bf205e5200ea33f0b35251657be9f8867b042af66fb",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/YanhuTabStrip.tsx.md": "ad3de1f64b7e3f0f61f093647ad8978e00a1d5762a10a562fbb59388ad933a82",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/pet/YanhuPetAvatar.tsx.md": "1a420025c9713913ff04739bb030e55338faaf1addff25ae1206925396c44e99",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/pet/YanhuPetDialog.tsx.md": "9745e6a574801d3e6c079c63d42de0547bb2c7da93a7fbf7ef1877964a886082",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/pet/YanhuPetFloatingHost.tsx.md": "d8633a9bdb654c74797ba12623b4d7b686b3fecad5acceb64645b3219f18c68f",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/pet/YanhuPetSpeechBubble.tsx.md": "9914cea6965d06b8247c6387ea2a766d332256ff40c956e9cef6ad14dd165011",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/pet/pet-geometry.test.ts.md": "be1d1410f2c45c3b77c390691bc08102e33a9a43c13ba12b1fa6b6e39ae2794d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/pet/pet-geometry.ts.md": "48acd754720fd1f95056be69890545bbb1f8c6161cbbc578ea6d75b1fa14846d"
+  },
+  "revisionRequiredManuals": {},
+  "sourceBinding": {
+    "verifiedCount": 17,
+    "note": "blob+sha256 脚本实算==MANIFEST==SCOPE"
+  },
+  "sealBinding": {
+    "manifestSha256": "98c078a27db5eb291c6450ccc373895dfd357beb1247a08bf8f0be6c96bf1ae1",
+    "readySha256": "54a746f5ac85abeaaf67243d75b8752cf34c17da44f5b1e1d8529d1b43eb7b9e",
+    "zipSha256": "ac4749ec63486f5b9ac458b3575d160c476606d790b8325f87b4daafc1e75881",
+    "zipBytes": 46848,
+    "zipEntries": 20,
+    "changesDiffReplay": "17/17 byte-identical"
+  }
+}

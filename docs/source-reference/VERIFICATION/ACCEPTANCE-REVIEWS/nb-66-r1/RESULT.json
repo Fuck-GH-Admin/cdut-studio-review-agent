@@ -1,0 +1,298 @@
+{
+  "schema": "dsh-r07-review-result/2",
+  "batch": "nb-66-r1",
+  "revisionOf": "nb-66",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-09-20261023",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-23T22:50:00Z",
+  "sealId": "seal-6e4ba1efcd0d61bf",
+  "sealedAtUtc": "2026-10-23T18:15:02Z",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0,
+    "blocking": 0,
+    "nonBlocking": 1
+  },
+  "gates": {
+    "G0": "PASS",
+    "G1": "PASS",
+    "G2": "PASS_WITH_NOTES",
+    "note": "2 篇修订逐 hunk 复验（F-01/F-02 全关闭）+ 16 篇逐字节未变；NB66-N-01（7 篇行号漂移）留 errata"
+  },
+  "revisionVerification": {
+    "changedManuals": 2,
+    "unchangedManuals": 16,
+    "findingsClosure": [
+      {
+        "id": "NB66-F-01",
+        "status": "resolved",
+        "evidence": "gpt-image-connection.ts.md §4/§8/§10 改写：孤儿模块（全树含动态口径仅 test 引用）如实记录，「设置页连接测试」降为预期用途、与已证实调用链分离——与 QA 复算一致"
+      },
+      {
+        "id": "NB66-F-02",
+        "status": "resolved",
+        "evidence": "file-search-service.ts.md §4/§8 改写：消费归 ipc.ts:427+preload 桥、remote-service.ts 零命中如实标注——一致"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "id": "NB66-N-01",
+      "severity": "minor",
+      "files": [
+        "apps/electron/src/main/lib/dev-shell-shortcut.ts",
+        "apps/electron/src/main/lib/global-shortcut-service.ts",
+        "apps/electron/src/main/lib/gpt-image-service.ts",
+        "apps/electron/src/main/lib/document-parser.ts",
+        "apps/electron/src/main/lib/file-preview-service.ts",
+        "apps/electron/src/main/lib/document-parse-tools.ts",
+        "apps/electron/src/main/lib/global-skill-manager.ts"
+      ],
+      "claim": "7 篇 source 手册 §2 符号行号手估漂移（同 nb-17-N-01/nb-22-N-01/NB80R1-N-01 类）；符号可按名定位。留 errata（与行号类合并清单一起关）。",
+      "sourceEvidence": "grep -n \"^export \" 抽核实测。",
+      "action": "errata 或任一 rN 顺带重导"
+    }
+  ],
+  "files": [
+    {
+      "path": "apps/electron/src/main/lib/dev-shell-shortcut.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/dev-shell-shortcut.ts.md",
+      "sourceBlob": "970a32899ed7585a2bbbf046df2fb7f82780c4c7",
+      "sourceSha256": "0de932f5505b779751f3cbb834e53869882bf5cf4ca4b83f139fc03dba63e133",
+      "manualSha256": "959d482a651c8314c376d4ea28a23eb610007d2a815d6eb18646648c8bf0430a",
+      "verdict": "accepted",
+      "findings": [
+        "NB66-N-01"
+      ],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/document-parse-tools.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/document-parse-tools.test.ts.md",
+      "sourceBlob": "5a4a21bbf1e8d88bc8b989384e1ef03c3a702c9f",
+      "sourceSha256": "452fc9b804a0a5369395c7fecde467be84f2251ae9e8d66e64dc82af94bb3d67",
+      "manualSha256": "1d9f457957ee807ec8db54b4743b59a04917186d2f282786137434f1b588cab0",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/document-parse-tools.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/document-parse-tools.ts.md",
+      "sourceBlob": "a190f4110ae0b4861cb5c9fd6d8f3b8375ca6c51",
+      "sourceSha256": "85ddb5a268945f52ece07abcc841a25869b4bb2afdb489855fd7a46b8c77110a",
+      "manualSha256": "87768f32cbed9f58a7c29913a7d47ea68d95fbfda81b3c2302ae5f3575217232",
+      "verdict": "accepted",
+      "findings": [
+        "NB66-N-01"
+      ],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/document-parser.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/document-parser.test.ts.md",
+      "sourceBlob": "fa85fc15113039915a83d95ed1ce18033c323f17",
+      "sourceSha256": "5b730aaa4c059a03682c9a4ffc5467fd4247b8c5d3b4ad8447fe52eaa2f0d5e9",
+      "manualSha256": "c303e0e52727f76b2a18b36d726c512c50e941b0487f8ea102308855ac4cc3e5",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/document-parser.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/document-parser.ts.md",
+      "sourceBlob": "fd18a368f90892a26dcaa6ae825c95a9863f3cd6",
+      "sourceSha256": "03b3aa2a79c5be5158e16993aa3f13775c326744096515b9c82764c3134ff756",
+      "manualSha256": "dc836036d564ab46940b6d8853a474fa3ddc6801b4908a951451872e273e7ca9",
+      "verdict": "accepted",
+      "findings": [
+        "NB66-N-01"
+      ],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/file-preview-service.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/file-preview-service.test.ts.md",
+      "sourceBlob": "aa26cceedd87482208744592a26ded22582975d1",
+      "sourceSha256": "73e6364e35439cfbea757f7e08e62bdeac3a6dd95c1d2e0a3c8eddffcc5b7123",
+      "manualSha256": "03b39088ec2f54127f8361711372f72f6ec7e4529a8ca8b3cc239bc5835889b8",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/file-preview-service.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/file-preview-service.ts.md",
+      "sourceBlob": "47a8091a7c46aaf734f506bdb2b47dd085a4b704",
+      "sourceSha256": "40239195167048875a8627bc34b48f3122fd44bdcf0da2361a9cb12c898981b4",
+      "manualSha256": "a44b11a88f771c8e25e2ac2c7fc3a079b96bdd9c62fa2ece1030d0877d905456",
+      "verdict": "accepted",
+      "findings": [
+        "NB66-N-01"
+      ],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/file-search-service.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/file-search-service.test.ts.md",
+      "sourceBlob": "1c32b0ae0faf9b52a23c2447ca53868aac9a36fb",
+      "sourceSha256": "2e0eab46cd3adf93a372f58d40cfdb4d08663c6fa155df7262ed87016d42ab35",
+      "manualSha256": "f3dc03614a6b8814f931336373da542ecb0bb3ca43944fe19437de776434f9dc",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/file-search-service.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/file-search-service.ts.md",
+      "sourceBlob": "3659925b16e9b0082c2ab615451cfb92d915df5f",
+      "sourceSha256": "696e4d597be9194b8ad8fc66a06e17463c1250f8e5a83e1f79df9f057a5308b8",
+      "manualSha256": "62c8d6f93c9440fbd8d651ea04f46787e932f4bff858f6bda01a6c623039324f",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "revised in r1"
+    },
+    {
+      "path": "apps/electron/src/main/lib/file-sync-service.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/file-sync-service.ts.md",
+      "sourceBlob": "f3cbc765568156e538ffe0452a943d484c4e9693",
+      "sourceSha256": "9cf3cd718e49e29f7852a57c40879e696dab247093cb8a247efaa286c64adc2f",
+      "manualSha256": "964381705b96dd8fa8dc343d7d2e8c6eda5d89e419e81b1ea18ba34d1ccfec5c",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/global-shortcut-service.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/global-shortcut-service.test.ts.md",
+      "sourceBlob": "3da4ae8760e7cfeb352f4e31968f2cb88d1b9f38",
+      "sourceSha256": "31a8f44e751e57b776af38ba0efe0ed2f613b0d9241a58ee9db45b8fb39967f9",
+      "manualSha256": "65db15cd8cc6372d7844cf3e23841163c88a52edd6fd0f9d47bb3edd67d56e5e",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/global-shortcut-service.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/global-shortcut-service.ts.md",
+      "sourceBlob": "09f44917d5e2df553652a4042f221cb4e897af7e",
+      "sourceSha256": "2f47479b52c4896b8181745b2a4c37fea03843bed588e33236224ae3efc507fa",
+      "manualSha256": "6ffe6fb53a8019dcc820994632ee82a9a44e5db8389653f74cb67e1cedfa8dc3",
+      "verdict": "accepted",
+      "findings": [
+        "NB66-N-01"
+      ],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/global-skill-manager.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/global-skill-manager.test.ts.md",
+      "sourceBlob": "c222f1bcc888c887c29ecd7d32d2a030d825835d",
+      "sourceSha256": "311b3599a2e7ebcbffa380b596d225ec79fdbff762428140a547fa975f1bad78",
+      "manualSha256": "185c210950f0e1dfb330c201d7c462ad73763302a49209ff26f4652a98e9e196",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/global-skill-manager.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/global-skill-manager.ts.md",
+      "sourceBlob": "be9fdb95d54cdb7a85e447f4e4eb8178541b67f5",
+      "sourceSha256": "35fff2deb19f0dfe0be786bd6ce42919cd7c5a339802b0310e8d0674210d771c",
+      "manualSha256": "bff349e70cd30294489c4ca865adbed646cb2bd22424f740ee13476d77db8e15",
+      "verdict": "accepted",
+      "findings": [
+        "NB66-N-01"
+      ],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/gpt-image-connection.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/gpt-image-connection.test.ts.md",
+      "sourceBlob": "7798efef079321ea8af42c1f303ed3e820a6e8f8",
+      "sourceSha256": "793d216ae2ea4743163d746cd8b2c071b058e436ada1d153740191dbd2702715",
+      "manualSha256": "4435effa1c8454fad6a4ed3b8b475f67a571c8bf802ae3fd69d16a0daa557a94",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/gpt-image-connection.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/gpt-image-connection.ts.md",
+      "sourceBlob": "3ba60205a40f954e9276c31cd68bbe98656995ee",
+      "sourceSha256": "e016a3f2eafefdc22c3720d9722c3d69e830143b5f388874040cf5fc53826a09",
+      "manualSha256": "19ebf098a11e02bd4266676569bd9e166bd565e16bbd5a9cf11185a2f0ec1a04",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "revised in r1"
+    },
+    {
+      "path": "apps/electron/src/main/lib/gpt-image-service.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/gpt-image-service.test.ts.md",
+      "sourceBlob": "1eb9ce0f33a4bd536d5561b7d357feae72b97077",
+      "sourceSha256": "fa361078284bfd30503c6f5c388557297b025cace50f62b41883cc431f7b610a",
+      "manualSha256": "18c9d9808f79b55ab93efc0a63dd21f868e923193c15cf34ca187272d7aebc14",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/gpt-image-service.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/gpt-image-service.ts.md",
+      "sourceBlob": "ad0b132f96a7bbf18caddac220984d56f6afb066",
+      "sourceSha256": "86c26dc00e846643c9cbeac3e60ba9c2a4f6d1fb8b9881996b6d53eacfa8a011",
+      "manualSha256": "a14b06535f079d51f38e1ac11e27543ecc21333f50aef631cdd9304487b36e5e",
+      "verdict": "accepted",
+      "findings": [
+        "NB66-N-01"
+      ],
+      "note": "unchanged since r0"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/dev-shell-shortcut.ts.md": "959d482a651c8314c376d4ea28a23eb610007d2a815d6eb18646648c8bf0430a",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/document-parse-tools.test.ts.md": "1d9f457957ee807ec8db54b4743b59a04917186d2f282786137434f1b588cab0",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/document-parse-tools.ts.md": "87768f32cbed9f58a7c29913a7d47ea68d95fbfda81b3c2302ae5f3575217232",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/document-parser.test.ts.md": "c303e0e52727f76b2a18b36d726c512c50e941b0487f8ea102308855ac4cc3e5",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/document-parser.ts.md": "dc836036d564ab46940b6d8853a474fa3ddc6801b4908a951451872e273e7ca9",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/file-preview-service.test.ts.md": "03b39088ec2f54127f8361711372f72f6ec7e4529a8ca8b3cc239bc5835889b8",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/file-preview-service.ts.md": "a44b11a88f771c8e25e2ac2c7fc3a079b96bdd9c62fa2ece1030d0877d905456",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/file-search-service.test.ts.md": "f3dc03614a6b8814f931336373da542ecb0bb3ca43944fe19437de776434f9dc",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/file-search-service.ts.md": "62c8d6f93c9440fbd8d651ea04f46787e932f4bff858f6bda01a6c623039324f",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/file-sync-service.ts.md": "964381705b96dd8fa8dc343d7d2e8c6eda5d89e419e81b1ea18ba34d1ccfec5c",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/global-shortcut-service.test.ts.md": "65db15cd8cc6372d7844cf3e23841163c88a52edd6fd0f9d47bb3edd67d56e5e",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/global-shortcut-service.ts.md": "6ffe6fb53a8019dcc820994632ee82a9a44e5db8389653f74cb67e1cedfa8dc3",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/global-skill-manager.test.ts.md": "185c210950f0e1dfb330c201d7c462ad73763302a49209ff26f4652a98e9e196",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/global-skill-manager.ts.md": "bff349e70cd30294489c4ca865adbed646cb2bd22424f740ee13476d77db8e15",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/gpt-image-connection.test.ts.md": "4435effa1c8454fad6a4ed3b8b475f67a571c8bf802ae3fd69d16a0daa557a94",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/gpt-image-connection.ts.md": "19ebf098a11e02bd4266676569bd9e166bd565e16bbd5a9cf11185a2f0ec1a04",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/gpt-image-service.test.ts.md": "18c9d9808f79b55ab93efc0a63dd21f868e923193c15cf34ca187272d7aebc14",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/gpt-image-service.ts.md": "a14b06535f079d51f38e1ac11e27543ecc21333f50aef631cdd9304487b36e5e"
+  },
+  "changedFromParent": {
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/file-search-service.ts.md": {
+      "before": "3eb49771cef9ab0dba5cb14585f90f1afb3668387d7577659a9adf7d05af599c",
+      "after": "62c8d6f93c9440fbd8d651ea04f46787e932f4bff858f6bda01a6c623039324f"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/gpt-image-connection.ts.md": {
+      "before": "e35e59c989280157a9b79b376dd31e5e08a041487b32919c6cc2fe3aefc16644",
+      "after": "19ebf098a11e02bd4266676569bd9e166bd565e16bbd5a9cf11185a2f0ec1a04"
+    }
+  },
+  "notRun": [
+    "product tests (bun test)",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "verificationNotes": [
+    "G0：18 源绑定脚本实算==MANIFEST==SCOPE；18 手册 hash 磁盘=MANIFEST=READY；链一致；ZIP 安全逐字节一致；before/ 2 篇==nb-66 stage；changes.diff 重放 2/2；RESPONSE after-hash 2/2。",
+    "G2：两处影响面修订逐 hunk 对冻结源复验成立（含动态 require/import 与 preload 口径）；16 篇未变与 r0 QA verified 逐字节相同。",
+    "NOT_RUN 不变；哈希全部脚本生成。"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "index-p01-app-shell__assets__CDUT",
+  "groupId": "p01-app-shell__assets__CDUT",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T19:58:00Z",
+  "sealedAtUtc": "2026-10-23T17:57:43Z",
+  "artifactSha256": "ac71296502f94a3013c6eac0b83b78d8a786eb177dd54151ca4471514b395b9f",
+  "note": "QA 实算封版链全对。1/1 accepted。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets__CDUT.md@assets/CDUT/ZhangChengYi/ZhangChengYi.jpg": "ac71296502f94a3013c6eac0b83b78d8a786eb177dd54151ca4471514b395b9f"
+  },
+  "revisionRequiredManuals": {},
+  "sourceHashes": {
+    "assets/CDUT/ZhangChengYi/ZhangChengYi.jpg": {
+      "sourceBlob": "50b8f572e34b4b436329e131feb6b13cfce7f551",
+      "sourceSha256": "ff7e0ae20df35d43126bb772e68aabb2b7d7812c966d9e56595cb8b00ab7673f",
+      "verifiedAgainstFrozenTree": true
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+ "schema": "dsh-r07-qa-done/1",
+ "batch": "nb-68",
+ "id": "NB-68",
+ "revisionOf": null,
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewRoot": "reviews/nb-68",
+ "reviewedAtUtc": "2026-10-24T05:45:00Z",
+ "status": "REVIEW_COMPLETE_REVISION_REQUIRED",
+ "batchVerdict": "revision_required",
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PARTIAL",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 9,
+  "revision_required": 1,
+  "unknown": 0
+ },
+ "acceptedManuals": 9,
+ "acceptedHashesCount": 9,
+ "revisionRequiredManuals": {
+  "workspace-heatmap-service.ts.md": [
+   {
+    "id": "F-01",
+    "severity": "minor_factual",
+    "claim": "§2 称「导出 7 条」——实际 **8 条**（其自身 export 位置 :28/:34/:70/:83/:96/:174/:253/:293 列了 8 个，表格亦 8 符号）。",
+    "sourceEvidence": "grep \"^export\" 计 8（interface+const+6 函数）",
+    "action": "rN 修正为 8"
+   }
+  ]
+ },
+ "findingsSummary": {
+  "workspace-heatmap-service.ts.md": [
+   {
+    "id": "F-01",
+    "severity": "minor_factual",
+    "claim": "§2 称「导出 7 条」——实际 **8 条**（其自身 export 位置 :28/:34/:70/:83/:96/:174/:253/:293 列了 8 个，表格亦 8 符号）。",
+    "sourceEvidence": "grep \"^export\" 计 8（interface+const+6 函数）",
+    "action": "rN 修正为 8"
+   }
+  ]
+ },
+ "batchFindings": [
+  "M-01",
+  "M-02"
+ ],
+ "resultSha256": "874f3e7267ca6364d4242961b9bedc7fe687ace83fde8b1004db06856c898e7d",
+ "reviewedHashesSha256": "68043922f774b80eb3b4103a3f145a3e5e9bc1a29fcec75ce96f9aa7a976d9e4",
+ "zip": {
+  "path": "deliveries/nb-68/R07-nb-68-05fb2565.zip",
+  "sha256": "2efa8dedb3d91992db1379a68a96d70ca92b3c25af41b797789c22211449a316",
+  "entries": 13,
+  "note": "10 手册+MANIFEST+2 mechanical TSV；不含 READY/DONE（v2）；无穿越/0 mismatch"
+ },
+ "sealId": "seal-001317b884d36028",
+ "artifacts": [
+  "reviews/nb-68/RESULT.json",
+  "reviews/nb-68/RESULT.md",
+  "reviews/nb-68/REVIEWED-HASHES.json",
+  "reviews/nb-68/DONE.json",
+  "handoffs/nb-68-REVIEW-TO-AUTHOR.md",
+  "handoffs/nb-68-REVIEW-TO-LEAD.md"
+ ],
+ "priorReviewsUntouched": true,
+ "parentPreserved": null,
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "real model/network",
+  "skill-creator 脚本执行"
+ ],
+ "writtenOnlyIn": "reviews/nb-68 + handoffs；未写 deliveries/inventory/manager/candidate/全局 FILES/MANIFEST",
+ "next": "作者开 nb-68-r1 修 F-01（导出 7→8）；lead 按 9 个 acceptedHashes 合入"
+}

@@ -1,0 +1,140 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-03",
+  "package": "p03-integrations",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewer": "docs-r07-qa-nb-03-20261023",
+  "reviewedAtUtc": "2026-10-23T12:05:00Z",
+  "note": "本文件是 QA 复验的确切字节绑定。lead 合入 candidate 时必须逐条核 manualSha256 与 sourceBlob，任一漂移即不得合入。",
+  "sealed": {
+    "readySha256": "d94eb57e2d2cd59962d32c81f141d1142d26c2f4c543e4909f6bdb884bb45679",
+    "manifestSha256": "4f557715625762b5ac80e9641845c4a4b035e723f61db55fc6a7e7202057f74d",
+    "doneSha256": "238e81e7f6ad5f89d27cfb73bae900ebe0f76cbc4b79569f9e9a8b4bfc531ab4",
+    "zipSha256": "216c5c549be266bfe625ea7f538bd8b83d0e7e662cef6c0bf8ee94c0b1195967",
+    "zipBytes": 139151
+  },
+  "entries": [
+    {
+      "path": "apps/electron/src/main/lib/longterm-memory/longterm-memory-store.ts",
+      "kind": "source",
+      "sourceBlob": "562396bca77df030d5969ed5101faaf76b3d18e3",
+      "sourceSha256": "b7a1435d34487e63b4ddcab25c5eb4696ed4aaa4a221df437e734d21c6cefe95",
+      "sourceLines": 398,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/longterm-memory/longterm-memory-store.ts.md",
+      "manualSha256": "b049e6ee2560dfc9a0c471e4101778d52d4024e7179d1200b3d0a6296d4121f8",
+      "verdict": "accepted",
+      "findings": [
+        "NB03-ST-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/longterm-memory/longterm-memory-auditor.ts",
+      "kind": "source",
+      "sourceBlob": "fef60f8ff55cd5d5db6d905260d9059a70187aeb",
+      "sourceSha256": "779653433f09f5d7e5a560582573f932b6ba6a5524a8fbc502e5165f42e8810f",
+      "sourceLines": 142,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/longterm-memory/longterm-memory-auditor.ts.md",
+      "manualSha256": "272a586775e6684497f417d8719d6b84ed0e5feb77cb0b093bb1077c20e71f09",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/longterm-memory/longterm-memory-auditor.test.ts",
+      "kind": "test",
+      "sourceBlob": "51b408985137f6769d6cd387b46ae0244a8b15b7",
+      "sourceSha256": "734410ad644103cdf8b3254693fdcdeddf2eaabea879a8c110f17d18fba6f988",
+      "sourceLines": 151,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/longterm-memory/longterm-memory-auditor.test.ts.md",
+      "manualSha256": "4b544589f43d65f49e55f8de30a22c597dc17f23828528cc1d063d59d60bf876",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/longterm-memory/longterm-memory-ipc.ts",
+      "kind": "source",
+      "sourceBlob": "56665813a1c1f338352d80726cb6225d0b349c15",
+      "sourceSha256": "e7a1714fbc476db2866f994e8f7055ea7556ad19f804544076a0e554402b6fcc",
+      "sourceLines": 85,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/longterm-memory/longterm-memory-ipc.ts.md",
+      "manualSha256": "7855095f52a2fff164031d0977d83bdad2dc2e41cebce4c6316ce2ac6289a28a",
+      "verdict": "accepted",
+      "findings": [
+        "NB03-IP-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/longterm-memory/longterm-memory-rag.ts",
+      "kind": "source",
+      "sourceBlob": "bffcb4430fb5b21df5b7408bc3bed6a473929ed1",
+      "sourceSha256": "8a2a2dd3f34d7678ed1440cff75ffe5ce3445935b74714b1132c1f822b2ff280",
+      "sourceLines": 296,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/longterm-memory/longterm-memory-rag.ts.md",
+      "manualSha256": "0ae2c2b82a860f76787e2d1564bea4bf1200fd905b8e5375c4a54068b5b86f2f",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/longterm-memory/longterm-memory-rag.test.ts",
+      "kind": "test",
+      "sourceBlob": "bee33c29781b4441154b695cf4a2815469bc6146",
+      "sourceSha256": "4fb134b066193626b17913aae387c77a42b729170385d8ac596fe2013ae42290",
+      "sourceLines": 161,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/longterm-memory/longterm-memory-rag.test.ts.md",
+      "manualSha256": "cda69eef5d1c489c9f5a5866267d0ba05c33cd52fbaaca4ac8b8f75d3c4a491f",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/longterm-memory/longterm-memory-reflector.ts",
+      "kind": "source",
+      "sourceBlob": "3ca105a4006f359547416505b5bf2a5179bf3918",
+      "sourceSha256": "33f64496ec5b8633011ffbc6dff1d8d997b0f1e30e2b25504a954e2b1289c699",
+      "sourceLines": 509,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/longterm-memory/longterm-memory-reflector.ts.md",
+      "manualSha256": "a154cf40cb0493fa04a94e3226105595b79e08bdf6162423c35197e2c45865fa",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/longterm-memory/longterm-memory-reflector.test.ts",
+      "kind": "test",
+      "sourceBlob": "bb9c6bbd053a90741ef7c26309eccceb700a8922",
+      "sourceSha256": "bd082c4c8f856b42a8bb3bb9eae7dc01394a80f0540d16cb26509d45d190fcc7",
+      "sourceLines": 323,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/longterm-memory/longterm-memory-reflector.test.ts.md",
+      "manualSha256": "4d0c7dfce45c52dcbc022889e62f4a728cbee7d131d0eb7ba996c9e4340f10ea",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/study/study-artifact-service.ts",
+      "kind": "source",
+      "sourceBlob": "27b30dc583440696680c1cbc05be95f36bcd8f6a",
+      "sourceSha256": "f2e5416de1f54a297720cca6e3d4318c7dd1dee51f8a314e5ffd74dc947475ba",
+      "sourceLines": 361,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/study-artifact-service.ts.md",
+      "manualSha256": "2165aa5d4046256d7ac27e8c553ff9d8344ef17e3894f19c8b79dbaf817a5ea5",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/study/study-artifact-service.test.ts",
+      "kind": "test",
+      "sourceBlob": "e47546f3117b32ca0771255cc3c6a301ba14a44c",
+      "sourceSha256": "07ee7af45082a8c8c2a68c697f90c856e3692b885d7bab56ba51fa3fd6a8476a",
+      "sourceLines": 41,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/study-artifact-service.test.ts.md",
+      "manualSha256": "5813ad444d73b5a1eff654c8d53e4558e28624971c578ff5b603b3211373ee02",
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "counts": {
+    "files": 10,
+    "accepted": 10,
+    "revision_required": 0,
+    "unknown": 0,
+    "blockingFindings": 0,
+    "nonBlockingFindings": 2
+  }
+}

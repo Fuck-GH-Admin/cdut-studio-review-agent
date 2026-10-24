@@ -1,0 +1,45 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-80",
+  "reviewedSeal": "nb-80-r1",
+  "revisionOf": "nb-80",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-23T22:15:00Z",
+  "sealId": "seal-224d7c837b5825df",
+  "note": "17/18 accepted 可合；browser-controller.ts.md 不合（NB80R1-F-01 行号越界，限引用返修）。manualSha256 为 QA 实算 r1 封版字节。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-cdp.ts.md": "ebf0e139e90fc19e8e77cd1bf742ebb48b9c2c37ceb32b90b1a1bd6c8b80e010",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-controller-fresh-session-tab.test.ts.md": "610f95ddfc9b1131b0e82576b2fcca120849713c0822e4a17fedbfad86219a22",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-controller-local-file-sentinel.test.ts.md": "e724c13f21859a5085636073f0a852d9b568d3c69854a2b84de5f64a9d086494",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-controller-preview-theme.test.ts.md": "62f890b0a8ef38596b8c02cf7ac4e17b4f5616c340c789d41ac760bbfaa7fed3",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-controller-screenshot.test.ts.md": "1317081e30094922745f5b59bf3ea3051635c054d54bdfb3549a0cfc2078cf4c",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-controller.lifecycle.test.ts.md": "66ef8b3c78e153a864728e781704d6728f61ee4b4daa2e4cb48d5a065b84e2dc",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-identity.ts.md": "4fb0cc3da3c94ba17c0b9621ef6c86047da7f5b1cdcdf7fca9e3669cc4e1d3bf",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-key-policy.ts.md": "73af048a1f7db548057cf5b0809686167a9648baeef1614cfea2f64f31f467eb",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-observation-policy.ts.md": "a7d6e9776517b96e6bc8195ae4a81726cf9a954bbf24cec0a426ae781ab599b8",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-policy.test.ts.md": "2c9fcc482c96dd708004a1f20714e026c33a7a77d881249496d49018d82ca136",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-policy.ts.md": "1bb9e31d65729a0f4f3535d06b0304d5653da332f75a3e680b1eb25c8b6b4611",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-preview-service.test.ts.md": "935055b7bf07b25ed729cf340ab88edf6f88c92be02c6931d64fadce7125f3e9",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-preview-service.ts.md": "89a47b8ce7b32d899e3e179c6919e959c4a338b6463393135fc02b8b0c3136ed",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-profile-policy.ts.md": "299a5160bdc8ec8d3500b65cad0a2089223653dc0709fbd4d7f5fe83460229aa",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-risk-disclaimer.ts.md": "6a05990e47a46c20a55f375c6e57106be44eb9b391713013df8574b49c14abc7",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-script-policy.ts.md": "e0f1e15de3d135cb7ae5788beb9440cf564b2e550bd97fa1f8462d78319e957e",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-start-page-store.ts.md": "bde45b59b226d0ca52fc92e8608e9ccdeb9e17f1b4fd5e7c9326284a4e691015"
+  },
+  "revisionRequiredManuals": {
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-controller.ts.md": "64d4d42f34fd0b2f66ae5b97c2820d812d870b6ef4eaf5af386c6a85e62a9702"
+  },
+  "sourceBinding": {
+    "verifiedCount": 18,
+    "note": "blob+sha256 脚本实算==MANIFEST==SCOPE"
+  },
+  "sealBinding": {
+    "manifestSha256": "d92a433b677148743ddc3fa8267cb91860658e374ecd9faae2451d8219f6f9af",
+    "readySha256": "4c54f1dbb308a7a9d3d6e4bc33bfd5ca70fedb9d1528b757699029a1c88cfc6d",
+    "zipSha256": "e186a643747c04c8cee3e36bde7cde22f7208281b3767e681144c1dbf55826ad",
+    "zipBytes": 47268,
+    "zipEntries": 21,
+    "changesDiffReplay": "3/3 byte-identical"
+  }
+}

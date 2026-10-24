@@ -1,0 +1,26 @@
+{
+ "schema": "dsh-r07-stage2-done/1",
+ "revision": "r1",
+ "track": "app-ipc-config",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "atUtc": "2026-10-23T21:41:41Z",
+ "status": "TRACK_COMPLETE",
+ "artifacts": [
+  "manager/STAGE2/app-ipc-config-r1/CHAINS.md",
+  "manager/STAGE2/app-ipc-config-r1/CHAIN-REGISTER.tsv",
+  "manager/STAGE2/app-ipc-config-r1/CONFLICTS.json",
+  "manager/STAGE2/app-ipc-config-r1/RESULT.json",
+  "manager/STAGE2/app-ipc-config-r1/DONE.json"
+ ],
+ "supersedes": "manager/STAGE2/app-ipc-config/（首版保留为证据）",
+ "keyGapsClosed": [
+  "bounds 实际持久化写点（静态源码核对闭合）",
+  "certificate-error 最终 allow/reject（三分支闭合）",
+  "IPC 关键通道端到端列证+范围声明",
+  "CONFLICTS-01 手册逐字判定（doc_error 成立非误派）"
+ ],
+ "conflicts": 5,
+ "notRun": "产品测试/typecheck/构建/GUI/IPC 实收发/seed·migration 实跑（统一 NOT_RUN）",
+ "boundaries": "未改产品/测试/依赖/seal/review/candidate；未写阶段三文档；实现缺陷留阶段三；非关键边界见 RESULT.nonKeyBoundaries 与 CHAINS.md",
+ "next": "lead 收口；CONFLICTS-01 唯一 handoff→nb-142 主责（手册 :58 行修复）；CONFLICTS-02/03/04/05 留阶段三设计差异报告"
+}

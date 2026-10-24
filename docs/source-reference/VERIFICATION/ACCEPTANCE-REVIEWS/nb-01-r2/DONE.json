@@ -1,0 +1,91 @@
+{
+  "schema": "dsh-r07-qa-done/1",
+  "batch": "nb-01-r2",
+  "id": "NB-01",
+  "revisionOf": "nb-01-r1",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewer": "docs-r07-qa-nb-01-20261023",
+  "author": "docs-r07-author-nb-01-20261023",
+  "reviewRoot": "reviews/nb-01-r2",
+  "reviewedAtUtc": "2026-10-23T14:05:00Z",
+  "status": "REVIEW_COMPLETE_ACCEPTED",
+  "batchVerdict": "ACCEPTED",
+  "gates": {
+    "G0": "G0_PASS",
+    "G1": "G1_PASS",
+    "G2": "G2_PASS",
+    "G3": "NOT_RUN",
+    "G4": "NOT_RUN"
+  },
+  "verdictCounts": {
+    "accepted": 8,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "findingsResolved": {
+    "F-01": "resolved",
+    "F-02": "resolved",
+    "F-03": "resolved"
+  },
+  "acceptedManuals": 8,
+  "acceptedHashesCount": 8,
+  "changedManuals": {
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-main-local-product-intake.ts.md": {
+      "previous": "9f25de4b23bede272c3b470c19264197e7df13086234416232bcbfad25dce1ab",
+      "current": "f98b50c20ad15772a54540591039bc776ee0c25ccb9e45816da74ffb4db00b53"
+    }
+  },
+  "inheritedUnchangedManuals": 7,
+  "zip": {
+    "path": "deliveries/nb-01-r2/R07-nb-01-r2-05fb2565.zip",
+    "sha256": "14d4dc5b89cef8ffe40b72c80ec7c008336be1c461b23852de28f41dfadc9d5a",
+    "bytes": 57785,
+    "entries": 11,
+    "layout": "SEAL-DELIVERY v2 (ZIP excludes READY/DONE by design; self-bound via READY.zip.sha256 = DONE.zipSha256)"
+  },
+  "sealId": "seal-12e9a6388283933e",
+  "artifacts": [
+    "reviews/nb-01-r2/RESULT.json",
+    "reviews/nb-01-r2/RESULT.md",
+    "reviews/nb-01-r2/SOURCE-CHECKLIST.md",
+    "reviews/nb-01-r2/REVIEWED-HASHES.json",
+    "reviews/nb-01-r2/DONE.json",
+    "handoffs/nb-01-r2-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-01-r2-REVIEW-TO-LEAD.md"
+  ],
+  "residualNonBlockingNotes": {
+    "count": 7,
+    "newInR2": 2,
+    "carriedFromR1": 5,
+    "blockingImpact": "none (accepted threshold <=2 non-blocking per file is met; see RESULT.json per-file notes)"
+  },
+  "parentPreserved": true,
+  "priorReviewsUntouched": ["reviews/nb-01", "reviews/nb-01-r1"],
+  "notRun": [
+    "bun test",
+    "tsc --noEmit",
+    "build/package",
+    "Electron/GUI",
+    "real model/network",
+    "concurrency/crash injection"
+  ],
+  "writtenOnlyIn": [
+    "reviews/nb-01-r2/",
+    "handoffs/nb-01-r2-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-01-r2-REVIEW-TO-LEAD.md",
+    "DSH-SESSION-REGISTRY.md (append)",
+    "DSH-BUSINESS-LEDGER.md (append)"
+  ],
+  "notWritten": [
+    "baseline/source",
+    "deliveries/",
+    "candidate/",
+    "inventory/",
+    "manager/",
+    "author manuals",
+    "global FILES.tsv / COVERAGE / MANIFEST / INDEX"
+  ],
+  "nb10Note": "NB-10 pre-read is PARTIAL from an interrupted round (2/18 files: review-v3-main-local-author-workbench.ts full, review-v3-main-author-plan-ipc.ts to :430); per manager instruction it is set aside, not counted here, and awaits re-dispatch. reviews/nb-10/ was not created.",
+  "next": "lead merges all 8 exact manualSha256 into candidate (intake uses the r2 bytes f98b50c2…); residual N notes optionally go to a future rN; batch closed pending manager dispatch",
+  "old922Counts": false
+}

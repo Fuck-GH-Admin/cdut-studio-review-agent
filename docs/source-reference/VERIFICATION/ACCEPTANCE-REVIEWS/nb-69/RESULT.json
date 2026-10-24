@@ -1,0 +1,232 @@
+{
+  "schema": "r07-review-result/1",
+  "batch": "nb-69",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-07-20261023",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "reviewedAtUtc": "2026-10-23T20:12:57Z",
+  "sealId": "seal-2ae04e8153f86c0e",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 14,
+    "accepted": 14,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "g0": {
+    "result": "PASS",
+    "hashChain": "DONE/READY/ZIP 实算一致",
+    "zip": "逐条目==盘上、无 READY-DONE",
+    "sourceBinding": "14/14==SCOPE==MANIFEST",
+    "manualBinding": "14/18 无 drift",
+    "changesDiff": "重放 14/14 逐字节==stage",
+    "humanColumns": "14/14",
+    "metadata": "14/14"
+  },
+  "g1": {
+    "result": "PASS",
+    "lineRefs": "带名引用 31/31 在范围（含 3 处批外引用核实）"
+  },
+  "g2": {
+    "result": "FULL",
+    "method": "14 源文件 8585 行逐行深读（事实库 reviews/nb-69/SOURCE-CHECKLIST.md §1-12）+14 手册逐篇对照；重点实测：导出/测试计数 grep、写操作启发式出现处数、无超时/Abort 负向声明、跨文件归属、不编造红线双册一致",
+    "positives": [
+      "jw-client 40 导出精确",
+      "yanhu-browser-tools.test 80 test/22 describe 与手册精确一致（grep 双源）",
+      "auth-manager.test 9/domain-tools 4 精确",
+      "UNVERIFIED/疑点照实登记（jw-client 6 条含 kbjcmsid 硬编码 UUID:1250、auth 6 条含明文密码入渲染脚本、yanhu BUG-44~50/27~30 无测试+疑似删测空行、domain-tools 标题超前无断言）",
+      "负向声明「全文件无超时/Abort」属实（grep=0）",
+      "演示态不编造红线在源码+两测试+手册三方一致"
+    ],
+    "findingsTotal": 0,
+    "notesTotal": 2
+  },
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-auth-manager.test.ts.md": "88352592f5eb350f43135711b1be62465a5d7b55b836393fb587e3991e722d05",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-auth-manager.ts.md": "4cea81d943b2b87207e4c896dc1aa7e3506db66cfcd6f205d6863a5aa0a5c14b",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-demo/demo-account.ts.md": "a8b8eecbd2a41c730a6e9afa7b8aa7bad32abe1ff429470d04a988e57c46b70e",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-demo/demo-avatar.ts.md": "b3ec3116ca98ea51d67e3639b18c884c6e5ad2c89b10e02f1ece0118ecc66284",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-demo/demo-fixtures.ts.md": "84335a39b96c5044f0831e7fd703a412340ac766c2861f88d1db255a71cef5de",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-demo/demo-service.test.ts.md": "de82e3efe542a515eefe532c2d4614d83e650e588dcd5657e2913403b395c7a8",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-demo/demo-service.ts.md": "38f0532bf139ea731cb715e2d75e1feea7d32e017904a6836c30ab3edc3ebbdb",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-domain-tools.test.ts.md": "f084b172ddac392e71b9c79957fea6eb15754491820f75c45f1fc60e6825f000",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-gatekeeper.ts.md": "dc0dfbd27073e355ac61b1dec92e2576c8846d7aca7cc13ee07c466cf8198605",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-jw-client.ts.md": "33773ebbe274da69d2d576551c0f2cf7e405149c940f4fe4284ccd36990bb81a",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-mutation-guard.ts.md": "2a800a6d9a8d6cfac83f72126aa8abeb3e2a1d3afa7853a59620d543dd4bf980",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-reverse-proxy-client.ts.md": "6b99ed8de0cdf5ef4dbcbfd2a578744cb74e4c9cadb8e985e995c2983ca00864",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-waf-instrumentor.ts.md": "ab11acd17090b8b87671a779d2e47d28f5172405c7e65c7711ef58fa7eda6b3c",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-browser-tools.test.ts.md": "122cc84d17000d2c121822f19bbe10b5f9cd5eb4f0e374c4bbc4f5dcb7d05eb2"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/main/lib/cdut/cdut-auth-manager.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-auth-manager.test.ts.md",
+      "sourceBlob": "f23b42db9d39b019ee407dc0b30988289c7cf69e",
+      "sourceSha256": "75099059bea992ea19b7434521262e43861b148079f9d191afc50a6b96950386",
+      "sourceLines": 260,
+      "manualSha256": "88352592f5eb350f43135711b1be62465a5d7b55b836393fb587e3991e722d05",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cdut/cdut-auth-manager.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-auth-manager.ts.md",
+      "sourceBlob": "cd6188c71df10d6b91761e9ebbb5eefd3ba18e07",
+      "sourceSha256": "b7e9f9ba1093ade701ab41043867cfc2691a470028e1aeb3c02312077c9a2d31",
+      "sourceLines": 1305,
+      "manualSha256": "4cea81d943b2b87207e4c896dc1aa7e3506db66cfcd6f205d6863a5aa0a5c14b",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cdut/cdut-demo/demo-account.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-demo/demo-account.ts.md",
+      "sourceBlob": "61daeb0cbb02bde55cec87c6728912bd2f2a0715",
+      "sourceSha256": "a1a4ebd52b891afaaf58a092a1833f925306caa97fb342fdae13ce6206cece0b",
+      "sourceLines": 48,
+      "manualSha256": "a8b8eecbd2a41c730a6e9afa7b8aa7bad32abe1ff429470d04a988e57c46b70e",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cdut/cdut-demo/demo-avatar.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-demo/demo-avatar.ts.md",
+      "sourceBlob": "7d45abf2c064fdd9688c7b673277d30aaa0c04c7",
+      "sourceSha256": "c14246416bc2e8778c02f81f9e515179c9c90a45d56e4b25d3854e59ee5c1269",
+      "sourceLines": 7,
+      "manualSha256": "b3ec3116ca98ea51d67e3639b18c884c6e5ad2c89b10e02f1ece0118ecc66284",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cdut/cdut-demo/demo-fixtures.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-demo/demo-fixtures.ts.md",
+      "sourceBlob": "ef29b3c32c27f7869baf90917ec7636c3ad7114a",
+      "sourceSha256": "1c2ce218cb8e006d47935ff351254ef84444f8b4760a39c3037acef2a36937a1",
+      "sourceLines": 164,
+      "manualSha256": "84335a39b96c5044f0831e7fd703a412340ac766c2861f88d1db255a71cef5de",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cdut/cdut-demo/demo-service.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-demo/demo-service.test.ts.md",
+      "sourceBlob": "aea309de42f4a4a42b5bbbcb38531b12970287cb",
+      "sourceSha256": "5d76a5bedd19bbd8b000356ba99c99d16f685b2ca9ed854ffa51c93d4d7a89ca",
+      "sourceLines": 112,
+      "manualSha256": "de82e3efe542a515eefe532c2d4614d83e650e588dcd5657e2913403b395c7a8",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [
+        {
+          "id": "N-NB69-01",
+          "severity": "low",
+          "claim": "「2 describe、6 test」应为 7 test（枚举第 6 项把 :97 成绩域与 :106 写操作两个 test 合并计数）。",
+          "sourceEvidence": "demo-service.test.ts grep test(=7。",
+          "action": "计数改 7 并拆分枚举第 6 项。"
+        }
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/cdut/cdut-demo/demo-service.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-demo/demo-service.ts.md",
+      "sourceBlob": "dc8d705d8ef2fc3a0358cf31c1b396e66abe7ccd",
+      "sourceSha256": "477b4c007b2064d919b49ade2d13c28347aeaee0d3ddb72e944a0a027c38bff1",
+      "sourceLines": 409,
+      "manualSha256": "38f0532bf139ea731cb715e2d75e1feea7d32e017904a6836c30ab3edc3ebbdb",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cdut/cdut-domain-tools.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-domain-tools.test.ts.md",
+      "sourceBlob": "247b80d3c09975b93a144bd632d563d6e29e1c39",
+      "sourceSha256": "6b16a057fe3050fa14d65acc41234e35de04f0c296c2554f9f26d1ed08ec4bd6",
+      "sourceLines": 69,
+      "manualSha256": "f084b172ddac392e71b9c79957fea6eb15754491820f75c45f1fc60e6825f000",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cdut/cdut-gatekeeper.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-gatekeeper.ts.md",
+      "sourceBlob": "42d19dfca4cac87236db1469df36599d10ef18e6",
+      "sourceSha256": "33489d4f3da97121dd797db84bb74b63b0478a37b0eb368a10107f01a9236788",
+      "sourceLines": 129,
+      "manualSha256": "dc0dfbd27073e355ac61b1dec92e2576c8846d7aca7cc13ee07c466cf8198605",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cdut/cdut-jw-client.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-jw-client.ts.md",
+      "sourceBlob": "5b7fab6fa116965baf26c6b71214ce2e9b46a815",
+      "sourceSha256": "bb3369ccb49510cbef3d33a98de7b77d0ad181446b055f3285a3ee1acc7e0bb5",
+      "sourceLines": 3160,
+      "manualSha256": "33773ebbe274da69d2d576551c0f2cf7e405149c940f4fe4284ccd36990bb81a",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [
+        {
+          "id": "N-NB69-02",
+          "severity": "low",
+          "claim": "§3「写操作成败启发式…6 处」应为 10 处精确 + 1 变体（:2660 附加「不符合」）：实测 :673/:716/:1794/:1817/:1953/:1976/:2004/:2660/:2686/:2789/:2933。",
+          "sourceEvidence": "grep -n 失败|错误|不存在 = 11 行命中。",
+          "action": "计数改「10 处精确+1 变体」。"
+        }
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/cdut/cdut-mutation-guard.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-mutation-guard.ts.md",
+      "sourceBlob": "5cd33a2c7fc47982e223995011a7bc01dbfc8e25",
+      "sourceSha256": "0396c9f25836307b798a4046fcec5f80335016223d16163294f9d2fb9734a9f4",
+      "sourceLines": 65,
+      "manualSha256": "2a800a6d9a8d6cfac83f72126aa8abeb3e2a1d3afa7853a59620d543dd4bf980",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cdut/cdut-reverse-proxy-client.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-reverse-proxy-client.ts.md",
+      "sourceBlob": "fb41320f7877760d3bbffd37bccbd927e2a03858",
+      "sourceSha256": "4bbffbfbdb38a11d0867443629b5f379ae5361680a98d6c48b75d36fffb4fdd6",
+      "sourceLines": 124,
+      "manualSha256": "6b99ed8de0cdf5ef4dbcbfd2a578744cb74e4c9cadb8e985e995c2983ca00864",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cdut/cdut-waf-instrumentor.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-waf-instrumentor.ts.md",
+      "sourceBlob": "8e8477b0e257717636c66fb059bccddd4bf7f0d9",
+      "sourceSha256": "d13cec9502cadf9281c71b73a7e292f38935f50bb1b896291615260d241c7cd1",
+      "sourceLines": 161,
+      "manualSha256": "ab11acd17090b8b87671a779d2e47d28f5172405c7e65c7711ef58fa7eda6b3c",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cdut/yanhu/yanhu-browser-tools.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-browser-tools.test.ts.md",
+      "sourceBlob": "d98904a9faf0fc7ffa605affbde199a7ae9daa3a",
+      "sourceSha256": "f1d213e2e96df530cef5551b273bb3a26cbffe33c56a197003af371bb5528f8e",
+      "sourceLines": 2572,
+      "manualSha256": "122cc84d17000d2c121822f19bbe10b5f9cd5eb4f0e374c4bbc4f5dcb7d05eb2",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-82",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "sealId": "seal-23d161e252555a15",
+  "reviewedAtUtc": "2026-10-24T09:30:00Z",
+  "reviewedManualHashes": {
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/process-monitor.test.ts.md": {
+      "manualSha256": "6f3af621086ff7886ec3f25127ad3909ca2fc686fefa6bd029c26ee58ede1c47",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/process-monitor.ts.md": {
+      "manualSha256": "00cad3297cc4711f590b53357e848811b891cacc6f670c1829422fb3c7090fd5",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-agent-event-log.test.ts.md": {
+      "manualSha256": "4739832c462b0a877d5acb50db88e5f2cd1e7582b90ca785fa1ae1d2ba67c42b",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-agent-event-log.ts.md": {
+      "manualSha256": "4f9f82d1f336828e2e0a07615efbb9f97bfcffe7619001e2e89ea0589a51ebd8",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-file-access.test.ts.md": {
+      "manualSha256": "be0aa907dba05ff5c99fcdf880e7b428c3a2eadaf8661f749b2ca539e7484105",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-file-access.ts.md": {
+      "manualSha256": "91af319709240efc83e3fc349e9b65d7375c5ef8e96577b3c40c66675bddd42b",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-relay-client.ts.md": {
+      "manualSha256": "00cd0fa6dff970a309a4b3111c6c39d0ad0ade989ce231f1607be6ddfa5ac5d4",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-service-commands.test.ts.md": {
+      "manualSha256": "f673c50899e712b778b25d39ba65bc1de803f166f6babe8b76b1bc200bf43c33",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-service-exploration-session.test.ts.md": {
+      "manualSha256": "1cf0bfbb30ad005042934dc90f34bfed81d165917a4d56fa3d6e6ecbf7b32504",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-service-heatmap.test.ts.md": {
+      "manualSha256": "75e441aab92f9fb61c1bf2a203691605ba83dbbc868b2b73b64a3f28ef8eeb23",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-service-send-message.test.ts.md": {
+      "manualSha256": "f82e3cfc3225f80fc71534f4e3eac1fbb01e0d1b5e66c57918ba9b7beaf1b448",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-service-workspace-file-search.test.ts.md": {
+      "manualSha256": "daa3f7f081a65ba9a56764bfb3d4ab64fcba5e0655f81b32dbd325882165a9c0",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-service.ts.md": {
+      "manualSha256": "d9be727949d1b6862256677caf43d8c0bec3812993eea3fdfde21dc8f23f20ea",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-workspace-file-search.test.ts.md": {
+      "manualSha256": "c10b32e90ca01d827714eddff43b704d12e927b09409b5da5886b72be6c292ee",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-workspace-file-search.ts.md": {
+      "manualSha256": "7e8a47771b1bb85b82679dda16553e3f1576dc2f3323e3dab5e48439a48db2b4",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/skin-manager-service.test.ts.md": {
+      "manualSha256": "e8be30c5dc7ec3c13186bb33809714a4d5604bc990e0935da6e57a583055d56b",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/skin-manager-service.ts.md": {
+      "manualSha256": "0f34acd52649dff8e7010d1e8e1d02cd81e7a81233655b44e5c14c6ccdba3c22",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/skin-name-guards.ts.md": {
+      "manualSha256": "51d39368df7bd984432b49ef1da2b8f9dfe90efa2563b215ccb46f3680bf21c0",
+      "verdict": "accepted"
+    }
+  },
+  "sourceBindings": {
+    "apps/electron/src/main/lib/process-monitor.test.ts": {
+      "sourceBlob": "cfad599f36b847ac4d4dba3948fd1fdead35c911",
+      "sourceSha256": "13fafdbdfe09dd738ca399b13f7580a2065fd3d57537fd20f749c5d2e81699d4"
+    },
+    "apps/electron/src/main/lib/process-monitor.ts": {
+      "sourceBlob": "afcd37f68d400975a8ae8bed361aaf5467dad3f0",
+      "sourceSha256": "c1c4951a1b885425ba1e66cec8e17800b494523d0a6a14fa09c737cbeea9f026"
+    },
+    "apps/electron/src/main/lib/remote-agent-event-log.test.ts": {
+      "sourceBlob": "21b84e69d90e8617b7e59b08a9495808ee992ff9",
+      "sourceSha256": "3b58c4a6f6bfce8e1e6bbee15356f5067907b63d9c9174422f3d747ec28ead65"
+    },
+    "apps/electron/src/main/lib/remote-agent-event-log.ts": {
+      "sourceBlob": "d4da416a55c558d60ea4f76a084bb3796d65f644",
+      "sourceSha256": "5003e3ed2b6b9a6f518767427a30db2491e2a5d13d25112dd4545fa45cf29b55"
+    },
+    "apps/electron/src/main/lib/remote-file-access.test.ts": {
+      "sourceBlob": "023dc16f0721efb91d710cd07626dcc6a1ff963d",
+      "sourceSha256": "2d9eb6fd2202290bd661c6c69406e74e283b800e766fb4fd46cacdcab22d282b"
+    },
+    "apps/electron/src/main/lib/remote-file-access.ts": {
+      "sourceBlob": "1522e98403a7f1be7d0a074faae1a9e1920d0407",
+      "sourceSha256": "d3d866bd9811ce48aeb669b591e94dea78a71e5d6dba50db35aeceed88b59146"
+    },
+    "apps/electron/src/main/lib/remote-relay-client.ts": {
+      "sourceBlob": "320516b0ca5445f9f6232999cf3feb4d1991ab6c",
+      "sourceSha256": "4f669fdff3b5ebcf7d265f4212c29d06471f2daeb9cbd3cad0fb88e4b5a73e33"
+    },
+    "apps/electron/src/main/lib/remote-service-commands.test.ts": {
+      "sourceBlob": "76800cfc74f36450f65e47af3c67e870070e3abd",
+      "sourceSha256": "d79a1676d12b890d8c0223005ebc3094408ae8d22c31a195660da9e0501dcd85"
+    },
+    "apps/electron/src/main/lib/remote-service-exploration-session.test.ts": {
+      "sourceBlob": "585280a9262b2198c35fcdc15b957b09978cb18b",
+      "sourceSha256": "0cbf0c83fb5631ae0bab4fe3f811ea328ddf86151c51b579fd6b926c8febc457"
+    },
+    "apps/electron/src/main/lib/remote-service-heatmap.test.ts": {
+      "sourceBlob": "96ce85282a9f0e6cc898b8253c45c184d803f840",
+      "sourceSha256": "7468dfe1599f901fcde15ea4962629ffb609e65bc6ec13611b9067e8dbebdb77"
+    },
+    "apps/electron/src/main/lib/remote-service-send-message.test.ts": {
+      "sourceBlob": "534a696cd145879674e828af2685d8455312eb5f",
+      "sourceSha256": "c76d0a5b953c94b55af189a6449bf827daaa96223420d071f01bebed8ceb628d"
+    },
+    "apps/electron/src/main/lib/remote-service-workspace-file-search.test.ts": {
+      "sourceBlob": "1c4f06382fd52ca1b8092883013d4cbbeb9581a4",
+      "sourceSha256": "a7b22d5edfa7d7f2d49928825a7dfc75b22b56dabd544c46c0614d4655b75ae1"
+    },
+    "apps/electron/src/main/lib/remote-service.ts": {
+      "sourceBlob": "671b012057d79739bd9fdb2e93a7faa370959645",
+      "sourceSha256": "5c93c9ddb2477311e32eeafbdb7046e72d4b3ac1194e8151ab9c9265ffb2c90b"
+    },
+    "apps/electron/src/main/lib/remote-workspace-file-search.test.ts": {
+      "sourceBlob": "4d09e41b91173f7f4a73fa40b1c49d4b2b954b77",
+      "sourceSha256": "6ebaceeafce30ba507c02db079c5206459836b169b8057bcae8ca11c744ffd87"
+    },
+    "apps/electron/src/main/lib/remote-workspace-file-search.ts": {
+      "sourceBlob": "f8428da8a6e96946c67be2fdc9bfcb0c80ed8a89",
+      "sourceSha256": "fda14c5b9600c5c290f6126306fd3fc3b576fe97559be36ae8f6d7eba88d8e92"
+    },
+    "apps/electron/src/main/lib/skin-manager-service.test.ts": {
+      "sourceBlob": "bc9b6c9881d31645e3ea1d9bda6fda3f3f6e84b6",
+      "sourceSha256": "a5787c0f4a478ab86863402e25cf8a6eafddb612c08fe5fd952ab847dba7637c"
+    },
+    "apps/electron/src/main/lib/skin-manager-service.ts": {
+      "sourceBlob": "8c3bb923a1e0a0813da60ba706604c9464434cf3",
+      "sourceSha256": "5251c53087048e601869446a6f641a94ae1913bc9631c067a0d0baa589e67cf8"
+    },
+    "apps/electron/src/main/lib/skin-name-guards.ts": {
+      "sourceBlob": "55c94fa22da77294822e49ab6b2fd4f9703f4ca7",
+      "sourceSha256": "d46a22b0f542aeb42d9da4bc15531b3ef02cca0747c7e7c9c50469b12b7bf556"
+    }
+  },
+  "qaNotes": "18/18 accepted（6 minor NB82-N1..N6 计数口径转 ACCEPTED-ERRATA）。NOT_RUN。"
+}

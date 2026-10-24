@@ -1,0 +1,131 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "index-p01-app-shell__apps__electron__resources__cslab-r1",
+  "groupId": "p01-app-shell__apps__electron__resources__cslab",
+  "revisionOf": "index-p01-app-shell__apps__electron__resources__cslab",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T22:55:00Z",
+  "sealedAtUtc": "2026-10-23T19:09:24+00:00",
+  "artifactSha256": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+  "note": "r1 合入以本表为准。19/19 accepted。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__cslab.md@apps/electron/resources/cslab/__pycache__/cslab-formula-verifier.cpython-313.pyc": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__cslab.md@apps/electron/resources/cslab/__pycache__/cslab-plot-digitizer.cpython-313.pyc": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__cslab.md@apps/electron/resources/cslab/demo/1792573114138-6ac8d0-石榴石_Y_Al_O____YAG____Ia-3d_完整立方晶胞.cif": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__cslab.md@apps/electron/resources/cslab/demo/demo-digitizer-spectrum.png": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__cslab.md@apps/electron/resources/cslab/demo/gold-fcc-nanoparticle.pdb": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__cslab.md@apps/electron/resources/cslab/demo/rutile-chgcar-sample.chgcar": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__cslab.md@apps/electron/resources/cslab/demo/rutile-diff-charge.cube": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__cslab.md@apps/electron/resources/cslab/demo/rutile-locpot-sample.locpot": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__cslab.md@apps/electron/resources/cslab/demo/rutile-raman-532nm.csv": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__cslab.md@apps/electron/resources/cslab/demo/rutile-tio2.cif": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__cslab.md@apps/electron/resources/cslab/demo/rutile-xrd-co-ka.csv": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__cslab.md@apps/electron/resources/cslab/demo/rutile-xrd-cu-ka.csv": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__cslab.md@apps/electron/resources/cslab/demo/silicon-diamond.poscar": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__cslab.md@apps/electron/resources/cslab/demo/silicon-srm640-benchmark.csv": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__cslab.md@apps/electron/resources/cslab/demo/srtio3-perovskite.cif": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__cslab.md@apps/electron/resources/cslab/requirements/formula-ocr.txt": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__cslab.md@apps/electron/resources/cslab/requirements/formula.txt": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__cslab.md@apps/electron/resources/cslab/requirements/instrument.txt": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__cslab.md@apps/electron/resources/cslab/requirements/plot.txt": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8"
+  },
+  "revisionRequiredManuals": {},
+  "sourceHashes": {
+    "apps/electron/resources/cslab/__pycache__/cslab-formula-verifier.cpython-313.pyc": {
+      "sourceBlob": "83ce986b4c3d4a88fab6fac4d33b64ac05317bdd",
+      "sourceSha256": "2690653dc61d15ed85a3f69f677cae35886111ad543421346fc5bd4ffa90e5a2",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/cslab/__pycache__/cslab-plot-digitizer.cpython-313.pyc": {
+      "sourceBlob": "eedcf230272782cc62d728b943e7192677eb6d79",
+      "sourceSha256": "fe695fb89ad8bfe5767774051dfa03aa6741c70452576ab1fc81a2ca75dd07d5",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/cslab/demo/1792573114138-6ac8d0-石榴石_Y_Al_O____YAG____Ia-3d_完整立方晶胞.cif": {
+      "sourceBlob": "5e78ff7d70bc5905165339d017662bb38d97f070",
+      "sourceSha256": "2c1bc1039e904b7ae2ad691de98e7da8b62ed3e7f56266e042e99bc07c5f030d",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/cslab/demo/demo-digitizer-spectrum.png": {
+      "sourceBlob": "422b10cd2331e1aa335005019070f60295fc5a4c",
+      "sourceSha256": "9fc2910a866a870c7fe3d316e381212212590231362771af64d2121eb0041321",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/cslab/demo/gold-fcc-nanoparticle.pdb": {
+      "sourceBlob": "2172705db0ceeecd6f4d3d49c569ecbb129d398b",
+      "sourceSha256": "57ca3587d13dc976de119bd227a3faaa6a8546266d5c714829e8d45ceaf59094",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/cslab/demo/rutile-chgcar-sample.chgcar": {
+      "sourceBlob": "5dd1d1d238c52ecca5d3d6426cf40ba59dd51d78",
+      "sourceSha256": "7b7fff8217409b11169cfbe61663cc28e781dab843dca1f094ba1cc2fe4dc651",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/cslab/demo/rutile-diff-charge.cube": {
+      "sourceBlob": "e039958b14f021b7c74b9d0abd584e88e785cf4b",
+      "sourceSha256": "85dc6b8086dae68f87d75d672d1bf5179f5231f051c751bfde639b8ac2c25a89",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/cslab/demo/rutile-locpot-sample.locpot": {
+      "sourceBlob": "6da77b1690b0aca3bb81fd4c76f57b10b7f463ef",
+      "sourceSha256": "f8e7ffffcc5d5514800a0a72bcb6873e0cd675b78cd00137d589a229f69a3035",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/cslab/demo/rutile-raman-532nm.csv": {
+      "sourceBlob": "9899b0687b32f2db3b4f74d953cbc911626b1126",
+      "sourceSha256": "084d3063b81229846cd1f28d126388fc6be8a10e12121b57e1a243b265d6b419",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/cslab/demo/rutile-tio2.cif": {
+      "sourceBlob": "b62271a399c3faf3ac2c909604069e10e8f201c8",
+      "sourceSha256": "848e6b8784d118f854c1a800407b1a78974f19cc360aabd450929bfddfda6ba1",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/cslab/demo/rutile-xrd-co-ka.csv": {
+      "sourceBlob": "b1b78ee3bd5d272c7134d3267f516233447028cc",
+      "sourceSha256": "02225cda1fc00f3780437cc0e2f94cb643d8892633fee71380aaf2b97fe67742",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/cslab/demo/rutile-xrd-cu-ka.csv": {
+      "sourceBlob": "69637ece8d698e5eb241e3ff1260364cd09299a9",
+      "sourceSha256": "62c8b29eb498c9528356a72988be6662c98a77e5fe7982ffa1d85f481ae3d953",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/cslab/demo/silicon-diamond.poscar": {
+      "sourceBlob": "8a987007b9258aba5805fdeddd289b4b4a8e6c03",
+      "sourceSha256": "28bb7716f1a9db7e8e60787f91ffdfb5596fd011cf5fd41fa21bbf49fa9a61f4",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/cslab/demo/silicon-srm640-benchmark.csv": {
+      "sourceBlob": "2f7050fd509f15f31b628641b0a1f322e2c5531a",
+      "sourceSha256": "37472b1e2a94497df9423279b171b3ca0bc83feddf80fd9c48c4f6b49b573928",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/cslab/demo/srtio3-perovskite.cif": {
+      "sourceBlob": "5e42a7ea8debe3379eef2eb03a7199072d4ccd0c",
+      "sourceSha256": "d135b076c13b815fea660c7f0e320c04e74c6cadae2d76521593df7632172dc9",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/cslab/requirements/formula-ocr.txt": {
+      "sourceBlob": "b41174a503ef57a94156f853a22c2b9830290212",
+      "sourceSha256": "2dd8442c9050800f3cdb12237135ccd7dda9705e18f207239827822ec161b77e",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/cslab/requirements/formula.txt": {
+      "sourceBlob": "f2f1faac5521a4f0ed1013aaf28f06cedde884ce",
+      "sourceSha256": "39b519524f9cf67f044ca29a5871d73a5cdd121b210229db5ceeabaff0a76217",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/cslab/requirements/instrument.txt": {
+      "sourceBlob": "5f94e1feb447579ee5e9b94a829c5e076fc27576",
+      "sourceSha256": "f41f20e85c5014c63cd99d592f377887469f243a047d38471d475ced4d9e8cd2",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/cslab/requirements/plot.txt": {
+      "sourceBlob": "cf20f750c7c48d2efa01ae4384ba2ec2e37d26b2",
+      "sourceSha256": "3532af8b96f1676ae6b023c722a10d8dd9b83ae3cf1812baa0b5cfcf53f636e8",
+      "verifiedAgainstFrozenTree": true
+    }
+  }
+}

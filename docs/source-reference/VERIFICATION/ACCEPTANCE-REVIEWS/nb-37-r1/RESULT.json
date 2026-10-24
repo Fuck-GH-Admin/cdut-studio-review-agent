@@ -1,0 +1,276 @@
+{
+  "schema": "dsh-r07-review-result/2",
+  "batch": "nb-37-r1",
+  "revisionOf": "nb-37",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "reviewedAtUtc": "2026-10-23T18:20:00Z",
+  "sealedAtUtc": "2026-10-23T16:32:12Z",
+  "sealId": "seal-feeed3a61f56b48d",
+  "parentSealId": "seal-60cb3c6830deaf64",
+  "runStatus": "NOT_RUN",
+  "batchVerdict": "accepted",
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass_with_findings"
+  },
+  "g0Evidence": {
+    "sealChain": "manifestSha/readySha/zipSha 三层独立重算全相等；zip 51508 B/21 条目（18 manuals+MANIFEST+2 mechanical TSVs，无 READY/DONE/reviews）",
+    "manualHashes": "18/18 磁盘=MANIFEST=READY 全等（脚本核）",
+    "scopeBinding": "18/18 源 blob+sha256+lines 与 manager/assignments/nb-37-SCOPE.json 全等（脚本重算）",
+    "parentPreserved": "deliveries/nb-37（seal-60cb3c6830deaf64）字节保留未动；r1 为作者 g0_check 自检后自发行（行号引用修正 15 篇约 30 处，FINDINGS-RESPONSE 与 before/after hash 齐全）",
+    "r1ChangeScope": "对父批逐文件 diff：15 篇仅行号引用行变动、3 篇测试手册字节未动，与 FINDINGS-RESPONSE 声明一致"
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/code-block/CodeBlock.tsx",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/code-block/CodeBlock.tsx.md",
+      "sourceBlob": "68cbc4679ab4124fdb3abe7933f54193c4f80b48",
+      "sourceSha256": "8607b993c037f5d36da580f5f02a14feaf495bfa4bc70de8fc3411cf85f8b9f4",
+      "manualSha256": "fbaa61cb66957b5c4497bf3004e22e59095fc6875f4edc85a22e669861e44aa0",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/ui/src/code-block/index.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/code-block/index.ts.md",
+      "sourceBlob": "951b8e9b5ac7dc97e2b2a07d8a8615d8d0974cc1",
+      "sourceSha256": "a5b3de983266fc4d9ed72452ee223682d823c9a95b9e00ad6ce6a4ce04f9ece6",
+      "manualSha256": "c8d7a27f63763c98bc02d4d2ff9beacd4365de175640c7bbbe831be99e6621a2",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/ui/src/hooks/index.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/hooks/index.ts.md",
+      "sourceBlob": "52e76eda6b1b4f091f4c251421b23a727779bb82",
+      "sourceSha256": "eb3d00596f19c934a66f0d773fd4b1cb463044159e83245c82b64802f2146a23",
+      "manualSha256": "f2b81732ec34d436acc7b77868a15619e1670f681f7d8e96ccb49bdbe8b85615",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/ui/src/hooks/use-smooth-zoom.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/hooks/use-smooth-zoom.ts.md",
+      "sourceBlob": "ed43ef76a6df45550b244ff8fff3f72ca0641b5b",
+      "sourceSha256": "403928e504348aa4d12f17af3fc8730be1f6ef153ec38252ac19460f90c090d2",
+      "manualSha256": "e32be1f4af18110ac6f178de55e3050e09e61c6a9170546d949341f094070e54",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/ui/src/hooks/useSmoothStream.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/hooks/useSmoothStream.ts.md",
+      "sourceBlob": "91998093779575ea1ed9e4d39a2f92a34b7287f8",
+      "sourceSha256": "58c7a596f92b1f4493adb6ea821d0d5558ee029ea0014c79e3392b75feba4335",
+      "manualSha256": "a741f99d6cfb23f9ff802b7ed85df35c47e36db17ec40119e562efaad88ef5f0",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/ui/src/index.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/index.ts.md",
+      "sourceBlob": "e1bfe09fe42332cdf3aeff8af64a409ff4f19410",
+      "sourceSha256": "2c6679e2b98e0788b6685f56d4918d9f06277b49640777787c6dc34b3d458081",
+      "manualSha256": "e1792aed9176fbee029fc7b995f31dff1878d6920ac436ecb979a7165eb854e0",
+      "verdict": "accepted",
+      "findings": [
+        "NB37-N1"
+      ]
+    },
+    {
+      "path": "packages/ui/src/lib/cn.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/lib/cn.ts.md",
+      "sourceBlob": "03bdc3dd9733acab39e675e49c606c25f9ae786c",
+      "sourceSha256": "b13b322c47bde482481ac17b1f6b1fff6853efdbbcc425f1149eeeb07ee1b2e3",
+      "manualSha256": "2ed6f05b46bc72d57ac774a605a783887167054e41c2495d12df6622deb0c612",
+      "verdict": "accepted",
+      "findings": [
+        "NB37-N2"
+      ]
+    },
+    {
+      "path": "packages/ui/src/lib/platform.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/lib/platform.ts.md",
+      "sourceBlob": "bd177a43792dac51513e3bd45bdeef5a088f3c44",
+      "sourceSha256": "203d18fc4d38e1fa52fb219284c52b0735068febe3080dec322729eb8078cba8",
+      "manualSha256": "bc2e21306c79372f4ce4a29743520316bf41c5722e6d2dba72c4fb15d4e3e6a2",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/ui/src/lib/wheel-zoom.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/lib/wheel-zoom.test.ts.md",
+      "sourceBlob": "7e2a240fe02b7f54bdfb953e30a9ab1d3710e516",
+      "sourceSha256": "6f50f53fa89aef9dbb8b7e128e45ac3c9704543e58d9f937cec10e0ddfa34524",
+      "manualSha256": "945bf6dcf92c8c643b395c7256ba81eef7c7c1104204e9ee9e2f9754a508a481",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/ui/src/lib/wheel-zoom.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/lib/wheel-zoom.ts.md",
+      "sourceBlob": "cc4d9ebdbf6192593df26bf4d21a5e3871c46b97",
+      "sourceSha256": "7319aefb15b584526873231c5814f883808d4209aa7d45527d814fe3cfadfb74",
+      "manualSha256": "bde8039d7d901c4652c715f61204482778ebdf7fb11dc3885b6dcbd15d9c3fe8",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/ui/src/lib/z-layers.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/lib/z-layers.ts.md",
+      "sourceBlob": "2f30f662fe45c6e4dd04dcf17993ae69eed01174",
+      "sourceSha256": "e561475938b9d75ac96eae71365841a8f2e54f079b7f24d9da6261029363fc68",
+      "manualSha256": "d8fb814eb26afe7dd81953fd4049391b3feae20ffbdc74e7effbbfde7e7ed82d",
+      "verdict": "accepted",
+      "findings": [
+        "NB37-N3"
+      ]
+    },
+    {
+      "path": "packages/ui/src/markdown-preview.test.tsx",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/markdown-preview.test.tsx.md",
+      "sourceBlob": "37de1fa962284816e830bd59b9dc2e43047e11ac",
+      "sourceSha256": "276222ef4a1335392fdeac3137232a859d43f96c4f5744766a8384d738d52cc1",
+      "manualSha256": "2994639cd7cffd7d65d7a1047fd89527a54f4379ffab899f4091adfa9c6fccdb",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/ui/src/markdown-preview.tsx",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/markdown-preview.tsx.md",
+      "sourceBlob": "249bff40ac38630b3561dab2f82aa6beab0afe44",
+      "sourceSha256": "d2c8d9c7cae2597ff56320c8eb8f2833fcef132a85c5f11a376d29df2dae3729",
+      "manualSha256": "c3dd4fbf4a53388f2f78c46e263b57d4dbbe322944f480e1df321f865eba9171",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/ui/src/mermaid-block/MermaidBlock.tsx",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/mermaid-block/MermaidBlock.tsx.md",
+      "sourceBlob": "f2d3735bc0687475f99dd9f64b1385d20e3fb939",
+      "sourceSha256": "9dff4b149f9f1bbfe2c069bc4f14d239a4de2f5a75bb0e60946e9357316d1473",
+      "manualSha256": "124f64b791ca42f5e837d31ee947261d24902e1980a30248d7b19f076a2644fe",
+      "verdict": "accepted",
+      "findings": [
+        "NB37-N5"
+      ]
+    },
+    {
+      "path": "packages/ui/src/mermaid-block/index.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/mermaid-block/index.ts.md",
+      "sourceBlob": "593c5d5fc9f24d70e9d7528be451e8d02db22cbc",
+      "sourceSha256": "637c2f18f0326fd9802dd65fb060e6438529bcdec8c9ffa7ba5ce4a3f20a5eb4",
+      "manualSha256": "31e24a117dd24b87cd107a4994c38d6d6ce946a6e473f49f2905b2b2f1d65bac",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/ui/src/mermaid-detection.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/mermaid-detection.test.ts.md",
+      "sourceBlob": "11c02c547bf93ad24bf1fdb00b6002dc1af1b679",
+      "sourceSha256": "5111a4b4285deedb0ec5a5fa5a2fe1ac12f178dc24fbaa8b5ec26dbae1dc7b43",
+      "manualSha256": "11d7b458fafb980d0549e55131209f1c33e84083266600df15cf3c5dc09f03ea",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/ui/src/mermaid-detection.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/mermaid-detection.ts.md",
+      "sourceBlob": "c8a44ec56f49bebc1a6f74bb202976357efe293e",
+      "sourceSha256": "0c4b5314610136addaadbee85fa2b9b65398f8b3a4029f65ad54f282172ad972",
+      "manualSha256": "626eb8f6f2fd7e2507884d430c9b067b192d0dafc4cf239db3d0aa80c91840f5",
+      "verdict": "accepted",
+      "findings": [
+        "NB37-N4"
+      ]
+    },
+    {
+      "path": "packages/ui/src/primitives/alert-dialog.tsx",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/alert-dialog.tsx.md",
+      "sourceBlob": "94f356758889f00db69d11d4995b8d08c13bab8f",
+      "sourceSha256": "7be3895a4a018894824dd19f84c49997162d5372c867902841f89e052b41c9d6",
+      "manualSha256": "248c6f60d3dc6b184098da89160e10fa888172167cdb691af2f1854d98823a5f",
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "NB37-N1",
+      "file": "packages/ui/src/index.ts.md",
+      "severity": "minor",
+      "claim": "§1/§2 称『集中再导出…共 20 个符号』/『导出 20 条』，但 §2 表逐条列出 25 个符号名（20 个值导出 + 5 个类型导出 MarkdownPreviewProps/SmoothZoom/SmoothZoomOptions/WheelZoomOptions/ZLayerName）。计数口径（仅值 vs 含类型）未注明。",
+      "sourceEvidence": "packages/ui/src/index.ts:5-26 逐行数：25 个具名符号（20 value + 5 type）。",
+      "action": "改为『25 个符号（20 值 + 5 类型）』或显式注明口径。"
+    },
+    {
+      "id": "NB37-N2",
+      "file": "packages/ui/src/lib/cn.ts.md",
+      "severity": "minor",
+      "claim": "§1『（:42 行注释实为 :5，见下表）』与 §8『注释 :5』引注释行号有误：与原 @/lib/utils cn 等价的注释实际在 :4（:5 是 export function cn 起始）；『:42』所指不明。",
+      "sourceEvidence": "packages/ui/src/lib/cn.ts:4 注释行、:5 函数起始（逐行读 :1-7）。",
+      "action": "注释行号改 :4；删除或解释『:42』表述。"
+    },
+    {
+      "id": "NB37-N3",
+      "file": "packages/ui/src/lib/z-layers.ts.md",
+      "severity": "minor",
+      "claim": "§2 称 Z_INDEX『16 键数值阶梯』、§10 称『16+16 键全景』，实际 Z_INDEX 15 键（Z_LAYER 才是 16 键，含 shellTopDrag）——与本手册 §2 自述『shellTopDrag 仅类名档，无 Z_INDEX 对应』自相矛盾。",
+      "sourceEvidence": "packages/ui/src/lib/z-layers.ts Z_INDEX :32-46 = 15 键；Z_LAYER :56-73 = 16 键（脚本计数）。",
+      "action": "『16 键』改『15 键』；§10『16+16』改『15+16』。"
+    },
+    {
+      "id": "NB37-N4",
+      "file": "packages/ui/src/mermaid-detection.ts.md",
+      "severity": "minor",
+      "claim": "§2 称 MERMAID_START_KEYWORDS『35 关键字』实为 34；称『6 导出 + 7 内部常量』实为 8 个内部 const（§2 自列 8 名却标 7）。",
+      "sourceEvidence": "mermaid-detection.ts:4-39 关键字 34 个（脚本计数）；^const 共 8 个（:4/:41/:47/:48/:49/:50/:51/:80）。",
+      "action": "35→34、7→8。"
+    },
+    {
+      "id": "NB37-N5",
+      "file": "packages/ui/src/mermaid-block/MermaidBlock.tsx.md",
+      "severity": "minor",
+      "claim": "§10 称『1 导出 + 10 内部符号』，§2 表实际列 12 个内部条目（10 个内部函数 + MermaidZoomModal 组件 + MermaidBlockProps 接口）。口径（组件/接口是否计入）未注明。",
+      "sourceEvidence": "MermaidBlock.tsx §2 表对照（:32-35 接口、:292-482 组件、:46-212 十函数）。",
+      "action": "改为『1 导出 + 12 内部符号（10 函数 + 1 组件 + 1 接口）』或注明口径。"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/code-block/CodeBlock.tsx.md": "fbaa61cb66957b5c4497bf3004e22e59095fc6875f4edc85a22e669861e44aa0",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/code-block/index.ts.md": "c8d7a27f63763c98bc02d4d2ff9beacd4365de175640c7bbbe831be99e6621a2",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/hooks/index.ts.md": "f2b81732ec34d436acc7b77868a15619e1670f681f7d8e96ccb49bdbe8b85615",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/hooks/use-smooth-zoom.ts.md": "e32be1f4af18110ac6f178de55e3050e09e61c6a9170546d949341f094070e54",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/hooks/useSmoothStream.ts.md": "a741f99d6cfb23f9ff802b7ed85df35c47e36db17ec40119e562efaad88ef5f0",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/index.ts.md": "e1792aed9176fbee029fc7b995f31dff1878d6920ac436ecb979a7165eb854e0",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/lib/cn.ts.md": "2ed6f05b46bc72d57ac774a605a783887167054e41c2495d12df6622deb0c612",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/lib/platform.ts.md": "bc2e21306c79372f4ce4a29743520316bf41c5722e6d2dba72c4fb15d4e3e6a2",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/lib/wheel-zoom.test.ts.md": "945bf6dcf92c8c643b395c7256ba81eef7c7c1104204e9ee9e2f9754a508a481",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/lib/wheel-zoom.ts.md": "bde8039d7d901c4652c715f61204482778ebdf7fb11dc3885b6dcbd15d9c3fe8",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/lib/z-layers.ts.md": "d8fb814eb26afe7dd81953fd4049391b3feae20ffbdc74e7effbbfde7e7ed82d",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/markdown-preview.test.tsx.md": "2994639cd7cffd7d65d7a1047fd89527a54f4379ffab899f4091adfa9c6fccdb",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/markdown-preview.tsx.md": "c3dd4fbf4a53388f2f78c46e263b57d4dbbe322944f480e1df321f865eba9171",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/mermaid-block/MermaidBlock.tsx.md": "124f64b791ca42f5e837d31ee947261d24902e1980a30248d7b19f076a2644fe",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/mermaid-block/index.ts.md": "31e24a117dd24b87cd107a4994c38d6d6ce946a6e473f49f2905b2b2f1d65bac",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/mermaid-detection.test.ts.md": "11d7b458fafb980d0549e55131209f1c33e84083266600df15cf3c5dc09f03ea",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/mermaid-detection.ts.md": "626eb8f6f2fd7e2507884d430c9b067b192d0dafc4cf239db3d0aa80c91840f5",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/alert-dialog.tsx.md": "248c6f60d3dc6b184098da89160e10fa888172167cdb691af2f1854d98823a5f"
+  },
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "notes": [
+    "G2 逐文件完整比对：18 源文件全文逐行读（含 MermaidBlock 843 行补读中段）+ 18 篇 r1 手册全文；r1 修正后的 index.ts 行号（Toaster :5 … mermaid-detection :19-26）、barrel re-export 行（:7/:5/:7）、ZLayerName :76 等全部回源命中。",
+    "消费者计数独立复算全对：from @profer/ui 44 文件、alert-dialog 深路径 22、detectIsMac 6/detectIsWindows 17、MarkdownPreview 2、CodeBlock import 恰 2、MermaidBlock 3、useSmoothStream 1/useSmoothZoom 4、mermaid-detection 3+2+1、applyWheelZoom/DEFAULT_WHEEL_ZOOM 无包外消费者。",
+    "手册质量亮点：wheel-zoom.ts.md 照实记录源码注释矛盾（:29 称 0.065 vs 实际 0.085）；use-smooth-zoom.ts.md 跨文件正确引 MermaidBlock :378 对端约定；MermaidBlock.tsx.md 渲染管线/防竞态/缩放锚定/事件隔离逐条与源码吻合。",
+    "5 条 findings 均为计数/行号口径精确化（各文件 ≤2 条非阻断），无行为结论错误；随 ACCEPTED-ERRATA 或下次触碰关闭。",
+    "manualSha256 全部由磁盘脚本生成并与 READY 三方核验（避免手录）。"
+  ]
+}

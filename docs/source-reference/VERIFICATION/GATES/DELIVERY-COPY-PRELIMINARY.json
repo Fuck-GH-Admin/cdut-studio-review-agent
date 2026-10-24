@@ -1,0 +1,9 @@
+{
+  "atUtc": "2026-10-23T22:48:34.962389+00:00",
+  "status": "PRELIMINARY_COPY_CHECK_PASS",
+  "sourceFilesSha256Checked": 3083,
+  "sourceAndCopiedManualPairsChecked": 2415,
+  "issues": [],
+  "scope": "Independent copy-integrity check only; authored root3/package still pending and final acceptance snapshot may change.",
+  "runtime": "NOT_RUN"
+}

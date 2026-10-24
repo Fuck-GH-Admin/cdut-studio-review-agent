@@ -1,0 +1,249 @@
+{
+ "schema": "r07-reviewed-hashes/2",
+ "batch": "nb-21",
+ "reviewer": "docs-r07-qa-ui-20261023",
+ "reviewedAtUtc": "2026-10-23T17:25:00Z",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "sourceWorktreeClean": true,
+ "sourceFiles": [
+  {
+   "path": "apps/electron/src/main/lib/review/review-feishu-owner-boundary.p05.test.ts",
+   "blob": "f19fad3301587653a4c6ea2a3de4f3c79e31dc16",
+   "sha256": "46eccc86b48b37b928d8a0e4b390df668c448d538f479fc9aa129856a1d001da",
+   "lines": 159
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-generalization.test.ts",
+   "blob": "692b7304f67fafb26285ec317b5c95d7b4c14d61",
+   "sha256": "fc76f1629b08c55342006be4492bcc458eff2f536c6028c152ca34015e18754f",
+   "lines": 687
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-identity-authority.test.ts",
+   "blob": "6e28758418136ee8ab0c761a2c0f853ace71e5aa",
+   "sha256": "603b5f8f8d743711f70e9bc976a470ae59f5cd3972111ca07f1c26193d982828",
+   "lines": 149
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-ipc-legacy-sender.test.ts",
+   "blob": "f63782b23c62813b320ca374699b68216a52638d",
+   "sha256": "881a19d1b573dc157943d801b9e4b94e72fd53af39a40f6afa1895946e48ed37",
+   "lines": 154
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-ipc-path.test.ts",
+   "blob": "85412bbc401dbbde04b8f684532deceb62505542",
+   "sha256": "10bda1c5dc79d9060f7a828bca75f2dfe550ac426bcdb249bccf6cb5cd8830ff",
+   "lines": 45
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-ipc.ts",
+   "blob": "d656fb468c27e2b9783b71dd40c7dc7b16290bae",
+   "sha256": "910c0189e44065729e7f53d2e41f3b8f8bbfc9c6c17c904298a90b47b5a074bd",
+   "lines": 1539
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-json.ts",
+   "blob": "fe019f6ae05ac2770f9270f87273d223b7ae3df0",
+   "sha256": "5c9aec7282fbbd832d6f1e6dea7cb8cf554d4ede5789dc9662bdaa66ad00cf40",
+   "lines": 28
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-model-gateway.test.ts",
+   "blob": "2b13c34cb6bc520148f6240e8f4c3edb6bc5ac90",
+   "sha256": "54a5d95e38706704ef76c5fe9577ad336d92e278546f87450f0c0d170ac9ebfa",
+   "lines": 125
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-model-identity.run.test.ts",
+   "blob": "5c6d1faa401217a6d1c6cd5027e699bf48d3b0a3",
+   "sha256": "8dc1637a45dcd6bc35c17eb164b98c5d816f0b9efcdde334c2a5ec881d25cbc4",
+   "lines": 35
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-model-identity.ts",
+   "blob": "7118245c27fc57373badb51d0f624cfbd9d0da27",
+   "sha256": "2d60acbd4ea4014aa7c59c433fb02dc31df59600b1221420af0b6726cdfb3e34",
+   "lines": 38
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-multi-rule.test.ts",
+   "blob": "35aafadeb6a0a29e1756c8113b73583d9c70278a",
+   "sha256": "53db76a5c50a02760ee98673bcc3c2f221999110512dbcee8d47618c6665ee69",
+   "lines": 155
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-ordinary-ipc-pending.p04.test.ts",
+   "blob": "8e80f197b8c19eb2df1b55d75b7d2e081449e935",
+   "sha256": "34ad161df8b232946eaa0035289f705a3c9cf637b71909af3cf96ca32b16959a",
+   "lines": 41
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-owned-session.p03.test.ts",
+   "blob": "05c2ce7214cc7545c15d1b750e5da15a7b179f41",
+   "sha256": "c0aefa153ad658ed7c451c29cf7d4b0cec1684bc5da2a931caeee48550618a73",
+   "lines": 98
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-p06-driver-contract.test.ts",
+   "blob": "644c336a2f50318c9ffb43f5cdf493956bafd15f",
+   "sha256": "562a534f45f0ef2a8710c1e723460ee03ea8dbf5b86a9073fed456f8ac48083b",
+   "lines": 59
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-pi-admission.ts",
+   "blob": "f4a6369170dcfc2839b398b144afa07a9d1577d5",
+   "sha256": "58763939f76efffe41c14074528b74b1d60cfc83b9140b49fd9f10144304e200",
+   "lines": 204
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-pi-owner-adapter.ts",
+   "blob": "cb80e050c7c8256d002f2c1315b3f3c388d47427",
+   "sha256": "dd83ce9be73e5048a0b530656d6b98e0e16fc849ff6acd9d57e761cd9b258699",
+   "lines": 496
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-principal-service.ts",
+   "blob": "86b9aa613fe2b3ea97920fd8ea4ae447b2a62221",
+   "sha256": "f665f2e38fa9acde46658be17b5d25cd6593eb2fc9129453f3a10eff96db394b",
+   "lines": 185
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-relay-multi-viewer-contract.p05.test.ts",
+   "blob": "019a1bd8f8f9eda018863f26f364128a2a6d5f9e",
+   "sha256": "c7be56c99432e564393bf955f7c5684ccf6268fb96df366bf45d48e8df0fa72e",
+   "lines": 289
+  }
+ ],
+ "manuals": [
+  {
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-feishu-owner-boundary.p05.test.ts.md",
+   "sha256": "faa8a0613546d904f94bdb02f66c6f478057d7cef9bec777c44b4f1be083b70e",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-generalization.test.ts.md",
+   "sha256": "72690f6c86c4efe60df0e05722d81acfcceab6e8cc0632f04178ee5b24016b3f",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-identity-authority.test.ts.md",
+   "sha256": "249c5f2a4d5ed4297eb7242e16b7df79cc2b77a948c14ea3d68cc711f8f1bc9d",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-ipc-legacy-sender.test.ts.md",
+   "sha256": "44703c1cd203882b14c5d4ef378d3115fe1cd5651f9b3ec2d59fe2faf8afda3a",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-ipc-path.test.ts.md",
+   "sha256": "c657044175babe3fc74ee816ba0ba0532a3d238d789286bea4af7f5be84fb229",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-ipc.ts.md",
+   "sha256": "0cd4ca8bcc2198cb634a00eed9252bb3fed1bcb16c9e18973cfe1d97cd332636",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-json.ts.md",
+   "sha256": "b874436a2edac8008170bc80fad9a2c709dfb2f6ca6daa0f5534860e405d6a9c",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-model-gateway.test.ts.md",
+   "sha256": "7928d2be0bc65681377b19c90087426d46d868081478759bba50d4656891af2b",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-model-identity.run.test.ts.md",
+   "sha256": "88f0c23fe21525a33e8a1a38617890cc3503f46404368a5c24529897bcef3255",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-model-identity.ts.md",
+   "sha256": "49a5811f5edcdfb80250b78e340de7ce5fbfe446804c9117e9be4b0d9151a301",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-multi-rule.test.ts.md",
+   "sha256": "4ba9ea418f77f02bb2508f425e52af7a50564b58fff2bbdffaf8363b509b8136",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-ordinary-ipc-pending.p04.test.ts.md",
+   "sha256": "b6214017accb28b44a3b0afc25ff3c00037d70e2c38d8fb5f0957b6c0f920e20",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-owned-session.p03.test.ts.md",
+   "sha256": "1adf2023bd446ca21ed49ac2f512a97dee541d82aad929aa10e5e913d6dcff19",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-p06-driver-contract.test.ts.md",
+   "sha256": "722040714c2d8b9311985df79419c45671e0d367e2372689c29c1ca1d19ca66e",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-pi-admission.ts.md",
+   "sha256": "52b9579d0f6c1dc0e2452e06f1911a9d2d9c8bc139f0dfd9951d8b9b43cc288e",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-pi-owner-adapter.ts.md",
+   "sha256": "5637216c446f5ee361791cf140a40e48d6acc09709d8d6f79d2c05f0745373da",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-principal-service.ts.md",
+   "sha256": "379b46f86177dd6f9e73515cb3bc0ec4a73404147f0d05619048cff58e68dc32",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-relay-multi-viewer-contract.p05.test.ts.md",
+   "sha256": "85d2a3418b3d2612f4d394a5c80440b6b3b3a7b9563a1f8ee1fb0ee58d5060fe",
+   "verdict": "accepted"
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-feishu-owner-boundary.p05.test.ts.md": "faa8a0613546d904f94bdb02f66c6f478057d7cef9bec777c44b4f1be083b70e",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-generalization.test.ts.md": "72690f6c86c4efe60df0e05722d81acfcceab6e8cc0632f04178ee5b24016b3f",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-identity-authority.test.ts.md": "249c5f2a4d5ed4297eb7242e16b7df79cc2b77a948c14ea3d68cc711f8f1bc9d",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-ipc-legacy-sender.test.ts.md": "44703c1cd203882b14c5d4ef378d3115fe1cd5651f9b3ec2d59fe2faf8afda3a",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-ipc-path.test.ts.md": "c657044175babe3fc74ee816ba0ba0532a3d238d789286bea4af7f5be84fb229",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-ipc.ts.md": "0cd4ca8bcc2198cb634a00eed9252bb3fed1bcb16c9e18973cfe1d97cd332636",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-json.ts.md": "b874436a2edac8008170bc80fad9a2c709dfb2f6ca6daa0f5534860e405d6a9c",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-model-gateway.test.ts.md": "7928d2be0bc65681377b19c90087426d46d868081478759bba50d4656891af2b",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-model-identity.run.test.ts.md": "88f0c23fe21525a33e8a1a38617890cc3503f46404368a5c24529897bcef3255",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-model-identity.ts.md": "49a5811f5edcdfb80250b78e340de7ce5fbfe446804c9117e9be4b0d9151a301",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-multi-rule.test.ts.md": "4ba9ea418f77f02bb2508f425e52af7a50564b58fff2bbdffaf8363b509b8136",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-ordinary-ipc-pending.p04.test.ts.md": "b6214017accb28b44a3b0afc25ff3c00037d70e2c38d8fb5f0957b6c0f920e20",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-owned-session.p03.test.ts.md": "1adf2023bd446ca21ed49ac2f512a97dee541d82aad929aa10e5e913d6dcff19",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-p06-driver-contract.test.ts.md": "722040714c2d8b9311985df79419c45671e0d367e2372689c29c1ca1d19ca66e",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-pi-admission.ts.md": "52b9579d0f6c1dc0e2452e06f1911a9d2d9c8bc139f0dfd9951d8b9b43cc288e",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-pi-owner-adapter.ts.md": "5637216c446f5ee361791cf140a40e48d6acc09709d8d6f79d2c05f0745373da",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-principal-service.ts.md": "379b46f86177dd6f9e73515cb3bc0ec4a73404147f0d05619048cff58e68dc32",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-relay-multi-viewer-contract.p05.test.ts.md": "85d2a3418b3d2612f4d394a5c80440b6b3b3a7b9563a1f8ee1fb0ee58d5060fe"
+ },
+ "sealedArtifacts": {
+  "READY.json": "be8f2b10ea5bb2be77122843331674597325b74d80a99dc6a0840065757437f3",
+  "DONE.json": "5da45b9e68bdf7395295a63418d4b4fd28229bc6e00d3b5efc5a70c05332d176",
+  "MANIFEST.json": "25481010e3296f285d26bc04de839d9ac938058e0318601d93cd0c12c610298a",
+  "R07-nb-21-05fb2565.zip": "8b7409b143352e95a8a1d612033de987f9e814c6073e2ea444a3df337ae6f671"
+ },
+ "zipChecks": {
+  "entries": 21,
+  "unsafePaths": 0,
+  "symlinks": 0,
+  "integrity": "unzip -t: No errors detected",
+  "stageManuals": 18,
+  "stageDriftVsLive": "none",
+  "metadataFilesMatchLive": true
+ },
+ "openNotes": [
+  "N21-1",
+  "N21-2"
+ ]
+}

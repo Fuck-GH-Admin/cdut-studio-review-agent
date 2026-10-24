@@ -1,0 +1,72 @@
+{
+  "schema": "dsh-r07-index-review-result/1",
+  "batch": "index-p01-app-shell__-r1",
+  "groupId": "p01-app-shell__",
+  "revisionOf": "index-p01-app-shell__",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-index-author-20261023",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T22:20:00Z",
+  "sealedAtUtc": "2026-10-23T19:09:24Z",
+  "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__.md",
+  "artifactSha256": "dc783a517280018f9e78c26faab1ada4b017caf2ab325d0e4213484f81f5cde5",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 2,
+    "accepted": 2,
+    "revision_required": 0,
+    "unknown": 0,
+    "blocking": 0,
+    "nonBlocking": 0
+  },
+  "gates": {
+    "G0_INDEX": "PASS",
+    "G1_INDEPENDENT_SOURCE_REVIEW": "PASS",
+    "G2_SEAL_CONSISTENCY": "PASS",
+    "note": "G0 等价 2/2、封版三方哈希全对。revisionVerification：F-01 closure=resolved；README 无回归。"
+  },
+  "revisionVerification": {
+    "changedManuals": 1,
+    "unchangedAffectedSections": 1,
+    "findingsClosure": [
+      {
+        "id": "IDX-G01-F-01",
+        "status": "resolved",
+        "evidence": "LICENSE 来源行现文含 6382c6a21 提交号与 commit message 引证、「root commit 不含 LICENSE」，与 QA git 实证一致"
+      }
+    ]
+  },
+  "g0Evidence": {
+    "stockScript": "ERRATA-E1 沿登记；等价检查 PASS"
+  },
+  "files": [
+    {
+      "path": "LICENSE",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#LICENSE",
+      "line": 8,
+      "sourceBlob": "be3f7b28e564e7dd05eaf59d64adba1a4065ac0e",
+      "sourceSha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0",
+      "manualSha256": "dc783a517280018f9e78c26faab1ada4b017caf2ab325d0e4213484f81f5cde5",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "r1 修订复验：IDX-G01-F-01 resolved（LICENSE 来源改为「2026-05-25 随 6382c6a21 协议切换引入，此前 Apache-2.0/MIT，root 不含 LICENSE」，QA 逐字比对属实）"
+    },
+    {
+      "path": "README.md",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#README.md",
+      "line": 18,
+      "sourceBlob": "6d85b0dfdfad714f25339ace4e8ad11f52897bcb",
+      "sourceSha256": "7f2477f6b813b36ca5fe8f4b82c82bdb632534e08894856518d3076de5671539",
+      "manualSha256": "dc783a517280018f9e78c26faab1ada4b017caf2ab325d0e4213484f81f5cde5",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "r1 复验：README.md 各列与 r0 accepted 结论一致，字节性内容未受影响（G0 全过）"
+    }
+  ],
+  "findings": [],
+  "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal（r0 与 r1 字节并存）/全局账；未 commit/push；结论只覆盖本批。"
+}

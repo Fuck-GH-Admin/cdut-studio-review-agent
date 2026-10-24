@@ -1,0 +1,43 @@
+{
+  "schema": "dsh-r07-qa-done/1",
+  "batch": "nb-142-r1",
+  "revisionOf": "nb-142",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-extra-03-20261024",
+  "reviewerSession": "docs-r07-qa-extra-03-20261024",
+  "reviewRoot": "reviews/nb-142-r1",
+  "reviewedAtUtc": "2026-10-23T20:35:00Z",
+  "status": "REVIEW_COMPLETE_ACCEPTED",
+  "batchVerdict": "accepted",
+  "gates": {
+    "G0": "G0_PASS",
+    "G1": "G1_PASS",
+    "G2": "G2_PASS"
+  },
+  "verdictCounts": {
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "seal": {
+    "sealId": "seal-8cd5d68f0d5ebf83",
+    "tool": "seal_delivery.py/1",
+    "zip": {
+      "sha256": "9d92b7aabe6a301ebf387ad15a054b3929219878f5260f009c2e7032ca009e38",
+      "bytes": 82841,
+      "entries": 21
+    }
+  },
+  "findingsClosed": [
+    "NB142-F-01",
+    "NB142-F-02",
+    "NB142-F-03",
+    "NB142-N-01",
+    "NB142-N-02"
+  ],
+  "note": "nb-142 批经 r1 全闭合（r0 revision_required->r1 accepted）",
+  "artifactSha256": {
+    "RESULT.json": "258a48f5d20049aec96c8fcf7b5714d06d0d2d9e6fd4d6bd417fa27eb10ee190",
+    "REVIEWED-HASHES.json": "b569c53529b854779e1d9def29b1dd485902513aedc149e8f49b8cf86d872950"
+  }
+}

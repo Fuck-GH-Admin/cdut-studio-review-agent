@@ -1,0 +1,237 @@
+{
+ "schema": "dsh-r07-review-result/1",
+ "batch": "nb-130",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-01-20261024",
+ "reviewerSession": "docs-r07-qa-extra-01-20261024",
+ "reviewedAtUtc": "2026-10-23T19:37:51Z",
+ "batchVerdict": "accepted",
+ "g0": {
+  "verdict": "PASS",
+  "details": "冻结 HEAD=05fb2565 clean；18/18 blob+sha256+bytes+lines=scope；MANIFEST→READY→DONE→ZIP 哈希链逐项复算全对；sealId 复算一致（seal-a7538012d1542f56）；ZIP 21 条目=18 manual+2 mechanical TSV+MANIFEST，无 READY/DONE/reviews，zip-vs-stage 0 漂移；18 手册 front matter 逐字段=scope（status=authored、NOT_RUN 齐全）；章节 14×11 + 4×6 全合规"
+ },
+ "g1": {
+  "verdict": "PASS",
+  "details": "SOURCE-EVIDENCE.tsv/COVERAGE.tsv 人工列逐文件齐备且与 QA 预读同源一致；UNVERIFIED.md 六节显式（NOT_RUN/未知/域外边界/否定检索范围/实现注意点/QA 预读计数偏差）；changes.diff 存在"
+ },
+ "g2": {
+  "verdict": "PASS_WITH_MINOR",
+  "details": "18/18 手册全文重读并与冻结源对照：导出计数 1/2/6/1/4/11/4/2/2/4/2/4/2/9 与 test 计数 6/7/4/4 全对；≥5 条行为结论/文件逐条核对（行号、错误串、常量、分支语义）大面积吻合；35+ 处跨文件 file:line 引证（ipc/preload/renderer/shared/config-paths/windows-env/sleep-blocker/token-crypto/memory-router 等）抽样逐一实测命中；作者 8 条否定结论（isUserPresent/clearReleaseCache/resolveKnowledgeReferences/searchKnowledgeItemsForChat/copyForkFile/buildForkProjectKey/updateDeviceName/cleanInstallerDir 零消费者面）全部独立复核为真；4 测试手册断言逐条与源码一致。1 条 minor（N-01 归属元数据）"
+ },
+ "files": [
+  {
+   "path": "apps/electron/src/main/lib/feishu-presence.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/feishu-presence.ts.md",
+   "sourceBlob": "9b2f1de41bf4cd5c213aa40fe83499981caa36ec",
+   "sourceSha256": "6edf0f8877b181483236f633185b1f694bc1176038119274365d180656d9fb43",
+   "manualSha256": "03a4b57d2e47c4a9fdc55b34140903a017296b8acefe9bbf8b2dab0ede3f2f14",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/feishu-sleep-blocker.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/feishu-sleep-blocker.ts.md",
+   "sourceBlob": "905e9e128da7c5ddaa90c0d1b9c3c0d9bdc6c1b3",
+   "sourceSha256": "2e38e18fcc99bde81f567870a609c59a650f7f6fd14467239b27371b2e468514",
+   "manualSha256": "7b3d7fe7f8e373b724da495c7ff970a2c33160faf44f7f05a83c43fb80e3568f",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/fork-file-ops.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/fork-file-ops.ts.md",
+   "sourceBlob": "17110dfd45671bb457d38a599aac965362f4bf5e",
+   "sourceSha256": "3d16828969c6a2683bd45698ad4051b60cf71f032ad31d1418b661db16680733",
+   "manualSha256": "abf41af4404cb2bd3a8f9fb64819a34ff82e12e642ba19ce5c5de639c63ab782",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/git-bash-detector.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/git-bash-detector.ts.md",
+   "sourceBlob": "09e063aec9886987ffd83eb0b99bda329b91b46c",
+   "sourceSha256": "2061ecbc46238fbd96aa490d8ba1ccb683590238935c4229d584e31400a734cd",
+   "manualSha256": "4ced26f62ebb9ed1cf269f4021fef0412596952162a174bc44128f3e27f41046",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/git-detector.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/git-detector.ts.md",
+   "sourceBlob": "b848eb24828269e1e9ec1ca59ef2246d0d2ee785",
+   "sourceSha256": "3ea0abbec906a864ebc67762b93ac50eb1793beaf3e667ea36956f0b8f46cf14",
+   "manualSha256": "6bf2aacb73058524bc7eac2cae4a4c0e006ee80f82adf4f34c9dc5d80ae68f25",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/git-diff-service.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/git-diff-service.ts.md",
+   "sourceBlob": "ddb3355aa34322715a68387c15598c8b6adb2ba2",
+   "sourceSha256": "04bf28304605223ee9a5a2e5ece464b1999ae338578f9ab1a34bcef41376bb97",
+   "manualSha256": "e479e98ff1d181b6d80a328cbe2ed07fa301020bd63ac170d42159312c93119b",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/github-release-service.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/github-release-service.ts.md",
+   "sourceBlob": "bd41bb5592dbfb90031af252b91d14f9f363f453",
+   "sourceSha256": "d4953c94583ed4ea48ef4db0c8a0c88c687aa186522adbc63ebf5b2ed0cadbc3",
+   "manualSha256": "c442e422e2a8bc3f0879b319221e614513890c27b2392c0b15a75abb46aff538",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/hippo-memory-graph.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/hippo-memory-graph.test.ts.md",
+   "sourceBlob": "ed342951e1173c0080aeadf524ee804736eb3afe",
+   "sourceSha256": "2fc2c513e693d01c2277e07e6e091d78a50d471da8c0b900705ef4ecc4d8e9b0",
+   "manualSha256": "28072c32691f1542ad46b06c2abf4be6d607ec2f5a782260bfda9f189a65fd3d",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/hippo-memory-graph.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/hippo-memory-graph.ts.md",
+   "sourceBlob": "4d34d39d0eac6dba23a4fe64f639ace2ab0b8e2c",
+   "sourceSha256": "424b087d4b245208a46bbf1d5db190e5ed98205e250f19136ffcc5ffb18a27b8",
+   "manualSha256": "91c1b1c17a767c4f63b20d6678217df4a2d8c7960ee8f0d419bac972412583c6",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/hippo-memory-service.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/hippo-memory-service.ts.md",
+   "sourceBlob": "489e6b27c84f68b059b22fbb774fda3baf00b86c",
+   "sourceSha256": "69cc750d0d5c5c1f343886ec8848437bb493ce0f292539832a4e8c3dcc910873",
+   "manualSha256": "ba7a577f9ac6d042398176a526f53b91bed555e57d56c32fbe6713fc076456f3",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/identity-service.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/identity-service.ts.md",
+   "sourceBlob": "286887cb8c6876c0dfbe32e780a6b857454e90ad",
+   "sourceSha256": "96967f278c131afe75aa761801b7fe9c47bc323a413b72b10188dd0b58b5944a",
+   "manualSha256": "cd73a96b63817fa33ea013ca5e4f2eba99b387dc3fc05ea8aaace026fc71f3fa",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/image-url-resolver.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/image-url-resolver.test.ts.md",
+   "sourceBlob": "69ac9b30623b459778d6035808cd2eec17be6f5e",
+   "sourceSha256": "29f56ee2ba31a44c6395733bcd8ca52d3030b57dd38b25686ff4a5ff26a0dcb8",
+   "manualSha256": "c5d1658daaadf7921ea977cfbad51f4a4393792c71fed84fef6d01e14a2d1325",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/image-url-resolver.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/image-url-resolver.ts.md",
+   "sourceBlob": "f6030f7623f00fa3c00170ff12f8f9074cc99316",
+   "sourceSha256": "a9ed7d7943218dff35ff2fc59c4b294363ba4d31570a4071a1b437a7e3d65e7c",
+   "manualSha256": "d85c0b1b4b6580a1df8c41d6b762dac03bd3a80081dc8b588fce889781561501",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/installer-downloader.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/installer-downloader.ts.md",
+   "sourceBlob": "11df3ac9c573bfd43eb1e5f4cc075b98fb3d0f04",
+   "sourceSha256": "8accba0f138714ff1a36bdb22e78acfbd641d7975b914c2f195051b309d51a33",
+   "manualSha256": "0ddb2c47aea287ddcf365aafcaebe0a9244b3c4c61bc350b3ffb64f904c4c8dc",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/installer-manifest.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/installer-manifest.ts.md",
+   "sourceBlob": "5c579066682e287f578b5ce6293efd4b9734dc01",
+   "sourceSha256": "2d29082bfa03d14d944b6c73e90edad9cfcca466bd6abd7c4fe50c40f6153f88",
+   "manualSha256": "93124a25f6bea2f9dc294cc794ea79afb4c665466d920884a3b38387016ca50e",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/knowledge-item-service.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/knowledge-item-service.test.ts.md",
+   "sourceBlob": "e98c9050dcf75b30148154b1c5adc1b6079bbb75",
+   "sourceSha256": "eb2508a80f6959f063660aadee3567b08372ad5203771f7191c2612a6defb9d0",
+   "manualSha256": "ea625d9fd2f86774f3ffbc524c4e0130e70e11814b9331a417fdad97981b5204",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/knowledge-item-service.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/knowledge-item-service.ts.md",
+   "sourceBlob": "18f71650014596004b63b5dd6f2763ed50a05aa7",
+   "sourceSha256": "3f39947862e4e260aa5fc0207bbc97b4cbef6fc81219ab9ae9e295e6600d24a3",
+   "manualSha256": "f30bfc2793a076852ab69cfec93722ef499b7e3c4b9dd71b240082ca21ab290d",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/mac-traffic-light.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/mac-traffic-light.test.ts.md",
+   "sourceBlob": "f9a33e57f9a514bed534b0ab226f91fbf6a908ab",
+   "sourceSha256": "60ab350c2c132f1133ae216dc18b6906927680a0740dba1d28a4e0ffd791c910",
+   "manualSha256": "6fa057399b7d63d6c2a365ed8aadf34a4edc23aace7d7486aaaf7d6d55787bb7",
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/feishu-presence.ts.md": "03a4b57d2e47c4a9fdc55b34140903a017296b8acefe9bbf8b2dab0ede3f2f14",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/feishu-sleep-blocker.ts.md": "7b3d7fe7f8e373b724da495c7ff970a2c33160faf44f7f05a83c43fb80e3568f",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/fork-file-ops.ts.md": "abf41af4404cb2bd3a8f9fb64819a34ff82e12e642ba19ce5c5de639c63ab782",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/git-bash-detector.ts.md": "4ced26f62ebb9ed1cf269f4021fef0412596952162a174bc44128f3e27f41046",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/git-detector.ts.md": "6bf2aacb73058524bc7eac2cae4a4c0e006ee80f82adf4f34c9dc5d80ae68f25",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/git-diff-service.ts.md": "e479e98ff1d181b6d80a328cbe2ed07fa301020bd63ac170d42159312c93119b",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/github-release-service.ts.md": "c442e422e2a8bc3f0879b319221e614513890c27b2392c0b15a75abb46aff538",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/hippo-memory-graph.test.ts.md": "28072c32691f1542ad46b06c2abf4be6d607ec2f5a782260bfda9f189a65fd3d",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/hippo-memory-graph.ts.md": "91c1b1c17a767c4f63b20d6678217df4a2d8c7960ee8f0d419bac972412583c6",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/hippo-memory-service.ts.md": "ba7a577f9ac6d042398176a526f53b91bed555e57d56c32fbe6713fc076456f3",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/identity-service.ts.md": "cd73a96b63817fa33ea013ca5e4f2eba99b387dc3fc05ea8aaace026fc71f3fa",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/image-url-resolver.test.ts.md": "c5d1658daaadf7921ea977cfbad51f4a4393792c71fed84fef6d01e14a2d1325",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/image-url-resolver.ts.md": "d85c0b1b4b6580a1df8c41d6b762dac03bd3a80081dc8b588fce889781561501",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/installer-downloader.ts.md": "0ddb2c47aea287ddcf365aafcaebe0a9244b3c4c61bc350b3ffb64f904c4c8dc",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/installer-manifest.ts.md": "93124a25f6bea2f9dc294cc794ea79afb4c665466d920884a3b38387016ca50e",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/knowledge-item-service.test.ts.md": "ea625d9fd2f86774f3ffbc524c4e0130e70e11814b9331a417fdad97981b5204",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/knowledge-item-service.ts.md": "f30bfc2793a076852ab69cfec93722ef499b7e3c4b9dd71b240082ca21ab290d",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/mac-traffic-light.test.ts.md": "6fa057399b7d63d6c2a365ed8aadf34a4edc23aace7d7486aaaf7d6d55787bb7"
+ },
+ "findings": [
+  {
+   "id": "NB130-N-01",
+   "severity": "minor",
+   "claim": "READY.json 与 DONE.json 的 author/reviewer 记为 docs-r07-author-models-20261023 / docs-r07-qa-models-20261023（scope 锁定的旧波次角色），与实际会话 docs-r07-author-extra-01-20261024 / docs-r07-qa-extra-01-20261024（团队 JSON、START.json、18 篇手册 front matter 均正确）不一致",
+   "sourceEvidence": "deliveries/nb-130/READY.json:6-7；deliveries/nb-130/DONE.json:6-7；对照 manager/teams/author-extra-01.json author/reviewer 与 START.json:7-8、各手册 front matter author 行",
+   "action": "封版字节不可原地改：lead 合入登记时以团队 JSON 为准记录真实归属；如后续开 rN 顺带更正 READY/DONE 归属字段。非阻断，不影响 18 篇技术事实"
+  }
+ ],
+ "qaErrataClosed": [
+  {
+   "id": "QA-PRE130-N-01",
+   "severity": "low",
+   "status": "closed",
+   "claim": "QA 预读记录 reviews/nb-130/PRE_READ_DONE.json 的 source/test 行数拆分 3165/227 有误",
+   "sourceEvidence": "wc -l 4 test 文件=249（64+104+61+20），source=3392-249=3143；总数 3392 正确，仅拆分误并",
+   "action": "作者 UNVERIFIED §6 发现并提出，QA 回源确认后更正为 3143/249（PRE_READ_DONE.json 追加 errata 字段留痕，原文不删）"
+  }
+ ],
+ "notRun": [
+  "产品测试",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "真实网络（GitHub/proma/远程图片/安装包）",
+  "bun test（21 用例断言级阅读≠运行）",
+  "Windows/macOS 实机"
+ ],
+ "notes": [
+  "真实动态（Windows 检测链/OS 级持久/真实 API/并发饱和）已按合同界定为 unknown，不伪造保证",
+  "旧 922 手册仅线索，未继承 verified"
+ ]
+}

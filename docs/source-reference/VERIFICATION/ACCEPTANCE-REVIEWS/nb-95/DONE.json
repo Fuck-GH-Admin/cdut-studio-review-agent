@@ -1,0 +1,67 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-95",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-models-20261023",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T18:00:54.351896+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "files": 18,
+ "accepted": 18,
+ "revisionRequired": 0,
+ "unknown": 0,
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/collapsible-preview.test.ts.md": "e2a1ab7b12b6948241cf915e52ac8583ff3eaf6cf21cfcbfc999047e3c3c7c4e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/collapsible-preview.ts.md": "fc71a32c9a00d07584606fbb0cac7f82c22c84dbde73f69c504ed5d7ac540b43",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/collapsible-result.tsx.md": "6b22e2dc23ee6be9491bc7562d2bc65bd28a142040a3e845fdaeb329487d2283",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/default-result.tsx.md": "af31515928027b4bb7158be79c2fdbc5d616856f97de3c2ac567080b4b6884c5",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/edit-result.tsx.md": "c9bc5e572c45631ec8d7528db085caa6606bd907354616a997e2578dba2beaca",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/glob-result.tsx.md": "41ef2e55c056396a7f85fae074bb112fc7b845b3c13d5c2b6df5285dcac87cc3",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/grep-preview.test.ts.md": "e8ce5576dc112c9b7b85de35e4dac8afa522a974ac4a937443f340e1230d2210",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/grep-preview.ts.md": "7a308dab9052ef1998267c5962030c7e3ef1f9e44e5758083c7413ada1927e10",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/grep-result.tsx.md": "14e4f5305a979ab3221296469d0b47b5496349635396b7e3857bc05d0c89a7b5",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/index.tsx.md": "96dedb4963a819720a735aba7f13a9865e9763f8d937f515c055ff79ea45de07",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/pierre-styles.ts.md": "a4723cdec7ef30b815d3b56cf78943e1c8ece7287aa36bfca642d201acec9956",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/preview-open-button.tsx.md": "e93e598b30c1ba76176c2b815bb5dfc7ab216d4e88e46b8870b01b878dab77b0",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/read-result.tsx.md": "3ebf649e785abb260073ce67c68b25047d7080143d91c441e96ab8565a938188",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/task-get-result.tsx.md": "ce2fe0e52f6d9829183a9c4cca0e847275d1689f66e64a5bfdacce90be03fdb6",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/task-list-result.tsx.md": "2c1b8508c5f66783af9d9d08b36269ffe628c884b94e3a5a91ee518aef49536e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/web-fetch-result.tsx.md": "6650473d7388e42d640dea6a87e50871fa76e4442ffdbeeaff8897d73ebe8724",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/web-search-result.tsx.md": "1f0c5209136e9dd1d83492cbf43f96ee87ac92cacfd02e76f2676244b6dbb315",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/write-result.tsx.md": "3e3121e0c8454e4a8adfa1f90b10394126a5db060b75a69851edbd557d8591de"
+ },
+ "revisionHashes": {},
+ "findings": {
+  "revision": [],
+  "notes": [
+   "NB95-OBS-01"
+  ]
+ },
+ "deliverySeal": {
+  "sealId": "seal-196fe0f57589055b",
+  "sealedAtUtc": "2026-10-23T17:58:29Z",
+  "readySha256": "21411334846f627402a40f233891c558642aad4a439cb61315536ad25efbe464",
+  "doneSha256": "f9b1a1b4e5d826f3b77ecf2a92c828eab1749a6683f2ad5e78d3d8ecf187aa01",
+  "manifestSha256": "346906d795c6731235de1f62599faad1c88b8a7fa9442150db869c22a42bfa62",
+  "zipSha256": "806c145fc427aa247101254e96706601bfcc0b91f26ed2a0ee6da7bddad097a9"
+ },
+ "notRun": [
+  "bun test",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "artifacts": {
+  "RESULT.json": "88bf35a1d5e2b4c190cba9ed6c7d26e54371360219ac71c7909da1442f55fe45",
+  "RESULT.md": "b9a3cc621a7c1c0a8af0d3a9b661d5c6bf20906df9522a243a139b0f7a46f193",
+  "REVIEWED-HASHES.json": "22b90abe6fed3018048af63eee45eb422906c2d4123dfdf60a9060820fca864e"
+ },
+ "next": "lead 合入 18 篇"
+}

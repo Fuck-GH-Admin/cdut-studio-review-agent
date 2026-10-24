@@ -1,0 +1,68 @@
+{
+  "schema": "dsh-r07-qa-done/1",
+  "batch": "nb-113",
+  "revisionOf": null,
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "status": "REVIEW_COMPLETE_ACCEPTED",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0,
+    "findingsOpen": 5,
+    "findingsBlocking": 0
+  },
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/navigation/NavigationInputProvider.tsx.md": "83791705a86a14f483ff845a0851256e178d2da77545e50c897533d31b491748",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/scratch-pad/ScratchPadView.tsx.md": "570790cc7cf90b1d290659f1436e6fde35f2545f3301d2ab862d9e52528f5e50",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/selection/SelectionActionPopover.test.ts.md": "3a0ed7be92d8091562983d9813f96c61aa13276f0651a2892b63be406576726f",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/selection/SelectionActionPopover.tsx.md": "414bb54b19135a6391113ef1bf33c7bab4e604a57f03df1f1235dc0f3d1ce131",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/session-preview/SessionMiniMapPopover.tsx.md": "9286ef0976505ef3006ee2dd00d56e308ddfbbbc2d0e43f63681e892a7842257",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/shortcuts/GlobalShortcuts.tsx.md": "cc80e069c0b12d90997d50d0555c6e61e0492d4c15f2ea4dae172450375ece9d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/shortcuts/ShortcutKeycaps.tsx.md": "a72a6b048ba707435b13197db69553c5756b6327160be6d5e9a0d551c84dcf97",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tutorial/TutorialBanner.tsx.md": "b5582feaa5b5b1082c7d5ec4cb6fd4381568a30229a9360a6649d7267470b733",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/welcome/BeijingAnalogClock.tsx.md": "9d7cc7232f8d2f1d82925d1eb88a7e73603eae50e64de7deda5d08f4d6ad9b9c",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/welcome/UsageHeatmap.tsx.md": "da59b4aed304b207af0458aa1afc5dea0c957beb25de19b8344bb1150752eb81",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/welcome/WelcomeEmptyState.tsx.md": "3697603f143317a6130d81db68f719b3315ad93072a543f7190b2eb1779a7c13",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/welcome/WelcomeView.tsx.md": "e1597524aa76fd9946ab6460e2e901b3b9179c772733aca0454fb6c36fca48a0",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/diff/diff-scroll.css.md": "17570ac71774cf4876774c456b92e219099be8ec1ff7a4809c286cf42fb228cb",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/diff/markdown-preview-extensions.tsx.md": "952788fd7d4ea049610378d9f696d7c7a128cb88fa3110a4890c64b1d44712a6",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/diff/preview-open-path.test.ts.md": "5462caabf56b5701154472eee24888bc141cae4c9589af28fd7db87261b16f71",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/diff/preview-open-path.ts.md": "d01210fedd1e4b1e36e381de53969431cbc9d67f66b7be8b5225c9d8c8463c5e",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/diff/preview-opener.ts.md": "05d88c6e5aa7ac717aa00cc79a703311dc433dd9e020ca9c2f34b9bf464d2ad5",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/diff/preview-viewport-context.ts.md": "49b1260d0b87f9a0e04febd664f0443aea829488923d24466a96a8d009dc1c4d"
+  },
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass"
+  },
+  "artifacts": [
+    "reviews/nb-113/RESULT.json",
+    "reviews/nb-113/RESULT.md",
+    "reviews/nb-113/REVIEWED-HASHES.json",
+    "reviews/nb-113/DONE.json",
+    "reviews/nb-113/SOURCE-CHECKLIST.md",
+    "handoffs/nb-113-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-113-REVIEW-TO-LEAD.md"
+  ],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network",
+    "bun 测试运行"
+  ],
+  "knownUnknowns": [
+    "navigation-controller/spatial-navigation/beijing-greeting/heatmap-utils/shortcut-registry/agent-tab-access/SDKMessageRenderer 等域外",
+    "DOMPurify/katex/shiki 三方行为",
+    "触屏真机行为",
+    "运行验证 NOT_RUN"
+  ],
+  "note": "N-01~N-05 不阻断；18 篇全部可合。",
+  "atUtc": "2026-10-23T21:05:00Z"
+}

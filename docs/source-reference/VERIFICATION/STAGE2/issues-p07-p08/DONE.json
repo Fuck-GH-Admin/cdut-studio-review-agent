@@ -1,0 +1,35 @@
+{
+ "schema": "dsh-r07-stage2-done/1",
+ "track": "issues-p07-p08",
+ "generatedAtUtc": "2026-10-23T21:48:28Z",
+ "reviewerSession": "docs-r07-qa-extra-06-20261024",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "status": "RECONCILIATION_DELIVERED_PARTIAL",
+ "completeness": "30 分钟窗口收口：588/588 条已对账入表（零静默丢弃）；其中 claim 级实证闭合 11 条、待 lead 合入 3 条、审计待核 116 条、证据不足 UNVERIFIED 122 条、产品待决 2 条、重复映射 2 条、原关闭保留 332 条。118 条 claim 级比对与 2 处源行号核对未完成——明确缺口见 SUMMARY/RESULT.gaps，不虚报完整",
+ "artifacts": [
+  "manager/STAGE2/issues-p07-p08/RECONCILIATION.json",
+  "manager/STAGE2/issues-p07-p08/SUMMARY.md",
+  "manager/STAGE2/issues-p07-p08/TO-AUTHORS.md",
+  "manager/STAGE2/issues-p07-p08/RESULT.json",
+  "handoffs/STAGE2-issues-p07-p08-TO-LEAD.md"
+ ],
+ "sha256": {
+  "manager/STAGE2/issues-p07-p08/RECONCILIATION.json": "a6b34b4cc8ece4a46ce9cc9009f617a4ada37c5539da25e0c6609f290d637d29",
+  "manager/STAGE2/issues-p07-p08/SUMMARY.md": "b97abfd681e4cecec0a62001b8bddb7ca433ce860037f580d57072bf294530ac",
+  "manager/STAGE2/issues-p07-p08/TO-AUTHORS.md": "a2ec91822be401349d914b1ec9ec42254b7a44755d2fd9d42588f1932930948c",
+  "manager/STAGE2/issues-p07-p08/RESULT.json": "429764813a765c47b93620ee706a9492d17861faef9ce4847132058f7cac390c"
+ },
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "GUI",
+  "real network"
+ ],
+ "boundaries": [
+  "未改产品/测试/依赖/作者seal/已有review/candidate",
+  "未写全局 OPEN-ISSUES",
+  "未写阶段三文档",
+  "静态断言未冒充实测"
+ ]
+}

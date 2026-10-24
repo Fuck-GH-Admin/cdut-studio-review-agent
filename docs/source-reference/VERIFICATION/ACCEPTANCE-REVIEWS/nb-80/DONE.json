@@ -1,0 +1,37 @@
+{
+  "schema": "dsh-r07-review-done/1",
+  "batch": "nb-80",
+  "reviewedSeal": "nb-80-r1",
+  "revisionOf": "nb-80",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-09-20261023",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-23T22:15:00Z",
+  "sealId": "seal-224d7c837b5825df",
+  "status": "REVIEW_COMPLETE_REVISION_REQUIRED",
+  "batchVerdict": "revision_required",
+  "counts": {
+    "files": 18,
+    "accepted": 17,
+    "revision_required": 1,
+    "blockingFindings": 1,
+    "minorFindings": 1
+  },
+  "artifacts": [
+    "reviews/nb-80/RESULT.json",
+    "reviews/nb-80/RESULT.md",
+    "reviews/nb-80/REVIEWED-HASHES.json",
+    "reviews/nb-80/DONE.json",
+    "handoffs/nb-80-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-80-REVIEW-TO-LEAD.md"
+  ],
+  "notRun": [
+    "product tests (bun test, 36 declarations)",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "boundaries": "QA 只读复核：未改作者正文/源码/测试/依赖/candidate/全局 FILES/COVERAGE/MANIFEST/INDEX/inventory/g0；未 commit/push；sealed 字节（nb-80 与 nb-80-r1）均未改写；NOT_RUN。",
+  "next": "作者开 deliveries/nb-80-r2 限引用修 NB80R1-F-01（顺带 N-01）；lead 合 17 篇 acceptedHashes 并归档 inventory/g0/nb-80.json（以 r2 最终字节为准）；QA 续 nb-94，r2 复验优先"
+}

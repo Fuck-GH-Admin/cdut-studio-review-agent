@@ -1,0 +1,43 @@
+{
+  "schema": "dsh-r07-stage2-done/1",
+  "track": "review-business",
+  "session": "docs-r07-index-qa-20261023",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "completedAtUtc": "2026-10-23T21:45:00Z",
+  "status": "STAGE2_TRACK_COMPLETE_WITH_GAPS",
+  "verdict": "accepted_partial_with_gaps",
+  "counts": {
+    "chains_total": 9,
+    "chains_verified_full": 6,
+    "chains_verified_store_partial": 2,
+    "chains_uncovered": 1,
+    "conflicts": 4,
+    "gaps": 7
+  },
+  "artifacts": [
+    "manager/STAGE2/review-business/CHAINS.md",
+    "manager/STAGE2/review-business/CHAIN-REGISTER.tsv",
+    "manager/STAGE2/review-business/CONFLICTS.json",
+    "manager/STAGE2/review-business/RESULT.json",
+    "manager/STAGE2/review-business/DONE.json",
+    "handoffs/STAGE2-review-business-TO-LEAD.md"
+  ],
+  "notRun": [
+    "产品测试",
+    "typecheck",
+    "构建",
+    "Electron/GUI",
+    "真实审核运行（静态断言不冒充实测）"
+  ],
+  "boundaries": "源码只读；未改产品/测试/依赖/作者 seal/已有 review/candidate/全局账；未开 ACP 根；未写阶段三 CODEBASE-MAP/ARCHITECTURE 文档",
+  "gaps": [
+    "C9 plan/结果输出未覆盖",
+    "plan-binding-v3 行级断言待验",
+    "run-service 失败补偿待验",
+    "review-authoring-v1↔v3 并存关系待验",
+    "review-c0-authority 权限体=推断",
+    "SQLite 间接依赖未知",
+    "RC-04 manual 全文比对待做"
+  ],
+  "next": "lead 按 handoffs/STAGE2-review-business-TO-LEAD.md 分派 RC-01..04 主责作者；缺口与实现缺陷留阶段三设计差异报告；当前不做产品修复"
+}

@@ -1,0 +1,94 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-55",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "sealId": "seal-a15b4c81cc7797fa",
+  "reviewedAtUtc": "2026-10-23T23:10:00Z",
+  "reviewedManualHashes": {
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-review-ops-tools.ts.md": {
+      "manualSha256": "0ef1a534f6ba82662f8eb4b2972c17d05a4f55a552bc2ce604a36a94cfa12562",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-review-watchdog.test.ts.md": {
+      "manualSha256": "377d4b5e052b2fd69ae278e4583bebb460724fd887cbd4a917ed6015bbbcbaff",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-review-watchdog.ts.md": {
+      "manualSha256": "1b6e65accda8e25fb57d4657837fb67292450c5dc9ddbb2a8e462842d0b41a63",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-runtime-smoke.test.ts.md": {
+      "manualSha256": "0682effba9cf95bcd976b973a041c4aa29c64f3db58a768c28672c53122ed432",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-skill-resources.test.ts.md": {
+      "manualSha256": "5d2248ff4058d55a1be995700e34911e438e738a3633bc36419d5232bb4424e4",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-skill-resources.ts.md": {
+      "manualSha256": "43cf887e9e02767a2d001584d5e9771c4c0bfac9bc93c1fd5d02f4dece33bb9e",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-skills-override.test.ts.md": {
+      "manualSha256": "a171d90b3fd25704d61dba337b0440ca6ac33925c082fa2599107a721de3d167",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-streaming-control.test.ts.md": {
+      "manualSha256": "8d362292a93c61f6ff6fac2884705d4ee950fcf42b431fddc1ffe7f254d8aff8",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-streaming-control.ts.md": {
+      "manualSha256": "0785ef02681b6be04358ae1cdcb51da044eb91463b5d9421d96b93af1e3b968d",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/windows-shell-installer.ts.md": {
+      "manualSha256": "54173539041810295e1da4744a3086337dea64af6daf2ed0dfa9615b88f9376c",
+      "verdict": "accepted"
+    }
+  },
+  "sourceBindings": {
+    "apps/electron/src/main/lib/adapters/pi-review-ops-tools.ts": {
+      "sourceBlob": "83b09525b2165e3636d925e60576a68fdba808c9",
+      "sourceSha256": "e898d2eeb41b6f5611c00ce5a655b19f23569ddf9294246d2e161d0cb9e39082"
+    },
+    "apps/electron/src/main/lib/adapters/pi-review-watchdog.test.ts": {
+      "sourceBlob": "b892b29405e14759a0804068bf946a1b1fc4b130",
+      "sourceSha256": "831ac800c5d1fdb86b6e2d93454d33c7a28a994c26f6a2a08eb9fd775e5dc5ca"
+    },
+    "apps/electron/src/main/lib/adapters/pi-review-watchdog.ts": {
+      "sourceBlob": "d25adcbfb6d1496f57a63381e0de1a86ee4164d7",
+      "sourceSha256": "6400afa1dd8b4d4383a9800ae1c84bf95da955e01ace95f8bbb61ed39936aecd"
+    },
+    "apps/electron/src/main/lib/adapters/pi-runtime-smoke.test.ts": {
+      "sourceBlob": "23df893eb351c9b0f256830271596639f668179d",
+      "sourceSha256": "cb26b1200c7e14e42d1bf7da4193a5b5c5a726773eab822868ad92e2de3eee8e"
+    },
+    "apps/electron/src/main/lib/adapters/pi-skill-resources.test.ts": {
+      "sourceBlob": "31a5818d9ba537abcd0c9fe923202fe6302f16dc",
+      "sourceSha256": "a34a7ff26818bad7a6ac126e0aa14b4d7e63bef9ecfafa52cb95a06b02c4bc44"
+    },
+    "apps/electron/src/main/lib/adapters/pi-skill-resources.ts": {
+      "sourceBlob": "55f397f0e07efdbba87e979402f706f70178bf46",
+      "sourceSha256": "caa7f067c6517d585aa484a154a19e7e8046d8f14beedac7323ca954b99f41b2"
+    },
+    "apps/electron/src/main/lib/adapters/pi-skills-override.test.ts": {
+      "sourceBlob": "56b0c23d02b382395424df65d896d5926a697458",
+      "sourceSha256": "6ef2b3340cec701f238b1e7b52bced74acce8a53f09ab185adb5afa0a6d436b3"
+    },
+    "apps/electron/src/main/lib/adapters/pi-streaming-control.test.ts": {
+      "sourceBlob": "3bb727fdc5bd852a7d94e6262408daa9ddc6db12",
+      "sourceSha256": "7046c6d0ac45629b2ff931e80b6e29ac39493b85e9fea7c424c43d52b139945f"
+    },
+    "apps/electron/src/main/lib/adapters/pi-streaming-control.ts": {
+      "sourceBlob": "22326172d4ae233daa53e5daed383f0753b89894",
+      "sourceSha256": "171ebe847dce4dce814b9acf0aed9cfb154e46fb66989d83101ec1c750390822"
+    },
+    "apps/electron/src/main/lib/adapters/windows-shell-installer.ts": {
+      "sourceBlob": "eca4b4c966e74e6b55968ec23033b61280ec1749",
+      "sourceSha256": "3a7bedc4cbfad59b1e5162d2d5cb02ac73eb0a977cb14d48ef936ffa017b0bb1"
+    }
+  },
+  "qaNotes": "10/10 accepted（3 minor NB55-N1..N3 计数口径转 ACCEPTED-ERRATA）。NOT_RUN。"
+}

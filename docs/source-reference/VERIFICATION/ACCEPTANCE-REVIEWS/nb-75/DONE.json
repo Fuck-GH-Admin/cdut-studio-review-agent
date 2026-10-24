@@ -1,0 +1,61 @@
+{
+  "schema": "dsh-r07-review-done/1",
+  "batch": "nb-75",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "sealId": "seal-55d8ed22f35e1b91",
+  "reviewedAtUtc": "2026-10-24T06:30:00Z",
+  "batchVerdict": "accepted",
+  "fileVerdicts": {
+    "apps/electron/src/main/lib/cslab/cslab-scientific-tools.ts": "accepted",
+    "apps/electron/src/main/lib/cslab/cslab-security.test.ts": "accepted",
+    "apps/electron/src/main/lib/cslab/cslab-security.ts": "accepted",
+    "apps/electron/src/main/lib/cslab/cslab-service.ts": "accepted",
+    "apps/electron/src/main/lib/cslab/cslab-share-db.ts": "accepted",
+    "apps/electron/src/main/lib/cslab/cslab-share-watcher.test.ts": "accepted",
+    "apps/electron/src/main/lib/cslab/cslab-share-watcher.ts": "accepted",
+    "apps/electron/src/main/lib/cslab/cslab-structure-snapshot.test.ts": "accepted",
+    "apps/electron/src/main/lib/cslab/cslab-structure-snapshot.ts": "accepted",
+    "apps/electron/src/main/lib/cslab/cslab-tiff.test.ts": "accepted",
+    "apps/electron/src/main/lib/cslab/cslab-tiff.ts": "accepted",
+    "apps/electron/src/main/lib/cslab/cslab-tool-audit.ts": "accepted",
+    "apps/electron/src/main/lib/cslab/cslab-tool-registry.ts": "accepted",
+    "apps/electron/src/main/lib/cslab/cslab-tool-trust.test.ts": "accepted",
+    "apps/electron/src/main/lib/cslab/cslab-tool-trust.ts": "accepted",
+    "apps/electron/src/main/lib/cslab/cslab-tools.test.ts": "accepted",
+    "apps/electron/src/main/lib/cslab/cslab-track-changes.test.ts": "accepted",
+    "apps/electron/src/main/lib/cslab/cslab-track-changes.ts": "accepted"
+  },
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0,
+    "findings": 7
+  },
+  "findingsIndex": [
+    "NB75-N1",
+    "NB75-N2",
+    "NB75-N3",
+    "NB75-N4",
+    "NB75-N5",
+    "NB75-N6",
+    "NB75-N7"
+  ],
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass_with_findings"
+  },
+  "runStatus": "NOT_RUN",
+  "artifacts": [
+    "reviews/nb-75/RESULT.json",
+    "reviews/nb-75/RESULT.md",
+    "reviews/nb-75/REVIEWED-HASHES.json",
+    "handoffs/nb-75-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-75-REVIEW-TO-LEAD.md"
+  ],
+  "mergeRule": "全 18 篇 acceptedHashes 可合；7 findings 入 ACCEPTED-ERRATA G4 前关闭。",
+  "note": "已 seal D0 不回写。"
+}

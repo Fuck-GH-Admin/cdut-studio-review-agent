@@ -1,0 +1,78 @@
+{
+ "schema": "dsh-r07-index-review-result/1",
+ "batch": "index-p02-agent-runtime__apps__electron__default-skills__pptx",
+ "groupId": "p02-agent-runtime__apps__electron__default-skills__pptx",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-02-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T19:15:00Z",
+ "sealedAtUtc": "2026-10-23T19:01:26+00:00",
+ "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__pptx.md",
+ "artifactSha256": "cf0b2a4f2f6d1ef4a4b761d2bf22fc391475aa23041d2719ea76f029ffce8cf8",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 1,
+  "accepted": 1,
+  "revision_required": 0,
+  "unknown": 0,
+  "blocking": 0,
+  "nonBlocking": 3
+ },
+ "gates": {
+  "G0_INDEX": "PASS",
+  "G1_INDEPENDENT_SOURCE_REVIEW": "PASS",
+  "G2_SEAL_CONSISTENCY": "PASS_WITH_NOTES",
+  "note": "G0 等价 1/1、封版链四方哈希全对、锚点/行号命中、锁一致。G1 独立实读 chartlib.md（114 行）/chartlib.py/SKILL.md：职责分节、消费链（SKILL.md:29/:64）、PALETTES 10 项、API 名、chartlib.py:33/:492-493 全部属实，验证①②③实测可执行且全过。发现自身结构行号漂移（N-01）与共享链漂移（N-02）、封版元数据倒挂（N-03），均非阻断。"
+ },
+ "g0Evidence": {
+  "stockScript": "ERRATA-E1 沿登记（g0_index_check.py:99-100 现按 deliveries/index-<gid> 寻址看似已修，QA 以自写等价检查为准）；等价检查 1/1 PASS"
+ },
+ "files": [
+  {
+   "path": "apps/electron/default-skills/pptx/scripts/chartlib.md",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__pptx.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__pptx.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--pptx--scripts--chartlib.md",
+   "line": 6,
+   "sourceBlob": "e3455db0b61c3828ed2d5e92dce3b984cb08cd72",
+   "sourceSha256": "a5060b1f02a0f43a1c966545071119cd6a2bf0d77062c50e3a0f553fdb854cc5",
+   "manualSha256": "cf0b2a4f2f6d1ef4a4b761d2bf22fc391475aa23041d2719ea76f029ffce8cf8",
+   "verdict": "accepted",
+   "findings": [
+    "N-01",
+    "N-02"
+   ],
+   "note": "消费三要素（谁加载 SKILL.md:29/:64→高级图表需求时→add_chart 统一接口/7 铁律/COM 验证约束）属实；10 配色/84 类型标注为推断=诚实。"
+  }
+ ],
+ "findings": [
+  {
+   "id": "N-01",
+   "severity": "low",
+   "type": "citation_precision",
+   "file": "apps/electron/default-skills/pptx/scripts/chartlib.md",
+   "manualLines": "职责列/影响列",
+   "detail": "chartlib.md 自身结构行号漂移：§三 实为 :61-79（写 :55-72）；§四 7 铁律 实为 :81-96（写 :74-97，:74-77 是 §三『规则』块）；「不碰底层 XML」实为 :4（写 :3）；「实测事故」注 实为 :93（写 :95-97）。7 条铁律内容与 :90/:95-97 实测吻合。",
+   "action": "合并 errata 重导；非阻断。"
+  },
+  {
+   "id": "N-02",
+   "severity": "low",
+   "type": "citation_precision",
+   "file": "(共通链)",
+   "manualLines": "消费/打包列",
+   "detail": "electron-builder.yml extraResources 实为 :70-75（filter :74-75；写 :71-73）；index.ts 赋值起 :939（写 :940-941）。",
+   "action": "合并 errata；非阻断。"
+  },
+  {
+   "id": "N-03",
+   "severity": "low",
+   "type": "delivery_metadata",
+   "file": "deliveries/index-…-pptx/DONE.json",
+   "manualLines": "startedAtUtc/sealedAtUtc",
+   "detail": "startedAtUtc 19:05:00Z 晚于 sealedAtUtc 19:01:26Z，元数据倒挂（MANIFEST/READY/DONE 哈希链本身全对，不影响字节）。",
+   "action": "下次重封时更正；非阻断。"
+  }
+ ],
+ "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局账；产品测试/typecheck/构建/GUI/实际 validate·COM 运行 NOT_RUN；结论只覆盖本批。非阻断≠已修。"
+}

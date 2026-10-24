@@ -1,0 +1,52 @@
+{
+ "schema": "dsh-r07-review-done/2",
+ "batch": "nb-92-r1",
+ "revisionOf": "nb-92",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-ui-20261023",
+ "reviewerSession": "docs-r07-qa-ui-20261023",
+ "reviewedAtUtc": "2026-10-24T01:20:00Z",
+ "state": "QA_COMPLETE",
+ "batchVerdict": "accepted",
+ "counts": {
+  "filesReviewed": 18,
+  "accepted": 18,
+  "closedFindings": 4,
+  "openNonBlocking": 0
+ },
+ "reviewedSeal": {
+  "root": "deliveries/nb-92-r1",
+  "revisionOf": "nb-92",
+  "readySha256": "eb96337726b00509db35917f94a1a1e7bf3016ca25299fcf86c4b41139a9098c",
+  "doneSha256": "db9470f5f077b7fe2a8137ce7c0b795a4c64e92735679fa91e1b4414fc58b0a6",
+  "manifestSha256": "932e9696aa1e9ad790f85daed6eb0ad5cf5a898e530abb87e673be8a65be07d1",
+  "zipSha256": "d4cd96880f587ad55862a96551eb19712f012f9cac8cd8736b0f0c2d120dc7ab"
+ },
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ExplorationBranchBar.tsx.md": "c5983bbb021deb9005547e1539450071d72cd9bdf290babf9550fe618979c6eb",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/FoldedSegmentsRegion.tsx.md": "c3cd1304a16e92640c9178b7ae1397228ee61b92c8fb4cd53015b3bf91c74b02",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/GoalStatusBar.test.tsx.md": "6bf1010ad675fc660804fdaa1c017487ef8939abb1be6fd2dd9af36c6b848cfd",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/GoalStatusBar.tsx.md": "d3de354266db6ec8c6365f2545a32676c46e9182236dc468b73f84bee447b0b8",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/GraphQuestionInput.tsx.md": "3067dd094593de79f9282887266cd673ae4f2a0455b3613e432ab4e2b0be320f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/MentionList.tsx.md": "08b8ee77264329344df120bdde53ecd7943dc3eb27142a32aef005d21e4f522d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/MoveSessionDialog.tsx.md": "3ce92677a3f10ab8b9c6e97be4126bb5049858732d1c3d2f6236856770eeedba",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/PermissionBanner.tsx.md": "6aed96a592659a6c3f51e8ba5274ad894b007485b73076f474ecd23383dcec0f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/PermissionModeSelector.tsx.md": "951a631980fa1eaa787374a8ef9670f6bc46cd167340d8ca2507e03100ab9ce5",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/PlanModeDashedBorder.test.ts.md": "af53ad983d903acb7b262ed0c6789f388057d50423b548768df4d43eb132e0a9",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/PlanModeDashedBorder.tsx.md": "1646a1eeb69ad43c91f83bf33ac7249015bf861bdcf0b94d0a17728a55330ae3",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/PresetSelector.tsx.md": "66b43a2d194e79f420babb4693df3bd9fe31d064ef45f9eb5d918297087db0d8",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ProcessBlockGroup.test.ts.md": "5bf6af1f87662b85f53e4f9f5feda2062ed85d757fd32c1e4cb39287909dce31",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ProcessBlockGroup.tsx.md": "fc135b9a31e7757fde1efdda83e71e9e6792a0eea98545dda3880f5b54c1a301",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ProjectGraphPanel.tsx.md": "aa8e3c1ce93a8032c5662a3c84ad0470a8b0dea820520a60c395a966c790bd83",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/RuntimeProcessPanel.tsx.md": "fe0ea2af49bf6b05a0d0bc7d8e1726672c9834213ada8862ae1ec95d57f46e6d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/SDKMessageRenderer.test.ts.md": "d4f60369ec243c5dfadaa6c1356935e49644e459e09f1e5b5452bb2544860f8f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/SDKMessageRenderer.tsx.md": "592f693ab7004caf394fff86a0851a2b0c4cd3795c67f33a9bbfa835d59510ae"
+ },
+ "outputs": {
+  "RESULT.json": "1bae2a82e6adbcc321dde7e963d15f6c105a4943e38fe6e062b5ba985e99644a",
+  "REVIEWED-HASHES.json": "40736210bf00eb5c6e7974993485a71709dc0ba3cdb63007f8489d684ad98158"
+ },
+ "notes": [
+  "N92-1/2/3/4 全 closed，无残留"
+ ]
+}

@@ -1,0 +1,42 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-122",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-extra-03-20261024",
+  "authorSession": "docs-r07-author-extra-03-20261024",
+  "reviewedAtUtc": "2026-10-23T21:40:00Z",
+  "batchVerdict": "accepted",
+  "bindingNote": "18/18 绑定==scope；manualSha256 四方一致；18 篇真值审查+强声明回源全实",
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/ofv-toolbar.ts.md": "1191bedd4dc57f0010791f99883137465c21d018306b39b313e7f25b94f11804",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/panel-layout.test.ts.md": "1256fe4f5b0e969c6b657afa131803878100aa149bf417484823fe1c8694a913",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/panel-layout.ts.md": "59ba7d41652274c840cf8e74c8f91da4aacad1e47bce1723c06eb2e371f6f027",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/pi-harness-view-model.test.ts.md": "da853ad93dbdf780b21c45f441e5ca3b56b4c50953e139d9a51591bc366a9411",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/pi-harness-view-model.ts.md": "b43db26567a239976a62da2b4c4d931624c5c09dab6a7ed2edb0df5c94798206",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/preview-extension-sets.ts.md": "e13c04c27714d3398b5f3fd397cb48246c92a5862a21ab7182877dc7a818f8fb",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/product-feature-flags.test.ts.md": "e7b53e72fa9ae0e1c1467d26407b3de1b54ec0a620c03a6a8db4b023dce25f60",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/product-feature-flags.ts.md": "079b56cdb3ef036a7f4586ac8753befc1055bb7f8e838071f1f71e231eab86b0",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/quoted-selection.test.ts.md": "f997276abb7d90f08649d22a1e17fc7f9872385e88bea9454797f016b04a5fab",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/quoted-selection.ts.md": "5e06d4fcea8cf7a5eac048c8ae809de425a59f25c565a1703ab12be67855a15c",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/resolved-blob-messages.test.ts.md": "0bb17b05bb6ee40d2ce09d0564053053a1648e08000e6e1a80880beec43e2704",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/resolved-blob-messages.ts.md": "9bc0a6d9e2f578fa82bbeababae0cce4378f2869e2303cec06bb3227606805c7",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/session-file-changes.ts.md": "db44c551f9f94eea7896247139db3d93ff6a2947361aca8bb14e02fd92044385",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/session-reference-drag.ts.md": "aa621427691715cc6a3e13b4de55021f9c881d23cf1d084c95c5a9fd42f05960",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/session-status-visual.ts.md": "2c2496437153fe50291fd235ec7d9652738f5592128e5dbc1c67fb3084e31dc4",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/session-update-batcher.test.ts.md": "48b2c8f4e1a53c496674ede172468b21c86b3cb58e78fd9ea23ff30dc86c6bdc",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/session-update-batcher.ts.md": "11148c837a2d9b42748fba38c2bab7217b0e603d63b29d646f9f6e9a943512c8",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/shortcut-defaults.ts.md": "338ff6859d4d42a0444b1aed946c93c242b62e1fec8699dc5b5c343bde69bdd6"
+  },
+  "rejectedHashes": {},
+  "deliveryHashes": {
+    "MANIFEST.json": "c2e22c3899c0da0a4978d8e2adfab9825172eb0d002f5f42cf218df33d5b61c0",
+    "READY.json": "c38f88121d28ff2d78810f606e071631ee4b873dde9904504b5b61f68d4c7329",
+    "DONE.json": "dedb454156f6c4e4c8bc033a60b7ec7878c47beb0bb723a70f127eca14ae85c2"
+  },
+  "zip": {
+    "path": "deliveries/nb-122/R07-nb-122-05fb2565.zip",
+    "sha256": "d632564942d3ed79c55a63bd7bb25113f275453787f26f4830459c4bc019643b",
+    "bytes": 74141,
+    "entries": 21
+  }
+}

@@ -1,0 +1,60 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill-r1",
+ "groupId": "p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T21:30:00Z",
+ "sealedAtUtc": "2026-10-23T19:33:22+00:00",
+ "artifactSha256": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+ "note": "r1 复验全对。9/9 accepted，0 findings。",
+ "acceptedManuals": {
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md@apps/electron/default-skills/guizang-ppt-skill/references/checklist.md": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md@apps/electron/default-skills/guizang-ppt-skill/references/components.md": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md@apps/electron/default-skills/guizang-ppt-skill/references/image-prompts.md": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md@apps/electron/default-skills/guizang-ppt-skill/references/layouts-swiss.md": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md@apps/electron/default-skills/guizang-ppt-skill/references/layouts.md": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md@apps/electron/default-skills/guizang-ppt-skill/references/swiss-layout-lock.md": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md@apps/electron/default-skills/guizang-ppt-skill/references/swiss-map-component.md": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md@apps/electron/default-skills/guizang-ppt-skill/references/themes-swiss.md": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill.md@apps/electron/default-skills/guizang-ppt-skill/references/themes.md": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30"
+ },
+ "sourceBindings": {
+  "apps/electron/default-skills/guizang-ppt-skill/references/checklist.md": {
+   "sourceBlob": "34719d78c3a0a0c8dc5cfa0152c675537a60a910",
+   "sourceSha256": "7328767e6ca6b4916a0ce20883d6982cc389f959357e73037299cdf0a31a3085"
+  },
+  "apps/electron/default-skills/guizang-ppt-skill/references/components.md": {
+   "sourceBlob": "54c98ecbd3df27cd9f6955ebb839bd761deadda4",
+   "sourceSha256": "0f6e7207399df8b3920954dfc7364e4182f52d4b418f317ef0147d51a660459d"
+  },
+  "apps/electron/default-skills/guizang-ppt-skill/references/image-prompts.md": {
+   "sourceBlob": "a13b01104e39765c9eb548d6ed52369517c193c5",
+   "sourceSha256": "5dc354f19955352e63550a935dfc5c9cd7a8e26e1aecf00883108bd627853aca"
+  },
+  "apps/electron/default-skills/guizang-ppt-skill/references/layouts-swiss.md": {
+   "sourceBlob": "ee3512665364b39861811698dcf5983615ea3262",
+   "sourceSha256": "de01ce9c78805c7b8744af44cf2e3d18c48d65c0ad3f1a88afce7ccbbaff6ad8"
+  },
+  "apps/electron/default-skills/guizang-ppt-skill/references/layouts.md": {
+   "sourceBlob": "3ea2f63708393cdbf2180e62c43dc1254b446ad4",
+   "sourceSha256": "9a57faaa937722b7d15725a6cebebc071f8c9431aaaf82e2584a9966bffa7f6e"
+  },
+  "apps/electron/default-skills/guizang-ppt-skill/references/swiss-layout-lock.md": {
+   "sourceBlob": "8a4f582dfe3399bf822b43acacb7793a43c05d95",
+   "sourceSha256": "035f40c1c758e5b0a9af98536abaca74c9216124d0f74ea136f5798907c30476"
+  },
+  "apps/electron/default-skills/guizang-ppt-skill/references/swiss-map-component.md": {
+   "sourceBlob": "5716d43f37aecca2edf6f2782e9ab9292d3dfe66",
+   "sourceSha256": "0b870a75c7dea7f22f84d9a5f64289b87c12dbcd89d567304e239081d3f07a1e"
+  },
+  "apps/electron/default-skills/guizang-ppt-skill/references/themes-swiss.md": {
+   "sourceBlob": "b7d1ca30f6f4d6fc87e91e24281c026de476d9aa",
+   "sourceSha256": "7151260f2ab25b3502733299707ac0abe23a8c5a9e63c47b26ee8ee0074a1f01"
+  },
+  "apps/electron/default-skills/guizang-ppt-skill/references/themes.md": {
+   "sourceBlob": "b33190e9708e154dbb4acc60962974d4b5428342",
+   "sourceSha256": "a4c7ccdd992118589a62d5ea214996d76d0d5c4d45c9653b9bfca9200f2d7e77"
+  }
+ }
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "dsh-r07-review-done/1",
+  "batch": "nb-14",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-09-20261023",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-23T16:58:32Z",
+  "sealId": "seal-910d78c7a7cee3ea",
+  "status": "REVIEW_COMPLETE_ACCEPTED_WITH_ERRATA",
+  "batchVerdict": "accepted",
+  "counts": {"files": 14, "accepted": 14, "revision_required": 0, "unknown": 0, "minorFindings": 4},
+  "artifacts": [
+    "reviews/nb-14/SOURCE-CHECKLIST.md",
+    "reviews/nb-14/PRE_READ_DONE.json",
+    "reviews/nb-14/RESULT.json",
+    "reviews/nb-14/RESULT.md",
+    "reviews/nb-14/REVIEWED-HASHES.json",
+    "reviews/nb-14/DONE.json",
+    "handoffs/nb-14-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-14-REVIEW-TO-LEAD.md"
+  ],
+  "notRun": ["product tests (bun test, 52 declarations)", "typecheck", "build", "Electron/GUI", "real model/network"],
+  "boundaries": "QA 只读复核：未改作者正文/源码/测试/依赖/candidate/全局 FILES/COVERAGE/MANIFEST/INDEX/inventory/g0；未 commit/push；sealed 字节未改写；产品测试与真实模型 NOT_RUN。",
+  "next": "lead 按 reviews/nb-14/REVIEWED-HASHES.json 14 个 exact manualSha256 机械合入并归档 inventory/g0/nb-14.json；NB14-N-01..N-04 走 errata（ACCEPTED-ERRATA）或任一 rN 关闭（G4 前必须关闭）；QA 续 nb-15 起预读"
+}

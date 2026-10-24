@@ -1,0 +1,128 @@
+{
+ "schema": "dsh-r07-qa-reviewed-hashes/1",
+ "batch": "nb-99",
+ "revisionOf": null,
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "reviewedAtUtc": "2026-10-24T11:45:00Z",
+ "bindingNote": "sourceBlob=git ls-tree HEAD 实测=MANIFEST；manualSha256=stage 现字节实算=MANIFEST",
+ "sourceBinding": {
+  "apps/electron/src/renderer/components/cdut-science/CsLabPdfViewer.tsx": {
+   "blob": "1210b87df8ae69fdd487c919c2d72b5504dbe8b1",
+   "sha256": "9711f33f7973f239860b6c03b88bd630f9573a30dfe21c9fd8bfba20d032212d",
+   "lines": 572
+  },
+  "apps/electron/src/renderer/components/cdut-science/CsLabPlotControls.tsx": {
+   "blob": "f56501d6ad7728807172cbf5bc8a82651b254f19",
+   "sha256": "af4806067c3d97298dbc7986f6a4040ca572c35ce8b9b97d543cd08fced207d6",
+   "lines": 128
+  },
+  "apps/electron/src/renderer/components/cdut-science/CsLabPlotDigitizerPanel.tsx": {
+   "blob": "7a096d76835fa85739cd29f3b14414872b61d04c",
+   "sha256": "54a890128037d4911bfb06a790f62232e1a0481811c160609a394bef9592e893",
+   "lines": 573
+  },
+  "apps/electron/src/renderer/components/cdut-science/CsLabPreparationView.tsx": {
+   "blob": "6e04712fee4e6242b27d65aba53277bb88876009",
+   "sha256": "0e30f19a83062219275875c3886d8f0236af254e9470a0b2d2c0b5d254dc67a4",
+   "lines": 584
+  },
+  "apps/electron/src/renderer/components/cdut-science/CsLabRenameLabDialog.tsx": {
+   "blob": "bfe0fa9120cb5a46619c97062fb055fcf8b8258a",
+   "sha256": "84dcb5511ab945ba6f25a8725a3fcac5e1d39d22248c4fe06843cedf2e9b9f85",
+   "lines": 142
+  },
+  "apps/electron/src/renderer/components/cdut-science/CsLabReviewMarginalia.tsx": {
+   "blob": "99a82be1759e19ceb92b9f9fea70f13c93b9e737",
+   "sha256": "b99015636713d64f073bac77244d9d0e3bd3298ce264585b76683a6c94e811f2",
+   "lines": 297
+  },
+  "apps/electron/src/renderer/components/cdut-science/CsLabRunTimeline.tsx": {
+   "blob": "fee1edf26713352a12b5497ecb60d52baf673f4b",
+   "sha256": "c434e8bdd90673283188bfee49261795e14a8970688cb3dfda6301bb8ab3deca",
+   "lines": 730
+  },
+  "apps/electron/src/renderer/components/cdut-science/CsLabSlideDrawer.tsx": {
+   "blob": "f85498439789f46bf8fbb51cab4355a3e6ac83ab",
+   "sha256": "129d07fd4db4a3509865d041d429aa75d566b236c13c6db1d6bc22350e199b64",
+   "lines": 184
+  },
+  "apps/electron/src/renderer/components/cdut-science/CsLabSpectrumStrip.tsx": {
+   "blob": "b1f3e6256703bbb7852531ec916f155bba96e85d",
+   "sha256": "9e5ca3d0854791408fd1305fd72c236e5693a8c438f89c4cd317edc2bad41a0f",
+   "lines": 678
+  },
+  "apps/electron/src/renderer/components/cdut-science/CsLabSplitControls.tsx": {
+   "blob": "c75f8af97158396d684405053170e94d9ce309fc",
+   "sha256": "cc2699cf4f06e3ea8560fb99cf71e315c0c86f5a0e7006c8d48eb02c6d49c42f",
+   "lines": 60
+  },
+  "apps/electron/src/renderer/components/cdut-science/CsLabStageGrid.tsx": {
+   "blob": "d8b5b5c855beff07f2b49061379d599ee31c13c1",
+   "sha256": "7aba99112011aad2a001970adc54559ab319449c6d270baf767cf958cb977ee8",
+   "lines": 185
+  },
+  "apps/electron/src/renderer/components/cdut-science/CsLabStagePane.tsx": {
+   "blob": "8253460ab189d9195dc1c50e3826780e718f9e66",
+   "sha256": "fd4d283f1f44b67b160f529329214b92f47e78aff66e37dc9796b8db99e41d94",
+   "lines": 298
+  },
+  "apps/electron/src/renderer/components/cdut-science/CsLabTileOverlay.tsx": {
+   "blob": "4a9a2c6f600e96dad72706b21483d203552ae215",
+   "sha256": "fe624ebf8c40e1b955f33e2bbebae04ca4377dcd53e53d4fbf22127f32ada873",
+   "lines": 74
+  },
+  "apps/electron/src/renderer/components/cdut-science/CsLabToolsPanel.tsx": {
+   "blob": "b38a4b457a73edf56720cad8bba5e8ac322fb2da",
+   "sha256": "a5a57b1492b4b4f143db84da206f5727b873b9c12afa08fd97f2998eb2f40cbe",
+   "lines": 457
+  },
+  "apps/electron/src/renderer/components/cdut-science/CsLabWorkspaceView.tsx": {
+   "blob": "ded9791205592eb2773f0f8465a9876701b6e365",
+   "sha256": "08efb9f24e90b8a312f082d15d76048d6390082bc87085f4e5597f94b64004f6",
+   "lines": 2660
+  },
+  "apps/electron/src/renderer/components/cdut-science/CsLabZoteroPanel.tsx": {
+   "blob": "52e05085b48d7f2af6691563441446b7f63e4437",
+   "sha256": "31acb0eddf5dec3fd7c31ee6b8808965fcedf80a48ec18d3c622c4105f8dd3d9",
+   "lines": 219
+  },
+  "apps/electron/src/renderer/components/cdut-science/agent-window/ScienceAgentWindowView.tsx": {
+   "blob": "5dbcaae28d140c3c1e9d30793319c8f080cab9c3",
+   "sha256": "7dff22b765c83711f89e209e528f8fc1c0b6cb3132e9139fb03442e42908e06b",
+   "lines": 669
+  }
+ },
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabPdfViewer.tsx.md": "dffbacc90b705f106be3c44b962b92ca0aae3f1865abf00bb3615c1f2f1e0814",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabPlotControls.tsx.md": "47b3c0b2ba9286c5993435da645e358f18bc26df75c059eff2a9d37327149f4e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabPlotDigitizerPanel.tsx.md": "901000701412298e39a0c48fdc6a2f46409c71f1372db022b50089e71ea39c1e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabPreparationView.tsx.md": "d75e53558ef611682c240ab69d5ab7d41d052adbea2de1c19239c4f7116d2118",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabRenameLabDialog.tsx.md": "392f7ac2a8a5b3dc1ab701cdc3c310cdca21ec404dce516bdc40b4c31b486844",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabReviewMarginalia.tsx.md": "5aa41f8bc962a69318e7aa355c578ac351ebe629565636d5c78b76bfe06c5850",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabRunTimeline.tsx.md": "74d59e9b6b5f66b63a27bfa8efc504d0f986427f24c5a254da5c7a2f2c07036b",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabSlideDrawer.tsx.md": "ae65098bab815abde87db6c96a5ed5a13e6104f7e2d9dfb9ae3fbb75aac0ea7c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabSpectrumStrip.tsx.md": "3db603b3ddd0cd87460379895b9ac6199aafd1516af55ecdcc8c80f1187c86d0",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabSplitControls.tsx.md": "9993354b0ce46960bb1cfe2fa4d61ed5b33077e30afc007612d81366d4c0c60f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabStageGrid.tsx.md": "46d250f799baac381d7d5cbd6c62bf7c59b198140de84a152e1222679e90009a",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabStagePane.tsx.md": "cf695efc3fe6547a25063effd9aab7c1ea97f43b060ed238c6fab18ee06fd625",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabTileOverlay.tsx.md": "195ead8068ce8aca2f53ec5880ce31fb38aef23b542bac8d81e6d842e2daabd3",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabToolsPanel.tsx.md": "1353681fa4afb0ee6cf1741c52c6a357a47e1b0926bcaea319e45e739b599da2",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabWorkspaceView.tsx.md": "9491786e019f7710fc21a217eb2cfcc58bf8e7260c39bfdb8a244f5523988dc4",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabZoteroPanel.tsx.md": "a2538159e0a1ae317a5d1a9b0a10d8193233d28ebdc8956dab66bdbdac10f521",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/agent-window/ScienceAgentWindowView.tsx.md": "1c284057158184290c0de9acf8f349927f459fe9ffb91fc927bbba3d4327d1d7"
+ },
+ "rejectedHashes": {},
+ "supersededManualHashes": {},
+ "deliveryHashes": {
+  "manifestSha256": "45e21d86b14e9e303fd7577bf084be643660d5bfc4068dcf3ce84d32f7ab9055",
+  "readySha256": "df34de4290f169e8a420bc675e4781cba1f6c897fa63f24566ca54392afb65a1",
+  "doneSha256": "1e226bb401780cf58d07a05a987678ceb993a1b9361894e9760bcd6eef7b18d8"
+ },
+ "zip": {
+  "path": "deliveries/nb-99/R07-nb-99-05fb2565.zip",
+  "sha256": "eac3450d9a6a43bf4f13d546e410c71e22b931a647f1ed4ed3d0440df0dadff0",
+  "entries": 20,
+  "note": "17 手册+MANIFEST+2 mechanical TSV；不含 READY/DONE（v2）；无穿越/0 mismatch"
+ }
+}

@@ -1,0 +1,60 @@
+{
+ "schema": "dsh-r07-qa-done/1",
+ "batch": "nb-47-r1",
+ "id": "NB-47",
+ "revisionOf": "nb-47",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewRoot": "reviews/nb-47-r1",
+ "reviewedAtUtc": "2026-10-24T15:10:00Z",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PASS",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 18,
+  "revision_required": 0,
+  "unknown": 0
+ },
+ "acceptedManuals": 18,
+ "acceptedHashesCount": 18,
+ "findingsClosure": {
+  "F-01": "CLOSED（agent-end-reason：虚假一致性声明改为「注释 9 级漏列 delegation_cancelled，代码 :76-78」逐字核实）",
+  "G1-LINE-REF-RANGE": "CLOSED（ask-user :16-23→:16-22，22 行文件核实）",
+  "N-01": "CLOSED（collaboration-tools 门禁 :2171/:2173→:2173/:2175，sed 核实）",
+  "N-02": "CLOSED（恢复分支改述为防御性守卫+照实记录不可达性）"
+ },
+ "resultSha256": "87e8435c58b3698bfc3610545910971f9bbdf852389073da3a4fec96d823706c",
+ "reviewedHashesSha256": "e29e2f090b1d212687bc379507fc2cc070dec515f676c9b13fa5e337ce237a45",
+ "zip": {
+  "path": "deliveries/nb-47-r1/R07-nb-47-r1-05fb2565.zip",
+  "sha256": "d32865129a7b725327ad7dad134149b892f7238604c2276431381fd43d4359db",
+  "entries": 21,
+  "note": "18 手册+MANIFEST+2 mechanical TSV；v2 无穿越/0 mismatch"
+ },
+ "sealId": "seal-dfa8d09d170a1e25",
+ "artifacts": [
+  "reviews/nb-47-r1/RESULT.json",
+  "reviews/nb-47-r1/RESULT.md",
+  "reviews/nb-47-r1/REVIEWED-HASHES.json",
+  "reviews/nb-47-r1/DONE.json",
+  "handoffs/nb-47-r1-REVIEW-TO-AUTHOR.md",
+  "handoffs/nb-47-r1-REVIEW-TO-LEAD.md"
+ ],
+ "priorReviewsUntouched": true,
+ "parentPreserved": "r0 交付字节未动（r0 stage sha 仍与 reviews/nb-47 acceptedHashes 全等）",
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "real model/network"
+ ],
+ "writtenOnlyIn": "reviews/nb-47-r1 + handoffs",
+ "next": "lead 按 18 个新 acceptedHashes 合入（3 篇新字节+15 篇原字节）；nb-47 循环闭合"
+}

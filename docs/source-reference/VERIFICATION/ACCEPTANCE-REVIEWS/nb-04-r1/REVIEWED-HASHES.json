@@ -1,0 +1,100 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "nb-04-r1",
+ "revisionOf": "nb-04",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T16:50:51.663944+00:00",
+ "deliverySeal": {
+  "sealId": "seal-4f23a5a95a8077f0",
+  "sealedAtUtc": "2026-10-23T16:38:19Z",
+  "readySha256": "2443acdbc45b01defa581aae57b8eaf065ffb9007cdfa7319d5a4552290ae2b8",
+  "doneSha256": "05f10684d0222887ccfb74c28ac089d3364ec99038c2ffdf2076f75daa5ace9d",
+  "manifestSha256": "18c1e094913913401b91d204706fb15931232afc985138f3aea025e9a5dad739",
+  "zipSha256": "3b1c3d53d21e60065a9b75a12332407b10773f00aa687ed8a977be7d3a5692d0"
+ },
+ "files": [
+  {
+   "path": "packages/shared/src/types/index.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/index.ts.md",
+   "sourceBlob": "609d7382a0d9a9e04e1ca013e64a1ecb2b198334",
+   "sourceSha256": "df1f2333195aed12b7e2e43189b505eb09517eebb788844eee352a6cfbb721ff",
+   "manualSha256": "9110a846cfc34ae15738eb97e2413690774d9266b3be97fddb18e25fa7f4f2a2",
+   "parentManualSha256": "9110a846cfc34ae15738eb97e2413690774d9266b3be97fddb18e25fa7f4f2a2",
+   "verdict": "accepted"
+  },
+  {
+   "path": "packages/shared/src/types/longterm-memory.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/longterm-memory.ts.md",
+   "sourceBlob": "745687da3dbd3447cf78ae9b87ca87913770d5d6",
+   "sourceSha256": "139b7568c64c9d9e050ea5cc16c26fe553833d08de5eaee9d3b049032f854439",
+   "manualSha256": "59f32323c316e272bc70b252f32ca217fb6c8ce6d7678163251115fb5a339720",
+   "parentManualSha256": "59f32323c316e272bc70b252f32ca217fb6c8ce6d7678163251115fb5a339720",
+   "verdict": "accepted"
+  },
+  {
+   "path": "packages/shared/src/utils/cslab-fuzzy-search.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-fuzzy-search.ts.md",
+   "sourceBlob": "f407eba365c4f59fa4fed2d4cfcdf7c097502cea",
+   "sourceSha256": "275ca0e5d935852a20fbc53ba7974ed5158cb57d9e362fd9305008256d2d87c8",
+   "manualSha256": "f56c8aa5d788e108ab789a4b75b5810cb26020bb315994c6d5237d897075dd1b",
+   "parentManualSha256": "f56c8aa5d788e108ab789a4b75b5810cb26020bb315994c6d5237d897075dd1b",
+   "verdict": "accepted"
+  },
+  {
+   "path": "packages/shared/src/utils/cslab-fuzzy-search.test.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-fuzzy-search.test.ts.md",
+   "sourceBlob": "b181beeccd4b06bccc2db99243acf3d57f5427d7",
+   "sourceSha256": "05032b19fe26d30ed44fe7a75d52f1c04ef59f16b7d822f933259f6e11c40e79",
+   "manualSha256": "a902db5cfe4ca0f7b96dc22b561ce0e6c9e977fc8f96fb2f81b590b733985108",
+   "parentManualSha256": "a902db5cfe4ca0f7b96dc22b561ce0e6c9e977fc8f96fb2f81b590b733985108",
+   "verdict": "accepted"
+  },
+  {
+   "path": "packages/core/src/providers/types.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/types.ts.md",
+   "sourceBlob": "752cb007973e54f43ce6432287bf1bd3d4a941cf",
+   "sourceSha256": "97b9300c009c1be59b4a6c5ce3c3318b7deb3d41a53fb5698006baafaaacb772",
+   "manualSha256": "d3a4cf99fcbbcadd6fe27026c404763e547520b186dd5ae0a235e9ed02c34b37",
+   "parentManualSha256": "c7926284c0144f5565a3d6a8a366f73736ee5b35245e08330ae8cd7f1ebfcbfe",
+   "verdict": "accepted"
+  },
+  {
+   "path": "packages/core/src/providers/anthropic-adapter.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/anthropic-adapter.ts.md",
+   "sourceBlob": "72bef8a307d3f8669b5b41a8a0f386aa41abe5f1",
+   "sourceSha256": "69fe59701ee44fcd41993ce042f9f9d0e35174a855c7cd795b1e3f03dd31e51c",
+   "manualSha256": "37b1a8d02f60785f3c6a674aad82221723cc240a78090d5fc5332be8bf12386f",
+   "parentManualSha256": "37b1a8d02f60785f3c6a674aad82221723cc240a78090d5fc5332be8bf12386f",
+   "verdict": "accepted"
+  },
+  {
+   "path": "packages/core/src/providers/google-adapter.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/google-adapter.ts.md",
+   "sourceBlob": "98730cbd646ba1c81ddca58d49ca3b2483bd010e",
+   "sourceSha256": "6380d3169737b1ff94208850371f1f324dc9f56edc950f32f29fe58118067cae",
+   "manualSha256": "c87b7129d7b41bbe9f6630350bb10bcecb8005fbbed48d8f364ef88f3e409c8c",
+   "parentManualSha256": "c87b7129d7b41bbe9f6630350bb10bcecb8005fbbed48d8f364ef88f3e409c8c",
+   "verdict": "accepted"
+  },
+  {
+   "path": "packages/core/src/providers/openai-adapter.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/openai-adapter.ts.md",
+   "sourceBlob": "3a72aef88e642e5a6eca72ca281ce41bdbbf0f54",
+   "sourceSha256": "deb6dbd9628ce8b46beaac9031c4872d9d8a9d17fb2fa41c66fb9937491ae857",
+   "manualSha256": "2fdd86dd857d46e5dca605de4a59e1a9f057b01d29add405d623e020fbfe14ec",
+   "parentManualSha256": "2fdd86dd857d46e5dca605de4a59e1a9f057b01d29add405d623e020fbfe14ec",
+   "verdict": "accepted"
+  },
+  {
+   "path": "packages/core/src/providers/openai-responses-adapter.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/openai-responses-adapter.ts.md",
+   "sourceBlob": "0dc274ae139e2618dd2dd24afe83f0bce6f434cb",
+   "sourceSha256": "5df3f2936a179c247b828c158925b3a7b84aeea2fb6bf17ecdf25aff67e092b3",
+   "manualSha256": "18dd98792a368db5cd0f04e4a1aa6ecbbe3bdde07f9b854d50c31a4d2ddbf177",
+   "parentManualSha256": "d23cbc6d7cae7e1e1ac710134b2863b9ffaedbf3b1504bda4a0cac62efda876c",
+   "verdict": "accepted"
+  }
+ ],
+ "note": "9 篇 r1 新 hash 全量合入；7 篇与 nb-04 accepted 字节相同但按 r1 记录"
+}

@@ -1,0 +1,280 @@
+{
+  "schema": "dsh-r07-review-result/1",
+  "batch": "nb-35",
+  "revisionOf": null,
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T17:10:00Z",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass"
+  },
+  "g0Evidence": {
+    "chain": "READY/DONE/MANIFEST/ZIP 交叉一致（manifestSha×2/readySha/zipSha/sealId seal-0f98ffbfa8c54312）；18 manualHashes=磁盘 0 mismatch",
+    "zip": "R07-nb-35-05fb2565.zip 21 条目（18 stage+MANIFEST+2 mechanical，无 READY/DONE=seal v2）；0 穿越/符号链接/字节 mismatch",
+    "sourceBinding": "18/18 blob+sha256+bytes+lines 独立实算==SCOPE==MANIFEST（冻结树 05fb）",
+    "metadata": "18 手册 frontmatter 11 键齐；source 11 章/test 6 章；testsRun/buildsRun 空、notRun 明示；非返修批（revisionOf=null）"
+  },
+  "g1Evidence": {
+    "sections": "18/18 齐备；144 处行号引用 0 倒置/0 越界；三分法+NOT_RUN 明确"
+  },
+  "g2Evidence": {
+    "coverage": "QA 全量逐行读毕 18 源（2734 行）+ 18 手册（1474 行）；与预读清单 reviews/nb-35/SOURCE-CHECKLIST.md（13 条注释-实现差异）逐条互核",
+    "factChecks": "全部行为结论回源属实：管道 8 步与阈值（0.85/0.9、0.40/0.35/0.25、0.5 IoA、0.7 跨栏、0.2 穿越比、1000 glyph）、TrapDoc 5 熔断+空白豁免+检查 1/3 现状不可触发、maxPages 截断 pageCount 语义、OCR/ONNX 预留未接线（全树 grep 否定结论成立）、enableOcrBridge 无消费者、markdown 双轨、注册表 18/23 缺 5 值、显式状态码压制文本兜底等",
+    "discrepancies": "native-segmenter 3 处、max-regret-router 2 处注释≠实现——手册全部主动照实记录（与 QA 预读独立发现一致）；域外（academic-enricher/adapters/sse-reader/task.ts 类比边界）如实标注",
+    "tests": "4 个 in-scope 测试文件断言逐条核（2/14/2/10=28 用例）；域外 __tests__ 5 文件仅记名与断言面；NOT_RUN"
+  },
+  "files": [
+    {
+      "path": "packages/core/src/pdf-engine/document-serializer.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/document-serializer.ts.md",
+      "sourceBlob": "5ddee9a0c14a2e23ec777522a5a3d2d7dcc545a7",
+      "sourceSha256": "489b7578e66f08528604022649b1b771ab18d54b991bf1aebfa4bc1296e12ea0",
+      "manualSha256": "886acbede08d40f2d355224088ca5b90e219b7e6e5e11e3dcc0181b1d8cc97e5",
+      "verdict": "accepted",
+      "findings": [
+        "N-08"
+      ]
+    },
+    {
+      "path": "packages/core/src/pdf-engine/index.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/index.ts.md",
+      "sourceBlob": "0db0c15b470d58660992a8b8088fa1466c587438",
+      "sourceSha256": "a59b8db20def538d6f443f009659d9886e0f3a54a4e61d39209c1f4f6ebd20fc",
+      "manualSha256": "f2a4e7c58f28ceecf4278b75b30294e229c6a795e5c4d2af6433f9e503f53396",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/core/src/pdf-engine/max-regret-router.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/max-regret-router.ts.md",
+      "sourceBlob": "ce74f086e2d998ee34c00d0859f9c786c6f405f8",
+      "sourceSha256": "0893ed7f6388f1356ef98e52fc243f653a0301fedc54dc8b281b118ef1dca688",
+      "manualSha256": "f41cc883ccdf28d5310f0d2ab194092670f78d76a2220b7bf92c031d2a0ad050",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/core/src/pdf-engine/native-segmenter.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/native-segmenter.ts.md",
+      "sourceBlob": "91c4dd95e5a05083318c6ba509ec679d7f6ff363",
+      "sourceSha256": "b0b7dc33a6cc3863abbfa7d00f66a362af9c64ef4aee36a273d994a6f8ad81e9",
+      "manualSha256": "a6b3180213b406913dade0c1212ca2046519142e749347cd154dabaf4c3a998a",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/core/src/pdf-engine/ocr-bridge.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/ocr-bridge.ts.md",
+      "sourceBlob": "6fbe8356126c52c4ff309e5589b7a3f050590a90",
+      "sourceSha256": "f7c39b95933f328d06e6c7feeb215b3eb6e6234211f00ee055dcd35dc9ea1a4a",
+      "manualSha256": "f99bd293e5cedcd3be0eec27af9ab79e277a016aafaa68c22605fb20d324867f",
+      "verdict": "accepted",
+      "findings": [
+        "N-07"
+      ]
+    },
+    {
+      "path": "packages/core/src/pdf-engine/onnx-adapter.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/onnx-adapter.ts.md",
+      "sourceBlob": "7be5f58033787f87293710e4843dfc1b9e1d6813",
+      "sourceSha256": "1acc0f0a71d496b30dcf4742127a082123fd338380fff6fcc928af4233fccf0e",
+      "manualSha256": "647f37e98eeb4f949d1dabb3657c1977076822d8781056db39344a73ca11065d",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/core/src/pdf-engine/pdf-engine.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/pdf-engine.ts.md",
+      "sourceBlob": "479d597c7a58422a930a9794edb8d618a42cb9b3",
+      "sourceSha256": "b5149509622dc2b098ef366fd8d940062bfc59dd2f382cd04ef4a36dc1f15038",
+      "manualSha256": "ba49aa73dee4ccf4c13c535d3a5bb831bc99168d3576674586913b9d5faa6a0b",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/core/src/pdf-engine/pdf-stream-extractor.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/pdf-stream-extractor.ts.md",
+      "sourceBlob": "0e04962bac9bf6fb85428d3b989e5b22364ba83b",
+      "sourceSha256": "f193f019445ae7058f101910a2f9471be5675bb7b82f662ed44545a50531e9c3",
+      "manualSha256": "644ed5de04cd5a2bb46ac530e8ffbdf655f42355467f27eeecf79d1ca3d436ac",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/core/src/pdf-engine/source-preserving-aligner.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/source-preserving-aligner.ts.md",
+      "sourceBlob": "f3bef9d779adcdee9935d713d3e01ebf500ba571",
+      "sourceSha256": "748ffafc97f0f14110ca590a67701617dbfe51512928046c3141d335f37b4a77",
+      "manualSha256": "d3aa5099df508f60c9be2cb41c4f85e69e7bfdbd4707857c8370b03979966985",
+      "verdict": "accepted",
+      "findings": [
+        "N-05"
+      ]
+    },
+    {
+      "path": "packages/core/src/pdf-engine/table-decomposer.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/table-decomposer.ts.md",
+      "sourceBlob": "df3f45bbf6b649ed9861c809d38c9cbbb6ac847b",
+      "sourceSha256": "500f7719e16e5db53fc34c80b460535cdc5de1bd15f533169d8be8b3e4aa9f5f",
+      "manualSha256": "c88602eec53cf306d0b7deb0567e6eb248e779ac0ab1dd5246c601bdb2e91361",
+      "verdict": "accepted",
+      "findings": [
+        "N-06"
+      ]
+    },
+    {
+      "path": "packages/core/src/pdf-engine/trapdoc-guard.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/trapdoc-guard.ts.md",
+      "sourceBlob": "ca31625610961180672744726b937453447a8c59",
+      "sourceSha256": "d72ce2f486127bb8412ddaf153377d0d63cfe0fdd57447f6205ad77baccf5655",
+      "manualSha256": "d591d7f54ed8e2770a9310ec3060d4f80d002dd8c34f4cfedb4eedc906f16f46",
+      "verdict": "accepted",
+      "findings": [
+        "N-04"
+      ]
+    },
+    {
+      "path": "packages/core/src/pdf-engine/types.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/types.ts.md",
+      "sourceBlob": "fd145cc909fb313707f75574a4b089914c618394",
+      "sourceSha256": "c12e5ff9512f43e1d313562276c54814f323b4c28d149f5f1c55959bcc997b4e",
+      "manualSha256": "59e518ec76babad90b7fb59fce1be84b11d0b56a252b1485b70d26c2ead05d45",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/core/src/providers/index.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/index.test.ts.md",
+      "sourceBlob": "8a134a07dd528a4e5763094e157eef49b9483a33",
+      "sourceSha256": "1e495d0939a5751980836fc210742d4d07b31c8dc6def05cdd87888269b801ab",
+      "manualSha256": "15defc18265747957fad8aeeb24148c14d390326861707e065ffd44420db8d07",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/core/src/providers/index.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/index.ts.md",
+      "sourceBlob": "ba89bcf6b6e9cd1e27135de843aeac664f2c33c4",
+      "sourceSha256": "d3a540188905214927b7e835e37b14319a26b364c6fbd494a64a6712bbda4f6a",
+      "manualSha256": "fe4da9023239cdba0d946f4b660b6241d23da8099354c9cfc0bb76f9e042c92a",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/core/src/providers/insufficient-credits.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/insufficient-credits.test.ts.md",
+      "sourceBlob": "868da97d95f258c1a80c9fe1e55ecf37f1eef224",
+      "sourceSha256": "f6e48f9ab9a0a595ca52f8487b8ac85e746c48750b3d49e4a2b8e2b4c8f154f9",
+      "manualSha256": "28332ed1605536247db83c08bee9ae6bd617d415a70d84540b6cb68e4a5106b4",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/core/src/providers/insufficient-credits.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/insufficient-credits.ts.md",
+      "sourceBlob": "3c6202ffcd7c5d9fe2fe3f8debc39e1f9ad50116",
+      "sourceSha256": "a79ca73c3589583c68a08e76cbc78fab2d9bfa9e51a50b5b6bb2a0db50f33f1a",
+      "manualSha256": "67ca5ed8044bacc2169b7ec15096e9b9ab5cee8fc806152147161ed83ee9484d",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/core/src/providers/openai-adapter.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/openai-adapter.test.ts.md",
+      "sourceBlob": "99c4082414b517a7f42e5272a13f3145c4c873d8",
+      "sourceSha256": "18a222dc99b095c26411b05d94c24a7ba4d976cb5e53902b7d4c0b92f77da712",
+      "manualSha256": "f091c952288ed29908571beb5da46bf54f669b93085f64f88c0d137df1b2c5f4",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/core/src/providers/openai-responses-adapter.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/openai-responses-adapter.test.ts.md",
+      "sourceBlob": "d81990ef39b65f45e00c1c36bea1341ebf36278b",
+      "sourceSha256": "e84d1c3ffda86bced1ebba8e120a7122baa5e69040e07b5356f00a4e7ae23ab7",
+      "manualSha256": "23baa1764e2e02bfaf471cb2b4dade1766dbb14a4a2728ba0a1f327b9335a308",
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/document-serializer.ts.md": "886acbede08d40f2d355224088ca5b90e219b7e6e5e11e3dcc0181b1d8cc97e5",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/index.ts.md": "f2a4e7c58f28ceecf4278b75b30294e229c6a795e5c4d2af6433f9e503f53396",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/max-regret-router.ts.md": "f41cc883ccdf28d5310f0d2ab194092670f78d76a2220b7bf92c031d2a0ad050",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/native-segmenter.ts.md": "a6b3180213b406913dade0c1212ca2046519142e749347cd154dabaf4c3a998a",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/ocr-bridge.ts.md": "f99bd293e5cedcd3be0eec27af9ab79e277a016aafaa68c22605fb20d324867f",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/onnx-adapter.ts.md": "647f37e98eeb4f949d1dabb3657c1977076822d8781056db39344a73ca11065d",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/pdf-engine.ts.md": "ba49aa73dee4ccf4c13c535d3a5bb831bc99168d3576674586913b9d5faa6a0b",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/pdf-stream-extractor.ts.md": "644ed5de04cd5a2bb46ac530e8ffbdf655f42355467f27eeecf79d1ca3d436ac",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/source-preserving-aligner.ts.md": "d3aa5099df508f60c9be2cb41c4f85e69e7bfdbd4707857c8370b03979966985",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/table-decomposer.ts.md": "c88602eec53cf306d0b7deb0567e6eb248e779ac0ab1dd5246c601bdb2e91361",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/trapdoc-guard.ts.md": "d591d7f54ed8e2770a9310ec3060d4f80d002dd8c34f4cfedb4eedc906f16f46",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/types.ts.md": "59e518ec76babad90b7fb59fce1be84b11d0b56a252b1485b70d26c2ead05d45",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/index.test.ts.md": "15defc18265747957fad8aeeb24148c14d390326861707e065ffd44420db8d07",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/index.ts.md": "fe4da9023239cdba0d946f4b660b6241d23da8099354c9cfc0bb76f9e042c92a",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/insufficient-credits.test.ts.md": "28332ed1605536247db83c08bee9ae6bd617d415a70d84540b6cb68e4a5106b4",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/insufficient-credits.ts.md": "67ca5ed8044bacc2169b7ec15096e9b9ab5cee8fc806152147161ed83ee9484d",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/openai-adapter.test.ts.md": "f091c952288ed29908571beb5da46bf54f669b93085f64f88c0d137df1b2c5f4",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/openai-responses-adapter.test.ts.md": "23baa1764e2e02bfaf471cb2b4dade1766dbb14a4a2728ba0a1f327b9335a308"
+  },
+  "findings": [
+    {
+      "id": "N-08",
+      "severity": "minor",
+      "file": "packages/core/src/pdf-engine/document-serializer.ts",
+      "claim": "§2 '4 个导出（1 类型+1 接口+2 函数——…共 6 个导出对象）'开头数 4 与同句'共 6 个'/§11'6 导出'矛盾（实 6）",
+      "sourceEvidence": "同句枚举与 §11 计数为正确值（机械复算源 export 数印证）",
+      "action": "任一未来 rN 顺带改数（不需为此单独重封）"
+    },
+    {
+      "id": "N-07",
+      "severity": "minor",
+      "file": "packages/core/src/pdf-engine/ocr-bridge.ts",
+      "claim": "§2 '5 个导出（4 接口+1 函数+1 函数=6 个导出对象）'开头数 5 与同句'6 个导出对象'/§11'6 导出'矛盾（实 6）",
+      "sourceEvidence": "同句枚举与 §11 计数为正确值（机械复算源 export 数印证）",
+      "action": "任一未来 rN 顺带改数（不需为此单独重封）"
+    },
+    {
+      "id": "N-05",
+      "severity": "minor",
+      "file": "packages/core/src/pdf-engine/source-preserving-aligner.ts",
+      "claim": "§2 '5 个导出（3 接口+2 函数——…共 6 个导出对象）'开头数 5 与同句'共 6 个'/§11'6 导出'矛盾（实 6：3 接口+computeIoA/alignGlyphsToBoxes/unionBBox 3 函数）",
+      "sourceEvidence": "同句枚举与 §11 计数为正确值（机械复算源 export 数印证）",
+      "action": "任一未来 rN 顺带改数（不需为此单独重封）"
+    },
+    {
+      "id": "N-06",
+      "severity": "minor",
+      "file": "packages/core/src/pdf-engine/table-decomposer.ts",
+      "claim": "§2 '8 个内部函数+1 内部接口'与表格 9 行内部函数/源码 9 个内部函数不符（glyphInRegion/medianFontSize/clusterRows/bboxOf/splitRowIntoGroups/modeMax/columnBandsFromLines/columnBandsFromBoxes/renderMarkdown）",
+      "sourceEvidence": "同句枚举与 §11 计数为正确值（机械复算源 export 数印证）",
+      "action": "任一未来 rN 顺带改数（不需为此单独重封）"
+    },
+    {
+      "id": "N-04",
+      "severity": "minor",
+      "file": "packages/core/src/pdf-engine/trapdoc-guard.ts",
+      "claim": "§2 '3 个导出（1 常量+2 接口+1 函数——合计 4 个导出语句对象）'开头数 3 与同句'合计 4 个'/§11'4 导出'矛盾（实 4：TRAPDOC_THRESHOLDS/TrapDocFilterOptions/TrapDocFilterResult/filterGhostGlyphs）",
+      "sourceEvidence": "同句枚举与 §11 计数为正确值（机械复算源 export 数印证）",
+      "action": "任一未来 rN 顺带改数（不需为此单独重封）"
+    }
+  ],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "notes": "判定口径（与 nb-40-r1 一致，显式声明）：F=错误计数是手册作业性结论且在 §11 重复/无同句更正（读者必然带走错误事实）；N=错误数字为句首笔误、同句枚举与/或 §11 即为正确值（无误导性结论）。本批 5 条均属后者，逐文件各 1 条≤2 非阻断→18 篇全 accepted。QA 自纠：预读清单对非主流节点 readingOrderIndex 误记'保留初值 0'，正确为'保留 enrich 所赋负值'（手册 pdf-engine.ts.md §5 正确，以其为准）。"
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "r07-qa-done/1",
+  "batch": "nb-29",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewedAtUtc": "2026-10-23T17:17:00Z",
+  "sealId": "seal-8ccdc6c2f7fc1367",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 14,
+    "accepted": 14,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "result": "reviews/nb-29/RESULT.json",
+  "resultSha256": "115a4058649b9a2b5cd11941d0da93b3bb91492b8f36165b04e19e4b136ab418",
+  "reviewedHashes": "reviews/nb-29/REVIEWED-HASHES.json",
+  "reviewedHashesSha256": "c7c9d22fdbf9422b84cbce0249fbc0980e1df5a4e1d5ad6d9d5a1bccfe3718ec",
+  "testsRun": [],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "knownUnknowns": [
+    "ReviewB2ArchiveVault/proposeB2MaterialCandidates 实现（非本批）",
+    "validateT01TypedCriteria/countAuthoredCriteria/decimalT04 实现（shared/非本批）",
+    "e2e 真实运行结果（NOT_RUN）",
+    "t07-main-service 接线细节（非本批）"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "index-p02-agent-runtime__apps__electron__default-skills__skill-creator",
+ "groupId": "p02-agent-runtime__apps__electron__default-skills__skill-creator",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-index-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T19:45:00Z",
+ "sealedAtUtc": "2026-10-23T19:06:14+00:00",
+ "artifactSha256": "11b02deba71110d677d2359c5648d4c0edad7cb0fd99e823c908afaf42efac12",
+ "note": "QA 实算封版链全对。4/4 accepted；2 条非阻断 findings 已登记。",
+ "acceptedManuals": {
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__skill-creator.md@apps/electron/default-skills/skill-creator/agents/analyzer.md": "11b02deba71110d677d2359c5648d4c0edad7cb0fd99e823c908afaf42efac12",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__skill-creator.md@apps/electron/default-skills/skill-creator/agents/comparator.md": "11b02deba71110d677d2359c5648d4c0edad7cb0fd99e823c908afaf42efac12",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__skill-creator.md@apps/electron/default-skills/skill-creator/agents/grader.md": "11b02deba71110d677d2359c5648d4c0edad7cb0fd99e823c908afaf42efac12",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__skill-creator.md@apps/electron/default-skills/skill-creator/references/schemas.md": "11b02deba71110d677d2359c5648d4c0edad7cb0fd99e823c908afaf42efac12"
+ }
+}

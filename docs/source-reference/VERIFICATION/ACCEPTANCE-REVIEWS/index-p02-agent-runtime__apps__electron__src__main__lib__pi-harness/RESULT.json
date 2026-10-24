@@ -1,0 +1,50 @@
+{
+ "schema": "dsh-r07-index-review-result/1",
+ "batch": "index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness",
+ "groupId": "p02-agent-runtime__apps__electron__src__main__lib__pi-harness",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-03-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T19:25:00Z",
+ "sealedAtUtc": "2026-10-23T19:14:06Z",
+ "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__src__main__lib__pi-harness.md",
+ "artifactSha256": "547759b81a7d7004abf543c14320bb0d31bbf5d984aded2bab3d49c51db7069e",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 1,
+  "accepted": 1,
+  "revision_required": 0,
+  "unknown": 0,
+  "blocking": 0,
+  "nonBlocking": 0
+ },
+ "gates": {
+  "G0_INDEX": "PASS",
+  "G1_INDEPENDENT_SOURCE_REVIEW": "PASS",
+  "G2_SEAL_CONSISTENCY": "PASS",
+  "note": "G0 等价检查全对（哈希链 artifact=547759b8…/manifest/ready 自洽、锚点 @line 10 实测、源绑定与冻结源/lock 全等、targetMd 一致）。G1：逐条引证独立实测全中——types.ts:1/:16 头注释、governor.ts:17-20、agent-orchestrator.ts:127-128/:1617-1623/:3552/:3695、config-paths.ts:377-378、pi-harness-store.ts:57-63/:69-108、agent-session-manager.ts:33/:2027、replay.ts:25-30、replay.test.ts:4/:7-11/:25-34、goal-controller.ts:58、reconciler.ts:6、telemetry.ts:129、session-telemetry.ts:12、session-telemetry.test.ts:7/:52、project-graph-service.ts:39/:111、package.json:46、README.md:1/:3/:5/:7-14/:18-26/:28/:32-35；负向检索证实 README 全树零代码引用、replay.ts 仅 replay.test.ts:4 import、collectSessionPiHarnessTelemetry 仅定义+测试（作者「未知」标注如实）；fixture 6 语义与门槛表对应抽验吻合。"
+ },
+ "g0Evidence": {
+  "stockScript": "ERRATA-E1 沿登记；等价检查 PASS"
+ },
+ "errataCarry": [
+  "ERRATA-E1",
+  "ERRATA-E2",
+  "ERRATA-E3"
+ ],
+ "files": [
+  {
+   "path": "apps/electron/src/main/lib/pi-harness/evals/README.md",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__src__main__lib__pi-harness.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__src__main__lib__pi-harness.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--src--main--lib--pi-harness--evals--README.md",
+   "line": 10,
+   "sourceBlob": "25233e786783972f2e4949708d15eedcd3136682",
+   "sourceSha256": "f02f904fbc862b0fd6e4c26d622997b275f4b60a7b3a490f7038ddec450f905a",
+   "manualSha256": "547759b81a7d7004abf543c14320bb0d31bbf5d984aded2bab3d49c51db7069e",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "README=人读说明文档，作者如实写明「代码加载点＝无」（QA 负向检索证实）并给出真实消费者（开发者按 :32-35 运行评测）与生效时机；「谁加载→何时生效→行为约束」框架适配如实（人读文档≠运行时规则），未套「无执行逻辑」空话。门槛表 6 行与 fixtures 实名逐一吻合；:28 诚实性声明（无 goal_resumed、门槛为零）与 telemetry 实现口径一致。"
+  }
+ ]
+}

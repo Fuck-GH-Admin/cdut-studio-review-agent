@@ -1,0 +1,28 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "index-p01-app-shell__apps__electron__resources__ppt-style-packs",
+  "groupId": "p01-app-shell__apps__electron__resources__ppt-style-packs",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T19:32:00Z",
+  "sealedAtUtc": "2026-10-23T17:53:35Z",
+  "artifactSha256": "6c45f5b0a01f28b38799cb914e4de3efed27a49ac7c73ceaf953d5f5615c7461",
+  "note": "QA 实算封版链全对。2/2 accepted。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__ppt-style-packs.md@apps/electron/resources/ppt-style-packs/academic-editorial/preview.webp": "6c45f5b0a01f28b38799cb914e4de3efed27a49ac7c73ceaf953d5f5615c7461",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__ppt-style-packs.md@apps/electron/resources/ppt-style-packs/profer-cloud-dancer/preview.webp": "6c45f5b0a01f28b38799cb914e4de3efed27a49ac7c73ceaf953d5f5615c7461"
+  },
+  "revisionRequiredManuals": {},
+  "sourceHashes": {
+    "apps/electron/resources/ppt-style-packs/academic-editorial/preview.webp": {
+      "sourceBlob": "6d009c03ebf90d6cba688e2971aa63bb50f5742d",
+      "sourceSha256": "e4fd8cb4951af0e5bf2045e248c56ec91c4f2fe3915d537ac11f01832cdcfcbf",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/ppt-style-packs/profer-cloud-dancer/preview.webp": {
+      "sourceBlob": "be1f23dd371f3a72bef522a2a7821ffcca526ebc",
+      "sourceSha256": "267454c9b301ffd1de61a7169b553b12554da320df36d7d8801fb420b2ff1ac3",
+      "verifiedAgainstFrozenTree": true
+    }
+  }
+}

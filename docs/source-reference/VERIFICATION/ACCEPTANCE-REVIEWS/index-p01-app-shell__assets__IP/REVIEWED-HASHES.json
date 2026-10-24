@@ -1,0 +1,40 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "index-p01-app-shell__assets__IP",
+  "groupId": "p01-app-shell__assets__IP",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T19:58:00Z",
+  "sealedAtUtc": "2026-10-23T17:57:43Z",
+  "artifactSha256": "3e70fdf2120fe296c31c56391e976b97ceb18015c84769f1243f2ef89e5a733b",
+  "note": "QA 实算封版链全对。4/4 accepted。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets__IP.md@assets/IP/Cute_IP/Blinking.png": "3e70fdf2120fe296c31c56391e976b97ceb18015c84769f1243f2ef89e5a733b",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets__IP.md@assets/IP/Cute_IP/Breathing.png": "3e70fdf2120fe296c31c56391e976b97ceb18015c84769f1243f2ef89e5a733b",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets__IP.md@assets/IP/Cute_IP/Walking.png": "3e70fdf2120fe296c31c56391e976b97ceb18015c84769f1243f2ef89e5a733b",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets__IP.md@assets/IP/Cute_IP/Yawning.png": "3e70fdf2120fe296c31c56391e976b97ceb18015c84769f1243f2ef89e5a733b"
+  },
+  "revisionRequiredManuals": {},
+  "sourceHashes": {
+    "assets/IP/Cute_IP/Blinking.png": {
+      "sourceBlob": "574cb933569dedffbaad68298b7c321647378690",
+      "sourceSha256": "a2a2eab67838503be1a508e9ff7b6e7f59de4a423e8996e6d03d22412782ef49",
+      "verifiedAgainstFrozenTree": true
+    },
+    "assets/IP/Cute_IP/Breathing.png": {
+      "sourceBlob": "8a42087aad5d39abec0efe7ae50fe35c453dd645",
+      "sourceSha256": "3e168e66d34c3d26cae5c8411b63b0b5c829fe018751e311beb25bd557782a43",
+      "verifiedAgainstFrozenTree": true
+    },
+    "assets/IP/Cute_IP/Walking.png": {
+      "sourceBlob": "615858c0f8bcbba6a8d118b611b82e5dec95e0d6",
+      "sourceSha256": "30baf58abc4a887e89d2fee48f0a037ec150c462e1d5cbd048dec760222219e9",
+      "verifiedAgainstFrozenTree": true
+    },
+    "assets/IP/Cute_IP/Yawning.png": {
+      "sourceBlob": "1fbb590ed82593b6198e8b00b4995b9767cc4c8d",
+      "sourceSha256": "1501b00ad96d124856b8b78b152c72ce2a5c8fe9da8482af50d0d2f1d1767258",
+      "verifiedAgainstFrozenTree": true
+    }
+  }
+}

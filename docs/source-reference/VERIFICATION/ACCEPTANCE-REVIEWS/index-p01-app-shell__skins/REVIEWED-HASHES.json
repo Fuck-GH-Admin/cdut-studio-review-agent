@@ -1,0 +1,70 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "index-p01-app-shell__skins",
+  "groupId": "p01-app-shell__skins",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T21:28:00Z",
+  "sealedAtUtc": "2026-10-23T18:39:54Z",
+  "artifactSha256": "fc1f204048ef451282e291eec135367a553facca5f21b4a6e86f1d6060e96e49",
+  "note": "QA 实算封版链全对。9/9 accepted。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__skins.md@apps/electron/resources/skin-template/preview.svg": "fc1f204048ef451282e291eec135367a553facca5f21b4a6e86f1d6060e96e49",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__skins.md@apps/electron/resources/skins/forest-dark/preview.webp": "fc1f204048ef451282e291eec135367a553facca5f21b4a6e86f1d6060e96e49",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__skins.md@apps/electron/resources/skins/forest-light/preview.webp": "fc1f204048ef451282e291eec135367a553facca5f21b4a6e86f1d6060e96e49",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__skins.md@apps/electron/resources/skins/mist-paper-dark/preview.svg": "fc1f204048ef451282e291eec135367a553facca5f21b4a6e86f1d6060e96e49",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__skins.md@apps/electron/resources/skins/ocean-dark/preview.webp": "fc1f204048ef451282e291eec135367a553facca5f21b4a6e86f1d6060e96e49",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__skins.md@apps/electron/resources/skins/ocean-light/preview.webp": "fc1f204048ef451282e291eec135367a553facca5f21b4a6e86f1d6060e96e49",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__skins.md@apps/electron/resources/skins/slate-dark/preview.webp": "fc1f204048ef451282e291eec135367a553facca5f21b4a6e86f1d6060e96e49",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__skins.md@apps/electron/resources/skins/slate-light/preview.webp": "fc1f204048ef451282e291eec135367a553facca5f21b4a6e86f1d6060e96e49",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__skins.md@apps/electron/resources/skins/terminal-dark/preview.png": "fc1f204048ef451282e291eec135367a553facca5f21b4a6e86f1d6060e96e49"
+  },
+  "revisionRequiredManuals": {},
+  "sourceHashes": {
+    "apps/electron/resources/skin-template/preview.svg": {
+      "sourceBlob": "4d93fd2747f53dd588551ac3a5c5e251f91a41e4",
+      "sourceSha256": "84e7af41935a565bdc25c15ec778bd2128b62e8242ebc4c7dce8cdb08f371715",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/skins/forest-dark/preview.webp": {
+      "sourceBlob": "5d327dcc1e60c95d6fe4bc83c14e2316d710fd86",
+      "sourceSha256": "285a971de72b9ac8a9c0ae771fb2ae717a35a6007ead4be1c55bb16088263fac",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/skins/forest-light/preview.webp": {
+      "sourceBlob": "66b5ca2c9753541d9a50cf53381f771bca0d35e8",
+      "sourceSha256": "7bf206d5cfbcd9df73f4636450abe20503d47d41f9a155c9ce7423602fdd8518",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/skins/mist-paper-dark/preview.svg": {
+      "sourceBlob": "c3cb3cf7c727d5c135fcea363598ac082cbc9bdf",
+      "sourceSha256": "7c1ba304593a3181bb0efb52cdeb23db4a0bad09fc8bddbcd988f798d7dd58aa",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/skins/ocean-dark/preview.webp": {
+      "sourceBlob": "6963dff7e5c6b37273f4493b77194eaa95a4af8d",
+      "sourceSha256": "ed7c8b58d2f2395b09f98c58139e1218fdf2cb4da3283cdd3db849f2d30ac1b1",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/skins/ocean-light/preview.webp": {
+      "sourceBlob": "95cd56de53e93500c6e5a92f13870cf30691f500",
+      "sourceSha256": "a58c7834db01792d5d14c9f0d77316ae296b96e3ae718db57ab84d3021a9037f",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/skins/slate-dark/preview.webp": {
+      "sourceBlob": "32dc5d8c08dc7bcfaf62ad2fe30ffd1de38caa6d",
+      "sourceSha256": "6236610e824277d8c8807838b224f4c8c466aa28915aed61032c5f29059203c7",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/skins/slate-light/preview.webp": {
+      "sourceBlob": "a8b00570f77d2e506cd887902178cc95b6f3bcdf",
+      "sourceSha256": "61eb0429828f2ea7d4fa3c1f77a6f7f3d3e436995cb6f47285a0ccfaf0a8c9bd",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/skins/terminal-dark/preview.png": {
+      "sourceBlob": "fdb6397f8e9da3dbf5493ea458d69c9e4842b198",
+      "sourceSha256": "1838361119a8496dc21a3ccbfb9d7f2ee731862571670156b64bcc6662542836",
+      "verifiedAgainstFrozenTree": true
+    }
+  }
+}

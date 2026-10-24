@@ -1,0 +1,222 @@
+{
+ "schema": "dsh-r07-review-result/1",
+ "batch": "nb-131-r1",
+ "revisionOf": "nb-131",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-06-20261024",
+ "reviewerSession": "docs-r07-qa-extra-06-20261024",
+ "reviewedSealId": "seal-406f5f412ccc3281",
+ "reviewedAtUtc": "2026-10-23T20:17:10Z",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 18,
+  "accepted": 18,
+  "revision_required": 0,
+  "unknown": 0,
+  "findings": {
+   "blocking": 0,
+   "minor": 0
+  }
+ },
+ "g0": {
+  "mechanical": "PASS（MANIFEST/READY/ZIP 链自洽、sealId 复算 seal-406f5f412ccc3281 一致、revisionOf=nb-131、18 manual 字节三方一致、源绑定 18/18==manager scope、ZIP 22 条目无 READY/DONE/reviews）",
+  "format": "PASS（6 篇变更 front matter/章节数/NOT_RUN 全合规）",
+  "scopeDiscipline": "PASS（变更恰好 6 篇=F-01 所在 1 篇+errata 所在 5 篇；其余 12 篇与 r0 逐字节一致=acceptedHashes 沿用）"
+ },
+ "g1": {
+  "findingsResponse": "FINDINGS-RESPONSE.md 8 条逐条属实响应，before 哈希与 reviews/nb-131/REVIEWED-HASHES 全等"
+ },
+ "g2": {
+  "fixVerification": "6 篇修改段回源复读：F-01 三元条件已改为 isStudyClass（含 :2040 projectCandidates 置空/:15 函数内短路上下文）；N-01/02 计数统一 8 测试/22 文件（21 静态+1 动态）；N-03 补 :491/:521/menu.ts:239 消费点；N-04 win32 9 项带分解；N-05 5 处 throw/4 种文案；N-06 43 项；N-07 toolCredentials 措辞精确（本地经 {...current} 保留/导入值不落入）——与源码逐一吻合，无新增问题"
+ },
+ "files": [
+  {
+   "path": "apps/electron/src/main/lib/mac-traffic-light.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/mac-traffic-light.ts.md",
+   "sourceBlob": "3341a4a84d753a0b385448351300a5120697c1f2",
+   "sourceSha256": "96f058812b618b0d001e14adfd05e839849050387153692224b9190fbe83f794",
+   "manualSha256": "54499151b8e8915fd974ef4d6e4382e111835366036a6e2da9f355458f6b4c14",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/main-window-lifecycle.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/main-window-lifecycle.ts.md",
+   "sourceBlob": "05c27bc3b93f583a5adde49270cf7467be3f1232",
+   "sourceSha256": "71ac9670d91e0f29ada485aed219b9b9284e645d6d9f5d06bba7c055e1c3e094",
+   "manualSha256": "3f5a51ead2cda6d378b50cc4061a9dd421a8556f29f31854f7ca317aca4502d1",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/main-window-state.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/main-window-state.ts.md",
+   "sourceBlob": "a74aceab3ec6f768ef74ab9c2e6f2e49343d6f66",
+   "sourceSha256": "83efbd9545c6709e05531a4e25f97c5b9a6b286235b0821b7ec433efba1ea7b0",
+   "manualSha256": "e6083ade7f3945c8042abb90d57d1f5b44d99f510dbe6d904bde3a019ebde7db",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/mcp-validator.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/mcp-validator.ts.md",
+   "sourceBlob": "f31907b00e960fa9387b63806110adcd1b76fe94",
+   "sourceSha256": "f7aec4b797bb0d5b1aa49f55662fe8b25b45d68c5367534b45ee8746b90c5527",
+   "manualSha256": "8d8b38aae702a72f50473a537b1961d88545654cc73548a47f3588993c844da1",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/microphone-permission-service.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/microphone-permission-service.ts.md",
+   "sourceBlob": "fee5eddcc9885c810c0406407b76345ab0e6ba47",
+   "sourceSha256": "720ee88b92a8e54fd300a5e97e345144e7717c6fa9a24be76c4f1bfef3cb55e4",
+   "manualSha256": "4880809961b33cb7edc7c79500d44cd0307fb55fcff1f3c63e8395fe015666ad",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/migration-service.runtime-artifacts.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/migration-service.runtime-artifacts.test.ts.md",
+   "sourceBlob": "1aa549b3ffaaf6e6058ce89a3257bd8fb9b21178",
+   "sourceSha256": "263dad34ef33ced0e7d47a87dd140d83199612879915b793008a1dbc50c047a1",
+   "manualSha256": "24217067c4b1cdfb024e3f61e8e83f7d200411a85d6ab95720b3f36f67fe16fd",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/migration-service.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/migration-service.test.ts.md",
+   "sourceBlob": "b611b485882b882337213491ffa50883edd79be4",
+   "sourceSha256": "3c4483d286775b1f1a8a0b9ae695e52c8fb1b446a48b25aca623a3289654c0bd",
+   "manualSha256": "b57a857f017fdacc5ecef28fdc47b9a06f3cc127a2405c3511a280eb4d8f3fae",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/migration-service.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/migration-service.ts.md",
+   "sourceBlob": "12f57046f6197d4c1e6f7d81b7475c5af4742fb5",
+   "sourceSha256": "d94b242fb7e5f0e89e4053f2122898ea65ff478730de7e348c7cee9daef356bc",
+   "manualSha256": "8225b93b592498880a3e2b93dd4306511c824b899eea93949b90767020d0301c",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/node-detector.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/node-detector.ts.md",
+   "sourceBlob": "3bc0c28b1a657930b97e03865fac7d6c846c035f",
+   "sourceSha256": "f317497422a09b2e50c9303bad625c5776d9d0139225ad02940e4f3fb6aaa0f4",
+   "manualSha256": "21ec25469b63c7dbe5af82fd36086b1542536fd40ee66dda9413c460e30ca349",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/oauth-proxy-scope.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/oauth-proxy-scope.ts.md",
+   "sourceBlob": "b0b1c32c189020039f74e7c20d0a0db9c8814f49",
+   "sourceSha256": "6e508d350ed762003b453174e6cd4e90a35cb87c01c319f6aa2ac7048e4770e5",
+   "manualSha256": "4905982e4830c6bd0f155380b067147ef78018f7770c0a10c1f72126c3c96b62",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/official-channel.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/official-channel.ts.md",
+   "sourceBlob": "011ec6f69b5dcd407de57e398f81316696c4d99e",
+   "sourceSha256": "5c2a25f56d96474f2e3a7b6ab54538aee02f7489653c5d9c8c04a6c115e4ba8b",
+   "manualSha256": "233fcccb700c022e3c145b9f89ec4561ad86d0a7a16779fed6b7c0d3568fbf25",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-additional-directories-prompt.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-additional-directories-prompt.ts.md",
+   "sourceBlob": "00724454e61f7fb559e2049037fa9bae99618868",
+   "sourceSha256": "a1b2ebcf1487f31a7a35a5f232f3a4381517aaf193a6ab5c0c34bdea4b5322fe",
+   "manualSha256": "37958897e3bd2c4c45f45b621d553796f5c70990ee8d05336a37c6758c0e2d6c",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-background-task-manager.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-background-task-manager.test.ts.md",
+   "sourceBlob": "b02e618b207d3297170577075bda7161d43ebed2",
+   "sourceSha256": "3fab396ac73a149bbecdf383899117fc3ac10e3880bce95aaa25ab4d2dc9356e",
+   "manualSha256": "ad24e9365fa2e9c96b1e5f30cbf6bc2df0f834be32255914c5b8d212a60a764f",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-background-task-manager.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-background-task-manager.ts.md",
+   "sourceBlob": "67c41cd5363de8830cb7c0e742a6a38d6d64cbe5",
+   "sourceSha256": "9224e029246e7d4847d258bb05118c874b3806ae7f6f28459580c9052c61fea4",
+   "manualSha256": "9c482b7b9ef2be1d07332d54b1cb01a373e4e5fb5f2bc84cdde0629cb98b1f8c",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-checkpoint-git.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-checkpoint-git.ts.md",
+   "sourceBlob": "c457e3c328952d7390d52c56649811a9f8113f5a",
+   "sourceSha256": "82a4bbddb345e6b7182068f3de5b3cc3ddd05d913bf591a3958994e3c6563024",
+   "manualSha256": "08614ce123ce1a7a27c7266778605185f01ad2e2e9cc863bc2d8f24aee61b1e1",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-execution-ledger.integration.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-execution-ledger.integration.test.ts.md",
+   "sourceBlob": "17923e871313cbdfb97f3710c65c180e8ffbcdfc",
+   "sourceSha256": "53026c43cb3ab215e3470cde6b022aa59547ab10541c016b1a7925a265ac4643",
+   "manualSha256": "440a73bb9dcc9acabfa2afc8d2b10ce687c90f7cfaf52e9fe97444abc115b538",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-execution-ledger.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-execution-ledger.ts.md",
+   "sourceBlob": "622d48b55444f6453831a2caede55d5905d569b3",
+   "sourceSha256": "5bdfa5ffeb97c9d8d817f0871fa5cd43c5eb6ae8f1df8eb6ea3d204fcbbc7dd9",
+   "manualSha256": "a753025bc131f23011c92ab8e2aabec5a36e70983fec9981ddbf487c67281fd2",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-file-checkpoint.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-file-checkpoint.test.ts.md",
+   "sourceBlob": "5be8d0ae5215993bfa73736e63482e68e327408d",
+   "sourceSha256": "5837a47813109eaf607a93e87f1dd022b4892f01a1f567f91445aa844775f261",
+   "manualSha256": "f961d76eec2559aebdc872a990476165a783a2430f0a9d8481ee87373abb85d9",
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/mac-traffic-light.ts.md": "54499151b8e8915fd974ef4d6e4382e111835366036a6e2da9f355458f6b4c14",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/main-window-lifecycle.ts.md": "3f5a51ead2cda6d378b50cc4061a9dd421a8556f29f31854f7ca317aca4502d1",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/main-window-state.ts.md": "e6083ade7f3945c8042abb90d57d1f5b44d99f510dbe6d904bde3a019ebde7db",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/mcp-validator.ts.md": "8d8b38aae702a72f50473a537b1961d88545654cc73548a47f3588993c844da1",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/microphone-permission-service.ts.md": "4880809961b33cb7edc7c79500d44cd0307fb55fcff1f3c63e8395fe015666ad",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/migration-service.runtime-artifacts.test.ts.md": "24217067c4b1cdfb024e3f61e8e83f7d200411a85d6ab95720b3f36f67fe16fd",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/migration-service.test.ts.md": "b57a857f017fdacc5ecef28fdc47b9a06f3cc127a2405c3511a280eb4d8f3fae",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/migration-service.ts.md": "8225b93b592498880a3e2b93dd4306511c824b899eea93949b90767020d0301c",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/node-detector.ts.md": "21ec25469b63c7dbe5af82fd36086b1542536fd40ee66dda9413c460e30ca349",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/oauth-proxy-scope.ts.md": "4905982e4830c6bd0f155380b067147ef78018f7770c0a10c1f72126c3c96b62",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/official-channel.ts.md": "233fcccb700c022e3c145b9f89ec4561ad86d0a7a16779fed6b7c0d3568fbf25",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-additional-directories-prompt.ts.md": "37958897e3bd2c4c45f45b621d553796f5c70990ee8d05336a37c6758c0e2d6c",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-background-task-manager.test.ts.md": "ad24e9365fa2e9c96b1e5f30cbf6bc2df0f834be32255914c5b8d212a60a764f",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-background-task-manager.ts.md": "9c482b7b9ef2be1d07332d54b1cb01a373e4e5fb5f2bc84cdde0629cb98b1f8c",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-checkpoint-git.ts.md": "08614ce123ce1a7a27c7266778605185f01ad2e2e9cc863bc2d8f24aee61b1e1",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-execution-ledger.integration.test.ts.md": "440a73bb9dcc9acabfa2afc8d2b10ce687c90f7cfaf52e9fe97444abc115b538",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-execution-ledger.ts.md": "a753025bc131f23011c92ab8e2aabec5a36e70983fec9981ddbf487c67281fd2",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-file-checkpoint.test.ts.md": "f961d76eec2559aebdc872a990476165a783a2430f0a9d8481ee87373abb85d9"
+ },
+ "errataQueue": [],
+ "notes": [
+  "F-01 关闭、7 minor 全部关闭",
+  "12 篇 r0 accepted 字节沿用（逐字节比对 12/12）",
+  "NOT_RUN：产品测试/typecheck/build/GUI/真实进程网络；未改源码/测试/依赖/作者正文/candidate/全局总账"
+ ]
+}

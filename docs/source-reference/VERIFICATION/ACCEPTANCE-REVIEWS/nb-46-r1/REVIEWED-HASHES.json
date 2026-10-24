@@ -1,0 +1,159 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-46-r1",
+  "revisionOf": "nb-46",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "sealId": "seal-cbb44e139b497dc3",
+  "reviewedAtUtc": "2026-10-24T10:40:00Z",
+  "reviewedManualHashes": {
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/proxy.ts.md": {
+      "manualSha256": "cd620601b247fa996aaa5eaf3423b6ab44403a750744346f7d61fd7032ffedd6",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/reasoning-profile-xai.test.ts.md": {
+      "manualSha256": "79d5ca443f812a9880d45b77cb04c9041e05b0ca0c41bf68829e884a158aea3b",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/reasoning-profile.test.ts.md": {
+      "manualSha256": "d41c94bd621c0aaff770b2da641f7bdfc98488d0eaf2ccbc986a42dcd4902b83",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/reasoning-profile.ts.md": {
+      "manualSha256": "525641369fb7fc848c02fac84849bc4fdc0342fbfbbd2af05f41cb40b2008267",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/recommendation.ts.md": {
+      "manualSha256": "4068ff4432c94f3e84780d47f3a7528db54922ea9749fd721b41e34383727fe2",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/remote-sync.ts.md": {
+      "manualSha256": "68a9a477eca2634da3333c70faff2cd07ccabf77ed6edb7e7527af0d313bba03",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/review-authoring-v1.ts.md": {
+      "manualSha256": "6fcdbac8fba847a2df62ebeb329a857ae020a4c6e23f5b1e6d720d139993bdbb",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/review-d2.ts.md": {
+      "manualSha256": "6b45020e0022bb9c56638d44a1216bfad55df6d503c086c7b67755ec3b0887f8",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/review-d3.ts.md": {
+      "manualSha256": "b30a4e730e5dbb8f5731a3ec45c6c520684addd95829ada87c9e463a27e19135",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/review-domain-packs.ts.md": {
+      "manualSha256": "9616eac0a697b48aa6297036609d7b8c55335e20ca9c9e78168c9c03251aa51a",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/review-v2-contracts.test.ts.md": {
+      "manualSha256": "c04125cac39fdbf9e34790d8301c93b7e871309df46ea078dc01a58d9ad95660",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/review-v2-contracts.ts.md": {
+      "manualSha256": "703043bed80bd260c23ca9ced4ffcbce597899f42d7c1f2112eb4480fd1afd0f",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/review-v2.ts.md": {
+      "manualSha256": "a215405bdd7dc4934f436b320f506c902a2d0ac2b2f9e6f95c7f0dbfa98f4731",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/review-v3-c0.test.ts.md": {
+      "manualSha256": "9306cdfa097f398f00f35454b892c2037497636e5d6960b5c5237e29be4e2eb4",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/review-v3-c0.ts.md": {
+      "manualSha256": "fcdeaa24f3f64290963e26dcd56e7b2052339604ea377c2da221ebb634198abe",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/review-v3-execution.ts.md": {
+      "manualSha256": "0ac3b3e47cfe86e6747b7c65bf889bb0ce9f9288e9ae40f1b69a7bf3126e9e4a",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/review-v3-run.ts.md": {
+      "manualSha256": "bb9087404b0658917ebd6e2764b6bab8e0fc96f0357aff528eb92fd08dd678b0",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/review.ts.md": {
+      "manualSha256": "eb048c2a82fdbf34f44f7ad4067e5da9e76dfea6c0d0c92cb2baf36b4ce8829e",
+      "verdict": "accepted"
+    }
+  },
+  "sourceBindings": {
+    "packages/shared/src/types/proxy.ts": {
+      "sourceBlob": "dba609d723eacb92ef4347b9b957f84d6614ec5a",
+      "sourceSha256": "559b504debd686ce5e49ce6805dfbe5a1e7331626d6c54fc8339624123f4c613"
+    },
+    "packages/shared/src/types/reasoning-profile-xai.test.ts": {
+      "sourceBlob": "bb16f2a5e9086a6dc65baedc00dbd3cde403c747",
+      "sourceSha256": "08049794c273598ac02fade1493107e4e20effd7dfcc4a8169a425588d75da17"
+    },
+    "packages/shared/src/types/reasoning-profile.test.ts": {
+      "sourceBlob": "6ce7bf0adea6d0a3c184955e05cc631bfa29c169",
+      "sourceSha256": "9697921ad8f47c2a65db5582bd8648a8b845f36b88e9d713bf5aec35e9764984"
+    },
+    "packages/shared/src/types/reasoning-profile.ts": {
+      "sourceBlob": "4e6ca97dd93c50111df68658c7e5f52bcab56c7d",
+      "sourceSha256": "18ba975ebc13428de7b1c99fbdfeae456797b2d8470977f5f1e1aed88627317c"
+    },
+    "packages/shared/src/types/recommendation.ts": {
+      "sourceBlob": "1c2255c67e7704834b040a18897d0e39a08a23d8",
+      "sourceSha256": "2525c9c411d6cd43c59798bee1f1268ada29d4ec8fdae4c0ec240b3ba89d1fe1"
+    },
+    "packages/shared/src/types/remote-sync.ts": {
+      "sourceBlob": "0854855852a59895a685abb4b210891cccaa01f7",
+      "sourceSha256": "d5aa0da09ba4472c82cb6015c7b2c1107563be40d0d6b68b527dff913bf26e2d"
+    },
+    "packages/shared/src/types/review-authoring-v1.ts": {
+      "sourceBlob": "7982ae7b5d401bb5269b9131346320b62b683ed9",
+      "sourceSha256": "704d6dd0dbfbd2411493bd5caa0015dd9c35553fa62a82cf11f6e70c66ebb625"
+    },
+    "packages/shared/src/types/review-d2.ts": {
+      "sourceBlob": "af9776191c86551f3b1f68d2d96ebdf31718ccee",
+      "sourceSha256": "891a5e47759d4c6a711a96ec0f5040da699b6e26d86c46ff4742584a1d335c86"
+    },
+    "packages/shared/src/types/review-d3.ts": {
+      "sourceBlob": "a47040c6d4dd7221c8dd1e933b0c79740cc38823",
+      "sourceSha256": "de23849084465d7f190f9382fefee55dcbe29ac6a4e000cebcbc92441ad58fc7"
+    },
+    "packages/shared/src/types/review-domain-packs.ts": {
+      "sourceBlob": "12ab927fad41af829d827983a9f6d4d5053c4f42",
+      "sourceSha256": "797637a80b6ed1d748d51b480b3d92b046bfd5248f4eb69c5ddda238c75962ba"
+    },
+    "packages/shared/src/types/review-v2-contracts.test.ts": {
+      "sourceBlob": "d57d4c7eda165f0d338c16ad334cb7ff44173227",
+      "sourceSha256": "24ece86c13cc917300d4351e6952322838d7647fd1c3bd8a272d981d3b38903e"
+    },
+    "packages/shared/src/types/review-v2-contracts.ts": {
+      "sourceBlob": "9d8e67a2199af5c1b49e73af3b77494cf0c5e4f1",
+      "sourceSha256": "1f2640925a816d42dfb024cac3043f62829e0f323fa5dcb1463c530d222ff5f4"
+    },
+    "packages/shared/src/types/review-v2.ts": {
+      "sourceBlob": "a4fd6b1b4639184f6011aecddbec02383636a5bf",
+      "sourceSha256": "ae9b73648d3fa08b6b7299c84aa4989cc0fac86bcfc98362c747050a640ec0f6"
+    },
+    "packages/shared/src/types/review-v3-c0.test.ts": {
+      "sourceBlob": "78acec41ccdc6e6c3eca5e78217761eccd16b6ed",
+      "sourceSha256": "25628d875f7af8a964f1a010597c8cee460d489708f25c2cf00b056b9217c892"
+    },
+    "packages/shared/src/types/review-v3-c0.ts": {
+      "sourceBlob": "96f8bcabf39d73868a4723748786c0380b9c06ad",
+      "sourceSha256": "b0342ca4a936ad91f03bc55feea48be07ab4904ccf3f076f561a6b321ceaca91"
+    },
+    "packages/shared/src/types/review-v3-execution.ts": {
+      "sourceBlob": "13870f3761547881561405a40b955df0dd9d9955",
+      "sourceSha256": "0169df5b1fde3888abd5464c825e20ca0a0ccb5b443af6efef088444f5354893"
+    },
+    "packages/shared/src/types/review-v3-run.ts": {
+      "sourceBlob": "dabf7ba8a843a194aee7ab9114fddee1bf79fcd6",
+      "sourceSha256": "61d10ad6fc271aeb83a3952bcf3daabc1d76b14596d4b244042416afcaa9868e"
+    },
+    "packages/shared/src/types/review.ts": {
+      "sourceBlob": "89a65e5a9911bdef285804113a918469d3fb909d",
+      "sourceSha256": "7019b86c0843ea8ce8cf8e20c9cc0240f2f3f9987167b903324ffd17179ab744"
+    }
+  },
+  "qaNotes": "18/18 accepted；NB46-N1..N10 全核销；10 篇=父批同 hash 由子批记录。NOT_RUN。"
+}

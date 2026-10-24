@@ -1,0 +1,189 @@
+<svg fill="none" viewBox="0 0 900 240" width="900" height="240" xmlns="http://www.w3.org/2000/svg">
+  <foreignObject width="100%" height="100%">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        .hero-container {
+          position: relative;
+          width: 100%;
+          height: 240px;
+          background: #F8FAFD;
+          border-radius: 18px;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+          border: 1px solid #E1E5EC;
+          box-shadow: 0 10px 30px rgba(66, 133, 244, 0.08), 0 2px 8px rgba(0, 0, 0, 0.03);
+        }
+
+        /* 1. Gemini 浅色柔和极光光斑（粉紫天蓝交融） */
+        .aurora {
+          position: absolute;
+          filter: blur(50px);
+          opacity: 0.55;
+          border-radius: 50%;
+          pointer-events: none;
+        }
+        .aurora-blue {
+          width: 340px; height: 180px;
+          background: #C2E7FF;
+          top: -40px; left: 16%;
+          animation: float-blue 8s ease-in-out infinite alternate;
+        }
+        .aurora-purple {
+          width: 320px; height: 180px;
+          background: #E8DEF8;
+          bottom: -40px; right: 18%;
+          animation: float-purple 9s ease-in-out infinite alternate;
+        }
+        .aurora-pink {
+          width: 240px; height: 140px;
+          background: #FFD8E4;
+          top: 30px; right: 35%;
+          animation: float-pink 7s ease-in-out infinite alternate;
+        }
+
+        @keyframes float-blue {
+          0% { transform: translate(0, 0) scale(1); }
+          100% { transform: translate(50px, 20px) scale(1.15); }
+        }
+        @keyframes float-purple {
+          0% { transform: translate(0, 0) scale(1); }
+          100% { transform: translate(-45px, -15px) scale(1.2); }
+        }
+        @keyframes float-pink {
+          0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+          100% { transform: translate(-25px, 20px) scale(1.1); opacity: 0.75; }
+        }
+
+        /* 2. ✦ CDUT Studio ✦ 高对比度宝石渐变流光文字 */
+        .title {
+          position: relative;
+          z-index: 10;
+          font-size: 38px;
+          font-weight: 800;
+          letter-spacing: 1.5px;
+          background: linear-gradient(75deg, #1A73E8 0%, #7C3AED 35%, #D93025 70%, #1A73E8 100%);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: shine 6s linear infinite;
+          margin-bottom: 20px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+        @keyframes shine {
+          to { background-position: 200% center; }
+        }
+
+        /* 3. Google 浅色浮雕提问胶囊框 */
+        .prompt-box {
+          position: relative;
+          z-index: 10;
+          width: 580px;
+          height: 48px;
+          background: rgba(255, 255, 255, 0.88);
+          backdrop-filter: blur(12px);
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          border-radius: 9999px;
+          display: flex;
+          align-items: center;
+          padding: 0 20px;
+          box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+        }
+
+        .prompt-sparkle {
+          color: #7C3AED;
+          font-size: 18px;
+          margin-right: 12px;
+          flex-shrink: 0;
+          animation: spin-pulse 4s ease-in-out infinite;
+        }
+        @keyframes spin-pulse {
+          0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.85; }
+          50% { transform: scale(1.2) rotate(15deg); opacity: 1; }
+        }
+
+        .prompt-text-wrapper {
+          position: relative;
+          flex: 1;
+          height: 24px;
+          overflow: hidden;
+        }
+
+        /* 三句话循环淡入淡出（高对比深灰文字，清晰易读） */
+        .text-line {
+          position: absolute;
+          width: 100%;
+          left: 0;
+          top: 0;
+          font-size: 14.5px;
+          font-weight: 600;
+          color: #1F1F1F;
+          white-space: nowrap;
+          opacity: 0;
+          transform: translateY(12px);
+        }
+
+        .line-1 { animation: cycle1 9s ease-in-out infinite; }
+        .line-2 { animation: cycle2 9s ease-in-out infinite; }
+        .line-3 { animation: cycle3 9s ease-in-out infinite; }
+
+        @keyframes cycle1 {
+          0% { opacity: 0; transform: translateY(12px); }
+          5%, 28% { opacity: 1; transform: translateY(0); }
+          33%, 100% { opacity: 0; transform: translateY(-12px); }
+        }
+        @keyframes cycle2 {
+          0%, 33% { opacity: 0; transform: translateY(12px); }
+          38%, 61% { opacity: 1; transform: translateY(0); }
+          66%, 100% { opacity: 0; transform: translateY(-12px); }
+        }
+        @keyframes cycle3 {
+          0%, 66% { opacity: 0; transform: translateY(12px); }
+          71%, 94% { opacity: 1; transform: translateY(0); }
+          100% { opacity: 0; transform: translateY(-12px); }
+        }
+
+        /* 浅色胶囊右侧微质感箭头按钮 */
+        .prompt-arrow {
+          width: 28px;
+          height: 28px;
+          background: #F0F4F9;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #7C3AED;
+          font-size: 14px;
+          font-weight: bold;
+        }
+      </style>
+
+      <div class="hero-container">
+        <!-- 柔和浅色极光背景 -->
+        <div class="aurora aurora-blue"></div>
+        <div class="aurora aurora-purple"></div>
+        <div class="aurora aurora-pink"></div>
+
+        <!-- 主标题 -->
+        <div class="title">✦ CDUT Studio ✦</div>
+
+        <!-- 浅色对话提问胶囊 -->
+        <div class="prompt-box">
+          <div class="prompt-sparkle">✦</div>
+          <div class="prompt-text-wrapper">
+            <div class="text-line line-1">你好！今天你想做点什么？</div>
+            <div class="text-line line-2">穷究于理，成就于工</div>
+            <div class="text-line line-3">告诉我你想探索的一切！</div>
+          </div>
+          <div class="prompt-arrow">➔</div>
+        </div>
+      </div>
+    </div>
+  </foreignObject>
+</svg>

@@ -1,0 +1,72 @@
+{
+ "schema": "dsh-r07-stage2-issues-result/1",
+ "track": "issues-p01-p03",
+ "atUtc": "2026-10-23T21:58:00Z",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "session": "docs-r07-qa-extra-04-20261024",
+ "model": "MiMo/max",
+ "partition": "FILES.tsv owner: p01-app-shell(191)/p02-agent-runtime(280)/p03-integrations(86)",
+ "counts": {
+  "VERIFIED_THIS_PASS_ERROR_PERSISTS": 9,
+  "OPEN_DOC_ERROR_UNFIXED": 23,
+  "OPEN_NEEDS_SOURCE_VERIFICATION": 140,
+  "PENDING_REVERIFICATION_MANUAL_CHANGED": 139,
+  "PENDING_VERIFICATION_AUTHOR_CLAIMED": 27,
+  "CLOSED_SUPERSEDED_PREVERIFIED": 153,
+  "CLOSED_THREE_PROOFS": 2,
+  "INFO_HASH_EQUAL_RECORD": 20,
+  "DOCUMENTED_IMPLEMENTATION_GAP": 1,
+  "CLOSED_MERGED_PREVERIFIED": 29,
+  "UNVERIFIED_TIMESTAMP_METADATA": 1,
+  "DEDUP_HISTORY_OF_CURRENT": 7,
+  "PENDING_VERIFICATION_TEST_CLAIM": 6
+ },
+ "totalRecords": 557,
+ "zeroSilentDrop": true,
+ "dedupe": {
+  "groups": 366,
+  "duplicatesFolded": 7
+ },
+ "spotChecks": [
+  {
+   "id": "IDX-G01-F-01",
+   "check": "git log --diff-filter=A LICENSE",
+   "finding": "first-add 6382c6a2 != initial 019f64e8 => claim false",
+   "result": "VERIFIED_ERROR_PERSISTS"
+  },
+  {
+   "id": "N-01(comment.py)",
+   "check": "grep -n TEMPLATE_DIR / shutil.copy",
+   "finding": ":25 vs manual :22; :236 vs :235",
+   "result": "VERIFIED_ERROR_PERSISTS"
+  },
+  {
+   "id": "IDX-G08-F-01",
+   "check": "FILES.tsv change column",
+   "finding": "r03_pr44 vs index row unchanged_since_093f (1 representative row of 6-file family)",
+   "result": "VERIFIED_ERROR_PERSISTS_PARTIAL_FAMILY"
+  }
+ ],
+ "deliverables": [
+  "manager/STAGE2/issues-p01-p03/RECONCILIATION.json",
+  "manager/STAGE2/issues-p01-p03/SUMMARY.md",
+  "manager/STAGE2/issues-p01-p03/TO-AUTHORS.md",
+  "manager/STAGE2/issues-p01-p03/RESULT.json",
+  "manager/STAGE2/issues-p01-p03/DONE.json",
+  "handoffs/STAGE2-issues-p01-p03-TO-LEAD.md"
+ ],
+ "gaps": [
+  "140 OPEN_NEEDS_SOURCE_VERIFICATION (claim-null 75; families nb-139/73/138/demo-data/docx-scripts/nb-66/65/75...)",
+  "139 PENDING_REVERIFICATION_MANUAL_CHANGED need re-verify at current hash (vendor-xsd family 135)",
+  "27 PENDING_VERIFICATION_AUTHOR_CLAIMED await independent review"
+ ],
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "GUI",
+  "real runtime",
+  "no git history rewrite"
+ ],
+ "boundaries": "wrote only manager/STAGE2/issues-p01-p03/ + one lead handoff; global OPEN-ISSUES untouched; seals/reviews/candidate/product untouched; static assertions not presented as measured"
+}

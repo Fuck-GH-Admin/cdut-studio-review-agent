@@ -1,0 +1,37 @@
+{
+  "schema": "dsh-r07-index-review-done/1",
+  "batch": "index-p01-app-shell__assets-r1",
+  "groupId": "p01-app-shell__assets",
+  "revisionOf": "index-p01-app-shell__assets",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-index-author-20261023",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T22:45:00Z",
+  "sealedAtUtc": "2026-10-23T19:09:24+00:00",
+  "status": "REVIEW_COMPLETE_ACCEPTED",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 16,
+    "accepted": 16,
+    "revision_required": 0,
+    "unknown": 0,
+    "findingsBlocking": 0,
+    "findingsNonBlocking": 0
+  },
+  "artifactSha256": "c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd",
+  "artifacts": [
+    "reviews/index-p01-app-shell__assets-r1/RESULT.json",
+    "reviews/index-p01-app-shell__assets-r1/REVIEWED-HASHES.json",
+    "reviews/index-p01-app-shell__assets-r1/SOURCE-CHECKLIST.md",
+    "reviews/index-p01-app-shell__assets-r1/DONE.json"
+  ],
+  "notRun": [
+    "产品测试",
+    "typecheck",
+    "构建",
+    "Electron/GUI（本轮统一 NOT_RUN）"
+  ],
+  "boundaries": "QA 只读复核；未改旧 seal；结论只覆盖本批。",
+  "findingsSummary": "r0 findings 全部 closure=resolved。批全组闭合（r0 revision_required → r1 accepted）。",
+  "next": "lead 按 r1 REVIEWED-HASHES.json 合入（artifactSha256=c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd）。"
+}

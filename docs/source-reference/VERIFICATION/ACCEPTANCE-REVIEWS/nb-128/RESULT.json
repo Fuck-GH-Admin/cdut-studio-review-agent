@@ -1,0 +1,242 @@
+{
+ "schema": "dsh-r07-review-result/1",
+ "batch": "nb-128",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-models-20261023",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T19:19:27.202852+00:00",
+ "preRead": "reviews/nb-128/PRE_READ_DONE.json",
+ "deliverySeal": {
+  "sealId": "seal-f0745cd11bfde5a2",
+  "sealedAtUtc": "2026-10-23T19:16:40Z",
+  "readySha256": "33ed9116c7bea8bdc9e1e8e9bc553b8d100cc76e1a1f9addbe3c02b7f9a75772",
+  "doneSha256": "a8b9c52ea5e8b17847f06a4b10f1f33b0f8a7b3a695607ddb720dd18684a6e1d",
+  "manifestSha256": "698c2b3771f68523f12394153448c2d69cccbab3b049c6d5f3df67384599546a",
+  "zipSha256": "b54f489ee162d11dc6da94bb71052087f7bfa25d9c4865ae6bf6f11deddca2ca"
+ },
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "gatesNote": "G0：18 文件一致、hash 链自洽、ZIP 21 合规；G2 对照预读基线——测试 5/13/3 全对、导出计数 15 源全对（auth-service 30 等）、12 条「无直接测试」全冻结树核实为真（login/refreshAuthToken 命中均为无关误配或 mock.module 依赖打桩）、automation-manager 限定口径准确（仅测 computeNextRunAt，CRUD/迁移缺口照实）、auth-service 安全链行号逐条吻合（:21/:198-341/:371/:380/:390/:400-520/:523/:532-555/:558-582/:597-675/:685-720）",
+ "batchVerdict": "accepted",
+ "files": [
+  {
+   "path": "apps/electron/src/main/lib/app-lifecycle.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/app-lifecycle.ts.md",
+   "sourceBlob": "1b28a131e73ad152ab88f857f05a9df91085b198",
+   "sourceSha256": "f14e2b51b3ebbaadd8dff3bc68967e5f35e0f7f3559c944199c0cbeeb2a59fdc",
+   "lines": 16,
+   "manualSha256": "b2bcd35cbe71c9cb7737557bc2434aed7a901c18aa9d4ca80f4349f1b3d5aae8",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/app-theme-service.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/app-theme-service.ts.md",
+   "sourceBlob": "8ac211c5b1443a8d067b40f41ce3dd5d99d67893",
+   "sourceSha256": "348d12eed83b8da29591131bec149bbaad14610631aeba90fc7ec9cba210830b",
+   "lines": 43,
+   "manualSha256": "baadc915a69bff4ab75163e5a4c215e988036922dde4f13fb640edd5b73d8b6c",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/attached-directory-project-detector.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/attached-directory-project-detector.test.ts.md",
+   "sourceBlob": "72a8c71877616559ed852d5c6226963a77b5b3fa",
+   "sourceSha256": "895bb68a0a4dc0a43d74986379ce0fdfa6ece990f494121317d4e962e5ec242b",
+   "lines": 91,
+   "manualSha256": "5c25723e5e7206bef5de0a039f9edb172868473cebe21ad1fe1e294a1edb4732",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/attached-directory-project-detector.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/attached-directory-project-detector.ts.md",
+   "sourceBlob": "ae06c31c779f61464dfae79d7c0f4010aed38a3a",
+   "sourceSha256": "aaa2c0e0ac77175ec9282de8e16d8002a966db4b2962d756fdd36134a71067a7",
+   "lines": 195,
+   "manualSha256": "95adafaeb33abf1a19c5ffd86ec0b9ef3c6a9d9010f0a1f25760bd5db8281bb8",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/attachment-service.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/attachment-service.ts.md",
+   "sourceBlob": "b565773008bcafc31fd9f9d53e1bf9caae1562c4",
+   "sourceSha256": "2e9ae1c26734155f5a4b33690d70bc3e1981a517838541b5072591981e792afa",
+   "lines": 326,
+   "manualSha256": "13097536aafa1441541fbde3e1cce6643045a13634eaf8de8338617384b6661a",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/auth-service.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/auth-service.ts.md",
+   "sourceBlob": "fea53c20ceb4b8824617ffd0d1b5bdbe287c6cf1",
+   "sourceSha256": "f92a4d94c010dade5ef9a282120cf5d1d98886807d32a59211ec0f012e8a6552",
+   "lines": 1057,
+   "manualSha256": "b82f5ce0c4eb2e72f995ec946712906972cfd8b805feab6d14cd13f0971f9877",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/automation-manager.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/automation-manager.test.ts.md",
+   "sourceBlob": "a4323d0f372af3600e3f896a498d553a3bd6e4cd",
+   "sourceSha256": "ada082c85e7176a7b2b3dc3b3fb6131b3314250026406d9d45dee5f53cd1d5fb",
+   "lines": 166,
+   "manualSha256": "123863ac4d8b4d93645a1e3b0a52638893e7e442d2f426d56a251fab45004ad3",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/automation-manager.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/automation-manager.ts.md",
+   "sourceBlob": "ade0b5840d0feded69c21af7f5e0b4d4f982951d",
+   "sourceSha256": "d7016284a1189debbf65422ca4375d75a94107e59df5cc3d914a7411884d8522",
+   "lines": 557,
+   "manualSha256": "9c75fec32e46be7c687a2f1d6b8e240a84a14d82d7d04e44c3144c333cc133ac",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/automation-notification-format.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/automation-notification-format.ts.md",
+   "sourceBlob": "b8a309d8e0e2090f96542856d0c1efc1f70e4592",
+   "sourceSha256": "4fd59f0d6b7eca56ff5f584e04a1208b2f3fce876bc261cf55bc1d7f2dbfcdf4",
+   "lines": 86,
+   "manualSha256": "be8b2d3e4d1628fca569aace759c4ef4ee51ece9fbf4ef58778b30f5245a4198",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/automation-notification-service.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/automation-notification-service.ts.md",
+   "sourceBlob": "6d63985593b456595632d67f939103c92965d4dd",
+   "sourceSha256": "d9ef5bd5beb8066311144a5c312c8cf713baa6dc111f103d049b075ff99222e8",
+   "lines": 46,
+   "manualSha256": "b2a43be7e4c38560500a312258b3bbfbfeb200ed1f876d3f56248c98d43c0015",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/automation-scheduler.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/automation-scheduler.ts.md",
+   "sourceBlob": "e1557e253bcbd411b51e7f038808c4fedfe4bad1",
+   "sourceSha256": "6046f1b362f68c71a0f900e849f499fb2fa4b1218ee349e41a256317c25fed96",
+   "lines": 341,
+   "manualSha256": "c6f37f42495546333f916387343b7155c0eb93a15d3bef5090173268b47903ea",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/background-task-manager.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/background-task-manager.test.ts.md",
+   "sourceBlob": "a5e4a17368e7899d605a6ba53a4352f9d000928d",
+   "sourceSha256": "59401ae178042d7f2780930984292e0aa7effe5b6fbb59bcdf1273ebfd9a083d",
+   "lines": 38,
+   "manualSha256": "3b24baa328edff79a9d7c7dc6c66ab8b3b15069533652be3ecf763d7c767236d",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/background-task-manager.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/background-task-manager.ts.md",
+   "sourceBlob": "9c19e7231b95f967cff5e5753a85fe6da8fbc08b",
+   "sourceSha256": "439c8367ab6ac716db7527e48db65918c3585abeca7e1d71bcd5becd04d0798c",
+   "lines": 97,
+   "manualSha256": "5cc19211bbe99aba800e2a101ea8001d75fde8956cc3648ed75ca263f3a7fce9",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/blob-store.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/blob-store.ts.md",
+   "sourceBlob": "aa8050f102c1af3fd1905d20aadf92b75c074255",
+   "sourceSha256": "48f034f12bcdae615f091f135687ac73df78cfc291cceca69a0917c81b864ff6",
+   "lines": 113,
+   "manualSha256": "1d25833992058c47b2e5c5fc552bc1baa36b4e58fa56f5ac36d852d9bc6c47bd",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/build-target.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/build-target.ts.md",
+   "sourceBlob": "8001e4decb85ef167f415a1c45d2386618113728",
+   "sourceSha256": "a4dd9d2b9a0259c4cf70bbea097725dcbc0bd05d0827dc0ca9377d176c525f30",
+   "lines": 20,
+   "manualSha256": "9c9116bd3783fd7ae2417c72db08f9ef565def5ae1e13404e7e02f8d2981f0c5",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/bulletin-service.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/bulletin-service.ts.md",
+   "sourceBlob": "ae1f9f4f4ac5a2de49f0f3e0f1b1dea4dd5c2e29",
+   "sourceSha256": "1508b2e4746b3296ceeaa71068d060f17680ecda024ba219f357445b8e4b07de",
+   "lines": 42,
+   "manualSha256": "951649559b0300ac364ff4981fc7f107abf3ffbe4124cbfc3830e9400e615ef8",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/bun-finder.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/bun-finder.ts.md",
+   "sourceBlob": "07a9e3210397db52c93b1cf2cd1721dffc0e2097",
+   "sourceSha256": "6effc8a82616705d39f73c924a353f5f1fe2b25b7ab81b43f5f622ef400facd2",
+   "lines": 194,
+   "manualSha256": "d878a3974fbe0e2cea4ef5ec5ad92eb8da39ee695d9fe9237800aaa8d15174e4",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/changelog-service.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/changelog-service.ts.md",
+   "sourceBlob": "9d6053f84ad96ce9495931aa568902f929ff7e09",
+   "sourceSha256": "f94cd8502fc0466d4121ed48ffc129c3d1b29721513d85097949638ee2e4a2ba",
+   "lines": 42,
+   "manualSha256": "876ea7bd652645c92d5ceb0800a7b64c29ca0c9a7e98bfdab91af8fd4956ad4f",
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "findings": [],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/app-lifecycle.ts.md": "b2bcd35cbe71c9cb7737557bc2434aed7a901c18aa9d4ca80f4349f1b3d5aae8",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/app-theme-service.ts.md": "baadc915a69bff4ab75163e5a4c215e988036922dde4f13fb640edd5b73d8b6c",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/attached-directory-project-detector.test.ts.md": "5c25723e5e7206bef5de0a039f9edb172868473cebe21ad1fe1e294a1edb4732",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/attached-directory-project-detector.ts.md": "95adafaeb33abf1a19c5ffd86ec0b9ef3c6a9d9010f0a1f25760bd5db8281bb8",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/attachment-service.ts.md": "13097536aafa1441541fbde3e1cce6643045a13634eaf8de8338617384b6661a",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/auth-service.ts.md": "b82f5ce0c4eb2e72f995ec946712906972cfd8b805feab6d14cd13f0971f9877",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/automation-manager.test.ts.md": "123863ac4d8b4d93645a1e3b0a52638893e7e442d2f426d56a251fab45004ad3",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/automation-manager.ts.md": "9c75fec32e46be7c687a2f1d6b8e240a84a14d82d7d04e44c3144c333cc133ac",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/automation-notification-format.ts.md": "be8b2d3e4d1628fca569aace759c4ef4ee51ece9fbf4ef58778b30f5245a4198",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/automation-notification-service.ts.md": "b2a43be7e4c38560500a312258b3bbfbfeb200ed1f876d3f56248c98d43c0015",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/automation-scheduler.ts.md": "c6f37f42495546333f916387343b7155c0eb93a15d3bef5090173268b47903ea",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/background-task-manager.test.ts.md": "3b24baa328edff79a9d7c7dc6c66ab8b3b15069533652be3ecf763d7c767236d",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/background-task-manager.ts.md": "5cc19211bbe99aba800e2a101ea8001d75fde8956cc3648ed75ca263f3a7fce9",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/blob-store.ts.md": "1d25833992058c47b2e5c5fc552bc1baa36b4e58fa56f5ac36d852d9bc6c47bd",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/build-target.ts.md": "9c9116bd3783fd7ae2417c72db08f9ef565def5ae1e13404e7e02f8d2981f0c5",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/bulletin-service.ts.md": "951649559b0300ac364ff4981fc7f107abf3ffbe4124cbfc3830e9400e615ef8",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/bun-finder.ts.md": "d878a3974fbe0e2cea4ef5ec5ad92eb8da39ee695d9fe9237800aaa8d15174e4",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/changelog-service.ts.md": "876ea7bd652645c92d5ceb0800a7b64c29ca0c9a7e98bfdab91af8fd4956ad4f"
+ },
+ "revisionHashes": {},
+ "verifiedHighlights": [
+  "auth-service 30 导出/安全链（token 持久化/注册 OTP 四步/自动刷新/登出清理）行号全对",
+  "automation 月度/多值调度测试覆盖与缺口口径照实（文件名覆盖面不匹配也如实标注）",
+  "blob-store 内容寻址/bun-finder vendor 回退/build-target 商业判定/attachment 7 导出——抽验吻合"
+ ],
+ "notRun": [
+  "bun test",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "limits": "静态复验（预读+G2）",
+ "next": "18 篇可合入；nb-128 闭环"
+}

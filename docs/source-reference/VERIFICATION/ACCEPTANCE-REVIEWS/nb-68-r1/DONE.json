@@ -1,0 +1,56 @@
+{
+ "schema": "dsh-r07-qa-done/1",
+ "batch": "nb-68-r1",
+ "id": "NB-68",
+ "revisionOf": "nb-68",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewRoot": "reviews/nb-68-r1",
+ "reviewedAtUtc": "2026-10-24T20:25:00Z",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PASS",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 10,
+  "revision_required": 0,
+  "unknown": 0
+ },
+ "acceptedManuals": 10,
+ "acceptedHashesCount": 10,
+ "findingsClosure": {
+  "F-01": "CLOSED（heatmap 导出 7→8 ×2 处 ✓ 无残留）"
+ },
+ "resultSha256": "18813be798df6a8d2c5a166b0f99eb907c20d0ec8e0ae046b6c235cc3290eb26",
+ "reviewedHashesSha256": "b9c3ce55e8fe5e731d9ff5d2c688b524f45f5740e48a04aa4ada163864f383e5",
+ "zip": {
+  "path": "deliveries/nb-68-r1/R07-nb-68-r1-05fb2565.zip",
+  "sha256": "329feb107e2a1bf62ec63f1b8279e798c8a1b7dc4ea0a4a10a6b09e32e93715d",
+  "note": "v2 无穿越/0 mismatch"
+ },
+ "sealId": "seal-699e913804f05170",
+ "artifacts": [
+  "reviews/nb-68-r1/RESULT.json",
+  "reviews/nb-68-r1/RESULT.md",
+  "reviews/nb-68-r1/REVIEWED-HASHES.json",
+  "reviews/nb-68-r1/DONE.json",
+  "handoffs/nb-68-r1-REVIEW-TO-AUTHOR.md",
+  "handoffs/nb-68-r1-REVIEW-TO-LEAD.md"
+ ],
+ "priorReviewsUntouched": true,
+ "parentPreserved": "r0 交付未动；1 篇 before/=父批原字节",
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "real model/network"
+ ],
+ "writtenOnlyIn": "reviews/nb-68-r1 + handoffs",
+ "next": "lead 按 10 个新 acceptedHashes 合入；nb-68 循环闭合"
+}

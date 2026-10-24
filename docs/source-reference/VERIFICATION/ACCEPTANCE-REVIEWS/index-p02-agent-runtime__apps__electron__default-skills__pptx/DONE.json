@@ -1,0 +1,37 @@
+{
+ "schema": "dsh-r07-index-review-done/1",
+ "batch": "index-p02-agent-runtime__apps__electron__default-skills__pptx",
+ "groupId": "p02-agent-runtime__apps__electron__default-skills__pptx",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-02-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T19:15:00Z",
+ "sealedAtUtc": "2026-10-23T19:01:26+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 1,
+  "accepted": 1,
+  "revision_required": 0,
+  "unknown": 0,
+  "findingsBlocking": 0,
+  "findingsNonBlocking": 3
+ },
+ "artifactSha256": "cf0b2a4f2f6d1ef4a4b761d2bf22fc391475aa23041d2719ea76f029ffce8cf8",
+ "artifacts": [
+  "reviews/index-p02-agent-runtime__apps__electron__default-skills__pptx/RESULT.json",
+  "reviews/index-p02-agent-runtime__apps__electron__default-skills__pptx/REVIEWED-HASHES.json",
+  "reviews/index-p02-agent-runtime__apps__electron__default-skills__pptx/SOURCE-CHECKLIST.md",
+  "reviews/index-p02-agent-runtime__apps__electron__default-skills__pptx/DONE.json"
+ ],
+ "notRun": [
+  "产品测试",
+  "typecheck",
+  "构建",
+  "Electron/GUI",
+  "实际 validate.py/comment.py/chartlib/profer CLI 运行（本轮统一 NOT_RUN）"
+ ],
+ "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局账；未 commit/push；结论只覆盖本批。",
+ "findingsSummary": "1/1 accepted。消费三要素/10 配色/API/chartlib.py 引证/验证①②③全过。3 条非阻断 findings（N-01 chartlib.md 结构行号漂移、N-02 共通链引证、N-03 封版元数据倒挂）。",
+ "next": "lead 按 REVIEWED-HASHES.json 合入（artifactSha256=cf0b2a4f2f6d1ef4a4b761d2bf22fc391475aa23041d2719ea76f029ffce8cf8）；N-01..N-03 随合并 errata；QA 续审后续交付。"
+}

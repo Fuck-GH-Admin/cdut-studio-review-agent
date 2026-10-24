@@ -1,0 +1,30 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "index-p02-agent-runtime__vendor-xsd__mce",
+ "groupId": "p02-agent-runtime__vendor-xsd__mce",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T20:50:00Z",
+ "sealedAtUtc": "2026-10-23T19:29:27+00:00",
+ "artifactSha256": "5fb854dc17e363e369466f7e05cb9215cbfa731c6af88ed59743a7738417892b",
+ "note": "QA 实算封版链全对。3/3 accepted，0 findings。",
+ "acceptedManuals": {
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__mce.md@apps/electron/default-skills/docx/scripts/office/schemas/mce/mc.xsd": "5fb854dc17e363e369466f7e05cb9215cbfa731c6af88ed59743a7738417892b",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__mce.md@apps/electron/default-skills/pptx/scripts/office/schemas/mce/mc.xsd": "5fb854dc17e363e369466f7e05cb9215cbfa731c6af88ed59743a7738417892b",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__mce.md@apps/electron/default-skills/xlsx/scripts/office/schemas/mce/mc.xsd": "5fb854dc17e363e369466f7e05cb9215cbfa731c6af88ed59743a7738417892b"
+ },
+ "sourceBindings": {
+  "apps/electron/default-skills/docx/scripts/office/schemas/mce/mc.xsd": {
+   "sourceBlob": "ef725457cf39116672e285d021be69b7ad022574",
+   "sourceSha256": "3a37e461ecf5a8670fdec34029703401f8728ab9c96ec1739a6ae58d55212413"
+  },
+  "apps/electron/default-skills/pptx/scripts/office/schemas/mce/mc.xsd": {
+   "sourceBlob": "ef725457cf39116672e285d021be69b7ad022574",
+   "sourceSha256": "3a37e461ecf5a8670fdec34029703401f8728ab9c96ec1739a6ae58d55212413"
+  },
+  "apps/electron/default-skills/xlsx/scripts/office/schemas/mce/mc.xsd": {
+   "sourceBlob": "ef725457cf39116672e285d021be69b7ad022574",
+   "sourceSha256": "3a37e461ecf5a8670fdec34029703401f8728ab9c96ec1739a6ae58d55212413"
+  }
+ }
+}

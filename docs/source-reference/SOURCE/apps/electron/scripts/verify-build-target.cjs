@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+
+const { readFileSync } = require('node:fs')
+const { resolve } = require('node:path')
+
+const expectedTarget = process.argv[2]
+const bundlePath = process.argv[3] || 'dist/main.cjs'
+
+if (!['oss', 'commercial'].includes(expectedTarget)) {
+  console.error('Usage: node scripts/verify-build-target.cjs <oss|commercial> [bundlePath]')
+  process.exit(2)
+}
+
+const bundle = readFileSync(resolve(bundlePath), 'utf8')
+// build:main 使用 --minify-whitespace --minify-identifiers（不启用 --minify-syntax，
+// 避免 esbuild 折叠三元表达式导致下面的字面量消失），匹配时对空白不敏感。
+const ossLiteral = /false\s*\?\s*"oss"\s*:\s*"oss"/
+const commercialLiteral = /false\s*\?\s*"oss"\s*:\s*"commercial"/
+
+const hasOssTarget = ossLiteral.test(bundle)
+const hasCommercialTarget = commercialLiteral.test(bundle)
+
+if (expectedTarget === 'oss') {
+  if (!hasOssTarget || hasCommercialTarget) {
+    console.error('[verify-build-target] OSS build target mismatch: expected oss bundle.')
+    process.exit(1)
+  }
+}
+
+if (expectedTarget === 'commercial') {
+  if (!hasCommercialTarget || hasOssTarget) {
+    console.error('[verify-build-target] Commercial build target mismatch: expected commercial bundle.')
+    process.exit(1)
+  }
+}
+
+console.log(`[verify-build-target] ${expectedTarget} bundle verified: ${bundlePath}`)

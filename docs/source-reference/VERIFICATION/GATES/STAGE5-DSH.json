@@ -1,0 +1,50 @@
+{
+ "schema": "r07-independent-gate/1",
+ "gate": "STAGE5-ROOT3-DESIGN-VS-IMPLEMENTATION",
+ "status": "S5PASS",
+ "reviewedAtUtc": "2026-10-23T23:08:55Z",
+ "reviewer": "DSH MiMo/max independent QA（非作者）",
+ "sourceSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "prerequisites": {
+  "final-hour/GATES/INDEX.json": "PASS",
+  "final-hour/GATES/CODEBASE-MAP.json": "PASS",
+  "final-hour/GATES/MODULE-API.json": "PASS",
+  "final-hour/GATES/STAGE4.json": "PASS（CURRENT-ARCHITECTURE/BUSINESS-FLOW 双哈希与本 gate 复算一致）"
+ },
+ "stageHashes": {
+  "final-hour/stage/CURRENT-ARCHITECTURE.md": "0f633ff9a470fb7adb28ae31e54d8980549b9ac3cd7a0115ed054add6f2f1872",
+  "final-hour/stage/BUSINESS-FLOW.md": "32847ccc17b85d94574f92d358a19f8d4622321dbb2508490c272349e3027dd5",
+  "final-hour/stage/DESIGN-VS-IMPLEMENTATION.md": "0d1b7485f81a36d8d60cd160b4cdceab38ec54fdcad87b942bbbffa5cc97c218"
+ },
+ "artifactUnderGate": "final-hour/stage/DESIGN-VS-IMPLEMENTATION.md",
+ "verificationMode": "静态源码核对（grep/read 冻结源）；真实运行 NOT_RUN；静态断言未冒充实测",
+ "factChecks": {
+  "latestReportDecision_DESC_at(-1)_无finality": "证实——byTimeThenId `right.localeCompare(left)` 降序+ID 降序兜底，`sort().at(-1)` 实取最早；无 finality 过滤；resolveReportRun 无决定才取最新技术 Run、决定绑定 Run 缺失拒绝替代（review-v3-report-snapshot.ts:26-76 实读）。文档表述与源码一致",
+  "普通Pi无planFingerprint": "证实——buildRun inputManifest 含 hash/documentVersions/effectiveRuleSetHash 无 planFingerprint（pi-case-review-service.ts:274-309）；freezeAttemptIdentity 缺 planFingerprint 返回 undefined 且注释明示不拿 input hash 冒充（review-runtime-contract.ts:55-73）",
+  "legacy_run_也business": "证实——classifyRunAuthority 仅排除 run-tpl-*/run-diag-*，其余（含旧 run-*）回退 business-attempt（review-runtime-contract.ts:31-37）；resolveCurrentBusinessRun 排除合成 ID、取最新、运行/失败/取消不回退、核 T03 当前性（:134-166）",
+  "T03属当前T05非旧recordStageDecision全局": "证实——assessT03RunAction 挂在 resolveCurrentBusinessRun/:178-194 与 workspace-business-service-v2.ts:87-110（当前 T05/原生办理）；stage-workflow.ts recordStageDecision(:81-195) 内无 Run/T03 校验、生成 `run@rev${revision}` 依据(:134)——文档与 BUSINESS-FLOW §7 表述一致",
+  "V1CAS缺省跳过": "证实——updateCase 注释称「缺省视为 0…」但代码 `options.expectedRevision !== undefined` 才比对，省略即跳过 CAS（case-store.ts:278-290）",
+  "D2_verifyPi仅测试调用": "证实——verifyD2PiRun 仅定义 review-d2-runtime.ts:498+测试引用，非 test 生产调用为零；准备/提交实际用 verifyD2InstalledPlan（pi-case-review-service.ts:462/:932），validateD2GuardSubmission 在 verifyD2PiRun 内部（review-d2-runtime.ts:533）",
+  "工具turn/scope帮助函数非普遍调用": "证实——requireAssignment 调 checkAssignment 不传 turnId/requireTurnMatch（pi-review-ops-tools.ts:200-205），assignment 侧支持但需调用方传（review-agent-assignment.ts:265-301）；review_list_cases/review_get_case 未调 checkCaseReadScope/isCaseVisible（:270-310，帮助函数定义 :354-373）",
+  "cslab事务worker与配置根边界": "证实——cslab-manuscript md/sidecar 先写后提交 DB（:244-306）；cslab-ooxml 缺 worker bundle 进程内降级、30s watchdog 仅 worker 分支（:1120-1137）；resolveLabRelativePath 词法 startsWith 包含（cslab-paths.ts:320-333）；配置根 Electron .cdutai/.cdutai-dev+PROFER_CONFIG_DIR（config-paths.ts:24-80）vs CLI .profer/.profer-dev+--config-dir（cli/paths.ts:25-28）",
+  "completed_businessReady_非approved": "证实——summarizePiReviewBusinessReadiness businessReady=completed&&无待确认/失败/未执行&&全读，不要求 compliant（pi-case-review-service.ts:819-836）；文档未把技术完成/业务可办理冒充批准",
+  "parseRevision重建非校验input": "证实——SourceRef.parseRevision 取 `document.parseRevision` 重建（pi-case-review-service.ts:326），input 只校验 blockId/quote；DESIGN 文档未误述，BUSINESS-FLOW §6 表述正确"
+ },
+ "structuralChecks": {
+  "links": "43/43 相对链接解析通过（含 ../../baseline/source 引用与四前置文档）",
+  "citations": "25 处 file:line 区间；D01-D14 证据区间抽查 12 组全部命中真实内容（report-export-v2:39-63、workspace-business:87-110、run-async:82-105 等）",
+  "crossDoc": "与 CURRENT-ARCHITECTURE/BUSINESS-FLOW 一致性核对通过（latestReportDecision 缺陷保留口径、legacy run 分层、businessReady≠批准、T03 边界、CAS/事务/worker 边界均互证一致）；与 MODULE-API 门产物口径无冲突",
+  "fixedNames": "五 MD 与 MODULE 名称未改动（QA 只读）"
+ },
+ "findings": "0 事实错误。未产出 ROOT-DOC-ACTIONS.json（无错可派）。",
+ "boundaries": "不改三份正文（用户指定 Codex 所写）；不重复既有报告；真实运行 NOT_RUN；本 gate 只覆盖第三份 ROOT 文档与三文档一致性/引证真实性，不代表全仓技术验收",
+ "verdict": "S5PASS",
+ "next": "lead 打包收口",
+ "reconciliationWithRootDocActions": {
+  "file": "manager/ROOT-DOC-ACTIONS.json（23:04:39Z，非本 QA 所建，未改动）",
+  "origin": "源于 GATES/STAGE4-FINDINGS.json（22:53:35Z，针对 CURRENT-ARCHITECTURE/BUSINESS-FLOW **草稿** hash 7bcad7f7…/3b9aa130… 的 4 项 findings，1 blocking+3 precision）",
+  "repairEffectVerified": "修复版正文（CURRENT-ARCHITECTURE 0f633ff9…、BUSINESS-FLOW 32847ccc…、DESIGN-VS-IMPLEMENTATION 0d1b7485…）经本 QA 逐条回源：4 项要求事实均已落实——S4-REPORT-01 报告选择实况（desc+at(-1)=最早+无 finality）三文档如实；S4-SOURCE-02 parseRevision 重建（BUSINESS-FLOW §6）；S4-READY-03 businessReady 含 completed（D03/§5）；S4-GATE-04 T03 限 T05/原生路径（D05/BF §7）",
+  "note": "该 registry 4 项 status 仍为 OPEN_TARGETED_REPAIR_REQUESTED（建单时未复核修复版）；建议经理按修复版正文核对后关闭。本 QA 未改该文件、未产新 ROOT-DOC-ACTIONS（无新错误可派）。",
+  "atUtc": "2026-10-23T23:10:07Z"
+ }
+}

@@ -1,0 +1,240 @@
+{
+ "schema": "dsh-r07-index-review-result/1",
+ "batch": "index-p03-integrations__demo-data",
+ "groupId": "p03-integrations__demo-data",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-03-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T19:48:00Z",
+ "sealedAtUtc": "2026-10-23T19:24:02+00:00",
+ "targetMd": "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md",
+ "artifactSha256": "63f9fef6a940cb3137654472c42c523da8d27859a1e680d0d1f0e78763bf90d6",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 7,
+  "accepted": 7,
+  "revision_required": 0,
+  "unknown": 0,
+  "blocking": 0,
+  "nonBlocking": 9
+ },
+ "gates": {
+  "G0_INDEX": "PASS",
+  "G1_INDEPENDENT_SOURCE_REVIEW": "PASS_WITH_NOTES",
+  "G2_SEAL_CONSISTENCY": "PASS",
+  "note": "G0 等价检查全对（哈希链自洽、7/7 锚点@声明行、源绑定与冻结源/lock 全等、targetMd 一致）。G1：全部加载/消费/打包/影响断言独立实测为真——DEMO_DATA_FILES 成员行号（:37/:40/:44/:45/:46）与 tableSeriesFor 调用点（:171-173）精确；assertDemoFiles 缺失即 throw 语义属实（throw 实测 :80）；coach-tour-runner.ts:251、cslab-demo-plates.ts:52/:54/:407、cslab-mol.ts:42、cslab-science.test.ts:17/:25、cslab-molstar-math.test.ts:66-106、cslab-demo.test.ts:26/:86/:28/:147、electron-builder.yml:118-122、sniff.ts:36-41/:47-49、mat-level5.ts:2/:5/:273、cslab-iron-cage.ts:138-142、cslab-python.ts:5、generate_max_mat.py:6/:17/:28/:55-56 逐行命中；双副本 5/5 逐字节一致、resources/cslab/demo 无 .mat、双 .mat 魔数、CSV/PDB/CIF 内容自述实测相符；.mat 零代码消费者负向检索复核成立。瑕疵：9 处行号漂移（±1~6，无越界，内容全对）见 DEMO-N-01..09，按行号漂移类 minor 登记（非阻断≠已修）。"
+ },
+ "familyFindings": [
+  {
+   "id": "DEMO-N-01",
+   "severity": "low",
+   "type": "citation_precision",
+   "manualLines": "见 detail",
+   "detail": "家族背景行引 `cslab-demo.ts:30-32` 为 DEMO_LAB_NAME，实际 `const DEMO_LAB_NAME` 在 :34（:30-32 为 import 行）。",
+   "action": "改 :34；不阻断"
+  },
+  {
+   "id": "DEMO-N-02",
+   "severity": "low",
+   "type": "citation_precision",
+   "manualLines": "见 detail",
+   "detail": "家族背景行引 `cslab-demo.ts:34-48` 为 DEMO_DATA_FILES 白名单，实际 `const DEMO_DATA_FILES = [` 在 :36、条目 :37-:48、`] as const` :49。",
+   "action": "改 :36-49；不阻断"
+  },
+  {
+   "id": "DEMO-N-03",
+   "severity": "low",
+   "type": "citation_precision",
+   "manualLines": "见 detail",
+   "detail": "家族背景行引 `resolveDemoDir()`（cslab-demo.ts:53-60），实际函数 :58-65（打包态 resourcesPath 行 :62、开发态 appPath 行 :64 在引证区间外）。",
+   "action": "改 :58-65；不阻断"
+  },
+  {
+   "id": "DEMO-N-04",
+   "severity": "low",
+   "type": "citation_precision",
+   "manualLines": "见 detail",
+   "detail": "家族背景行引 `CSLAB_DEMO_DIR` 环境覆盖（:54-56），实际 `process.env.CSLAB_DEMO_DIR` 在 :60。",
+   "action": "改 :60；不阻断"
+  }
+ ],
+ "g0Evidence": {
+  "stockScript": "ERRATA-E1 沿登记；等价检查 PASS"
+ },
+ "errataCarry": [
+  "ERRATA-E1",
+  "ERRATA-E2",
+  "ERRATA-E3"
+ ],
+ "files": [
+  {
+   "path": "demo-data/cdut-science-rutile/gold-fcc-nanoparticle.pdb",
+   "manual": "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md",
+   "targetMd": "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md",
+   "anchor": "MODULE-REFERENCE/p03-integrations/INDEX.md#demo-data--cdut-science-rutile--gold-fcc-nanoparticle.pdb",
+   "line": 15,
+   "sourceBlob": "2172705db0ceeecd6f4d3d49c569ecbb129d398b",
+   "sourceSha256": "57ca3587d13dc976de119bd227a3faaa6a8546266d5c714829e8d45ceaf59094",
+   "manualSha256": "63f9fef6a940cb3137654472c42c523da8d27859a1e680d0d1f0e78763bf90d6",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "DEMO-N-05",
+     "severity": "low",
+     "type": "citation_precision",
+     "manualLines": "见 detail",
+     "detail": "`assertDemoFiles()` 引 `cslab-demo.ts:62-78`（家族背景 1 处 + 5 个 cdut-science-rutile 文件消费行各 1 处，共 6 处），实际 `async function assertDemoFiles` 在 :67、throw 在 :80、函数止于 :81。",
+     "action": "6 处统一改 :67-81；不阻断"
+    },
+    {
+     "id": "DEMO-N-06",
+     "severity": "low",
+     "type": "citation_precision",
+     "manualLines": "见 detail",
+     "detail": "gold-fcc 影响行「演示数据缺失」throw 引 `cslab-demo.ts:74-78`，实际 throw 在 :80（:74-78 是 try/catch 收尾）。",
+     "action": "改 :80；不阻断"
+    }
+   ],
+   "note": "REMARK :1-2（demo 说明/atoms=2315 radius=21 A）与 :3 起 ATOM 记录实测相符；DEMO_DATA_FILES 成员 :40 精确；coach-tour-runner.ts:251 open-asset-by-title 精确命中；cslab-mol.ts:42 `'.pdb':'pdb'` 精确；双副本 sha 5/5 逐字节一致实测；electron-builder.yml:118-122 精确。行号漂移见 DEMO-N-05/06。"
+  },
+  {
+   "path": "demo-data/cdut-science-rutile/rutile-raman-532nm.csv",
+   "manual": "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md",
+   "targetMd": "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md",
+   "anchor": "MODULE-REFERENCE/p03-integrations/INDEX.md#demo-data--cdut-science-rutile--rutile-raman-532nm.csv",
+   "line": 25,
+   "sourceBlob": "9899b0687b32f2db3b4f74d953cbc911626b1126",
+   "sourceSha256": "084d3063b81229846cd1f28d126388fc6be8a10e12121b57e1a243b265d6b419",
+   "manualSha256": "63f9fef6a940cb3137654472c42c523da8d27859a1e680d0d1f0e78763bf90d6",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "DEMO-N-05",
+     "severity": "low",
+     "type": "citation_precision",
+     "manualLines": "见 detail",
+     "detail": "`assertDemoFiles()` 引 `cslab-demo.ts:62-78`（家族背景 1 处 + 5 个 cdut-science-rutile 文件消费行各 1 处，共 6 处），实际 `async function assertDemoFiles` 在 :67、throw 在 :80、函数止于 :81。",
+     "action": "6 处统一改 :67-81；不阻断"
+    },
+    {
+     "id": "DEMO-N-07",
+     "severity": "low",
+     "type": "citation_precision",
+     "manualLines": "见 detail",
+     "detail": "rutile-raman 职责行头注释引 `cslab-demo.ts:11`「Raman 数据表（Origin 绘图与拟合）」，实际该句在 :9。",
+     "action": "改 :9；不阻断"
+    }
+   ],
+   "note": "表头 raman_shift,intensity 与 100.0 起实测；DEMO_DATA_FILES :46 精确；tableSeriesFor :173 精确；cslab-demo-plates.ts:54、cslab-demo.test.ts:28/:147 精确命中；双副本一致实测。行号漂移见 DEMO-N-05/07。"
+  },
+  {
+   "path": "demo-data/cdut-science-rutile/rutile-tio2.cif",
+   "manual": "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md",
+   "targetMd": "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md",
+   "anchor": "MODULE-REFERENCE/p03-integrations/INDEX.md#demo-data--cdut-science-rutile--rutile-tio2.cif",
+   "line": 35,
+   "sourceBlob": "b62271a399c3faf3ac2c909604069e10e8f201c8",
+   "sourceSha256": "848e6b8784d118f854c1a800407b1a78974f19cc360aabd450929bfddfda6ba1",
+   "manualSha256": "63f9fef6a940cb3137654472c42c523da8d27859a1e680d0d1f0e78763bf90d6",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "DEMO-N-05",
+     "severity": "low",
+     "type": "citation_precision",
+     "manualLines": "见 detail",
+     "detail": "`assertDemoFiles()` 引 `cslab-demo.ts:62-78`（家族背景 1 处 + 5 个 cdut-science-rutile 文件消费行各 1 处，共 6 处），实际 `async function assertDemoFiles` 在 :67、throw 在 :80、函数止于 :81。",
+     "action": "6 处统一改 :67-81；不阻断"
+    },
+    {
+     "id": "DEMO-N-08",
+     "severity": "low",
+     "type": "citation_precision",
+     "manualLines": "见 detail",
+     "detail": "rutile-tio2.cif 消费行「VESTA/PXRD 演示，cslab-demo.ts:6-7 头注释」，实际「VESTA 空间群与 PXRD」句在 :5。",
+     "action": "改 :5；不阻断"
+    }
+   ],
+   "note": ":2 六原子自述/:3 data 块/:4 _audit_creation_method 实测逐字相符；DEMO_DATA_FILES :37 精确；cslab-demo-plates.ts:407 精确；cslab-science.test.ts:17/:25 精确；双副本一致实测。行号漂移见 DEMO-N-05/08。"
+  },
+  {
+   "path": "demo-data/cdut-science-rutile/rutile-xrd-co-ka.csv",
+   "manual": "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md",
+   "targetMd": "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md",
+   "anchor": "MODULE-REFERENCE/p03-integrations/INDEX.md#demo-data--cdut-science-rutile--rutile-xrd-co-ka.csv",
+   "line": 45,
+   "sourceBlob": "b1b78ee3bd5d272c7134d3267f516233447028cc",
+   "sourceSha256": "02225cda1fc00f3780437cc0e2f94cb643d8892633fee71380aaf2b97fe67742",
+   "manualSha256": "63f9fef6a940cb3137654472c42c523da8d27859a1e680d0d1f0e78763bf90d6",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "DEMO-N-05",
+     "severity": "low",
+     "type": "citation_precision",
+     "manualLines": "见 detail",
+     "detail": "`assertDemoFiles()` 引 `cslab-demo.ts:62-78`（家族背景 1 处 + 5 个 cdut-science-rutile 文件消费行各 1 处，共 6 处），实际 `async function assertDemoFiles` 在 :67、throw 在 :80、函数止于 :81。",
+     "action": "6 处统一改 :67-81；不阻断"
+    }
+   ],
+   "note": "表头 two_theta,intensity 10.00 起实测；DEMO_DATA_FILES :45 精确；tableSeriesFor :172 精确；cslab-demo-plates.ts:52 精确；双副本一致实测。行号漂移见 DEMO-N-05。"
+  },
+  {
+   "path": "demo-data/cdut-science-rutile/rutile-xrd-cu-ka.csv",
+   "manual": "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md",
+   "targetMd": "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md",
+   "anchor": "MODULE-REFERENCE/p03-integrations/INDEX.md#demo-data--cdut-science-rutile--rutile-xrd-cu-ka.csv",
+   "line": 55,
+   "sourceBlob": "69637ece8d698e5eb241e3ff1260364cd09299a9",
+   "sourceSha256": "62c8b29eb498c9528356a72988be6662c98a77e5fe7982ffa1d85f481ae3d953",
+   "manualSha256": "63f9fef6a940cb3137654472c42c523da8d27859a1e680d0d1f0e78763bf90d6",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "DEMO-N-05",
+     "severity": "low",
+     "type": "citation_precision",
+     "manualLines": "见 detail",
+     "detail": "`assertDemoFiles()` 引 `cslab-demo.ts:62-78`（家族背景 1 处 + 5 个 cdut-science-rutile 文件消费行各 1 处，共 6 处），实际 `async function assertDemoFiles` 在 :67、throw 在 :80、函数止于 :81。",
+     "action": "6 处统一改 :67-81；不阻断"
+    }
+   ],
+   "note": "表头实测；DEMO_DATA_FILES :44 精确；tableSeriesFor :171 精确；cslab-demo.test.ts:26/:86 精确；cslab-molstar-math.test.ts:66-106（27.44 (110) 断言）精确；双副本一致实测。行号漂移见 DEMO-N-05。"
+  },
+  {
+   "path": "demo-data/matlab-benchmarks/matlab_level5_max_compressed_complex.mat",
+   "manual": "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md",
+   "targetMd": "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md",
+   "anchor": "MODULE-REFERENCE/p03-integrations/INDEX.md#demo-data--matlab-benchmarks--matlab_level5_max_compressed_complex.mat",
+   "line": 65,
+   "sourceBlob": "ee415a4a4be6440574261897e6a223aabd480b87",
+   "sourceSha256": "a447b7fbd76143484c9cafab28c3bf6e4d9b444f27455584da9241f1669d7db9",
+   "manualSha256": "63f9fef6a940cb3137654472c42c523da8d27859a1e680d0d1f0e78763bf90d6",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "DEMO-N-09",
+     "severity": "low",
+     "type": "citation_precision",
+     "manualLines": "见 detail",
+     "detail": "matlab_level5 文件消费行 `sniff.ts:43` `isMatLevel5` 判定，实际在 :44。",
+     "action": "改 :44；不阻断"
+    }
+   ],
+   "note": "魔数实测 MATLAB 5.0 MAT 头；generate_max_mat.py:6（c:\\Users\\Belie\\… 落盘路径）/:17 N=50000/:28 complex128/:30-38 savemat+do_compression/:34-35 标量与元数据实测相符；零代码消费者负向检索复核成立（全树仅生成器自命中）；resources/cslab/demo 无 .mat 实测。行号漂移见 DEMO-N-09。"
+  },
+  {
+   "path": "demo-data/matlab-benchmarks/matlab_v73_max_hdf5_chunked.mat",
+   "manual": "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md",
+   "targetMd": "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md",
+   "anchor": "MODULE-REFERENCE/p03-integrations/INDEX.md#demo-data--matlab-benchmarks--matlab_v73_max_hdf5_chunked.mat",
+   "line": 75,
+   "sourceBlob": "4d16d37ec4f30887c455d910a85784bae4a3aa6b",
+   "sourceSha256": "93111ecda56fe3f72b6f7400d1b6492f5115a49de642032d68237e3163da4480",
+   "manualSha256": "63f9fef6a940cb3137654472c42c523da8d27859a1e680d0d1f0e78763bf90d6",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "魔数实测 \\x89HDF；generate_max_mat.py:50/:57/:61/:63/:64-65/:55-56 逐行命中；sniff.ts:36-41/:47-49、cslab-iron-cage.ts:138-142、cslab-python.ts:5、mat-level5.ts:2/:5/:273 全部精确；零代码消费者负向检索成立。"
+  }
+ ]
+}

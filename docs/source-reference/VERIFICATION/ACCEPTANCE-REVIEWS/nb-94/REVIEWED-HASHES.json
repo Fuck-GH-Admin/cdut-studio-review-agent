@@ -1,0 +1,42 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-94",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-24T00:40:00Z",
+  "sealId": "seal-a76d4becbd9b0a1f",
+  "note": "内容 18/18 accepted 可合（45 声明测试 NOT_RUN）；批次因 G0 机械缺陷 NB94-F-01 整体 revision_required——r1 仅重生成 changes.diff 后即可闭链。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/live-group-set.ts.md": "cc633c8f5535a1d811abb27b7adb614b255218042d4a070021dee2f09e2ca30f",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/mention-popup-utils.ts.md": "2531ba1d07507ee55f60cce44969d939182480a694936c9711267d365d670d3a",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/mention-query-utils.test.ts.md": "ed4e33af1c8ce757340cb0a381fdacc132dede9788a19f89bc2cb7212b6263f4",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/mention-query-utils.ts.md": "4d556ff2fd07d114537666853cb698def4a65652a4125d60f97133bb597d096d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/mention-suggestions.tsx.md": "08c86e21f4d48209d443c50f052b515d6abcbc42acf62d3a87481c6d07e0d94b",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/permission-mode-selector-utils.test.ts.md": "36d4be921a1a5046cec90326ac56e4fea148055724d24bdb15fb285d1e07d7a9",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/permission-mode-selector-utils.ts.md": "d1fb3b55d9991de29bc2d0e93fc5c37015fd07b2cf3ecb0421457b02a1657757",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/preset-selector-utils.test.ts.md": "dc55d542dc513d7ce72165c575c928daf070c4bca24339735eccd23deb8db2a1",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/preset-selector-utils.ts.md": "c228232d0a3fa6527e85973176aef19fb25e462d4d0b871b23199f70df901aaa",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/render-window.test.ts.md": "33648a0d2b925996e81f4c82fa373cfe173ef79390b425eb3701906519a343d8",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/render-window.ts.md": "81761d90c668648ca9b5f551e768b04cefa4ef9cb8ae338eb13d9eaf9edf2082",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/task-progress.test.ts.md": "4cb4dfc9e4ba305e0fefcc1161a83d1ca6996ad2ed01024d7868ac6d6804a77c",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/task-progress.ts.md": "f5af5431f24e226b64deeb7029c50958c4e0745ede0ca1354e6c846f010f344d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/thinking-tag-parser.test.ts.md": "565dade501717be7e586a19517c874e43cbb27096e1e5dedcedeacbc9551a9fd",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/thinking-tag-parser.ts.md": "31d76b22b9e193d6e2d4cf30cfc7d01b918c6d70ba0da7062410880b1ffaf862",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-phrase.test.ts.md": "b13f1084bad321d460e1bf412aa6731735e2bc71464edb0deb623b1d301d9710",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-phrase.ts.md": "e21b08eef6c2c8dd441f87b2d449127c595b3655c0cd0167a10b42e69139ffb7",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/bash-result.tsx.md": "2b5a86e8d9b122127c549573a9a4ca8ddd43103481960073b2f5b4b9267c0e8f"
+  },
+  "revisionRequiredManuals": {},
+  "sourceBinding": {
+    "verifiedCount": 18,
+    "note": "blob+sha256 脚本实算==MANIFEST==SCOPE"
+  },
+  "sealBinding": {
+    "manifestSha256": "ec0258208da4f673c2a6b63f45194d27604c2f1239709c1558bbd1721c65eae0",
+    "readySha256": "156b12a239d469bebf7bcc4f63b23d8957ae78177ee411dd2dc8f41ea122944c",
+    "zipSha256": "2d32faad438c6f0316688db5f7d10e0652d8b964b839188961998d56f43f7799",
+    "zipBytes": 44528,
+    "zipEntries": 21,
+    "changesDiffReplay": "16/18 (2 stale-draft mismatches = NB94-F-01)"
+  }
+}

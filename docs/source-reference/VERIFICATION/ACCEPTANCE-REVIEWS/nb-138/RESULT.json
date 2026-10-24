@@ -1,0 +1,193 @@
+{
+  "schema": "dsh-r07-review-result/1",
+  "batch": "nb-138",
+  "revisionOf": null,
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T22:10:00Z",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 11,
+    "accepted": 11,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass"
+  },
+  "g0Evidence": {
+    "chain": "READY/DONE/MANIFEST/ZIP 交叉一致（sealId seal-b14eaac1007db937）；11 manualHashes=磁盘 0 mismatch；ZIP 14 条目 0 穿越/符号链接/字节 mismatch；11/11 源绑定==SCOPE==MANIFEST（独立实算）；非返修批"
+  },
+  "g1Evidence": {
+    "sections": "11/11 齐备；行号引用抽查进 G2（吻合）；frontmatter 记 N-01"
+  },
+  "g2Evidence": {
+    "coverage": "QA 全量逐行读毕 11 源（694 行：sync-runtime-deps 237/verify-release-assets 99/verify-macos-package 71/verify-macos-update-assets 66/verify-packaged-pi-runtime.ps1 54/ui-workspace-contract.test 42/verify-build-target 37/verify-update-metadata 36/verify-macos-signature 29/verify-release-assets-unsigned 17/sleep 6）+11 手册（725 行）逐篇；机械核 test( 2",
+    "verifiedTrue": "11 篇全对：sleep `|| 2` 兜底、sync-runtime-deps 7 包清单+版本冲突检测+环检测+嵌套回落+绝对 symlink 禁令+误删护栏三段、ui-workspace-contract 2 测试（实编译口径+别名实解析）、verify-build-target 三元字面量探针（minify-syntax 约定注释）、verify-macos-signature DR 唯一硬门槛（spctl 明确不在范围）、verify-update-metadata 公钥三级来源+detached RSA、verify-macos-package 七段断言链+包自身 ABI 探针、verify-macos-update-assets 五段对账（DMG 不参与更新注释）、ps1 GUI 等待+JSON 兜底门禁+env finally 恢复、unsigned 包装器、verify-release-assets 双模式+Authenticode 链",
+    "problems": "1 条 minor（frontmatter reviewer 模板残留×11，本次值 p02-agent-runtime）"
+  },
+  "files": [
+    {
+      "path": "apps/electron/scripts/sleep.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/sleep.ts.md",
+      "sourceBlob": "b5f695f3ca9d68d437cc2eef6337375b8e05f662",
+      "sourceSha256": "dd68bb23ff7bcb13db0d5b5d71c33d17a2869ca41b0cdde5809c02902f69325e",
+      "manualSha256": "317571d5431fe558267cc2455eb625e1dfe242221eb9feb5d19b271fdfba3aba",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/scripts/sync-runtime-deps.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/sync-runtime-deps.ts.md",
+      "sourceBlob": "889a7559215932001eba6e8a6a994bd28d8b5bec",
+      "sourceSha256": "623a7d264d4461fee7dc57a3b8e032fdd18017638e5386a326517b5fd4d62dbe",
+      "manualSha256": "f615b966b6f8484846c54edf6bbd1ad20a6ba919f0a9371646fce32f496e01e8",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/scripts/ui-workspace-contract.test.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/ui-workspace-contract.test.ts.md",
+      "sourceBlob": "94d7cb472393516bac946c08a04dabd78f0b413a",
+      "sourceSha256": "3a3d3f82ac171dcb0ce559a090d0903fdfc27f6fe4671f6da98d295feed4c567",
+      "manualSha256": "8b25fb31c65de6b993f39d294cb591e30c0a8daf30f1294cb0e5eac5d85a2050",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/scripts/verify-build-target.cjs",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/verify-build-target.cjs.md",
+      "sourceBlob": "0e2b799357e5e73e5b7411082c8f661efb503ca4",
+      "sourceSha256": "436be9b7c9bccd23370df43060e37090afe5315c30068485af47b7caa9f61f7c",
+      "manualSha256": "1e0dc21fe954cb6ebebbbe26e34fd63564ae6fb5382bb0eb5b28a1a432f3ca0a",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/scripts/verify-macos-package.cjs",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/verify-macos-package.cjs.md",
+      "sourceBlob": "67f13f4801d0757d4c2979901dfd73b88aae9a5b",
+      "sourceSha256": "950eedbe3bde03fc942fc7ed3494eda250c51396764c0e41d2974e3f1ded2571",
+      "manualSha256": "28eec00103172c6e7b9d43f9ebc32351eae9e80405b55fe0de00649fd87c33ab",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/scripts/verify-macos-signature.cjs",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/verify-macos-signature.cjs.md",
+      "sourceBlob": "cc80f1151c3a4b3f865ceaf1181cf1d57f8d3e9a",
+      "sourceSha256": "adfe3dc4116415a75d58a3ab8fa85937a71cb4a55dac8216b1bec18708ce4ad9",
+      "manualSha256": "52d4355d067a0e7d8a76b275b79aea20d6b36be2819200495eea8dca80c9617c",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/scripts/verify-macos-update-assets.cjs",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/verify-macos-update-assets.cjs.md",
+      "sourceBlob": "3a4c405afea34554f355ed88ba6079bba0e22dd6",
+      "sourceSha256": "ea00a48df290014bcfa2c4977741fbb6a6a5ae7da1eed17e815c480ebe866ee5",
+      "manualSha256": "afe0aee16b221ea523607213582b7ed31312f2eb9bc6b86412f7b7f6b814c169",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/scripts/verify-packaged-pi-runtime.ps1",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/verify-packaged-pi-runtime.ps1.md",
+      "sourceBlob": "7de5d2d43a96faea5f0ef39e97d653122db4cc4c",
+      "sourceSha256": "40d68b60a1237bd24126b8f5164f15d5fadecbb22092801686df71cb688471c7",
+      "manualSha256": "45bc1045e7ecf2f55678c1829458ea06683b72990f67c95637adf3d724e5ba57",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/scripts/verify-release-assets-unsigned.cjs",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/verify-release-assets-unsigned.cjs.md",
+      "sourceBlob": "5fa1fdcd35f2ad07468c947fa0e31edc82ba24bd",
+      "sourceSha256": "f31bf971553300802f9a6fa861c6641f8a10b1fc661d5b2ff449b8092d9558f6",
+      "manualSha256": "9f02b156e6304bbd7c4e8a38297f31d303fc66976be1a50e0ad97547537fa3be",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/scripts/verify-release-assets.cjs",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/verify-release-assets.cjs.md",
+      "sourceBlob": "66aece2024514be3d963419422d2410dc9fda57c",
+      "sourceSha256": "8b37486da87b66a0cf122c184e6ce157ebae8e88d74f1ef98fbad32426b3d92c",
+      "manualSha256": "397a4ccd0e5c90388b1e9d885c11d461a12f8f3348ca091f9686263c9e5037cc",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/scripts/verify-update-metadata.cjs",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/verify-update-metadata.cjs.md",
+      "sourceBlob": "3e9234356026662a00aa11ee87d84e40bde5f54f",
+      "sourceSha256": "4cc0a4e0b12fdb630b700d9c1664af9008ebedd81730aefb7c658ebf02d4263f",
+      "manualSha256": "3c8e05e5ec540f8420a823a7b953e9342300951c60ab8a599add6182d85ffe32",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/sleep.ts.md": "317571d5431fe558267cc2455eb625e1dfe242221eb9feb5d19b271fdfba3aba",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/sync-runtime-deps.ts.md": "f615b966b6f8484846c54edf6bbd1ad20a6ba919f0a9371646fce32f496e01e8",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/ui-workspace-contract.test.ts.md": "8b25fb31c65de6b993f39d294cb591e30c0a8daf30f1294cb0e5eac5d85a2050",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/verify-build-target.cjs.md": "1e0dc21fe954cb6ebebbbe26e34fd63564ae6fb5382bb0eb5b28a1a432f3ca0a",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/verify-macos-package.cjs.md": "28eec00103172c6e7b9d43f9ebc32351eae9e80405b55fe0de00649fd87c33ab",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/verify-macos-signature.cjs.md": "52d4355d067a0e7d8a76b275b79aea20d6b36be2819200495eea8dca80c9617c",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/verify-macos-update-assets.cjs.md": "afe0aee16b221ea523607213582b7ed31312f2eb9bc6b86412f7b7f6b814c169",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/verify-packaged-pi-runtime.ps1.md": "45bc1045e7ecf2f55678c1829458ea06683b72990f67c95637adf3d724e5ba57",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/verify-release-assets-unsigned.cjs.md": "9f02b156e6304bbd7c4e8a38297f31d303fc66976be1a50e0ad97547537fa3be",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/verify-release-assets.cjs.md": "397a4ccd0e5c90388b1e9d885c11d461a12f8f3348ca091f9686263c9e5037cc",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/verify-update-metadata.cjs.md": "3c8e05e5ec540f8420a823a7b953e9342300951c60ab8a599add6182d85ffe32"
+  },
+  "findings": [
+    {
+      "id": "N-01",
+      "severity": "minor",
+      "file": "（全 11 篇 frontmatter）",
+      "claim": "frontmatter `reviewer: p02-agent-runtime` 11/11——模板残留（与 nb-113/nb-125 的 `p03-integrations` 同类，值随包名漂移；比照 nb-30 先例记 N）；author 字段正确。",
+      "sourceEvidence": "grep '^reviewer:' stage/**/ = 11×p02-agent-runtime",
+      "action": "任一 rN 批量更正或去除。"
+    }
+  ],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network",
+    "bun 测试运行",
+    "各 verify 脚本实际执行（平台门禁 darwin/win）"
+  ],
+  "knownUnknowns": [
+    "macos-signature.cjs/packaged-pi-probe.cjs/packaged-cli-contract.cjs 域外",
+    "darwin/win 平台实跑",
+    "运行验证 NOT_RUN"
+  ],
+  "notes": "N-01 不阻断；11 篇全部可合。"
+}

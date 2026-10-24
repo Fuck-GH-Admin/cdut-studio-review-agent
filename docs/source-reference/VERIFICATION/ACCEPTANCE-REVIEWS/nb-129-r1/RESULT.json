@@ -1,0 +1,237 @@
+{
+ "schema": "dsh-r07-review-result/1",
+ "batch": "nb-129-r1",
+ "revisionOf": "nb-129",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-models-20261023",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T20:04:25.432263+00:00",
+ "deliverySeal": {
+  "sealId": "seal-1b4ddc8ed631f55e",
+  "sealedAtUtc": "2026-10-23T20:03:17Z",
+  "readySha256": "bfa56ecfb1292274d5e12e233d80f7bcea05549e150df1761126e52112e06d36",
+  "doneSha256": "c7520287eae2eb583131559ff61ba0acfbaf7addf4db19b44052b1bc38468f5c",
+  "manifestSha256": "57a7fe6630d5ba505610d36ba5452982150adf23f2d64b3f625f5448e52c158c",
+  "zipSha256": "73f649d41cddf14c4529f13cdbba2fb8624808f056d42757b10ec6f0321a7dec"
+ },
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "gatesNote": "G0 链自洽；变更恰 2 篇（16 篇 accepted 字节保持）；G2 修复全中：NB129-TEST-01/02 改「有直接测试（owner 边界安全面/镜像守卫面）review-feishu-owner-boundary.p05.test.ts」，159 行/7 test(/:140 ensureSessionMirror 用例实测吻合",
+ "batchVerdict": "accepted",
+ "files": [
+  {
+   "path": "apps/electron/src/main/lib/clipboard-agent-tools.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/clipboard-agent-tools.ts.md",
+   "sourceBlob": "4e8b69d956761c521b2876482b4b0e8e5bb3b745",
+   "sourceSha256": "481b1301761b6d64b6cc38c030916d27e778b77dcce83aa048d94d6068f08390",
+   "lines": 49,
+   "manualSha256": "a71d39e3913b6b2d269423a0ae1f957f932eec1ed51114c5fc8058e56c7855d7",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/command-execution.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/command-execution.ts.md",
+   "sourceBlob": "03c9518f14aee302d69ab2cfc4dec047c2b63e94",
+   "sourceSha256": "aaa4f601870708da803bb2478531f332ea2dbc333e589207a84af4050973fd11",
+   "lines": 71,
+   "manualSha256": "c04947348c63f06763cf87d3489f9483ad2f1b5e6bb6103cf8c8a71f2d0f2912",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/config-paths.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/config-paths.test.ts.md",
+   "sourceBlob": "c5bff18a3b0bf6c74b422e151f2e60bd93c790e5",
+   "sourceSha256": "890af9d596e0f4c95adf8ec32d7657dee58d13f64200909b5ded1c373779b903",
+   "lines": 220,
+   "manualSha256": "84a356f06cc1f3ae6dee049722950b76de5ff9a5e91db84d1baeb0dfcb91c57a",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/default-skill-slug-migration.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/default-skill-slug-migration.test.ts.md",
+   "sourceBlob": "3307be5da11b60337c560fd6e071eaa260b470c2",
+   "sourceSha256": "df5b3ddde367a6f59665744e89b40aaf6be6f496ad3dd5f9bccaec0bf2184f60",
+   "lines": 74,
+   "manualSha256": "b40f8a91df86090145c999803c946b8912997e65268edf433074ff82a4a4d237",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/default-skill-slugs.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/default-skill-slugs.test.ts.md",
+   "sourceBlob": "77297cf82a1bf14ba5c0d8fd0a6aac8cb8db559b",
+   "sourceSha256": "c990313125f6aa37337a9885a78fc9351c609a6a1f7eec62d04e3f781f39907f",
+   "lines": 18,
+   "manualSha256": "569f6d20066cf212e558646746c220c2f24d5a3993af48a585adb03cf644b031",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/default-skill-slugs.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/default-skill-slugs.ts.md",
+   "sourceBlob": "ca93f38bef241945961c9e9852d0f5906f780783",
+   "sourceSha256": "a496a804a823afe5683de91330e07617a8be9f06d458f200b4506eba8c69baba",
+   "lines": 22,
+   "manualSha256": "f45a66c02c3021873f70e33f067ce4c4d9ab4a55ba5fb2fc45e19e673040d030",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/detached-preview-window.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/detached-preview-window.ts.md",
+   "sourceBlob": "18cf583b2e3bc1b4e7eb2fd9a1b09ac38ef098db",
+   "sourceSha256": "dce23966daea535a4e8a5c663d294e6d0461f26d7dde69044654d8b04078e6ae",
+   "lines": 199,
+   "manualSha256": "905d8fb82d575887951dcb26bead4a540fa842bc29bdfe17876911af64443681",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/device-durable-store.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/device-durable-store.ts.md",
+   "sourceBlob": "b4c2bc0f0675103cd46b93da4c426be8b811787c",
+   "sourceSha256": "83aa204e5127e76cb09b9a50aef10cb65400dc6b2860ee494858672a85bfd0d0",
+   "lines": 79,
+   "manualSha256": "f8260d55877268a4f8a9b1209c056f40a4b3014020a84720d939e9c42b5a0b8a",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/dock-badge-service.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/dock-badge-service.ts.md",
+   "sourceBlob": "dd738a6546617b7e451f195314c3ba921a0d7f33",
+   "sourceSha256": "753da0f3b5a2add7edf09057677d79f493e3d9dfb5e66b150e7892132581922c",
+   "lines": 58,
+   "manualSha256": "ddadb407804a82da2eff1e46e77598613e3ec4f25d25187fd12c78c9fb6c99d6",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/environment-checker.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/environment-checker.ts.md",
+   "sourceBlob": "1b1a208234c557b1bdb8c356616d22f73b9c161e",
+   "sourceSha256": "1df2c47145b60bbeff85b38c709df4c60eb06ac426ced7f7ff9aec10d8c337f2",
+   "lines": 125,
+   "manualSha256": "d6b166a3d8700ff900f078f63ce4c63df9fa4555f851857619f6a76728042ac5",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/error-patterns.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/error-patterns.test.ts.md",
+   "sourceBlob": "ad4c42e9507bc76a68525b74b416d231a8cd374e",
+   "sourceSha256": "dddffdc4f9206afe1a5a5266d5a4dd56efc2d971579d76d9384873c441319469",
+   "lines": 192,
+   "manualSha256": "6460ac90a708e460da0a651fc4abe332be4aef3bb99ea67fe5dc7242e0c0622e",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/error-patterns.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/error-patterns.ts.md",
+   "sourceBlob": "4ee7d5040f66e32a0c411f72f04e1280d23bfde7",
+   "sourceSha256": "646691656adbfe952d95d2d0ed8383ae2d45e558fde5a3b8512d9a64e19c7969",
+   "lines": 195,
+   "manualSha256": "8d3d356a7b50614b31c1fa9333e2bc70b81136914051c74ebf7e220a2becf57f",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/execution-service.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/execution-service.test.ts.md",
+   "sourceBlob": "6b86c300ed2ba51bcac4e4c682b8e2208364fe54",
+   "sourceSha256": "981dbecc614379857a14ddcbed0ac6c5447abf47a19a98073c442bf994a4c87a",
+   "lines": 71,
+   "manualSha256": "299ca63d95cd93b1c8972ca425c92e0d3b19343accbd956c8ac63f1efab6f932",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/execution-service.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/execution-service.ts.md",
+   "sourceBlob": "0f27c9a84063f85ba8c5ab34bddde22c215a2cb5",
+   "sourceSha256": "5b64641d83abcb5b3557eec2179ebe4533abcb1a6e32e012df09d965f8c3d340",
+   "lines": 165,
+   "manualSha256": "43e750b9d1e32afa0be9fb9a6aaf555872897d943a8a3b288a810e29831f1c5c",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/feishu-bridge-manager.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/feishu-bridge-manager.ts.md",
+   "sourceBlob": "f194fce04d4514c702b2750f2abfd60265e58592",
+   "sourceSha256": "b83c3f73ae67eb5a0461404bcc8d78ec3efbac4bdb5a9e2ba2d86d8d26cca82a",
+   "lines": 219,
+   "manualSha256": "f9e9859259da3a092f87ba654afa4db99c6cd695ab1e8320e7a9b45f52fcfe65",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/feishu-bridge.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/feishu-bridge.ts.md",
+   "sourceBlob": "8b32abd1d3a41fd0544ff0ac6379b59f4ff2891d",
+   "sourceSha256": "90ade16daf4fb2b1317eed9f492b299e457598b209fd70fc86608e31bf9b501d",
+   "lines": 2522,
+   "manualSha256": "ef9320b8a4c003f52324e1d47f7b970eaa26af2cbe17abcd69c9e75e9b16ef09",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/feishu-config.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/feishu-config.ts.md",
+   "sourceBlob": "f6d00417dd2641a67a257f1d56fd2d23fa33f37f",
+   "sourceSha256": "df2ff378ea71f04f6f7b3531f4732984aef00a07a39fb6f2498b23eb7bb91482",
+   "lines": 220,
+   "manualSha256": "eccc1bee16e421f382e88f522198a1c47b090fb378172124597e46f3069088fb",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/feishu-message.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/feishu-message.ts.md",
+   "sourceBlob": "d1a12f1229529686a50799947d247a529c0a5c2f",
+   "sourceSha256": "926a2c3d1ac58d330bade17d8371e03a1f4fd21e5b29d55727ad4737a3d6fcbc",
+   "lines": 416,
+   "manualSha256": "c87e4bd4cb13debd910c5d195b2d27939fada3d36464f9ade60596c3761cc86c",
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "findings": [],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/clipboard-agent-tools.ts.md": "a71d39e3913b6b2d269423a0ae1f957f932eec1ed51114c5fc8058e56c7855d7",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/command-execution.ts.md": "c04947348c63f06763cf87d3489f9483ad2f1b5e6bb6103cf8c8a71f2d0f2912",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/config-paths.test.ts.md": "84a356f06cc1f3ae6dee049722950b76de5ff9a5e91db84d1baeb0dfcb91c57a",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/default-skill-slug-migration.test.ts.md": "b40f8a91df86090145c999803c946b8912997e65268edf433074ff82a4a4d237",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/default-skill-slugs.test.ts.md": "569f6d20066cf212e558646746c220c2f24d5a3993af48a585adb03cf644b031",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/default-skill-slugs.ts.md": "f45a66c02c3021873f70e33f067ce4c4d9ab4a55ba5fb2fc45e19e673040d030",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/detached-preview-window.ts.md": "905d8fb82d575887951dcb26bead4a540fa842bc29bdfe17876911af64443681",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/device-durable-store.ts.md": "f8260d55877268a4f8a9b1209c056f40a4b3014020a84720d939e9c42b5a0b8a",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/dock-badge-service.ts.md": "ddadb407804a82da2eff1e46e77598613e3ec4f25d25187fd12c78c9fb6c99d6",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/environment-checker.ts.md": "d6b166a3d8700ff900f078f63ce4c63df9fa4555f851857619f6a76728042ac5",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/error-patterns.test.ts.md": "6460ac90a708e460da0a651fc4abe332be4aef3bb99ea67fe5dc7242e0c0622e",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/error-patterns.ts.md": "8d3d356a7b50614b31c1fa9333e2bc70b81136914051c74ebf7e220a2becf57f",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/execution-service.test.ts.md": "299ca63d95cd93b1c8972ca425c92e0d3b19343accbd956c8ac63f1efab6f932",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/execution-service.ts.md": "43e750b9d1e32afa0be9fb9a6aaf555872897d943a8a3b288a810e29831f1c5c",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/feishu-bridge-manager.ts.md": "f9e9859259da3a092f87ba654afa4db99c6cd695ab1e8320e7a9b45f52fcfe65",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/feishu-bridge.ts.md": "ef9320b8a4c003f52324e1d47f7b970eaa26af2cbe17abcd69c9e75e9b16ef09",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/feishu-config.ts.md": "eccc1bee16e421f382e88f522198a1c47b090fb378172124597e46f3069088fb",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/feishu-message.ts.md": "c87e4bd4cb13debd910c5d195b2d27939fada3d36464f9ade60596c3761cc86c"
+ },
+ "revisionHashes": {},
+ "notRun": [
+  "bun test",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "limits": "静态复验；按 r1 新 hash",
+ "next": "18 篇可合入；nb-129 系列闭环"
+}

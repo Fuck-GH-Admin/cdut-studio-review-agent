@@ -1,0 +1,38 @@
+{
+ "schema": "dsh-r07-index-review-done/1",
+ "batch": "index-p03-integrations__demo-data",
+ "groupId": "p03-integrations__demo-data",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-03-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T19:52:00Z",
+ "sealedAtUtc": "2026-10-23T19:24:02+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 7,
+  "accepted": 7,
+  "revision_required": 0,
+  "unknown": 0,
+  "findingsBlocking": 0,
+  "findingsNonBlocking": 9
+ },
+ "artifactSha256": "63f9fef6a940cb3137654472c42c523da8d27859a1e680d0d1f0e78763bf90d6",
+ "artifacts": [
+  "reviews/index-p03-integrations__demo-data/RESULT.json",
+  "reviews/index-p03-integrations__demo-data/REVIEWED-HASHES.json",
+  "reviews/index-p03-integrations__demo-data/SOURCE-CHECKLIST.md",
+  "reviews/index-p03-integrations__demo-data/DONE.json"
+ ],
+ "notRun": [
+  "产品测试",
+  "typecheck",
+  "构建",
+  "Electron/GUI",
+  "演示实验室创建",
+  ".mat 解析实跑（本轮统一 NOT_RUN）"
+ ],
+ "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/inventory/全局账/candidate；未 commit/push；结论只覆盖本批 7 文件。",
+ "findingsSummary": "9 条非阻断 minor（DEMO-N-01..09，行号漂移 ±1~6、无越界、内容全对）已登记，非阻断≠已修，建议作者并入 errata 一次重导（可按 grep -n 机械校验）。勘误 ERRATA-E1/E2/E3 沿登记。G0/G2 PASS、G1 PASS_WITH_NOTES。",
+ "next": "lead 按 REVIEWED-HASHES.json 合入（artifactSha256=63f9fef6a940cb3137654472c42c523da8d27859a1e680d0d1f0e78763bf90d6）；QA 续审 mvp-single-case、onboarding（均已封版）及后续（ecma/mce/renderer-assets WIP 待封版），返修优先。"
+}

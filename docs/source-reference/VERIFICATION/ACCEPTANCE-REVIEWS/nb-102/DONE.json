@@ -1,0 +1,61 @@
+{
+  "schema": "dsh-r07-qa-done/1",
+  "batch": "nb-102",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-01-20261023",
+  "reviewerSession": "docs-r07-qa-nb-01-20261023",
+  "reviewRoot": "reviews/nb-102",
+  "reviewedAtUtc": "2026-10-25T00:15:00Z",
+  "status": "REVIEW_COMPLETE_ACCEPTED",
+  "batchVerdict": "accepted",
+  "gates": {
+    "G0": "G0_PASS",
+    "G1": "G1_PASS",
+    "G2": "G2_PASS",
+    "G3": "NOT_RUN",
+    "G4": "NOT_RUN"
+  },
+  "verdictCounts": {
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "seal": {
+    "sealId": "seal-c89f5d80c65554f4",
+    "tool": "seal_delivery.py/1",
+    "spec": "SEAL-DELIVERY v2",
+    "zip": {
+      "path": "deliveries/nb-102/R07-nb-102-05fb2565.zip",
+      "sha256": "232e62b69539c2d49437b70b9d48292398a53330571daa36f57c13f1c28e2cca",
+      "bytes": 50796,
+      "entries": 21,
+      "verified": "QA 独立复算：21 条目逐字节一致、0 mismatch、无穿越/符号链接、mtime 全 1980-01-01"
+    }
+  },
+  "artifacts": [
+    "reviews/nb-102/RESULT.json",
+    "reviews/nb-102/RESULT.md",
+    "reviews/nb-102/REVIEWED-HASHES.json",
+    "reviews/nb-102/DONE.json",
+    "handoffs/nb-102-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-102-REVIEW-TO-LEAD.md",
+    "handoffs/teams/qa-nb-01-STATUS.json"
+  ],
+  "notRun": [
+    "bun test",
+    "tsc --noEmit",
+    "build/package",
+    "Electron/GUI",
+    "real model/network",
+    "concurrency/crash injection"
+  ],
+  "writtenOnlyIn": [
+    "reviews/nb-102/",
+    "handoffs/nb-102-REVIEW-TO-*.md",
+    "handoffs/teams/qa-nb-01-STATUS.json",
+    "DSH-SESSION-REGISTRY.md (append)",
+    "DSH-BUSINESS-LEDGER.md (append)"
+  ],
+  "next": "lead 合入 18 accepted；QA 待 nb-81-r1/nb-93-r1（本组 10 批全部出结论）",
+  "old922Counts": false
+}

@@ -1,0 +1,46 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-73-r2",
+ "revisionOf": "nb-73",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-01-20261024",
+ "reviewerSession": "docs-r07-qa-extra-01-20261024",
+ "reviewedAtUtc": "2026-10-23T22:44:33Z",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "files": 18,
+ "accepted": 18,
+ "revision_required": 0,
+ "unknown": 0,
+ "sealId": "seal-22b44b0e335e3796",
+ "resultSha256": "12e25b5d552f166cd96ec15d21075fb563982db088052708899123b052ba344c",
+ "resultMdSha256": "43d092208340b2c12aad6c70635908b57cecb5d74b6327d0e58b75f18b8c6c2a",
+ "reviewedHashesSha256": "be3ba4e265283ce3df1f7246f5dbca5b34664699a8cf1fc3f5d1dd2649575e6e",
+ "toAuthorSha256": "4c28fd760cc613cc189d03f3f363eec075d5b8ca86516e672c4763ad63f9a223",
+ "toLeadSha256": "8645f9b3a82ed870eb141c3d67235a4118e79902198c7b58b3e64c661dca9f83",
+ "findingsOpen": [],
+ "findingsClosed": [
+  "NB73R1-F01（:511→:587-592）",
+  "NB73R1-F02（:375-378→:386-390×2）",
+  "NB73R1-F03（4 断言簇锚）",
+  "NB73R1-F04（5 断言/证据锚）",
+  "NB73R1-F05（8→9 断言）"
+ ],
+ "bindings": {
+  "r2Fixed": 4,
+  "r1AcceptedUnchanged": 13,
+  "parentAccepted": {
+   "cslab-hpc.ts.md": "ddd8ace2…（MERGE 已合入，勿重复合）"
+  }
+ },
+ "notRun": [
+  "产品测试",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "真实 TLS/网络/SQLite/文件操作",
+  "bun test（28 用例断言级阅读）"
+ ],
+ "declaredScope": "仅 nb-73-r2 修订面（18 篇当前字节）的复验；不含运行验证",
+ "note": "**nb-73 批链闭环 18/18**；最终合入以本批 acceptedHashes 为准；r0/r1/r2 封版与旧 QA 报告全保留；extra-01 组 4/4 批独立接受完毕"
+}

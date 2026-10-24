@@ -1,0 +1,69 @@
+{
+ "schema": "dsh-r07-review-done/2",
+ "batch": "nb-84",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-ui-20261023",
+ "reviewerSession": "docs-r07-qa-ui-20261023",
+ "reviewedAtUtc": "2026-10-23T20:15:00Z",
+ "state": "QA_COMPLETE",
+ "batchVerdict": "accepted",
+ "counts": {
+  "filesReviewed": 18,
+  "accepted": 18,
+  "revisionRequired": 0,
+  "openNonBlocking": 0
+ },
+ "reviewedSeal": {
+  "root": "deliveries/nb-84",
+  "readySha256": "0f4458af62afbfafb2e7167c4e0a52f5723ed9746acb00b751e1bbe4366e228c",
+  "doneSha256": "b8df906e188a573b9efbaf5efa587d6558ff39abb15d8d2836ef8e8846c91ff4",
+  "manifestSha256": "ce6f769964140e859aa6ea7f3ef6377ea073e30d3278d058b43737fbc2022dd5",
+  "zipSha256": "c4648ea48541122ade08445809647e9738c06cff1f7070cd9339ea4933431296",
+  "zipBytes": 40883,
+  "zipEntries": 21,
+  "note": "seal v2；新批无 before；源 18/18 blob+sha+行数与冻结树一致"
+ },
+ "findings": {
+  "open": []
+ },
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/AssistantDrawer.tsx.md": "a5f7d0e4566e77d2a455981f04e01e98e27c498a2ba822eb8cbc0ae706b141ec",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/BatchAutomationDialog.tsx.md": "da9926ca9890196c1432b8932f604da30278ec77f5e08564060dac17c56fcffe",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/BatchGroupActionDialog.tsx.md": "4b408b9d390b1782ad3433b3986c9067e303af8da28832f70499b830081f5a9e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/BatchPanel.tsx.md": "47282bcbf38a316d6af985911a634fe203428d45c661c2209198170a90d471df",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/CaseManagerBar.tsx.md": "46f148304dffe432dc3d69d5737613b9af76d69678985625688dab504914740f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/CaseTimelinePanel.tsx.md": "ea75f04aaca81b1ec4a561d18a051e4c87e8ee47275fa2d6355e2ba5bf84d33c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/CenterPanel.tsx.md": "a00d969617bf0f704e15e28fc71fe86ef8d7ad443e537319ebaaf32b1d36c1b9",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/FindingCard.tsx.md": "339d9d01b516d73a2705f3aa62375e4d11588579f37b5a9a941e82a0856c1d6b",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/LeftPanel.tsx.md": "f8decc865a5907f8ae312397aba0f550dd07c7190176979f6e808917bd31c092",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/MaterialDropZone.tsx.md": "5bfe52a18e6541cfb734cf11da37bf494720057f481a130eb1eca79f4d50a76c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/NativeManualItemDialog.test.ts.md": "6decefe2838f52936857a9508cd5e5909ea1425f321d052057ee9627df294109",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/NativeManualItemDialog.tsx.md": "5b8e498998f9ec4e9f8831de802e5889cbb8763faea206f4dedc8c9ec4601a79",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ObservationConfirmPanel.tsx.md": "c188f79e4edf92e2f59414cdd3cb5eb07496a0760af8cb46c3aea3ba2e292f98",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewActionDialog.tsx.md": "c4b6286b3c4758c01e4391713e2ed63e73e56b2122f84026ef874f1bed32d4ae",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewAssignmentCard.tsx.md": "12a31c5f26beee357b472827148295ed3b194c791d99e78a0e332bd7b07ea058",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewContextBar.tsx.md": "1ad3ed91cb3d1767e3d24859b034771c530f8970928b30c0ef912f5e2ab72631",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewHistoryPanel.tsx.md": "bb4fd372f99e5bba3ac7521b4e9388779d04f20b00cb20a0ca6a160e63f31bd7",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewMaterialControls.tsx.md": "d77249745a5c35f65d340b09a53e6f3e6a62be24480a09c18b17132a12d06cb1"
+ },
+ "outputs": {
+  "RESULT.json": "b4895fba7a23b02eeb27b3760a30a75bd9a40811eec57702301b0bb6b161d529",
+  "RESULT.md": "3784dffb81af881c272699ebe7316ea4c82a4a6b04c6e6f79c7811261fdb3040",
+  "REVIEWED-HASHES.json": "cf5b4c5064ecc5b8cbb019df08c2ff1eb0f9a1147164bbfbaf08772effed60c2"
+ },
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "boundaries": [
+  "未改源码/测试/依赖/作者正文/candidate/全局 FILES/COVERAGE/MANIFEST/INDEX",
+  "已 seal 不回写；NOT_RUN 不等于测试通过",
+  "accepted 仅限静态文档 scope；运行期行为未知"
+ ],
+ "notes": [
+  "全量导出覆盖审计 17/17 COMPLETE；无低级备注"
+ ]
+}

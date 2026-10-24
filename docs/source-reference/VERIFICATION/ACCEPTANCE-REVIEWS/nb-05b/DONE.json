@@ -1,0 +1,51 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-05b",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-models-20261023",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T15:56:13.943612+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "files": 4,
+ "accepted": 4,
+ "revisionRequired": 0,
+ "unknown": 0,
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/index.ts.md": "b9cc38bc6fb0cbd671874697276e4e8e875a12041b22d7acafe970c9d7e3cb13",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/preload/index.ts.md": "da67f6e83c70604c3fd159b98ea3240cbc96696f7b32e5ee251d79d2399c663c",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/config-paths.ts.md": "249288f3aeb3507448ab11f14b01345d49bf8ea4e4b3ae4a9e89690b0a753796",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/lightweight-completion.ts.md": "b579624ce58681e3a817255e5adb913b8efac5edc7c32a8274805cc7d7aece69"
+ },
+ "revisionHashes": {},
+ "findings": {
+  "revision": [],
+  "notes": []
+ },
+ "deliverySeal": {
+  "sealId": "seal-2b5c5cf7f7cd4fb5",
+  "sealedAtUtc": "2026-10-23T14:06:14Z",
+  "readySha256": "d1b3ade772a8f2d1374aa5cb1868515de5fbfaabf7466539b759c91c1d09a13d",
+  "doneSha256": "27d2921e16349bdf2f8130a80864bfed4108f608790a170f5d716d1533d14486",
+  "manifestSha256": "8b4321eb4353cd0feca103faa728431e76b33a148a0bc380ce73da7a04e356f9",
+  "zipSha256": "027cfe06da50b5fbf0a534e8867f7414c50cfd05dc025e9d4dec5530907bee53"
+ },
+ "notRun": [
+  "bun test",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "artifacts": {
+  "RESULT.json": "78566ba3d290fb9a8db4e448ec4a536e3e5ee5c47c6dec1c9b8799f175e46fc1",
+  "RESULT.md": "dcfe85320729eefaad724535898953565ec14534d00039e28f5f134e6dcdc53d",
+  "REVIEWED-HASHES.json": "07630fad370abf1489df726de9f8c92645f54c2884b8350fee48d1d4f1cd7eda"
+ },
+ "next": "lead 按 acceptedHashes 合入 4 篇"
+}

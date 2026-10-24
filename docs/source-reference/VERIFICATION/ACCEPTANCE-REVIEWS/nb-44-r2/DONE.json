@@ -1,0 +1,53 @@
+{
+ "schema": "dsh-r07-review-done/2",
+ "batch": "nb-44-r2",
+ "revisionOf": "nb-44",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-ui-20261023",
+ "reviewerSession": "docs-r07-qa-ui-20261023",
+ "reviewedAtUtc": "2026-10-24T05:10:00Z",
+ "state": "QA_COMPLETE",
+ "batchVerdict": "accepted",
+ "counts": {
+  "filesReviewed": 18,
+  "accepted": 18,
+  "closedFindings": 1,
+  "openNonBlocking": 0
+ },
+ "reviewedSeal": {
+  "root": "deliveries/nb-44-r2",
+  "revisionOf": "nb-44",
+  "readySha256": "066affcb4182bac772765360b9a8eb10a326203bb4ab6b05450c621f470c394d",
+  "doneSha256": "88afd7cdad0fe012bd50fd50c732c8e269813d171177f64976bc73f4af26194d",
+  "manifestSha256": "8f4a2d07c5ba28ac5178ff62b7b3db4d0affdcb73593d7def431cf9d3a8b9bbb",
+  "zipSha256": "8e7f2d4818644aaefa340f78f4635e7ebdf7dc69bfafdcc4225edff5d7c56177"
+ },
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/agent-preset-policy.test.ts.md": "c1b3e84e602c2791b15cd039ba70fbe7de90d3c860470b50bc1c5af3a56c7823",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/agent-preset-policy.ts.md": "8b554f9499bf67ef1b428f98ad19b25fe80d6738d454ecf3bfbaef9c58eeebfe",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/agent-preset.ts.md": "940f267375d82d49fc541108c05b9da9660a28ea0b7a843235409bc997ba097c",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/agent-preview.test.ts.md": "a9a9c1a49d862001a17015e37fb54a52d0536300cd0cb61bd6959e607bc3ddb5",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/agent-preview.ts.md": "333847c5bb140a255c0628dfb645c405ea2590ac265542c17d3aef4e21738a84",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/agent-provider.test.ts.md": "22d64699e12c4804ec1a8e2bec6cf7149bd10c33aa028d61e59ffb1736a5556e",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/agent-provider.ts.md": "f2977e52b50252fb1fff13c03d8364dd9df18b34335d113d48c53ebf29cd729b",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/agent.ts.md": "3d20323f5a67f4bd9aab91d37a3ee669ee10c986e762730efe928ef47bb4f994",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/automation.ts.md": "98311b1461693bebf48624d262a32e847f1999d67e0c333be4483e4227974191",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/browser.ts.md": "60177720a9692737d473d88cfad354854e455bfc6f926c7fd11554b1b2c8d050",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/bulletin.ts.md": "0594a9341eb42729869e59c3b7f83c0cda87517bc0c1eaac0eae4e104ca909df",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/cdut.ts.md": "607a953bb050cf2fd4856694293e2cc3794970ba7167a05bc46aac6dd8182237",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/changelog.ts.md": "115b40e1b595e17b06bbb33a3cd633d73ea79a0944c2d61503c162f38bad5ba0",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/channel-xai.test.ts.md": "9c099129ce1138d1d7077df8e0f270bf95b94cd28e080e1c4ea84a5076320e23",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/channel-zhipu-team.test.ts.md": "4d996d2f06b3135e72545ffb8580ff9fa9e07c7c4110075cbb0436d920712fea",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/channel.codex.test.ts.md": "ce652741fd8e680f1a69abd24875d87c6ac3bf42aa227f26720314b6908f1bb9",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/channel.ts.md": "3adc77b11e6cccbfc1c835d49bd32b318bc81548d1e418efb04df254e39204ed",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/chat-tool.ts.md": "31d3c8c7bbc47f29175e14818b621963a243c46b4021d38958d0e7c7b37a62de"
+ },
+ "outputs": {
+  "RESULT.json": "7a609f6276b1bff667ab79c0174d9944634462b9ca8f40aac00d601c8d000e6d",
+  "RESULT.md": "e2fd8cc29196a19a6f6a67d0cc8bd172a88a29892a6e12fa9227237e6bc6c288",
+  "REVIEWED-HASHES.json": "7b55c36c6a6391b0445f633275f589eca3ae639b1d08c269906f78908de72bbf"
+ },
+ "notes": [
+  "N44R-1 全 closed，chat-tool 幻影符号问题彻底解决"
+ ]
+}

@@ -1,0 +1,3692 @@
+[
+  {
+    "originalPath": "reviews/index-p01-app-shell__-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__-r1/RESULT.json",
+    "sha256": "d9fa5756e6759cc0e1f1cebfe603482a7c7a46f7e33950be1aab9ca581017090"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__-r1/DONE.json",
+    "sha256": "10d95c12a2327ea6a3929c649176ec79da0d3e70925ead5ca99db72216a7aee9"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__-r1/REVIEWED-HASHES.json",
+    "sha256": "e9d6ea43515b4bcba6a61cd2369b7273aab28361092c82a47dd071b5e7427d6c"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell____pycache__/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell____pycache__/RESULT.json",
+    "sha256": "ab78e301857f66598e37cb372c0e4c1c00961a1b3c99de74b2c0e2521098e598"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell____pycache__/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell____pycache__/DONE.json",
+    "sha256": "b70dddf7c18eca0b83965f5cec12f6a1b0efc742f835d3f1f2606c05600b1159"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell____pycache__/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell____pycache__/REVIEWED-HASHES.json",
+    "sha256": "047ef0cd0bc819c699451ca108dd4d5a5f3a32f17d134b32a6b3ed7219ac8e49"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell___context/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell___context/RESULT.json",
+    "sha256": "eaefd415319f80ac1db3d3bf613481a389d6470857d6e1745ac601f9a1106359"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell___context/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell___context/DONE.json",
+    "sha256": "09d46a7f523938f0f24c758cfdae89235dc2cbcdb38af2fac8093932424232f5"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell___context/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell___context/REVIEWED-HASHES.json",
+    "sha256": "5c4957c39a1df0ecd94c292bef55d104a71ab292c17669005c7dc3c160bb731e"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell___cursor/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell___cursor/RESULT.json",
+    "sha256": "29c0da9f780ffc1ad3b824cf835b903387414d7237f94677342675b162be2665"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell___cursor/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell___cursor/DONE.json",
+    "sha256": "f4cf24a97940302e414c0639506cc93c3f657141555d0755066ad50ebad9ffc3"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell___cursor/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell___cursor/REVIEWED-HASHES.json",
+    "sha256": "71bfc91e83a3736b8246fc651b31d624b122b76a41525f4647f481d131233557"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__apps-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__apps-r1/RESULT.json",
+    "sha256": "4c455d028defeea5102a4ab6cc18fe708a76e830dfc4d44f6c91b85dd1343205"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__apps-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__apps-r1/DONE.json",
+    "sha256": "49d69ad7dbecf568abff99023fba9134b67042e51a7c47abeeb9a366233c878a"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__apps-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__apps-r1/REVIEWED-HASHES.json",
+    "sha256": "8590df76e75b227ee4751e24ae8df5cc68d2f979ea1bd7b835e66729302ea3dc"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__apps__electron-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__apps__electron-r1/RESULT.json",
+    "sha256": "f35e7fe9bd7035e7b89db6e2eb962cbed5182a724a4ca27efb3d5bdd8ca9ebb7"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__apps__electron-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__apps__electron-r1/DONE.json",
+    "sha256": "f11da633d72e96284cba0f2c3074444e2cf2d2ea5a3c06121ad089eae8a06d04"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__apps__electron-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__apps__electron-r1/REVIEWED-HASHES.json",
+    "sha256": "11fa7c08e6faa8a80f8e5ccb58468384595cec9c1c4f9658eee2084911363a8f"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__apps__electron__resources-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__apps__electron__resources-r1/RESULT.json",
+    "sha256": "8fdd83360f821d1fe19e49c44a54e0cb0c68845e56f43a350f7f29b74df44f64"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__apps__electron__resources-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__apps__electron__resources-r1/DONE.json",
+    "sha256": "b5e15122ec41e4e51e5da2abd4b5c3c141c2bf583511d760ace9b8d44cd235fb"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__apps__electron__resources-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__apps__electron__resources-r1/REVIEWED-HASHES.json",
+    "sha256": "a9447b02846d53385dd2007406d6ada32185ba6024df9b286ced1db91d605398"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__apps__electron__resources__cslab-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__apps__electron__resources__cslab-r1/RESULT.json",
+    "sha256": "7059c14ef212f52059ce825c0f58f75dccd42160b349946971de7827cc874115"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__apps__electron__resources__cslab-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__apps__electron__resources__cslab-r1/DONE.json",
+    "sha256": "4b022745223a2d718c8bc7acb0383091b3044f968f2f3fbd8fcbda48d25128de"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__apps__electron__resources__cslab-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__apps__electron__resources__cslab-r1/REVIEWED-HASHES.json",
+    "sha256": "3fbde15858c3c9ebaa07bf40616ef710f421a0bdd35b2fd7c6f318822a6dd5d6"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__apps__electron__resources__ppt-style-packs/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__apps__electron__resources__ppt-style-packs/RESULT.json",
+    "sha256": "4eb3402d030275862b16ed51f18599025b2ec0c62fba4abd3e7578ce270f59fa"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__apps__electron__resources__ppt-style-packs/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__apps__electron__resources__ppt-style-packs/DONE.json",
+    "sha256": "5cb693b33bef310cd7032bc660a266fa717017f37e8a7a9a976222dccd425312"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__apps__electron__resources__ppt-style-packs/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__apps__electron__resources__ppt-style-packs/REVIEWED-HASHES.json",
+    "sha256": "367b38703458fdcf24fee2f8d4c59c30b1c93115040b1756464911c30c1273b4"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__assets-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__assets-r1/RESULT.json",
+    "sha256": "0ae6f7fbe1e3a85a5d48c7e2d1d9cc185bffce27855d83dc2d708e85c99295f4"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__assets-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__assets-r1/DONE.json",
+    "sha256": "314a262373664382c0e57d3cf026f6330591850b43538145b2c2cfaf88f9698a"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__assets-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__assets-r1/REVIEWED-HASHES.json",
+    "sha256": "46c76a0938f8b68b779ed96cbc8ee61c6193cbc5923bc3b46663381cd6b72ccf"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__assets__CDUT/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__assets__CDUT/RESULT.json",
+    "sha256": "a0d9674db33d1467a5a9a47090051d0700ea18cea5cf222b98472312bac06a46"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__assets__CDUT/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__assets__CDUT/DONE.json",
+    "sha256": "4775573c1566038340f711ecc0f024cf1a1d30fa6fe9d0be3526639a640d2246"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__assets__CDUT/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__assets__CDUT/REVIEWED-HASHES.json",
+    "sha256": "c0f5a23bf3bf9d75a7a1a278e9476b27024b2916ad5da14c2fee7c90dcf9a892"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__assets__IP/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__assets__IP/RESULT.json",
+    "sha256": "8695587734335440025b0c6c2184367b1b35e2d41d708018dbcb6fa115d73f19"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__assets__IP/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__assets__IP/DONE.json",
+    "sha256": "4a460a95affae12a4caf6bfeaef2d3d25ec3e4043aa79044cfaf903ae3814239"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__assets__IP/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__assets__IP/REVIEWED-HASHES.json",
+    "sha256": "57402a2018540c4bc615884723310252e6731b6b9138ed49ef4ced205aa583f3"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__docs/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__docs/RESULT.json",
+    "sha256": "8f6c296f43145a955795dc032ee6146cca2226943434abc6902b6f2374a3ded1"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__docs/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__docs/DONE.json",
+    "sha256": "3465e41a24ca2c57d50dd3315ee07fa898b3cdc051fcf0a33c247144b888f103"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__docs/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__docs/REVIEWED-HASHES.json",
+    "sha256": "8a9e984b744fb9784a10712de6a34ab2e21c7ac7ba10284cec111eb28dc8e395"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__docs__assets/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__docs__assets/RESULT.json",
+    "sha256": "01f9546ad88f3351ef7fb85bf2f7943b41b8219d95dc14c8a43bf8f0c916b44f"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__docs__assets/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__docs__assets/DONE.json",
+    "sha256": "c2feb9fba095fb6797de1f17a7f83703b5e02177d8a5628e7ba39661c7cd481a"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__docs__assets/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__docs__assets/REVIEWED-HASHES.json",
+    "sha256": "79ff655862cbc20c82da6242ce62b1a58f65fcdeb392d6266b862afb34fbd3d5"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__docs__design__review-agent/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__docs__design__review-agent/RESULT.json",
+    "sha256": "5a29d437c162aae62d46a8f0969a848e624d82289270904bb1ee211b8efe8e64"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__docs__design__review-agent/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__docs__design__review-agent/DONE.json",
+    "sha256": "67e1e54be85b9b4de67c2d5a826c220afa1d56d8d36c421d3a9bc11ce00966fb"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__docs__design__review-agent/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__docs__design__review-agent/REVIEWED-HASHES.json",
+    "sha256": "5dc9259c2088ff35db71d24782add72a8f34273cdd7e50b91c570850ef028486"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__release-notes/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__release-notes/RESULT.json",
+    "sha256": "dacddc9c4171a1e49cf8e4d10c1bd409719af57536f2f04560ee5e00bbe3bf46"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__release-notes/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__release-notes/DONE.json",
+    "sha256": "6187523e8a9ac8f439bd8acbd4f17fafc7b2574614b37a10ab808dc15c8c3e6e"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__release-notes/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__release-notes/REVIEWED-HASHES.json",
+    "sha256": "a4eca4504507c5e260c1251a62318a9efd89c8f6b1d647ed4bbb5e9f75d7c5d4"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__skins/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__skins/RESULT.json",
+    "sha256": "e8cf2fbe9799639f05d141bbf437f4c4a2c9ead20a60e521d6e4bc3bc7215eb0"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__skins/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__skins/DONE.json",
+    "sha256": "efbd6cb5789ed57d11afaf7f99ab0c47a22cf7358d9b4cfdf4b632d97c9ce85e"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__skins/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__skins/REVIEWED-HASHES.json",
+    "sha256": "e66e895fe82d4e298ed202b5bd790700986b9355a813fe56d495a95ba75af5d5"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__specs__gui/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__specs__gui/RESULT.json",
+    "sha256": "dffffb0b5d68a0d14435dc83ee3f7436a891c071f86f84426a0d6322fa005adc"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__specs__gui/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__specs__gui/DONE.json",
+    "sha256": "706ce6ecb41265bb9db3852735a64dabacb0799004e61440ba920289aae33bec"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__specs__gui/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__specs__gui/REVIEWED-HASHES.json",
+    "sha256": "96e98d1f3a100b48213419cecdc0f6dabb9383623e8bd8cd22bb6ce59d907b2e"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__tutorial/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__tutorial/RESULT.json",
+    "sha256": "c5f159c5fdae86d46f4e8fb4afcc5ea619f5d2419469b4c8290563a2293872a3"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__tutorial/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__tutorial/DONE.json",
+    "sha256": "9aaf7e656cc1018b5b281ea2b483c63c06021f518a4fbceb4c27b774358a80b9"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__tutorial/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__tutorial/REVIEWED-HASHES.json",
+    "sha256": "0fbe6e859283b70f6e9072c5538faf8a8cd668ad645bed3e76c589a7829bf145"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__work/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__work/RESULT.json",
+    "sha256": "cd7df61b8f1f0263e2f3d460243fa11da42a591dac31034a9887a03e25f1998d"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__work/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__work/DONE.json",
+    "sha256": "e35fce4a4d33c72411ed71d322b74d1ad8cca3705df4e425f2a3f6d84829e58d"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__work/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__work/REVIEWED-HASHES.json",
+    "sha256": "f38a9dd68aaaef6c412bebdf47bad3d1e2f6101490472621d796d3987357e953"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__work__reports-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__work__reports-r1/RESULT.json",
+    "sha256": "f0893fed68e142174028e79d5cb7ef056c44cad6b691a511f49263b22a6bb77c"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__work__reports-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__work__reports-r1/DONE.json",
+    "sha256": "17e891cf8c6f761136d825d286d15fb60e873cd8fde637c7ef0cac6706820f52"
+  },
+  {
+    "originalPath": "reviews/index-p01-app-shell__work__reports-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p01-app-shell__work__reports-r1/REVIEWED-HASHES.json",
+    "sha256": "d857e9b6619c8a8a3388ae95e096f2a422fa6a5478a3a9a38f96c6c3786fbd46"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__default-skills-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__default-skills-r1/RESULT.json",
+    "sha256": "2ba2de6a40a9bd8dd3e309d158d330d5b981ef26cda7fed99776cff1ab966693"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__default-skills-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__default-skills-r1/DONE.json",
+    "sha256": "505a044c335b1d5720f6457d7a56586fc8c10f71a9fd6d639f4a87905ff1476c"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__default-skills-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__default-skills-r1/REVIEWED-HASHES.json",
+    "sha256": "19370388aeb9f92425e40b128f03b5eed21702d8ec0969a85ac4063fe1c9294d"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__default-skills__docx__scripts/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__default-skills__docx__scripts/RESULT.json",
+    "sha256": "bcfeceef7e8a09f1e334e053abce64fbc051fd84347d2c53c45552b6b2738d23"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__default-skills__docx__scripts/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__default-skills__docx__scripts/DONE.json",
+    "sha256": "49e77c663930e0b5c5ea7df6a8e57404c5e5a96f76478fd5faf79210cac6728f"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__default-skills__docx__scripts/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__default-skills__docx__scripts/REVIEWED-HASHES.json",
+    "sha256": "39ef2950cefff7d1878eccc32a4f740161e0b8bce208ad503cf0baf1689e19c4"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill-r1/RESULT.json",
+    "sha256": "164971f8ffbade2e896bfdba7e79b727fd253ab2d774c0e43d58ae36385fe9bf"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill-r1/DONE.json",
+    "sha256": "20e24a97c4dc43628b295d5daaf89e0b984bdf7a139b28d999ff38715ebc167c"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill-r1/REVIEWED-HASHES.json",
+    "sha256": "f8c366c5ce7cbc79613a265febd785912f3fe9d93e56d5d7313a5f62752c766e"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__default-skills__pptx/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__default-skills__pptx/RESULT.json",
+    "sha256": "fa4187b9afb609356cff0d766fbd3cacc3d9e716ddaf531f91c846c00adb49dc"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__default-skills__pptx/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__default-skills__pptx/DONE.json",
+    "sha256": "41b0f466e3d1cda58cb589c4e64877d3fb22b8f903b3603a6d7dc609500fc193"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__default-skills__pptx/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__default-skills__pptx/REVIEWED-HASHES.json",
+    "sha256": "b7e5e2cf32fae6a209ad40a18d47ab2fda1b2cc878adb23c28dbda73ea2d54e1"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__default-skills__session-cleaner/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__default-skills__session-cleaner/RESULT.json",
+    "sha256": "c8194254d8969e3b240c4512ff674c1c3eb9a551cee826f0c3293599f162998e"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__default-skills__session-cleaner/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__default-skills__session-cleaner/DONE.json",
+    "sha256": "2b0f80ed77b89d2a9d8174c617d64a674baef7b73c6b6e5a03729c028e399db6"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__default-skills__session-cleaner/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__default-skills__session-cleaner/REVIEWED-HASHES.json",
+    "sha256": "dd3a38781e62e8f0c8e6ffb3e9bef47c28c06a11ce81309e9f8f3f991b92de43"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__default-skills__skill-creator/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__default-skills__skill-creator/RESULT.json",
+    "sha256": "54f549e2ead3fe43eda04df84f03940bcb9cbc9d65d71880bef7df5b4ae3ab8b"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__default-skills__skill-creator/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__default-skills__skill-creator/DONE.json",
+    "sha256": "6b011313def47358a9952efcca74feb63158b805ff2e7cfe1003999e962c52c4"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__default-skills__skill-creator/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__default-skills__skill-creator/REVIEWED-HASHES.json",
+    "sha256": "5b0a23c971a6584b3248c85c6bb7093466755104f55d8077ace3a68980111d72"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness/RESULT.json",
+    "sha256": "aff674a6909320e933e53386eb73fa2394f1ae13d400bd3cb9546c3f17497cbb"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness/DONE.json",
+    "sha256": "9dc2db6dc38dfd77a66f9439c69625a1dc2ca1c35ef618cffae163bf3164343f"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness/REVIEWED-HASHES.json",
+    "sha256": "504284b1757097dc46c20b78168d76eccc0968350d862be559d3d907913e76ca"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals/RESULT.json",
+    "sha256": "0f0c78e67677dd8400db1b0d36203625c5c9ca414605a0e5e318faa478bfdecd"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals/DONE.json",
+    "sha256": "a0abac107f0fa91595aafc09184f9f907c6dcc01940f1f868b66af7ae192db3d"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals/REVIEWED-HASHES.json",
+    "sha256": "fd9365bd19c3784499c920609c4c8e40eb4c374cf01433a2d43a8d06b554d695"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016-r1/RESULT.json",
+    "sha256": "b1b22d1e91b85fad70d35c79ac57698ff98864e95d47c8ac488b3335ae21026c"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016-r1/DONE.json",
+    "sha256": "44cdebbc33d0e4f3868ff9d9b838051caf858c1f3e301bc638c6629815e39060"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016-r1/REVIEWED-HASHES.json",
+    "sha256": "5ecbae028716e1e02e164734946d2d921e71587300f5f4132bb263b591df9d93"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__vendor-xsd__ecma-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__vendor-xsd__ecma-r1/RESULT.json",
+    "sha256": "66f0019feb12427bf9813e84288c7af3069d7ca68eb9f9c124e8feb2576380a6"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__vendor-xsd__ecma-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__vendor-xsd__ecma-r1/DONE.json",
+    "sha256": "5c069da0911d9c10aaf32206598e18681da3f1059e1dc89e36e8548b1b815cb3"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__vendor-xsd__ecma-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__vendor-xsd__ecma-r1/REVIEWED-HASHES.json",
+    "sha256": "2a39ded74ca7eb64eeda58c5441205a59eb558a81842453e862499b008e4f241"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__vendor-xsd__mce/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__vendor-xsd__mce/RESULT.json",
+    "sha256": "b8bbb13647783946484bb9c465fac2ce13e894a15721fd9a6cc601ca77dfeb0e"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__vendor-xsd__mce/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__vendor-xsd__mce/DONE.json",
+    "sha256": "474627b1fdca8f52f77ccacb077df02d0125cee8cc47280290f8e9919c3e06fb"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__vendor-xsd__mce/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__vendor-xsd__mce/REVIEWED-HASHES.json",
+    "sha256": "8e179f029c68537ba98af547485963def5b0ae9716a31b75f01923783de8dedc"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__vendor-xsd__microsoft/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__vendor-xsd__microsoft/RESULT.json",
+    "sha256": "3ad5f492effa86574b6451b0e20ff05b1f57b5f49508d83b9b6c4a7d0c1b15c9"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__vendor-xsd__microsoft/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__vendor-xsd__microsoft/DONE.json",
+    "sha256": "dfacfa30d7dbf575e7ca298d7bbc6c0276bcf6819911c31630d0dc8155ae5092"
+  },
+  {
+    "originalPath": "reviews/index-p02-agent-runtime__vendor-xsd__microsoft/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p02-agent-runtime__vendor-xsd__microsoft/REVIEWED-HASHES.json",
+    "sha256": "c7c330494e6792a31b6bac9a88eb76c07e61147b91a246719dc9d09ecdda8c20"
+  },
+  {
+    "originalPath": "reviews/index-p03-integrations__demo-data/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p03-integrations__demo-data/RESULT.json",
+    "sha256": "7a428648e717915a1829918a115717be4d561798e2e4c3c2a742f159319c5393"
+  },
+  {
+    "originalPath": "reviews/index-p03-integrations__demo-data/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p03-integrations__demo-data/DONE.json",
+    "sha256": "e4cbec6779b61a8cba05bfa2f4818efb80b0a223c06cff27ca51fccc247e0bd3"
+  },
+  {
+    "originalPath": "reviews/index-p03-integrations__demo-data/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p03-integrations__demo-data/REVIEWED-HASHES.json",
+    "sha256": "c18d36477665f7c47db646806662af8a06e2e3bc82c8db16a569fc297a10ef1d"
+  },
+  {
+    "originalPath": "reviews/index-p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case/RESULT.json",
+    "sha256": "893d474f1f75fc2623cf649b8b6bb6a4a5526a89823c473be64c9038011d9590"
+  },
+  {
+    "originalPath": "reviews/index-p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case/DONE.json",
+    "sha256": "f7b17cd43b3414b3a49c55ba3934608a958ad735a176061aec850941f5112a8b"
+  },
+  {
+    "originalPath": "reviews/index-p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case/REVIEWED-HASHES.json",
+    "sha256": "d96eda82e5298054c47094e297d1cdaa77ae62ed8acbf312e7eaba5509fd3f97"
+  },
+  {
+    "originalPath": "reviews/index-p08-renderer-ui__apps__electron__src__renderer__components__onboarding/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p08-renderer-ui__apps__electron__src__renderer__components__onboarding/RESULT.json",
+    "sha256": "3649e2db993e65b2e96f2df4b02a5637ad69afb926fb7f83b34b0cc363789a4a"
+  },
+  {
+    "originalPath": "reviews/index-p08-renderer-ui__apps__electron__src__renderer__components__onboarding/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p08-renderer-ui__apps__electron__src__renderer__components__onboarding/DONE.json",
+    "sha256": "a49b0c79726100625a9aa159b12e03b4d8cc6761b9f06803fc9c253e75df4919"
+  },
+  {
+    "originalPath": "reviews/index-p08-renderer-ui__apps__electron__src__renderer__components__onboarding/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p08-renderer-ui__apps__electron__src__renderer__components__onboarding/REVIEWED-HASHES.json",
+    "sha256": "e8a36280a15ce6a8032a114921bf239d664730191f161695ad1a7219908f7f85"
+  },
+  {
+    "originalPath": "reviews/index-p08-renderer-ui__renderer-assets/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p08-renderer-ui__renderer-assets/RESULT.json",
+    "sha256": "aa391afc9f32ff5474793a3ca169785f0d3339d0737387eadb2000cdad038cd8"
+  },
+  {
+    "originalPath": "reviews/index-p08-renderer-ui__renderer-assets/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p08-renderer-ui__renderer-assets/DONE.json",
+    "sha256": "f88c7c38672dc0dd5a97173a521def4c31691294f972c07648454f33f85d177a"
+  },
+  {
+    "originalPath": "reviews/index-p08-renderer-ui__renderer-assets/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/index-p08-renderer-ui__renderer-assets/REVIEWED-HASHES.json",
+    "sha256": "77e239439dfbaf1463ea3f56bf14d60222794b71edd3966a749d10febeb7aa65"
+  },
+  {
+    "originalPath": "reviews/nb-01-r2/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-01-r2/RESULT.json",
+    "sha256": "a2ef6fcc7d7e6c4d95ebb7bc6622523d0d5f196900d630114024ff6551a4b087"
+  },
+  {
+    "originalPath": "reviews/nb-01-r2/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-01-r2/RESULT.md",
+    "sha256": "e4392cafd553dd0bd94ba1164f83e588ff9385caf5063ef190db3fbceb2f6aac"
+  },
+  {
+    "originalPath": "reviews/nb-01-r2/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-01-r2/DONE.json",
+    "sha256": "9910e4d44c887cbae997c1e3f70eee944b5193470f7e750ddba02361dd22122d"
+  },
+  {
+    "originalPath": "reviews/nb-01-r2/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-01-r2/REVIEWED-HASHES.json",
+    "sha256": "c1df18c43967c4c2fcf86525ba0f8c00928d0125ea357bdef3a235f09b719485"
+  },
+  {
+    "originalPath": "reviews/nb-02-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-02-r1/RESULT.json",
+    "sha256": "a793f59a89880561f81787fca0a0f7b3e0253f4a538e49a58a77cc7718932beb"
+  },
+  {
+    "originalPath": "reviews/nb-02-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-02-r1/RESULT.md",
+    "sha256": "6f659a9cda78dea3611f168c7010538c642c71c3aa8abfdbf0eae002f03c9538"
+  },
+  {
+    "originalPath": "reviews/nb-02-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-02-r1/DONE.json",
+    "sha256": "57b1070d52e89b3c8f23a8e3c89de291e82efc3ae94df3f1c67fb2dd8a3ea0b9"
+  },
+  {
+    "originalPath": "reviews/nb-02-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-02-r1/REVIEWED-HASHES.json",
+    "sha256": "12b5087934436563ee15ad3de68624e5757de0eee106d218cc0862a58c938f6a"
+  },
+  {
+    "originalPath": "reviews/nb-03/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-03/RESULT.json",
+    "sha256": "875e9491b16c513d5345caf0e74c6a8bbc67a47f3db783fb02fa02c315025eb3"
+  },
+  {
+    "originalPath": "reviews/nb-03/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-03/RESULT.md",
+    "sha256": "65a2672ebc9fd17c36dfdfb5c58a995f2b8f05125dc5f3540af29680ef923853"
+  },
+  {
+    "originalPath": "reviews/nb-03/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-03/DONE.json",
+    "sha256": "d5403cda041e54c6a9d358ac8c42c04cfba1dc642c629627245f27c988174b6b"
+  },
+  {
+    "originalPath": "reviews/nb-03/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-03/REVIEWED-HASHES.json",
+    "sha256": "9af62ddfdd1153433b2e3c601d663dc6e1b1c26317c26ca5e894e98d3dd21c64"
+  },
+  {
+    "originalPath": "reviews/nb-04-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-04-r1/RESULT.json",
+    "sha256": "aa64fe7f7284f81019ae75cb12e84e5172751a4e4c62372541fdfff1a8b936c2"
+  },
+  {
+    "originalPath": "reviews/nb-04-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-04-r1/RESULT.md",
+    "sha256": "c017aa05fb4eff33195a904ff606d8d1b5ce7e5f3b180150b22538a068ea98d0"
+  },
+  {
+    "originalPath": "reviews/nb-04-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-04-r1/DONE.json",
+    "sha256": "ab1c4deb863c7404d81eebcf05d0270996f11bc7dc9631488b55c5fa0b78c1ae"
+  },
+  {
+    "originalPath": "reviews/nb-04-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-04-r1/REVIEWED-HASHES.json",
+    "sha256": "95e7aeb041d9034689f50385938360bb6cb6ec17a30ea51b06a54bcc1340e66f"
+  },
+  {
+    "originalPath": "reviews/nb-05-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-05-r1/RESULT.json",
+    "sha256": "affa1c76a77386318ea3b154d6636eeea808aac9af3984ef83a3279029f20637"
+  },
+  {
+    "originalPath": "reviews/nb-05-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-05-r1/RESULT.md",
+    "sha256": "a230040775691a763c84186310799ccfc65e17bf2a523a8a0bb9eb119aafd179"
+  },
+  {
+    "originalPath": "reviews/nb-05-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-05-r1/DONE.json",
+    "sha256": "be1a291b2365e62bb969fb3482956aab0c25d86d2f78812d621f1ff1a75a6fa6"
+  },
+  {
+    "originalPath": "reviews/nb-05-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-05-r1/REVIEWED-HASHES.json",
+    "sha256": "7d6b53bb71d5bb65bc4f3e2c4a154dc76383027233f5d366d5ca2af55c529ad2"
+  },
+  {
+    "originalPath": "reviews/nb-05b/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-05b/RESULT.json",
+    "sha256": "78566ba3d290fb9a8db4e448ec4a536e3e5ee5c47c6dec1c9b8799f175e46fc1"
+  },
+  {
+    "originalPath": "reviews/nb-05b/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-05b/RESULT.md",
+    "sha256": "dcfe85320729eefaad724535898953565ec14534d00039e28f5f134e6dcdc53d"
+  },
+  {
+    "originalPath": "reviews/nb-05b/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-05b/DONE.json",
+    "sha256": "ad3b3554662c595ca0417b08c4b324723a2fbbb7cb430110902306a38870bd8e"
+  },
+  {
+    "originalPath": "reviews/nb-05b/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-05b/REVIEWED-HASHES.json",
+    "sha256": "07630fad370abf1489df726de9f8c92645f54c2884b8350fee48d1d4f1cd7eda"
+  },
+  {
+    "originalPath": "reviews/nb-06-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-06-r1/RESULT.json",
+    "sha256": "8d7e6af98ca81d15854f99db76b7ade8e0e1d799acd6fc94ae71885baa7e4dcc"
+  },
+  {
+    "originalPath": "reviews/nb-06-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-06-r1/RESULT.md",
+    "sha256": "2f1dc2e48cc03d9c8a1a55c5f5ab0327b74aa701a2eb44c42c705f67bce575c0"
+  },
+  {
+    "originalPath": "reviews/nb-06-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-06-r1/DONE.json",
+    "sha256": "7e1e94238a14d3df550581d39d34f7ddcca5b5999551480e6b8c6a601b5d7009"
+  },
+  {
+    "originalPath": "reviews/nb-06-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-06-r1/REVIEWED-HASHES.json",
+    "sha256": "f97e7315946287592632a649383c7584a92cd4aeaae8aedeca25c493dc6afe40"
+  },
+  {
+    "originalPath": "reviews/nb-07-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-07-r1/RESULT.json",
+    "sha256": "9ef9486ed0004f6ca68e3e85d708058776ebd9ed689af2d1815f096841d6049e"
+  },
+  {
+    "originalPath": "reviews/nb-07-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-07-r1/RESULT.md",
+    "sha256": "cf36f535587a713cfca2afc80b679824f6b63e31e28816b170734da3b352ea57"
+  },
+  {
+    "originalPath": "reviews/nb-07-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-07-r1/DONE.json",
+    "sha256": "9df2eb51aa7f9cb3ccff8ba404a24d832593bcb03fe5a248b7cfa7d1a132b574"
+  },
+  {
+    "originalPath": "reviews/nb-07-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-07-r1/REVIEWED-HASHES.json",
+    "sha256": "b2d8384c955091bb5ed02009ec581b9d44443f9a2255e151ab45a0fb92a299fb"
+  },
+  {
+    "originalPath": "reviews/nb-08/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-08/RESULT.json",
+    "sha256": "7f3f69c6e3964fe95dcb7821683d4479dc3c8ae3247e0c4fcdc44619a487cb64"
+  },
+  {
+    "originalPath": "reviews/nb-08/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-08/RESULT.md",
+    "sha256": "cb48dd119b8e395e3217eb7cc02c999facffa753f4aa582aacc39d2d34ad867b"
+  },
+  {
+    "originalPath": "reviews/nb-08/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-08/DONE.json",
+    "sha256": "2e352f3d4402eba088681adbaa2f1c6fea24df60b65073699392769d7f641f73"
+  },
+  {
+    "originalPath": "reviews/nb-08/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-08/REVIEWED-HASHES.json",
+    "sha256": "bf0e0caea0c7a05907effc73fc72667333e1a3919636b45353d0b9bbd06ab062"
+  },
+  {
+    "originalPath": "reviews/nb-08-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-08-r1/RESULT.json",
+    "sha256": "e15d3b94bc0988c1fe5509840630225da4551386cb25985cd711e0db48dac38b"
+  },
+  {
+    "originalPath": "reviews/nb-08-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-08-r1/RESULT.md",
+    "sha256": "03f239318cea1405b52809495efd4e49b2f3a99e7c73122356db848738dee256"
+  },
+  {
+    "originalPath": "reviews/nb-08-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-08-r1/DONE.json",
+    "sha256": "d6f5ceb35435bf9299558bb3ddf2d294684c257f30bdf1a8b5b2df1ceece9799"
+  },
+  {
+    "originalPath": "reviews/nb-08-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-08-r1/REVIEWED-HASHES.json",
+    "sha256": "b3a4fb0bd1f022531bdb015f4ff0c76fd212d8fb70f5c3ab34898c474f77f913"
+  },
+  {
+    "originalPath": "reviews/nb-09-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-09-r1/RESULT.json",
+    "sha256": "e035aa270b48d26654696016128f4d4a370ec35b2513af062b9cad4ccd9e7d42"
+  },
+  {
+    "originalPath": "reviews/nb-09-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-09-r1/RESULT.md",
+    "sha256": "17f62f042e66d9d2d7587a4fe011756b7b0ef2454749b34a311ab2a22390af2d"
+  },
+  {
+    "originalPath": "reviews/nb-09-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-09-r1/DONE.json",
+    "sha256": "3db1f0b2075d4420f54222295e1cfe3290274033e5e68dd5bc84be98c28a5760"
+  },
+  {
+    "originalPath": "reviews/nb-09-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-09-r1/REVIEWED-HASHES.json",
+    "sha256": "1a46c0696e2f4b03aa5d606aa0f0e726e946ab792c10bde871e39c67ea651edb"
+  },
+  {
+    "originalPath": "reviews/nb-10/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-10/RESULT.json",
+    "sha256": "af524b29949994426da283be8894b61aee13e1e43482006d9eb808c10b62c0ec"
+  },
+  {
+    "originalPath": "reviews/nb-10/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-10/RESULT.md",
+    "sha256": "b2435647ced0d3f289ab85b43c2593fa6c006c12a87140971100d0e0af6bd629"
+  },
+  {
+    "originalPath": "reviews/nb-10/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-10/DONE.json",
+    "sha256": "0a06b92d379a83657f61f4114b76e2ce6ae97d0cdff43065843e331bbeecb176"
+  },
+  {
+    "originalPath": "reviews/nb-10/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-10/REVIEWED-HASHES.json",
+    "sha256": "eb348d7ad849cea2be74b19ae969c32f0873af9ab31a009b3b00bd41a1ffaf70"
+  },
+  {
+    "originalPath": "reviews/nb-100-codex-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-100-codex-r1/RESULT.json",
+    "sha256": "844cc73cacc17ab16dcfcdcad0a4c4c350654b489b5860a1df7ec42794da73ad"
+  },
+  {
+    "originalPath": "reviews/nb-100-codex-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-100-codex-r1/RESULT.md",
+    "sha256": "17a79121574e76a7854a0b965d0146cf3016256ae9250bf6bea87529a6e4d582"
+  },
+  {
+    "originalPath": "reviews/nb-100-codex-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-100-codex-r1/DONE.json",
+    "sha256": "9d2d74267079bca7a2832463440c339f8a8a56f0e1f3db2c01a8ddab77953e84"
+  },
+  {
+    "originalPath": "reviews/nb-100-codex-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-100-codex-r1/REVIEWED-HASHES.json",
+    "sha256": "64e7488d3262604817f4ecea7dcbf28a8ac400a030f1fbd3375616efa6600e9b"
+  },
+  {
+    "originalPath": "reviews/nb-100-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-100-r1/RESULT.json",
+    "sha256": "dcf0f3b68cf8a9a5d2afebe88d65da9df786d889f71de3b487219aa8e7e5f4ae"
+  },
+  {
+    "originalPath": "reviews/nb-100-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-100-r1/RESULT.md",
+    "sha256": "1a4a2dc64a94f378dd1551c34a569f525268b8444fd77306068809278276e54e"
+  },
+  {
+    "originalPath": "reviews/nb-100-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-100-r1/DONE.json",
+    "sha256": "41327f1bdc6aa1c84b73f47de654b2a1b49e2968b90b10ed9c4cacd0b19da2bd"
+  },
+  {
+    "originalPath": "reviews/nb-100-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-100-r1/REVIEWED-HASHES.json",
+    "sha256": "fa5e0eebb1f180881b7e52ecbfe6750d92753a5b36812bcf44513ceaeb59768e"
+  },
+  {
+    "originalPath": "reviews/nb-101/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-101/RESULT.json",
+    "sha256": "886846f34b9ad6fb7f2247542b99fee47688d1b33d15f40a6f9207043eaed764"
+  },
+  {
+    "originalPath": "reviews/nb-101/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-101/RESULT.md",
+    "sha256": "87533cc7c3fd8dcff7ba9ae4940d24402a3a767f7ffa204107ed620b0e6a34d2"
+  },
+  {
+    "originalPath": "reviews/nb-101/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-101/DONE.json",
+    "sha256": "b90eb5059f33fd86b5ccee549a83f4a46cd51a614a00df40e233c9c970aa5eda"
+  },
+  {
+    "originalPath": "reviews/nb-101/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-101/REVIEWED-HASHES.json",
+    "sha256": "aae48abd2efcbc63ff8685c86a2a59acbe9361cb2e43f901df58861e7e5914a9"
+  },
+  {
+    "originalPath": "reviews/nb-102/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-102/RESULT.json",
+    "sha256": "2f83634cf313592a8791888a7272c1f0a0003e67c0d9f49c31ee4f34adccf44e"
+  },
+  {
+    "originalPath": "reviews/nb-102/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-102/RESULT.md",
+    "sha256": "d4188c969e2ace8bf205b3ad7e3dea7a3b0f66813e3f084f617942254569750d"
+  },
+  {
+    "originalPath": "reviews/nb-102/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-102/DONE.json",
+    "sha256": "9d61979e5a728ea624e0f5ad87e366e0946478249d65460c7b30a27af6efaf77"
+  },
+  {
+    "originalPath": "reviews/nb-102/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-102/REVIEWED-HASHES.json",
+    "sha256": "abbe5f79651c0ed20d606fa965aaed71fcd5ae2c4de8cd76641902edf28371ec"
+  },
+  {
+    "originalPath": "reviews/nb-103-r2/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-103-r2/RESULT.json",
+    "sha256": "3a2215382855ab680896e994c190d9958fb0e7e22256304110265d9117998138"
+  },
+  {
+    "originalPath": "reviews/nb-103-r2/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-103-r2/RESULT.md",
+    "sha256": "541925f744cb4285dbb48942c2e89d90857617ee670cef6343aa8da43b14b90b"
+  },
+  {
+    "originalPath": "reviews/nb-103-r2/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-103-r2/DONE.json",
+    "sha256": "3664512d053cf7021284a6070e0bf286d15ab8b891356ece858d5b4fda07b857"
+  },
+  {
+    "originalPath": "reviews/nb-103-r2/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-103-r2/REVIEWED-HASHES.json",
+    "sha256": "cf89e7ca776962967ceeee2bbadfe700b7109ac15b087031d24fec3fcf183e77"
+  },
+  {
+    "originalPath": "reviews/nb-104-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-104-r1/RESULT.json",
+    "sha256": "83c6be6df8b3bdcc3dcaac1023ddc956a6b2ee5f15b77d82060ea34c7bdda2aa"
+  },
+  {
+    "originalPath": "reviews/nb-104-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-104-r1/RESULT.md",
+    "sha256": "e7b31803ef7d5581486ab3abbb00bf1f707923f5b6c3a905c1d752de0ca2ede2"
+  },
+  {
+    "originalPath": "reviews/nb-104-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-104-r1/DONE.json",
+    "sha256": "70d06b011e2945eb48e97ba48b26d9d0311637662fcd48dedfee5544942c8853"
+  },
+  {
+    "originalPath": "reviews/nb-104-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-104-r1/REVIEWED-HASHES.json",
+    "sha256": "ec448b25de299fa15e0cc0d4bb34bb2d82cb3d3ace19bffe7c62ccbda0c87a3a"
+  },
+  {
+    "originalPath": "reviews/nb-105-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-105-r1/RESULT.json",
+    "sha256": "a38d953ea5e80952208fb04b3d64f0f8d54f13a292d14b3116feb59175a3215f"
+  },
+  {
+    "originalPath": "reviews/nb-105-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-105-r1/DONE.json",
+    "sha256": "fd8d3ea975e4980f6b3b809a592c5ef146b2d39056b3979d98aa467fcdb85c48"
+  },
+  {
+    "originalPath": "reviews/nb-105-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-105-r1/REVIEWED-HASHES.json",
+    "sha256": "d78dbaef2b4510006698710f9c1e9b113641da69de18979eee087126e3b8389a"
+  },
+  {
+    "originalPath": "reviews/nb-106/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-106/RESULT.json",
+    "sha256": "32d8584b3c831f0cf4cc931593774dfab21e40db3b1821c0739e6f4f07ae2529"
+  },
+  {
+    "originalPath": "reviews/nb-106/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-106/RESULT.md",
+    "sha256": "fec91779b3071f0cd52f8d68c2b604a1b218b6cb7418694ad40b480327938b31"
+  },
+  {
+    "originalPath": "reviews/nb-106/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-106/DONE.json",
+    "sha256": "f011cafc16102239184501e0735a9f4cd0b2a5c9518c3763ecc26c187011f398"
+  },
+  {
+    "originalPath": "reviews/nb-106/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-106/REVIEWED-HASHES.json",
+    "sha256": "c4310d8e3691a7a30cb3e7274dc5f3ebfb77e869f44aa858d98659ec4caaa2da"
+  },
+  {
+    "originalPath": "reviews/nb-107/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-107/RESULT.json",
+    "sha256": "52cbb11a9f29b4aa5b6ee93b1bb6781f2620ee8b0c0f7906e8738434032a55d0"
+  },
+  {
+    "originalPath": "reviews/nb-107/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-107/RESULT.md",
+    "sha256": "0da1340e05c60107048fe363c80c61d486bdfdf7033ae3d6f106499ea1393de1"
+  },
+  {
+    "originalPath": "reviews/nb-107/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-107/DONE.json",
+    "sha256": "8fcf77cd8e36826a9bb9f87d8bbef57f914c2efd09e7a8e6ff1fafe489a5401a"
+  },
+  {
+    "originalPath": "reviews/nb-107/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-107/REVIEWED-HASHES.json",
+    "sha256": "2361bb0ad63dcbac91358eecd621f6a31f6a47d0f3f08b6d5958dd2313a24cdd"
+  },
+  {
+    "originalPath": "reviews/nb-108-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-108-r1/RESULT.json",
+    "sha256": "b96266f16a9954610ceae7e091bb931912633ba6c47cee7968f684de37a7e75a"
+  },
+  {
+    "originalPath": "reviews/nb-108-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-108-r1/RESULT.md",
+    "sha256": "82ec2dfcbcaf44267c396d9c265d3ce198b9ff760fc52d6b5922c942a1216f01"
+  },
+  {
+    "originalPath": "reviews/nb-108-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-108-r1/DONE.json",
+    "sha256": "ae1355276c836275510d6e835c8579e59dc8f7d99aa8c0201233e6becd341630"
+  },
+  {
+    "originalPath": "reviews/nb-108-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-108-r1/REVIEWED-HASHES.json",
+    "sha256": "f04c5d19c02af76399a7aefdcbb87c8b6e68468b152f1ebdb827a81f6b569806"
+  },
+  {
+    "originalPath": "reviews/nb-109/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-109/RESULT.json",
+    "sha256": "0015b0d3af9e9f25c5a91e43cfe6d3cc1967747e6fc869fe0c18ecbc709551e8"
+  },
+  {
+    "originalPath": "reviews/nb-109/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-109/RESULT.md",
+    "sha256": "e1e33186cd412f576cba76f99e4a43bd62fa20cb498731770bde266cde6d1126"
+  },
+  {
+    "originalPath": "reviews/nb-109/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-109/DONE.json",
+    "sha256": "68d24e1485aa8675403f146f96a7d0ecb5083f3d23cb4b667d1bcd9580f52626"
+  },
+  {
+    "originalPath": "reviews/nb-109/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-109/REVIEWED-HASHES.json",
+    "sha256": "6e0a2c72d540c2de56157b820d1b274dd5f808a06c72b20cb6576bbb5a0da032"
+  },
+  {
+    "originalPath": "reviews/nb-11-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-11-r1/RESULT.json",
+    "sha256": "a9e9ee395a755b2891ca0bc43b6a0417cea5df5a980d47746a22655c7a8e75c9"
+  },
+  {
+    "originalPath": "reviews/nb-11-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-11-r1/RESULT.md",
+    "sha256": "fd51865780547b8a024a276fe8cd0924be98fcf37655b0b64743381ec5cdb985"
+  },
+  {
+    "originalPath": "reviews/nb-11-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-11-r1/DONE.json",
+    "sha256": "3534bdbde96c6e52f0203f8a4e62eed735400d261a015079555861d8cc214316"
+  },
+  {
+    "originalPath": "reviews/nb-11-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-11-r1/REVIEWED-HASHES.json",
+    "sha256": "388d3a87bd8892c9de9a98eb2f43b61195b3f32ed02757ada93eac0cf3c4828d"
+  },
+  {
+    "originalPath": "reviews/nb-110-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-110-r1/RESULT.json",
+    "sha256": "0ecc1ea7db843ce414b689c00d277b064135c3dae9551cb7d7f0405fe1511080"
+  },
+  {
+    "originalPath": "reviews/nb-110-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-110-r1/RESULT.md",
+    "sha256": "4d2158b504c0aa3528e0e37ba3f0b41389dd51bd8031614a2bbbe673f8154af8"
+  },
+  {
+    "originalPath": "reviews/nb-110-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-110-r1/DONE.json",
+    "sha256": "09f7f186dea870e1bedc702c21ab44d66201d141edcebb7c606500a87a1ac406"
+  },
+  {
+    "originalPath": "reviews/nb-110-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-110-r1/REVIEWED-HASHES.json",
+    "sha256": "9c2e72c8549fa263f82c016a3e80a08404c9ba3ffd0224050af4771bf38fc86a"
+  },
+  {
+    "originalPath": "reviews/nb-111/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-111/RESULT.json",
+    "sha256": "89436118e1f15a2ddf138902aaa736f33729dd526d7da288c701b6bde2e0d6f7"
+  },
+  {
+    "originalPath": "reviews/nb-111/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-111/RESULT.md",
+    "sha256": "1ee5960a21f785bf37aafe2460629686e6c68ad24356e1ac54ef936a78ae2cae"
+  },
+  {
+    "originalPath": "reviews/nb-111/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-111/DONE.json",
+    "sha256": "7e1052249edec84af301930f98a2f10d5b6a317554a6b6cc0de89695243b3e53"
+  },
+  {
+    "originalPath": "reviews/nb-111/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-111/REVIEWED-HASHES.json",
+    "sha256": "dc5c07b346e6955adfcdd3aedf0a83ad036e3689d9faf862355a879eb2f3ba70"
+  },
+  {
+    "originalPath": "reviews/nb-111-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-111-r1/RESULT.json",
+    "sha256": "d3a015f4d2d788c9ec64e9437ed22bb33d46d92d49a61ab39845adfa4f21bcaa"
+  },
+  {
+    "originalPath": "reviews/nb-111-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-111-r1/RESULT.md",
+    "sha256": "efbaaf3b3df5d621da6b85a610c0d0450e80e6d6acec6ae8bd04b055ab158f74"
+  },
+  {
+    "originalPath": "reviews/nb-111-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-111-r1/DONE.json",
+    "sha256": "f9eb7165ec1e3395553efef96e354a48ac7727bc6ad67683d5c3864a584721b9"
+  },
+  {
+    "originalPath": "reviews/nb-111-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-111-r1/REVIEWED-HASHES.json",
+    "sha256": "a4384f27f48ad09f2760d3e995ae28903ababc81e676b66b46d66cbddbdfb6e7"
+  },
+  {
+    "originalPath": "reviews/nb-112-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-112-r1/RESULT.json",
+    "sha256": "e4ed6cf17cd2d3fa4be3755170acb659070f27a9e50183dcf2a0e4dfca51bac8"
+  },
+  {
+    "originalPath": "reviews/nb-112-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-112-r1/RESULT.md",
+    "sha256": "b79b710ad54ef78885f371733afb26769d761bfd30be3a96e4dd6eee03e9b8f3"
+  },
+  {
+    "originalPath": "reviews/nb-112-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-112-r1/DONE.json",
+    "sha256": "7a868b10eeeca173209e949e4ba6cee0e586d09016942b3bfbf09a7e982c6472"
+  },
+  {
+    "originalPath": "reviews/nb-112-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-112-r1/REVIEWED-HASHES.json",
+    "sha256": "b0db00b491f8bd971dbbb7c3aef55fa1aba8b46ed9977efc27189c7064f3db5e"
+  },
+  {
+    "originalPath": "reviews/nb-113/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-113/RESULT.json",
+    "sha256": "c318ab045ab701a40ffcffdcc26044e681e24b627b81be68c907601ed3a6cdd1"
+  },
+  {
+    "originalPath": "reviews/nb-113/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-113/RESULT.md",
+    "sha256": "fa19c96597b3b6dd00a7f380f0a49eb6150211e9f01ed999b76f27b866399233"
+  },
+  {
+    "originalPath": "reviews/nb-113/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-113/DONE.json",
+    "sha256": "f4400ebf9bcb10a2a8a9ad5b4e0cd535089811fdd3a2f47e3dcf86d730330152"
+  },
+  {
+    "originalPath": "reviews/nb-113/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-113/REVIEWED-HASHES.json",
+    "sha256": "4506846902a129bed1c01774411641ac380897b0706683ed6cc1fe8f4f486ab7"
+  },
+  {
+    "originalPath": "reviews/nb-114/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-114/RESULT.json",
+    "sha256": "afe67891d207bdaf878705aef36067f4c84624275243153a9a1ce443ac131a0e"
+  },
+  {
+    "originalPath": "reviews/nb-114/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-114/RESULT.md",
+    "sha256": "ac6e219a0e1891399756629a75151417bd85b8d0b8f0028f64286a06e86a33f7"
+  },
+  {
+    "originalPath": "reviews/nb-114/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-114/DONE.json",
+    "sha256": "aa604a8dcada30c5b2c85357ae06cda737f83a905cb620dbf8c1c4b2b02c3926"
+  },
+  {
+    "originalPath": "reviews/nb-114/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-114/REVIEWED-HASHES.json",
+    "sha256": "fff6b7eec403781d0a68d2ed58ecb5fbd5d3522e99142513a20cdc538ea3aa65"
+  },
+  {
+    "originalPath": "reviews/nb-114-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-114-r1/RESULT.json",
+    "sha256": "00001ae11487119d9bcfff4e25cbc2a07fecfbb6316522eacb8afa59e5a7c0c8"
+  },
+  {
+    "originalPath": "reviews/nb-114-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-114-r1/RESULT.md",
+    "sha256": "e5b14379a53c71d2470ab53fb0f51f529040b4b0ac0de2f0124d71a13a049fb3"
+  },
+  {
+    "originalPath": "reviews/nb-114-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-114-r1/DONE.json",
+    "sha256": "9570d3a855125441e7172fdf0f883a56cb10b8d36f1d7f21ea3488dd5db651c1"
+  },
+  {
+    "originalPath": "reviews/nb-114-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-114-r1/REVIEWED-HASHES.json",
+    "sha256": "cde301aed27c9232e549fc3d817ff9f452f2d4c43d2128748be8f93601c45277"
+  },
+  {
+    "originalPath": "reviews/nb-115/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-115/RESULT.json",
+    "sha256": "cfe063930c5881b6c7f0f99d3826f555bb6cfc0367b14126f1d00b1226c39ec9"
+  },
+  {
+    "originalPath": "reviews/nb-115/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-115/RESULT.md",
+    "sha256": "926d2fe7763becd9a969e4f9dbd29233598441801e8fea0ac5867c0d34c681a6"
+  },
+  {
+    "originalPath": "reviews/nb-115/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-115/DONE.json",
+    "sha256": "d8098d99c5127416453fae7a8d9bf9f6941c7165e3bc0a6ea999f7b0bfd5714c"
+  },
+  {
+    "originalPath": "reviews/nb-115/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-115/REVIEWED-HASHES.json",
+    "sha256": "162f10f77b3a37f5247cbd8ec222c6d7293944ae552b27d72ff225bd80c64d2d"
+  },
+  {
+    "originalPath": "reviews/nb-116-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-116-r1/RESULT.json",
+    "sha256": "d72cb4870fce71a1f05d54477e1bc4325a0f4aeece7bda91fab503a07e18d853"
+  },
+  {
+    "originalPath": "reviews/nb-116-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-116-r1/RESULT.md",
+    "sha256": "ba4d54ebc3c40a13cccfae2643b205b210da154bdde1f6f3fb839a4e910c45ec"
+  },
+  {
+    "originalPath": "reviews/nb-116-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-116-r1/DONE.json",
+    "sha256": "938c6c5d54c9056c5533deed56997f21066d6d0a34bd3e3aebf1cecb096a6d41"
+  },
+  {
+    "originalPath": "reviews/nb-116-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-116-r1/REVIEWED-HASHES.json",
+    "sha256": "c493feaf8bbf50846c92bc74a20b454882e441dd2a5ebcbf785e6fa795097b9b"
+  },
+  {
+    "originalPath": "reviews/nb-117/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-117/RESULT.json",
+    "sha256": "b32ddd353cd31fc25d6f2c2b8ddffa353e9e98f807da06e3481c05f241b91ec3"
+  },
+  {
+    "originalPath": "reviews/nb-117/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-117/RESULT.md",
+    "sha256": "a0c9d340798d07b54e33903a8614a149f300907e7b66963bccb80fa499b2c315"
+  },
+  {
+    "originalPath": "reviews/nb-117/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-117/DONE.json",
+    "sha256": "f8b3a8f101530fae08adf3145812a0d8844f4364fe13f62afd3bd823ef0e52c2"
+  },
+  {
+    "originalPath": "reviews/nb-117/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-117/REVIEWED-HASHES.json",
+    "sha256": "f1af3e0b1924c2c049d8c152e224928f62afde6dfdb783d1836f17de7d231b23"
+  },
+  {
+    "originalPath": "reviews/nb-117-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-117-r1/RESULT.json",
+    "sha256": "4d2a447c42c9b0ce2ffeec88cee9679ddbe84f0a039576baa15a19307f5e4a43"
+  },
+  {
+    "originalPath": "reviews/nb-117-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-117-r1/RESULT.md",
+    "sha256": "af4351c60635f45e11cdbe742d783c25cd53f10114decbc20ddf22609d0d286d"
+  },
+  {
+    "originalPath": "reviews/nb-117-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-117-r1/DONE.json",
+    "sha256": "0fc0a624a0b5a843fac359569894f72b631ddaf494176823d3eb8f7b3710fe70"
+  },
+  {
+    "originalPath": "reviews/nb-117-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-117-r1/REVIEWED-HASHES.json",
+    "sha256": "405799491d64a1eacd0393e46a2ac0c70d6e1175ac1ff38eeed379ff78d4b58d"
+  },
+  {
+    "originalPath": "reviews/nb-118/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-118/RESULT.json",
+    "sha256": "43d03333bb063570008b67c1b56e40b4742bef349e8a5acd4790aa596e145db3"
+  },
+  {
+    "originalPath": "reviews/nb-118/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-118/RESULT.md",
+    "sha256": "1e220cf3bee52029016f118d64a7370e0b414a61a5b3a31e1d672ca790fa001a"
+  },
+  {
+    "originalPath": "reviews/nb-118/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-118/DONE.json",
+    "sha256": "eafde10af7ae2e71ddaf02123e2064d270e5e12578cf3852987cd88b929a829b"
+  },
+  {
+    "originalPath": "reviews/nb-118/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-118/REVIEWED-HASHES.json",
+    "sha256": "73001b6c469b060173f57f48d8c6c09c33e733f4591d54c531f1dedaaa974c46"
+  },
+  {
+    "originalPath": "reviews/nb-119/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-119/RESULT.json",
+    "sha256": "a6af0c37ef97976a2eb8999ce16fde6e75ed410193326f13bd5a3d4f13688da9"
+  },
+  {
+    "originalPath": "reviews/nb-119/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-119/RESULT.md",
+    "sha256": "bf73c50596491f94c2cd42767c288385ec5c861c60f97460f70fcbf819a2fc1b"
+  },
+  {
+    "originalPath": "reviews/nb-119/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-119/DONE.json",
+    "sha256": "9f5a721af9253a27867a916d9f0cf76f37384d980f7dd5def50bf8bf6f4edb4a"
+  },
+  {
+    "originalPath": "reviews/nb-119/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-119/REVIEWED-HASHES.json",
+    "sha256": "aadcbb86b20666fd32892c67b120cf0262797503e596b61e07f1d3a845253328"
+  },
+  {
+    "originalPath": "reviews/nb-12-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-12-r1/RESULT.json",
+    "sha256": "281275c8da0bbc018380d13665ff3069a66f40dc93f602e8e9795eb5cffd9d34"
+  },
+  {
+    "originalPath": "reviews/nb-12-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-12-r1/RESULT.md",
+    "sha256": "d3413da4adb90bf9aae6f01fd799942184429bfcaa8a69c7c4b407e48c3df1bc"
+  },
+  {
+    "originalPath": "reviews/nb-12-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-12-r1/DONE.json",
+    "sha256": "ed062004567173b577915598ac74eeed99c757daff2eee559753f1088c1f2736"
+  },
+  {
+    "originalPath": "reviews/nb-12-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-12-r1/REVIEWED-HASHES.json",
+    "sha256": "d474f7654184e536fa6c1e0d2a80a28ddb3cd66d5ea818e5d6a4900bdb7ee876"
+  },
+  {
+    "originalPath": "reviews/nb-120/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-120/RESULT.json",
+    "sha256": "7e388bc1998df8e8b1d8bb48141af6354fb23759367a78fcc6a69db3002c3b83"
+  },
+  {
+    "originalPath": "reviews/nb-120/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-120/RESULT.md",
+    "sha256": "28518721231a0fa0d95287ca2e4bbccabba99971b5e514ab8de9fbf7da96c821"
+  },
+  {
+    "originalPath": "reviews/nb-120/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-120/DONE.json",
+    "sha256": "0780e5ded58e2375e91e4ef68820060a653da709dd343cf63ee1919b313b82c3"
+  },
+  {
+    "originalPath": "reviews/nb-120/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-120/REVIEWED-HASHES.json",
+    "sha256": "b1daffbb59e78a88c89cbf802f64715d98044813bd3351dad859f122575d1ca6"
+  },
+  {
+    "originalPath": "reviews/nb-121/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-121/RESULT.json",
+    "sha256": "8b05cd521c46bc52ace47e6ca85cd91f32da86f411a26037bc90ce7578563252"
+  },
+  {
+    "originalPath": "reviews/nb-121/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-121/RESULT.md",
+    "sha256": "08177df8fbf0c6ea974d92056a320179f715471d764319df02b8b45890710192"
+  },
+  {
+    "originalPath": "reviews/nb-121/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-121/DONE.json",
+    "sha256": "79cad51315b06bf7b59d74eedb5168307c504f317f2e98ba1e022aa98da4f1e5"
+  },
+  {
+    "originalPath": "reviews/nb-121/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-121/REVIEWED-HASHES.json",
+    "sha256": "56e5d4a1406a279c8e15a19d5f117d33564786dc81fbf6402a5cf3755ad80609"
+  },
+  {
+    "originalPath": "reviews/nb-122/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-122/RESULT.json",
+    "sha256": "71dc22149c46b3d7dbcca0905e24d38059cefd3f24fb15c4a0d43dccba1dc929"
+  },
+  {
+    "originalPath": "reviews/nb-122/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-122/RESULT.md",
+    "sha256": "daca5cd1ad2e233ed9c7b8118794e8cab324b361276f11fa5af84cce0fc0f8b6"
+  },
+  {
+    "originalPath": "reviews/nb-122/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-122/DONE.json",
+    "sha256": "904dde6e018338cba15d56e0fad4bbe5ff7813a8e7f29e6a89aab677e965c0c8"
+  },
+  {
+    "originalPath": "reviews/nb-122/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-122/REVIEWED-HASHES.json",
+    "sha256": "b890c519e4e3211e0b44a4395b74c00940f598a5ae619c70f6987a9152e58254"
+  },
+  {
+    "originalPath": "reviews/nb-123/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-123/RESULT.json",
+    "sha256": "984ff60c308b39a4e3f54b7a17d0880d484c6a5f63324e645ee98b58c314b8bb"
+  },
+  {
+    "originalPath": "reviews/nb-123/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-123/RESULT.md",
+    "sha256": "2edeaa3b15bf76fa5a1f9c7181bbdf0d48ecf92c4847bb6b2e30256c2ec6064c"
+  },
+  {
+    "originalPath": "reviews/nb-123/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-123/DONE.json",
+    "sha256": "f70a8814a343eb403d7355865da8783206248cf3ad94966ea8621c9cf988f60f"
+  },
+  {
+    "originalPath": "reviews/nb-123/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-123/REVIEWED-HASHES.json",
+    "sha256": "e35fb41e695e109ecff3e71ee6f30dda20b2bacfe28d143176ad8d35c7b781f3"
+  },
+  {
+    "originalPath": "reviews/nb-124/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-124/RESULT.json",
+    "sha256": "48f3db6a42249b0c4c7570b01e75c5e98ced740dc67c4c354b34f2fc2052fb4d"
+  },
+  {
+    "originalPath": "reviews/nb-124/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-124/RESULT.md",
+    "sha256": "757ab9828deb5201b0ad2a767c74b69b766aeb16b943a1daffd4604af534a438"
+  },
+  {
+    "originalPath": "reviews/nb-124/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-124/DONE.json",
+    "sha256": "40dfd7292cae797f499ab29e917435d4552677518f41d9719f5b6eca906fc852"
+  },
+  {
+    "originalPath": "reviews/nb-124/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-124/REVIEWED-HASHES.json",
+    "sha256": "e21e94eb231ae3c38717bbf536a20f7c22eef8be311b746d52d8b6f5ee0dc4b0"
+  },
+  {
+    "originalPath": "reviews/nb-125/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-125/RESULT.json",
+    "sha256": "5c895905d1d39079b22e61ba1ce721234a74ef6a5e456d681f895f42b0f5199c"
+  },
+  {
+    "originalPath": "reviews/nb-125/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-125/RESULT.md",
+    "sha256": "56c3c65e59bbbb27b7c4ae77abd0df5c1846787e03461affaf550b41a8301962"
+  },
+  {
+    "originalPath": "reviews/nb-125/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-125/DONE.json",
+    "sha256": "c007bb81d11bcc317355577fb2e6a431d07cd458c9b8bbb57f1de0e7fcea53c4"
+  },
+  {
+    "originalPath": "reviews/nb-125/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-125/REVIEWED-HASHES.json",
+    "sha256": "72823a2ea2eeb3b567e78e3262df757630ce12c679c5af89d8649ae5cd435d1a"
+  },
+  {
+    "originalPath": "reviews/nb-126-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-126-r1/RESULT.json",
+    "sha256": "754abb635ce45cc4801ca57c9c584105de80bf9b38ae1ae0214119af1fee0455"
+  },
+  {
+    "originalPath": "reviews/nb-126-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-126-r1/RESULT.md",
+    "sha256": "7d0701535d5b54a12dbe17224cb8bcf514a0b249c6660fe1a5f3c046cd1b3cf6"
+  },
+  {
+    "originalPath": "reviews/nb-126-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-126-r1/DONE.json",
+    "sha256": "35909b477183ed468822b309c71c82bc505297450a8d88fddd9675dde643cf4a"
+  },
+  {
+    "originalPath": "reviews/nb-126-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-126-r1/REVIEWED-HASHES.json",
+    "sha256": "e62feac8dad5ece9f0c32d16c456268902c5af63abd5431df8165df83dc2088a"
+  },
+  {
+    "originalPath": "reviews/nb-127-r2/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-127-r2/RESULT.json",
+    "sha256": "fa1e31d81359f1d74170e1d6771ed102d0babe3eebe7261be1a33c9312804c82"
+  },
+  {
+    "originalPath": "reviews/nb-127-r2/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-127-r2/RESULT.md",
+    "sha256": "56884daa986827221380cc434bd9a908005e11c101e4b0fcfde747dfb02353db"
+  },
+  {
+    "originalPath": "reviews/nb-127-r2/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-127-r2/DONE.json",
+    "sha256": "5a2f207f85db077d34ac8189b64251a951b36c0043d64b632f5bfc7aca8dae8e"
+  },
+  {
+    "originalPath": "reviews/nb-127-r2/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-127-r2/REVIEWED-HASHES.json",
+    "sha256": "dcc0e4c905af9baeb4c1ece02e4cb3287135bcfd21e30b719acc778ec3b25054"
+  },
+  {
+    "originalPath": "reviews/nb-128/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-128/RESULT.json",
+    "sha256": "b93235fbfa6034fc6d161d3a69d8a02b2dcb0308ad542d12956cc47f57c55666"
+  },
+  {
+    "originalPath": "reviews/nb-128/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-128/RESULT.md",
+    "sha256": "70d67129337efa31e63a972693a745fc23940e7f0927e06df063a430d66711ea"
+  },
+  {
+    "originalPath": "reviews/nb-128/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-128/DONE.json",
+    "sha256": "0247e2894b4d793794a655b5c15fe7a07c07500b5b7c6ed989289b433e3d782b"
+  },
+  {
+    "originalPath": "reviews/nb-128/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-128/REVIEWED-HASHES.json",
+    "sha256": "28d316da590ea60454a416007e68e7cba6652b7c7e64c0e7e7f2a74a33bb5bc1"
+  },
+  {
+    "originalPath": "reviews/nb-129-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-129-r1/RESULT.json",
+    "sha256": "1ab9282924b90ca10f2f1fcc2df9daae3c47c6559190659315ae979d22dbd75f"
+  },
+  {
+    "originalPath": "reviews/nb-129-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-129-r1/RESULT.md",
+    "sha256": "93721c86526815100d29c72c57aa3eda136980e76f41e56f4c98f67e23d4819e"
+  },
+  {
+    "originalPath": "reviews/nb-129-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-129-r1/DONE.json",
+    "sha256": "bd9d3fcff90cdc318ad44b6b5f0e10a856b121a74626778c2595f87c3a4d0d37"
+  },
+  {
+    "originalPath": "reviews/nb-129-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-129-r1/REVIEWED-HASHES.json",
+    "sha256": "1442150f534d568de26039934960a1d05d79cd07d9b0f7845de1088aab0ebb27"
+  },
+  {
+    "originalPath": "reviews/nb-13-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-13-r1/RESULT.json",
+    "sha256": "f20011ebef4576d10c826e328cf42b549312ffac6f919820f46b13db699a47fc"
+  },
+  {
+    "originalPath": "reviews/nb-13-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-13-r1/RESULT.md",
+    "sha256": "2441b3db2baec47c3207c83097f076ccd5c776049e3e0f14e7d0ffc1d6c0708d"
+  },
+  {
+    "originalPath": "reviews/nb-13-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-13-r1/DONE.json",
+    "sha256": "1ca7a7448fe9ccbac803e3adc674bda983e63ab96737f9be3141f1f07ef8eecb"
+  },
+  {
+    "originalPath": "reviews/nb-13-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-13-r1/REVIEWED-HASHES.json",
+    "sha256": "73095640cf9acb5df818242030fa6a2f24e3c3510b24d07e7d72a051f8790d0e"
+  },
+  {
+    "originalPath": "reviews/nb-130/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-130/RESULT.json",
+    "sha256": "684f35a48dd1803737d590e69a6e254eba6583408d4177c5580ca8201e4b2dbc"
+  },
+  {
+    "originalPath": "reviews/nb-130/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-130/RESULT.md",
+    "sha256": "17b732deb389d2d88a501958808415f1bfbf2c8c56f105724521da52497c19bf"
+  },
+  {
+    "originalPath": "reviews/nb-130/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-130/DONE.json",
+    "sha256": "743a8fb80294ec64e0e14557c985a1c4265e7569f4a1e09bb7c381da64efd5b0"
+  },
+  {
+    "originalPath": "reviews/nb-130/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-130/REVIEWED-HASHES.json",
+    "sha256": "283ad113a96aac10f446a2c82650f0eff265757ea8d1fae5f094cc963ad15aef"
+  },
+  {
+    "originalPath": "reviews/nb-131-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-131-r1/RESULT.json",
+    "sha256": "3251033ff70c955762f26c5012803ab04c62ef4a7ef7eecd42bf8ada8dbe527e"
+  },
+  {
+    "originalPath": "reviews/nb-131-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-131-r1/RESULT.md",
+    "sha256": "5fb38a84441f5499e9f2ccb25a0c01746428c4d118637e8f10d366eb0edd56df"
+  },
+  {
+    "originalPath": "reviews/nb-131-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-131-r1/DONE.json",
+    "sha256": "e520df28a5010e28acfeb0b66125e80bbd281b73735f20b4cb3f2d33588956d2"
+  },
+  {
+    "originalPath": "reviews/nb-131-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-131-r1/REVIEWED-HASHES.json",
+    "sha256": "cf1cd6c5a4656884275316842b39682da0fa84b753d2e1acc81e4a79e9f0b63e"
+  },
+  {
+    "originalPath": "reviews/nb-132-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-132-r1/RESULT.json",
+    "sha256": "f455826548e1db3570395a2a1895fcb886197b7f55366f302ed94fec48d3984a"
+  },
+  {
+    "originalPath": "reviews/nb-132-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-132-r1/RESULT.md",
+    "sha256": "fe695e91cf0ac75c4343c5c3e15ad7e05d832432d5c18080c351b04dc4d91fa4"
+  },
+  {
+    "originalPath": "reviews/nb-132-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-132-r1/DONE.json",
+    "sha256": "1c17220b57fdb5c51f77960fe372c461a6aedf570e347f2eb2352aecdd99bb0c"
+  },
+  {
+    "originalPath": "reviews/nb-132-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-132-r1/REVIEWED-HASHES.json",
+    "sha256": "9b2750a342faf966aa39b7f824a4a6a7286caacbe3442e4a7287eeee7364dfe5"
+  },
+  {
+    "originalPath": "reviews/nb-133/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-133/RESULT.json",
+    "sha256": "d0476baebc424379f9a5e7ccfbe6bc89af08a6b519cb8babbce437f0495419e9"
+  },
+  {
+    "originalPath": "reviews/nb-133/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-133/RESULT.md",
+    "sha256": "53531ed386b297a2ddbb91412b301485c5fe0a872643be4d90d0c897564d34ba"
+  },
+  {
+    "originalPath": "reviews/nb-133/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-133/DONE.json",
+    "sha256": "a4c1e9d7dc3f7ab1f38193818cb8bd2611c29d4373070bd39f950d9aafe8da40"
+  },
+  {
+    "originalPath": "reviews/nb-133/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-133/REVIEWED-HASHES.json",
+    "sha256": "5450925f72a2c14aaa8a848c459c61d02342d4627c945090745c1692419edf78"
+  },
+  {
+    "originalPath": "reviews/nb-134/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-134/RESULT.json",
+    "sha256": "cf35545aa82dc98d7808bf08ca9d3824fee95ac89d08dd5b2ebf943c58c01830"
+  },
+  {
+    "originalPath": "reviews/nb-134/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-134/RESULT.md",
+    "sha256": "141db4232a3820ba86ecbd9fdeeaeb8c1967fe9afeb1f33d6e402726084d2172"
+  },
+  {
+    "originalPath": "reviews/nb-134/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-134/DONE.json",
+    "sha256": "c27e0670a4cf80aa85cb814285f2f5bc53f491bebb78f4d3792c709fbe348c23"
+  },
+  {
+    "originalPath": "reviews/nb-134/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-134/REVIEWED-HASHES.json",
+    "sha256": "dc44bd9d40f2c74cd4c74159505eb952396d399a118741ffdf7b1a4ca669fec6"
+  },
+  {
+    "originalPath": "reviews/nb-135-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-135-r1/RESULT.json",
+    "sha256": "8287691e815d111314b7e56748070671031aa5d12022eec32e7ca64f12135886"
+  },
+  {
+    "originalPath": "reviews/nb-135-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-135-r1/RESULT.md",
+    "sha256": "349399fcc7134934ff843ebe5c03b3d85426a14f76b3da75e43ea78c11bac7df"
+  },
+  {
+    "originalPath": "reviews/nb-135-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-135-r1/DONE.json",
+    "sha256": "d7f430a47cdd17b52ce52bfa1a5e26b450734f1ffd0241fcc413c9f122d16c99"
+  },
+  {
+    "originalPath": "reviews/nb-135-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-135-r1/REVIEWED-HASHES.json",
+    "sha256": "539e53860aa8c361b940339dd4cf12ff829303380aa7b61a71f66349f01e5d43"
+  },
+  {
+    "originalPath": "reviews/nb-136-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-136-r1/RESULT.json",
+    "sha256": "f65c9f927f45fde324ed92a7417d48e684f94e77b349d8529592f295e7e54a37"
+  },
+  {
+    "originalPath": "reviews/nb-136-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-136-r1/RESULT.md",
+    "sha256": "454b1f6da2c97e81a20097ee6d34eef16d8448af1b8dcd9736ddf86da11377a3"
+  },
+  {
+    "originalPath": "reviews/nb-136-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-136-r1/DONE.json",
+    "sha256": "8e2eb2eb3d4a18a5cdf76020b64a0a50fcd6bfeb8f4e01a8f2a2ed8e6613d86e"
+  },
+  {
+    "originalPath": "reviews/nb-136-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-136-r1/REVIEWED-HASHES.json",
+    "sha256": "e771f63d41919403cf58f7bef3877ad5a91709e679c74787481abd1df212ee36"
+  },
+  {
+    "originalPath": "reviews/nb-137/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-137/RESULT.json",
+    "sha256": "3356703e2f0703f42ffc721ba6c50bc0ef41a0c4b6f86f1468f328a59927bbd4"
+  },
+  {
+    "originalPath": "reviews/nb-137/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-137/RESULT.md",
+    "sha256": "b939174098e1103aed46ab60cd18f7838a6f0463de53c38fce1a54f7a181329c"
+  },
+  {
+    "originalPath": "reviews/nb-137/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-137/DONE.json",
+    "sha256": "bd8b95bf674f5265fc2794de6d93d37cb285b9012fb7ae20051f9fea6108d642"
+  },
+  {
+    "originalPath": "reviews/nb-137/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-137/REVIEWED-HASHES.json",
+    "sha256": "10712e2464c057a8781bafcc4dacbedb0cf024a97393dc7aa91b878a6052fec0"
+  },
+  {
+    "originalPath": "reviews/nb-138/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-138/RESULT.json",
+    "sha256": "5c82afcbdbd6106b18d36c3e5c46704d65df639eb5abbc901fa500135e48e089"
+  },
+  {
+    "originalPath": "reviews/nb-138/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-138/RESULT.md",
+    "sha256": "540ccb1e5d77e80de3b0589194b377d7f5e8531ee92bef3e5f8ca9438ec0dc4e"
+  },
+  {
+    "originalPath": "reviews/nb-138/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-138/DONE.json",
+    "sha256": "0a4f7e02eb1ad980d692ad85ae7a260dc22c59cb5f118a1fe14398d9ff69cc2d"
+  },
+  {
+    "originalPath": "reviews/nb-138/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-138/REVIEWED-HASHES.json",
+    "sha256": "ac266d6f25af24138697a7793259c0d551dc4a0c62b8decbb5005f70128766a9"
+  },
+  {
+    "originalPath": "reviews/nb-139/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-139/RESULT.json",
+    "sha256": "fc7005b0a5c8590c74f2008c891ba3dff42ee273ca0e92ff7883d1406b48e8f2"
+  },
+  {
+    "originalPath": "reviews/nb-139/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-139/RESULT.md",
+    "sha256": "0509a522a3a3df589cc9c637cca5c98e8694a135e29f3ceb7aed3fdb2340a477"
+  },
+  {
+    "originalPath": "reviews/nb-139/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-139/DONE.json",
+    "sha256": "6dbdd5f543e250d40c251bacc681a83ec6c92db263eddc7e9f7bf2ff2df33d10"
+  },
+  {
+    "originalPath": "reviews/nb-139/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-139/REVIEWED-HASHES.json",
+    "sha256": "8f59ca467590b327e1b5e4a492b4722c6994c31b415c7e2205bcc0f7af228005"
+  },
+  {
+    "originalPath": "reviews/nb-14/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-14/RESULT.json",
+    "sha256": "863efa28c531ed14ea5ecf70cf7cb8342542ffff04e9df3ddeb270359ab1ba9c"
+  },
+  {
+    "originalPath": "reviews/nb-14/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-14/RESULT.md",
+    "sha256": "5f61639c2c5de53a9151e794eb5b256f0852a916e3d87c978c4a5b90eafbfa7d"
+  },
+  {
+    "originalPath": "reviews/nb-14/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-14/DONE.json",
+    "sha256": "fc5ff1c214452cf5dbf053552d7eb85c80329f2ab80da298c10525a82fe13787"
+  },
+  {
+    "originalPath": "reviews/nb-14/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-14/REVIEWED-HASHES.json",
+    "sha256": "9dbff27f77485ad0e0444c273e81bbf6457a22d7a50b3d087c415ef72a87f9c3"
+  },
+  {
+    "originalPath": "reviews/nb-140/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-140/RESULT.json",
+    "sha256": "9e296943063a5e31a3c851d20419284c3ca3c896e8f4a2bcec7707ea361827f4"
+  },
+  {
+    "originalPath": "reviews/nb-140/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-140/RESULT.md",
+    "sha256": "043cda62012723b17d7be1ca814b85eafa31c42e8b91d8b6b4c09d5fd16d9fd3"
+  },
+  {
+    "originalPath": "reviews/nb-140/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-140/DONE.json",
+    "sha256": "eb9e287b8626d775079c2092ac379f1554a3891203e3c4e83558096a9ff2d95f"
+  },
+  {
+    "originalPath": "reviews/nb-140/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-140/REVIEWED-HASHES.json",
+    "sha256": "9e289cfd2b75f48607811e8af5b582bdead238603ba9fd033e4eee5a56ec99b0"
+  },
+  {
+    "originalPath": "reviews/nb-141-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-141-r1/RESULT.json",
+    "sha256": "f6a5708cf2e21118f0a29cef9f884a9883c7ea5bffe51a83ac2be062eea435d7"
+  },
+  {
+    "originalPath": "reviews/nb-141-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-141-r1/RESULT.md",
+    "sha256": "27748773269e5e96e7007370d5136cccd5028e50c4130e2a50a1013b3e1736f7"
+  },
+  {
+    "originalPath": "reviews/nb-141-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-141-r1/DONE.json",
+    "sha256": "e1dc88746595e2a84f8f2922f8a89bc45755a7f9ff87c6ead412648bbc28661f"
+  },
+  {
+    "originalPath": "reviews/nb-141-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-141-r1/REVIEWED-HASHES.json",
+    "sha256": "fcdd08554319dac49b2af65480b2adbb200ff32995942f3f2efa9811c58600e6"
+  },
+  {
+    "originalPath": "reviews/nb-142-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-142-r1/RESULT.json",
+    "sha256": "258a48f5d20049aec96c8fcf7b5714d06d0d2d9e6fd4d6bd417fa27eb10ee190"
+  },
+  {
+    "originalPath": "reviews/nb-142-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-142-r1/RESULT.md",
+    "sha256": "95c34186cf55b0a1a211c500bead7b66434089b658f528804e62be8680c98b2c"
+  },
+  {
+    "originalPath": "reviews/nb-142-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-142-r1/DONE.json",
+    "sha256": "742cfab3237d03f9053b4ac7755a8e78a817198943b89f0429c196f45fbdeb4f"
+  },
+  {
+    "originalPath": "reviews/nb-142-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-142-r1/REVIEWED-HASHES.json",
+    "sha256": "b569c53529b854779e1d9def29b1dd485902513aedc149e8f49b8cf86d872950"
+  },
+  {
+    "originalPath": "reviews/nb-143-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-143-r1/RESULT.json",
+    "sha256": "e69d7f757fb6a47617d94f64a01abfd4a396b224323768857af46a76e85f25d2"
+  },
+  {
+    "originalPath": "reviews/nb-143-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-143-r1/RESULT.md",
+    "sha256": "931669d7a4e2f93d58025ac86c5d2fa5f8f656d9b7d5b582522b64a00e12f0ee"
+  },
+  {
+    "originalPath": "reviews/nb-143-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-143-r1/DONE.json",
+    "sha256": "25160efdfadcf8ab79ba2983ce92d63a2b1d92ea67ae40ace9e153559ccd2565"
+  },
+  {
+    "originalPath": "reviews/nb-143-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-143-r1/REVIEWED-HASHES.json",
+    "sha256": "5676d915184e61ded98362c5585df3863aaa5ad702d4e1ac1186cfdb07c420cb"
+  },
+  {
+    "originalPath": "reviews/nb-144-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-144-r1/RESULT.json",
+    "sha256": "9879a45836180759d81b9c31ca5448dc5f263b7fe55ea80d182a648e117b39d6"
+  },
+  {
+    "originalPath": "reviews/nb-144-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-144-r1/RESULT.md",
+    "sha256": "f94d89f7f1a91e0b321b3130250a9f95f9198299da46241e07f0c8fa01ae7c5f"
+  },
+  {
+    "originalPath": "reviews/nb-144-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-144-r1/DONE.json",
+    "sha256": "302999c4006c5c4f2b1daf4b869165b1b9b42fe0a448af0cc404b5df66df9bda"
+  },
+  {
+    "originalPath": "reviews/nb-144-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-144-r1/REVIEWED-HASHES.json",
+    "sha256": "a02b4a26da18de35490690d9bb6452d3646bd71053079ee8da6a8f127e94342c"
+  },
+  {
+    "originalPath": "reviews/nb-15-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-15-r1/RESULT.json",
+    "sha256": "0e5f31d96f0b143e2d0f40ea89e483d5ede4fcadb725dfeea2fa819b6141170d"
+  },
+  {
+    "originalPath": "reviews/nb-15-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-15-r1/RESULT.md",
+    "sha256": "948ed9804407ca39929dc79bd5ca73e8299b73f2c9753432f858cb4d7a9f5a05"
+  },
+  {
+    "originalPath": "reviews/nb-15-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-15-r1/DONE.json",
+    "sha256": "81a9c1730ebcbcc76387bb513d192fc64728d8dd5298b646a0c694959890f33e"
+  },
+  {
+    "originalPath": "reviews/nb-15-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-15-r1/REVIEWED-HASHES.json",
+    "sha256": "918401ad4ffef5c12495cf842b175c4eb3839dd2f4e407e9c6f772db9527907c"
+  },
+  {
+    "originalPath": "reviews/nb-16-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-16-r1/RESULT.json",
+    "sha256": "5ed6a3cb59aa477118b5fbcc140563a6b3fdcf669ed68d07f078c6c4b6a91e5e"
+  },
+  {
+    "originalPath": "reviews/nb-16-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-16-r1/RESULT.md",
+    "sha256": "206b11025dd43b3a158301744711bbd4ce52645c95a1976c6ec21330de3b8af6"
+  },
+  {
+    "originalPath": "reviews/nb-16-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-16-r1/DONE.json",
+    "sha256": "062ec863aa4318a3dea94b23821a1b2bb55f0ba93e368174b1c2a1a8e43b24c4"
+  },
+  {
+    "originalPath": "reviews/nb-16-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-16-r1/REVIEWED-HASHES.json",
+    "sha256": "bb3c4f81d372e84a58629fd0e999c9540c7d05e0bbaf815b8f85bab5859bb532"
+  },
+  {
+    "originalPath": "reviews/nb-17-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-17-r1/RESULT.json",
+    "sha256": "cb3a6f3fa19b6eb666721b1143559307b49be61205cdf34e8a094417a6e9cca4"
+  },
+  {
+    "originalPath": "reviews/nb-17-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-17-r1/RESULT.md",
+    "sha256": "3f8d0d2242224da96a146716ef67a18e0eb9c9675404376b046dba6af31abf16"
+  },
+  {
+    "originalPath": "reviews/nb-17-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-17-r1/DONE.json",
+    "sha256": "7b7e6ce98a61c0bb1a7a3b8448923f9ce5bb7e09c9a20745277a0e637a015910"
+  },
+  {
+    "originalPath": "reviews/nb-17-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-17-r1/REVIEWED-HASHES.json",
+    "sha256": "9da21906d6a87e6f805b52f4414e406b126bae4c8523fd618099b5bfc18f7056"
+  },
+  {
+    "originalPath": "reviews/nb-18-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-18-r1/RESULT.json",
+    "sha256": "94ad9c5f7420e2c560c15b0c97ecc572615960dca8c2ba62b9698e6ec1cf9504"
+  },
+  {
+    "originalPath": "reviews/nb-18-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-18-r1/RESULT.md",
+    "sha256": "d2a7b0975426214604f164d8770587816ec8257c53f9d420a61284ebef799303"
+  },
+  {
+    "originalPath": "reviews/nb-18-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-18-r1/DONE.json",
+    "sha256": "bbe451b6ec6c7930a44a54465249e8da0eab0ac858cf4d52c4ac3094d6918311"
+  },
+  {
+    "originalPath": "reviews/nb-18-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-18-r1/REVIEWED-HASHES.json",
+    "sha256": "47e67eab536ff4f5a17a495afed8e2bff1b081d817a1d423c813ea39d5d1a854"
+  },
+  {
+    "originalPath": "reviews/nb-19/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-19/RESULT.json",
+    "sha256": "c7c67244b883f3d0db4af83c9b76bef7d4f1ca4bfcb5da8b1128304701bfec4e"
+  },
+  {
+    "originalPath": "reviews/nb-19/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-19/RESULT.md",
+    "sha256": "a863af5c163a3103582e5b6ec67fdbe8f5c8404436130098b13b6517ce03d186"
+  },
+  {
+    "originalPath": "reviews/nb-19/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-19/DONE.json",
+    "sha256": "e6c2c7482dc4da89d57518a2b25634425d0fbc2077affda11ca52b36819ec850"
+  },
+  {
+    "originalPath": "reviews/nb-19/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-19/REVIEWED-HASHES.json",
+    "sha256": "092be4335062b36827eb6eba846f986f0b8d62abfab0bf489b2fc8f05767f917"
+  },
+  {
+    "originalPath": "reviews/nb-20-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-20-r1/RESULT.json",
+    "sha256": "b23a31cad9ad6b908f490387d7f028604c7cd89d03f9a73703cc2d4c02672de5"
+  },
+  {
+    "originalPath": "reviews/nb-20-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-20-r1/RESULT.md",
+    "sha256": "4e936abd0312e731e39803391ba849ba138902136b8f27f2ebf98525248b3684"
+  },
+  {
+    "originalPath": "reviews/nb-20-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-20-r1/DONE.json",
+    "sha256": "025ed3f6ed4fc6c2349311829fd37d1f1112958a2f23e19744a1ff501c44b391"
+  },
+  {
+    "originalPath": "reviews/nb-20-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-20-r1/REVIEWED-HASHES.json",
+    "sha256": "0e3eb5c5f4bdb97290185a8c1233c6fc8d8944689e76768575f30e90753e19b8"
+  },
+  {
+    "originalPath": "reviews/nb-21/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-21/RESULT.json",
+    "sha256": "051f9587274062d5278e9cbaf0509c8ab9ce52d225f3788ddb75d390db4f0457"
+  },
+  {
+    "originalPath": "reviews/nb-21/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-21/RESULT.md",
+    "sha256": "2c42607363fc0c22f6b8cab3afd40913c5e3f19b247c3b1fc54e0eacb04dcd96"
+  },
+  {
+    "originalPath": "reviews/nb-21/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-21/DONE.json",
+    "sha256": "16cdd2186398bcbe2ea2d00d25710777244af51d62dda0e21842fa7b600d7060"
+  },
+  {
+    "originalPath": "reviews/nb-21/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-21/REVIEWED-HASHES.json",
+    "sha256": "bb575c579ea18b50de304819daaa72a86f09375f1684a3e7f3b56ee7995b7e05"
+  },
+  {
+    "originalPath": "reviews/nb-22/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-22/RESULT.json",
+    "sha256": "206efc177984efc645d1a97d2a88bdff24f8bb4b015c53d853efbb17f52a0f0e"
+  },
+  {
+    "originalPath": "reviews/nb-22/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-22/RESULT.md",
+    "sha256": "65c837c50df8d897fdb856a48adc1fe53aef2a28eda062675bfbfab4f626afc2"
+  },
+  {
+    "originalPath": "reviews/nb-22/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-22/DONE.json",
+    "sha256": "4f9d4f33d4e132407127d6175bfeecab203162ea251eb2b713f3bc5ce8d49395"
+  },
+  {
+    "originalPath": "reviews/nb-22/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-22/REVIEWED-HASHES.json",
+    "sha256": "ec5811459dd7ab15e7f295ef80477dd5071adb477cda822c2f0e41b7312793a6"
+  },
+  {
+    "originalPath": "reviews/nb-23-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-23-r1/RESULT.json",
+    "sha256": "7a78968849f82bd022528625c0ec0888c2831038fd56e7d85f56a50196dc8a88"
+  },
+  {
+    "originalPath": "reviews/nb-23-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-23-r1/RESULT.md",
+    "sha256": "183994d868c7172091fc4904c60aa17fe29b8d99a48f3d9bc1abb9638446ff2d"
+  },
+  {
+    "originalPath": "reviews/nb-23-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-23-r1/DONE.json",
+    "sha256": "8b50728897f71b558ded61f72cdcc61784fbc8f30d2c87e9ae7837ed711e4e88"
+  },
+  {
+    "originalPath": "reviews/nb-23-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-23-r1/REVIEWED-HASHES.json",
+    "sha256": "5892aaff2b8b1e691a9352415006d740f67e9a736835bb3d0215fa219134c672"
+  },
+  {
+    "originalPath": "reviews/nb-24-r1-extra-02/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-24-r1-extra-02/RESULT.json",
+    "sha256": "1d113b4ef8d92587045769f7041328be8ac1a483256b660a8c15d091b10e31be"
+  },
+  {
+    "originalPath": "reviews/nb-24-r1-extra-02/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-24-r1-extra-02/RESULT.md",
+    "sha256": "7e7feb265aa5207498e22735f9c92e81082c86fd864a34cb77a4c66edeb4a530"
+  },
+  {
+    "originalPath": "reviews/nb-24-r1-extra-02/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-24-r1-extra-02/DONE.json",
+    "sha256": "6791c4f9d9b4c2e17b55a97d70c5330a69875b1fd00dc8d1f89e2b888002a905"
+  },
+  {
+    "originalPath": "reviews/nb-24-r1-extra-02/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-24-r1-extra-02/REVIEWED-HASHES.json",
+    "sha256": "9574c046160c2ae63bdc5674f18285c79722f813ace6d98e3d98082410a4bcdd"
+  },
+  {
+    "originalPath": "reviews/nb-25-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-25-r1/RESULT.json",
+    "sha256": "469ec4a4cdcbf928e9807193f11706e523832de62c6e42a14d2c8288bdba1f42"
+  },
+  {
+    "originalPath": "reviews/nb-25-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-25-r1/RESULT.md",
+    "sha256": "debfbfad5e14d37ada8284f9e2901705f37b50b633b78c1b385ee45e04810e5b"
+  },
+  {
+    "originalPath": "reviews/nb-25-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-25-r1/DONE.json",
+    "sha256": "55cdaf235c260d889a9b0bd2b578efa3c244cfe233f772d31f2f24656d8ca114"
+  },
+  {
+    "originalPath": "reviews/nb-25-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-25-r1/REVIEWED-HASHES.json",
+    "sha256": "654e9a45b67319c5e2b86e606477dcdebfb68e27f861f9d2b491688294b0e291"
+  },
+  {
+    "originalPath": "reviews/nb-26-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-26-r1/RESULT.json",
+    "sha256": "034e1a4a70e06f5e1b3d6a1ce912355a212de866a43db45b54fc605b965502ab"
+  },
+  {
+    "originalPath": "reviews/nb-26-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-26-r1/RESULT.md",
+    "sha256": "66cba9b01c369762c196d6041672fc9ccc91ba1a4b0573d801d9ce33451b9bb4"
+  },
+  {
+    "originalPath": "reviews/nb-26-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-26-r1/DONE.json",
+    "sha256": "b6d49c3344fc56af6171998dd0625b7945553baacf6dc470295dad327e21ae25"
+  },
+  {
+    "originalPath": "reviews/nb-26-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-26-r1/REVIEWED-HASHES.json",
+    "sha256": "450f292ad270c243f5ee9c766e634c068cb5d9ee26cc1b3edb6bafd4e6198698"
+  },
+  {
+    "originalPath": "reviews/nb-27-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-27-r1/RESULT.json",
+    "sha256": "4ba65587a26f6452938d5a6c4e4a991e8524f858f5343f0aa6ada3c107645fbf"
+  },
+  {
+    "originalPath": "reviews/nb-27-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-27-r1/RESULT.md",
+    "sha256": "ce01a6049d73494203aa6705c82ea16528d4dc907d015da35b7d68856d9f18bb"
+  },
+  {
+    "originalPath": "reviews/nb-27-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-27-r1/DONE.json",
+    "sha256": "6dd843bc80156e2664c722621b3f245643af1ee8ed0b4cf03e3e41ff2c1a9b55"
+  },
+  {
+    "originalPath": "reviews/nb-27-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-27-r1/REVIEWED-HASHES.json",
+    "sha256": "a9aea096eae429b6c24c89c87de0641b4ba311f135d7e7cd135b7d8c13dab0fc"
+  },
+  {
+    "originalPath": "reviews/nb-28-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-28-r1/RESULT.json",
+    "sha256": "cb19679e98b630899a8ad26045b717cf8156086759218e27d4e70a80aeffbc54"
+  },
+  {
+    "originalPath": "reviews/nb-28-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-28-r1/RESULT.md",
+    "sha256": "079afff69069e2560e3e3a4a0d77e7e24312e62a8fd157b60f4024ceffe3fbe0"
+  },
+  {
+    "originalPath": "reviews/nb-28-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-28-r1/DONE.json",
+    "sha256": "11ad7a24ca1db0fb64c5457a79adc65e842a0f29693c3e97554e6d31d1d533bb"
+  },
+  {
+    "originalPath": "reviews/nb-28-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-28-r1/REVIEWED-HASHES.json",
+    "sha256": "16e899448465b6a5c732f034a774547576565699a80b9ba95b70351f2ac0eafe"
+  },
+  {
+    "originalPath": "reviews/nb-29/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-29/RESULT.json",
+    "sha256": "115a4058649b9a2b5cd11941d0da93b3bb91492b8f36165b04e19e4b136ab418"
+  },
+  {
+    "originalPath": "reviews/nb-29/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-29/RESULT.md",
+    "sha256": "a604f1880b2f7a191a97ea255c2f24e4291103cfd13433af63b9bfe24bdf94cc"
+  },
+  {
+    "originalPath": "reviews/nb-29/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-29/DONE.json",
+    "sha256": "0c38881782f7d557226650861ab71cd9e1da3761d9e948e12ca9f8a953a2f2e7"
+  },
+  {
+    "originalPath": "reviews/nb-29/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-29/REVIEWED-HASHES.json",
+    "sha256": "c7c9d22fdbf9422b84cbce0249fbc0980e1df5a4e1d5ad6d9d5a1bccfe3718ec"
+  },
+  {
+    "originalPath": "reviews/nb-30-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-30-r1/RESULT.json",
+    "sha256": "79fb8a8ec837fd84b3b94968a3e6b9fe624366a00c745004ce884e0e0a10dd73"
+  },
+  {
+    "originalPath": "reviews/nb-30-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-30-r1/RESULT.md",
+    "sha256": "3f3e2b47c957a09ac8329b2054baa6a03ebd1c48ff570397ca31d9e8838f87f4"
+  },
+  {
+    "originalPath": "reviews/nb-30-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-30-r1/DONE.json",
+    "sha256": "1d84bcf028ed88c485f65f8140d8998c73bec51ea4b539006380cd128c4bf819"
+  },
+  {
+    "originalPath": "reviews/nb-30-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-30-r1/REVIEWED-HASHES.json",
+    "sha256": "d190ac6c661f4192ec3f10d868f97182f869aa2bdabf123533067703c4034f28"
+  },
+  {
+    "originalPath": "reviews/nb-31-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-31-r1/RESULT.json",
+    "sha256": "fd46ab3e24c6052b2579ac8c555667f492ef5b48d7586788a55fa0328d8e9b9d"
+  },
+  {
+    "originalPath": "reviews/nb-31-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-31-r1/RESULT.md",
+    "sha256": "a6f5220eb0d1c0f401648e13885b770cbe732965c53e0344dbee335e28b3d4e7"
+  },
+  {
+    "originalPath": "reviews/nb-31-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-31-r1/DONE.json",
+    "sha256": "f7047b7a0a51d88d8d7b78b37c902c8521795b6515275e6ab66574af82b619e6"
+  },
+  {
+    "originalPath": "reviews/nb-31-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-31-r1/REVIEWED-HASHES.json",
+    "sha256": "31f1a21785b148ecc4ffc9a8ecba4e2e24a874125ab272175995249f4f3480f5"
+  },
+  {
+    "originalPath": "reviews/nb-32-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-32-r1/RESULT.json",
+    "sha256": "b8a29a979a78b9fa211d25e6c96652fff52ea0d507ac897bcd5f17106c549029"
+  },
+  {
+    "originalPath": "reviews/nb-32-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-32-r1/RESULT.md",
+    "sha256": "0ce707a63f8f763437b408111e5bc53d560c72183a62cecde3bcb4b68b08c8ae"
+  },
+  {
+    "originalPath": "reviews/nb-32-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-32-r1/DONE.json",
+    "sha256": "a9eb6994bf853d9f11e6581cdda89c22df5295f25dd2b73456b9d0c7bed0d2d7"
+  },
+  {
+    "originalPath": "reviews/nb-32-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-32-r1/REVIEWED-HASHES.json",
+    "sha256": "a7b6b929d8b5e33a89b6b38405ff142daafb482bd54993f26a03a0da1411c0a1"
+  },
+  {
+    "originalPath": "reviews/nb-33-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-33-r1/RESULT.json",
+    "sha256": "58eee1e136df8cae8f86cc5f47970b368813a84c5ae572fa33f0da0ee8872415"
+  },
+  {
+    "originalPath": "reviews/nb-33-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-33-r1/RESULT.md",
+    "sha256": "022f6c1a69a186e19df9d0766ce0167d44839d24e9504d33e8a734b80bd85e33"
+  },
+  {
+    "originalPath": "reviews/nb-33-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-33-r1/DONE.json",
+    "sha256": "01120625976a245384bb023fd7aa828d2acde7cf3fbd93ad661f7ff2af263d1c"
+  },
+  {
+    "originalPath": "reviews/nb-33-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-33-r1/REVIEWED-HASHES.json",
+    "sha256": "b2006fa60f5fa83aaf4019f29956679a892c2c8f4a351c26cb119a2ab29eab2e"
+  },
+  {
+    "originalPath": "reviews/nb-34-r2/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-34-r2/RESULT.json",
+    "sha256": "a2fdd7838805ee29a2046ff19540f9fb901a7a6e937ad8f3ab04330a7431c65f"
+  },
+  {
+    "originalPath": "reviews/nb-34-r2/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-34-r2/RESULT.md",
+    "sha256": "baa637603c0db85b0311320e2a9d7e856edbb893e5da8f591849394abad12c2e"
+  },
+  {
+    "originalPath": "reviews/nb-34-r2/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-34-r2/DONE.json",
+    "sha256": "94e1ba7a17148c1bcd10cb044b8b83da360f61d93a044b9183b06f2dabad895d"
+  },
+  {
+    "originalPath": "reviews/nb-34-r2/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-34-r2/REVIEWED-HASHES.json",
+    "sha256": "fbf5697f399576419a7b2e79787af2d2ecb205770e8fd97f2850c0fc47e9a1cd"
+  },
+  {
+    "originalPath": "reviews/nb-35/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-35/RESULT.json",
+    "sha256": "f558d8a4ca89e7474a8f150caeb4e1a15bb123510b5577cc0e735fd90d3daf25"
+  },
+  {
+    "originalPath": "reviews/nb-35/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-35/RESULT.md",
+    "sha256": "b7d9b17fed50c8bc06a47b1e54a73f516bfdc817c68e58f50313b3b4326c86a5"
+  },
+  {
+    "originalPath": "reviews/nb-35/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-35/DONE.json",
+    "sha256": "6abb3b6bd5754c13491a6d620c8bec190a54c16736f6fafd12dcc21d43d5c922"
+  },
+  {
+    "originalPath": "reviews/nb-35/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-35/REVIEWED-HASHES.json",
+    "sha256": "11d56b9637933ecfeec86c72c2824dbec07ce38b3c047e598afcd5dc99f59cd3"
+  },
+  {
+    "originalPath": "reviews/nb-36/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-36/RESULT.json",
+    "sha256": "9b71433b254ec7d66590352ccdb9137c4e00aa0e3fab6250cdc7ea604864b809"
+  },
+  {
+    "originalPath": "reviews/nb-36/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-36/RESULT.md",
+    "sha256": "2b6a5dbb5ee771659577a58948d59b2da4b3fd8be22a558af420be39b6b0a7b6"
+  },
+  {
+    "originalPath": "reviews/nb-36/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-36/DONE.json",
+    "sha256": "4ec111c040769247240297402ae8b74d9857d8aec00d0a2093d8875b8d2597b4"
+  },
+  {
+    "originalPath": "reviews/nb-36/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-36/REVIEWED-HASHES.json",
+    "sha256": "e0aee1ea8f706a3e58f80db51d9b050a5096365c67cc075e258cb90667e2199b"
+  },
+  {
+    "originalPath": "reviews/nb-37-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-37-r1/RESULT.json",
+    "sha256": "feec4aa07d83f6dff7c3246ea675c55b19d642bfd17266c3c15caad6f9129822"
+  },
+  {
+    "originalPath": "reviews/nb-37-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-37-r1/RESULT.md",
+    "sha256": "7a4010d49b8aa0527ad552916e322413c73f0cc654c7b1ace304b2d6278bfa28"
+  },
+  {
+    "originalPath": "reviews/nb-37-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-37-r1/DONE.json",
+    "sha256": "2410563c256f3c13172aa2bce2b0b978f0a6ae313b81fc87d2a61c8a747904b4"
+  },
+  {
+    "originalPath": "reviews/nb-37-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-37-r1/REVIEWED-HASHES.json",
+    "sha256": "2fdcc80376280c0c676e5f3e0b524a4051e131e8c77496824818d33ed40a2b0b"
+  },
+  {
+    "originalPath": "reviews/nb-38/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-38/RESULT.json",
+    "sha256": "860bc8e67f82915d699725d482d5511e307ba2ddbb17d2234525df29ab91c797"
+  },
+  {
+    "originalPath": "reviews/nb-38/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-38/RESULT.md",
+    "sha256": "c33278d3a7d0745b01700a42470d7bff3abbefc2d5277b806a362674de9f8e1e"
+  },
+  {
+    "originalPath": "reviews/nb-38/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-38/DONE.json",
+    "sha256": "72df98fb915f5594ac636a4b775d08caaec2c0f83a2fe9a58b76d8e932c3179b"
+  },
+  {
+    "originalPath": "reviews/nb-38/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-38/REVIEWED-HASHES.json",
+    "sha256": "20a2852d50c3551476ab0882f6b983e74c46c18b81a676de8b845ab59e8f067b"
+  },
+  {
+    "originalPath": "reviews/nb-39-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-39-r1/RESULT.json",
+    "sha256": "e9fd15a90cdb126a033c62722d959bc00e660cd7e0a7c38b376e32618c939d08"
+  },
+  {
+    "originalPath": "reviews/nb-39-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-39-r1/RESULT.md",
+    "sha256": "83ebdffe3b1b25a7776de4d7fd1a79b90794c64a9c6b7cd9049ff5d360372259"
+  },
+  {
+    "originalPath": "reviews/nb-39-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-39-r1/DONE.json",
+    "sha256": "9e7c382a4e89e64647144eae11775428d47dd65f294146f24b07ba8eb655b159"
+  },
+  {
+    "originalPath": "reviews/nb-39-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-39-r1/REVIEWED-HASHES.json",
+    "sha256": "a4560732ecca5cf67c189504a04761fcda66c5790d90143877a4842dcbe8f8b5"
+  },
+  {
+    "originalPath": "reviews/nb-40-r2/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-40-r2/RESULT.json",
+    "sha256": "fa1cf95ac233fcbc76f84424aedbe2a35cec2b71ff1572c9c0df63d6fce99b29"
+  },
+  {
+    "originalPath": "reviews/nb-40-r2/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-40-r2/RESULT.md",
+    "sha256": "948cc1dd157395d2af418af25e7c71b173b47ae1389af17d9afae0e237f47762"
+  },
+  {
+    "originalPath": "reviews/nb-40-r2/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-40-r2/DONE.json",
+    "sha256": "0942ec609f7da8e33b9a047450aefc5d15847d01041cc993f69ee6cd20d17f61"
+  },
+  {
+    "originalPath": "reviews/nb-40-r2/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-40-r2/REVIEWED-HASHES.json",
+    "sha256": "32f94a7bacc124915b115e88cc1e2aca809a4f652eb62bcc9403c17e3f304cf7"
+  },
+  {
+    "originalPath": "reviews/nb-41/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-41/RESULT.json",
+    "sha256": "5a928f65ddba0ab763e6d270c2a454156a022bde77eb0399cfb9bbc1411fb2c0"
+  },
+  {
+    "originalPath": "reviews/nb-41/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-41/RESULT.md",
+    "sha256": "f6836de7970fd388c864d39abdb93c14af34d101c98ecaad89f9d2b9a9588933"
+  },
+  {
+    "originalPath": "reviews/nb-41/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-41/DONE.json",
+    "sha256": "1060e3d2304a44becd223d60c51b91e3182e17dbe7de2bb38b19bd2d0d7cc839"
+  },
+  {
+    "originalPath": "reviews/nb-41/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-41/REVIEWED-HASHES.json",
+    "sha256": "9eeb4173acee4ec61c936d06c602ed7839c193f6581e349183f1c6f28ed40f93"
+  },
+  {
+    "originalPath": "reviews/nb-41-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-41-r1/RESULT.json",
+    "sha256": "2a43dce4eb4b1aed1a05a3f7666d139a330e1ad99510fd29dd8bcd0a7f188a62"
+  },
+  {
+    "originalPath": "reviews/nb-41-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-41-r1/RESULT.md",
+    "sha256": "bfba861e8ee99d00267b4ea3619d44e78c58a119169944a590e3bd2d4588b603"
+  },
+  {
+    "originalPath": "reviews/nb-41-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-41-r1/DONE.json",
+    "sha256": "c99228325681685b40407f85ac18e1da04ea398addd31adac5333e41de5d08be"
+  },
+  {
+    "originalPath": "reviews/nb-41-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-41-r1/REVIEWED-HASHES.json",
+    "sha256": "54630bc74cd8dff1e64e8d9508bb7182967d6ad8e2aa5fee0ba2bb49c01e7734"
+  },
+  {
+    "originalPath": "reviews/nb-41-r2/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-41-r2/RESULT.json",
+    "sha256": "8aec5a69e1b58802cb08bfa7e6e058a7404a012f794caca6c635f6c291cbd881"
+  },
+  {
+    "originalPath": "reviews/nb-41-r2/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-41-r2/RESULT.md",
+    "sha256": "4bcf8e6b98fed80fb16939a7005cd83afd7a5edc4ec6cfbf11e482bb8964204a"
+  },
+  {
+    "originalPath": "reviews/nb-41-r2/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-41-r2/DONE.json",
+    "sha256": "e4cb3ac99e06c579bf364ad9f44b83f2f4366dd16296fc5f44890177584d9a8b"
+  },
+  {
+    "originalPath": "reviews/nb-41-r2/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-41-r2/REVIEWED-HASHES.json",
+    "sha256": "06e7d1dfa0047e580f6d9eacbefe48b2170b7ccd1cc11f916c1a367d9a696391"
+  },
+  {
+    "originalPath": "reviews/nb-42/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-42/RESULT.json",
+    "sha256": "e53f08cfcf84cf7966a268acf3f5888301748b288a47297e45791ef81d7a9001"
+  },
+  {
+    "originalPath": "reviews/nb-42/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-42/RESULT.md",
+    "sha256": "bd819ae0deda2d414659a9f7627c822a5eca5179d3a0da2ab3e7b2b2300b4a3d"
+  },
+  {
+    "originalPath": "reviews/nb-42/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-42/DONE.json",
+    "sha256": "b0f78e5f042e529a4e875d575cbfad03fd851f49c2f61d33e02538568b5bbd64"
+  },
+  {
+    "originalPath": "reviews/nb-42/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-42/REVIEWED-HASHES.json",
+    "sha256": "fc85cd3834153ce86c73729c686c7b02de126cd02795cc2d52a9b5429a0e73c5"
+  },
+  {
+    "originalPath": "reviews/nb-42-r2/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-42-r2/RESULT.json",
+    "sha256": "0a95a42d5698ebe6f308c96e6db7f85b72dbfd725e92619e57cac4970a722405"
+  },
+  {
+    "originalPath": "reviews/nb-42-r2/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-42-r2/RESULT.md",
+    "sha256": "b958810425b010bc624057910437b29f6951b41d24ea0190168aed12c4d7ecf2"
+  },
+  {
+    "originalPath": "reviews/nb-42-r2/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-42-r2/DONE.json",
+    "sha256": "3f01732a820a18f43363f2134a834d0d6fe927563cb36cf419592b578e79425d"
+  },
+  {
+    "originalPath": "reviews/nb-42-r2/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-42-r2/REVIEWED-HASHES.json",
+    "sha256": "260c71fdb716b5557eaf3c8880521bcc6604181758a8bcacae1b73df8e65387c"
+  },
+  {
+    "originalPath": "reviews/nb-43-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-43-r1/RESULT.json",
+    "sha256": "61c224431f8fb1440561fdd8fdfd7f48e1c776c40cf0df34ecd127f3b795a362"
+  },
+  {
+    "originalPath": "reviews/nb-43-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-43-r1/RESULT.md",
+    "sha256": "442ce50bc204c27fc27462c974fefaedd82be40070d894c85f21908b2ea08408"
+  },
+  {
+    "originalPath": "reviews/nb-43-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-43-r1/DONE.json",
+    "sha256": "0a47cfcb58eceacd35b6fef443529fe128ec5cb73e5632bb56455599f6f51bbb"
+  },
+  {
+    "originalPath": "reviews/nb-43-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-43-r1/REVIEWED-HASHES.json",
+    "sha256": "5a069b8250dd829711715b00038f48e72e864cc876b28f38ecc58109fc04c0b3"
+  },
+  {
+    "originalPath": "reviews/nb-44-r2/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-44-r2/RESULT.json",
+    "sha256": "7a609f6276b1bff667ab79c0174d9944634462b9ca8f40aac00d601c8d000e6d"
+  },
+  {
+    "originalPath": "reviews/nb-44-r2/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-44-r2/RESULT.md",
+    "sha256": "e2fd8cc29196a19a6f6a67d0cc8bd172a88a29892a6e12fa9227237e6bc6c288"
+  },
+  {
+    "originalPath": "reviews/nb-44-r2/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-44-r2/DONE.json",
+    "sha256": "d9d3da50eadbab035239eed89fbf40f8aac9ed808bfe41821b5725cc974dd0f9"
+  },
+  {
+    "originalPath": "reviews/nb-44-r2/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-44-r2/REVIEWED-HASHES.json",
+    "sha256": "7b55c36c6a6391b0445f633275f589eca3ae639b1d08c269906f78908de72bbf"
+  },
+  {
+    "originalPath": "reviews/nb-45-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-45-r1/RESULT.json",
+    "sha256": "1792ba54dea6a6a807b1ab0e7ba59cbdf99a6aabb684626fc2e7ec1b4b3ca338"
+  },
+  {
+    "originalPath": "reviews/nb-45-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-45-r1/RESULT.md",
+    "sha256": "7deef6bdaeb8406dc44d47796f05552f7a6cf8f49be2a1d1f009d9a8359cdbca"
+  },
+  {
+    "originalPath": "reviews/nb-45-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-45-r1/DONE.json",
+    "sha256": "604b01daf022354e525e17434f3e07a0c5e693eda8d0aae1ce17242f52d56e2e"
+  },
+  {
+    "originalPath": "reviews/nb-45-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-45-r1/REVIEWED-HASHES.json",
+    "sha256": "987b7fbcb12c034d8953876175fed7e32c948d139fb9d2638f38d108671bb075"
+  },
+  {
+    "originalPath": "reviews/nb-46-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-46-r1/RESULT.json",
+    "sha256": "30412dd7c118608ace0ccad9b6682d3fa42a52954f2d12c9210f4b13f2126da5"
+  },
+  {
+    "originalPath": "reviews/nb-46-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-46-r1/RESULT.md",
+    "sha256": "e2bd8b74ad91d7c55ce0068b4fa3d343dcf68c03184003c6e44e733f45825e41"
+  },
+  {
+    "originalPath": "reviews/nb-46-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-46-r1/DONE.json",
+    "sha256": "7bba13ec1f97ceb5a1aa65d8060852bf2d737d7dae0957dc9504576332240f21"
+  },
+  {
+    "originalPath": "reviews/nb-46-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-46-r1/REVIEWED-HASHES.json",
+    "sha256": "1f78f35b6404a700eade596e5ecd8bf0d1ad63c22372959bc5c70ed8604fc857"
+  },
+  {
+    "originalPath": "reviews/nb-47/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-47/RESULT.json",
+    "sha256": "b77d10fc52a00e029dbc3b27992dc84764521d23b84ff139d5c0d72106456649"
+  },
+  {
+    "originalPath": "reviews/nb-47/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-47/RESULT.md",
+    "sha256": "85e858290235d07e86242f0c152cfe65f1fbabc6019adf69296da4f66ca5aae6"
+  },
+  {
+    "originalPath": "reviews/nb-47/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-47/DONE.json",
+    "sha256": "f3d4f89d423518f3be30d1fd55d51dd633d368fb363e5f790c453f564f777872"
+  },
+  {
+    "originalPath": "reviews/nb-47/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-47/REVIEWED-HASHES.json",
+    "sha256": "46a672eb8a5023461800ca94eda4d510083a12f32a195d0b26d4a24d393d81de"
+  },
+  {
+    "originalPath": "reviews/nb-47-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-47-r1/RESULT.json",
+    "sha256": "87e8435c58b3698bfc3610545910971f9bbdf852389073da3a4fec96d823706c"
+  },
+  {
+    "originalPath": "reviews/nb-47-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-47-r1/RESULT.md",
+    "sha256": "095b884da6b7330e7a11fee4b134fca572db9cdd14414504430feb7d78192d44"
+  },
+  {
+    "originalPath": "reviews/nb-47-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-47-r1/DONE.json",
+    "sha256": "db4613145ee73d8df1b2bba6a4b4c946bc7f689980ce64417053c90c4b4f611a"
+  },
+  {
+    "originalPath": "reviews/nb-47-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-47-r1/REVIEWED-HASHES.json",
+    "sha256": "e29e2f090b1d212687bc379507fc2cc070dec515f676c9b13fa5e337ce237a45"
+  },
+  {
+    "originalPath": "reviews/nb-48-r1-extra-02/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-48-r1-extra-02/RESULT.json",
+    "sha256": "9d1fba17542404ff2a19ad51aacc728d28f27892867e7a5caa2fc0545d71e4cc"
+  },
+  {
+    "originalPath": "reviews/nb-48-r1-extra-02/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-48-r1-extra-02/RESULT.md",
+    "sha256": "43ba283e3455bcdde3148d81fcc05ebffd58b34acf8ddf67741cf0d17976cf21"
+  },
+  {
+    "originalPath": "reviews/nb-48-r1-extra-02/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-48-r1-extra-02/DONE.json",
+    "sha256": "c7e6d5adfdd1365425eaebbd4e0b7e1eba5398ffca13ee9b50a3f6b301f6a4aa"
+  },
+  {
+    "originalPath": "reviews/nb-48-r1-extra-02/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-48-r1-extra-02/REVIEWED-HASHES.json",
+    "sha256": "44ca925871657c6755f21316e21b726050c3d7456883b64b9a631552961a50c3"
+  },
+  {
+    "originalPath": "reviews/nb-49-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-49-r1/RESULT.json",
+    "sha256": "98b156e81ed31548107aac66cec7052b4df95111360ef97fbfbe2520aafd004b"
+  },
+  {
+    "originalPath": "reviews/nb-49-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-49-r1/RESULT.md",
+    "sha256": "4d06fdbb7f1dc35b8f60a52ad74582656b208d7903b0f0992dd3dbb833f286d0"
+  },
+  {
+    "originalPath": "reviews/nb-49-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-49-r1/DONE.json",
+    "sha256": "73fa19c5f01d50b1db6b007a493be1e818f254a9a6f189bd9992edbf602b1eca"
+  },
+  {
+    "originalPath": "reviews/nb-49-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-49-r1/REVIEWED-HASHES.json",
+    "sha256": "3ee6297d15b5f6fce536ea26589c4ccf465554abd652a6d9ff63f3dbf4798a10"
+  },
+  {
+    "originalPath": "reviews/nb-50-r1-extra-02/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-50-r1-extra-02/RESULT.json",
+    "sha256": "34a22b2001b22b296eb2208a0cfc87198f8069c816d8f9ca8f91ca97e0db8fa6"
+  },
+  {
+    "originalPath": "reviews/nb-50-r1-extra-02/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-50-r1-extra-02/RESULT.md",
+    "sha256": "afa601415fc9f701446b6b2ba887d701e43d17d57857d939bbfd3386f85e0a12"
+  },
+  {
+    "originalPath": "reviews/nb-50-r1-extra-02/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-50-r1-extra-02/DONE.json",
+    "sha256": "9b45e8b69586ee1f709b628153ebc2d461210b45821a30533c6765fedbfefd6c"
+  },
+  {
+    "originalPath": "reviews/nb-50-r1-extra-02/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-50-r1-extra-02/REVIEWED-HASHES.json",
+    "sha256": "13bfac4f762d0042346c37ba6efb4d470d751b1f1cc91cf94cedb344ebceb400"
+  },
+  {
+    "originalPath": "reviews/nb-51-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-51-r1/RESULT.json",
+    "sha256": "8fbd963e064fb10a30aea981dd1b8d2c48bfd63f03ab2f50d3aa65b721d89509"
+  },
+  {
+    "originalPath": "reviews/nb-51-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-51-r1/RESULT.md",
+    "sha256": "e09f893731911b0c2f8272fa8e3f5c70545e72acd2a6608b96f16c80255c51b1"
+  },
+  {
+    "originalPath": "reviews/nb-51-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-51-r1/DONE.json",
+    "sha256": "15bf4c9e1eb2ba79c98933c31e7afa7edf739a2e7167a2b9807bf0823c10d9f9"
+  },
+  {
+    "originalPath": "reviews/nb-51-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-51-r1/REVIEWED-HASHES.json",
+    "sha256": "547bc9b6546ddb90145350c7ec18b3c9bd4c56d6f299d6dc7991e85a05f800d6"
+  },
+  {
+    "originalPath": "reviews/nb-52-r1-extra-02/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-52-r1-extra-02/RESULT.json",
+    "sha256": "c250437f3e850a30a283db6544d12a36795426beb52d1bf4007a3c4b41abb444"
+  },
+  {
+    "originalPath": "reviews/nb-52-r1-extra-02/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-52-r1-extra-02/RESULT.md",
+    "sha256": "1bc9412869418efe12c329fe024bd14e1423bd422eeedf1e0a22a16b8dd2d2ef"
+  },
+  {
+    "originalPath": "reviews/nb-52-r1-extra-02/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-52-r1-extra-02/DONE.json",
+    "sha256": "c826384761d98e7a35a591b58a8ed5e6c2d538de7474077df4c028577a85836f"
+  },
+  {
+    "originalPath": "reviews/nb-52-r1-extra-02/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-52-r1-extra-02/REVIEWED-HASHES.json",
+    "sha256": "59efefca3058e011a0985a1f4b0d3761f96795df68b43389e296ab3ae8ede3b2"
+  },
+  {
+    "originalPath": "reviews/nb-53-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-53-r1/RESULT.json",
+    "sha256": "4d6c8b4b311119e9abef8528401837a81a5aff48faddf3fe5750cb83d02f1a3b"
+  },
+  {
+    "originalPath": "reviews/nb-53-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-53-r1/RESULT.md",
+    "sha256": "63133f8c242a0cea798a2260645245c980914cbde8d42508939b21572d5c93df"
+  },
+  {
+    "originalPath": "reviews/nb-53-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-53-r1/DONE.json",
+    "sha256": "6aeda5e0a58a61d4bf20a13fd5909fee9a5bf651e08d41b65cc55f5c692a9cbe"
+  },
+  {
+    "originalPath": "reviews/nb-53-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-53-r1/REVIEWED-HASHES.json",
+    "sha256": "fa7d4f804617fa84d1e1ccc89357975319936ef1e341d82c0b14bfae0a98cb48"
+  },
+  {
+    "originalPath": "reviews/nb-54-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-54-r1/RESULT.json",
+    "sha256": "695d1ff921498f300bc06f8e16add8cc3684c8fe289ac21b613f648bc9c36382"
+  },
+  {
+    "originalPath": "reviews/nb-54-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-54-r1/RESULT.md",
+    "sha256": "ed32748448be5c6ba039e9e3aeac210766f3bc6b262b56b734c78b69ffa360e9"
+  },
+  {
+    "originalPath": "reviews/nb-54-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-54-r1/DONE.json",
+    "sha256": "3fc73c293dbb31aff9c9c7a509fb01a449226d0d375d464e8422fb3f3503d8c4"
+  },
+  {
+    "originalPath": "reviews/nb-54-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-54-r1/REVIEWED-HASHES.json",
+    "sha256": "41b0d8860dfb1dfff37f52fe1d2cfb140eeaa0af1c741738d5a9236e5a6f9f08"
+  },
+  {
+    "originalPath": "reviews/nb-55/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-55/RESULT.json",
+    "sha256": "9a7cf56be8d7c4df512a3031c62747a30f6c7e5746c73924fa49ec9b81fe5cf5"
+  },
+  {
+    "originalPath": "reviews/nb-55/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-55/RESULT.md",
+    "sha256": "3369f938ca5e164e353f9fc2ff7fc63b805048fed5b9f93db21afc9f5016c94b"
+  },
+  {
+    "originalPath": "reviews/nb-55/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-55/DONE.json",
+    "sha256": "8183a8bc808ddcbf1cde89c01bdf6fb0dca5ef4f1391da82a1f322bf2f04a27c"
+  },
+  {
+    "originalPath": "reviews/nb-55/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-55/REVIEWED-HASHES.json",
+    "sha256": "26d14f28cd3c2b3d12ec8d53a2407af5ec1d04a905f03b8ca9fa656822a8d8f3"
+  },
+  {
+    "originalPath": "reviews/nb-56/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-56/RESULT.json",
+    "sha256": "6f8797fc9d72ee729df4906a2cac04eadb7a1311ccc6db66c6e53919d3a23e41"
+  },
+  {
+    "originalPath": "reviews/nb-56/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-56/RESULT.md",
+    "sha256": "17bcac9959093a29b2a0a2495b090b5bb9f48b3ce2a00512b3bec5800b115de4"
+  },
+  {
+    "originalPath": "reviews/nb-56/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-56/DONE.json",
+    "sha256": "562a5caab4611cb040ce22cb295b923c4c81b0f033b4b93232e2a2ce7377aaac"
+  },
+  {
+    "originalPath": "reviews/nb-56/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-56/REVIEWED-HASHES.json",
+    "sha256": "ebddddafde4d7930b5f855fcb6f35b643cd24192eb3f57346976d39b7a60519e"
+  },
+  {
+    "originalPath": "reviews/nb-57-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-57-r1/RESULT.json",
+    "sha256": "99209490ea0c1d4bb5f6f553f14abc14ac2469b7012a7302a0451429b94f9733"
+  },
+  {
+    "originalPath": "reviews/nb-57-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-57-r1/RESULT.md",
+    "sha256": "30b37e376b8b34f96a09e8859853178d4dd4f4d865a91716f431907fc5930771"
+  },
+  {
+    "originalPath": "reviews/nb-57-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-57-r1/DONE.json",
+    "sha256": "460fa4e004c1266c64e7fac1cb95deab873ffd0d0ea5ad360d492af27ee60783"
+  },
+  {
+    "originalPath": "reviews/nb-57-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-57-r1/REVIEWED-HASHES.json",
+    "sha256": "2334d2ef26e367c28208fce18e43897f931ad037b3489532aea7c12e62a08636"
+  },
+  {
+    "originalPath": "reviews/nb-58-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-58-r1/RESULT.json",
+    "sha256": "5c2801555129c5e7ca4c557c178b762d9c95f608ab391f09c3051b887506affa"
+  },
+  {
+    "originalPath": "reviews/nb-58-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-58-r1/RESULT.md",
+    "sha256": "5a8ff63eb8f69caefefffa5583f03ce5cb6cd21c0a95ab8fcec8da80e372ae1f"
+  },
+  {
+    "originalPath": "reviews/nb-58-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-58-r1/DONE.json",
+    "sha256": "8b28bf157288d630e21941b84b78ffaa3991c7e002020a5a3fe1bfac141d16b6"
+  },
+  {
+    "originalPath": "reviews/nb-58-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-58-r1/REVIEWED-HASHES.json",
+    "sha256": "05a3f002399bf7640c8a1d528a65e2727c62138cae5889010e4b450d5a7948b7"
+  },
+  {
+    "originalPath": "reviews/nb-59-r1-extra-02/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-59-r1-extra-02/RESULT.json",
+    "sha256": "020529419446cb18ffdc66cbe0f94f50e5b68e9072af23b14ed667a085a79652"
+  },
+  {
+    "originalPath": "reviews/nb-59-r1-extra-02/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-59-r1-extra-02/RESULT.md",
+    "sha256": "aa9ec3b3479b342d06b6c521b9b9cf8b2c0fe3e00ecf5363314a339f4d1c960a"
+  },
+  {
+    "originalPath": "reviews/nb-59-r1-extra-02/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-59-r1-extra-02/DONE.json",
+    "sha256": "4875a544378ca76c4c21610fe676e42f63718af580451421de3d312b0605240d"
+  },
+  {
+    "originalPath": "reviews/nb-59-r1-extra-02/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-59-r1-extra-02/REVIEWED-HASHES.json",
+    "sha256": "656b93b466cf65b4a616f9704f6d2067b9b2af901f5ef06d8b513ea21869f13f"
+  },
+  {
+    "originalPath": "reviews/nb-60/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-60/RESULT.json",
+    "sha256": "bcdfbdb5d4a62b893908f3b8e0a841e630ace96bc38e5ba982f4e8b0d081f4ab"
+  },
+  {
+    "originalPath": "reviews/nb-60/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-60/RESULT.md",
+    "sha256": "cdfe6247687ec2132f05b7ffc3877078dcbc18c94b919f4647f8c2aabccab020"
+  },
+  {
+    "originalPath": "reviews/nb-60/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-60/DONE.json",
+    "sha256": "183c00dac6c9a8f110b920c4af060b0390cd5317f5a9f9f8d0cb3ccd3eaea8df"
+  },
+  {
+    "originalPath": "reviews/nb-60/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-60/REVIEWED-HASHES.json",
+    "sha256": "11ff170e799613b1fb3f06f9a63219cc00584a74f11a3c5b1dd2bfa979d5f436"
+  },
+  {
+    "originalPath": "reviews/nb-61-r2/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-61-r2/RESULT.json",
+    "sha256": "57aa6f74a8866ff0a39f77f2f91f474c9a5d59d16c4d9f5f18dc97e44228b316"
+  },
+  {
+    "originalPath": "reviews/nb-61-r2/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-61-r2/RESULT.md",
+    "sha256": "02116497a64305de8c4d7f28ee90bc0b620c189336e2703f1bb1b0e17630a943"
+  },
+  {
+    "originalPath": "reviews/nb-61-r2/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-61-r2/DONE.json",
+    "sha256": "8d00492862c609adfa398813a2ad5f36b64223534f3955bdb490bd0952aadea3"
+  },
+  {
+    "originalPath": "reviews/nb-61-r2/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-61-r2/REVIEWED-HASHES.json",
+    "sha256": "61b0c4c9c9d47ed5ee9a2583e5ecaced137ee915f11d52ad2ea9c9537262e7c3"
+  },
+  {
+    "originalPath": "reviews/nb-62/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-62/RESULT.json",
+    "sha256": "984cd521d19dc12a0306501e93a62f3e2afb7947347068f0185e8794703a67fa"
+  },
+  {
+    "originalPath": "reviews/nb-62/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-62/RESULT.md",
+    "sha256": "847a29f28c943e9196736f20be87eedab21ccc8a1cb88ea4686391e904e2a892"
+  },
+  {
+    "originalPath": "reviews/nb-62/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-62/DONE.json",
+    "sha256": "34a53cd83caba42dd5af86a69a00f4ebb38c6dfa9a32388ff9300cc8e9ce0972"
+  },
+  {
+    "originalPath": "reviews/nb-62/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-62/REVIEWED-HASHES.json",
+    "sha256": "b237b6c0656102bfa557a42a37759eb411a90833bc983b0992538e99943cf5d6"
+  },
+  {
+    "originalPath": "reviews/nb-63-r4/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-63-r4/RESULT.json",
+    "sha256": "8699d0aac36acb1128a2daa974b9b68be8453c458ad33c820bdbd64d5ac54ec9"
+  },
+  {
+    "originalPath": "reviews/nb-63-r4/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-63-r4/RESULT.md",
+    "sha256": "6cce86caee13174bdcb7a677f96d2ac647cec8dd74b46c3dba4f363c799e5912"
+  },
+  {
+    "originalPath": "reviews/nb-63-r4/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-63-r4/DONE.json",
+    "sha256": "a51211e1bf551fe90dc56888661a2c6de731ef776bd1047068cae6c50a79960a"
+  },
+  {
+    "originalPath": "reviews/nb-63-r4/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-63-r4/REVIEWED-HASHES.json",
+    "sha256": "27a9d800a5d5cb8129588cb8b190a00d619420a1ad98ebe1e744057f81a43e25"
+  },
+  {
+    "originalPath": "reviews/nb-64-r3/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-64-r3/RESULT.json",
+    "sha256": "d1d4ed50434a978044e68e5589cc6abdf2ef6f8dce582533e7a3aad19e1b3f0a"
+  },
+  {
+    "originalPath": "reviews/nb-64-r3/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-64-r3/RESULT.md",
+    "sha256": "de0f64ba5a4c107f80b475e58290b12e787b87d1ebeaa5e942f8d009bc982d7b"
+  },
+  {
+    "originalPath": "reviews/nb-64-r3/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-64-r3/DONE.json",
+    "sha256": "a607d38dcf3a5fb3e79400b669de4791708a6cc0943845ececf83f85b252c006"
+  },
+  {
+    "originalPath": "reviews/nb-64-r3/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-64-r3/REVIEWED-HASHES.json",
+    "sha256": "b0c99281e62917e988d5a49871ef56ef02b94062d9c445ad8c3f5ed29d1868c5"
+  },
+  {
+    "originalPath": "reviews/nb-65/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-65/RESULT.json",
+    "sha256": "36c477e542a880e73d5aae02a849b0567060ec6add13c33980d2f8833e5c9665"
+  },
+  {
+    "originalPath": "reviews/nb-65/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-65/RESULT.md",
+    "sha256": "c5cd0b157ac3f0216030226a1b391a557eb399aecb728b53fddcf76258f08d70"
+  },
+  {
+    "originalPath": "reviews/nb-65/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-65/DONE.json",
+    "sha256": "1b5f28c99325d6c23bed5e304db0d84ab120b55a0df933690c828587a636d21e"
+  },
+  {
+    "originalPath": "reviews/nb-65/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-65/REVIEWED-HASHES.json",
+    "sha256": "48dc4c40b52dcc38e3cc76c1fda93c4b964bf72397ae004acbeb8220a06c5925"
+  },
+  {
+    "originalPath": "reviews/nb-66-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-66-r1/RESULT.json",
+    "sha256": "46229ff15f497959b001d514ce7bc6c39452080a4f655bfbaab93a3ee370fb4e"
+  },
+  {
+    "originalPath": "reviews/nb-66-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-66-r1/RESULT.md",
+    "sha256": "a7d165b4214983d11a6f81e2beb1ca1f8cfda4a4df99559606568487e4675bc6"
+  },
+  {
+    "originalPath": "reviews/nb-66-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-66-r1/DONE.json",
+    "sha256": "bd370dedc213622842847ec24ddfb99d05cf041e4e6afdb6bf348dc5957c0ef1"
+  },
+  {
+    "originalPath": "reviews/nb-66-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-66-r1/REVIEWED-HASHES.json",
+    "sha256": "6bfccb68d44f57b672da6a243573a397869dc00daae21c42d8d504136baf619a"
+  },
+  {
+    "originalPath": "reviews/nb-67-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-67-r1/RESULT.json",
+    "sha256": "25eee734a8d0af14ef58d6b458881b353718f9736d8073b5312a3a6adceeab8e"
+  },
+  {
+    "originalPath": "reviews/nb-67-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-67-r1/DONE.json",
+    "sha256": "2eaa2b67bffb70d1db7047229f357598d2effd8d9374a6bd584696497932d51d"
+  },
+  {
+    "originalPath": "reviews/nb-67-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-67-r1/REVIEWED-HASHES.json",
+    "sha256": "37225601def1c27adabd8998374b35764237339473dbfa8dbe7be26950d1de8c"
+  },
+  {
+    "originalPath": "reviews/nb-68/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-68/RESULT.json",
+    "sha256": "874f3e7267ca6364d4242961b9bedc7fe687ace83fde8b1004db06856c898e7d"
+  },
+  {
+    "originalPath": "reviews/nb-68/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-68/RESULT.md",
+    "sha256": "8ba5aba695d6a1f301bfe25ea792618df00fbf2e6f25999e034998b1f90665fa"
+  },
+  {
+    "originalPath": "reviews/nb-68/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-68/DONE.json",
+    "sha256": "b90206e488d1adee93afc9f7a07ab85522a975d6e9b1d63b144192165f86e344"
+  },
+  {
+    "originalPath": "reviews/nb-68/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-68/REVIEWED-HASHES.json",
+    "sha256": "68043922f774b80eb3b4103a3f145a3e5e9bc1a29fcec75ce96f9aa7a976d9e4"
+  },
+  {
+    "originalPath": "reviews/nb-68-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-68-r1/RESULT.json",
+    "sha256": "18813be798df6a8d2c5a166b0f99eb907c20d0ec8e0ae046b6c235cc3290eb26"
+  },
+  {
+    "originalPath": "reviews/nb-68-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-68-r1/RESULT.md",
+    "sha256": "8624b9cba7b4f20fa5ae5194bec0a3670d41686caefc746a008057866b8588be"
+  },
+  {
+    "originalPath": "reviews/nb-68-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-68-r1/DONE.json",
+    "sha256": "7a2bfb1e5841b052521c6c1809f3a7ee18e35b1db0dbd6cd62d2b80992a27466"
+  },
+  {
+    "originalPath": "reviews/nb-68-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-68-r1/REVIEWED-HASHES.json",
+    "sha256": "b9c3ce55e8fe5e731d9ff5d2c688b524f45f5740e48a04aa4ada163864f383e5"
+  },
+  {
+    "originalPath": "reviews/nb-69/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-69/RESULT.json",
+    "sha256": "52ea98e7a1ac6c93dd433c3c90fbd929844dbb795170a3ec37925493c2d996ef"
+  },
+  {
+    "originalPath": "reviews/nb-69/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-69/RESULT.md",
+    "sha256": "07e284d5ff082ea2b0378a0168172cdf78267f115d9d58870be8ff08b0a17522"
+  },
+  {
+    "originalPath": "reviews/nb-69/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-69/DONE.json",
+    "sha256": "c3e4a18143f40044ad76cee529bfb3d52003b206612e29e0ac6a7b9d1c42ef4d"
+  },
+  {
+    "originalPath": "reviews/nb-69/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-69/REVIEWED-HASHES.json",
+    "sha256": "236e38cdfdde59dc1629d4f1fc8de066e1c8927a2bc894c240d10309bae316c8"
+  },
+  {
+    "originalPath": "reviews/nb-70-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-70-r1/RESULT.json",
+    "sha256": "fcd4407384aca002b36eeadb47d8a0c13ac81a4435a1df873a08e5bb37a6dd36"
+  },
+  {
+    "originalPath": "reviews/nb-70-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-70-r1/RESULT.md",
+    "sha256": "cd3f825f0055bdc5736a02e4ded8bf382ca0222bf726d2ad8dbce0dfc5dea193"
+  },
+  {
+    "originalPath": "reviews/nb-70-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-70-r1/DONE.json",
+    "sha256": "df72f26cb88bd051c99fc4f23a728c44d7d621a7c56348a08eff14e0b96d04f0"
+  },
+  {
+    "originalPath": "reviews/nb-70-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-70-r1/REVIEWED-HASHES.json",
+    "sha256": "13294db6561febb6a1b74cc777f7acdfb65db8e808041fd342fed8ef289c394a"
+  },
+  {
+    "originalPath": "reviews/nb-71-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-71-r1/RESULT.json",
+    "sha256": "c7bbf41643b920335508c5f0f7f8d4a9130d148a5026620a3522b6c2c0bf5730"
+  },
+  {
+    "originalPath": "reviews/nb-71-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-71-r1/RESULT.md",
+    "sha256": "254790020537ade505f74c70cb6aa4f7c54601aa73fdedaeb5dcdec01be90265"
+  },
+  {
+    "originalPath": "reviews/nb-71-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-71-r1/DONE.json",
+    "sha256": "76230d8450a74ef9ec91d3e901d5289ae99d8341dfca3d13730d422bab77d2ef"
+  },
+  {
+    "originalPath": "reviews/nb-71-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-71-r1/REVIEWED-HASHES.json",
+    "sha256": "2263db5f1193e81311e13be2d9740eb2f844484394f84148c63de5411eb67ae4"
+  },
+  {
+    "originalPath": "reviews/nb-72-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-72-r1/RESULT.json",
+    "sha256": "745f2fa4814d0d72f43b12f039cb2ebfe6bbfbd0b90045c2d09f90b59214c949"
+  },
+  {
+    "originalPath": "reviews/nb-72-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-72-r1/DONE.json",
+    "sha256": "9af731427849a379a10d68afa1bb627d28d0030692c748c074b9f44bf07eee6f"
+  },
+  {
+    "originalPath": "reviews/nb-72-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-72-r1/REVIEWED-HASHES.json",
+    "sha256": "b23706cd8df8b7eb830966a87547f32f2f4f4a70c28fbaf6befdb360dc17bc14"
+  },
+  {
+    "originalPath": "reviews/nb-73-r2/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-73-r2/RESULT.json",
+    "sha256": "12e25b5d552f166cd96ec15d21075fb563982db088052708899123b052ba344c"
+  },
+  {
+    "originalPath": "reviews/nb-73-r2/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-73-r2/RESULT.md",
+    "sha256": "43d092208340b2c12aad6c70635908b57cecb5d74b6327d0e58b75f18b8c6c2a"
+  },
+  {
+    "originalPath": "reviews/nb-73-r2/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-73-r2/DONE.json",
+    "sha256": "4be6061a016a4a19e13f29f083c9180ea55f5b78e72b9a795185cf3a198032a5"
+  },
+  {
+    "originalPath": "reviews/nb-73-r2/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-73-r2/REVIEWED-HASHES.json",
+    "sha256": "be3ba4e265283ce3df1f7246f5dbca5b34664699a8cf1fc3f5d1dd2649575e6e"
+  },
+  {
+    "originalPath": "reviews/nb-74-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-74-r1/RESULT.json",
+    "sha256": "58efef33400358b99fcbcb99686d675b81079c4c01ae80bdcbfaa6e217dae876"
+  },
+  {
+    "originalPath": "reviews/nb-74-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-74-r1/DONE.json",
+    "sha256": "8f8a8e3ed6af51682c420ec11d1121505983f554a57981e01f4a2df94d932206"
+  },
+  {
+    "originalPath": "reviews/nb-74-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-74-r1/REVIEWED-HASHES.json",
+    "sha256": "d98289c0d4cc749693f36671ba40c46da7e339d37c1f416c410fac7265e6bd8b"
+  },
+  {
+    "originalPath": "reviews/nb-75/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-75/RESULT.json",
+    "sha256": "ccca52d2983cc3d08d9fb8c5b3e32188086f70f8dd0b4459a0c176cc6e62a128"
+  },
+  {
+    "originalPath": "reviews/nb-75/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-75/RESULT.md",
+    "sha256": "d6b2f11acb1684f6c1cf3aa3fb261085ad6f5e660cb850577ddaf04d28f2a3a0"
+  },
+  {
+    "originalPath": "reviews/nb-75/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-75/DONE.json",
+    "sha256": "269521bd86213f8b119a542bf427b66f1d8d09fba5e1bb4c07992910a718a103"
+  },
+  {
+    "originalPath": "reviews/nb-75/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-75/REVIEWED-HASHES.json",
+    "sha256": "5fa8b19c5aacbc30bee10fa24d07043e6106371c1a51479ac80577c4c6654636"
+  },
+  {
+    "originalPath": "reviews/nb-76/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-76/RESULT.json",
+    "sha256": "0ca7781307357c3f2ee8867fb05b7873fcc049499b7963cc716b3ff657d81b04"
+  },
+  {
+    "originalPath": "reviews/nb-76/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-76/RESULT.md",
+    "sha256": "71f8c63d8526696e46fc53c5f604018b33a06bf4f80c3ae0bedf8b6326f8635a"
+  },
+  {
+    "originalPath": "reviews/nb-76/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-76/DONE.json",
+    "sha256": "34d645d432746758c663184d1d26dfee27d2f16797b663d28716c08db2b07972"
+  },
+  {
+    "originalPath": "reviews/nb-76/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-76/REVIEWED-HASHES.json",
+    "sha256": "a4f7ebb6a4450e050b27d1cb2e3eefd04d555411891923df28cca59adf55ac6a"
+  },
+  {
+    "originalPath": "reviews/nb-77/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-77/RESULT.json",
+    "sha256": "50efb67d4be89f90de3c9117710d2747b9e3c51164552629308de107d007a5b2"
+  },
+  {
+    "originalPath": "reviews/nb-77/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-77/RESULT.md",
+    "sha256": "8370456b445711077b99c1e1062d45debb3c6a03d9d0f5d9b7dea4047ecac49f"
+  },
+  {
+    "originalPath": "reviews/nb-77/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-77/DONE.json",
+    "sha256": "c0e5e64b08b63953f4b17bd8b7cfa3f0125a49037a240d50427d4d1ef70720f4"
+  },
+  {
+    "originalPath": "reviews/nb-77/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-77/REVIEWED-HASHES.json",
+    "sha256": "bd9fcec9b3c2d3cce731c3b392bc83f11f1db953edd3b155fc92bf61b3fe32e5"
+  },
+  {
+    "originalPath": "reviews/nb-78-r2/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-78-r2/RESULT.json",
+    "sha256": "9ae0c57d230366970b2a8435383b84f8fd238c5fe9090f385bce518e86627345"
+  },
+  {
+    "originalPath": "reviews/nb-78-r2/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-78-r2/RESULT.md",
+    "sha256": "cd75e5e611f09f7388a6ec7a2c298e5aa21b78eac06e6ee3f5d770c693a1b399"
+  },
+  {
+    "originalPath": "reviews/nb-78-r2/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-78-r2/DONE.json",
+    "sha256": "5dafc8e7024725da3e68b25a401746c34beb213b2e54ab53a406b9461a40de08"
+  },
+  {
+    "originalPath": "reviews/nb-78-r2/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-78-r2/REVIEWED-HASHES.json",
+    "sha256": "0710b8a6c84b9e1fed49220638cc0b1ff50ac0e55b3878f94bc065ee9e9d7e0d"
+  },
+  {
+    "originalPath": "reviews/nb-79-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-79-r1/RESULT.json",
+    "sha256": "77120852cd9dde5a03d813e5aad03a1770e8d640fbf9e59fedac03451175de63"
+  },
+  {
+    "originalPath": "reviews/nb-79-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-79-r1/DONE.json",
+    "sha256": "ebae16e293d0cfc4dfc230efd6a6af6186396d8eeba3957102dbd04fab346176"
+  },
+  {
+    "originalPath": "reviews/nb-79-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-79-r1/REVIEWED-HASHES.json",
+    "sha256": "25f9706e6b1779cada5a570ccad27275a86db64d0e879ba09d89eedd2c52c4f6"
+  },
+  {
+    "originalPath": "reviews/nb-80/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-80/RESULT.json",
+    "sha256": "58cfaf001465c2f187f46bb24e72b785d2542c80fb5d8123c60df37b09277dd2"
+  },
+  {
+    "originalPath": "reviews/nb-80/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-80/RESULT.md",
+    "sha256": "fe17a1db5d559f2e706a80bf1494e87666310cd29b5051881819b72d950a74d4"
+  },
+  {
+    "originalPath": "reviews/nb-80/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-80/DONE.json",
+    "sha256": "a6e46157fa113f0fa77b9b9b8de382a98d977825f7f1c13e45a885b1335a563f"
+  },
+  {
+    "originalPath": "reviews/nb-80/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-80/REVIEWED-HASHES.json",
+    "sha256": "b7decf15dc8c8e76dc3381a61abd309127157a8e31ba4c2a97f941a4f748af6f"
+  },
+  {
+    "originalPath": "reviews/nb-80-r2/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-80-r2/RESULT.json",
+    "sha256": "37becc37ddfe123ba413aa23861119884c53fac96748eee23100c875be1bbcb5"
+  },
+  {
+    "originalPath": "reviews/nb-80-r2/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-80-r2/RESULT.md",
+    "sha256": "8619d310a1d3b718e1471adb7f3a307a62f401aada75583b5620e227761a93ca"
+  },
+  {
+    "originalPath": "reviews/nb-80-r2/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-80-r2/DONE.json",
+    "sha256": "46e224a99ea04c536e71c94e44da9fe25269050854bb0467a52edf05d06a0563"
+  },
+  {
+    "originalPath": "reviews/nb-80-r2/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-80-r2/REVIEWED-HASHES.json",
+    "sha256": "b866fdd977632b3379adf42bd83e08be67015ac32cba37685a47d00c064a73c8"
+  },
+  {
+    "originalPath": "reviews/nb-81-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-81-r1/RESULT.json",
+    "sha256": "7187a434bfccfd07d8582bfde23ce156b21163e79bc72602bd70f4ec61955ab2"
+  },
+  {
+    "originalPath": "reviews/nb-81-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-81-r1/RESULT.md",
+    "sha256": "0602c4ec6b3c1435b46d70fb69952542cb8b05f7df8236a88c8edac0d8df6e39"
+  },
+  {
+    "originalPath": "reviews/nb-81-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-81-r1/DONE.json",
+    "sha256": "909982a1850cbd2f103323e51d37c2d53a35fb4195a0d23bed6839ea5641a290"
+  },
+  {
+    "originalPath": "reviews/nb-81-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-81-r1/REVIEWED-HASHES.json",
+    "sha256": "934a9ebe6dcee8b80a88e67c658475ea4beba180d0d5a9642f883aebf6d1e172"
+  },
+  {
+    "originalPath": "reviews/nb-82/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-82/RESULT.json",
+    "sha256": "f923df2d918434b243f2a19d849c2ef4db8302a6e89bbe7e4bb312efb4017a7f"
+  },
+  {
+    "originalPath": "reviews/nb-82/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-82/RESULT.md",
+    "sha256": "e00d5ab752b3c7f46c7208c6467b2a4f46d67abaa4490df411aadce5a31330d8"
+  },
+  {
+    "originalPath": "reviews/nb-82/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-82/DONE.json",
+    "sha256": "7cfa05d302406efa132c70f8cbee8c7dddde7aa8e784285e4f7692478e8eadcd"
+  },
+  {
+    "originalPath": "reviews/nb-82/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-82/REVIEWED-HASHES.json",
+    "sha256": "513d05d8037f9da23436a0c9fc7f7f61483971164cc99da78cff21680f6f1aca"
+  },
+  {
+    "originalPath": "reviews/nb-83-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-83-r1/RESULT.json",
+    "sha256": "c6d9541b00e6ee6b390fa5df030ccb78f50add074a465d497fdf212e3ec6127e"
+  },
+  {
+    "originalPath": "reviews/nb-83-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-83-r1/RESULT.md",
+    "sha256": "4b910ad5628a3cb37cfa9a2f083f5ff51399ab85ae0cdeeea08f0f072a047e17"
+  },
+  {
+    "originalPath": "reviews/nb-83-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-83-r1/DONE.json",
+    "sha256": "c85488dac4a456708bfd8790170f9eed197f836b4ad3b46f0fb5f15c2d758634"
+  },
+  {
+    "originalPath": "reviews/nb-83-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-83-r1/REVIEWED-HASHES.json",
+    "sha256": "6542b54ca0cbaa7418071f20fd2ee8c2ec59a72a0cbc1d2e3dd3b94a61c4f69c"
+  },
+  {
+    "originalPath": "reviews/nb-84/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-84/RESULT.json",
+    "sha256": "b4895fba7a23b02eeb27b3760a30a75bd9a40811eec57702301b0bb6b161d529"
+  },
+  {
+    "originalPath": "reviews/nb-84/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-84/RESULT.md",
+    "sha256": "3784dffb81af881c272699ebe7316ea4c82a4a6b04c6e6f79c7811261fdb3040"
+  },
+  {
+    "originalPath": "reviews/nb-84/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-84/DONE.json",
+    "sha256": "5ae9775b37173f9a69d6d95db7e849b89e6b3689b63c4bbe2bf76b9acf67281c"
+  },
+  {
+    "originalPath": "reviews/nb-84/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-84/REVIEWED-HASHES.json",
+    "sha256": "cf5b4c5064ecc5b8cbb019df08c2ff1eb0f9a1147164bbfbaf08772effed60c2"
+  },
+  {
+    "originalPath": "reviews/nb-85/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-85/RESULT.json",
+    "sha256": "a1b3437a14829e5e3a34e6e228b2207c8b589fb57fa8141eeb25b1a513c4b2cc"
+  },
+  {
+    "originalPath": "reviews/nb-85/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-85/RESULT.md",
+    "sha256": "4fc6efd1312c06a901fe587dbdcff7c7e77b9e7bc25a6a43c4ffc99d50ef3774"
+  },
+  {
+    "originalPath": "reviews/nb-85/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-85/DONE.json",
+    "sha256": "35cbc09bf037ebe866f54a9964c4242435fe662b67c06a1c5e09c62268902cf3"
+  },
+  {
+    "originalPath": "reviews/nb-85/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-85/REVIEWED-HASHES.json",
+    "sha256": "51ca7ab27cdd5a13ca9c24f78f3cb1a5ad65c8fdfb349928ce59ec81f390148a"
+  },
+  {
+    "originalPath": "reviews/nb-86/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-86/RESULT.json",
+    "sha256": "5e5a2e86e991226307e37984fcca36fbdd7d4ec6951139114178b2832ede9049"
+  },
+  {
+    "originalPath": "reviews/nb-86/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-86/RESULT.md",
+    "sha256": "bafd9e7ce9e741a1e69d3e37b30d6acaea077a6662a2f0e0b9ea0709299d760d"
+  },
+  {
+    "originalPath": "reviews/nb-86/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-86/DONE.json",
+    "sha256": "8223d53cd1213f780f609af1a8b18744ed4e28993ceb74f1f64fedae36450921"
+  },
+  {
+    "originalPath": "reviews/nb-86/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-86/REVIEWED-HASHES.json",
+    "sha256": "3e5557a006457206002566adec9fdd40afa06e238b514117d2a742d26da61ce2"
+  },
+  {
+    "originalPath": "reviews/nb-87-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-87-r1/RESULT.json",
+    "sha256": "bd92c0e24fcc32edab7599fae2b2ce47b9b1d56287197b0934f9471e16de3c39"
+  },
+  {
+    "originalPath": "reviews/nb-87-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-87-r1/DONE.json",
+    "sha256": "b08841ebbabdc5571243020cc5a1c0343dffe905facdc03af07a76308009dfd3"
+  },
+  {
+    "originalPath": "reviews/nb-87-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-87-r1/REVIEWED-HASHES.json",
+    "sha256": "c003d12d0d1c741a3d83b97c07715cdaee0325124d777c2683ebeced99a95e3b"
+  },
+  {
+    "originalPath": "reviews/nb-88-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-88-r1/RESULT.json",
+    "sha256": "0347e327c6efb28717235fa3b999d4513ff913d57edd40c0102100f0d1d4789c"
+  },
+  {
+    "originalPath": "reviews/nb-88-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-88-r1/DONE.json",
+    "sha256": "8f8e5f1858f20df6a3b7671098c19c43cef821a5ce79bf8f5332c83395beef49"
+  },
+  {
+    "originalPath": "reviews/nb-88-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-88-r1/REVIEWED-HASHES.json",
+    "sha256": "babee0c81d7f83a1d35594297ae6a4b9998c2000ea4004674e247a3e5e61bba1"
+  },
+  {
+    "originalPath": "reviews/nb-89/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-89/RESULT.json",
+    "sha256": "1d6be535cbdc2175b73e4c498ea3e945b6ff6f2e712442e7d1d339a63e619533"
+  },
+  {
+    "originalPath": "reviews/nb-89/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-89/RESULT.md",
+    "sha256": "bfca6a96e4e49dfaa063e443bf2fdc02b1034c7aa68479cc4cd94452e76d32af"
+  },
+  {
+    "originalPath": "reviews/nb-89/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-89/DONE.json",
+    "sha256": "e63ca74b953c4528772e92ea899d983f90c68b8d12bf28f0d53ec6b0bbb3534c"
+  },
+  {
+    "originalPath": "reviews/nb-89/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-89/REVIEWED-HASHES.json",
+    "sha256": "cb4cfcb531c032bf7560e2e8434ae309792d6fa6d5f750e683908b7dd487b8c2"
+  },
+  {
+    "originalPath": "reviews/nb-90-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-90-r1/RESULT.json",
+    "sha256": "1806401edf1e36b4665654e0e3527136b5e1637fd2c0fabd644f38e38a0f9e60"
+  },
+  {
+    "originalPath": "reviews/nb-90-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-90-r1/DONE.json",
+    "sha256": "e33674ba97d1c937e5f2c546a21a2d50879ee3e4fcdfbe86a74d002fca8e6f7e"
+  },
+  {
+    "originalPath": "reviews/nb-90-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-90-r1/REVIEWED-HASHES.json",
+    "sha256": "3510e2aa4e84af53059260ab9b823f117fbfc990c4909aec609265101bc1c548"
+  },
+  {
+    "originalPath": "reviews/nb-91-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-91-r1/RESULT.json",
+    "sha256": "98da31a85fd2dcdd8059680d37b87d5037387cfb2e550c506e92b17d947dbe97"
+  },
+  {
+    "originalPath": "reviews/nb-91-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-91-r1/RESULT.md",
+    "sha256": "9b806c0ff3a7a0bbe9e97e7a277577a7e7dfdfe3564c7b8786c136d74ae1fde4"
+  },
+  {
+    "originalPath": "reviews/nb-91-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-91-r1/DONE.json",
+    "sha256": "be74537b3c460b291ff2ae24a1334f8000fd214636db20ccb24a86a8087afdba"
+  },
+  {
+    "originalPath": "reviews/nb-91-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-91-r1/REVIEWED-HASHES.json",
+    "sha256": "b9a7fab45dcfa2060cb1687badb4e2f8fdf3a79b7581c5ca1278fdfd89c87d00"
+  },
+  {
+    "originalPath": "reviews/nb-92-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-92-r1/RESULT.json",
+    "sha256": "1bae2a82e6adbcc321dde7e963d15f6c105a4943e38fe6e062b5ba985e99644a"
+  },
+  {
+    "originalPath": "reviews/nb-92-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-92-r1/DONE.json",
+    "sha256": "7e54c42e9e66d056c7fcb0f7cb0c25a3012fb7974880fa40375e9a2f2452f5b9"
+  },
+  {
+    "originalPath": "reviews/nb-92-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-92-r1/REVIEWED-HASHES.json",
+    "sha256": "40736210bf00eb5c6e7974993485a71709dc0ba3cdb63007f8489d684ad98158"
+  },
+  {
+    "originalPath": "reviews/nb-93-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-93-r1/RESULT.json",
+    "sha256": "995f29589831b207bebcfca11c5ccf1d95255b697308a00ad83fdd3ee307d950"
+  },
+  {
+    "originalPath": "reviews/nb-93-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-93-r1/RESULT.md",
+    "sha256": "fdf3b7638c86b784c58c10de31fb6ec534f0539685716a87c0e0bdc5f7597c2a"
+  },
+  {
+    "originalPath": "reviews/nb-93-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-93-r1/DONE.json",
+    "sha256": "bdb71df2dedf35a6ff05d45fb69215f4a57ec08a8098115b1ad65da444958fbe"
+  },
+  {
+    "originalPath": "reviews/nb-93-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-93-r1/REVIEWED-HASHES.json",
+    "sha256": "21e97f4f7f1b647c07b2969617ac693c7a5acac460dbba4c7caca3910fe425a4"
+  },
+  {
+    "originalPath": "reviews/nb-94/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-94/RESULT.json",
+    "sha256": "fc876d66cb45884e142cc9579479d08a6ebb0eb8b5861cc2b1522eb5d306c2fb"
+  },
+  {
+    "originalPath": "reviews/nb-94/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-94/RESULT.md",
+    "sha256": "e25339eacc9cb32fd9bcc5eb9ca45cfca4c3fd4e7893b24f0d92b77d027d8a67"
+  },
+  {
+    "originalPath": "reviews/nb-94/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-94/DONE.json",
+    "sha256": "c5b656f3db4b16b557585fa3cd9f38dda23cb2003cf2ffc52e91d6bee1985888"
+  },
+  {
+    "originalPath": "reviews/nb-94/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-94/REVIEWED-HASHES.json",
+    "sha256": "d5c702fb00fac1d61cf1ac950ec0990a01fa38d413b325122f341ed499c9506e"
+  },
+  {
+    "originalPath": "reviews/nb-95/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-95/RESULT.json",
+    "sha256": "88bf35a1d5e2b4c190cba9ed6c7d26e54371360219ac71c7909da1442f55fe45"
+  },
+  {
+    "originalPath": "reviews/nb-95/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-95/RESULT.md",
+    "sha256": "b9a3cc621a7c1c0a8af0d3a9b661d5c6bf20906df9522a243a139b0f7a46f193"
+  },
+  {
+    "originalPath": "reviews/nb-95/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-95/DONE.json",
+    "sha256": "c72ed4a61131360011e6dc6f7e33407ccedf6c58c8d7a9fb41515708af379a3b"
+  },
+  {
+    "originalPath": "reviews/nb-95/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-95/REVIEWED-HASHES.json",
+    "sha256": "22b90abe6fed3018048af63eee45eb422906c2d4123dfdf60a9060820fca864e"
+  },
+  {
+    "originalPath": "reviews/nb-96-r1/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-96-r1/RESULT.json",
+    "sha256": "f94d2bb2dc6b2882c2f90dd822265f56be10c28ad6b2411ecbf2177f9f10b044"
+  },
+  {
+    "originalPath": "reviews/nb-96-r1/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-96-r1/RESULT.md",
+    "sha256": "1b614e1ccf898defa0599941e7883a9494a785af854634d4fc45dbec99c1847c"
+  },
+  {
+    "originalPath": "reviews/nb-96-r1/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-96-r1/DONE.json",
+    "sha256": "a1ed5ee6187724bbb8cb899e76d4d9cbe25abbbbdc76de878819eac2a0d72187"
+  },
+  {
+    "originalPath": "reviews/nb-96-r1/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-96-r1/REVIEWED-HASHES.json",
+    "sha256": "394e906ac5feb7ae244af42bd53ac3eefb7b6eff783b9c37bfb01ef633f8e757"
+  },
+  {
+    "originalPath": "reviews/nb-97/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-97/RESULT.json",
+    "sha256": "c0e365468ea61a3f0345773269ed4a639d0b30df7b157902b01d61670a84deb6"
+  },
+  {
+    "originalPath": "reviews/nb-97/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-97/RESULT.md",
+    "sha256": "9de786c715c78124b56f6270632a23af94602da6a10159b21dabd50ca2fb9e47"
+  },
+  {
+    "originalPath": "reviews/nb-97/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-97/DONE.json",
+    "sha256": "03f712a09b2fa49a4119de70cd381a14c9d2481b4ba8a870686d28830139b837"
+  },
+  {
+    "originalPath": "reviews/nb-97/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-97/REVIEWED-HASHES.json",
+    "sha256": "a3f6711d06d8aee4b9d9679164b049244c17d3c2c8c31600eb675b45ddcb3c71"
+  },
+  {
+    "originalPath": "reviews/nb-98/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-98/RESULT.json",
+    "sha256": "b76fed2abcf59ecd3a94248b67d7070047ecebe9eb2c9521cf4525097dc9932e"
+  },
+  {
+    "originalPath": "reviews/nb-98/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-98/RESULT.md",
+    "sha256": "8ec5501732184fceb6b76f3f9bcd6fe17ec28b56055d8dba3c4abd95b4d7b5b5"
+  },
+  {
+    "originalPath": "reviews/nb-98/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-98/DONE.json",
+    "sha256": "6f01091f51f925c52b0a049d527d5a37b821e23e89dbd7733ed9aed6bea30ef8"
+  },
+  {
+    "originalPath": "reviews/nb-98/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-98/REVIEWED-HASHES.json",
+    "sha256": "0300f40dba659343207181c7b8dc1145c7746d0fc1929f9ad0b09fcc67c4f22f"
+  },
+  {
+    "originalPath": "reviews/nb-99/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-99/RESULT.json",
+    "sha256": "0626383237ac36ba7ad82656c0c3656119d702c1eb10e468ff69459ab4ee9edf"
+  },
+  {
+    "originalPath": "reviews/nb-99/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-99/RESULT.md",
+    "sha256": "dfc971e1e91d421edad828ee952ecaf00e1cc0b0b246c7bc72f5c62e0456535d"
+  },
+  {
+    "originalPath": "reviews/nb-99/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-99/DONE.json",
+    "sha256": "20ff91d30a0636eb079cecccb611e33e0b89fbb6e4b917a24f1322a3183d3981"
+  },
+  {
+    "originalPath": "reviews/nb-99/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-99/REVIEWED-HASHES.json",
+    "sha256": "0439c2567b8f9c0c15e1f347943f52ad77ba32a1918340f4a3be84f7006f49c8"
+  },
+  {
+    "originalPath": "reviews/nb-skins-r2/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-skins-r2/RESULT.json",
+    "sha256": "1908bfd457977d14aab2810d1a13ba660a423c9a865ac011858356a16d8e71be"
+  },
+  {
+    "originalPath": "reviews/nb-skins-r2/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-skins-r2/RESULT.md",
+    "sha256": "2cf2a77373d13176d96ccc26612d4d78882108ea7437daf2b4b29342e557a5c6"
+  },
+  {
+    "originalPath": "reviews/nb-skins-r2/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-skins-r2/DONE.json",
+    "sha256": "3144a53254dd2909cfe61a9d7ba4be90ec96f5f27da2937c06335ac2a831291a"
+  },
+  {
+    "originalPath": "reviews/nb-skins-r2/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/nb-skins-r2/REVIEWED-HASHES.json",
+    "sha256": "ef8c383b74c86cd426d5a05d5de01fd9d99f45e0983734134a82d604947a73c1"
+  },
+  {
+    "originalPath": "reviews/pilot-models-r2/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/pilot-models-r2/RESULT.json",
+    "sha256": "7e45d967abcc3d2813f596b3253092bf83b10fba234ec7064c9cca311432be1b"
+  },
+  {
+    "originalPath": "reviews/pilot-models-r2/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/pilot-models-r2/RESULT.md",
+    "sha256": "8f619a00a3224cdc8a160bd8b859dc21ad08e3855543559fce7facc739ff651c"
+  },
+  {
+    "originalPath": "reviews/pilot-models-r2/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/pilot-models-r2/DONE.json",
+    "sha256": "1d87a863352df8ab13fb0f78d87dc23cfe67a5248ef13fea87c4d82b6899f9b2"
+  },
+  {
+    "originalPath": "reviews/pilot-models-r2/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/pilot-models-r2/REVIEWED-HASHES.json",
+    "sha256": "ae37341789021019d589a0b46d69915374ae77e37b6ca44b2174edd6f59180e3"
+  },
+  {
+    "originalPath": "reviews/pilot-ui-r2/RESULT.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/pilot-ui-r2/RESULT.json",
+    "sha256": "fe00b363c08185310e6e194eca371d06092a70e228d3e9b4e96a39c33c88b9c4"
+  },
+  {
+    "originalPath": "reviews/pilot-ui-r2/RESULT.md",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/pilot-ui-r2/RESULT.md",
+    "sha256": "c10227acbc1a046f4e664199711c8e0750060ab46cd54c0358a5de929195f963"
+  },
+  {
+    "originalPath": "reviews/pilot-ui-r2/DONE.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/pilot-ui-r2/DONE.json",
+    "sha256": "a0f988e4c42af3da51192f0a0fc375a93c62e2a3cd1b60987442cf046b6c2881"
+  },
+  {
+    "originalPath": "reviews/pilot-ui-r2/REVIEWED-HASHES.json",
+    "portablePath": "VERIFICATION/ACCEPTANCE-REVIEWS/pilot-ui-r2/REVIEWED-HASHES.json",
+    "sha256": "61abe6304d9c77ef01a31257f48b0f4a58ed525928409a2138a26765a654e854"
+  }
+]

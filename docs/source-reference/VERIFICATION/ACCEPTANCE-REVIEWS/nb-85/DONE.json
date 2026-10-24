@@ -1,0 +1,59 @@
+{
+  "schema": "dsh-r07-review-done/1",
+  "batch": "nb-85",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "sealId": "seal-da446ce6ae62f168",
+  "reviewedAtUtc": "2026-10-24T13:30:00Z",
+  "batchVerdict": "accepted",
+  "fileVerdicts": {
+    "apps/electron/src/renderer/components/content-review/ReviewV3F06EvidenceWorkbench.tsx": "accepted",
+    "apps/electron/src/renderer/components/content-review/ReviewV3F12SupplementCycle.tsx": "accepted",
+    "apps/electron/src/renderer/components/content-review/ReviewV3F13AppealHistory.tsx": "accepted",
+    "apps/electron/src/renderer/components/content-review/ReviewV3LocalManualItem.tsx": "accepted",
+    "apps/electron/src/renderer/components/content-review/ReviewV3LocalPiControls.tsx": "accepted",
+    "apps/electron/src/renderer/components/content-review/ReviewV3QuickIntake.tsx": "accepted",
+    "apps/electron/src/renderer/components/content-review/ReviewV3SourceLinks.tsx": "accepted",
+    "apps/electron/src/renderer/components/content-review/ReviewV3SourceNavigator.tsx": "accepted",
+    "apps/electron/src/renderer/components/content-review/ReviewV3T01AuthoringLaunchpad.tsx": "accepted",
+    "apps/electron/src/renderer/components/content-review/ReviewV3T01ConditionEditor.tsx": "accepted",
+    "apps/electron/src/renderer/components/content-review/ReviewV3T01NumberRuleEditor.tsx": "accepted",
+    "apps/electron/src/renderer/components/content-review/ReviewV3T01TrialPanel.tsx": "accepted",
+    "apps/electron/src/renderer/components/content-review/ReviewV3T02CoverageSection.tsx": "accepted",
+    "apps/electron/src/renderer/components/content-review/ReviewV3T02MaterialCoveragePanel.tsx": "accepted",
+    "apps/electron/src/renderer/components/content-review/ReviewV3T02VisualOcrPanel.tsx": "accepted",
+    "apps/electron/src/renderer/components/content-review/ReviewV3T03FactWorkbench.tsx": "accepted",
+    "apps/electron/src/renderer/components/content-review/ReviewV3T03RestructurePanel.tsx": "accepted",
+    "apps/electron/src/renderer/components/content-review/ReviewV3T05HumanWorkflow.tsx": "accepted"
+  },
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0,
+    "findings": 5
+  },
+  "findingsIndex": [
+    "NB85-N1",
+    "NB85-N2",
+    "NB85-N3",
+    "NB85-N4",
+    "NB85-N5"
+  ],
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass_with_findings"
+  },
+  "runStatus": "NOT_RUN",
+  "artifacts": [
+    "reviews/nb-85/RESULT.json",
+    "reviews/nb-85/RESULT.md",
+    "reviews/nb-85/REVIEWED-HASHES.json",
+    "handoffs/nb-85-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-85-REVIEW-TO-LEAD.md"
+  ],
+  "mergeRule": "全 18 篇 acceptedHashes 可合；5 findings 入 ACCEPTED-ERRATA G4 前关闭。",
+  "note": "已 seal D0 不回写。"
+}

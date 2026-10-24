@@ -1,0 +1,116 @@
+{
+  "schema": "dsh-r07-review-result/2",
+  "batch": "nb-06-r1",
+  "revisionOf": "nb-06",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "reviewedAtUtc": "2026-10-23T16:55:00Z",
+  "sealedAtUtc": "2026-10-23T16:38:33Z",
+  "sealId": "seal-5bc74f4b630910a5",
+  "parentSealId": "seal-2289f08af7dec4f1",
+  "runStatus": "NOT_RUN",
+  "batchVerdict": "accepted",
+  "gates": { "G0": "pass", "G1": "pass", "G2": "pass_with_findings" },
+  "g0Evidence": {
+    "sealChain": "manifestSha/readySha/zipSha 三层独立重算全相等；zip bytes 58436 与声明一致；revisionOf=nb-06",
+    "zipEntries": "10 = 7 manuals + MANIFEST + 2 mechanical TSVs；无 READY/DONE/reviews（合 SEAL-DELIVERY §4）",
+    "manualHashes": "7/7 磁盘=MANIFEST=READY 全等",
+    "changeScope": "对父批逐文件 diff：仅 agent-atoms.ts.md（4 hunks）/longterm-memory-atoms.ts.md（1 hunk）/AgentView.tsx.md（1 hunk）改动，改动全部落在 FINDINGS-RESPONSE 声明范围；4 篇 diff 为空（逐字节=父批 acceptedHashes）",
+    "findingsResponse": "FINDINGS-RESPONSE.md 5 条全 ACCEPT 且回源口径记录；before/after sha256 与实测一致"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/renderer/atoms/agent-atoms.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/agent-atoms.ts.md",
+      "sourceBlob": "9616d92a45a4dd44e91f34248072a7c81e0c1b49",
+      "sourceSha256": "2d2d5132b832e7b1b3a3c106f634c74caa8a484987fabcfb949e97d225c89885",
+      "manualSha256": "088d9154a37e472e5a02af74e50726d8188a4d49445e591375c8f4a2e4ee34bc",
+      "verdict": "accepted",
+      "findings": ["NB06R1-L1"]
+    },
+    {
+      "path": "apps/electron/src/renderer/atoms/longterm-memory-atoms.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/longterm-memory-atoms.ts.md",
+      "sourceBlob": "47483693fc54f774b2b77fb3e31ec54b36b1520f",
+      "sourceSha256": "4f9aa27791cc27ec789b32cfaa3af0bdbe60bc0b3bea9104c625cba9a0d5c664",
+      "manualSha256": "c5da2ec80f9447812d745ae841541b467d5d6c6c26eabf3e05d872d777154f81",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/AgentView.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AgentView.tsx.md",
+      "sourceBlob": "975ccdde55f1d9616eb762b6be5ca9077d9b3d83",
+      "sourceSha256": "958b8d4ec90357fd1de88aac6d9b8246786be43cf353ede3bf751b09306b606e",
+      "manualSha256": "a386787ad238a28ebe55944e6efcf1ec29606ad5acebbddb2ad870a8b0d2df30",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/ContextModeToggleButton.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ContextModeToggleButton.tsx.md",
+      "sourceBlob": "8c98182e67c0c3459dd1d5833b026923c6ae2ad9",
+      "sourceSha256": "6316869788e49b16928e68c2d8c9458f76aaacdc1fefdbde1e53235f3824487d",
+      "manualSha256": "e1408ae85aa98acd089589f5148578341a681b8d1f18dba393e91e3c6db216a9",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "字节=父批 accepted，按合入规则由本子批 QA 记录同一 hash"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/AgentSettings.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/AgentSettings.tsx.md",
+      "sourceBlob": "4deedd413afc4c0c545374d321197c5a1aceefd9",
+      "sourceSha256": "dc800f85735321d4f18c47464893c9acd14c26d2034f6489ad31317cc99e01d3",
+      "manualSha256": "171ecd1e299f80563c7dded2b8714eaa65fe4032c6fff8a635e5a7a8e326479a",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "字节=父批 accepted"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/LongTermMemoryView.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/LongTermMemoryView.tsx.md",
+      "sourceBlob": "b3c365b61e44be9d7b36bda96c8ca74b55deeb3c",
+      "sourceSha256": "3fa4410029763504c05ad7b2f4b2ff093734974669448948146b4cd30294eecb",
+      "manualSha256": "8f6d69f26909c00fafc56896689a69937f4008b2e8ea43832513b93b00b1a4c7",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "字节=父批 accepted"
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/SettingsDialog.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/SettingsDialog.tsx.md",
+      "sourceBlob": "8eb34ae77b59dc9ee22740ac384aa0bbf1be6f6f",
+      "sourceSha256": "d9350c796a7466dc9674c5405fb9fdcd259e703299063769753e3599a085b53d",
+      "manualSha256": "4dc1c7aa7af3d6f26c1b38fe1d7e79c4668bae4c57918a14869390dadb52a711",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "字节=父批 accepted"
+    }
+  ],
+  "findings": [
+    {
+      "id": "NB06R1-L1",
+      "file": "apps/electron/src/renderer/atoms/agent-atoms.ts",
+      "severity": "minor",
+      "claim": "r1 新增的 §9 直接测试第 3 条（agent-live-messages.test.ts）自身行号/行数有漂移：称『30 行』与断言 ':21/:22/:23'，实际文件 28 行、三条 expect 在 ':24/:25/:26'。该条其余内容（import :4、1 用例、describe liveMessagesAtomFamily、断言语义）均正确；NB06-TEST-01 的实质修复（3 直接文件 9 用例、12 入向、测试存在性）已验证到位。",
+      "sourceEvidence": "wc -l agent-live-messages.test.ts = 28；expect( 实测在 :24 toEqual / :25 not.toBe / :26 toBe。",
+      "action": "『30 行』→『28 行』、':21/:22/:23'→':24/:25/:26'；随 ACCEPTED-ERRATA 或下次触碰关闭，不阻断合入。"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/agent-atoms.ts.md": "088d9154a37e472e5a02af74e50726d8188a4d49445e591375c8f4a2e4ee34bc",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/longterm-memory-atoms.ts.md": "c5da2ec80f9447812d745ae841541b467d5d6c6c26eabf3e05d872d777154f81",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AgentView.tsx.md": "a386787ad238a28ebe55944e6efcf1ec29606ad5acebbddb2ad870a8b0d2df30",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ContextModeToggleButton.tsx.md": "e1408ae85aa98acd089589f5148578341a681b8d1f18dba393e91e3c6db216a9",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/AgentSettings.tsx.md": "171ecd1e299f80563c7dded2b8714eaa65fe4032c6fff8a635e5a7a8e326479a",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/LongTermMemoryView.tsx.md": "8f6d69f26909c00fafc56896689a69937f4008b2e8ea43832513b93b00b1a4c7",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/SettingsDialog.tsx.md": "4dc1c7aa7af3d6f26c1b38fe1d7e79c4668bae4c57918a14869390dadb52a711"
+  },
+  "notRun": ["product tests", "typecheck", "build", "Electron/GUI", "real model/network"],
+  "notes": [
+    "复验方式：父批 D0（reviews/nb-06）证据复用 + 本轮逐 hunk 回源复核改动声明；4 篇未动文件以 diff 为空 + hash 等于父批 acceptedHashes 双重确认。",
+    "NB06-TEST-01/02、COUNT-01/02/03 五条全修复验证通过（12 测试文件=8 子串+4 相对导入实测、3 直接文件 9 用例、98、toast 9=7+2、38=30+8 均回源复算一致）。",
+    "本 r1 新引入的唯一残余是 NB06R1-L1 行号漂移（minor，非阻断）；按『行号错位可限定返修/计数最终关闭』口径记 ACCEPTED-ERRATA 关闭。"
+  ]
+}

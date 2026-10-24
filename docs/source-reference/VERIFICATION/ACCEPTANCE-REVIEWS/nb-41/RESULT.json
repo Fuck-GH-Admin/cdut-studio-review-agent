@@ -1,0 +1,378 @@
+{
+  "schema": "r07-review-result/1",
+  "batch": "nb-41",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-07-20261023",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "reviewedAtUtc": "2026-10-23T17:55:00Z",
+  "sealId": "seal-e458e44fda060ceb",
+  "batchVerdict": "revision_required",
+  "counts": {
+    "files": 18,
+    "accepted": 10,
+    "revision_required": 8,
+    "unknown": 0
+  },
+  "g0": {
+    "result": "PASS",
+    "hashChain": "MANIFEST/READY/DONE/ZIP consistent",
+    "zip": "21 entries, no traversal/READY-DONE",
+    "sourceBinding": "18/18==SCOPE==MANIFEST",
+    "manualBinding": "18/18 no drift",
+    "changesDiff": "replay consistent",
+    "humanColumns": "18/18",
+    "metadata": "18/18"
+  },
+  "g1": {
+    "result": "PASS",
+    "lineRefs": "39/39 in range",
+    "chapters": "11x11+2x7+2x6+1x8"
+  },
+  "g2": {
+    "result": "PARTIAL",
+    "method": "18 source files deep-read + fact base reviews/nb-41/SOURCE-CHECKLIST.md; 18 manuals compared; spot-verified server routes, index.html data flow, @profer/project-core consumers, dataset exports, metrics.test case count",
+    "findingsTotal": 11,
+    "notesTotal": 5
+  },
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/task.ts.md": "bd99864441669cffd7dd95039142678ddb2cc312d9a04bee8fb21bdebf170f7d",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/tsconfig.json.md": "38b1d9c1c8de7738c90314643c9e97a7ee4d642c61d61bbf1c40c80182fab112",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/package.json.md": "d0d64d81cadb05780ff6fd365c8d438972232d932de6eea060694d14cf8bbb43",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/dataset.test.ts.md": "80df00653affb9c278daffdae888f3a16342045371a76954320545af02787957",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/evaluator.ts.md": "c62fd58666b0b63c1324ca045231cc8da7aff440b7bd8d939ea72e437469ec07",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/metrics.test.ts.md": "e43ba68fcf3ea95d5c76f1638e096312158839d2e7b0c351a8e16595992adba2",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/metrics.ts.md": "f6ad748ec03909580265b368f5d31e5348ae0dbd0a2c366d7d9cf81ea5bb0362",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/runner.ts.md": "7f41d39bed277b88e1e4ed8ad2d8a5a1704895b19fff1bdaf366e20ac7fbb997",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/types.ts.md": "12f42aafcb2d7147f59c12cf49fd6ad5d608b9be2edaf9fa4aff02156e23c754",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/tsconfig.json.md": "4aee1bbb7664fc728ceb37949257c3375dde0a706d609e96c1fe3165f11dfa9d"
+  },
+  "files": [
+    {
+      "path": "packages/agent-fabric/src/task.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/task.ts.md",
+      "sourceBlob": "3269181747073d91ecac8785f2630558b66ef681",
+      "sourceSha256": "effad25de250417b467876c34e02932d6b6c3425a2e4dca3dc0fdc661118f4e2",
+      "sourceLines": 248,
+      "manualSha256": "bd99864441669cffd7dd95039142678ddb2cc312d9a04bee8fb21bdebf170f7d",
+      "manualLines": 92,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [
+        {
+          "id": "F-NB41-07",
+          "severity": "low",
+          "claim": "13 导出应为 16（表漏 ApprovalModeValue/WorkspaceModeValue/RetryClassValue 三个类型别名）。",
+          "sourceEvidence": "task.ts grep -c ^export = 16。",
+          "action": "补 3 行、计数改 16。"
+        }
+      ]
+    },
+    {
+      "path": "packages/agent-fabric/tsconfig.json",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/tsconfig.json.md",
+      "sourceBlob": "73a65ef2ef6e5658643310ffc67e5391df2cbbc1",
+      "sourceSha256": "1de5fbec4888f903fd7d0695642e6c2cb46ae9f5e944df0d93a4fd1aaa2325d6",
+      "sourceLines": 5,
+      "manualSha256": "38b1d9c1c8de7738c90314643c9e97a7ee4d642c61d61bbf1c40c80182fab112",
+      "manualLines": 56,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "packages/benchmark-multihop/package.json",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/package.json.md",
+      "sourceBlob": "8e637f118bb3f4e4e4c2d718b537b9513f6b1937",
+      "sourceSha256": "19dc9b37435c2101354a89993f2592b123e18336c750579de121ed3a2ca3db67",
+      "sourceLines": 16,
+      "manualSha256": "d0d64d81cadb05780ff6fd365c8d438972232d932de6eea060694d14cf8bbb43",
+      "manualLines": 69,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "packages/benchmark-multihop/public/index.html",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/public/index.html.md",
+      "sourceBlob": "9dffbc09d3a95b21cbfb5e9fce4e90f4f6585cea",
+      "sourceSha256": "22a3f96fbafbb5c59a2265384e8b57d30eee04bed5b4240017b33b50f2b80150",
+      "sourceLines": 440,
+      "manualSha256": "8575e4216c667bef38dbc8ebda00c924c47167c911046b02a7cdea79d5c514f6",
+      "manualLines": 66,
+      "verdict": "revision_required",
+      "findings": [
+        {
+          "id": "F-NB41-02",
+          "severity": "major",
+          "claim": "§2 描述前端用 EventSource(/api/run/stream) 消费 SSE、POST /api/dataset/download 吃 dataset-progress、/api/report/export?format= 下载、函数名 renderMetrics/renderBars。实测：runBenchmark 用 fetch(/api/run)+ReadableStream 手工解析 SSE 帧（:240-280）；downloadOfficial 用 POST /api/datasets/download JSON 响应（:413）；exportReport 用 POST /api/export body {report,format} blob 下载（:395）；函数实名 renderReport/renderDetail；全文件无 EventSource、无 /api/report*。",
+          "sourceEvidence": "index.html:240/:282-297（帧解析+handleEvent）、:395/:413；grep EventSource 零命中。",
+          "action": "按源码重写 §2 数据流（fetch+ReadableStream 帧解析、真实端点与函数名），同步 §3/§5。"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "path": "packages/benchmark-multihop/src/dataset-loader.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/dataset-loader.ts.md",
+      "sourceBlob": "93e6469bf9ebc8ebff135768d331887d086885a1",
+      "sourceSha256": "5ee629afc8564fefa39b6df78a14b2d3507b97a099b13f255e0a24aae40a3dba",
+      "sourceLines": 139,
+      "manualSha256": "edb61767f9dc32e727fc17686b27446cc8121b750b2867749f1000a885b21797",
+      "manualLines": 81,
+      "verdict": "revision_required",
+      "findings": [
+        {
+          "id": "F-NB41-06",
+          "severity": "minor",
+          "claim": "服务端路由引用错误：dataset-loader §4/§8 引用 /api/dataset/download（实际 POST /api/datasets/download，server.ts:110，无 SSE dataset-progress）；report §4/§8 引用 /api/report/export（实际 POST /api/export，server.ts:183-198，GET /api/report/export 不存在）。",
+          "sourceEvidence": "server.ts:110-118/:183-198；grep /api/report 零命中。",
+          "action": "dataset-loader 改 /api/datasets/download；report 改 POST /api/export。"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "path": "packages/benchmark-multihop/src/dataset.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/dataset.test.ts.md",
+      "sourceBlob": "9dd2a0b9eaa8e56fc47c4d444c58e75d910446fa",
+      "sourceSha256": "b1bee4fdfd1f0f2ba5c72fcc6ff1151b0c786f2ec6a9d036122663929b86ac90",
+      "sourceLines": 45,
+      "manualSha256": "80df00653affb9c278daffdae888f3a16342045371a76954320545af02787957",
+      "manualLines": 56,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "packages/benchmark-multihop/src/dataset.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/dataset.ts.md",
+      "sourceBlob": "160b66a6f09f35ae47f94600ee283fe04d4bd6cc",
+      "sourceSha256": "2a2303510250bdb28957f9032b4cac5e9f2ea2e5d28d27b6d3d54afabd954a3b",
+      "sourceLines": 426,
+      "manualSha256": "b952d07ecb9e134a2a777c1fb60b0b777c12cd427cd97927dc3067037c54b388",
+      "manualLines": 77,
+      "verdict": "revision_required",
+      "findings": [
+        {
+          "id": "F-NB41-05",
+          "severity": "minor",
+          "claim": "§2 称 EMBEDDED_QUERIES（:238-375）为导出常量、共 4 导出。实测：该处常量名为 RAW_QUERIES（:191 起，未导出，RawQuery 接口亦未导出）；实际导出仅 3 个（EMBEDDED_CORPUS:16 / EMBEDDED_SAMPLE:391 / validateEmbeddedSample:403）。",
+          "sourceEvidence": "dataset.ts grep export 仅 3 处；:191 const RAW_QUERIES。",
+          "action": "改为 3 导出+未导出 RAW_QUERIES(:191)；删除 EMBEDDED_QUERIES 名。"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "path": "packages/benchmark-multihop/src/evaluator.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/evaluator.ts.md",
+      "sourceBlob": "86f62cb5c586c2f9b711ccf9313545877cd2136a",
+      "sourceSha256": "856cdbc01011378affe18cf9968f959c218520cade69d0bb81fcae5108808f96",
+      "sourceLines": 328,
+      "manualSha256": "c62fd58666b0b63c1324ca045231cc8da7aff440b7bd8d939ea72e437469ec07",
+      "manualLines": 79,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "packages/benchmark-multihop/src/metrics.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/metrics.test.ts.md",
+      "sourceBlob": "e7dc2fa4760546c2b3b27982b859d4b56dd1f9f7",
+      "sourceSha256": "3a9598eec16b161463499c45f2f1115bfe5d215ceed338b37b44dcc9490b6ff0",
+      "sourceLines": 201,
+      "manualSha256": "e43ba68fcf3ea95d5c76f1638e096312158839d2e7b0c351a8e16595992adba2",
+      "manualLines": 59,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [
+        {
+          "id": "F-NB41-11",
+          "severity": "low",
+          "claim": "8 describe、22 test 中 22 与自身枚举相加（1+9+2+1+1+4+3+5=26）矛盾；实测 26 test。",
+          "sourceEvidence": "metrics.test.ts grep -c test( = 26。",
+          "action": "改 26 并校准锚点。"
+        }
+      ]
+    },
+    {
+      "path": "packages/benchmark-multihop/src/metrics.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/metrics.ts.md",
+      "sourceBlob": "a769416abf96931320d4b0c1f5f19bb747cd9b9e",
+      "sourceSha256": "4e7a64575abdbc1ce2427bc6277162c4649022e684ad59aa1f46a172b3e6aed9",
+      "sourceLines": 299,
+      "manualSha256": "f6ad748ec03909580265b368f5d31e5348ae0dbd0a2c366d7d9cf81ea5bb0362",
+      "manualLines": 85,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [
+        {
+          "id": "F-NB41-08",
+          "severity": "low",
+          "claim": "10 导出应为 11（mean/median 分立）；metrics.test 22 用例应为 26（8 describe 实测）。",
+          "sourceEvidence": "metrics.ts export=11；metrics.test.ts test(=26 describe(=8。",
+          "action": "计数修正。"
+        }
+      ]
+    },
+    {
+      "path": "packages/benchmark-multihop/src/report.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/report.ts.md",
+      "sourceBlob": "3bb501bea4a33c5231742ad8aa3f902d06129013",
+      "sourceSha256": "8abc0878fd0be3c5215d486bf39e57d019f25511f1a0616b4b876282eb7522cf",
+      "sourceLines": 269,
+      "manualSha256": "bd77d34373553558ff1b0de96baf99eea3a9e651a13ead8ac83c77640bc907c8",
+      "manualLines": 78,
+      "verdict": "revision_required",
+      "findings": [
+        {
+          "id": "F-NB41-06",
+          "severity": "minor",
+          "claim": "服务端路由引用错误：dataset-loader §4/§8 引用 /api/dataset/download（实际 POST /api/datasets/download，server.ts:110，无 SSE dataset-progress）；report §4/§8 引用 /api/report/export（实际 POST /api/export，server.ts:183-198，GET /api/report/export 不存在）。",
+          "sourceEvidence": "server.ts:110-118/:183-198；grep /api/report 零命中。",
+          "action": "dataset-loader 改 /api/datasets/download；report 改 POST /api/export。"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "path": "packages/benchmark-multihop/src/runner.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/runner.ts.md",
+      "sourceBlob": "f1115957b3ac82a001e715dec5c382b80bfd5712",
+      "sourceSha256": "ae945cc007ad8f5590c0e50e4d4d1e7ea6c54acb37b6884bffcd608e9d66d3a7",
+      "sourceLines": 187,
+      "manualSha256": "7f41d39bed277b88e1e4ed8ad2d8a5a1704895b19fff1bdaf366e20ac7fbb997",
+      "manualLines": 83,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [
+        {
+          "id": "F-NB41-09",
+          "severity": "low",
+          "claim": "7 导出应为 9（表内 9 符号、7 行系合并行）。",
+          "sourceEvidence": "runner.ts export=9。",
+          "action": "计数改 9。"
+        }
+      ]
+    },
+    {
+      "path": "packages/benchmark-multihop/src/server.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/server.ts.md",
+      "sourceBlob": "7830e578dfb373061c7bdf8f53385cf1a276fa94",
+      "sourceSha256": "a6b2f7a21dfe111e3586fe720b33ad61fc1590bf9f2be1658d252743f8b88c14",
+      "sourceLines": 208,
+      "manualSha256": "ca73900a8d35844ed5251b37d4238668844518d82d5c7dedddbd23af487f41e2",
+      "manualLines": 82,
+      "verdict": "revision_required",
+      "findings": [
+        {
+          "id": "F-NB41-01",
+          "severity": "major",
+          "claim": "§3 路由清单大面积虚构/错名：声称 POST /api/dataset/download 进度经 SSE dataset-progress 帧、POST /api/run 内存保存报告后返回 extractHighlights、GET /api/report、GET /api/report/export?format=md|json|csv。实测源码：下载路由为 POST /api/datasets/download 且直接 JSON 返回（无 SSE）；POST /api/run 是 SSE 流（status/progress/done/error，报告经 done 帧下发，服务端不存报告）；导出为 POST /api/export（body {report,format}）；GET /api/report 与 GET /api/report/export 不存在。",
+          "sourceEvidence": "server.ts:110-118（/api/datasets/download JSON）、:121-180（/api/run SSE ReadableStream）、:183-198（POST /api/export）、:203（404）；grep /api/report 全文件零命中。",
+          "action": "按源码重写 §3/§6/§11 路由表；删除两条不存在路由与内存保存报告表述。"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "path": "packages/benchmark-multihop/src/types.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/types.ts.md",
+      "sourceBlob": "e1404386e2189c10df0f4a8d4e66f0acdf29969a",
+      "sourceSha256": "d4d2c672f4b907da0dd80d029d9b8a54aeb2e7a8c060536f7a407d45d8e85edf",
+      "sourceLines": 156,
+      "manualSha256": "12f42aafcb2d7147f59c12cf49fd6ad5d608b9be2edaf9fa4aff02156e23c754",
+      "manualLines": 79,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [
+        {
+          "id": "F-NB41-10",
+          "severity": "low",
+          "claim": "13 类型导出应为 9（表内 9 项完整正确，仅汇总数错）。",
+          "sourceEvidence": "types.ts 类型导出 9。",
+          "action": "计数改 9。"
+        }
+      ]
+    },
+    {
+      "path": "packages/benchmark-multihop/tsconfig.json",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/tsconfig.json.md",
+      "sourceBlob": "73a65ef2ef6e5658643310ffc67e5391df2cbbc1",
+      "sourceSha256": "1de5fbec4888f903fd7d0695642e6c2cb46ae9f5e944df0d93a4fd1aaa2325d6",
+      "sourceLines": 5,
+      "manualSha256": "4aee1bbb7664fc728ceb37949257c3375dde0a706d609e96c1fe3165f11dfa9d",
+      "manualLines": 50,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "packages/project-core/package.json",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/package.json.md",
+      "sourceBlob": "77d954b076e9bcc7d56e61314d6558dff873f0b8",
+      "sourceSha256": "bf64a8d12a0ee955d960923680a3cd5a14ffe27e65145c4cd5a8741a4c27a311",
+      "sourceLines": 22,
+      "manualSha256": "5e661051339e0ccfd0157836fe2bb8779699aeda5e5afff931d168090d29598d",
+      "manualLines": 67,
+      "verdict": "revision_required",
+      "findings": [
+        {
+          "id": "F-NB41-03",
+          "severity": "major",
+          "claim": "「零代码引用」不成立：（project-core package.json §3/§7、graph-query §4）称冻结树检索 @profer/project-core 零命中、当前实际无代码引用。实测 10+ 处真实消费：apps/electron/src/main/ipc.ts:4417、lib/pi-harness/orchestrator-bridge.ts:4、telemetry.ts:1、reconciler.ts:1、graph-focus-packet.ts:7、evals/replay.ts:1、多个 pi-harness 测试、main/lib/project-graph-service.ts（generateSummary/formatSummaryAsPreamble）、renderer/atoms/graph-atoms.ts（deriveGraph）。",
+          "sourceEvidence": "grep -rn @profer/project-core 命中 10+ 文件；project-graph-service.ts:14-25 导入块；graph-atoms.ts:18。",
+          "action": "改为真实消费者/调用链清单；删除预留共享库未落地表述。"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "path": "packages/project-core/src/graph-parser.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/graph-parser.ts.md",
+      "sourceBlob": "c73e9376931020eaf93818f6f024ff13e6f91305",
+      "sourceSha256": "99b81b9b69f0c48d73442b403d36884a1da48a58db32970beeb55b770e036872",
+      "sourceLines": 120,
+      "manualSha256": "304f8ae05067b073bfaf5c565189654baa9b3746cf9ee77875b64299d8e9b120",
+      "manualLines": 77,
+      "verdict": "revision_required",
+      "findings": [
+        {
+          "id": "F-NB41-04",
+          "severity": "minor",
+          "claim": "formatNodeDetail 为错误符号名：graph-query §2/§11 与 graph-parser §4 将 :~610-636 导出写作 formatNodeDetail；实际导出名为 formatTaskContext（graph-query.ts:604-636）。",
+          "sourceEvidence": "graph-query.ts:604 export function formatTaskContext；grep formatNodeDetail 全树零命中。",
+          "action": "改名 formatTaskContext 并校准行号（两篇同步）。"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "path": "packages/project-core/src/graph-query.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/graph-query.ts.md",
+      "sourceBlob": "c951c82b94d9868be6e39daa8801d804ee8a6055",
+      "sourceSha256": "c51aadf6fdec1f6f75b27babfa7a629ed3e6790efbd59ecbb2b14034ea8f7561",
+      "sourceLines": 660,
+      "manualSha256": "c03fa3e270aa4d7e913832a2c68e33dc99e3379981c8266b05a605044b212d81",
+      "manualLines": 86,
+      "verdict": "revision_required",
+      "findings": [
+        {
+          "id": "F-NB41-03",
+          "severity": "major",
+          "claim": "「零代码引用」不成立：（project-core package.json §3/§7、graph-query §4）称冻结树检索 @profer/project-core 零命中、当前实际无代码引用。实测 10+ 处真实消费：apps/electron/src/main/ipc.ts:4417、lib/pi-harness/orchestrator-bridge.ts:4、telemetry.ts:1、reconciler.ts:1、graph-focus-packet.ts:7、evals/replay.ts:1、多个 pi-harness 测试、main/lib/project-graph-service.ts（generateSummary/formatSummaryAsPreamble）、renderer/atoms/graph-atoms.ts（deriveGraph）。",
+          "sourceEvidence": "grep -rn @profer/project-core 命中 10+ 文件；project-graph-service.ts:14-25 导入块；graph-atoms.ts:18。",
+          "action": "改为真实消费者/调用链清单；删除预留共享库未落地表述。"
+        },
+        {
+          "id": "F-NB41-04",
+          "severity": "minor",
+          "claim": "formatNodeDetail 为错误符号名：graph-query §2/§11 与 graph-parser §4 将 :~610-636 导出写作 formatNodeDetail；实际导出名为 formatTaskContext（graph-query.ts:604-636）。",
+          "sourceEvidence": "graph-query.ts:604 export function formatTaskContext；grep formatNodeDetail 全树零命中。",
+          "action": "改名 formatTaskContext 并校准行号（两篇同步）。"
+        }
+      ],
+      "notes": []
+    }
+  ]
+}

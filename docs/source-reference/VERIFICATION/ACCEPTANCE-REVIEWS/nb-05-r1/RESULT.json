@@ -1,0 +1,70 @@
+{
+  "schema": "dsh-r07-review-result/1",
+  "batch": "nb-05-r1",
+  "revisionOf": "nb-05",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T15:57:15Z",
+  "batchVerdict": "accepted",
+  "gates": { "G0": "pass", "G1": "pass", "G2": "pass" },
+  "sourceEvidence": {
+    "prereadChecklist": "reviews/nb-05/SOURCE-CHECKLIST.md（851 行，589 注册点全量矩阵，全文件 1-8114 独立逐行读；本次 G2 在其基础上按 r1 封版字节复核，新声明全部回源）",
+    "independentCounts": { "registrations": 589, "handle": 584, "on": 5, "onLines": [1347, 2302, 2495, 2914, 2943], "assertSensitiveAgentIpcSender": 54, "assertOrdinaryAgentSession": 43 }
+  },
+  "g0Evidence": {
+    "parentChain": "SUPERSEDED-BY.parentSealed 5/5 实算一致（READY 81d48273… / DONE f2a5d141… / MANIFEST 54427591… / ZIP 05ce2009… / manual 53f2b91e…），父批字节未改",
+    "r1Chain": "manual 7a8d945a… = SUPERSEDED-BY.r1 = READY.manualHashes = MANIFEST.files[0].manualSha256；ZIP 220d6ba3… = READY.zip.sha256 = DONE.zipSha256 = SUPERSEDED-BY.r1；MANIFEST 4411cbb3… = READY/DONE.manifestSha256；READY ac5c7a40… = DONE.readySha256；sealId seal-ce3f146e62a6ede5 一致；seal_delivery.py/1",
+    "zip": "R07-nb-05-r1-05fb2565.zip 4 条目（COVERAGE.mechanical/MANIFEST/SOURCE-EVIDENCE.mechanical/stage 手册），无 READY/DONE（seal v2 设计）；0 穿越/0 符号链接/0 字节 mismatch；mtime 全 1980-01-01",
+    "revisionChain": "before/ 与父批 stage 逐字节相同；changes.diff（5b5d80c0…）单 hunk（唯一改动=§6 行号倒置笔误 ipc.ts:4266-2475→4266-4275），git apply 重放 before/+diff == stage 逐字节；SUPERSEDED-BY 声明与实算一致",
+    "sourceBinding": "apps/electron/src/main/ipc.ts blob 691ae29c… / sha256 cdd428a9… / 8114 行，与 nb-05-SCOPE.json、冻结树 git ls-tree、MANIFEST 四处一致（独立实算）",
+    "metadata": "手册头 11 键齐全；reviewer=p02-agent-runtime（非本包）；testsRun/buildsRun 空、notRun 明示；人工证据列自述继承父批+回源 4262-4277"
+  },
+  "g1Evidence": {
+    "sections": "11 章齐备且有实质内容（结论边界/导出符号/逻辑流程/调用链/IO 副作用/分支恢复/权限权威/影响面/测试/三分法/覆盖表）",
+    "exports": "5/5 导出与源码行号一致（506/1284/1297/1318/1322）",
+    "matrix": "§3.2 A-U 分组计数 19+15+29+24+18+31+24+74+23+19+17+32+56+11+40+25+22+21+9+43+37 = 589，与机械 grep 584+5 一致",
+    "lineRefs": "全文 path:line 引用 829 处（反引号限定口径 814 处），倒置/越界/悬空 = 0（r1 修复后复扫）；10 个仓库路径全部存在",
+    "triPartition": "§10 已证实/推断/未知逐条带证据；NOT_RUN 明示（§9）"
+  },
+  "g2Evidence": {
+    "coverage": "589/589 注册行全部被矩阵引用（机械比对 missing=0）；QA 全文读毕 1028 行手册 + 独立全量读毕源码 8114 行（预读）",
+    "factChecks": "抽核并扩核 ≥30 组行为结论全部相符：导出/内部符号行号、注册期副作用 13 项（含 runAutoArchive 24h setInterval、cdut resetOnStartup、子注册委托）、守卫语义（isPathAllowed deny-by-default、isPreviewPathAllowed 只读放宽、UPDATE_SYNC 不剥离 reviewAgentAutoApproval、GET_DEFAULT_APP_FOR_FILE 无 access 跳检、KILL_PROCESS 双因子、权限热切/runtime 切换回滚、Goal/STOP_AGENT 并行停止）、矩阵逐节行级核对（A-U 全部抽查+全量机械覆盖）",
+    "discrepancies": "手册 §10 记录的 12 条现存实现矛盾逐条回源核实全部属实（含 QA 预读已知的 8 条与 QA 未发现的 4 条：3890 注释错位、4051 不广播 vs 4090 投影、ATTACH/DETACH realpath 不对称、GET_MESSAGES vs GET_SDK_MESSAGES 守卫不对称）",
+    "crossFile": "ipc-sender-guard.ts:22-59（主窗口/可信次级 WeakSet/文案）、agent-session-manager.ts:658-664（isReviewOwnedOrDeletedAgentSessionId+文案）、runtime.ts:361-408（IPC_CHANNELS 字面量）、planning.ts:13（PLANNING_CONFLICT_ERROR 值）、goal-ipc-routing.test.ts 5 断言、ipc-sender-guard.test.ts 1 用例 5 断言——逐条回源一致",
+    "tests": "手册 §9 测试断言=静态阅读结论，NOT_RUN；覆盖缺口否定结论带 grep 范围（与 QA 独立检索一致）"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/main/ipc.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/ipc.ts.md",
+      "sourceBlob": "691ae29c3cc881dee4dc1d2d31544d8b8eb98e01",
+      "sourceSha256": "cdd428a90cce993183cd6f52bdccdad225815544801ddbc7a2470dd6e7c6dd88",
+      "manualSha256": "7a8d945a0915a74c0fb9583f963b834565c57aa61f500c739aeb3c9c6bf5dff5",
+      "manualLines": 1028,
+      "verdict": "accepted",
+      "findings": ["N-01", "N-02"]
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/ipc.ts.md": "7a8d945a0915a74c0fb9583f963b834565c57aa61f500c739aeb3c9c6bf5dff5"
+  },
+  "findings": [
+    {
+      "id": "N-01",
+      "severity": "minor",
+      "claim": "§6 'team/本地分支' 与矩阵 6920 行的分支条件与计数不精确：(a) 称 Planning 全族按 `getAgentWorkspace(...)?.type === 'team'` 路由'14 处'，实际该模式 17 处（ipc.ts:6933,7004,7014,7035,7049,7059,7076,7085,7094,7102,7111,7120,7131,7141,7152,7159,7168）；(b) 所举首例 ipc.ts:6921-6926（LIST_TODOS）并非 type==='team' 判定，而是 workspaceId 存在即走 listTeamTodos 的 presence-based 路由，矩阵 6920 行'workspaceId 为 team 时'措辞同误。",
+      "sourceEvidence": "ipc.ts:6920-6927（LIST_TODOS：`if (typeof workspaceId === 'string' && workspaceId)` → listTeamTodos）；grep 'type === 'team'' = 17 行（实测）",
+      "action": "下一修订轮（rN）把 §6 计数改为 17 处 type-based + 1 处 presence-based（LIST_TODOS 单列），矩阵 6920 行改为'传入 workspaceId 即走 team 服务（presence 判定），否则本地'。非阻断，不影响其余结论。"
+    },
+    {
+      "id": "N-02",
+      "severity": "minor",
+      "claim": "两处 trivial 计数偏差：§11 覆盖表'注册期副作用（14 项）'与 §3.0 实表 13 行不一致（不同拆分口径均得不出 14）；COVERAGE/UNVERIFIED 称'815 处 path:line 引用'，按其自述反引号口径实测 814 处（宽口径 829 处）。",
+      "sourceEvidence": "手册 §3.0 副作用表 13 行；反引号 path:line 正则实测 814；`ipc.ts:NNNN` 宽口径实测 829",
+      "action": "下一修订轮统一计数口径并改数（13 或按拆分口径明示；引用数注明统计正则）。非阻断；两种口径下倒置/越界均为 0，不影响有效性。"
+    }
+  ],
+  "notRun": ["product tests", "typecheck", "build", "Electron/GUI", "real model/network"],
+  "notes": "QA 预读清单 §4.19（reviews/nb-05/SOURCE-CHECKLIST.md）对 LIST_TODOS 同样简写为'team→listTeamTodos'，本报告 N-01 一并更正该口径（QA 自纠，不回写已发布清单，以此为补充记录）。r1 唯一改动（行号倒置修复）经重放验证成立；旧接受不套新字节，本 verdict 绑定 manualSha256=7a8d945a…。"
+}

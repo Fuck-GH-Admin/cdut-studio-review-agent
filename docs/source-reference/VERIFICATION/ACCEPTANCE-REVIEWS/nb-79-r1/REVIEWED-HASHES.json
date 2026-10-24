@@ -1,0 +1,35 @@
+{
+ "schema": "r07-reviewed-hashes/2",
+ "batch": "nb-79-r1",
+ "revisionOf": "nb-79",
+ "reviewer": "docs-r07-qa-ui-20261023",
+ "reviewedAtUtc": "2026-10-24T00:15:00Z",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/hierarchical-graphrag.ts.md": "dabc30d66a5d0f28f6862fc2c6a04e0106a893b909fee60a1214ee27a77d070b",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/hybrid-retriever.ts.md": "f439e9462f1d89f15fe9b45553450e15c7403aca4d2a419a9687358ee0a3a3a8",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/markdown-normalizer.ts.md": "1f353c5638925e97afdca676e8f88ad4d173e2c313f7504cc1e95155f453da5e",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/ocr-engine.ts.md": "cbb213c61cf5afb1e9b9f97a2440cb50e4d1236baf1204200996e377e7b86783",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/propositional-chunker.test.ts.md": "54609e63d539a27aa200c913c847dda83748ab50aa4a89d77072c8765a40f9ff",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/propositional-chunker.ts.md": "f6910b79196694189ecb7bb6c4c6a78dc4cc757893b5ed2c58e9daa374ed23d0",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/quiz-options.ts.md": "5595d7e1e5c1c9d569f0e66faa14b6d2d15fd1fa0915c91514976c8979a15e42",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/statistical-semantic-chunker.ts.md": "6ae4cae6e96cad51c4d144f980590d4bb6806ef62eaaa1db20eb963be1f79abc",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/study-benchmark-server.ts.md": "6d2c5c5a13db87cd3445bac83b83b8891c4ccc7b2479b889b6377d837aec1353",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/study-document-indexer.test.ts.md": "d529bcb47333e38b35c44347bd4827d4a678516bde01c6307e1cca4cc147e8da",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/study-document-indexer.ts.md": "7d25e5c1cb6b52c8cb34ffb9086e1cba54b59448fe145952c215b5d57ef82f50",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/study-retrieval-router.test.ts.md": "1943d091760eea17d2fe5286b00b7f4179be714ca222a339a9da1b5166a81acc",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/study-retrieval-router.ts.md": "f346f1758732e38c790029dc531bcac34b8ca73ace07707b246744917c90bef5",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/study-session-store.test.ts.md": "e14d0df80ee97edd0a9b09f3b73307d8d909ffdfc62ebe5af620e198bccc977c",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/study-session-store.ts.md": "f292a45546c04342cfc219ba816c4b84fe0d8493620b0e79dd4ca9ae7c2e3d71",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/study-tools.ts.md": "073cc95edf4d6d18e07018e507ff546867066347b063dc09577e07c203df0aee"
+ },
+ "sealedArtifacts": {
+  "READY.json": "b861325b0b5e5a62094a3f211c63bfe4e9cc180a897f0458d1aef03f43495062",
+  "DONE.json": "157925a662466fb9091258a8248f5f8ef9c449837c36fa5dd1d654c9b2b9618e",
+  "MANIFEST.json": "7bc11342a84e549c549413b8607885a822a2860525608836bd2ba120e011e803",
+  "R07-nb-79-r1-05fb2565.zip": "2dd0eee5e1c5ebf595a26273bdcd6c9d33f434fb038382c1a42d515e48d9480b"
+ },
+ "openNotes": [
+  "N79-1"
+ ]
+}

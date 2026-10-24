@@ -1,0 +1,118 @@
+{
+  "schema": "r07-reviewed-hashes/1",
+  "batch": "nb-77",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "sealId": "seal-3c634b8ef06bc19d",
+  "reviewedAtUtc": "2026-10-23T20:38:07Z",
+  "manuals": [
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/agent-fabric/agent-fabric-service.ts.md",
+      "manualSha256": "81095829c58be1a9892b19ecf285380d78853e8f269446e2aae2079045f2115e",
+      "sourceSha256": "fac9b378f3b5f1ef0a5ea12404399807d3f58b20b4df772df038dcedce684118",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/agent-fabric/fabric-config.ts.md",
+      "manualSha256": "b9defb3af63e524215e80d7478c576e9119ac7d9dbfb644f797ace53ba1e47f0",
+      "sourceSha256": "f551684124673cedc824666fdb4094136fb8918d3550792989500c1e02d6503a",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/agent-fabric/fabric-executor-headless.ts.md",
+      "manualSha256": "655ca518fc1044e90782a00dc5b6a262dd68d7dbe72815411d8927cb9b983e20",
+      "sourceSha256": "82bafafb8d184159b17b702884c4804a974a7093bf85e0da1f3a4b5b5911e6ef",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/agent-fabric/fabric-pairing.ts.md",
+      "manualSha256": "cc183febcad5da6d2e6ba4c1f68a7e865bbea4a9456b6d3c3fbc02dfbf375487",
+      "sourceSha256": "f8160fab425437c06c288a650894540de49a860d5f2aa5cc7b9cf51f0e9d7ea2",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/agent-fabric/fabric-server.test.ts.md",
+      "manualSha256": "fc73e3f7d8e2dbf300b79cdfa11fbf24565aa81372ca398c4eca0100bc148040",
+      "sourceSha256": "03df8492f1d06b38fa4ec0c9eb4496de2c6eed546f1571f7c76d540bdbf64a5e",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/agent-fabric/fabric-server.ts.md",
+      "manualSha256": "a094982b7c6cd81ca980f7bae021bd7467c4eda053d5a82ee68a5efa863fd1a8",
+      "sourceSha256": "3eda155a86010bae1ec7c1e0989c57d159b68b012ecfc02ff94212fe3aad6e3d",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/agent-fabric/fabric-store.test.ts.md",
+      "manualSha256": "eb5b19eec8e088771e73fb01fa60906c20d5c6137e5b74a3b76bbccbfb43fae5",
+      "sourceSha256": "9c65968c5d63cf8a43b3923e941d432b0a7a011b83a4b1ce8651bd1f2c12458d",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/agent-fabric/fabric-store.ts.md",
+      "manualSha256": "3a8497a66fe7086329be961c7ae8b823630debcbf13dd51285eb73398af43d8d",
+      "sourceSha256": "f3a1cd1a27b88c719738332f353cf9d893de961017b0f505d3b6dedb6e3f5c1b",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/context-rag/conversation-chunks.test.ts.md",
+      "manualSha256": "f956c02b665fa1a37d9c5b3d0f8ad3b2715aafc2b7479d3c76cb1bbaaaeb740d",
+      "sourceSha256": "c6e94fe9cfb4e63bc911cadf0409eca694345513ff9a469a8b9c88e6b969c654",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/context-rag/conversation-chunks.ts.md",
+      "manualSha256": "2956206251b925f526d237f907c6ffab3277d7e4b4f76d54f42509f095cd2a99",
+      "sourceSha256": "2e7678264be1de3f1374a9aeecb27e3f63e92d8dbe6dcf110b9f5e10ee952719",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/context-rag/conversation-index.ts.md",
+      "manualSha256": "77de02463d90a6f574375468d7ad6f221c324392d29f2d153d3d8953efa00d83",
+      "sourceSha256": "e6dcf0a597318f83816bc957d4d4dbb938bc25be71b8b7c819da13afc29f7472",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/context-rag/conversation-retrieval.test.ts.md",
+      "manualSha256": "c11472330707836433fac8cdcef5eb94726a96919b9ecca91ad0400aec000c47",
+      "sourceSha256": "5528d8560380e1e5638626ccbf3c08d58c89544b0b3d25637668df230161b122",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/context-rag/conversation-retrieval.ts.md",
+      "manualSha256": "57eaca3f196b6023b41a43ac35203fdbfb82560a7405998610ff1bf0c5f1657e",
+      "sourceSha256": "5a02a47ec026fd7adb0bddbe9706b0f2239a8605668d7ac9c02b0f82d2e60515",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/card-renderer-v2.test.ts.md",
+      "manualSha256": "bceaeabf8f133d5547764a03e64fcfff8bb6963dc4f87be4d9d01a891711c288",
+      "sourceSha256": "bc3b7703610d04b1da73d07f00d883924e9029b50778333d75cebae275cbd7e9",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/card-renderer-v2.ts.md",
+      "manualSha256": "a043fffc8491c8ef17ab3f912eaffbbcb3d8e2172ee494f298e62b74e4f08852",
+      "sourceSha256": "a603da2d5602ab2f8dbcb1798f5fd6ab486fd3f36b3a2a1de31a91b04bfa3d2a",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/card-run-state.test.ts.md",
+      "manualSha256": "5708d4077b604f7c4e1aef4f3235aa3c4ffbe603461d36d794710c4c463fd769",
+      "sourceSha256": "e79e4b05199ff77680d43530938e41410b26fb6949fbf4948ed267509b73a597",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/card-run-state.ts.md",
+      "manualSha256": "1a8bac5f37ad79230d1b505654edaaa199a90f4dada0b669bf337b5c9b7e5154",
+      "sourceSha256": "1096f2ed58d804ff78aa3e2d2deabe3490753ea7ee8b686e6c94cccac222d548",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/card-stream.ts.md",
+      "manualSha256": "54815a3f3278c196b134e2b2b59bc534eb64193a13c65e543ad7d07989263218",
+      "sourceSha256": "f589894c47edab417ba244cc192c365bfbf60b66aed522dcb0d3b34760f0b071",
+      "verdict": "accepted"
+    }
+  ]
+}

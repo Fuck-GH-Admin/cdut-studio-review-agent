@@ -1,0 +1,63 @@
+{
+  "schema": "r07-independent-gate/1",
+  "gate": "INDEX-SOURCE-CORRESPONDENCE",
+  "status": "PASS",
+  "reviewedAtUtc": "2026-10-23T21:47:21.229133+00:00",
+  "reviewer": "Codex independent_gates",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "scope": "真实源码到文档的路径/归属/哈希/状态对应门禁；不是全仓技术真实性验收。",
+  "evidence": {
+    "final-hour/INDEX-VERIFICATION/GAPS.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "final-hour/INDEX-VERIFICATION/REPORT.md": "dc6d42bb0e376152318ea94e2b64d5e588f81cb0a48ca44f4f9fd447a4573c55",
+    "final-hour/INDEX-VERIFICATION/SOURCE-TO-DOCUMENT.tsv": "b9d645b7bb1b47b6331c30d069fa92495324102009913039bdbddd95ff4fee5e",
+    "final-hour/INDEX-VERIFICATION/STAGED-DOCUMENTS.json": "7c7e23c958918b616488ea6609c26b4fbc24a0713806d7d4a4861019ab2c847a",
+    "final-hour/INDEX-VERIFICATION/SUMMARY.json": "649539186cbfde9926d4efd20c2907a3030efccfbb46ff8e273957a7c23402eb",
+    "final-hour/INDEX-VERIFICATION/UNACCEPTED.json": "04176ccc578662d7154cd6c4d35a6c4c2831d149d12f03352f56d1b7e3aa1296",
+    "final-hour/INDEX-VERIFICATION/p01-app-shell.md": "9625a6a05184d6b62875e6489bcbcf6483d983386003ebb7e1feb19f8013a46f",
+    "final-hour/INDEX-VERIFICATION/p02-agent-runtime.md": "200df59198a11b5010eab9d113d5c6d8d6409afd094ad821d5929951b7a27f8e",
+    "final-hour/INDEX-VERIFICATION/p03-integrations.md": "5b773495ac33f3396a755002e354a13674dac1832477d381b5ff3170836e8701",
+    "final-hour/INDEX-VERIFICATION/p04-review-case-core.md": "a610aa2fee43b1551ee707724b9d74be46b88085f9fd702f479af92dcef233e4",
+    "final-hour/INDEX-VERIFICATION/p05-review-engine.md": "97c786a7a6bcd3116096649cb8919f202e1bb485e837edf8dbbad8ff9bff43c2",
+    "final-hour/INDEX-VERIFICATION/p06-review-batch.md": "25e9a19b527a9001db9f65e97722e007db32dcf367cfe592f5454e8552ddccd6",
+    "final-hour/INDEX-VERIFICATION/p07-shared-libs.md": "cf3097c5d43ae32328e0882857eb5483344a03c1aa04a8af089dab02cee3a85b",
+    "final-hour/INDEX-VERIFICATION/p08-renderer-ui.md": "e3d743fa6d1824e6d5a2f45562a80628a52231a5f38ce77cec3b5b9e08935a33",
+    "final-hour/INDEX-VERIFICATION/verify_index.py": "45ca0e948262ca0514558793a2c6b191e1b7bdcb7dd64db55400e188d1081d5c"
+  },
+  "sourceCheck": {
+    "path": "final-hour/GATES/SOURCE-CHECK.json",
+    "sha256": "04ff105e01edf85be65352162ef3010bb1c1eeea4919fba459c6a77f136415b3"
+  },
+  "independentChecks": {
+    "frozenGitHead": "exact match",
+    "trackedVsInventoryUniquePaths": 3083,
+    "sourceSha256AndBlobChecked": 3083,
+    "registryVsInventoryPathsOwnerDeepBlobSha256Checked": 3083,
+    "deepAssignmentManualAuthorReviewerChecked": 2378,
+    "acceptedCandidateBindingsAndHashesChecked": 2965,
+    "selectedStagedSourceBlobDocumentHashDoneChecked": 118,
+    "uniqueCurrentOrSelectedDocumentsChecked": 2415,
+    "issues": [],
+    "indexGroupHeadingLiteralCorrespondenceChecked": 705,
+    "gfmParsedNavigationFileTargetsChecked": 6166,
+    "indexRenderedHeadingSlugsChecked": 705
+  },
+  "snapshotCounts": {
+    "deepAccepted": 2260,
+    "deepStagedUnaccepted": 118,
+    "indexAccepted": 705,
+    "sourceTotal": 3083
+  },
+  "acceptanceMeaning": "ACCEPTED仅说明当前接受台账对应字节和源绑定一致；已知技术勘误、未关闭finding以及后续新修订仍须独立复验，不因本门禁转accepted。",
+  "legacyAuthority": "old922/g*历史手册不构成当前权威。",
+  "navigationNormalization": "705个旧inventory INDEX.md锚点保留为inventoryLink；actualLink使用已接受group markdown的实际heading。",
+  "limitations": [
+    "未重新审读全部2378篇自然语言手册。",
+    "本门禁绑定INDEX-VERIFICATION快照字节；后续台账增量不追溯改变本快照。",
+    "118篇真实sealed staged稿仍未接受。"
+  ],
+  "runtime": "NOT_RUN: no product tests/typecheck/build/GUI/real model calls",
+  "resolvedFindings": [
+    "IDX-NAV-01 literal headings normalized to rendered lowercase punctuation-stripped fragments; all705 independently checked.",
+    "IDX-NAV-02 CommonMark angle-wrapped destinations and URI percent escaping checked by parsing all6166 links and resolving decoded paths."
+  ]
+}

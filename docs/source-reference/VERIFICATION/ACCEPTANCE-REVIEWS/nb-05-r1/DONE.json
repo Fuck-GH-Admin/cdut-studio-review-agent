@@ -1,0 +1,33 @@
+{
+  "schema": "dsh-r07-qa-done/1",
+  "batch": "nb-05-r1",
+  "revisionOf": "nb-05",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "status": "REVIEW_COMPLETE_ACCEPTED",
+  "batchVerdict": "accepted",
+  "counts": { "files": 1, "accepted": 1, "revision_required": 0, "unknown": 0, "findingsOpen": 2, "findingsBlocking": 0 },
+  "reviewedManuals": ["MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/ipc.ts.md"],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/ipc.ts.md": "7a8d945a0915a74c0fb9583f963b834565c57aa61f500c739aeb3c9c6bf5dff5"
+  },
+  "gates": { "G0": "pass", "G1": "pass", "G2": "pass" },
+  "artifacts": [
+    "reviews/nb-05-r1/RESULT.json",
+    "reviews/nb-05-r1/RESULT.md",
+    "reviews/nb-05-r1/REVIEWED-HASHES.json",
+    "reviews/nb-05-r1/DONE.json",
+    "handoffs/nb-05-r1-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-05-r1-REVIEW-TO-LEAD.md"
+  ],
+  "sourceEvidenceReuse": "reviews/nb-05/SOURCE-CHECKLIST.md（独立预读，589 注册点矩阵）+ reviews/nb-05/PRE_READ_DONE.json；本次按 r1 封版字节复核，未回写旧报告",
+  "notRun": ["product tests", "typecheck", "build", "Electron/GUI", "real model/network"],
+  "knownUnknowns": [
+    "preload 5105 行逐通道对齐（G3 R2-ipc-projection，跨批）",
+    "约 60 个 ./lib/** 下层服务行为（边界）",
+    "运行时 Electron 行为（NOT_RUN）"
+  ],
+  "note": "2 条非阻断 minor（N-01/N-02）留待任一未来修订轮顺带关闭；已接受字节不得原地改，修订另开 nb-05-rN 并由 QA 按新 hash 复验。",
+  "atUtc": "2026-10-23T15:57:15Z"
+}

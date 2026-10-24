@@ -1,0 +1,56 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-135-r1",
+ "revisionOf": "nb-135",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-04-20261024",
+ "reviewerSession": "docs-r07-qa-extra-04-20261024",
+ "reviewedAtUtc": "2026-10-23T20:40:00Z",
+ "status": "REVIEW_COMPLETE",
+ "batchVerdict": "accepted",
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "deliverySeal": {
+  "sealId": "seal-671737026912a957",
+  "sealedAtUtc": "2026-10-23T20:19:46Z",
+  "readySha256": "85d088a2d34dcd3d900da91fdeb68e6d12482a4bb3b3b99fd377f95275bcbfb1",
+  "doneSha256": "d4577c0daf6fc3c7a48ee2fa40abbc2d4b7b26f734281bd7d2ed0f847b6e2f91",
+  "manifestSha256": "767188452899cc5924a81505a81bc70b85b83b88cd05671a752f3592a64d33c0",
+  "zipSha256": "97e899d8810184dcd610bdd75dd5a367c7e88efe11f714cffa8bbe2592732a9e"
+ },
+ "fileVerdicts": {
+  "apps/electron/src/shared/intro-fluid-shader.ts": "accepted",
+  "apps/electron/src/types/identity.ts": "accepted",
+  "apps/electron/src/types/index.ts": "accepted",
+  "apps/electron/src/types/node-sqlite.d.ts": "accepted",
+  "apps/electron/src/types/officeparser.d.ts": "accepted",
+  "apps/electron/src/types/settings.ts": "accepted",
+  "apps/electron/src/types/user-profile.ts": "accepted",
+  "apps/electron/src/types/ws.d.ts": "accepted",
+  "apps/electron/src/main/lib/ipc-sender-guard.test.ts": "accepted",
+  "apps/electron/src/main/lib/ipc-sender-guard.ts": "accepted",
+  "apps/electron/src/main/menu.test.ts": "accepted",
+  "apps/electron/src/main/menu.ts": "accepted",
+  "apps/electron/src/main/tray.ts": "accepted"
+ },
+ "resolvedFindings": [
+  "QA-135-F02 resolved (56->60 x2, source count 60 verified)",
+  "QA-135-F03 resolved (citation full path)",
+  "QA-135-F01 closed via corrected SCOPE.json in r1 seal"
+ ],
+ "acceptedCount": 13,
+ "revisionCount": 0,
+ "resultSha256": "8287691e815d111314b7e56748070671031aa5d12022eec32e7ca64f12135886",
+ "reviewedHashesSha256": "539e53860aa8c361b940339dd4cf12ff829303380aa7b61a71f66349f01e5d43",
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network/IPC"
+ ],
+ "note": "nb-135 链闭环（r0 11/2 -> r1 13/13 accepted）；合入以 r1 acceptedHashes 为准；本 DONE 为复核封版，之后改动须开 reviews/nb-135-r2/。"
+}

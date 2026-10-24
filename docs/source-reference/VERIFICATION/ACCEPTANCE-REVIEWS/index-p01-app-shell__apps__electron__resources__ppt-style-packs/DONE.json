@@ -1,0 +1,38 @@
+{
+  "schema": "dsh-r07-index-review-done/1",
+  "batch": "index-p01-app-shell__apps__electron__resources__ppt-style-packs",
+  "groupId": "p01-app-shell__apps__electron__resources__ppt-style-packs",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-index-author-20261023",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T19:32:00Z",
+  "sealedAtUtc": "2026-10-23T17:53:35Z",
+  "status": "REVIEW_COMPLETE_ACCEPTED",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 2,
+    "accepted": 2,
+    "revision_required": 0,
+    "unknown": 0,
+    "findingsBlocking": 0,
+    "findingsNonBlocking": 0
+  },
+  "artifactSha256": "6c45f5b0a01f28b38799cb914e4de3efed27a49ac7c73ceaf953d5f5615c7461",
+  "artifacts": [
+    "reviews/index-p01-app-shell__apps__electron__resources__ppt-style-packs/RESULT.json",
+    "reviews/index-p01-app-shell__apps__electron__resources__ppt-style-packs/REVIEWED-HASHES.json",
+    "reviews/index-p01-app-shell__apps__electron__resources__ppt-style-packs/SOURCE-CHECKLIST.md",
+    "reviews/index-p01-app-shell__apps__electron__resources__ppt-style-packs/PREREAD-NOTES.md",
+    "reviews/index-p01-app-shell__apps__electron__resources__ppt-style-packs/DONE.json"
+  ],
+  "notRun": [
+    "产品测试",
+    "typecheck",
+    "构建",
+    "Electron/GUI",
+    "真实界面渲染（本轮统一 NOT_RUN）"
+  ],
+  "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局账；未 commit/push；结论只覆盖本批。",
+  "findingsSummary": "无 findings。ERRATA-E1 沿登记。",
+  "next": "lead 按 REVIEWED-HASHES.json 合入（artifactSha256=6c45f5b0a01f28b38799cb914e4de3efed27a49ac7c73ceaf953d5f5615c7461）；QA 继续 index-p01-app-shell__assets（已交付）与后续组。"
+}

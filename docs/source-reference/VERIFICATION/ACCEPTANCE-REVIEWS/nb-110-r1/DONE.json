@@ -1,0 +1,34 @@
+{
+  "schema": "dsh-r07-independent-review-done/1",
+  "batch": "nb-110-r1",
+  "revisionOf": "nb-110",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-03-20261023",
+  "reviewerSession": "docs-r07-qa-nb-03-20261023",
+  "batchVerdict": "accepted",
+  "completedAtUtc": "2026-10-23T20:32:29Z",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "findings": 3,
+    "optionalNotes": 0
+  },
+  "sealBinding": {
+    "sealId": "seal-981a1fa5a0260af8",
+    "zipSha256": "0b6b810fdc3997a5564210b7314f606d40cf20ccbd635e5fe6cdab872769dd43",
+    "manifestSha256": "0aab2c89a600d0f89daf833273469cc8632f48d04514c5d928779461e4266edd",
+    "readySha256": "3283a9c70744d507e5cd372f888ce63afcc7056abba124d6d7f057a92cfc8f84",
+    "doneSha256": "ed7c776949b33768786fc9a8f2f692b76add72679e3c92441b9af46f3512892c",
+    "sealedAtUtc": "2026-10-23T20:30:55Z"
+  },
+  "notRun": [
+    "bun test NOT_RUN",
+    "tsc/build NOT_RUN",
+    "GUI NOT_RUN",
+    "模型/产品调用 NOT_RUN"
+  ],
+  "note": "NB110-SEM-01/02/03 全闭合；变更恰为 3 findings 对象；15 篇与父批逐字节一致。nb-110 线以 r1 为终版。",
+  "resultSha256": "0ecc1ea7db843ce414b689c00d277b064135c3dae9551cb7d7f0405fe1511080",
+  "reviewedHashesSha256": "9c2e72c8549fa263f82c016a3e80a08404c9ba3ffd0224050af4771bf38fc86a"
+}

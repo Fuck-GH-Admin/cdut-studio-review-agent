@@ -1,0 +1,37 @@
+{
+ "schema": "dsh-r07-index-review-done/1",
+ "batch": "index-p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case",
+ "groupId": "p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-03-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T20:05:00Z",
+ "sealedAtUtc": "2026-10-23T19:24:02+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 3,
+  "accepted": 3,
+  "revision_required": 0,
+  "unknown": 0,
+  "findingsBlocking": 0,
+  "findingsNonBlocking": 5
+ },
+ "artifactSha256": "b84b7019ce3b1f24d5a52715751b4af0fa6b29051001bebc605cb16263ccb046",
+ "artifacts": [
+  "reviews/index-p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case/RESULT.json",
+  "reviews/index-p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case/REVIEWED-HASHES.json",
+  "reviews/index-p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case/SOURCE-CHECKLIST.md",
+  "reviews/index-p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case/DONE.json"
+ ],
+ "notRun": [
+  "产品测试（bun test 含 single-case-mvp.e2e 全链路）",
+  "typecheck",
+  "构建",
+  "Electron/GUI",
+  "真实 LLM（本轮统一 NOT_RUN）"
+ ],
+ "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/inventory/全局账/candidate；未 commit/push；结论只覆盖本批 3 文件。",
+ "findingsSummary": "5 条非阻断 minor（MVP-N-01..05，行号漂移 ±1~4、无越界、内容全对）已登记，非阻断≠已修。本轮第 2 组行号漂移簇（含 demo-data 共 22 处）——建议作者封版前 grep -n 机械重导全部 file:line。勘误 ERRATA-E1/E2/E3 沿登记。G0/G2 PASS、G1 PASS_WITH_NOTES。",
+ "next": "lead 按 REVIEWED-HASHES.json 合入（artifactSha256=b84b7019ce3b1f24d5a52715751b4af0fa6b29051001bebc605cb16263ccb046）；QA 续审 onboarding（已封版）及后续（ecma/mce/renderer-assets WIP 待封版），返修优先。"
+}

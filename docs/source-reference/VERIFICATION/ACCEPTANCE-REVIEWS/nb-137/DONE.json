@@ -1,0 +1,39 @@
+{
+  "schema": "dsh-r07-qa-done/1",
+  "batch": "nb-137",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-extra-03-20261024",
+  "reviewerSession": "docs-r07-qa-extra-03-20261024",
+  "reviewRoot": "reviews/nb-137",
+  "reviewedAtUtc": "2026-10-23T21:10:00Z",
+  "status": "REVIEW_COMPLETE_ACCEPTED",
+  "batchVerdict": "accepted",
+  "gates": {
+    "G0": "G0_PASS",
+    "G1": "G1_PASS",
+    "G2": "G2_PASS"
+  },
+  "verdictCounts": {
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "seal": {
+    "sealId": "seal-212b490607ef8758",
+    "tool": "seal_delivery.py/1",
+    "zip": {
+      "sha256": "edad70b2006d876b0fd94addcf910b5265cf38cbfaa37bd58872adc76381cde5",
+      "bytes": 93574,
+      "entries": 21
+    }
+  },
+  "openNonBlocking": [
+    "NB137-N-01 (minor 行号)",
+    "NB137-N-02 (minor 幻行引用)"
+  ],
+  "note": "nb-137 独立 accepted；2 条 minor 非阻断待勘误一次关闭",
+  "artifactSha256": {
+    "RESULT.json": "3356703e2f0703f42ffc721ba6c50bc0ef41a0c4b6f86f1468f328a59927bbd4",
+    "REVIEWED-HASHES.json": "10712e2464c057a8781bafcc4dacbedb0cf024a97393dc7aa91b878a6052fec0"
+  }
+}

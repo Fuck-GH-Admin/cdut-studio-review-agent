@@ -1,0 +1,43 @@
+{
+ "schema": "dsh-r07-stage2-result/1",
+ "track": "issues-p07-p08",
+ "generatedAtUtc": "2026-10-23T21:47:57Z",
+ "reviewerSession": "docs-r07-qa-extra-06-20261024",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "coverage": "PARTIAL_30MIN_WINDOW",
+ "recordsInScope": 588,
+ "zeroSilentDrop": true,
+ "reconciled": 588,
+ "claimLevelVerifiedClosed": 11,
+ "statusCounts": {
+  "unverified_onb": 2,
+  "closed_triple": 11,
+  "keep_closed": 332,
+  "unverified_next": 118,
+  "audit_pending": 116,
+  "await_lead_merge": 3,
+  "dup": 2,
+  "unverified_idx": 1,
+  "unverified_gap": 1,
+  "product_decision": 2
+ },
+ "verdict": "reconciliation_pass_with_declared_gaps",
+ "gaps": [
+  "118 条无 fixBatch 记录未完成 claim 级当前手册核对（清单=RECONCILIATION items status=UNVERIFIED & action=claim-level-verify-next-window）",
+  "ONB-N-01/02 源 LICENSE 行号逐行核对未完成",
+  "IDX-G08-N-01 当前索引文档常量名未完成最终比对"
+ ],
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "GUI",
+  "real network"
+ ],
+ "boundaries": [
+  "未改产品/测试/依赖/作者seal/已有review/candidate",
+  "未写全局 OPEN-ISSUES",
+  "未写阶段三文档",
+  "静态断言未冒充实测"
+ ]
+}

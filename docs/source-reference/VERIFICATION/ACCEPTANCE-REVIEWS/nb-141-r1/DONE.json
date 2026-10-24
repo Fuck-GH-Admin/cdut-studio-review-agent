@@ -1,0 +1,39 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-141-r1",
+ "revisionOf": "nb-141",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-qa-extra-05-20261024",
+ "reviewedAtUtc": "2026-10-23T20:24:08Z",
+ "status": "REVIEW_COMPLETE",
+ "batchVerdict": "accepted",
+ "fileVerdictsCount": {
+  "accepted": 16,
+  "revision_required": 0
+ },
+ "findingsClosed": [
+  "QA F-1 (DONE.note count, closed by note rewrite)",
+  "author F-01/F-02 (G1-MISSING-SECTION)"
+ ],
+ "deliverySeal": {
+  "sealId": "seal-bcb469a58e01e570",
+  "manifestSha256": "c47c33a02cc28af12aaa1d7f51207620a3065eba3567a2493dd70fe87cc14c4f",
+  "readySha256": "6fad6e594909ce5c1a977b1b39541b1daf9b27a43565d4d2704ccf49639c562b",
+  "zipSha256": "4b06114f54e776b2ec1e5ff1b161aeaa5b0e8c18eaac364b30a26a7ad11b6d3f"
+ },
+ "artifacts": [
+  "reviews/nb-141-r1/RESULT.json",
+  "reviews/nb-141-r1/RESULT.md",
+  "reviews/nb-141-r1/REVIEWED-HASHES.json",
+  "reviews/nb-141-r1/TO-AUTHOR.md",
+  "reviews/nb-141-r1/TO-LEAD.md"
+ ],
+ "notRun": [
+  "product tests (17 cases)",
+  "typecheck",
+  "bun build --compile",
+  "CLI execution"
+ ],
+ "next": "nb-141 全批闭环；lead 合入 2 篇 config 手册（r1 hash）；QA 继续盯 nb-132-r1/nb-112-r1/nb-143-r1",
+ "note": "D0 自洽；14 篇=父版字节（旧接受不套新字节合规）。"
+}

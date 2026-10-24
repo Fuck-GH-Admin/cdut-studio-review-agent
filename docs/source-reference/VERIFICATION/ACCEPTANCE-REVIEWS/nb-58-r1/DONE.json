@@ -1,0 +1,66 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-58-r1",
+ "revisionOf": "nb-58",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-models-20261023",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T17:29:39.155036+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "files": 18,
+ "accepted": 18,
+ "revisionRequired": 0,
+ "unknown": 0,
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/channel-list-no-placeholder.test.ts.md": "519ca8ef0b49ad8e54f0ec7820ec039d2b0ca0ac39dabcd3c0ccac57074190d0",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/channel-manager.ts.md": "c53c043cdb66756ce9a52f09474902dfdb3d8ed5e3ab4c2618db95cac17340de",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/channel-plan-quota-parsers.test.ts.md": "70b84edc1c70096d88e20b09e84d75a2731e4510230b3dbc5398875da6bc902d",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/channel-plan-quota-parsers.ts.md": "5fb73b1c428e72f6b9b6851233f31cb6dcfca71cb10ce607077051d656019277",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/channel-preset-model-updates.test.ts.md": "e2a819da97d700b6d6e346641fd2d379afa323fc1a182684bd8fb515e7e79614",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/channel-url-routing.test.ts.md": "7ae368ec6ae2cac72fd2355269bba01f5cc5af53ade2623c3be356c6904b4dbc",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/channel-url-routing.ts.md": "cc00b93e1fce2538534531d6d495199032133dbd9f1ee99a19048c767047698e",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-controller.test.ts.md": "7124321dfd9584b392215c823c75ee2c8144eb4995f4f184785c9879657449a3",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-controller.ts.md": "3da98bded5f6d001db2689b38275d71958e14b4e36af807bc057f4a003523d60",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-ipc-routing.test.ts.md": "b9c3a3ba9a7d619521a34828036ee40a2827f42f45b88cd28b686fe09e801429",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-loop.test.ts.md": "890b1fd8d91f3885b7c14b6cb792435dd0feaf85b08e0b55fcff62703d886c2f",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-loop.ts.md": "4cb1fdc0c3d30db3eb1aa82568015f3d764918cc85574028069321c5f8594837",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-session-service.test.ts.md": "60ddadca999be02722d3abfec6341b07e0750ded55149d7c4f6d994084d09c67",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-session-service.ts.md": "cd215d49117f47c243ffab10bd6eb4fe23299fa632539f5b900cbdcfa1406eb0",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-store.test.ts.md": "2409cebea12de34470e147ebf7579fc48e6f6a54a1289ffa35d4347a24b8acd4",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-store.ts.md": "8363c031bd1a4597f052882e4c10c1f05125ac4b1d6b6c347da3790cd08ef2d7",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-tools.test.ts.md": "9bab7fe84dfdc82d752e37bca4caef98cf23b5720cc5910b66338ce2f627d3cc",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-tools.ts.md": "60095931e63a414372a08ac26393ecfaa5ba2ee0f3075020c9b0a1ccc8a73356"
+ },
+ "revisionHashes": {},
+ "findings": {
+  "revision": [],
+  "notes": []
+ },
+ "deliverySeal": {
+  "sealId": "seal-a82417b6e355f8db",
+  "sealedAtUtc": "2026-10-23T17:24:15Z",
+  "readySha256": "174593c89eaab4336238b4a9f928e80945967a9786252e83ec27a0bd72e72943",
+  "doneSha256": "e90a3ba9801b9aafb354c6a798938aba7539a445307f32a6b99003fb07fe3891",
+  "manifestSha256": "1bafc828088677e8435c109d8294c1db42747220cdd21bd7b6c293c064a073cc",
+  "zipSha256": "889c4db8c1daacedee2c63b65e7744cd7c5b6f2b8d702208d89db7f4e8f0ed4e"
+ },
+ "notRun": [
+  "bun test",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "artifacts": {
+  "RESULT.json": "5c2801555129c5e7ca4c557c178b762d9c95f608ab391f09c3051b887506affa",
+  "RESULT.md": "5a8ff63eb8f69caefefffa5583f03ce5cb6cd21c0a95ab8fcec8da80e372ae1f",
+  "REVIEWED-HASHES.json": "05a3f002399bf7640c8a1d528a65e2727c62138cae5889010e4b450d5a7948b7"
+ },
+ "next": "lead 合入"
+}

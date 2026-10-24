@@ -1,0 +1,147 @@
+{
+ "schema": "dsh-r07-qa-reviewed-hashes/1",
+ "batch": "nb-47-r1",
+ "revisionOf": "nb-47",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "reviewedAtUtc": "2026-10-24T15:10:00Z",
+ "bindingNote": "manualSha256=r1 stage 现字节实算=MANIFEST；3 篇变更按新 hash 重新接受，15 篇与 r0 acceptedHashes 逐字节相同",
+ "sourceBinding": {
+  "apps/electron/src/main/lib/agent-ask-user-service.test.ts": {
+   "blob": "1bb7c695f8bc271c19031830c4d77ab2ae7dc6d1",
+   "sha256": "975d2e1e885184a94297463a4b313f47c19f8de3e3f91ade7ef29961468fc2e5",
+   "lines": 74
+  },
+  "apps/electron/src/main/lib/agent-ask-user-service.ts": {
+   "blob": "1f2ed37110d542c1084f2335625be511b876f3af",
+   "sha256": "b1e3a8855108f860899eeeda58a1b20fcd38af328303232a68ced718a66a1c7e",
+   "lines": 201
+  },
+  "apps/electron/src/main/lib/agent-catalog-invalidation.test.ts": {
+   "blob": "d63cec8d376de0464c87433df0a836b96a61c4da",
+   "sha256": "704339d380fd5cf65ebf8afd9df6e4dc920451c2ab1496297f3533b973784a52",
+   "lines": 64
+  },
+  "apps/electron/src/main/lib/agent-catalog-invalidation.ts": {
+   "blob": "7043765b1fff4c8dc8ede972da7d85a61a064064",
+   "sha256": "66200c6182ed2dafd22588b7bbd5fb6fc110894583aad836276682b691923a48",
+   "lines": 28
+  },
+  "apps/electron/src/main/lib/agent-collaboration-tools.ts": {
+   "blob": "6a76a9c75234c135c3703d04f873573dc35af4c3",
+   "sha256": "8f1baf640fbc742aa7ea4c14eb403ea350bef5bc603c11977674f13b1c1f8aaa",
+   "lines": 1321
+  },
+  "apps/electron/src/main/lib/agent-collaboration-utils.test.ts": {
+   "blob": "9eb1c119c1354c395069c1f6c7010d80eecdae6d",
+   "sha256": "7ca999fca1f2e9878973eef9f47b6269d603c24173f3c4d2dcfb5e2bd23d9139",
+   "lines": 15
+  },
+  "apps/electron/src/main/lib/agent-collaboration-utils.ts": {
+   "blob": "b502490874e396ab89950390da37d0deb47b1fa0",
+   "sha256": "64c48363045cdd92cfbdda4909597b9c887d70c213d9e135b6ab79df474f6c97",
+   "lines": 120
+  },
+  "apps/electron/src/main/lib/agent-delegation-preset-schema.test.ts": {
+   "blob": "112befd649b0a9e2e850b7c7387c096ca6470771",
+   "sha256": "0b7d1df9d4a3b0309843ca14870e28a9fea149186ad81d4f58a4e93eab3886bd",
+   "lines": 35
+  },
+  "apps/electron/src/main/lib/agent-delegation-preset-schema.ts": {
+   "blob": "f6ac8c7943d46807ae218fbabd69de51e3ff0fd7",
+   "sha256": "39feeddb2ae032cbf378bf6c06e878cfe3226da49e28a735464529ecf74fcf8d",
+   "lines": 26
+  },
+  "apps/electron/src/main/lib/agent-delegation-preset.test.ts": {
+   "blob": "659d85a586fe8665c0f0c5870dab8cd7f4856591",
+   "sha256": "7066e1ff8a4c5fa8fc199dcd255a401e2b01e7eb35acff06a33a7b9abcf2f187",
+   "lines": 144
+  },
+  "apps/electron/src/main/lib/agent-delegation-preset.ts": {
+   "blob": "15b1f1e90c2f77249a875a06de1f4a340181543e",
+   "sha256": "8667086345df14d4f3babd68fa05da2fb8dc299eab1d3aa85e594214756a6ca4",
+   "lines": 54
+  },
+  "apps/electron/src/main/lib/agent-directory-utils.test.ts": {
+   "blob": "12fa197484d91493f369888c598e165bb0285c43",
+   "sha256": "b6a5c30fc739dcdef10dac741a11cd62d94127693142aeb12d6749822079f918",
+   "lines": 120
+  },
+  "apps/electron/src/main/lib/agent-directory-utils.ts": {
+   "blob": "7449bcd239b54e0ea7879dd0452420c6edffdc67",
+   "sha256": "0170c56f79d492cbcf1a86f721fbf7ce6e48a74f3975945c0358e94545d529b2",
+   "lines": 68
+  },
+  "apps/electron/src/main/lib/agent-end-reason.test.ts": {
+   "blob": "f574403231bfa5c6a0c4357cfd1e43309d3942b1",
+   "sha256": "079f55292cb56384baf0b176ebdb4bcd2dfd1941f0fc3c9710c1469080303fd2",
+   "lines": 125
+  },
+  "apps/electron/src/main/lib/agent-end-reason.ts": {
+   "blob": "10a801f441782690c6ad28a0652156f04693ee01",
+   "sha256": "0cdcd1905a3118295049a5ad855272ef6d41d09cba40ab377b98517da6d46c97",
+   "lines": 90
+  },
+  "apps/electron/src/main/lib/agent-event-bus.ts": {
+   "blob": "fae05c4de882a02a4a492af6c87ad7304d6e14a6",
+   "sha256": "177346b204f9b7182c38d445d68cbe98c4212112a6881de503de5a405dc3c7d1",
+   "lines": 93
+  },
+  "apps/electron/src/main/lib/agent-event-fanout.test.ts": {
+   "blob": "a8b299734f3faf575d0441cc47fec9c8b4c5a70d",
+   "sha256": "177bcd6b8fc3a7ed57dee35d77afa288293b23ec70fce04eaa4439739fa40e6b",
+   "lines": 150
+  },
+  "apps/electron/src/main/lib/agent-event-fanout.ts": {
+   "blob": "9742b3a5a5e6b33b3d62d74c6e0e90c600f7e8be",
+   "sha256": "0f68933afb317e912ce3de47ac5acda428677512b1afb7b0802fedc3ffb52122",
+   "lines": 81
+  }
+ },
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-ask-user-service.test.ts.md": "cdf3aae0f8972a99108728f3ee864619b27cd37676af1c89f0434f03d6dbbd0f",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-ask-user-service.ts.md": "d84ee2cbb4faf7cc3fd942f8cf11ae50c8ee96c7d859c927c03c60929cc2678b",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-catalog-invalidation.test.ts.md": "2621360baf51b9925cd17e0b8f565aa84e340969ebe0ab32b803e76b6a4c9bb8",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-catalog-invalidation.ts.md": "51d4d78c10cf0885d2f794e9ca6e6b9c961fe1158d7fc029f98fe6a4572284b0",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-collaboration-tools.ts.md": "3f92021e6e368b24a1490a354c9f7191b4a484e34d9140b39eb1447406431eb3",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-collaboration-utils.test.ts.md": "264e25a8051c0ca0b8c381f1f58ad766097e952a628771d00dfeb3cc920abf7a",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-collaboration-utils.ts.md": "0ccb9ee90669f1ba416a8170b3517074248d72765237cbe0ce6395bc48dfc927",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-delegation-preset-schema.test.ts.md": "6ea3889ce9721fca5d81bdf3070e3b9986ae5ac5b511e6145577b65f5af1d8e1",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-delegation-preset-schema.ts.md": "5c14d7f1a543bf616bfbc456ca944b372436b8e2722a0234b6b56bbbef4b72f5",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-delegation-preset.test.ts.md": "88a26e5d353a1c49150b732b08da94139bcc14fcf912495745b52712a77e429e",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-delegation-preset.ts.md": "a07ec483126d36860e86d63a6d51b6560ce8085b4d974a76cb8fbc583ba1e934",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-directory-utils.test.ts.md": "de3d734a1a93f11dba929774c25751173e2441ff738c839fb9f208fdcccd3b99",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-directory-utils.ts.md": "50dee6ef09bc680806e32c92bc434a7a41e50df9a250895bdff00415598694ab",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-end-reason.test.ts.md": "676aae7772905d73d76c4886929652cab7be158e6784d44382b67405ab167050",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-end-reason.ts.md": "fbc0444a939d1f1e723adb3427b3d5d351ba399183ee7f5ea72945076d93fc93",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-event-bus.ts.md": "e11ce0c382c4744af28eeb273128d785fc74556146b03fe49f6c720236ba930d",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-event-fanout.test.ts.md": "eafd29beb6b58f376ca37513f88f3f9971385e8f9dd7410c677edbc15bcf7a10",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-event-fanout.ts.md": "719dadb224e3bb20d853190ed6693f3ea7ec448b38dc67abba76d0de1a8c6426"
+ },
+ "rejectedHashes": {},
+ "supersededManualHashes": {
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-ask-user-service.ts.md": {
+   "oldManualSha256": "738f17bae29a71d18dbb05eb59c1e11eaa35cb1caba96ed6a56c638ef3cf6d45",
+   "newManualSha256": "d84ee2cbb4faf7cc3fd942f8cf11ae50c8ee96c7d859c927c03c60929cc2678b"
+  },
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-collaboration-tools.ts.md": {
+   "oldManualSha256": "efa97eddf23c002ee9496d5542eac36f40faea5524ee38f2dbb99b06bfb67df0",
+   "newManualSha256": "3f92021e6e368b24a1490a354c9f7191b4a484e34d9140b39eb1447406431eb3"
+  },
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-end-reason.ts.md": {
+   "oldManualSha256": "2cef0a311fe392f275a838ac2836588ef5b4df1f109df9a0ee1b6dcb1216591c",
+   "newManualSha256": "fbc0444a939d1f1e723adb3427b3d5d351ba399183ee7f5ea72945076d93fc93"
+  }
+ },
+ "deliveryHashes": {
+  "manifestSha256": "dc7202534dc6526ba4f8b41378e198ad5c1fda254d73b0a4f5e5b7ea14e4215a",
+  "readySha256": "6ab069f0361e66cee72ee82f709d078a1e11b58fa9a90b5000a5ea6b22bd8dba",
+  "doneSha256": "0411a7ea3219b13a6aeee85a86953d3643d77ec420c121b3d485e30e9de01557"
+ },
+ "zip": {
+  "path": "deliveries/nb-47-r1/R07-nb-47-r1-05fb2565.zip",
+  "sha256": "d32865129a7b725327ad7dad134149b892f7238604c2276431381fd43d4359db",
+  "entries": 21,
+  "note": "18 手册+MANIFEST+2 mechanical TSV；v2 无穿越/0 mismatch"
+ }
+}

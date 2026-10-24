@@ -1,0 +1,14 @@
+{
+  "atUtc": "2026-10-23T23:23:53.173797+00:00",
+  "sourceFiles": 3083,
+  "uniqueDocuments": 2415,
+  "sourceMismatch": [],
+  "manualMismatch": [],
+  "newMarkdownFiles": 23,
+  "localLinksChecked": 11080,
+  "missingTargets": [],
+  "fragmentsChecked": 705,
+  "missingFragments": [],
+  "runtime": "NOT_RUN",
+  "scope": "All new top-level authored docs,8 owner indexes,8 module OVERVIEWs; original source docs and sealed per-file bodies excluded from link mutation/validation"
+}

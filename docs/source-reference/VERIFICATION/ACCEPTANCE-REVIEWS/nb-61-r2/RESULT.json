@@ -1,0 +1,236 @@
+{
+  "schema": "dsh-r07-review-result/1",
+  "batch": "nb-61-r2",
+  "revisionOf": "nb-61-r1",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T19:25:00Z",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass"
+  },
+  "g0Evidence": {
+    "chain": "READY/DONE/MANIFEST/ZIP 交叉一致（sealId seal-83f905f6ad193c57，revisionOf nb-61-r1）；18 manualHashes=磁盘 0 mismatch",
+    "revisionChain": "before/ 18/18==nb-61-r1 stage（12 篇逐字节未变==声明）；changes.diff 13 hunks/6 文件 git apply 重放==stage 逐字节",
+    "zip": "21 条目 0 穿越/符号链接/字节 mismatch"
+  },
+  "g2Evidence": {
+    "fixVerification": "逐 hunk 核验全部关闭：F-01 base.py.md（SCHEMA_MAPPINGS '15 后缀（机械计数 15 键）'+§3 差集门语义'只报 NEW errors、无 --original 全部计新增'+§11）、F-02 pptx.py.md（四处统一 11 项：'组合 11 项（validate_xml+10；全部执行）'/§3'10 项布尔累加且全部执行不短路…合计 11'/§6'11 项…仅 validate_xml 短路'/§10）、F-03 redlining.py.md（'w:ins 整体删除（含内容）、w:del 还原展开'——括注与主张已一致）；N-01 clean.py.md（+3 导出行、update_content_types 改标公共、§11'9 公共函数'）、N-02 chartlib.py.md（CHARTS 不存在照实注）、N-03 pack.py.md（original 不存在静默跳过照实注）、N-04 redlining（+_get_git_word_diff :149-192 行+§11'4 内部'）",
+    "residual": "N-05：redlining.py.md §11'类+3 方法+4 内部'中方法实为 2（repair/validate；_generate_detailed_diff 已归内部组）——残留小计数",
+    "noNewErrors": "6 篇修订区逐 hunk 与源核对无新错误；12 篇未改==r1 字节"
+  },
+  "files": [
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/__init__.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/__init__.py.md",
+      "sourceBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "manualSha256": "f83a275946a12605f0da68012d83d18d9826e79b7940c1813cb43fb2bde0a0d1",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/add_slide.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/add_slide.py.md",
+      "sourceBlob": "13700df012007ae73e63e12555182b75d3899a4a",
+      "sourceSha256": "04233ba3932c6b8611677347891616456e243cc09b7f9769408b8c83d9acfe64",
+      "manualSha256": "44878896839468c054ecb0dee91ee741e5ee0f2f75e7b5e1c5929d531b04b77b",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/chartlib.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/chartlib.py.md",
+      "sourceBlob": "a5032259dad646776260d343d16111da9ecf7ab4",
+      "sourceSha256": "63e532c7998387f663db464204d2d1bc5770c7096061274db5cf7ee31823a8ce",
+      "manualSha256": "f0fe4ca4dea8e611fb282c14fb840a2a418a568be366aa6deadd557a2601f051",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/clean.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/clean.py.md",
+      "sourceBlob": "3d13994cfeb46b70ca2d8ba2839688bc85021fd0",
+      "sourceSha256": "3e3966a17f488a1ddc7145f0b7ec9f25595afa1f3a427ab05e610f1a328feea9",
+      "manualSha256": "b006a32b5c58ddb97ce82a0317b31e5e381b8d89a4295d87601ef3b66e859389",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/gradient.js",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/gradient.js.md",
+      "sourceBlob": "04bc2f38a34846ef1569380c176a82c926d3f979",
+      "sourceSha256": "a5f287e0733c04c2f915cfa837e63cdc92f3a267b5e7d60c0fdbaacafe7aa488",
+      "manualSha256": "991fb1d20c5a8e135ec4f83319637fbd55a95b5d7469e2d471dae1258ca8b8df",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/office/helpers/__init__.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/helpers/__init__.py.md",
+      "sourceBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "manualSha256": "100968170367ed13ef048ee5f63d8588face3e4c0a19f23f373f70fbf958e48c",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/office/helpers/merge_runs.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/helpers/merge_runs.py.md",
+      "sourceBlob": "ad7c25eec0d064fbd9f5624b17b60e5dd49b5903",
+      "sourceSha256": "7c40ed838b88639c51f9ffdcfd564b568f26832b78fe44008c0e01b742669ca7",
+      "manualSha256": "73aaa07fa1ca7dfb8ff30170d6a99b3beab554a76520296fd614edbf2ca875c3",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/office/helpers/simplify_redlines.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/helpers/simplify_redlines.py.md",
+      "sourceBlob": "db963bb998d7d5a8517d8252ce82ec9ab28665bc",
+      "sourceSha256": "560cb55978a834c505406eb18e2c61f62f998fc7a2d8e9721b9c563b42597896",
+      "manualSha256": "52c0d25f5c3c222412b3945350f7543cd6c054bf9ac1f26836a033621ba28781",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/office/pack.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/pack.py.md",
+      "sourceBlob": "db29ed8b1c3676a4980b2d67e9dfe432556d2e58",
+      "sourceSha256": "b1800987e568261a31f462df8e1303d386e9e6ccc11a75ef46e60cc528c20683",
+      "manualSha256": "c87839c74f29e944c3c5b9de5b7ad62ae5a1c263c2f109109a1a754527ac483c",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/office/pptx2png.ps1",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/pptx2png.ps1.md",
+      "sourceBlob": "267931bee68c16261df15367ebd966d34d2bde25",
+      "sourceSha256": "ccb27161138cb9a4cc8e577533b4c5b7de707fbaff8d2bb2fb4537aff0a3d437",
+      "manualSha256": "c8611e16c40ba17b4ea44389590b562d2cc9cb2d5bd1b1cb561a3be2cc022b49",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/office/soffice.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/soffice.py.md",
+      "sourceBlob": "c7f7e3289fdff196399fd6f3d6668b9aa68eec87",
+      "sourceSha256": "a3e21840e29e32f947d5286028931b96eaf2dee63f75d883b8eb19c943c80aa0",
+      "manualSha256": "14907ba46eb75c12d144fe1795bc789d0e8ca102e0b0bd603d60a6022da1ba50",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/office/unpack.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/unpack.py.md",
+      "sourceBlob": "00152533ac0fa95109f74253ac6a475401fa6afe",
+      "sourceSha256": "83f69cecc87910183654c06345837244402e8a99edbf3bdddc1cf72f11304b62",
+      "manualSha256": "5692f9243c5ed6e5054c0f21c39f4d8719456798cda109864c322d83ecb857f7",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/office/validate.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/validate.py.md",
+      "sourceBlob": "03b01f6e3ba40e1408d0bd16d587154fa9798a87",
+      "sourceSha256": "1aef24f8e316965a0584c30859776bd2c82a9fb69f72d79cfed041119cf95514",
+      "manualSha256": "368027d4f8e75f0a7b24aedfcd193d00ff21105ea5c30ce39b7ba3ecb30f3818",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/office/validators/__init__.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/validators/__init__.py.md",
+      "sourceBlob": "db092ece7e21de98f87bd81471578259a1bc642f",
+      "sourceSha256": "83e0f035c5abea238d3f2c3968afbd511ed022b527b7c9cb60a9434cc34ff987",
+      "manualSha256": "63a04a26abf282ce3dbeb4320710b44bf9e1e5a98542630b5a8223d42c097462",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/office/validators/base.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/validators/base.py.md",
+      "sourceBlob": "db4a06a2291abf80bd9b000b6ff3b7f012e6dd2f",
+      "sourceSha256": "d6358b67252df4dbfe4fa6647423a765960c949346ef6a8c4eb8722bb1108d25",
+      "manualSha256": "a93597ce4d74083f6684c0a545421459750e90fb5d4fdfc8f3dd74fc8fe14e4f",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/office/validators/docx.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/validators/docx.py.md",
+      "sourceBlob": "fec405e694790259824feebb95061f56a705621c",
+      "sourceSha256": "0ef04ce86b2e6b6a1cb088c0276fd0bd5b770d96fdfe7a6cc73d005feb3f0345",
+      "manualSha256": "c8cfbce090f14bbf6e838618ee2ccb3d794454d5bf89b7b9c2eada00157dad7a",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/office/validators/pptx.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/validators/pptx.py.md",
+      "sourceBlob": "09842aa99866fe270ecfeec6f7993495e1865f2b",
+      "sourceSha256": "f937961e62a5fa0d002b8dc51a4c4e2cd8fcd59fe65853fa54edaca3fe99eccc",
+      "manualSha256": "33db0749f7f40fbb6e705fd24a3249dc8cbb3275e4483023d24411231389a371",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/office/validators/redlining.py",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/validators/redlining.py.md",
+      "sourceBlob": "71c81b6bf4cacda322db32c87df7b2301c469933",
+      "sourceSha256": "f4c33fdb9da0651d1d9aa76f0d5294cc9955869339ae131b2f75f3b2e366cb40",
+      "manualSha256": "f5463f2f3ae8f2725161e40015f187fe9b5d4ba54bfc4b298f7ad6200e99200d",
+      "verdict": "accepted",
+      "findings": [
+        "N-05"
+      ]
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/__init__.py.md": "f83a275946a12605f0da68012d83d18d9826e79b7940c1813cb43fb2bde0a0d1",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/add_slide.py.md": "44878896839468c054ecb0dee91ee741e5ee0f2f75e7b5e1c5929d531b04b77b",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/chartlib.py.md": "f0fe4ca4dea8e611fb282c14fb840a2a418a568be366aa6deadd557a2601f051",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/clean.py.md": "b006a32b5c58ddb97ce82a0317b31e5e381b8d89a4295d87601ef3b66e859389",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/gradient.js.md": "991fb1d20c5a8e135ec4f83319637fbd55a95b5d7469e2d471dae1258ca8b8df",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/helpers/__init__.py.md": "100968170367ed13ef048ee5f63d8588face3e4c0a19f23f373f70fbf958e48c",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/helpers/merge_runs.py.md": "73aaa07fa1ca7dfb8ff30170d6a99b3beab554a76520296fd614edbf2ca875c3",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/helpers/simplify_redlines.py.md": "52c0d25f5c3c222412b3945350f7543cd6c054bf9ac1f26836a033621ba28781",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/pack.py.md": "c87839c74f29e944c3c5b9de5b7ad62ae5a1c263c2f109109a1a754527ac483c",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/pptx2png.ps1.md": "c8611e16c40ba17b4ea44389590b562d2cc9cb2d5bd1b1cb561a3be2cc022b49",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/soffice.py.md": "14907ba46eb75c12d144fe1795bc789d0e8ca102e0b0bd603d60a6022da1ba50",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/unpack.py.md": "5692f9243c5ed6e5054c0f21c39f4d8719456798cda109864c322d83ecb857f7",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/validate.py.md": "368027d4f8e75f0a7b24aedfcd193d00ff21105ea5c30ce39b7ba3ecb30f3818",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/validators/__init__.py.md": "63a04a26abf282ce3dbeb4320710b44bf9e1e5a98542630b5a8223d42c097462",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/validators/base.py.md": "a93597ce4d74083f6684c0a545421459750e90fb5d4fdfc8f3dd74fc8fe14e4f",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/validators/docx.py.md": "c8cfbce090f14bbf6e838618ee2ccb3d794454d5bf89b7b9c2eada00157dad7a",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/validators/pptx.py.md": "33db0749f7f40fbb6e705fd24a3249dc8cbb3275e4483023d24411231389a371",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/office/validators/redlining.py.md": "f5463f2f3ae8f2725161e40015f187fe9b5d4ba54bfc4b298f7ad6200e99200d"
+  },
+  "findings": [
+    {
+      "id": "N-05",
+      "severity": "minor",
+      "file": "apps/electron/default-skills/pptx/scripts/office/validators/redlining.py.md",
+      "claim": "§11 '类+3 方法+4 内部'——方法实为 2（.repair/.validate），_generate_detailed_diff 计入内部组；应'类+2 方法+4 内部'。",
+      "sourceEvidence": "redlining.py 导出面：类 1+方法 repair/validate 2+私有 4",
+      "action": "任一 rN 顺带改。"
+    }
+  ],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network",
+    "python/PowerShell/gcc 运行验证"
+  ],
+  "notes": "nb-61 链 r0→r1→r2 闭合；F-01~F-03+N-01~N-04 全关闭。18 篇以 r2 hash 全合（6 篇替代 r1 值）。"
+}

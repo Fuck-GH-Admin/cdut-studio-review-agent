@@ -1,0 +1,98 @@
+{
+ "schema": "dsh-r07-qa-done/1",
+ "batch": "nb-111",
+ "id": "NB-111",
+ "revisionOf": null,
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewRoot": "reviews/nb-111",
+ "reviewedAtUtc": "2026-10-24T08:05:00Z",
+ "status": "REVIEW_COMPLETE_REVISION_REQUIRED",
+ "batchVerdict": "revision_required",
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PARTIAL",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 15,
+  "revision_required": 2,
+  "unknown": 0
+ },
+ "acceptedManuals": 15,
+ "acceptedHashesCount": 15,
+ "revisionRequiredManuals": {
+  "topbar-layout.ts.md": [
+   {
+    "id": "F-01",
+    "severity": "minor_factual",
+    "claim": "§2 称「导出 7 条」——实际 **8 条**（其自身 export 位置 :1/:2/:12/:22/:26/:34/:48/:76 列了 8 个，表格亦 8 符号）。",
+    "sourceEvidence": "grep \"^export\" 计 8（4 常量+2 接口+2 函数）",
+    "action": "rN 修正为 8"
+   }
+  ],
+  "yanhu-pet-atoms.ts.md": [
+   {
+    "id": "F-02",
+    "severity": "minor_factual",
+    "claim": "§2 称「导出 10 条」——实际 **11 条**（其自身表格列 11：DEFAULT_PET_CONFIG + 10 个原子）。",
+    "sourceEvidence": "export 计 11（DEFAULT_PET_CONFIG :22 + petConfig/petViewportSize/petPresented/petMessages/petStreaming/petStreamText/petReasoningText/petActiveTools/petRequestId/petSpriteState）",
+    "action": "rN 修正为 11"
+   }
+  ]
+ },
+ "findingsSummary": {
+  "topbar-layout.ts.md": [
+   {
+    "id": "F-01",
+    "severity": "minor_factual",
+    "claim": "§2 称「导出 7 条」——实际 **8 条**（其自身 export 位置 :1/:2/:12/:22/:26/:34/:48/:76 列了 8 个，表格亦 8 符号）。",
+    "sourceEvidence": "grep \"^export\" 计 8（4 常量+2 接口+2 函数）",
+    "action": "rN 修正为 8"
+   }
+  ],
+  "yanhu-pet-atoms.ts.md": [
+   {
+    "id": "F-02",
+    "severity": "minor_factual",
+    "claim": "§2 称「导出 10 条」——实际 **11 条**（其自身表格列 11：DEFAULT_PET_CONFIG + 10 个原子）。",
+    "sourceEvidence": "export 计 11（DEFAULT_PET_CONFIG :22 + petConfig/petViewportSize/petPresented/petMessages/petStreaming/petStreamText/petReasoningText/petActiveTools/petRequestId/petSpriteState）",
+    "action": "rN 修正为 11"
+   }
+  ]
+ },
+ "batchFindings": [
+  "M-01",
+  "M-02"
+ ],
+ "resultSha256": "89436118e1f15a2ddf138902aaa736f33729dd526d7da288c701b6bde2e0d6f7",
+ "reviewedHashesSha256": "dc5c07b346e6955adfcdd3aedf0a83ad036e3689d9faf862355a879eb2f3ba70",
+ "zip": {
+  "path": "deliveries/nb-111/R07-nb-111-05fb2565.zip",
+  "sha256": "c33c244ac03360defc893c3cfde817b297ae29fbdc620cab2cf35957739e8280",
+  "entries": 20,
+  "note": "17 手册+MANIFEST+2 mechanical TSV；不含 READY/DONE（v2）；无穿越/0 mismatch"
+ },
+ "sealId": "seal-ada60ff3b8804649",
+ "artifacts": [
+  "reviews/nb-111/RESULT.json",
+  "reviews/nb-111/RESULT.md",
+  "reviews/nb-111/REVIEWED-HASHES.json",
+  "reviews/nb-111/DONE.json",
+  "handoffs/nb-111-REVIEW-TO-AUTHOR.md",
+  "handoffs/nb-111-REVIEW-TO-LEAD.md"
+ ],
+ "priorReviewsUntouched": true,
+ "parentPreserved": null,
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "GUI"
+ ],
+ "writtenOnlyIn": "reviews/nb-111 + handoffs；未写 deliveries/inventory/manager/candidate/全局 FILES/MANIFEST",
+ "next": "作者开 nb-111-r1 修 F-01/F-02；lead 按 15 个 acceptedHashes 合入"
+}

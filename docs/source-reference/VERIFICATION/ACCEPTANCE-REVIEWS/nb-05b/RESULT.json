@@ -1,0 +1,81 @@
+{
+ "schema": "dsh-r07-review-result/1",
+ "batch": "nb-05b",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-models-20261023",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T15:56:13.943612+00:00",
+ "deliverySeal": {
+  "sealId": "seal-2b5c5cf7f7cd4fb5",
+  "sealedAtUtc": "2026-10-23T14:06:14Z",
+  "readySha256": "d1b3ade772a8f2d1374aa5cb1868515de5fbfaabf7466539b759c91c1d09a13d",
+  "doneSha256": "27d2921e16349bdf2f8130a80864bfed4108f608790a170f5d716d1533d14486",
+  "manifestSha256": "8b4321eb4353cd0feca103faa728431e76b33a148a0bc380ce73da7a04e356f9",
+  "zipSha256": "027cfe06da50b5fbf0a534e8867f7414c50cfd05dc025e9d4dec5530907bee53"
+ },
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "gatesNote": "G0：4 文件 blob/sha/lines 与 scope/MANIFEST/手册头一致，DONE→ready/manifest/zip 链自洽，ZIP 7 条目无 READY/DONE（seal v2 合规）、无穿越/外批；G1 元数据/章节/三分表/NOT_RUN 齐全；G2 逐篇回源，重点行号/计数/矛盾项全部实测吻合",
+ "batchVerdict": "accepted",
+ "files": [
+  {
+   "path": "apps/electron/src/main/index.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/index.ts.md",
+   "sourceBlob": "bc7093234e6a119379cee9a3051215f71307025f",
+   "sourceSha256": "7bc8571522c42f4e67587cdd0aa05e41f1ae72965e1da2977775c0cf17a68b5b",
+   "lines": 1282,
+   "manualSha256": "b9cc38bc6fb0cbd671874697276e4e8e875a12041b22d7acafe970c9d7e3cb13",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/preload/index.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/preload/index.ts.md",
+   "sourceBlob": "32eabfb7b941981ffc1dc1c6a447e96fa1fdc452",
+   "sourceSha256": "87e00255321d55eb5edea8dce84389e7ebca1861324e7fb97e0f9c79dd435471",
+   "lines": 5105,
+   "manualSha256": "da67f6e83c70604c3fd159b98ea3240cbc96696f7b32e5ee251d79d2399c663c",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/config-paths.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/config-paths.ts.md",
+   "sourceBlob": "952a2ca9aef8ef930af1e6f6f954557f67d6d6ab",
+   "sourceSha256": "1d2394a1c81263d942ee2a81217e561812f4a78a0cdd8c271e9de39029f6e1a0",
+   "lines": 1385,
+   "manualSha256": "249288f3aeb3507448ab11f14b01345d49bf8ea4e4b3ae4a9e89690b0a753796",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/lightweight-completion.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/lightweight-completion.ts.md",
+   "sourceBlob": "657fa0688e23e26ef2ff24e73e260227f8b58f9f",
+   "sourceSha256": "8ce8155985953f7b36487c54ac2eace14d2daea18a3cb4625383f9baaac6b2f7",
+   "lines": 117,
+   "manualSha256": "b579624ce58681e3a817255e5adb913b8efac5edc7c32a8274805cc7d7aece69",
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "findings": [],
+ "verifiedHighlights": [
+  "main/index.ts：唯一导出 getMainWindow:373；证书策略三分支顺序 :135-156（泄露链拒→校内放→默认拒）；contextIsolation:true/nodeIntegration:false :515-516；will-navigate :798-811 + setWindowOpenHandler :814-824 一律 deny；close=隐藏 :828-869、before-quit 清理 :1223-1282；bootstrap :909 两梯队、handleBootstrapFailure :1188-1213；runtime.ts:407/:409 常量与 :770/:779 裸串并存如实登记；ANTHROPIC_* 启动即删 :179-186",
+  "config-paths.ts：94 导出计数实测吻合；resolve* 纯解析 vs get*Dir mkdir 分层；seed 决策树 :956-1041（缺失→managed / 无基线→仅历史指纹接管 :941-944 / user-owned 跳过 / 哈希变→保留 / 版本升→rm+cp :1020-1029）；.seed-state 损坏降级保护 :800-804；143 个 importers 实测；seed 调用点 main/index.ts:1001；config-paths.test 12 + migration.test 2 用例行号断言逐条吻合",
+  "preload/index.ts：834 invoke/79 on/6 send/2 sendSync/1 off/1 webUtils 计数实测逐项吻合；3 对象 exposeInMainWorld :4705/:4738/:5099；_settingsPromise 去重 :2529-2538；零校验/零 try/catch/零日志属实；5 处现存矛盾逐一实测证实（:494-498/:538 孤儿注释、chat:send-message 无消费者、CLEAR_COMPLETION_STATE 键值不符 agent.ts:2058-2059、PET_TOUR_FILL 双用 :4613/:4619、openAggregateV2 :5080 重复封装）；3 个间接测试引用核对属实",
+  "lightweight-completion.ts：2 导出；失败一律 null 不抛；openai-codex :55/xAI OAuth :65-67 显式排除；商业代理三条件 :71-73 + request.url 整体覆盖 :95；超时钳 1s + unref :101-102；唯一调用点 agent-orchestrator:177/:823（长期记忆审核链）实测；warn :50/:61/:78/:114 精确"
+ ],
+ "notRun": [
+  "bun test",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "limits": "静态复验；Electron 入口/真实运行行为、main 注册逐字一致性、as Promise<T> 与 handler 返回一致性为未知（UNVERIFIED 已登记）",
+ "next": "4 篇可按 acceptedHashes 合入；无需返修"
+}

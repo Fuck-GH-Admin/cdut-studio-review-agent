@@ -1,0 +1,52 @@
+{
+  "schema": "dsh-r07-review-done/1",
+  "batch": "nb-60",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "sealId": "seal-015a87984fec56c1",
+  "reviewedAtUtc": "2026-10-24T00:40:00Z",
+  "batchVerdict": "accepted",
+  "fileVerdicts": {
+    "apps/electron/src/main/lib/skill-policy-projection.test.ts": "accepted",
+    "apps/electron/src/main/lib/skill-routing-eval.test.ts": "accepted",
+    "apps/electron/src/main/lib/skill-routing-rules.ts": "accepted",
+    "apps/electron/src/main/lib/skill-routing.test.ts": "accepted",
+    "apps/electron/src/main/lib/skill-routing.ts": "accepted",
+    "apps/electron/src/main/lib/skill-runtime-routing.ts": "accepted",
+    "apps/electron/src/main/lib/skill-runtime-smoke.test.ts": "accepted",
+    "apps/electron/src/main/lib/title-generation.test.ts": "accepted",
+    "apps/electron/src/main/lib/title-generation.ts": "accepted",
+    "apps/electron/src/main/lib/titlebar-overlay.ts": "accepted"
+  },
+  "counts": {
+    "files": 10,
+    "accepted": 10,
+    "revision_required": 0,
+    "unknown": 0,
+    "findings": 6
+  },
+  "findingsIndex": [
+    "NB60-N1",
+    "NB60-N2",
+    "NB60-N3",
+    "NB60-N4",
+    "NB60-N5",
+    "NB60-N6"
+  ],
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass_with_findings"
+  },
+  "runStatus": "NOT_RUN",
+  "artifacts": [
+    "reviews/nb-60/RESULT.json",
+    "reviews/nb-60/RESULT.md",
+    "reviews/nb-60/REVIEWED-HASHES.json",
+    "handoffs/nb-60-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-60-REVIEW-TO-LEAD.md"
+  ],
+  "mergeRule": "全 10 篇 acceptedHashes 可合；6 findings 入 ACCEPTED-ERRATA G4 前关闭（NB60-N6 建议尽快）。",
+  "note": "已 seal D0 不回写。"
+}

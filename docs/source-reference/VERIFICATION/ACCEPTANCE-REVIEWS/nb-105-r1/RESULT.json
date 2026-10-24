@@ -1,0 +1,248 @@
+{
+ "schema": "r07-review-result/2",
+ "batch": "nb-105-r1",
+ "revisionOf": "nb-105",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-ui-20261023",
+ "reviewerSession": "docs-r07-qa-ui-20261023",
+ "reviewedAtUtc": "2026-10-24T01:45:00Z",
+ "batchVerdict": "accepted",
+ "verdictNote": "返修复验：N105-1 closed——AgentSkillsToolbarDomain :13-14/AgentSkillsToolbarScope :15 补列、AgentSkillsToolbarTab 行段改实值 :17-21、全篇 0 越界引用。1 篇变更、17 篇未变。accepted 仅限静态文档 scope；NOT_RUN。",
+ "scope": "manager/assignments/nb-105-SCOPE.json",
+ "sealed": {
+  "root": "deliveries/nb-105-r1",
+  "revisionOf": "nb-105",
+  "readySha256": "8a5bdfebf24228c47bdc62082938db1cbaa8d554d0356e3cbe7b1c30e69cf9d5",
+  "doneSha256": "f414e8d5f36aeac07d1e46bd84f6e695674c330e08e7e73df6030a8cba39dec5",
+  "manifestSha256": "a06b35d83db6a5bdade75c0e961c37d20855335668cacdd90eb17d62c37894af",
+  "zipSha256": "133b19ac172b882c578f9490c4f4285ec19475492a3c399153df39dee7a4ed9f"
+ },
+ "gates": {
+  "G0": "PASS",
+  "G1": "PASS",
+  "G2": "ACCEPTED"
+ },
+ "g0Evidence": [
+  "18 篇四方哈希一致；源 18/18 blob 一致；17 篇未变逐字节"
+ ],
+ "g2Evidence": [
+  "N105-1 closed：§2 四行全对（Domain :13-14、Scope :15、Tab :17-21、组件 :41-145），0 越界、无省略号"
+ ],
+ "files": [
+  {
+   "path": "apps/electron/src/renderer/components/agent-skills/AgentPresetSettings.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/AgentPresetSettings.tsx.md",
+   "sourceBlob": "453e3f7ee0367093a2154b02445c847da90318b4",
+   "sourceSha256": "4e8c24fe78260e954d9b6a768739783ad122703090f2a9deb13bd380282c400c",
+   "manualSha256": "bac7957ff7d9a4e2e3603e31ba5a661f74aa96ea74b1eef04085dd828ee6defd",
+   "parentSha256": "bac7957ff7d9a4e2e3603e31ba5a661f74aa96ea74b1eef04085dd828ee6defd",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent-skills/AgentSkillsToolbar.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/AgentSkillsToolbar.tsx.md",
+   "sourceBlob": "f5b0058ea2bea5ff0f349b041dacb062951934ce",
+   "sourceSha256": "1806f166e98ad8968d564e57e4d4a65a355e7c70d36373aa95da0a95f9ab5348",
+   "manualSha256": "51117866c352ff3afac3212406e30ace10ddc003d66400e1928bf97f07dbb5a1",
+   "parentSha256": "c663db0bde7b82861dda2ee969151da02a6cac4f924f5be949465990fa8dd9dd",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent-skills/AgentSkillsView.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/AgentSkillsView.tsx.md",
+   "sourceBlob": "697c811e7d9a1b7252ba0329af0858403fc73098",
+   "sourceSha256": "2042ffb073fd3837e987a7905e435a7087df6c620d05784bd977d774f172fe24",
+   "manualSha256": "f59c54960d358c24e9ae6cda50eba1787515c92e358f58805e362eefe388cc36",
+   "parentSha256": "f59c54960d358c24e9ae6cda50eba1787515c92e358f58805e362eefe388cc36",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent-skills/CreateGlobalSkillDialog.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/CreateGlobalSkillDialog.tsx.md",
+   "sourceBlob": "ec35066df1c2a84c2063f6732d961148c589b73a",
+   "sourceSha256": "3290735975ecec06bf00fcb5116ade1722742b5ae394a3285817ae82d75c71b1",
+   "manualSha256": "5631c786603823386d623d2039aba36cfdef7ae991ee055547a3dd4f887ca8ab",
+   "parentSha256": "5631c786603823386d623d2039aba36cfdef7ae991ee055547a3dd4f887ca8ab",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent-skills/CreateWorkspaceSkillDialog.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/CreateWorkspaceSkillDialog.tsx.md",
+   "sourceBlob": "19988fd3def545ffa2dcfde5c797f9883cdab302",
+   "sourceSha256": "16b8cbe3a3178556feb784952ae0631b4c1e1323dc4eace808f3f47649e6b885",
+   "manualSha256": "3b6482cbcc602ce8bb453d0e0fe14e18ee3940df8eca77faeacfddf37bee0f06",
+   "parentSha256": "3b6482cbcc602ce8bb453d0e0fe14e18ee3940df8eca77faeacfddf37bee0f06",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent-skills/GlobalCapabilitiesView.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/GlobalCapabilitiesView.tsx.md",
+   "sourceBlob": "a8f081f3b434e00ebd4a8f05042c438c8c56dcf6",
+   "sourceSha256": "836ce0d17c6777cc355d703db75c6883c5a340352e5954b0523d5f27b5445f19",
+   "manualSha256": "e79e108d0d603f607dbde135c39703d882dfe490ee3e0cd18d7a67374376a8dd",
+   "parentSha256": "e79e108d0d603f607dbde135c39703d882dfe490ee3e0cd18d7a67374376a8dd",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent-skills/GlobalPresetScopePanel.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/GlobalPresetScopePanel.tsx.md",
+   "sourceBlob": "df4d59856f8581d19cf5acd1a998d066b38d57f6",
+   "sourceSha256": "e33d61baf4f96cd5fec82389e5d7fe430f3e51f6dbaa43d06d7e77e38bac2752",
+   "manualSha256": "ef94673e1863e057a4cbe1fe59366928fad2fd56a323644ee02a5ed5baafac08",
+   "parentSha256": "ef94673e1863e057a4cbe1fe59366928fad2fd56a323644ee02a5ed5baafac08",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent-skills/GlobalPresetSettings.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/GlobalPresetSettings.tsx.md",
+   "sourceBlob": "dcaa2e88187482f7b15e7ca5a1e12920d361bd23",
+   "sourceSha256": "f1d7eeee7b3d81e98545091d639fe36bdf7ecea822b2d5dd7c682763170b4a25",
+   "manualSha256": "ffa499faef6da7e02d8983737a12cf71749d0de00e7a7e56e30cd5a997642e51",
+   "parentSha256": "ffa499faef6da7e02d8983737a12cf71749d0de00e7a7e56e30cd5a997642e51",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent-skills/ImportPresetDialog.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/ImportPresetDialog.tsx.md",
+   "sourceBlob": "74a4e659f3d2342bd17a9998a120cde24ffc1dbe",
+   "sourceSha256": "86db1b672bcf7f59d85b6bcf5bb38400bf17b1cd584d41893f7d19c348aa38ef",
+   "manualSha256": "6468541899f565fed30fd79979fabed5ca5eccd8d476e7542b015d10289ff63e",
+   "parentSha256": "6468541899f565fed30fd79979fabed5ca5eccd8d476e7542b015d10289ff63e",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent-skills/ImportSkillDialog.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/ImportSkillDialog.tsx.md",
+   "sourceBlob": "5b1d10539018db3b67e1d7ba1db930cc992b0fd8",
+   "sourceSha256": "64a2408a3f2796acae49f95d1618cdde0cb43b613a31f550ca6d616b7e983cc8",
+   "manualSha256": "cc8221b404c1f1da87f72757192fa16a833c07bb7ade00cd98e209e396457cc0",
+   "parentSha256": "cc8221b404c1f1da87f72757192fa16a833c07bb7ade00cd98e209e396457cc0",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent-skills/MasterSkillDetailSheet.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/MasterSkillDetailSheet.tsx.md",
+   "sourceBlob": "fd54c0073bfc84664a6b36410efa4eae6bd0967c",
+   "sourceSha256": "422069c6cd0f36aa6f1fb97965135b53da7178a1415bc5506cae1602451610bf",
+   "manualSha256": "447976dd65953aa70ebc9021d28e642a3b492e8319fe5fc21828d126a45c4baa",
+   "parentSha256": "447976dd65953aa70ebc9021d28e642a3b492e8319fe5fc21828d126a45c4baa",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent-skills/MasterSkillsTab.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/MasterSkillsTab.tsx.md",
+   "sourceBlob": "88ace16139e1cf775703a91be88f48a85989c59a",
+   "sourceSha256": "24d6d12393d07ea20c851f07228275fa04d2a0941dcef130ad05ff00a1fd773d",
+   "manualSha256": "6fcb6dfa3dd05f54ffa5284f27c7a846b8a8608e4c4ad3ff31d94afa71117594",
+   "parentSha256": "6fcb6dfa3dd05f54ffa5284f27c7a846b8a8608e4c4ad3ff31d94afa71117594",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent-skills/McpCard.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/McpCard.tsx.md",
+   "sourceBlob": "b20202ac0572197e31b2e39625f16ba2aa418f7e",
+   "sourceSha256": "8a2a9ed7701f585675571f3cbbe8899485a7fccdfba746682a2726ae23e7afd3",
+   "manualSha256": "e2f5cb06380f43d668ce114517f51d4bc4cf48b0945b87ea9dd2046d9cc3c5fb",
+   "parentSha256": "e2f5cb06380f43d668ce114517f51d4bc4cf48b0945b87ea9dd2046d9cc3c5fb",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent-skills/McpDetailSheet.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/McpDetailSheet.tsx.md",
+   "sourceBlob": "8c071b2214a17bfb454ce9912a19d5297888cb5d",
+   "sourceSha256": "88756d3d7eb25f2a09377215a00d0a7eb563458404ace8f60059837eeff0432f",
+   "manualSha256": "8d446f707cd7d70dbd647c3f5e2fb12db1876776f00972a8e29656238bc4e096",
+   "parentSha256": "8d446f707cd7d70dbd647c3f5e2fb12db1876776f00972a8e29656238bc4e096",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent-skills/SkillCard.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/SkillCard.tsx.md",
+   "sourceBlob": "6ec431a95e3f28c38c7e6c073369bc7790e7a5eb",
+   "sourceSha256": "e1af99459ebd3d77ed96e2dfd1585d7a6e9ff2988d158a02f028d3965f6dc5d4",
+   "manualSha256": "7aa8409689af9feff9824f1dbf729ea1fd4cb1847b8f462aba5b4579fa847b2c",
+   "parentSha256": "7aa8409689af9feff9824f1dbf729ea1fd4cb1847b8f462aba5b4579fa847b2c",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent-skills/SkillDetailHeader.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/SkillDetailHeader.tsx.md",
+   "sourceBlob": "3d91f9f4bbce5f6d684152e09b899cfef06790e0",
+   "sourceSha256": "a054b3e227d2f7f1ce6ab606536a81b218b662ee584e17a9ddd440c418ad41c8",
+   "manualSha256": "9107908c55df3c023f738fa8f957447b3623099749ad0a4da7092d5499f8472f",
+   "parentSha256": "9107908c55df3c023f738fa8f957447b3623099749ad0a4da7092d5499f8472f",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent-skills/SkillDetailLayout.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/SkillDetailLayout.tsx.md",
+   "sourceBlob": "53a5ee57b38d2d9b24479bee37ffc9277d6e6587",
+   "sourceSha256": "539ca8e88cf69ef672484c8fc5b181bcce2ac7e3de23c1bde832f62778cc2fdf",
+   "manualSha256": "a1352f687bd0435f278b68a51fe9d8e21c37f4e250cacac1e21c5ef8550a947c",
+   "parentSha256": "a1352f687bd0435f278b68a51fe9d8e21c37f4e250cacac1e21c5ef8550a947c",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent-skills/SkillDetailSheet.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/SkillDetailSheet.tsx.md",
+   "sourceBlob": "944ae79a5a1066c81f21aa44432fd20ac9011fe4",
+   "sourceSha256": "feb6ff38ab92f185060e953d18114ec482442a86df1aa3c93c3e797bc5c9e24a",
+   "manualSha256": "d200e7900bd40058cb90f05f71c6804042300876393847d1ed07e2ed1fbe6799",
+   "parentSha256": "d200e7900bd40058cb90f05f71c6804042300876393847d1ed07e2ed1fbe6799",
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/AgentPresetSettings.tsx.md": "bac7957ff7d9a4e2e3603e31ba5a661f74aa96ea74b1eef04085dd828ee6defd",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/AgentSkillsToolbar.tsx.md": "51117866c352ff3afac3212406e30ace10ddc003d66400e1928bf97f07dbb5a1",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/AgentSkillsView.tsx.md": "f59c54960d358c24e9ae6cda50eba1787515c92e358f58805e362eefe388cc36",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/CreateGlobalSkillDialog.tsx.md": "5631c786603823386d623d2039aba36cfdef7ae991ee055547a3dd4f887ca8ab",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/CreateWorkspaceSkillDialog.tsx.md": "3b6482cbcc602ce8bb453d0e0fe14e18ee3940df8eca77faeacfddf37bee0f06",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/GlobalCapabilitiesView.tsx.md": "e79e108d0d603f607dbde135c39703d882dfe490ee3e0cd18d7a67374376a8dd",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/GlobalPresetScopePanel.tsx.md": "ef94673e1863e057a4cbe1fe59366928fad2fd56a323644ee02a5ed5baafac08",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/GlobalPresetSettings.tsx.md": "ffa499faef6da7e02d8983737a12cf71749d0de00e7a7e56e30cd5a997642e51",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/ImportPresetDialog.tsx.md": "6468541899f565fed30fd79979fabed5ca5eccd8d476e7542b015d10289ff63e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/ImportSkillDialog.tsx.md": "cc8221b404c1f1da87f72757192fa16a833c07bb7ade00cd98e209e396457cc0",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/MasterSkillDetailSheet.tsx.md": "447976dd65953aa70ebc9021d28e642a3b492e8319fe5fc21828d126a45c4baa",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/MasterSkillsTab.tsx.md": "6fcb6dfa3dd05f54ffa5284f27c7a846b8a8608e4c4ad3ff31d94afa71117594",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/McpCard.tsx.md": "e2f5cb06380f43d668ce114517f51d4bc4cf48b0945b87ea9dd2046d9cc3c5fb",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/McpDetailSheet.tsx.md": "8d446f707cd7d70dbd647c3f5e2fb12db1876776f00972a8e29656238bc4e096",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/SkillCard.tsx.md": "7aa8409689af9feff9824f1dbf729ea1fd4cb1847b8f462aba5b4579fa847b2c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/SkillDetailHeader.tsx.md": "9107908c55df3c023f738fa8f957447b3623099749ad0a4da7092d5499f8472f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/SkillDetailLayout.tsx.md": "a1352f687bd0435f278b68a51fe9d8e21c37f4e250cacac1e21c5ef8550a947c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/SkillDetailSheet.tsx.md": "d200e7900bd40058cb90f05f71c6804042300876393847d1ed07e2ed1fbe6799"
+ },
+ "findings": [],
+ "closedFindings": {
+  "N105-1": "closed"
+ },
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "boundaries": [
+  "未改源码/作者正文/candidate/全局总账；旧 seal 不回写；NOT_RUN 不等于测试通过",
+  "accepted 仅限静态文档 scope"
+ ]
+}

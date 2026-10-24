@@ -1,0 +1,317 @@
+{
+  "schema": "dsh-r07-qa-result/2",
+  "batch": "nb-137",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-extra-03-20261024",
+  "reviewerSession": "docs-r07-qa-extra-03-20261024",
+  "batchVerdict": "accepted",
+  "verdictCounts": {
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "reviewedAtUtc": "2026-10-23T21:10:00Z",
+  "reviewRoot": "reviews/nb-137",
+  "deliveryRoot": "deliveries/nb-137",
+  "preRead": "reviews/nb-137/PRE_READ_DONE.json（seal 前 18/18 逐文件整读，绑定 18/18 复用；Q1-Q9 核查点全部对照）",
+  "seal": {
+    "tool": "seal_delivery.py/1",
+    "sealId": "seal-212b490607ef8758",
+    "sealedAtUtc": "2026-10-23T20:19:23Z",
+    "manifestSha256": "93885734579afbd8c14c1b56c5e70d88098eb3da58b0456ab433b1e112e024b7",
+    "readySha256": "4171ae2373295f8ef61dca5d160843045d66daf8c82a36d06ba96ae49b5e179b",
+    "zip": {
+      "path": "deliveries/nb-137/R07-nb-137-05fb2565.zip",
+      "sha256": "edad70b2006d876b0fd94addcf910b5265cf38cbfaa37bd58872adc76381cde5",
+      "bytes": 93574,
+      "entries": 21
+    }
+  },
+  "gates": {
+    "G0": "G0_PASS",
+    "G1": "G1_PASS",
+    "G2": "G2_PASS"
+  },
+  "g0Detail": {
+    "hashChain": "MANIFEST 93885734…/READY/ZIP 三方重算全对（ZIP 93574B/21 条目）；manualSha256 18/18 MANIFEST==READY==stage==ZIP",
+    "binding": "18/18 source blob+sha256+lines == manager scope（独立重算）",
+    "format": "18/18 front matter 齐全"
+  },
+  "g1Detail": {
+    "unverified": "UNVERIFIED 自报 5 组差异/8 组否定范围；新增强声明 3 项回源全实：插件 5 模块（plugin-manager/permissions/requests/view-manager/agent-tools）冻结树全缺失、@anthropic-ai/claude-agent-sdk 未登记（3 清单 0 命中）、memory-archive-backup 路径根 ~/.profer vs config-paths ~/.cdutai 权威根差异",
+    "coverage": "COVERAGE.tsv 备注完整（18/18，min 29 字符）；SOURCE-EVIDENCE 完整"
+  },
+  "g2Detail": {
+    "method": "18/18 手册全文读 + 9 组行号/符号抽验全中（channel-manager:530、main-window-state:9、template-store:253/365-367/386、SettingsDialog:38-43、SettingsPanel:238-245、after-pack 5 锚点、pnpm-lock.yaml 存在、packaging-guards 19 用例计数）",
+    "preReadCheckpoints": "预读 Q1-Q9 全部如实处置（Q1 Pi 0.84.2/0.86.1 版本漂移、Q2 set-exe-icon 零调用+两套并行+LegalCopyright 差异、Q3 plugin-smoke fixture 缺失+cwd 敏感、Q4 零调用、Q5 零调用+路径根差异、Q6 仅 win 门禁、Q7 非 darwin 跳过、Q8 seed 夹具、Q9 revisionArg 双义）",
+    "findings": "0 major；2 minor 引用毛刺（NB137-N-01 :29-31→:33-34、NB137-N-02 :178 幻行）"
+  },
+  "files": [
+    {
+      "path": "apps/electron/scripts/macos-signature.cjs",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/macos-signature.cjs.md",
+      "sourceBlob": "3150a89065bd4ea726cd1d68090e372262d57d08",
+      "sourceSha256": "b9e134077ba518d7acd28dc14041f6d1463abcbb711aeb243d2777379a12411c",
+      "manualSha256": "f941c62067f9111b38363d9776953364b47cac886f522217f38fc20c0235ea03",
+      "lines": 283,
+      "manualLines": 136,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/scripts/memory-archive-backup.mjs",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/memory-archive-backup.mjs.md",
+      "sourceBlob": "461a5e8c833e2b1e44bc1fe5fbb42e74f5a89365",
+      "sourceSha256": "9d58705e321cf32a6afea3528026f5f2b58bf167a63284aaac637e6767243e5c",
+      "manualSha256": "5aeb7dcd39a9ba7715f4b4e9dd4d93045c02dc5c30dedf823a04073854ab2b2a",
+      "lines": 74,
+      "manualLines": 112,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": [
+        {
+          "id": "NB137-N-02",
+          "severity": "minor",
+          "claim": "§6 失败表引用 :178（'仅 :178 一类脚本风格外的保护'）——74 行文件不存在 :178，疑串稿残留",
+          "sourceEvidence": "memory-archive-backup.mjs 全文 74 行",
+          "action": "errata 删除或更正该引用"
+        }
+      ]
+    },
+    {
+      "path": "apps/electron/scripts/memory-search-verify.mjs",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/memory-search-verify.mjs.md",
+      "sourceBlob": "0e79ef8543c2b498cd8a67d4cab8a90d5f762bb2",
+      "sourceSha256": "574b8fedb2820c5c6fc7fb9067a490309e3e0d0ab40525bdbc9550d16fec6fd6",
+      "manualSha256": "3c435fbdd60a95cb71c30014e775a00d87940c3586664e1cc0dc803306331727",
+      "lines": 105,
+      "manualLines": 104,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/scripts/nsis-icon-refresh.nsh",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/nsis-icon-refresh.nsh.md",
+      "sourceBlob": "fd4e81c4330664232d0facb76f4a3783b5341ff1",
+      "sourceSha256": "3a3c7297cb564dfad998c31fbaa9db801c54fd01bdf9a1016994cbe188ea3942",
+      "manualSha256": "0e81941aa7df80b92233ca37020377635694a07424bf655ddcd03658b943bdad",
+      "lines": 26,
+      "manualLines": 96,
+      "kind": "script",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/scripts/package-closure.test.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/package-closure.test.ts.md",
+      "sourceBlob": "7c97807ea968d687173e9077c1e81a964bf1e585",
+      "sourceSha256": "bc3bd35184b1a049378c8d675fc0aad4018d2a8abd2e6e0b28f7855fff49cbcb",
+      "manualSha256": "1729de7347f679056b473866d1a40a9d2093b489b1c3ceb59f6710e8514583a3",
+      "lines": 76,
+      "manualLines": 81,
+      "kind": "test",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/scripts/packaged-cli-contract.cjs",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/packaged-cli-contract.cjs.md",
+      "sourceBlob": "76aa77e55746b62b04be21b77b37f0f494a868ec",
+      "sourceSha256": "82324b1dd3937b1eb166b5bf0f9994fdf49d6d9e171cacd147d8d6b5ee610a3f",
+      "manualSha256": "f2151760d99d7d533910562e21242a4a0111b065d181a6920d82afb9fb4370c9",
+      "lines": 48,
+      "manualLines": 101,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/scripts/packaged-pi-probe.cjs",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/packaged-pi-probe.cjs.md",
+      "sourceBlob": "f1bbfd890ef540fd04e84abcd391afc7e8cd5a13",
+      "sourceSha256": "489213c2daa38a887e343aea652b42219374c66e5990333ef25805be92b37684",
+      "manualSha256": "4c6bab4cbb49cd5a073803fdede3a5cca3bcca108f49772690883f59081b15c1",
+      "lines": 154,
+      "manualLines": 117,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/scripts/packaging-guards.test.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/packaging-guards.test.ts.md",
+      "sourceBlob": "9fd182bd239dfa5e4e9aa04632602be3fb422f12",
+      "sourceSha256": "0f04bffd99ab739ecd52decafc71b44f9909e2cf7d17d0c07ef207b20c1291b4",
+      "manualSha256": "739da6d24daac6afec13246f20c0f77f51fe7a77f9ae2b968eb4e266c72c534b",
+      "lines": 388,
+      "manualLines": 119,
+      "kind": "test",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/scripts/packaging-host.cjs",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/packaging-host.cjs.md",
+      "sourceBlob": "70471e9a130d9151ee1b6ca10aaa7337f99a79f7",
+      "sourceSha256": "e78e9d03e541a9fafe9ecf853c1ba7473605f573b480e12ce0a8785e19ca9d33",
+      "manualSha256": "6beaac62812182932d00ac5ee7666e9d4f6776ed24292bfae3cc362bfd81159e",
+      "lines": 71,
+      "manualLines": 105,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/scripts/plugin-rpc-smoke.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/plugin-rpc-smoke.ts.md",
+      "sourceBlob": "5fdb24c9a222c5b6996cf32181fb6b94b2ce01cc",
+      "sourceSha256": "56c737657cbf48ea6df2e6fcbd902aceaf5712b321ac8cb236b49fba61e24de6",
+      "manualSha256": "9b118344abd2abe8373e1456af0833c2f2793b2d181d979a08a62b90b298921e",
+      "lines": 180,
+      "manualLines": 124,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/scripts/plugin-smoke.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/plugin-smoke.ts.md",
+      "sourceBlob": "6bb586ccf47040af9aa127753ca2b4d7b95b0c22",
+      "sourceSha256": "74ae543bd647f0490edb0fd5e23cb92ad3dabf3851e6906855dbdda59664c03e",
+      "manualSha256": "a2a7f5de2c53b2f90d490e58b1d947140aa7e200487445db360267590a7f2075",
+      "lines": 92,
+      "manualLines": 119,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/scripts/review-authoring-v1.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/review-authoring-v1.ts.md",
+      "sourceBlob": "2716cda3c81b6c7221b72eeb71634492614b014a",
+      "sourceSha256": "bb91d128fa46c0b96d7fa484eefe42e319cc8158056ce2158972fb67f36df825",
+      "manualSha256": "948bcbe7d850ea1166ac5bd46e3c8d5a6071d03eaf357a399ba73ce2536fbafa",
+      "lines": 82,
+      "manualLines": 120,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/scripts/review-d2-plan.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/review-d2-plan.ts.md",
+      "sourceBlob": "832516bf047ca2e89c4a0bd87bc41220115b436a",
+      "sourceSha256": "a598466421e5a4787c6c1fcaf7879db118faa1a7c4a2c817c0f83de6609e935b",
+      "manualSha256": "782da70888340c75cd1a6ccafe2de8a9d27e6a91ffcac54b03de4b349e8222dc",
+      "lines": 66,
+      "manualLines": 118,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/scripts/review-semantic-demo.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/review-semantic-demo.ts.md",
+      "sourceBlob": "a0e479f1d06e5f433d1a93501b13d9bbe9b21d2c",
+      "sourceSha256": "3cd05442f74b2743a9685c9fe87cb8ca7781c90be45241fb53e458199764defb",
+      "manualSha256": "9cf1ad27a1db5cba44c472654db694f2b88aa2951ba011c1b204aa1fd2ba4140",
+      "lines": 100,
+      "manualLines": 115,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/scripts/run-electron-builder.cjs",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/run-electron-builder.cjs.md",
+      "sourceBlob": "79f32334882b52fce7e47755a0919de7a72e05f6",
+      "sourceSha256": "5c198dbb75845923085f93b992a0d8cefdcae3d9a1d3e641f73fbb1a2e61d9a7",
+      "manualSha256": "64a6c05d37d468912e0748354f999b61d730ff2b6e9f21acdbadf6e15a5bef1d",
+      "lines": 48,
+      "manualLines": 107,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/scripts/set-exe-icon.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/set-exe-icon.ts.md",
+      "sourceBlob": "87231c2d570a89326afea03ed08af30a5e7b02fa",
+      "sourceSha256": "e124158fc1a2ba734a497d2766766470539e4fabd9d17b51bc604153b9bd9b15",
+      "manualSha256": "7680c4d0925f42e443c21dfb8dcefc41c56e79be32fdbbfa1fa6950a4e8d1966",
+      "lines": 34,
+      "manualLines": 101,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/scripts/settings-macos-contract.test.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/settings-macos-contract.test.ts.md",
+      "sourceBlob": "0ab9afbd8dfcc8a91b2bda6fc2475ae2e2d6f8d3",
+      "sourceSha256": "0208b3bb516d72ac7ce94af37a9e19ea8a17249a6e2e3ab21f9895b0ebf637bf",
+      "manualSha256": "1dc7d9eb1f3ba677bc6ad8f0ecc527dbfd62dc2fd50e838d33e1a6403e582c3d",
+      "lines": 67,
+      "manualLines": 78,
+      "kind": "test",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/scripts/sign-update-metadata.cjs",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/sign-update-metadata.cjs.md",
+      "sourceBlob": "633ad75b375ae8fea069a1c35fe23d589b0fef23",
+      "sourceSha256": "d8f39f95dd035c438a00b249b5f7baa87dc39a14debf719c0a8d83afb74c83ea",
+      "manualSha256": "54a9f2481db3820db829b3b349ad5f6793d958725644808196751f273124b15b",
+      "lines": 29,
+      "manualLines": 109,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": [
+        {
+          "id": "NB137-N-01",
+          "severity": "minor",
+          "claim": "§4 称 verify-update-metadata.cjs:29-31 verifier.verify 失败 throw，实际 verifier.verify 在 :33、throw 在 :34（行号 +2~3 漂移，语义正确）",
+          "sourceEvidence": "verify-update-metadata.cjs:33-34 实测",
+          "action": "errata 更正行号 :33-34"
+        }
+      ]
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/macos-signature.cjs.md": "f941c62067f9111b38363d9776953364b47cac886f522217f38fc20c0235ea03",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/memory-archive-backup.mjs.md": "5aeb7dcd39a9ba7715f4b4e9dd4d93045c02dc5c30dedf823a04073854ab2b2a",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/memory-search-verify.mjs.md": "3c435fbdd60a95cb71c30014e775a00d87940c3586664e1cc0dc803306331727",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/nsis-icon-refresh.nsh.md": "0e81941aa7df80b92233ca37020377635694a07424bf655ddcd03658b943bdad",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/package-closure.test.ts.md": "1729de7347f679056b473866d1a40a9d2093b489b1c3ceb59f6710e8514583a3",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/packaged-cli-contract.cjs.md": "f2151760d99d7d533910562e21242a4a0111b065d181a6920d82afb9fb4370c9",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/packaged-pi-probe.cjs.md": "4c6bab4cbb49cd5a073803fdede3a5cca3bcca108f49772690883f59081b15c1",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/packaging-guards.test.ts.md": "739da6d24daac6afec13246f20c0f77f51fe7a77f9ae2b968eb4e266c72c534b",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/packaging-host.cjs.md": "6beaac62812182932d00ac5ee7666e9d4f6776ed24292bfae3cc362bfd81159e",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/plugin-rpc-smoke.ts.md": "9b118344abd2abe8373e1456af0833c2f2793b2d181d979a08a62b90b298921e",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/plugin-smoke.ts.md": "a2a7f5de2c53b2f90d490e58b1d947140aa7e200487445db360267590a7f2075",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/review-authoring-v1.ts.md": "948bcbe7d850ea1166ac5bd46e3c8d5a6071d03eaf357a399ba73ce2536fbafa",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/review-d2-plan.ts.md": "782da70888340c75cd1a6ccafe2de8a9d27e6a91ffcac54b03de4b349e8222dc",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/review-semantic-demo.ts.md": "9cf1ad27a1db5cba44c472654db694f2b88aa2951ba011c1b204aa1fd2ba4140",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/run-electron-builder.cjs.md": "64a6c05d37d468912e0748354f999b61d730ff2b6e9f21acdbadf6e15a5bef1d",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/set-exe-icon.ts.md": "7680c4d0925f42e443c21dfb8dcefc41c56e79be32fdbbfa1fa6950a4e8d1966",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/settings-macos-contract.test.ts.md": "1dc7d9eb1f3ba677bc6ad8f0ecc527dbfd62dc2fd50e838d33e1a6403e582c3d",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/sign-update-metadata.cjs.md": "54a9f2481db3820db829b3b349ad5f6793d958725644808196751f273124b15b"
+  },
+  "rejectedHashes": {},
+  "notRun": [
+    "product tests (packaging-guards 19/package-closure 4/settings-macos 4 用例声明)",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "真实打包/签名/公证/CLI 探针",
+    "bun install"
+  ],
+  "notClaimed": [
+    "不声称测试通过（NOT_RUN）",
+    "不声称两冒烟脚本可运行（插件子系统缺失）"
+  ],
+  "mergeGuidance": "lead 按 acceptedHashes（18 篇）合入；NB137-N-01/N-02 非阻断，随下次勘误一次编辑性关闭"
+}

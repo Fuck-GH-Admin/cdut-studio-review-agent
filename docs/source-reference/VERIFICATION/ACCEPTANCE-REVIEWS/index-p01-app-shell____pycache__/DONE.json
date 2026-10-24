@@ -1,0 +1,38 @@
+{
+  "schema": "dsh-r07-index-review-done/1",
+  "batch": "index-p01-app-shell____pycache__",
+  "groupId": "p01-app-shell____pycache__",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-index-author-20261023",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T18:22:00Z",
+  "sealedAtUtc": "2026-10-23T17:41:12Z",
+  "status": "REVIEW_COMPLETE_ACCEPTED",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 1,
+    "accepted": 1,
+    "revision_required": 0,
+    "unknown": 0,
+    "findingsBlocking": 0,
+    "findingsNonBlocking": 0
+  },
+  "artifactSha256": "386e2267f3f7dc8ced32ceafcd24d8a52c87d59a0cb17ae6c42556dfa4d2050c",
+  "artifacts": [
+    "reviews/index-p01-app-shell____pycache__/RESULT.json",
+    "reviews/index-p01-app-shell____pycache__/REVIEWED-HASHES.json",
+    "reviews/index-p01-app-shell____pycache__/SOURCE-CHECKLIST.md",
+    "reviews/index-p01-app-shell____pycache__/PREREAD-NOTES.md",
+    "reviews/index-p01-app-shell____pycache__/DONE.json"
+  ],
+  "notRun": [
+    "产品测试",
+    "typecheck",
+    "构建",
+    "Electron/GUI",
+    "Python 导入执行（本轮统一 NOT_RUN，且无源可执行）"
+  ],
+  "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局 FILES/COVERAGE/INDEX-ACCEPTED/inventory；未 commit/push；结论只覆盖本批 index-p01-app-shell____pycache__。",
+  "findingsSummary": "无 findings。ERRATA-E1 沿登记。",
+  "next": "lead 按 REVIEWED-HASHES.json 合入（artifactSha256=386e2267…）；QA 继续 index-p01-app-shell__apps（已交付）与 __apps__electron（已交付）。"
+}

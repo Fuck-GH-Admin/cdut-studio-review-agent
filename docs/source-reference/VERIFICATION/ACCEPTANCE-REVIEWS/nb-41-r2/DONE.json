@@ -1,0 +1,32 @@
+{
+  "schema": "r07-qa-done/1",
+  "batch": "nb-41-r2",
+  "revisionOf": "nb-41-r1",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewedAtUtc": "2026-10-23T19:52:49Z",
+  "sealId": "seal-246efa6dfd90a0d8",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "result": "reviews/nb-41-r2/RESULT.json",
+  "resultSha256": "8aec5a69e1b58802cb08bfa7e6e058a7404a012f794caca6c635f6c291cbd881",
+  "reviewedHashes": "reviews/nb-41-r2/REVIEWED-HASHES.json",
+  "reviewedHashesSha256": "06e7d1dfa0047e580f6d9eacbefe48b2170b7ccd1cc11f916c1a367d9a696391",
+  "testsRun": [],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "knownUnknowns": [
+    "主进程评测服务实现（非本批）",
+    "HF schema/运行期评测（NOT_RUN）"
+  ]
+}

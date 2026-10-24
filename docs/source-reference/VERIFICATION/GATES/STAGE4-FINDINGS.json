@@ -1,0 +1,37 @@
+{
+  "schema": "r07-independent-stage4-findings/1",
+  "reviewedAtUtc": "2026-10-23T22:53:35.062199+00:00",
+  "status": "TARGETED_REPAIRS_REQUESTED",
+  "draftHashes": {
+    "CURRENT-ARCHITECTURE.md": "7bcad7f7e3c9c28aacc40b3057287b92bbf8038330fa5a3e33c1c2c67d5288f2",
+    "BUSINESS-FLOW.md": "3b9aa130d28bc2f346c5c076afc347ae0401b8a2a1e879c4fd7807b3d11d6d85"
+  },
+  "findings": [
+    {
+      "id": "S4-REPORT-01",
+      "severity": "blocking",
+      "source": "review-v3-report-snapshot.ts:26-36",
+      "fact": "Comparator sorts descending; latestReportDecision takes at(-1), selecting earliest any decision and no finality filtering. Existing draft incorrectly promises final/latest decision bound reportRun.",
+      "required": "Describe actual selection and comment/implementation mismatch; retain explicit request and no-decision latesttechnicalRun branches."
+    },
+    {
+      "id": "S4-SOURCE-02",
+      "severity": "precision",
+      "source": "pi-case-review-service.ts:312-330",
+      "fact": "Pi source input carries version/block/quote; parseRevision/location rebuilt from current document, not compared as caller fields."
+    },
+    {
+      "id": "S4-READY-03",
+      "severity": "precision",
+      "source": "pi-case-review-service.ts:835",
+      "fact": "businessReady also requires status completed."
+    },
+    {
+      "id": "S4-GATE-04",
+      "severity": "precision",
+      "source": "stage-workflow.ts:81-195",
+      "fact": "Legacy recordStageDecision itself has no T03/Run currentity gate and emits synthetic run@rev; restrict extraT03 claim to T05/native path."
+    }
+  ],
+  "runtime": "NOT_RUN"
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "r07-qa-done/1",
+  "batch": "nb-77",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewedAtUtc": "2026-10-23T20:38:07Z",
+  "sealId": "seal-3c634b8ef06bc19d",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "result": "reviews/nb-77/RESULT.json",
+  "resultSha256": "50efb67d4be89f90de3c9117710d2747b9e3c51164552629308de107d007a5b2",
+  "reviewedHashes": "reviews/nb-77/REVIEWED-HASHES.json",
+  "reviewedHashesSha256": "bd9fcec9b3c2d3cce731c3b392bc83f11f1db953edd3b155fc92bf61b3fe32e5",
+  "testsRun": [],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "飞书 API 实调",
+    "Fabric 服务实起",
+    "真实 Agent 会话"
+  ],
+  "knownUnknowns": [
+    "@profer/agent-fabric Gateway 内部（非本批）",
+    "study/hierarchical-graphrag 聚类实现（非本批）",
+    "飞书 CardKit 2.0 API 实际行为（NOT_RUN）",
+    "长会话索引性能与召回质量（NOT_RUN）",
+    "配对脚本 agent-fabric-pair.mjs（非本批）"
+  ]
+}

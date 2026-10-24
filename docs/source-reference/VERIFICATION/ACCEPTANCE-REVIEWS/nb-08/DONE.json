@@ -1,0 +1,33 @@
+{
+  "schema": "dsh-r07-independent-review-done/1",
+  "batch": "nb-08",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-03-20261023",
+  "reviewerSession": "docs-r07-qa-nb-03-20261023",
+  "batchVerdict": "revision_required",
+  "completedAtUtc": "2026-10-23T16:58:28Z",
+  "counts": {
+    "files": 18,
+    "accepted": 14,
+    "revision_required": 4,
+    "findings": 5,
+    "optionalNotes": 2
+  },
+  "sealBinding": {
+    "sealId": "seal-26162a91a91bfb18",
+    "zipSha256": "09b52f5e92b233c231ffa893397dafe6234950968a690b6dee3b08651f7eff0c",
+    "manifestSha256": "7ce5065bc757b5524d55edde7ba8e250abdf6e27656627ec01c151fdc573a56e",
+    "readySha256": "39345717699223c28275ff0d3eebde198fa0a549497bd76a99606e0c1a4f277d",
+    "doneSha256": "2bc32a957961601766dd7c6ee8bf72ee5b98d0b4f48e1665dd0753f2e880a61e",
+    "sealedAtUtc": "2026-10-23T14:15:53Z"
+  },
+  "notRun": [
+    "bun test NOT_RUN",
+    "GUI NOT_RUN",
+    "构建 NOT_RUN",
+    "模型/产品调用 NOT_RUN"
+  ],
+  "note": "独立源读真值见 reviews/nb-08/SOURCE-CHECKLIST.md；5 findings 须返修（含 NB08-PERM-01 medium），2 可选备注非阻断。返修复验按新 hash，不套旧接受。",
+  "resultSha256": "7f3f69c6e3964fe95dcb7821683d4479dc3c8ae3247e0c4fcdc44619a487cb64",
+  "reviewedHashesSha256": "bf0e0caea0c7a05907effc73fc72667333e1a3919636b45353d0b9bbd06ab062"
+}

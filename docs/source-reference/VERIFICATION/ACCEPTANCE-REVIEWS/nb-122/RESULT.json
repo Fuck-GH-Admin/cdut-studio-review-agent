@@ -1,0 +1,299 @@
+{
+  "schema": "dsh-r07-qa-result/2",
+  "batch": "nb-122",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-extra-03-20261024",
+  "reviewerSession": "docs-r07-qa-extra-03-20261024",
+  "batchVerdict": "accepted",
+  "verdictCounts": {
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "reviewedAtUtc": "2026-10-23T21:40:00Z",
+  "reviewRoot": "reviews/nb-122",
+  "deliveryRoot": "deliveries/nb-122",
+  "preRead": "reviews/nb-122/PRE_READ_DONE.json（seal 前 18/18 逐文件整读，绑定 18/18 复用；Q1-Q7 对照）",
+  "seal": {
+    "tool": "seal_delivery.py/1",
+    "sealId": "seal-065aa5a22bf529ea",
+    "sealedAtUtc": "2026-10-23T20:22:41Z",
+    "manifestSha256": "c2e22c3899c0da0a4978d8e2adfab9825172eb0d002f5f42cf218df33d5b61c0",
+    "readySha256": "c38f88121d28ff2d78810f606e071631ee4b873dde9904504b5b61f68d4c7329",
+    "zip": {
+      "path": "deliveries/nb-122/R07-nb-122-05fb2565.zip",
+      "sha256": "d632564942d3ed79c55a63bd7bb25113f275453787f26f4830459c4bc019643b",
+      "bytes": 74141,
+      "entries": 21
+    }
+  },
+  "gates": {
+    "G0": "G0_PASS",
+    "G1": "G1_PASS",
+    "G2": "G2_PASS"
+  },
+  "g0Detail": {
+    "hashChain": "MANIFEST c2e22c38…/READY/ZIP d6325649… 三方重算全对（74141B/21 条目）；manualSha256 18/18 四方一致",
+    "binding": "18/18 source blob+sha256+lines == manager scope",
+    "format": "18/18 front matter 齐全"
+  },
+  "g1Detail": {
+    "unverified": "强声明回源全实：insertSessionReferenceMention/事件名全树 0 监听者（inserted 恒 false 与 :68-72 注释矛盾照实记录）、PANEL_ONLY_PREVIEW_EXTS 零消费者、GLOBAL_SHORTCUT_DEFAULTS 双表并存（global-shortcut-service.ts:21-23 + main/index.ts:1049-1050）、AppShell.tsx:79 isTeamWorkspace=false 硬编码（行号精确）、quoted 写/解析 message_id/role 不对称（:51-52 vs :66-95）",
+    "coverage": "COVERAGE 备注完整（18/18，min 28 字符）；测试计数 18/7/15/3/10/2 机械复算全对"
+  },
+  "g2Detail": {
+    "method": "18/18 手册全文读；对照预读 Q1-Q7 全部如实处置（Q1 flag+不对称、Q2 executionLabel 7 态覆盖缺口、Q3 .bin 重复、Q4 拖拽单例、Q5 shortcut 消费链（预读 Q5 系误报，shortcut-registry:8-9 实为消费者，manual 正确）、Q6 OFV 语义标推断、Q7 无测试模块）",
+    "findings": "0 major；1 minor 批内交叉引用不一致（NB122-N-01）"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/renderer/lib/ofv-toolbar.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/ofv-toolbar.ts.md",
+      "sourceBlob": "d8c676fcf76fa5c407b0df9eb2a353b74d94d778",
+      "sourceSha256": "7bd446b18b831b0fe7a7acaf75e548661652e05cc0e1e303050b4c77df687d6f",
+      "manualSha256": "1191bedd4dc57f0010791f99883137465c21d018306b39b313e7f25b94f11804",
+      "lines": 59,
+      "manualLines": 102,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/panel-layout.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/panel-layout.test.ts.md",
+      "sourceBlob": "046870b697ccd3c7964e5a4eb676b1c38098410d",
+      "sourceSha256": "e758483bb0a07b085c54624fa8adf9b24b34aa27a5d12b65f8a5365a1a570e3e",
+      "manualSha256": "1256fe4f5b0e969c6b657afa131803878100aa149bf417484823fe1c8694a913",
+      "lines": 141,
+      "manualLines": 78,
+      "kind": "test",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/panel-layout.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/panel-layout.ts.md",
+      "sourceBlob": "b50e9d3694fa4c5d425c98b3f7a49eee1eee5259",
+      "sourceSha256": "afc72edb45330636a4bb275e5f65e9a3772b5ceac15009e6017339282f750adc",
+      "manualSha256": "59ba7d41652274c840cf8e74c8f91da4aacad1e47bce1723c06eb2e371f6f027",
+      "lines": 98,
+      "manualLines": 111,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/pi-harness-view-model.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/pi-harness-view-model.test.ts.md",
+      "sourceBlob": "a817b4ce68c8b0c5bbd24824a5f39cfe4b0c0331",
+      "sourceSha256": "1cca361e90b098add4b4728881d9966481ca69c2d16cdab949b4278fd7b00a00",
+      "manualSha256": "da853ad93dbdf780b21c45f441e5ca3b56b4c50953e139d9a51591bc366a9411",
+      "lines": 46,
+      "manualLines": 65,
+      "kind": "test",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/pi-harness-view-model.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/pi-harness-view-model.ts.md",
+      "sourceBlob": "be1aaf2f03c348c442a5b6baead4e8497506df05",
+      "sourceSha256": "93a07a074946b7160aaa25ad725953c3ac47c4bbb03e3474e2761c4525c00dce",
+      "manualSha256": "b43db26567a239976a62da2b4c4d931624c5c09dab6a7ed2edb0df5c94798206",
+      "lines": 57,
+      "manualLines": 106,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/preview-extension-sets.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/preview-extension-sets.ts.md",
+      "sourceBlob": "9267e050f02099b020fcf813fccf1bc45bfc150f",
+      "sourceSha256": "4a9d30d8ad54d2cf95162793c25dc9d5785d7fa859a48c8a1262fdb216004512",
+      "manualSha256": "e13c04c27714d3398b5f3fd397cb48246c92a5862a21ab7182877dc7a818f8fb",
+      "lines": 75,
+      "manualLines": 97,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/product-feature-flags.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/product-feature-flags.test.ts.md",
+      "sourceBlob": "7a2240383dd2bc83378063371d7589b497611844",
+      "sourceSha256": "68957bf797543d6cc3383355f7f1cd2fd6f121c2f5e6fd7e205d23d578e136ec",
+      "manualSha256": "e7b53e72fa9ae0e1c1467d26407b3de1b54ec0a620c03a6a8db4b023dce25f60",
+      "lines": 90,
+      "manualLines": 78,
+      "kind": "test",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/product-feature-flags.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/product-feature-flags.ts.md",
+      "sourceBlob": "4a6bd6bcc6d0146da86e54befb996a7cc8f92ba5",
+      "sourceSha256": "a561b51033878ed9bc1fac178c8cac00c41b80490bdb80ea3ec40a1e5276f11f",
+      "manualSha256": "079b56cdb3ef036a7f4586ac8753befc1055bb7f8e838071f1f71e231eab86b0",
+      "lines": 40,
+      "manualLines": 99,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/quoted-selection.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/quoted-selection.test.ts.md",
+      "sourceBlob": "5733f062de53f1f642eb1a0cb47e4f29859416a4",
+      "sourceSha256": "cca2435c6643e60eeb7a04fbd6dfb07703c617c17d9338125693041f0f2fe8e6",
+      "manualSha256": "f997276abb7d90f08649d22a1e17fc7f9872385e88bea9454797f016b04a5fab",
+      "lines": 85,
+      "manualLines": 59,
+      "kind": "test",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/quoted-selection.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/quoted-selection.ts.md",
+      "sourceBlob": "e6b82f0bb5ba2ab7e20a265a1bf8751989edf05c",
+      "sourceSha256": "c0131afad15990b7ec3c3d4c7204a9c1a260710f45d0683acb83cc5eba6f8f25",
+      "manualSha256": "5e06d4fcea8cf7a5eac048c8ae809de425a59f25c565a1703ab12be67855a15c",
+      "lines": 103,
+      "manualLines": 104,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/resolved-blob-messages.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/resolved-blob-messages.test.ts.md",
+      "sourceBlob": "c706838b619decf0cb22b1bb7ca7f0071fb1f6ea",
+      "sourceSha256": "5e1c9a586e961d3c0a154c2603f6061095de8495a2f32cf631c00523d1783c57",
+      "manualSha256": "0bb17b05bb6ee40d2ce09d0564053053a1648e08000e6e1a80880beec43e2704",
+      "lines": 97,
+      "manualLines": 70,
+      "kind": "test",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/resolved-blob-messages.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/resolved-blob-messages.ts.md",
+      "sourceBlob": "30897b85368c5b84729409513505d3c81d6e5b35",
+      "sourceSha256": "b5c3699548767a40c91c43047189f483f7b9e514e5dd516354b90cbfe2268d8a",
+      "manualSha256": "9bc0a6d9e2f578fa82bbeababae0cce4378f2869e2303cec06bb3227606805c7",
+      "lines": 29,
+      "manualLines": 92,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/session-file-changes.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/session-file-changes.ts.md",
+      "sourceBlob": "76a92e0f77ed149b68f8fccefbd0948121fd6834",
+      "sourceSha256": "8903fd9d8ba8c0e54a32ee2cd4d308fb70a9a02f9dae68b62a6bb5d58d563c0d",
+      "manualSha256": "db44c551f9f94eea7896247139db3d93ff6a2947361aca8bb14e02fd92044385",
+      "lines": 58,
+      "manualLines": 100,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/session-reference-drag.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/session-reference-drag.ts.md",
+      "sourceBlob": "924d86649bb19ca30e3f3da44fea2bf9857e083d",
+      "sourceSha256": "99554d061753d93acfd4b545822a1d0552349a140cea45f3fe1dc2d2e3d9c6db",
+      "manualSha256": "aa621427691715cc6a3e13b4de55021f9c881d23cf1d084c95c5a9fd42f05960",
+      "lines": 101,
+      "manualLines": 115,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/session-status-visual.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/session-status-visual.ts.md",
+      "sourceBlob": "b217a9189f194a600e270150497802f9cba4fb0e",
+      "sourceSha256": "20478f76386694bc65e5debf57b4361c091c9c08109119038a89f78864aab296",
+      "manualSha256": "2c2496437153fe50291fd235ec7d9652738f5592128e5dbc1c67fb3084e31dc4",
+      "lines": 23,
+      "manualLines": 89,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/session-update-batcher.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/session-update-batcher.test.ts.md",
+      "sourceBlob": "3ba683ebf2af09a8ff9c88325d25d218fd177ebc",
+      "sourceSha256": "edd41af1977b0ae3467bd0eb0a043623c4e377089736ae083cd47367acdf8a21",
+      "manualSha256": "48b2c8f4e1a53c496674ede172468b21c86b3cb58e78fd9ea23ff30dc86c6bdc",
+      "lines": 46,
+      "manualLines": 67,
+      "kind": "test",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/session-update-batcher.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/session-update-batcher.ts.md",
+      "sourceBlob": "0e220f3f71f8e44a904cb3f131f4a8499912092d",
+      "sourceSha256": "a2165e7e07b4508a26cd44217aca71181bd7f623af19176c78eff034069cd714",
+      "manualSha256": "11148c837a2d9b42748fba38c2bab7217b0e603d63b29d646f9f6e9a943512c8",
+      "lines": 59,
+      "manualLines": 104,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/shortcut-defaults.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/shortcut-defaults.ts.md",
+      "sourceBlob": "63617ac52b2d8a3e80aa87623e17b3f0a2304bb0",
+      "sourceSha256": "4d3d7301738815eee5b5c5abf77b3ac1f51486f7c15e35ba3d320b1539540322",
+      "manualSha256": "338ff6859d4d42a0444b1aed946c93c242b62e1fec8699dc5b5c343bde69bdd6",
+      "lines": 195,
+      "manualLines": 103,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/ofv-toolbar.ts.md": "1191bedd4dc57f0010791f99883137465c21d018306b39b313e7f25b94f11804",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/panel-layout.test.ts.md": "1256fe4f5b0e969c6b657afa131803878100aa149bf417484823fe1c8694a913",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/panel-layout.ts.md": "59ba7d41652274c840cf8e74c8f91da4aacad1e47bce1723c06eb2e371f6f027",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/pi-harness-view-model.test.ts.md": "da853ad93dbdf780b21c45f441e5ca3b56b4c50953e139d9a51591bc366a9411",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/pi-harness-view-model.ts.md": "b43db26567a239976a62da2b4c4d931624c5c09dab6a7ed2edb0df5c94798206",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/preview-extension-sets.ts.md": "e13c04c27714d3398b5f3fd397cb48246c92a5862a21ab7182877dc7a818f8fb",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/product-feature-flags.test.ts.md": "e7b53e72fa9ae0e1c1467d26407b3de1b54ec0a620c03a6a8db4b023dce25f60",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/product-feature-flags.ts.md": "079b56cdb3ef036a7f4586ac8753befc1055bb7f8e838071f1f71e231eab86b0",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/quoted-selection.test.ts.md": "f997276abb7d90f08649d22a1e17fc7f9872385e88bea9454797f016b04a5fab",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/quoted-selection.ts.md": "5e06d4fcea8cf7a5eac048c8ae809de425a59f25c565a1703ab12be67855a15c",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/resolved-blob-messages.test.ts.md": "0bb17b05bb6ee40d2ce09d0564053053a1648e08000e6e1a80880beec43e2704",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/resolved-blob-messages.ts.md": "9bc0a6d9e2f578fa82bbeababae0cce4378f2869e2303cec06bb3227606805c7",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/session-file-changes.ts.md": "db44c551f9f94eea7896247139db3d93ff6a2947361aca8bb14e02fd92044385",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/session-reference-drag.ts.md": "aa621427691715cc6a3e13b4de55021f9c881d23cf1d084c95c5a9fd42f05960",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/session-status-visual.ts.md": "2c2496437153fe50291fd235ec7d9652738f5592128e5dbc1c67fb3084e31dc4",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/session-update-batcher.test.ts.md": "48b2c8f4e1a53c496674ede172468b21c86b3cb58e78fd9ea23ff30dc86c6bdc",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/session-update-batcher.ts.md": "11148c837a2d9b42748fba38c2bab7217b0e603d63b29d646f9f6e9a943512c8",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/shortcut-defaults.ts.md": "338ff6859d4d42a0444b1aed946c93c242b62e1fec8699dc5b5c343bde69bdd6"
+  },
+  "rejectedHashes": {},
+  "notRun": [
+    "product tests (panel 18/pi-harness 7/flags 15/quoted 3/blob 10/batcher 2 用例声明)",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "真实 IPC/拖放/快捷键注册"
+  ],
+  "notClaimed": [
+    "不声称测试通过（NOT_RUN）",
+    "不声称 OFV createToolbar 语义已验证（node_modules 未读，标推断）"
+  ],
+  "mergeGuidance": "lead 按 acceptedHashes（18 篇）合入；NB122-N-01 非阻断随勘误关闭"
+}

@@ -1,0 +1,54 @@
+{
+  "schema": "dsh-r07-review-done/1",
+  "batch": "nb-43-r1",
+  "revisionOf": "nb-43",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "sealId": "seal-d7ec3913642e646a",
+  "reviewedAtUtc": "2026-10-24T01:40:00Z",
+  "batchVerdict": "accepted",
+  "fileVerdicts": {
+    "packages/session-core/src/search.ts": "accepted",
+    "packages/session-core/src/select.ts": "accepted",
+    "packages/session-core/src/session-core.test.ts": "accepted",
+    "packages/session-core/src/thinking-tags.ts": "accepted",
+    "packages/session-core/src/tokens.ts": "accepted",
+    "packages/session-core/src/transcript.ts": "accepted",
+    "packages/session-core/tsconfig.json": "accepted",
+    "packages/core/package.json": "accepted",
+    "packages/core/tsconfig.json": "accepted",
+    "packages/shared/package.json": "accepted",
+    "packages/shared/tsconfig.json": "accepted",
+    "packages/ui/components.json": "accepted",
+    "packages/ui/package.json": "accepted",
+    "packages/ui/tsconfig.json": "accepted"
+  },
+  "counts": {
+    "files": 14,
+    "accepted": 14,
+    "revision_required": 0,
+    "unknown": 0,
+    "findings": 0
+  },
+  "resolvedFindings": [
+    "NB43-N1",
+    "NB43-N2",
+    "NB43-N3"
+  ],
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass"
+  },
+  "runStatus": "NOT_RUN",
+  "artifacts": [
+    "reviews/nb-43-r1/RESULT.json",
+    "reviews/nb-43-r1/RESULT.md",
+    "reviews/nb-43-r1/REVIEWED-HASHES.json",
+    "handoffs/nb-43-r1-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-43-r1-REVIEW-TO-LEAD.md"
+  ],
+  "mergeRule": "全 14 篇 acceptedHashes 可合；父批 nb-43 封版保留。",
+  "note": "已 seal D0 不回写。"
+}

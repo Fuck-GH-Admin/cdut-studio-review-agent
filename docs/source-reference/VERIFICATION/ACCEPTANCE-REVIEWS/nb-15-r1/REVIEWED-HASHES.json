@@ -1,0 +1,53 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-15-r1",
+  "revisionOf": "nb-15",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-23T18:10:00Z",
+  "sealId": "seal-272a7f266a1cca1d",
+  "note": "17/17 accepted（NB15-F-01/N-01 全关闭）。合入以本表为准（2 篇新 hash 覆盖 r0，15 篇同 r0 重登记）。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-f06-evidence.test.ts.md": "4a342483c653776a05b68aab47223116590997b5ff6ff6d9d49e31c8bc6f79b4",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-f06-evidence.ts.md": "0f3d15acbc24fd36394dd7bc99e0460cfb62b5410f7f26435afeb23a8f9144ec",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-f07-plan-coverage.test.ts.md": "e1698cd191b9b073a53426b8a8994905ca73aa4391c01b689aa95e2f791c67d7",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-f07-plan-coverage.ts.md": "6caac4e8d15f791fed8224ea212a15a2fde1a4e7e9f1a6d70fb97ca2651487f5",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-f08-rubric-calculator.test.ts.md": "500914f5582a87ff4e5a0860ffe8d1f46daf02af5c2a73034ce522afea9d82a2",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-f08-rubric-calculator.ts.md": "8766952ade546e05effa421ef1fac774f3b5352311b57df605f07a358db7b68c",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/run-service-v2.artifacts.test.ts.md": "8e3454a628081fa89bd9139cc2ff3bc273ca428b745bbcc66652b28718ba9a75",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/run-service-v2.test.ts.md": "d4645b34bfdf6668b096522404409406079abdffbe587d36100373fca077bcff",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/run-service-v2.ts.md": "c8d66c6451edb57b7feefd744bd3cab7a996366fdeffd858f1a87d51419a2363",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/run-service.ts.md": "fb11378e1849433c8a8f5e2cd873b4f3938983672bd49b206e65458cb99232ca",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/run-store-v2.ts.md": "f1ad2ad0b9ce632f6c3936437d85b9fbaefe82f812734c6a800981a21bbc586d",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/source-current-validity-v3.test.ts.md": "9dc754df2f2d91d29835d977e742e232cdab5103db2d82e05fb5622bad85c3f1",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/source-current-validity-v3.ts.md": "94ee3fc04d01843ae9cddb5e9a61f8a050004fe8ba2b84afa693d52cf22c7f8c",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/source-index.test.ts.md": "72322abc097479ff5fc97bada531468ab55a84ba5ca26b35a07b96724ead88fd",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/source-index.ts.md": "86bee08f357c9e44f457aba73d32a30e1f32096ce05c8879067536155a6404b0",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/system-tesseract-ocr-adapter.test.ts.md": "dbd4427bdce2c92ec27017d7a5d781806a212b4b9a104ef8350f2e50dc672a3d",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/system-tesseract-ocr-adapter.ts.md": "fcfad2aa21e56517916cb5090f804100247851a43f0b68c1ce57809d65a01184"
+  },
+  "revisionRequiredManuals": {},
+  "changedFromParent": {
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/run-service-v2.test.ts.md": {
+      "before": "facde9bf1070abcd4d1bbae87ec627271144b31228451b71bce79f196f3d2cd1",
+      "after": "d4645b34bfdf6668b096522404409406079abdffbe587d36100373fca077bcff"
+    },
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/run-service-v2.ts.md": {
+      "before": "3198f74daf39602b2abb8577202b19a9f2e9095baacfc864ab098cb2a94417bc",
+      "after": "c8d66c6451edb57b7feefd744bd3cab7a996366fdeffd858f1a87d51419a2363"
+    }
+  },
+  "sourceBinding": {
+    "verifiedCount": 17,
+    "note": "blob+sha256 脚本实算==MANIFEST==SCOPE"
+  },
+  "sealBinding": {
+    "manifestSha256": "74bb887094d7fe662f2f2be74646306c1da5e28482565c5fffb0ab39318b247f",
+    "readySha256": "6525bf605d99a6402a48c4610d982afde6c472de151bc663ecfc4617c5ab7c08",
+    "zipSha256": "929d24343f02dcc059b28a1ea190799e15cc861a1eedcaddb96ba7fec2ec661b",
+    "zipBytes": 59236,
+    "zipEntries": 20,
+    "beforeEqualsParentStage": "2/2",
+    "changesDiffReplay": "2/2 byte-identical"
+  }
+}

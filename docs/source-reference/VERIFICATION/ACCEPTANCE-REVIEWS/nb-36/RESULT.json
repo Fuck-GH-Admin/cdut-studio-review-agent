@@ -1,0 +1,203 @@
+{
+ "schema": "r07-review-result/2",
+ "batch": "nb-36",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-ui-20261023",
+ "reviewerSession": "docs-r07-qa-ui-20261023",
+ "reviewedAtUtc": "2026-10-23T17:45:00Z",
+ "batchVerdict": "accepted",
+ "verdictNote": "G0/G1/G2 全过，11/11 accepted。exports 对账 7/8 精确、§2 符号行号严格核验全过、wechat/sse-reader 行号逐行相符、测试用例覆盖完整。2 条低级计数备注（N36-1/N36-2）G4 前关闭。accepted 仅限静态文档 scope；NOT_RUN。",
+ "scope": "manager/assignments/nb-36-SCOPE.json",
+ "sealed": {
+  "root": "deliveries/nb-36",
+  "readySha256": "b037e19edad93f9d99753700d201cebc86da6ad7d862ecbd4616acaa80dec0ec",
+  "doneSha256": "a383955d919cca0fc0cffe29aa39a4f4dbf091661e4f2f8d109040e193d7cdb8",
+  "manifestSha256": "27ad308a14684b8ffc9fd36414e31c9a2af132292d079e6e622a2d519987e350",
+  "zipSha256": "bb343d789f3df81d0e06c47cd59b0f7cefad1e399a1100b992f5a49c2007e1e8",
+  "zipBytes": 33037,
+  "zipEntries": 14,
+  "note": "seal v2；新批无 before；源 11/11 blob+sha+行数与冻结树一致"
+ },
+ "gates": {
+  "G0": "PASS",
+  "G1": "PASS",
+  "G2": "ACCEPTED"
+ },
+ "g0Evidence": [
+  "11 篇 manual sha256 与 READY.manualHashes/MANIFEST 一致；zip stage=11 无多缺",
+  "源 11/11 blob+sha256+行数与冻结树一致；SCOPE==MANIFEST 唯一",
+  "ZIP 14 entries 无穿越/符号链接，unzip -t 无错误；元数据一致；无漂移；manifestSha 链自洽"
+ ],
+ "g1Evidence": [
+  "8 source 11 章/3 test 6 章；front matter 复算一致；三态/NOT_RUN 齐",
+  "§2 符号行号严格内容核验 8/8 全过；行号引用可解析"
+ ],
+ "g2Evidence": [
+  "exports 对账：sse-reader 5/5、thinking-capability 4/4、url-utils 13/13、user-agent 3/3、url-nul-safety 2/2、runtime 35/35、wechat 11/11 精确；study 声明 45 实为 44（N36-1）",
+  "wechat §2 行号 :11/:25/:37/:46/:59/:68/:74/:81/:91/:99/:112 与源逐行相符；sse-reader 行段相符",
+  "url-nul-safety 双重检查（CONTROL_CHARS :15、编码 NUL、hostname 复检）与源一致；CVE-2026-105482 头注释属实",
+  "测试：sse-reader 7/7、usage-parsing 5/5 行段覆盖；url-utils.test 12 describe 行段全覆盖 65 用例（计数声明见 N36-2）"
+ ],
+ "files": [
+  {
+   "path": "packages/core/src/providers/sse-reader.test.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/sse-reader.test.ts.md",
+   "sourceBlob": "4070b9c15d3ded027d1907eb5bffeff5c8cde292",
+   "sourceSha256": "ab3f70a71720bde0348cb7144459f29f0aa4365b51db0c8a1f5474d8f67a2a92",
+   "manualSha256": "8cb87f49fe76826f52e3fe6f3793882d6cdb47f995943a1deab9a6ee15e31371",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/core/src/providers/sse-reader.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/sse-reader.ts.md",
+   "sourceBlob": "ccf03cf0dc87eeb6506cf0aaadc87010951ae14e",
+   "sourceSha256": "b3f6694613bc3bdd3868174c6d72aed16c0f4d61658b02420d2742e84d256a08",
+   "manualSha256": "7efc5c88f22b9a9b5fc90c887b097feabf078ed1936da21860e0c831fe5aea2d",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/core/src/providers/thinking-capability.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/thinking-capability.ts.md",
+   "sourceBlob": "c6c68793c5b372e90e08e5a6fd913031c95a1691",
+   "sourceSha256": "e3a5e38a98249d99d263c020e386644647a4a7bb2930fdc351dd894c58f3106b",
+   "manualSha256": "fe2c0793f684dd855ef696fed0f8d77ffe25c8cdd225a582b79654763902ca3e",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/core/src/providers/url-utils.test.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/url-utils.test.ts.md",
+   "sourceBlob": "a06266c2077b32c1cdeb08ee67ed4fb165fee401",
+   "sourceSha256": "4968af4cce6fedbd5801c757261758f0aac251a075b7de944df03a8b9f30b526",
+   "manualSha256": "13bd47b229076879ab9fe612c4f60f4190cf1bffa09f8d6c0e7daaa8af042eb4",
+   "verdict": "accepted",
+   "findings": [
+    "N36-2"
+   ]
+  },
+  {
+   "path": "packages/core/src/providers/url-utils.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/url-utils.ts.md",
+   "sourceBlob": "d4c9956c12225c8cedd66e1c3cfc8dd14d27da78",
+   "sourceSha256": "6205019fc855ae2b0cd65d14bcf03a77bae5dba596c497ac9a998f71479d93db",
+   "manualSha256": "ba749ed00a84833f8a39fdb195e82d804769e089e7489f69c2d70ab7b16ba4c3",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/core/src/providers/usage-parsing.test.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/usage-parsing.test.ts.md",
+   "sourceBlob": "794cd52658614144da6d4c783eb5a88aff945efb",
+   "sourceSha256": "82e8871a6f8e279d63239bd50b26e9b14b21b99f8be7467fb5e5ac5debf724ff",
+   "manualSha256": "a129629c5f286fe61ff501aab6b6cf151be81625fbc0fb0915553e6215c4cebb",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/core/src/providers/user-agent.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/user-agent.ts.md",
+   "sourceBlob": "89c09e5081f7ea3b4421416e8a78e9d92ca09422",
+   "sourceSha256": "0a9d7ee182a5a94780a037cfa9e2d2c4d4a06a981707679cc6ebf5de3800bfc9",
+   "manualSha256": "1d53c18ee75c191f66127a269b484703701d5ff0b256184da35178602c1a8593",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/shared/src/types/runtime.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/runtime.ts.md",
+   "sourceBlob": "c043a3941ad0e9b56a1e1a3a43cc5c7319ca3d03",
+   "sourceSha256": "855a781640bc714f108a0bf1a9dcf45f066ca71d210dd25cca1ec1e81302314c",
+   "manualSha256": "fc9f588ed9c56237099deeb983362b6fcbe2bf69bdcc231172858ec6574362b4",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/shared/src/types/study.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/study.ts.md",
+   "sourceBlob": "96fec3c3239ff1c03a42fe882f62e679a49acadd",
+   "sourceSha256": "38900b91abe41f0b528adb1bc4524d4703303d769495a5ca705c9309e2bc56ac",
+   "manualSha256": "d64bda4865cc8fbf8aed26514aeab88bc47b222e1c132e0ee061e487f60be8ca",
+   "verdict": "accepted",
+   "findings": [
+    "N36-1"
+   ]
+  },
+  {
+   "path": "packages/shared/src/types/wechat.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/wechat.ts.md",
+   "sourceBlob": "4127f43d8be65882ca0759512d93478fe2240f6c",
+   "sourceSha256": "f63f5a540f02d0506632fe473c515414f504ceb6108b62889d145a0d25599407",
+   "manualSha256": "269470b3caf3b0a20ff32be7bb3db12b7c5e885c1c9a786ae37a5e2a0bf4aace",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/shared/src/utils/url-nul-safety.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/url-nul-safety.ts.md",
+   "sourceBlob": "582581aa53145d158ee42572cac4ec9916f4b1e7",
+   "sourceSha256": "0e3c7b35ea7105e02f967fd4b3abde54de371ffa76561d0616ed19d292d8c803",
+   "manualSha256": "99c9015f3f493db33731a781ef1ead8f0c98cdafc4638e22c738b92867232c4d",
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/sse-reader.test.ts.md": "8cb87f49fe76826f52e3fe6f3793882d6cdb47f995943a1deab9a6ee15e31371",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/sse-reader.ts.md": "7efc5c88f22b9a9b5fc90c887b097feabf078ed1936da21860e0c831fe5aea2d",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/thinking-capability.ts.md": "fe2c0793f684dd855ef696fed0f8d77ffe25c8cdd225a582b79654763902ca3e",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/url-utils.test.ts.md": "13bd47b229076879ab9fe612c4f60f4190cf1bffa09f8d6c0e7daaa8af042eb4",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/url-utils.ts.md": "ba749ed00a84833f8a39fdb195e82d804769e089e7489f69c2d70ab7b16ba4c3",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/usage-parsing.test.ts.md": "a129629c5f286fe61ff501aab6b6cf151be81625fbc0fb0915553e6215c4cebb",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/user-agent.ts.md": "1d53c18ee75c191f66127a269b484703701d5ff0b256184da35178602c1a8593",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/runtime.ts.md": "fc9f588ed9c56237099deeb983362b6fcbe2bf69bdcc231172858ec6574362b4",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/study.ts.md": "d64bda4865cc8fbf8aed26514aeab88bc47b222e1c132e0ee061e487f60be8ca",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/wechat.ts.md": "269470b3caf3b0a20ff32be7bb3db12b7c5e885c1c9a786ae37a5e2a0bf4aace",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/url-nul-safety.ts.md": "99c9015f3f493db33731a781ef1ead8f0c98cdafc4638e22c738b92867232c4d"
+ },
+ "findings": [
+  {
+   "id": "N36-1",
+   "severity": "low",
+   "type": "count_error",
+   "status": "open",
+   "file": "packages/shared/src/types/study.ts",
+   "manualLines": "study.ts.md §2 首行、§10 行",
+   "claim": "「export 共 45 个」（§2）与「45 个导出…已证实 | grep -n \"^export\" 全表」（§10）——真实 44（const 5/interface 29/type 10）",
+   "sourceEvidence": [
+    "grep -c \"^export \" = 44；§2 八组 44/44 导出全覆盖（含 MAX_* 两常量 :112/:117、AI_CLASS_HOME_TAB_ID :264），无幻影符号",
+    "所引证据命令 grep -n \"^export\" 实际输出 44 行，与声明不符"
+   ],
+   "action": "改「共 44 个」并同步 §10 行；非阻断，G4 前关闭"
+  },
+  {
+   "id": "N36-2",
+   "severity": "low",
+   "type": "count_error",
+   "status": "open",
+   "file": "packages/core/src/providers/url-utils.test.ts",
+   "manualLines": "url-utils.test.ts.md §2 首行",
+   "claim": "「11 describe / 约 52 test」——真实 12 describe（:17/:40/:62/:85/:95/:102/:184/:226/:240/:264/:316/:358）/ 65 test；§2 表本身即 12 行且行段正确、覆盖完整",
+   "sourceEvidence": [
+    "grep -cE \"^\\s*describe\\(\" = 12；grep -cE \"^\\s*(test|it)\\(\" = 65；表 12 行与 describe 逐段对应"
+   ],
+   "action": "改「12 describe / 65 test」；非阻断，G4 前关闭"
+  }
+ ],
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "boundaries": [
+  "未改源码/测试/依赖/作者正文/candidate/全局 FILES/COVERAGE/MANIFEST/INDEX",
+  "已 seal 不回写；NOT_RUN 不等于测试通过",
+  "accepted 仅限静态文档 scope；运行期行为未知"
+ ],
+ "next": [
+  "nb-44/nb-62 已 sealed 待验（按序）"
+ ]
+}

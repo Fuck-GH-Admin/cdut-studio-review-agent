@@ -1,0 +1,88 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-63-r4",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-03-20261023",
+  "reviewedAtUtc": "2026-10-23T18:16:31Z",
+  "batchVerdict": "accepted",
+  "manuals": {
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/xlsx/scripts/office/helpers/__init__.py.md": {
+      "manualSha256": "29d713bed157036be81919b106d64ce1f9c5eb7458c8927ff4a0bf6fa0463d05",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceBlob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/xlsx/scripts/office/helpers/merge_runs.py.md": {
+      "manualSha256": "f01c225a6681d55ac1ec7d5281c56af7cc3b400f1a6ea7da808e77f16cf11bb5",
+      "sourceSha256": "7c40ed838b88639c51f9ffdcfd564b568f26832b78fe44008c0e01b742669ca7",
+      "sourceBlob": "ad7c25eec0d064fbd9f5624b17b60e5dd49b5903",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/xlsx/scripts/office/helpers/simplify_redlines.py.md": {
+      "manualSha256": "178ee3333b556137e35897fba9033806f8e6bd87364ac6b64485df028db43997",
+      "sourceSha256": "560cb55978a834c505406eb18e2c61f62f998fc7a2d8e9721b9c563b42597896",
+      "sourceBlob": "db963bb998d7d5a8517d8252ce82ec9ab28665bc",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/xlsx/scripts/office/pack.py.md": {
+      "manualSha256": "60b52e60062517d7706756452c5807bca1c7065d73ee3db1d0d2a592d9b072ea",
+      "sourceSha256": "b1800987e568261a31f462df8e1303d386e9e6ccc11a75ef46e60cc528c20683",
+      "sourceBlob": "db29ed8b1c3676a4980b2d67e9dfe432556d2e58",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/xlsx/scripts/office/soffice.py.md": {
+      "manualSha256": "b3468b666d81c4a488106c58f29b2248f9d60753a9e5b72b2aa92cd607062ad3",
+      "sourceSha256": "a3e21840e29e32f947d5286028931b96eaf2dee63f75d883b8eb19c943c80aa0",
+      "sourceBlob": "c7f7e3289fdff196399fd6f3d6668b9aa68eec87",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/xlsx/scripts/office/unpack.py.md": {
+      "manualSha256": "b2dba02ccbcc73c15277984ce9491d3a75f6fd7c616012ab99e2e97a0e2f80e1",
+      "sourceSha256": "83f69cecc87910183654c06345837244402e8a99edbf3bdddc1cf72f11304b62",
+      "sourceBlob": "00152533ac0fa95109f74253ac6a475401fa6afe",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/xlsx/scripts/office/validate.py.md": {
+      "manualSha256": "c52e3ac015442d51e3ef6526483cd0cdae2cc271e44a96bc21f7c9a90986ced8",
+      "sourceSha256": "1aef24f8e316965a0584c30859776bd2c82a9fb69f72d79cfed041119cf95514",
+      "sourceBlob": "03b01f6e3ba40e1408d0bd16d587154fa9798a87",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/xlsx/scripts/office/validators/__init__.py.md": {
+      "manualSha256": "083b4cea2d22f0a5411ef3def74b58702afb663675ca13517b33a10d941796f7",
+      "sourceSha256": "83e0f035c5abea238d3f2c3968afbd511ed022b527b7c9cb60a9434cc34ff987",
+      "sourceBlob": "db092ece7e21de98f87bd81471578259a1bc642f",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/xlsx/scripts/office/validators/base.py.md": {
+      "manualSha256": "f77b99833e0e3e3cb8666278a8d3493a0bc9e9ab64e475a420d97897d03b3288",
+      "sourceSha256": "d6358b67252df4dbfe4fa6647423a765960c949346ef6a8c4eb8722bb1108d25",
+      "sourceBlob": "db4a06a2291abf80bd9b000b6ff3b7f012e6dd2f",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/xlsx/scripts/office/validators/docx.py.md": {
+      "manualSha256": "8cdafca3142d2bd368e3abf5a7839e8831129ab898d171293ba4760934e9a837",
+      "sourceSha256": "0ef04ce86b2e6b6a1cb088c0276fd0bd5b770d96fdfe7a6cc73d005feb3f0345",
+      "sourceBlob": "fec405e694790259824feebb95061f56a705621c",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/xlsx/scripts/office/validators/pptx.py.md": {
+      "manualSha256": "f99083c688d071a05ab98dc6115f13dba140c9ff6cebd6569ab330ac38d789cc",
+      "sourceSha256": "f937961e62a5fa0d002b8dc51a4c4e2cd8fcd59fe65853fa54edaca3fe99eccc",
+      "sourceBlob": "09842aa99866fe270ecfeec6f7993495e1865f2b",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/xlsx/scripts/office/validators/redlining.py.md": {
+      "manualSha256": "81921f6586ade6356f57170af756a69119e8cc3afe26f72a6e8a525a549cc960",
+      "sourceSha256": "f4c33fdb9da0651d1d9aa76f0d5294cc9955869339ae131b2f75f3b2e366cb40",
+      "sourceBlob": "71c81b6bf4cacda322db32c87df7b2301c469933",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/xlsx/scripts/recalc.py.md": {
+      "manualSha256": "98f32997eb1973c27c2ac480e603390f65856b1c6eb7e4073668776aa05584e4",
+      "sourceSha256": "cf419d15e02965aeaec17773c05b61303f7f520f67fa2696547e7da07502eac7",
+      "sourceBlob": "f472e9a5d04583dc14869f36aa4252a533639ad6",
+      "verdict": "accepted"
+    }
+  }
+}

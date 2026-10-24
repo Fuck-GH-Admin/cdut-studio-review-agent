@@ -1,0 +1,174 @@
+{
+  "schema": "r07-independent-gate/1",
+  "gate": "MODULE-API",
+  "status": "PASS",
+  "reviewedAtUtc": "2026-10-23T22:48:02.851367+00:00",
+  "reviewer": "Codex independent_gates",
+  "sourceSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "prerequisite": {
+    "path": "final-hour/GATES/CODEBASE-MAP.json",
+    "status": "PASS",
+    "sha256": "faf1497c96462e5331cc7f512a039bb6fccc6f544a444cd80134075943888009"
+  },
+  "artifacts": {
+    "final-hour/stage/API-REFERENCE.md": "a7b0674eb2df400d2aa060ac47cae4e0842632e5f84c1f9c514f2978801fb4d0",
+    "final-hour/stage/API-REGISTRY.md": "da311f98c8bba1334e7a73c3496e081f37a2d3c6dcfc9c02ac9a6de82d5a6cf9",
+    "final-hour/stage/MODULE-REFERENCE/p01-app-shell/OVERVIEW.md": "47de97e6d218ce4cc9bfecc19bfc89a76a761714b415dbc7c164e996ba87940d",
+    "final-hour/stage/MODULE-REFERENCE/p02-agent-runtime/OVERVIEW.md": "7b114164d137aed5d6703491da010df4435dac9d46a7d2f8c55714a6eecd75b5",
+    "final-hour/stage/MODULE-REFERENCE/p03-integrations/OVERVIEW.md": "b1325acb79528febc82a8841858fbeb8bb3fc1a46b6c21d31bbdf8a5411e3504",
+    "final-hour/stage/MODULE-REFERENCE/p04-review-case-core/OVERVIEW.md": "ca77501f8ef8e8d354e43b7af5655810fe9e1b67384781d6b34ff3e6d440c715",
+    "final-hour/stage/MODULE-REFERENCE/p05-review-engine/OVERVIEW.md": "a16d3ec948b354bb565541a4dd2397774c1ad5deb9d06a7e29f750afcb4a99f6",
+    "final-hour/stage/MODULE-REFERENCE/p06-review-batch/OVERVIEW.md": "725045b06970eba972ba0698df4b6db19bb5025745dccb9b38ad7e15eede6d8e",
+    "final-hour/stage/MODULE-REFERENCE/p07-shared-libs/OVERVIEW.md": "003eba4c6e88b0e78ddee9da0bac3586dea2d6549fef3c0b6d028a339a82383c",
+    "final-hour/stage/MODULE-REFERENCE/p08-renderer-ui/OVERVIEW.md": "9d86a5c8f85e33d0d21ad06feb189a2a77fbbf22b22129a5a7729f1c7f3f7228",
+    "final-hour/stage/EXPORTED-DECLARATIONS.tsv": "930f9bcb22fa98524a08cadc050a0a69a0f32fd16e14183df419c424e78a70ae",
+    "final-hour/stage/IPC-SITES.tsv": "9721910c5ae219384e5cfb137100e2be79e4ecf42cedeb7940520ebbc821cf1d",
+    "final-hour/stage/PRELOAD-CONTRACTS.tsv": "bddf4676c47f8e4f02d3c3ba0712dd70b18f89e175f39e5903c2e05b7add225d",
+    "final-hour/stage/AGENT-TOOL-SCHEMAS.tsv": "0345dbd4f74d5d7a58733626bba5a3ccb57941e8094449f903fc8070ac4f5473"
+  },
+  "checks": {
+    "narrativesRead": 9,
+    "allTsJsFilesListed": 2219,
+    "fullRegistryCheckedPreviously": "final-hour/GATES/API-REGISTRY-CHECK.json",
+    "registryCopiesByteEqual": true,
+    "localGfmTargetsChecked": 4662,
+    "sourceCitationLineBoundsChecked": 182,
+    "issues": [],
+    "sourceTrace": {
+      "apps/electron/src/main/lib/agent-service.ts": {
+        "sha256": "b95ba3366b750539ad63803a67e7f684d9a2353eac64f0c5fc58a228c850b8c8",
+        "verified": [
+          "54 Pi adapter assembly",
+          "277→297 runAgent;361-384 busy rejection vs normal failure events;stopAndWait delegate"
+        ]
+      },
+      "apps/electron/src/main/lib/review/case-store-v2.ts": {
+        "sha256": "643676c9fd19a7795c02e18ba79be83008f8a578c9ee67b097b8d496a7d651bf",
+        "verified": [
+          "203 idempotency beforeCAS,archived guard,revision+receipt,state write;separate legacy omittedCAS"
+        ]
+      },
+      "apps/electron/src/main/lib/review/review-v3-case-disk-tx.ts": {
+        "sha256": "1cc36fcda00fa3ddea2c7623217dda2a6a26de246da6f156c3f383d067ce7440",
+        "verified": [
+          "mkdir lock+token,fsync+rename,POSIX dirsync;offline recovery notIPC"
+        ]
+      },
+      "apps/electron/src/main/lib/review/pi-case-review-service.ts": {
+        "sha256": "6a46e1460c6649b34da0086a391ac433879aae27f663988d5aad5b7214033098",
+        "verified": [
+          "274 buildRun does not assign planFingerprint",
+          "738 source/read scope and image/text receipt",
+          "915 submission validation",
+          "1040 missing/rejected finish keepsrunning;1086completed+separate businessReady;1128adapter outcome mapping"
+        ]
+      },
+      "apps/electron/src/main/lib/review/review-runtime-contract.ts": {
+        "sha256": "a1291c00629122e20819e31a72b55b214045a55e54d5a4c29e8f8aecfc07029c",
+        "verified": [
+          "freezeAttemptIdentity missingfingerprint→undefined;diagnostic exclusions;latestbusiness attempt no old-successfallback"
+        ]
+      },
+      "apps/electron/src/main/lib/review/review-pi-run-bridge.ts": {
+        "sha256": "5400a59e753a09be08dfc371589af4a619850be5ba12de1e4ad334b6ec545d93",
+        "verified": [
+          "26 start+mode+model;59confirmedinterrupted newturn;admission actualowner ACK;stopboundIDs"
+        ]
+      },
+      "apps/electron/src/main/lib/review/review-pi-admission.ts": {
+        "sha256": "58763939f76efffe41c14074528b74b1d60cfc83b9140b49fd9f10144304e200",
+        "verified": [
+          "64 runtime/user/turn/currentrun and no externaloutcome;ACKonowner"
+        ]
+      },
+      "apps/electron/src/main/lib/adapters/pi-review-ops-tools.ts": {
+        "sha256": "e898d2eeb41b6f5611c00ce5a655b19f23569ddf9294246d2e161d0cb9e39082",
+        "verified": [
+          "direct3 vs general14",
+          "requireAssignment omits turn match;list/get unconnected readscope",
+          "create-case no requestId;cancel byrunID lacks caseownership validation"
+        ]
+      },
+      "apps/electron/src/main/lib/review/review-strict-pi-tools.ts": {
+        "sha256": "86fe8a0c9ab9a1cb172ff2ce3ac0ab3fb06c04bc1eb992736e637f51f11d0adc",
+        "verified": [
+          "strict4+profileCompactContext;original inspector plain object schema;realpath;postawaitbinding"
+        ]
+      },
+      "apps/electron/src/main/lib/review/review-agent-assignment.ts": {
+        "sha256": "d1a42842ba20149cd5438263287bedb566d6ee68610e017494458b395804b0ac",
+        "verified": [
+          "durable revocation first;optionalturnmatching not universal"
+        ]
+      },
+      "apps/electron/src/main/lib/review/document-capability-library.ts": {
+        "sha256": "1d8ba2abdf5ba0d08d8c1869d8d6a296d31665bb40c058370db541f77675baee",
+        "verified": [
+          "read defaults/pagination;textreceipt;loadImage containment+bytesignature"
+        ]
+      },
+      "apps/electron/src/main/lib/review/run-store-v2.ts": {
+        "sha256": "c113331f5cda65eb3d225241e8569bed08b1cf74a239ca37da8b296a2d24c6cd",
+        "verified": [
+          "runs-v2 independent files/artifacts;fixedtmp+rename;interrupted denial"
+        ]
+      },
+      "apps/electron/src/main/lib/review/batch-store.ts": {
+        "sha256": "ce46e44ec9688b80cfb338ba82003886fba8359baa8234f8a852310b33392ff7",
+        "verified": [
+          "645boundentryRun/inputHash/optionalplanFingerprint"
+        ]
+      },
+      "apps/electron/src/main/lib/review/review-v3-t07-state-store.ts": {
+        "sha256": "f692f8a03b4a155618f1351f0c2b4ef8e9501478d24b0c3fd2adf80667eb206c",
+        "verified": [
+          "70 CAS+tmp/rename;noOSlock claim"
+        ]
+      },
+      "apps/electron/src/main/lib/review/review-c0-authority.ts": {
+        "sha256": "5e4d347efe908cc2478bfc656a20454b78e391537b9ca4cdda9543b8d0f4d7e2",
+        "verified": [
+          "20mainframe;28localprincipal;58bind;deterministiccreateintent"
+        ]
+      },
+      "apps/electron/src/main/lib/cslab/cslab-router.ts": {
+        "sha256": "c5ea566daf30f176827aedeb6dd12fa2a8e97e6af9fde736f0ba6fbaf396e27c",
+        "verified": [
+          "258 AUTH_EXEMPT wrapper vsunlocked"
+        ]
+      },
+      "apps/electron/src/renderer/atoms/review-atoms.ts": {
+        "sha256": "2beced7231b51177f663df5f8fde460dddee4f51332f8b8bd2885796c3cf1c45",
+        "verified": [
+          "35globalsection;keyedcase/run/aggregate/execution caches;selectionUIseparate"
+        ]
+      },
+      "packages/core/src/index.ts": {
+        "sha256": "4a7cc72db07079268af6d55ecc590a6a1f2d63ebce1bac4ec1df60dc21f61ceb",
+        "verified": [
+          "browser-saferuntimeexports;Nodeengine type-only roots"
+        ]
+      }
+    }
+  },
+  "resolvedFindings": [
+    {
+      "id": "MOD06-01",
+      "fix": "Case/material registration/decisions remain aggregate;Run files/artifacts separate."
+    },
+    {
+      "id": "MOD08-01",
+      "fix": "Only case-specific caches keyed;section/selection/focus remainUIstate."
+    },
+    {
+      "id": "API-CITE-01",
+      "fix": "Busy throw366 and registerReviewIpc107 exact source citations corrected."
+    }
+  ],
+  "limits": [
+    "只对本轮API叙述、8模块概览、语法注册表和关键合同作独立静态门禁；不是全部单文件手册的再次真实性验收。",
+    "注册表包含test/internal/unwired语法声明；不视为当前生产公开API数量。",
+    "不把旧accepted、辅助helper或源码注释当作实际调用接线。"
+  ],
+  "runtime": "NOT_RUN: no product tests/typecheck/build/GUI/model/network/real external services"
+}

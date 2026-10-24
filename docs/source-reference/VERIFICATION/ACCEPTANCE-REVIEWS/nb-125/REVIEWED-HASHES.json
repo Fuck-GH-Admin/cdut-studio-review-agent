@@ -1,0 +1,37 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-125",
+  "revisionOf": null,
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T21:45:00Z",
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/use-is-dark-theme.ts.md": "d1bdba10e3aa9dc0eb95a57957c8b6903de1eb79fcfb32c0c3bff269f26a83eb",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/use-plan-quota.ts.md": "7aa6dbf83fd2489e28a9d0e3e3627cda8324e116e9925d2a6e9245f2c836082c",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/use-window-inner-height.ts.md": "a158a39084569581886abb44e57e99187e4a48bc074b2ad17934926f17bf4b72",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useBackgroundTasks.ts.md": "8bf42ae83b892128ca019ca3e4770863f06fbdd0b0cfcb57223b9c09505a022c",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useBrowserLocalFileSelectionQuote.test.ts.md": "7d9ecf16cd4b3856449758cab8b8e1289d43e58efe6ff91bccafd5c8382b6011",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useBrowserLocalFileSelectionQuote.ts.md": "d1ed2fe35475af127688eabdc2e4e02f004ec603db51e1641af168f36c50df83",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useBrowserPreviewThemeSync.ts.md": "e2b24c10983ae02bf6a57964366448dc638cea74f2049a9207e29765e7e4a450",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useBulletinStartupTrigger.ts.md": "3eefcf9d320983959605e94ada756429aa236957c02197e98ff995804a470739",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useCdutAccountHydration.ts.md": "e0c84e120162b7256f7576264258eab1bf8a57f9beae23d1ed3c18465dec90f6",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useCloseTab.tsx.md": "16ee27c615ebccbf85b7800357bebd32e57914dd3b61367130e9ad10d17ab7c9",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useConversationSettings.ts.md": "7dda91b569facee8ba56281bbec4804186f8378f16d17dbfd95920b4551ea555",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useCreateSession.ts.md": "2ea791364c78f42f59e3cc2073bcbf1b8d4b902ab1b4ca63632f9a18c7089765",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useDefaultAppForFile.ts.md": "39b0cc89e0555520ff6d2c636f5214cf6b894dcc4275b4069980587d3e0c57f9",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useEnterCdutAiClass.ts.md": "18c567475726a2c19db231f601a5f373f63c4259f0db32752d991a98a5edb224",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useGlobalAgentListeners.ts.md": "7a964fd34793bda86d5a531c39ba709242c34f82eaa6128efc656173b8fa0f0a",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useMigrationImport.ts.md": "a828ad4ff72c1eeb510ce886f43c43fb7d308262c2de3c77436647eb8390a714",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useOpenSession.ts.md": "cf3f819390ce0b54e923f78d77d29aaad2b00954f6ac6a7f5548c6543ea40ef4",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/usePanelAutoLayout.ts.md": "25c66eb955680c01bc7699b60f8b41579ce34328fabea8619be06b7fb2a44ad2"
+  },
+  "revisionRequiredHashes": {},
+  "rejectedHashes": {},
+  "chain": {
+    "sealId": "seal-d498dea67ce96158",
+    "manifestSha256": "2e4f7ad4f53c94e8ca7079e504efadff06f40512edc7344ece7f6412a124a00e",
+    "readySha256": "b782533cf80694df1338d8431282486a65dd70c830506aaff6f10082b839c91d",
+    "zipSha256": "85b22b8f7729d99b606922db9d96e1a61c80a2dc65c5855bf7cd17d77aa90037"
+  }
+}

@@ -1,0 +1,66 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-71-r1",
+ "revisionOf": "nb-71",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-models-20261023",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T17:42:36.231624+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "files": 18,
+ "accepted": 18,
+ "revisionRequired": 0,
+ "unknown": 0,
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-dom-distillation.ts.md": "ce73f4f23ac0e5e1df270deb6ef5e900d81c4d8d91d96387f76dddca08d1c822",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-domain-gatekeeper.test.ts.md": "2c28582f2d7363eab10f40fea3af8cec5f7ac5ee59e8f3ad486ee33210aa521d",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-domain-gatekeeper.ts.md": "03a8b83555a1341f821cbe3e4b3755e95fdf011ad32365348049ce00e4416eae",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-event-log.test.ts.md": "bf91ceafeddd98a74384b6dde22ec3bd8206b8cd89313ba29d83b03e3dff44e4",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-event-log.ts.md": "4db4c807de81e2d0adbf08d4bbf3eb5246e748618e24d47c32fa644fd760eb28",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-express-manager.ts.md": "19e444d8f13bf5360dfda29b6ce1c45cd9b563631685a9b1b6d50e76d1e74b94",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-fingerprint-engine.ts.md": "a97bfd3669f86cd60b45bb7e79e33a24e729a255a8ee04322ffe206c119417a7",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-fingerprint-script.ts.md": "8693e513254e272fe35a59dabba36e9eacfe6714a95c8ed42223d9cbae7859e0",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-fingerprint.test.ts.md": "18a9cfddadee4fe135197d0e97bce757c17a9d63bbb3e530857080b520d69ed4",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-pet-memory.ts.md": "57c4dd69ca17ec4f11849da5faa38eb5c906cf536c4b0a782a3d0b1203cd95c9",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-pet-prompt.ts.md": "e2fef95f51c89a1706ca4b2be36b142deca3334ff09dfc69cf6a9d63223185fe",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-pet-window-manager.ts.md": "8512b3ade66b01c183e3b0b678d3a9444a2463d77d9c7766ce5a43b818c1fe78",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-pi-runtime.test.ts.md": "5e0ddc4d6565e4b62fbe0541d3717e83fdb51f4fbaf24a32a3baa240f87d5a9b",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-pi-runtime.ts.md": "1f0f579afae92a4257bd65b334e5cbaade31caa832b8c5b5df55712e05acf2e3",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-preload.ts.md": "da3c49a44b66c61d0385b51953841a1e95e2e0aac0de0310356ef21534d5b2b0",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-stabilization.test.ts.md": "6262b04e409a034cc5be9deba9497bc1117e169d8051424f251c40b5ba2868e5",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-stabilization.ts.md": "28ae95a95fa896137a2c31b77bbea8371d6357262929649192a4ede29997e020",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-tabs-store.test.ts.md": "04f9d815d34ed7dc62057939e4d5cd5cd77e25f8edd7fee2ab5c578d8fc7c052"
+ },
+ "revisionHashes": {},
+ "findings": {
+  "revision": [],
+  "notes": []
+ },
+ "deliverySeal": {
+  "sealId": "seal-365a12a831f5b358",
+  "sealedAtUtc": "2026-10-23T17:39:39Z",
+  "readySha256": "6b6c817ac6c3b937ecf47efe5e33de80a69b4a074dbd24e36bbd1eff9456e685",
+  "doneSha256": "14a8a87aed59e5b7ad1a6d41c6fa4eb8fdaac87bf7cfe3f38406ac67fd4803a2",
+  "manifestSha256": "62796951373fdc05d555206bfb6eb50a4e06ede9d0ab06187f3d27f698990ac8",
+  "zipSha256": "9c2d1259f535fdd3fc1a81cf56b5f3638fa4a4be4e37e5aeaddf706bdf671bfe"
+ },
+ "notRun": [
+  "bun test",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "artifacts": {
+  "RESULT.json": "c7bbf41643b920335508c5f0f7f8d4a9130d148a5026620a3522b6c2c0bf5730",
+  "RESULT.md": "254790020537ade505f74c70cb6aa4f7c54601aa73fdedaeb5dcdec01be90265",
+  "REVIEWED-HASHES.json": "2263db5f1193e81311e13be2d9740eb2f844484394f84148c63de5411eb67ae4"
+ },
+ "next": "lead 合入"
+}

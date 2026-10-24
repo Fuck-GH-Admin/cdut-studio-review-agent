@@ -1,0 +1,225 @@
+{
+  "schema": "dsh-r07-review-result/1",
+  "batch": "nb-96-r1",
+  "revisionOf": "nb-96",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T21:20:00Z",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass"
+  },
+  "g0Evidence": {
+    "chain": "READY/DONE/MANIFEST/ZIP 交叉一致（sealId seal-2a87f04feb20e06d，revisionOf nb-96）；18 manualHashes=磁盘 0 mismatch",
+    "revisionChain": "before/ 18/18==nb-96 stage（12 篇未变==声明）；changes.diff 7 hunks/6 文件 git apply 重放==stage 逐字节",
+    "zip": "21 条目 0 穿越/符号链接/字节 mismatch"
+  },
+  "g2Evidence": {
+    "fixVerification": "逐 hunk 核验 F-01~F-04+N-01 全关闭：F-01 ReleaseNotesViewer §4 改'无（孤儿件）——全树 grep 0 命中（含检索范围）+无 @deprecated 照实'；F-02 SettingsPanel §3/§7+OpenApi §4 改'渲染分支无导航入口（源注释 :133）+:108 悬空注释未实现鉴权过滤'照实；F-03 McpServerForm §4 改 agent-skills/McpDetailSheet.tsx（含检索范围）；F-04 DataManagement §4 API 名全改实名（cleanupStorage/cleanupTempStorage/previewSessionCompaction/applySessionCompaction）；N-01 ChannelSettings §3 补未登录隐藏官方渠道（:104）",
+    "spotCheck": "DataManagement API 调用点行号机械核对：cleanupStorage :607,:639/cleanupTempStorage :625/previewSessionCompaction :677/applySessionCompaction :691——**作者更正行号全部精确**；QA 自纠：F-04 原 evidence 行号（:630,:668/:650/:712/:731）系约数不精确，以作者为准",
+    "noNewErrors": "6 篇修订区逐 hunk 无新错误；12 篇未改==r0 字节"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/renderer/components/settings/AboutSettings.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/AboutSettings.tsx.md",
+      "sourceBlob": "69cb75e64b1eb97f1185d14112d333de7c9264e1",
+      "sourceSha256": "e407eedbb6f7f4fab5be63eea842d3ccf0f871eeaddf93b4ca50ead5a4ae19ea",
+      "manualSha256": "791f98261c82c6ea773582ca6a7b441084ced1edcc2979cb36e5863bcef41bfa",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/AppearanceSettings.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/AppearanceSettings.tsx.md",
+      "sourceBlob": "6afdd258a74534d31a1986fe2cc1a6b56a964ef9",
+      "sourceSha256": "79760588b6178a830cea7c0a16e41081ae0cbdfa20d409c70e2e2744d18332a1",
+      "manualSha256": "e80381affe312f0dcce07332b87d5b28650847271a791c05495c1ded657f1934",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/BotDefaultSettings.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/BotDefaultSettings.tsx.md",
+      "sourceBlob": "be25c57d10927f6ddc4a140f4922ff10ba863995",
+      "sourceSha256": "e6b295fb3225dd2a470a0aedc6acd2a81d28b76530430bf3769613876ad404ef",
+      "manualSha256": "86e713bc4e03c3bb6171f32fff844b9b2b25da032f1c9ef310b6c45e8f937f62",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/BotHubSettings.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/BotHubSettings.tsx.md",
+      "sourceBlob": "bbf852fb281ca03841fa50ebbc58cc850a6c2ef9",
+      "sourceSha256": "47775dbe13e6e4e6051daa59578cc1576d33d8c91dbd07b2368bd1e52a68d92e",
+      "manualSha256": "cc65c70261477a81a846fd9c6d92de5156df6872d1883cac06a5e396f0a85f2e",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/ChannelForm.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/ChannelForm.tsx.md",
+      "sourceBlob": "66336e2d33111bd994c70b6246b7af51794171e4",
+      "sourceSha256": "c839064de169185ba60d751b0b4e58587145341d8e80ef0461e29c7f4769c6fe",
+      "manualSha256": "b37ba0585d4bb5bebf20a2db2b324895f4f573504ba875d7e9039448179693c1",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/ChannelSettings.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/ChannelSettings.tsx.md",
+      "sourceBlob": "e8a61fc088dd671f863fc6a3a5eb13f5dffe3697",
+      "sourceSha256": "46b3df3cb9d55ae8feb9fad5fea20a049f13362a74b09dd3acc402dcbeeb794b",
+      "manualSha256": "272f241db03913ee481a657c164420257f9372144f856c267de1f9fec7af3414",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/DataManagementSettings.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/DataManagementSettings.tsx.md",
+      "sourceBlob": "e00fd52b4b922dd29809094e6721b7ef4054812d",
+      "sourceSha256": "950c7b6a8bc9545b1c5b9e72a3fa1f5b5e998fbe9f8ce96e907b804721a23424",
+      "manualSha256": "77ea25ed0230f0e10ee475f840bfa420f514fa58eacb45d6807e732246e65e24",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/DeveloperSettings.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/DeveloperSettings.tsx.md",
+      "sourceBlob": "0573e152985e7e8575520271246abcb2489cce00",
+      "sourceSha256": "3e429ca6a1cd9a281e3135c443b8e76a9fe88e550bdace26c7b7f6932e1ae1b1",
+      "manualSha256": "5b723a3e54c1a33cd1a8e1a4d607f62db37b16e5eab58903d4b79e597cbfad87",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/DingTalkSettings.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/DingTalkSettings.tsx.md",
+      "sourceBlob": "bc32918424ac3fcf7c7b2a63ff3474aa974a98bd",
+      "sourceSha256": "7e8a2c1d803f938b5301c68e7427622f6ce2eee25e2d43da2bf2216aecb62b3f",
+      "manualSha256": "2b42b806ef1bda4ab26a6304560b3376b1e9d6c4e3fbdc484d8d9b10ab4a0b86",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/FeishuSettings.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/FeishuSettings.tsx.md",
+      "sourceBlob": "ad4cefdaec59d56158de1977d2b09c06688f0940",
+      "sourceSha256": "b40572a954328b5ef0b2292b330ff838acc75b31b92a90a5104217b0bf7511e5",
+      "manualSha256": "bf33caf728ecfae41fbbc0015556d641a099ba52c0620a828d16a79cb64148cb",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/GeneralSettings.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/GeneralSettings.tsx.md",
+      "sourceBlob": "2cdc21951e894ffc2c7308a63252ab191351178e",
+      "sourceSha256": "41b6e0145de2261a7b45f02ef55b0659b277243b43fa1c3432aa995fd63ad62e",
+      "manualSha256": "8aa0258d67de21c0b492ba5b0b2d1a942e5cbcfad054377c483196f9093d8b7f",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/McpServerForm.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/McpServerForm.tsx.md",
+      "sourceBlob": "6dcbe51b0c3a4aac62a1f378de69e2fa2cbd47b1",
+      "sourceSha256": "ec68ac027baaa5b9534d5a5440cdd09292102e186008d0a3132d08fafa540eed",
+      "manualSha256": "32a7f45762b52a2f98c54d16ad99662da3d2dc98fcba0b27fee761d36a6ad9de",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/MigrationSettings.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/MigrationSettings.tsx.md",
+      "sourceBlob": "c7459b9cab39ea427bd067f6f7b10534ed2eb0a6",
+      "sourceSha256": "c29361563ec0aaf466f4436d41533adc7b63a12457d88d3a3849d807bdbfc4b1",
+      "manualSha256": "16c5a531bb6b46df8bf6f4bfe22a37589ea5e1ca5b237364765ece105f001be9",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/ModelAvailabilityBar.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/ModelAvailabilityBar.tsx.md",
+      "sourceBlob": "4ee60dfc45a1a0014c82b58b68f153ab096549ad",
+      "sourceSha256": "91f944c3f4ced17ab57f53fe828a4fde4d8f57723e56245f9d6a343dfd23309c",
+      "manualSha256": "a1354d263e6d7f44d76f0232d7f23a0d130dc8b931e265b83a7cdd5524f6a064",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/OpenApiSettings.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/OpenApiSettings.tsx.md",
+      "sourceBlob": "d17c71c3ff49ce0561055cad60523f1a42ef3858",
+      "sourceSha256": "988c6f9f8f5a21e7d2fb9a0a203057001e052dd0f2b26b4ae73e8f1ef08bb820",
+      "manualSha256": "4bbbd26a0ce3845f9887b6939c72983a94925e3e9addd91a18808e3674275d9f",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/ProxySettings.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/ProxySettings.tsx.md",
+      "sourceBlob": "a0476381330b87716ddd543f035901f99592b041",
+      "sourceSha256": "e2d2a681f9cb5190e67fe455af5278785ba70af47f1e6d73da1107d447b4fc47",
+      "manualSha256": "9ee1476575f161e78b754f88b0a6380db296b75c258c93478ec84447d6cb28b2",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/ReleaseNotesViewer.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/ReleaseNotesViewer.tsx.md",
+      "sourceBlob": "74bd64a2349b7a83dff787732e3b79dce1a15fc6",
+      "sourceSha256": "61b8b7c313d389f4bd7c69094a2744ec048ff4b51275b07d30d92d7837eaf818",
+      "manualSha256": "7e98c8c410c0b7f340b4de2004811c25f0925c90686b12d8934c07b6bc26858e",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/SettingsPanel.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/SettingsPanel.tsx.md",
+      "sourceBlob": "5b143174b76e68290fd029156938949c1df6f5e2",
+      "sourceSha256": "aaceb25049205e97d67ad98f03ca3398e12d7d778a240cf5aa138083e9544f68",
+      "manualSha256": "a9043abf468d554cd4e4f7f3624a8f32b597a71b3e5d62e70faa28079236c300",
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/AboutSettings.tsx.md": "791f98261c82c6ea773582ca6a7b441084ced1edcc2979cb36e5863bcef41bfa",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/AppearanceSettings.tsx.md": "e80381affe312f0dcce07332b87d5b28650847271a791c05495c1ded657f1934",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/BotDefaultSettings.tsx.md": "86e713bc4e03c3bb6171f32fff844b9b2b25da032f1c9ef310b6c45e8f937f62",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/BotHubSettings.tsx.md": "cc65c70261477a81a846fd9c6d92de5156df6872d1883cac06a5e396f0a85f2e",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/ChannelForm.tsx.md": "b37ba0585d4bb5bebf20a2db2b324895f4f573504ba875d7e9039448179693c1",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/ChannelSettings.tsx.md": "272f241db03913ee481a657c164420257f9372144f856c267de1f9fec7af3414",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/DataManagementSettings.tsx.md": "77ea25ed0230f0e10ee475f840bfa420f514fa58eacb45d6807e732246e65e24",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/DeveloperSettings.tsx.md": "5b723a3e54c1a33cd1a8e1a4d607f62db37b16e5eab58903d4b79e597cbfad87",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/DingTalkSettings.tsx.md": "2b42b806ef1bda4ab26a6304560b3376b1e9d6c4e3fbdc484d8d9b10ab4a0b86",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/FeishuSettings.tsx.md": "bf33caf728ecfae41fbbc0015556d641a099ba52c0620a828d16a79cb64148cb",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/GeneralSettings.tsx.md": "8aa0258d67de21c0b492ba5b0b2d1a942e5cbcfad054377c483196f9093d8b7f",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/McpServerForm.tsx.md": "32a7f45762b52a2f98c54d16ad99662da3d2dc98fcba0b27fee761d36a6ad9de",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/MigrationSettings.tsx.md": "16c5a531bb6b46df8bf6f4bfe22a37589ea5e1ca5b237364765ece105f001be9",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/ModelAvailabilityBar.tsx.md": "a1354d263e6d7f44d76f0232d7f23a0d130dc8b931e265b83a7cdd5524f6a064",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/OpenApiSettings.tsx.md": "4bbbd26a0ce3845f9887b6939c72983a94925e3e9addd91a18808e3674275d9f",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/ProxySettings.tsx.md": "9ee1476575f161e78b754f88b0a6380db296b75c258c93478ec84447d6cb28b2",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/ReleaseNotesViewer.tsx.md": "7e98c8c410c0b7f340b4de2004811c25f0925c90686b12d8934c07b6bc26858e",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/SettingsPanel.tsx.md": "a9043abf468d554cd4e4f7f3624a8f32b597a71b3e5d62e70faa28079236c300"
+  },
+  "findings": [],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network",
+    "bun 测试运行"
+  ],
+  "notes": "nb-96 链 r0→r1 闭合；F-01~F-04+N-01 全关闭。18 篇以 r1 hash 全合（6 篇替代 r0 值）。"
+}

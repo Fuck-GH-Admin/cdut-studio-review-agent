@@ -1,0 +1,224 @@
+{
+  "schema": "dsh-r07-review-result/2",
+  "batch": "nb-43-r1",
+  "revisionOf": "nb-43",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "reviewedAtUtc": "2026-10-24T01:40:00Z",
+  "sealedAtUtc": "2026-10-23T18:03:03Z",
+  "sealId": "seal-d7ec3913642e646a",
+  "parentSealId": "seal-6ca30b462a9bfb4e",
+  "runStatus": "NOT_RUN",
+  "batchVerdict": "accepted",
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass"
+  },
+  "g0Evidence": {
+    "sealChain": "manifestSha/readySha/zipSha 三层独立重算全相等；zip 17 条目合规",
+    "manualHashes": "14/14 磁盘=MANIFEST=READY 全等",
+    "changeScope": "对父批 diff 仅 3 篇（thinking-tags.ts.md :19/:28、select.ts.md :77、package.json.md :19/:39），全部落在 NB43-N1/N2/N3 声明范围；11 篇字节=父批"
+  },
+  "files": [
+    {
+      "path": "packages/session-core/src/search.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/search.ts.md",
+      "sourceBlob": "2cd3e1adbbbb7c86556bc756ccd2a24ac63eaa01",
+      "sourceSha256": "494ceb39edcb826d5440671836f088947e7d3b40248a54278a829c292b634d93",
+      "manualSha256": "4e5100f777951ef3e21e2a160f77d98034b3357b6d1650c1200d10b917fd58cb",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": "inherited_clean_from_parent"
+    },
+    {
+      "path": "packages/session-core/src/select.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/select.ts.md",
+      "sourceBlob": "a456be266c8260ec99f423ce41c3de80a66b8424",
+      "sourceSha256": "6c09557d592b1aebbdcadde45267ea435b13cef677e24a2948f6f045b9f645ea",
+      "manualSha256": "a4c66760d8c6f893ca00fe404458420bf07d0da6c87f41b00a8759eacfd9927d",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": "inherited_clean_from_parent"
+    },
+    {
+      "path": "packages/session-core/src/session-core.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/session-core.test.ts.md",
+      "sourceBlob": "9c4477e12ab5190ecbf42e5befabc0436ef03d2c",
+      "sourceSha256": "4399d2831c2002e084fa24e5da24a46bddd2823ffb187a631453f7f9e5cb62ca",
+      "manualSha256": "4244f170d93ee58dda0bd110b1273859a71f121ab450298d075bd8480a18d7d5",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": "inherited_clean_from_parent"
+    },
+    {
+      "path": "packages/session-core/src/thinking-tags.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/thinking-tags.ts.md",
+      "sourceBlob": "05ecc2decc4181654274d488cf8da3ed246d4aa8",
+      "sourceSha256": "fef7e2858d56edb7871c29b59bd89c5fd8d5825dba580485f4129e4d15ed86dd",
+      "manualSha256": "0f264a44629a4350804f8f1875e275048674e6b7c6a3a3de94c252694a04b0ec",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": "inherited_clean_from_parent"
+    },
+    {
+      "path": "packages/session-core/src/tokens.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/tokens.ts.md",
+      "sourceBlob": "f53b37f724e38e642eefedca061798339887890a",
+      "sourceSha256": "377cc23cf27d3f4b5d7a15de83e704d9ee01fdb9bb5ee19f36e159b1597a7a26",
+      "manualSha256": "a3b7f5662c528832cbdb4bcd8e921c69263d4091923c7fe1afb9c2027d1b5837",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": "inherited_clean_from_parent"
+    },
+    {
+      "path": "packages/session-core/src/transcript.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/transcript.ts.md",
+      "sourceBlob": "fbe15e3d3a0d35fb70278344e64626b1d5b7d444",
+      "sourceSha256": "90b2b2e7be625a4a597e02e80eff5c2b3f5b963ba32b216d0a974473600b58cd",
+      "manualSha256": "cde577038d8ad59622ca74c2154fa58787ae93f8f27fb200917e92e590d058ff",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": "inherited_clean_from_parent"
+    },
+    {
+      "path": "packages/session-core/tsconfig.json",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/tsconfig.json.md",
+      "sourceBlob": "73a65ef2ef6e5658643310ffc67e5391df2cbbc1",
+      "sourceSha256": "1de5fbec4888f903fd7d0695642e6c2cb46ae9f5e944df0d93a4fd1aaa2325d6",
+      "manualSha256": "0ac8f1f1a8d49e54bbf3ba7f94b4092f79fb92fa99f1a991f1b5a0b5261d0f04",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": "inherited_clean_from_parent"
+    },
+    {
+      "path": "packages/core/package.json",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/package.json.md",
+      "sourceBlob": "34491f33fe75fcc79cf2039953f44a824a90156d",
+      "sourceSha256": "caa860714ad3f9fcfd997baf75d22804de93a6eb4e178c314b531817e5e727cd",
+      "manualSha256": "efc52f473df1511cd609a37cc2b1c3954e9a9d7ae71361635315e53ce1b96e11",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": "inherited_clean_from_parent"
+    },
+    {
+      "path": "packages/core/tsconfig.json",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/tsconfig.json.md",
+      "sourceBlob": "13ee9ecadee7451dc2a4aecd0014e1fca783ab42",
+      "sourceSha256": "9237ac72c4fe2f5c1f2c3d095ab476ca1f4655b0ea5d75569d262b60af903421",
+      "manualSha256": "34b2d18bcb2be8b3245644d669b86c81562f2b7f7138024092699c9d5a591d75",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": "inherited_clean_from_parent"
+    },
+    {
+      "path": "packages/shared/package.json",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/package.json.md",
+      "sourceBlob": "eae0c903cacd225d31869031411ff67fef6c0472",
+      "sourceSha256": "6ef462e6faed471d3e08a4b5f30e2ecb7a46d6ad6d2794b0b000b537efa08da9",
+      "manualSha256": "51f023570a058fcc8bbd7d24c852259da00f98368952091c8ac11a1647660791",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": "inherited_clean_from_parent"
+    },
+    {
+      "path": "packages/shared/tsconfig.json",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/tsconfig.json.md",
+      "sourceBlob": "73a65ef2ef6e5658643310ffc67e5391df2cbbc1",
+      "sourceSha256": "1de5fbec4888f903fd7d0695642e6c2cb46ae9f5e944df0d93a4fd1aaa2325d6",
+      "manualSha256": "1a40906c98ac543e8f019b7c3cf8c051b809b3b8e67ec1eb6f9278879379090d",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": "inherited_clean_from_parent"
+    },
+    {
+      "path": "packages/ui/components.json",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/components.json.md",
+      "sourceBlob": "5cd43a3281c8ad689be7145c6c8b5a5334c66fc1",
+      "sourceSha256": "b7759b321260b01d2a30a63c7f3d65e2bc5c44460216a46eaeea4ec693c66d2d",
+      "manualSha256": "3e7a63aa78030452205388ef8dd78c007ccd3143381790c2e7f2b7a6600dd9ed",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": "inherited_clean_from_parent"
+    },
+    {
+      "path": "packages/ui/package.json",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/package.json.md",
+      "sourceBlob": "f4d1fac6edaac23a3330166bc945c115cdd7b8ef",
+      "sourceSha256": "cfaa38c9681bcf94ba62ab4b74db9b035004b337580b1ac927083b5ffa3a2bcb",
+      "manualSha256": "c0f41b0420e40bfbbf111ac1fe5615623c7886156f4a1c0b384eb7bc1fabff1b",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": "inherited_clean_from_parent"
+    },
+    {
+      "path": "packages/ui/tsconfig.json",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/tsconfig.json.md",
+      "sourceBlob": "6cbc3f58d30bab51b979dbacf4c346f4fd30c4eb",
+      "sourceSha256": "307083ff88a3ef85f62385ddc2fd62b49c8dd1457904c1d4b15da6ba97335c1a",
+      "manualSha256": "b3cf5f36b18f1c50d6dea77e7e7a6000d05fdb2cfc01647dc0d3fd3c0fbe85a1",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": "inherited_clean_from_parent"
+    }
+  ],
+  "findings": [
+    {
+      "id": "NB43-N1",
+      "file": "packages/session-core/src/thinking-tags.ts",
+      "severity": "major",
+      "status": "resolved",
+      "claim": "（父批交付字节损坏：§1 悬空反引号残句+§2 值列竖线拆表）——r1 已改用符号名（THINK_OPEN_TAG/THINK_CLOSE_TAG）描述字面量、值列无竖线；repr 逐字节复核残片清零、拆列消除。",
+      "sourceEvidence": "diff :19/:28 两行；python repr 残片扫描=0。",
+      "action": "已核销（遗留 cosmetic：修复行 4 列 vs 5 列表头，渲染安全，见 notes）。"
+    },
+    {
+      "id": "NB43-N2",
+      "file": "packages/session-core/src/select.ts",
+      "severity": "minor",
+      "status": "resolved",
+      "claim": "（父批 §11 SelectOptions :3-17）——r1 已改 :3-14。",
+      "sourceEvidence": "diff :77 行。",
+      "action": "已核销。"
+    },
+    {
+      "id": "NB43-N3",
+      "file": "packages/ui/package.json",
+      "severity": "minor",
+      "status": "resolved",
+      "claim": "（父批 Radix ×14）——r1 已改 ×15（§1/§3 两处）。",
+      "sourceEvidence": "diff :19/:39；python json 15 个 @radix-ui/*。",
+      "action": "已核销。"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/search.ts.md": "4e5100f777951ef3e21e2a160f77d98034b3357b6d1650c1200d10b917fd58cb",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/select.ts.md": "a4c66760d8c6f893ca00fe404458420bf07d0da6c87f41b00a8759eacfd9927d",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/session-core.test.ts.md": "4244f170d93ee58dda0bd110b1273859a71f121ab450298d075bd8480a18d7d5",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/thinking-tags.ts.md": "0f264a44629a4350804f8f1875e275048674e6b7c6a3a3de94c252694a04b0ec",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/tokens.ts.md": "a3b7f5662c528832cbdb4bcd8e921c69263d4091923c7fe1afb9c2027d1b5837",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/transcript.ts.md": "cde577038d8ad59622ca74c2154fa58787ae93f8f27fb200917e92e590d058ff",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/tsconfig.json.md": "0ac8f1f1a8d49e54bbf3ba7f94b4092f79fb92fa99f1a991f1b5a0b5261d0f04",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/package.json.md": "efc52f473df1511cd609a37cc2b1c3954e9a9d7ae71361635315e53ce1b96e11",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/tsconfig.json.md": "34b2d18bcb2be8b3245644d669b86c81562f2b7f7138024092699c9d5a591d75",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/package.json.md": "51f023570a058fcc8bbd7d24c852259da00f98368952091c8ac11a1647660791",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/tsconfig.json.md": "1a40906c98ac543e8f019b7c3cf8c051b809b3b8e67ec1eb6f9278879379090d",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/components.json.md": "3e7a63aa78030452205388ef8dd78c007ccd3143381790c2e7f2b7a6600dd9ed",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/package.json.md": "c0f41b0420e40bfbbf111ac1fe5615623c7886156f4a1c0b384eb7bc1fabff1b",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/tsconfig.json.md": "b3cf5f36b18f1c50d6dea77e7e7a6000d05fdb2cfc01647dc0d3fd3c0fbe85a1"
+  },
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "notes": [
+    "复验方式：父批 reviews/nb-43 D0 证据复用 + 3 篇逐 hunk 回源核销；11 篇未动文件 diff 为空且 hash=父批 accepted 同值（按合入规则由本子批记录）。",
+    "NB43-N1 修复质量合格：改用符号名/引用源码行号的写法正是 QA 要求的规避方式，供全组沿用（nb-60 NB60-N6 同类残片建议同法）。",
+    "遗留 cosmetic（非阻断）：thinking-tags §2 修复行（:28）为 4 单元格 vs 表头 5 列，渲染器显示空单元格不破表；下次触碰可顺手补一格。",
+    "manualSha256 脚本生成=READY 三方核验。"
+  ]
+}

@@ -1,0 +1,91 @@
+{
+ "schema": "dsh-r07-qa-done/1",
+ "batch": "nb-19",
+ "id": "NB-19",
+ "revisionOf": null,
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewRoot": "reviews/nb-19",
+ "reviewedAtUtc": "2026-10-23T16:55:00Z",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PASS",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 18,
+  "revision_required": 0,
+  "unknown": 0
+ },
+ "acceptedManuals": 18,
+ "acceptedHashesCount": 18,
+ "residualNonBlockingNotes": [],
+ "nonBlockingFindings": [],
+ "findingsSummary": {
+  "review-v3-background-technical-coordinator.ts.md": [
+   "N-01"
+  ],
+  "review-v3-b4-rule-source-diff.ts.md": [
+   "N-02"
+  ],
+  "review-v3-b4-r25-raw-clause-condition.ts.md": [
+   "N-03"
+  ],
+  "review-v3-execution-proposal-producer.ts.md": [
+   "N-04"
+  ],
+  "review-v3-core-t03-run-gate.ts.md": [
+   "N-05"
+  ],
+  "review-v3-execution-contract.ts.md": [
+   "N-06"
+  ],
+  "review-v3-d4-demo-publish.ts.md": [
+   "N-07"
+  ],
+  "review-v3-execution-turn-budget.ts.md": [
+   "N-08"
+  ],
+  "review-v3-r22-concentrated.test.ts.md": [
+   "N-09"
+  ]
+ },
+ "batchFindings": [
+  "M-01",
+  "M-02",
+  "M-03"
+ ],
+ "resultSha256": "c7c67244b883f3d0db4af83c9b76bef7d4f1ca4bfcb5da8b1128304701bfec4e",
+ "reviewedHashesSha256": "092be4335062b36827eb6eba846f986f0b8d62abfab0bf489b2fc8f05767f917",
+ "zip": {
+  "path": "deliveries/nb-19/R07-nb-19-05fb2565.zip",
+  "sha256": "a88612f8fcd740fdbf5ecce2e7f2f7fc4497fcdb2ad837a766dd86a644bde59c",
+  "entries": 21,
+  "note": "18 stage 手册 + MANIFEST + 2 mechanical TSV；无穿越/符号链接；逐条目与磁盘 0 mismatch"
+ },
+ "sealId": "seal-760acee7124aac19",
+ "artifacts": [
+  "reviews/nb-19/RESULT.json",
+  "reviews/nb-19/RESULT.md",
+  "reviews/nb-19/REVIEWED-HASHES.json",
+  "reviews/nb-19/DONE.json",
+  "handoffs/nb-19-REVIEW-TO-AUTHOR.md",
+  "handoffs/nb-19-REVIEW-TO-LEAD.md"
+ ],
+ "priorReviewsUntouched": true,
+ "parentPreserved": null,
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "writtenOnlyIn": "reviews/nb-19 + handoffs；未写 deliveries/inventory/manager/candidate/全局 FILES/MANIFEST",
+ "next": "lead 按 18 个 exact manualSha256 合入 candidate；作者如需修 N-01..N-09 行号另开 nb-19-r1（保留父字节）"
+}

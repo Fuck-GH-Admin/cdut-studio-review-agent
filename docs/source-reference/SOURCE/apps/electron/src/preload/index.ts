@@ -1,0 +1,5105 @@
+/**
+ * Preload 脚本
+ *
+ * 通过 contextBridge 安全地将 API 暴露给渲染进程
+ * 使用上下文隔离确保安全性
+ */
+
+import { contextBridge, ipcRenderer, webUtils } from 'electron'
+import { IPC_CHANNELS, REVIEW_IPC_CHANNELS, CHANNEL_IPC_CHANNELS, CHAT_IPC_CHANNELS, AGENT_IPC_CHANNELS, LARK_IPC_CHANNELS, ENVIRONMENT_IPC_CHANNELS, INSTALLER_IPC_CHANNELS, PROXY_IPC_CHANNELS, GITHUB_RELEASE_IPC_CHANNELS, CHANGELOG_IPC_CHANNELS, BULLETIN_IPC_CHANNELS, CHAT_TOOL_IPC_CHANNELS, FEISHU_IPC_CHANNELS, DINGTALK_IPC_CHANNELS, WECHAT_IPC_CHANNELS, AUTOMATION_IPC_CHANNELS, RECOMMENDATION_IPC_CHANNELS, PLANNING_IPC_CHANNELS, AUTH_IPC_CHANNELS, SYNC_IPC_CHANNELS, TEAM_IPC_CHANNELS, SKILL_MARKETPLACE_IPC_CHANNELS, SKILL_MASTER_IPC_CHANNELS, GLOBAL_SKILL_IPC_CHANNELS, TEAM_FILE_IPC_CHANNELS, TEAM_MEMORY_IPC_CHANNELS, SSE_IPC_CHANNELS, KNOWLEDGE_IPC_CHANNELS, AGENT_PRESET_IPC_CHANNELS, type Todo, type CalendarEvent, type TodoListQuery, type CalendarEventListQuery, type PlanningGroup, type PlanningGroupScope, type PlanningTag, type PlanningReminder, type ActivePlanningReminder, type PlanningAgentOperation, type PlanningChange, type CreateTodoInput, type UpdateTodoInput, type CreateCalendarEventInput, type UpdateCalendarEventInput, type CreatePlanningGroupInput, type UpdatePlanningGroupInput, type CreatePlanningTagInput, type UpdatePlanningTagInput, type SnoozePlanningReminderInput, type StartTodoAgentInput, type StartTodoAgentResult, type TodoAgentSessionActivation, type TeamMemoryApiResult, type TeamMemoryDocument, type TeamMemoryRevision, type ChangelogEntry, type BulletinItem, type AgentPreset, type AgentPresetCreateInput, type AgentPresetUpdateInput, type AgentPresetImportResult } from '@profer/shared'
+import { USER_PROFILE_IPC_CHANNELS, SETTINGS_IPC_CHANNELS, SKIN_IPC_CHANNELS, SCRATCH_PAD_IPC_CHANNELS, APP_ICON_IPC_CHANNELS, DOCK_BADGE_IPC_CHANNELS, STORAGE_IPC_CHANNELS, NOTIFICATION_SOUND_IPC_CHANNELS, DESKTOP_NOTIFICATION_IPC_CHANNELS } from '../types'
+import type { CustomNotificationSound } from '../types'
+import type { PresetReference, PresetReferenceReport, PresetScopeRebindResult, LarkCliStatus, LarkCliOperationResult, LarkLoginStartResult, LarkLoginEvent, LarkMcpCredentialsInput, LarkMcpSetupResult, LarkMcpStatus } from '@profer/shared'
+import { CDUT_AI_CLASS_IPC_CHANNELS, CDUT_ZONE_IPC_CHANNELS, STUDY_IPC_CHANNELS, type AiClassSessionSummary, type CdutAccountProfile, type CdutDomainCacheName, type CdutDomainToolResult, type CdutGatekeeperDecision, type CdutGatekeeperNoticeEvent, type CdutLoginInput, type CdutLoginResult, type CdutSavedAccountSummary, type CdutMutationConfirmRequest, type CdutMutationConfirmResult, type CdutToolInvokeParams, type KnowledgeGraphData, type StudyDocumentOutline, type StudyDocumentQueryInput, type StudyGraphCostEstimate, type StudyGraphGenerateInput, type StudyGraphProgressEvent, type StudyIngestDocumentsInput, type StudySearchKnowledgeInput, type StudySearchKnowledgeResult, type StudySetDocumentsActiveInput, type StudyToggleDocumentActiveInput } from '@profer/shared'
+import { LONGTERM_MEMORY_IPC_CHANNELS, type LongTermMemoryGraph, type LongTermMemoryHit, type LongTermMemoryNode, type LongTermMemoryNodeInput } from '@profer/shared'
+import { YANHU_EXPRESS_IPC_CHANNELS, type YanhuCloseRightInput, type YanhuCreateTabInput, type YanhuLoadingChangedEvent, type YanhuNavigateInput, type YanhuReorderTabsInput, type YanhuSyncThemeInput, type YanhuTabRefInput, type YanhuTabsState, type YanhuUrlChangedEvent, type YanhuViewLayout, type YanhuPetBootstrap, type YanhuPetChatInput, type YanhuPetChatStatus, type YanhuPetConfig, type YanhuPetMessage, type YanhuPetStateEvent, type YanhuPetStreamEvent, type YanhuPetTourFillEvent, type YanhuPetViewport, type YanhuPetWindowGeometry } from '@profer/shared'
+import {
+  CSLAB_IPC_CHANNELS,
+  type CsLabAuthStatus,
+  type CsLabAuthResult,
+  type CsLabTelemetry,
+  type CsLabNode,
+  type CsLabLogEntry,
+  type CsLabLab,
+  type CsLabCreateLabInput,
+  type CsLabLabSnapshot,
+  type CsLabIngestRequest,
+  type CsLabIngestResult,
+  type CsLabIngestProgress,
+  type CsLabAssetSummary,
+  type CsLabTablePayload,
+  type CsLabCellValue,
+  type CsLabManuscript,
+  type CsLabManuscriptSummary,
+  type CsLabSaveManuscriptInput,
+  type CsLabSaveManuscriptAsIpcInput,
+  type CsLabSaveManuscriptAsResult,
+  type CsLabSaveFileDialogOptions,
+  type CsLabSaveFileDialogResult,
+  type CsLabDocxImportResult,
+  type CsLabDocxSyncInput,
+  type CsLabDocxSyncResult,
+  type CsLabCapsule,
+  type CsLabCapsuleLineage,
+  type CsLabPythonCapability,
+  type CsLabAssetChangedEvent,
+  type CsLabCapsuleStaleEvent,
+  type CsLabToolRuntimeStatus,
+  type CsLabToolDepsProgress,
+  type CsLabInstallToolDepsInput,
+  type CsLabZoteroStatus,
+  type CsLabZoteroDiscovery,
+  type CsLabZoteroSyncResult,
+  type CsLabZoteroBridgeStatus,
+  type CsLabZoteroAnnotation,
+  type CsLabLiteratureItem,
+  type CsLabLiteratureSearchResult,
+  type CsLabPlotDigitizeInput,
+  type CsLabPlotDigitizeResult,
+  type CsLabDigitizedFigureInput,
+  type CsLabDigitizedFigureResult,
+  type CsLabFormulaVerifyInput,
+  type CsLabFormulaVerifyResult,
+  type CsLabFormulaOcrResult,
+  type CsLabZoteroSyncedEvent,
+  type CsLabZoteroStatusEvent,
+  type CsLabProtocol,
+  type CsLabRun,
+  type CsLabCreateProtocolInput,
+  type CsLabUpdateProtocolInput,
+  type CsLabCreateRunInput,
+  type CsLabUpdateRunInput,
+  type CsLabVaultNoteSummary,
+  type CsLabVaultReadResult,
+  type CsLabVaultIndexStatus,
+  type CsLabVaultIndexResult,
+  type CsLabVaultChangedEvent,
+  type CsLabCanvasSummary,
+  type CsLabCanvasReadResult,
+  type CsLabCanvasCreateResult,
+  type CsLabCanvasWriteInput,
+  type CsLabCanvasWriteResult,
+  type CsLabCustomToolScan,
+  type CsLabCustomToolRunInput,
+  type CsLabCustomToolRunResult,
+  type CsLabUvEnsureResult,
+  type CsLabSessionLabBinding,
+  type CsLabDagJobsCancelledEvent,
+  type CsLabShareSourceSummary,
+  type CsLabShareSourceInput,
+  type CsLabShareCandidate,
+  type CsLabShareScanResult,
+  type CsLabShareStatusEvent,
+  type CsLabHpcProfileSummary,
+  type CsLabHpcProfileInput,
+  type CsLabHpcJob,
+  type CsLabComputeContract,
+  type CsLabHpcTestResult,
+  type CsLabHpcMfaRequest,
+  type CsLabHpcJobEvent,
+  type CsLabMolAsset,
+  type CsLabTableSeries,
+  type CsLabAssetDataUrl,
+  type CsLabAssetFileInfo,
+  type CsLabTableExportFormat,
+  type CsLabTableExportResult,
+  type CsLabReviewRequest,
+  type CsLabReviewResult,
+  type CsLabCrystalAnalysis,
+  type CsLabPxrdPattern,
+  type CsLabPxrdOptions,
+  type CsLabFitRequest,
+  type CsLabFitResult,
+  type CsLabSmoothRequest,
+  type CsLabVolumeGrid,
+  type CsLabPlotDocument,
+  type CsLabPlotSummary,
+  type CsLabPlotExportOptions,
+  type CsLabPlotExportResult,
+  type CsLabPlotUpdatedEvent,
+  type CsLabStructureSnapshotRequest,
+  type CsLabStructureSnapshotResult,
+  type CsLabStructureSnapshotSubmitInput,
+  type CsLabDemoLabResult,
+  type CsLabAgentContext,
+  type CsLabStructureFocusedEvent,
+  type CsLabAgentWindowInput,
+  type CsLabAgentWindowRef,
+  type CsLabPlotUndoResult,
+} from '@profer/shared'
+import type {
+  RuntimeStatus,
+  GitRepoStatus,
+  Channel,
+  ChannelCreateInput,
+  ChannelUpdateInput,
+  ChannelTestResult,
+  ChannelPlanQuotaResult,
+  FetchModelsInput,
+  FetchModelsResult,
+  ConversationMeta,
+  ChatMessage,
+  ChatSendInput,
+  GenerateTitleInput,
+  StreamChunkEvent,
+  StreamReasoningEvent,
+  StreamCompleteEvent,
+  StreamErrorEvent,
+  StreamToolActivityEvent,
+  AttachmentSaveInput,
+  AttachmentSaveResult,
+  ResolveImageUrlResult,
+  FileDialogResult,
+  KnowledgeImportBatchResult,
+  KnowledgeItem,
+  KnowledgeLibrarySnapshot,
+  KnowledgeSearchResult,
+  RecentMessagesResult,
+  MessageSearchResult,
+  BranchTreeSnapshot,
+  AgentSessionMeta,
+  AgentRuntime,
+  AgentEffort,
+  AgentThinkingLevel,
+  StudyTeachingMode,
+  ProviderType,
+  ReasoningCapability,
+  SDKMessage,
+  AgentSendInput,
+  AgentStreamEvent,
+  AgentStreamCompletePayload,
+  UpdateAgentInterruptStateInput,
+  AgentWorkspace,
+  AgentGenerateTitleInput,
+  AgentSaveFilesInput,
+  AgentSaveWorkspaceFilesInput,
+  AgentSavedFile,
+  AgentAttachDirectoryInput,
+  AgentAttachFileInput,
+  WorkspaceAttachDirectoryInput,
+  WorkspaceAttachFileInput,
+  GetTaskOutputInput,
+  GetTaskOutputResult,
+  StopTaskInput,
+  WorkspaceMcpConfig,
+  SkillMeta,
+  OtherWorkspaceSkillsGroup,
+  OtherWorkspacePresetsGroup,
+  WorkspaceCapabilities,
+  WorkspaceMemorySummary,
+  SkillFileContent,
+  SkillFileNode,
+  MemoryWikilinkTarget,
+  MemoryBacklink,
+  FileEntry,
+  FileSearchResult,
+  EnvironmentCheckResult,
+  InstallerManifest,
+  InstallerDownloadRequest,
+  InstallerDownloadResult,
+  InstallerProgressPayload,
+  ProxyConfig,
+  SystemProxyDetectResult,
+  GitHubRelease,
+  GitHubReleaseListOptions,
+  PermissionRequest,
+  PermissionResponse,
+  ProferPermissionMode,
+  AskUserRequest,
+  AskUserResponse,
+  ExitPlanModeResponse,
+  ChatToolInfo,
+  ChatToolState,
+  ChatToolMeta,
+  MoveSessionToWorkspaceInput,
+  ForkSessionInput,
+  ListSessionProcessesInput,
+  KillProcessInput,
+  SessionProcessInfo,
+  RewindSessionInput,
+  RewindSessionResult,
+  SessionHealth,
+  AgentMessageSearchResult,
+  AgentSessionReferenceSearchInput,
+  AgentSessionReferenceSearchResult,
+  DetachedPreviewWindowData,
+  DetachedPreviewWindowInput,
+  FeishuConfig,
+  FeishuConfigInput,
+  FeishuBridgeState,
+  FeishuTestResult,
+  FeishuChatBinding,
+  FeishuPresenceReport,
+  FeishuUpdateBindingInput,
+  DingTalkConfig,
+  DingTalkConfigInput,
+  DingTalkBridgeState,
+  DingTalkTestResult,
+  WeChatConfig,
+  WeChatBridgeState,
+  AgentQueueMessageInput,
+  PendingRequestsSnapshot,
+  Automation,
+  CreateAutomationInput,
+  UpdateAutomationInput,
+} from '@profer/shared'
+import type {
+  AiClassRightTabItem,
+  AiClassTabsState,
+  FlashcardDeck,
+  FlashcardItem,
+  MindMapData,
+  QuizSession,
+  StudyArtifactSummary,
+  StudyCardRatingInput,
+  StudyGenerateArtifactInput,
+  StudyGenerateArtifactResult,
+  StudyQuizAnswerInput,
+} from '@profer/shared'
+import type {
+  UserProfile,
+  AppSettings,
+  DeveloperSettingsSnapshot,
+  PocketModeStatus,
+  TrayCreateSessionData,
+  TrayOpenAgentSessionData,
+} from '../types'
+import { SHORTCUT_IPC_CHANNELS, TRAY_IPC_CHANNELS } from '../types'
+
+/**
+ * 暴露给渲染进程的 API 接口定义
+ */
+export interface ElectronAPI {
+  /** 获取宿主操作系统和 CPU 架构，供安装包选择使用 */
+  getPlatformInfo: () => { platform: NodeJS.Platform; arch: string }
+
+  // ===== 运行时相关 =====
+
+  /**
+   * 获取运行时状态
+   * @returns 运行时状态，包含 Bun、Git 等信息
+   */
+  getRuntimeStatus: () => Promise<RuntimeStatus | null>
+
+  /**
+   * 重新初始化运行时状态（重新跑 Node / Bun / Git / Shell 检测）
+   * 用户安装完 Git / Node 后触发，强制刷新缓存
+   */
+  reinitRuntime: () => Promise<RuntimeStatus>
+
+  /**
+   * 获取指定目录的 Git 仓库状态
+   * @param dirPath - 目录路径
+   * @returns Git 仓库状态
+   */
+  getGitRepoStatus: (dirPath: string) => Promise<GitRepoStatus | null>
+
+  /** 获取未暂存的变更文件列表 */
+  getUnstagedChanges: (dirPath: string, sessionPath?: string, workspaceFilesPath?: string, extraPaths?: string[], sessionId?: string) => Promise<import('@profer/shared').UnstagedChangesResult>
+  /** 获取单个文件的 diff */
+  getFileDiff: (input: import('@profer/shared').GetFileDiffInput) => Promise<string>
+  /** 获取未追踪文件内容 */
+  getUntrackedContent: (input: import('@profer/shared').GetFileDiffInput) => Promise<string>
+  /** 还原文件变更 */
+  revertFile: (input: import('@profer/shared').RevertFileInput) => Promise<void>
+  /** 使 git diff 缓存失效（Agent 写文件/git 突变后调用，传 changedPath 定向失效，不传全量失效） */
+  invalidateGitDiffCache: (changedPath?: string) => Promise<void>
+  /** 获取文件新旧版本内容 */
+  getDiffContents: (input: import('@profer/shared').GetFileDiffInput) => Promise<{ oldContent: string; newContent: string } | null>
+  /** 列出 Git Worktree */
+  listWorktrees: (repoPath: string, sessionId: string) => Promise<import('@profer/shared').WorktreeInfo[]>
+  /** 获取 Worktree 相对于基准分支的全量变更 */
+  getWorktreeChanges: (worktreePath: string, baseBranch: string, sessionId: string) => Promise<import('@profer/shared').UnstagedChangesResult>
+  /** 在独立窗口打开当前文件预览 */
+  openDetachedPreview: (input: DetachedPreviewWindowInput) => Promise<string | null>
+  /** 获取独立预览窗口数据 */
+  getDetachedPreviewData: (previewId: string) => Promise<DetachedPreviewWindowData | null>
+
+  // ===== Pi 受管浏览器（主进程 WebContentsView） =====
+  openAgentBrowser: (sessionId: string) => Promise<import('@profer/shared').BrowserViewState>
+  listAgentBrowserTabs: (sessionId: string) => Promise<import('@profer/shared').BrowserTabListResult>
+  createAgentBrowserTab: (input: import('@profer/shared').BrowserCreateTabInput) => Promise<import('@profer/shared').BrowserViewState>
+  selectAgentBrowserTab: (input: import('@profer/shared').BrowserTabInput) => Promise<import('@profer/shared').BrowserViewState>
+  closeAgentBrowserTab: (input: import('@profer/shared').BrowserTabInput) => Promise<import('@profer/shared').BrowserViewState | null>
+  getAgentBrowserState: (sessionId: string) => Promise<import('@profer/shared').BrowserViewState | null>
+  setAgentBrowserLayout: (layout: import('@profer/shared').BrowserViewLayout) => void
+  navigateAgentBrowser: (input: import('@profer/shared').BrowserNavigateInput) => Promise<import('@profer/shared').BrowserViewState>
+  goBackAgentBrowser: (sessionId: string) => Promise<import('@profer/shared').BrowserViewState>
+  goForwardAgentBrowser: (sessionId: string) => Promise<import('@profer/shared').BrowserViewState>
+  reloadAgentBrowser: (sessionId: string) => Promise<import('@profer/shared').BrowserViewState>
+  translateAgentBrowser: (input: import('@profer/shared').BrowserTabInput) => Promise<import('@profer/shared').BrowserTranslateResult>
+  /** 用户面板显式触发：将系统剪贴板文本粘贴到当前聚焦字段。 */
+  pasteAgentBrowserClipboard: (input: import('@profer/shared').BrowserTabInput) => Promise<import('@profer/shared').BrowserTranslateResult>
+  /** 订阅受管网页下载被拦截的脱敏事件。 */
+  onAgentBrowserDownloadBlocked: (callback: (event: import('@profer/shared').BrowserDownloadBlockedEvent) => void) => () => void
+  /**
+   * 订阅「用户在浏览器列的文件预览里划词」。
+   * 选区本身发生在无 preload 的沙箱 viewer 页，只能由主进程转投过来。
+   */
+  onAgentBrowserLocalFileSelection: (callback: (event: import('@profer/shared').BrowserLocalFileSelectionEvent) => void) => () => void
+  /** 同步切换浏览器原生视图的前台会话所有权。 */
+  setAgentBrowserForeground: (sessionId: string | null) => void
+  hideAgentBrowser: (sessionId: string) => Promise<void>
+  /**
+   * 用户侧：把已授权文件在受管浏览器里打开（非 HTML 走内置 viewer 页）。
+   *
+   * `theme` / `tokens` 由渲染进程算好一起送来：viewer 页跑在无 preload 的沙箱
+   * webContents 里，读不到 app 的主题，只能把"实际生效的 token 值"烘进 URL。
+   * 不传时主进程用最近一次同步的主题兜底（Agent 打开的预览走这条路）。
+   */
+  openFileInBrowser: (input: {
+    sessionId: string
+    filePath: string
+    theme?: 'light' | 'dark'
+    tokens?: import('@profer/shared').OfvThemeTokens
+    access?: import('@profer/shared').FileAccessOptions
+  }) => Promise<import('@profer/shared').BrowserViewState>
+  closeAgentBrowser: (sessionId: string) => Promise<void>
+  /**
+   * 把当前主题同步给已打开的本地预览，并让主进程记住它（供之后新建的预览使用）。
+   *
+   * 为什么是重载：viewer 页的 theme 只能在打开时烘进 URL，那一页没有修改主题的接口。
+   * 返回被重载的预览个数；普通网页不受影响。
+   */
+  refreshBrowserPreviewTheme: (input: {
+    theme: 'light' | 'dark'
+    tokens?: import('@profer/shared').OfvThemeTokens
+  }) => Promise<number>
+  setAgentBrowserZoom: (input: import('@profer/shared').BrowserTabInput & { zoomFactor: number }) => Promise<import('@profer/shared').BrowserViewState>
+  onAgentBrowserStateChanged: (callback: (state: import('@profer/shared').BrowserViewState) => void) => () => void
+
+  // ===== 新标签页起始页 =====
+  getBrowserStartPage: () => Promise<import('@profer/shared').BrowserStartPageState>
+  addBrowserBookmark: (input: import('@profer/shared').BrowserAddBookmarkInput) => Promise<import('@profer/shared').BrowserStartPageState>
+  removeBrowserBookmark: (id: string) => Promise<import('@profer/shared').BrowserStartPageState>
+  updateBrowserHomeUrl: (url: string) => Promise<import('@profer/shared').BrowserStartPageState>
+  clearBrowserHistory: () => Promise<import('@profer/shared').BrowserStartPageState>
+
+  // ===== 通用工具 =====
+
+  /** 在系统默认浏览器中打开外部链接 */
+  openExternal: (url: string) => Promise<void>
+
+  // ===== 窗口控制（Windows 自定义标题栏）=====
+
+  /** 最小化窗口 */
+  windowMinimize: () => Promise<void>
+  /** 最大化/还原窗口 */
+  windowMaximize: () => Promise<void>
+  /** 关闭窗口 */
+  windowClose: () => Promise<void>
+  /** 窗口是否处于最大化状态 */
+  windowIsMaximized: () => Promise<boolean>
+  /** macOS 窗口是否处于原生全屏状态 */
+  windowIsFullScreen: () => Promise<boolean>
+  /** 订阅窗口 resize 事件 */
+  onWindowResize: (callback: () => void) => () => void
+  /** 订阅窗口最大化状态变化通知 */
+  onWindowMaximizeChanged: (callback: (isMaximized: boolean) => void) => () => void
+  /** 订阅 macOS 原生全屏状态变化 */
+  onWindowFullScreenChanged: (callback: (isFullScreen: boolean) => void) => () => void
+  /** 订阅后台静默自动归档未读通知（携带本次归档的会话/对话数量） */
+  onArchivedUnreadChanged: (callback: (archivedCount: number) => void) => () => void
+
+  // ===== 渠道管理相关 =====
+
+  /** 获取所有渠道列表（apiKey 保持加密态） */
+  listChannels: () => Promise<Channel[]>
+  /** 获取官方模型最近可用性 */
+  getOfficialModelHealth: () => Promise<import('@profer/shared').OfficialChannelHealth[]>
+
+  /** 创建渠道（apiKey 为明文，主进程加密） */
+  createChannel: (input: ChannelCreateInput) => Promise<Channel>
+
+  /** 更新渠道 */
+  updateChannel: (id: string, input: ChannelUpdateInput) => Promise<Channel>
+
+  /** 删除渠道 */
+  deleteChannel: (id: string) => Promise<void>
+
+  /** 解密获取明文 API Key（仅在用户查看时调用） */
+  decryptApiKey: (channelId: string) => Promise<string>
+
+  /** 测试渠道连接 */
+  testChannel: (channelId: string) => Promise<ChannelTestResult>
+
+  /** 直接测试连接（无需已保存渠道，传入明文凭证） */
+  testChannelDirect: (input: FetchModelsInput) => Promise<ChannelTestResult>
+
+  /** 从供应商拉取可用模型列表（直接传入凭证，无需已保存渠道） */
+  fetchModels: (input: FetchModelsInput) => Promise<FetchModelsResult>
+
+  /** 查询渠道订阅 Plan 额度 */
+  getChannelPlanQuota: (channelId: string) => Promise<ChannelPlanQuotaResult>
+
+  /** 从服务端同步渠道到本地 */
+  syncChannelsFromServer: (serverBaseUrl: string, accessToken: string) => Promise<void>
+
+  /** 检查是否处于商业模式 */
+  getCommercialMode: () => Promise<boolean>
+
+  /** 获取账号能力（商业模式+自配权限+订阅等级）。force=true 时先拉服务端刷新再读，用于权限变更即时生效 */
+  getAccountCapabilities: (force?: boolean) => Promise<{ commercialMode: boolean; canSelfConfig: boolean; membershipTier: string }>
+
+  /** 获取构建目标 */
+  getBuildTarget: () => Promise<'oss' | 'commercial'>
+  /** 在已保存的 xAI 渠道上启动订阅 OAuth 登录。 */
+  loginXaiOAuth: (channelId: string) => Promise<Channel>
+
+  // ===== 对话管理相关 =====
+
+  /** 获取对话列表（includeArchived=true 时包含已归档对话） */
+  listConversations: (includeArchived?: boolean) => Promise<ConversationMeta[]>
+
+  /** 创建对话 */
+  createConversation: (title?: string, modelId?: string, channelId?: string) => Promise<ConversationMeta>
+
+  /** 获取对话消息 */
+  getConversationMessages: (id: string) => Promise<ChatMessage[]>
+
+  /** 获取对话最近 N 条消息（分页加载） */
+  getRecentMessages: (id: string, limit: number) => Promise<RecentMessagesResult>
+
+  /** 更新对话标题 */
+  updateConversationTitle: (id: string, title: string) => Promise<ConversationMeta>
+
+  /** 手动重新生成对话标题（绕过定稿锁定） */
+  regenerateConversationTitle: (id: string, channelId?: string, modelId?: string) => Promise<ConversationMeta | null>
+
+  /** 更新对话使用的模型/渠道 */
+  updateConversationModel: (id: string, modelId?: string, channelId?: string) => Promise<ConversationMeta>
+
+  /** 删除对话 */
+  deleteConversation: (id: string) => Promise<void>
+
+  /** 切换对话置顶状态 */
+  togglePinConversation: (id: string) => Promise<ConversationMeta>
+
+  /** 切换对话归档状态 */
+  toggleArchiveConversation: (id: string) => Promise<ConversationMeta>
+
+  /** 搜索对话消息内容 */
+  searchConversationMessages: (query: string) => Promise<MessageSearchResult[]>
+
+  // ===== 教程 =====
+
+  /** 获取教程内容 */
+  getTutorialContent: () => Promise<string | null>
+
+  /** 创建欢迎对话（含教程附件） */
+  createWelcomeConversation: () => Promise<ConversationMeta | null>
+
+  // ===== 消息发送 =====
+
+  /** 发送消息（触发 AI 流式响应） */
+  /** 向当前对话写入一条可见的资料引用记录。 */
+
+  /** 中止生成 */
+  /** 删除指定消息 */
+  deleteMessage: (conversationId: string, messageId: string) => Promise<ChatMessage[]>
+
+  /**
+   * @deprecated 已被分支模型取代。保留仅供旧调用方使用。
+   * 从指定消息开始截断（包含该消息）
+   */
+  truncateMessagesFrom: (
+    conversationId: string,
+    messageId: string,
+    preserveFirstMessageAttachments?: boolean,
+  ) => Promise<ChatMessage[]>
+
+  /** 获取当前对话的"激活分支"线性消息流（root→leaf） */
+  getBranch: (conversationId: string) => Promise<ChatMessage[]>
+
+  /** 设置对话的激活分支消息 ID 序列，返回设置后的分支线性消息流 */
+  setActivePath: (conversationId: string, path: string[]) => Promise<ChatMessage[]>
+
+  /** 获取对话全量分支树快照 */
+  getBranchTree: (conversationId: string) => Promise<BranchTreeSnapshot>
+
+  /** 在指定 anchor 的兄弟位置 fork 一条新 user message */
+  forkBranchAt: (
+    conversationId: string,
+    anchorId: string,
+    payload: {
+      role: 'user'
+      content: string
+      attachments?: ChatMessage['attachments']
+      knowledgeReferences?: ChatMessage['knowledgeReferences']
+    },
+  ) => Promise<ChatMessage>
+
+  /** 按 ID 取单条消息的完整 content（BranchTreeView hover 用） */
+  getMessageContent: (conversationId: string, messageId: string) => Promise<string | null>
+
+  /** 更新上下文分隔线 */
+  updateContextDividers: (conversationId: string, dividers: string[]) => Promise<ConversationMeta>
+
+  /** 生成对话标题 */
+  // ===== 附件管理相关 =====
+
+  /** 保存附件到本地 */
+  saveAttachment: (input: AttachmentSaveInput) => Promise<AttachmentSaveResult>
+
+  /** 读取附件（返回 base64 字符串） */
+  readAttachment: (localPath: string) => Promise<string>
+
+  /** 确认远程 URL 是否为图片，返回可直接渲染的 data URL（通用图片渲染能力） */
+  resolveImageUrl: (url: string) => Promise<ResolveImageUrlResult>
+
+  /** 另存图片到用户选择的位置（原生 Save As 对话框） */
+  saveImageAs: (localPath: string, defaultFilename: string) => Promise<boolean>
+
+  /** 保存应用内置资源文件到用户选择的位置（原生 Save As 对话框） */
+  saveResourceFileAs: (resourceRelativePath: string, defaultFilename: string) => Promise<boolean>
+
+  /** 删除附件 */
+  deleteAttachment: (localPath: string) => Promise<void>
+
+  /** 打开文件选择对话框 */
+  openFileDialog: () => Promise<FileDialogResult>
+
+  // ===== 通用个人资料库相关 =====
+
+  knowledge: {
+    importItems: (filePaths: string[]) => Promise<KnowledgeImportBatchResult>
+    listItems: () => Promise<KnowledgeItem[]>
+    getItem: (itemId: string) => Promise<{ meta: KnowledgeItem; text: string } | null>
+    deleteItem: (itemId: string) => Promise<{ itemId: string; deleted: boolean }>
+    searchItems: (query: string, itemIds?: string[], topK?: number) => Promise<KnowledgeSearchResult[]>
+    getLibrarySnapshot: () => Promise<KnowledgeLibrarySnapshot>
+    /** 在文件管理器中显示本地资料的受控副本。 */
+    showItemInFolder: (itemId: string) => Promise<void>
+  }
+
+  /** 提取附件文档的文本内容 */
+  extractAttachmentText: (localPath: string) => Promise<string>
+
+  // ===== 用户档案相关 =====
+
+  /** 获取用户档案 */
+  getUserProfile: () => Promise<UserProfile>
+
+  /** 更新用户档案 */
+  updateUserProfile: (updates: Partial<UserProfile>) => Promise<UserProfile>
+
+  // ===== 应用设置相关 =====
+
+  // ===== 皮肤管理 =====
+  getSkins: () => Promise<import('../types').SkinInfo[]>
+  getSkinCss: (id: string) => Promise<string | null>
+  getSkinPreview: (id: string) => Promise<string | null>
+  selectSkinZip: () => Promise<string | null>
+  selectSkinFolder: () => Promise<string | null>
+  installSkinZip: (path: string, replace?: boolean) => Promise<import('../types').SkinManagerResult>
+  installSkinFolder: (path: string, replace?: boolean) => Promise<import('../types').SkinManagerResult>
+  deleteUserSkin: (id: string) => Promise<import('../types').SkinManagerResult>
+  openUserSkinsFolder: () => Promise<void>
+  openSkinTemplateFolder: () => Promise<void>
+  refreshSkins: () => Promise<import('../types').SkinInfo[]>
+
+  /** 通知主进程 renderer 已完成首屏初始化 */
+  notifyRendererReady: () => void
+  setReviewAgentAutoApproval: (input: { enabled: boolean; grantedBy: string }) => Promise<AppSettings>
+
+  /** 获取应用设置 */
+  getSettings: () => Promise<AppSettings>
+
+  /** 更新应用设置 */
+  updateSettings: (updates: Partial<AppSettings>) => Promise<AppSettings>
+
+  /** 同步更新应用设置（用于 beforeunload 场景） */
+  updateSettingsSync: (updates: Partial<AppSettings>) => boolean
+
+  /** 订阅开发者模式与开放认识论设置变化（返回清理函数） */
+  onDeveloperSettingsChanged: (callback: (settings: DeveloperSettingsSnapshot) => void) => () => void
+
+  /** 获取移动模式（试验版）状态与连接信息 */
+  getPocketModeStatus: () => Promise<PocketModeStatus>
+  /** 启用或关闭移动模式（试验版） */
+  setPocketModeEnabled: (enabled: boolean) => Promise<PocketModeStatus>
+  /** 设置移动模式服务端口（保存并热应用，服务运行中自动重启） */
+  setPocketModePort: (port: number) => Promise<PocketModeStatus>
+  /** 获取安卓版 APK 扫码下载信息（官网地址/二维码/文件名） */
+  getProferApkQr: () => Promise<{ url: string; dataUrl: string; fileName: string }>
+
+  /** 获取系统主题（是否深色模式） */
+  getSystemTheme: () => Promise<boolean>
+
+  /** 订阅系统主题变化事件（返回清理函数） */
+  onSystemThemeChanged: (callback: (isDark: boolean) => void) => () => void
+
+  /** 获取开机自启动状态 */
+  getAutoLaunch: () => Promise<boolean>
+
+  // ===== 自定义通知音效 =====
+
+  /** 添加自定义通知音效（sourcePath → 主进程复制 + 持久化） */
+  addCustomNotificationSound: (sourcePath: string, label: string) => Promise<CustomNotificationSound>
+  /** 删除自定义通知音效 */
+  removeCustomNotificationSound: (id: string) => Promise<CustomNotificationSound[]>
+  /** 获取自定义音效的文件 URL（用于 HTMLAudioElement 播放） */
+  getCustomSoundUrl: (fileName: string) => Promise<string>
+
+  // ===== 桌面通知（通过主进程弹出原生 Notification） =====
+
+  /** 通过主进程弹出桌面通知（Windows 点击可靠） */
+  showDesktopNotification: (title: string, body: string) => Promise<void>
+  /** 注册桌面通知点击回调（返回清理函数） */
+  onDesktopNotificationClicked: (callback: () => void) => () => void
+
+  /** 设置开机自启动 */
+  setAutoLaunch: (enabled: boolean) => Promise<void>
+
+  /** 订阅用户手动切换主题事件（跨窗口同步，返回清理函数） */
+  onThemeSettingsChanged: (callback: (payload: { themeMode: string; themeStyle: string; interfaceVariant?: string }) => void) => () => void
+
+  /** 订阅皮肤安装/删除/刷新事件（多窗口同步刷新，返回清理函数） */
+  onSkinsChanged: (callback: (payload: { deletedId: string | null }) => void) => () => void
+
+  // ===== Scratch Pad =====
+
+  /** 从磁盘加载 scratch-pad.md */
+  loadScratchPad: () => Promise<string>
+
+  /** 异步保存内容到 scratch-pad.md */
+  saveScratchPad: (content: string) => Promise<boolean>
+
+  /** 同步保存内容到 scratch-pad.md（beforeunload 场景） */
+  saveScratchPadSync: (content: string) => boolean
+
+  /** 导出 ScratchPad 内容为 Markdown 文件到指定目录 */
+  exportScratchPad: (markdown: string, dirPath: string, filename: string) => Promise<string>
+
+  /** 打开原生保存对话框，返回用户选择的路径 */
+  chooseExportPath: (defaultName: string) => Promise<string | null>
+
+  // ===== 应用图标切换 =====
+
+  /** 设置应用图标变体（传入 variant ID，如 'blue'、'cyberpunk'，'default' 恢复默认） */
+  setAppIcon: (variantId: string) => Promise<boolean>
+
+  /** 设置 Dock/Launcher 角标数量（0 表示清除） */
+  setDockBadgeCount: (count: number) => Promise<boolean>
+
+  // ===== 环境检测相关 =====
+
+  /** 执行环境检测 */
+  checkEnvironment: () => Promise<EnvironmentCheckResult>
+
+  // ===== 第三方安装包（Git / Node.js）相关 =====
+
+  /** 获取安装包清单（远程，失败回退内置） */
+  fetchInstallerManifest: () => Promise<InstallerManifest>
+
+  /** 开始下载指定安装包，resolve 时文件已落地并通过 sha256 校验 */
+  downloadInstaller: (req: InstallerDownloadRequest) => Promise<InstallerDownloadResult>
+
+  /** 取消指定 key 的进行中下载 */
+  cancelInstallerDownload: (key: string) => Promise<boolean>
+
+  /** 拉起已下载的安装程序（等效双击） */
+  launchInstaller: (filePath: string) => Promise<void>
+
+  /** 订阅下载进度事件，返回取消订阅函数 */
+  onInstallerProgress: (
+    callback: (payload: InstallerProgressPayload) => void,
+  ) => () => void
+
+  // ===== 代理配置相关 =====
+
+  /** 获取代理配置 */
+  getProxySettings: () => Promise<ProxyConfig>
+
+  /** 更新代理配置 */
+  updateProxySettings: (config: ProxyConfig) => Promise<void>
+
+  /** 检测系统代理 */
+  detectSystemProxy: () => Promise<SystemProxyDetectResult>
+
+  // ===== 流式事件订阅（返回清理函数） =====
+
+  /** 订阅内容片段事件 */
+  onStreamChunk: (callback: (event: StreamChunkEvent) => void) => () => void
+
+  /** 订阅推理片段事件 */
+  onStreamReasoning: (callback: (event: StreamReasoningEvent) => void) => () => void
+
+  /** 订阅流式完成事件 */
+  onStreamComplete: (callback: (event: StreamCompleteEvent) => void) => () => void
+
+  /** 订阅流式错误事件 */
+  onStreamError: (callback: (event: StreamErrorEvent) => void) => () => void
+
+  /** 订阅流式工具活动事件 */
+  onStreamToolActivity: (callback: (event: StreamToolActivityEvent) => void) => () => void
+
+  // ===== Agent 会话管理相关 =====
+
+  /** 获取 Agent 会话列表（includeArchived=true 时包含已归档会话） */
+  listAgentSessions: (includeArchived?: boolean) => Promise<AgentSessionMeta[]>
+
+  /** 获取单个 Agent 会话 meta（归档会话兜底读取；不存在返回 null） */
+  getAgentSessionMeta: (id: string) => Promise<AgentSessionMeta | null>
+
+  /** 轻量：对话 + Agent 会话的归档计数（不传输 meta 列表） */
+  getArchivedCounts: () => Promise<{ conversations: number; agentSessions: number }>
+
+  /** 创建 Agent 会话 */
+  createAgentSession: (title?: string, channelId?: string, workspaceId?: string, modelId?: string, presetId?: string) => Promise<AgentSessionMeta>
+
+  // ===== Agent 预设（工作区级） =====
+
+  /** 获取指定工作区的全部可用 Agent 预设（内置 + 全局 + 当前工作区） */
+  listAgentPresets: (workspaceSlug?: string, includeInactiveGlobal?: boolean) => Promise<AgentPreset[]>
+  /** 获取全局元预设和用户全局预设。 */
+  listGlobalAgentPresets: () => Promise<AgentPreset[]>
+  /** 创建/更新用户全局预设。 */
+  createGlobalAgentPreset: (input: AgentPresetCreateInput) => Promise<AgentPreset>
+  promoteWorkspacePresetToGlobal: (workspaceSlug: string, presetId: string, targetWorkspaceSlugs: string[], keepWorkspaceCopy?: boolean) => Promise<AgentPreset>
+  updateGlobalAgentPreset: (presetId: string, updates: AgentPresetUpdateInput) => Promise<AgentPreset>
+  /** 查询全局预设工作区引用并复制到工作区。 */
+  getPresetReferenceReport: (reference: PresetReference) => Promise<PresetReferenceReport>
+  copyPresetToWorkspace: (reference: PresetReference, workspaceSlug: string, name?: string) => Promise<AgentPreset>
+  deleteGlobalAgentPreset: (reference: PresetReference) => Promise<void>
+  setDefaultAgentPresetReference: (workspaceSlug: string, reference: PresetReference) => Promise<PresetReference>
+  enableGlobalPresetInWorkspace: (workspaceSlug: string, reference: PresetReference) => Promise<void>
+  disableGlobalPresetInWorkspace: (workspaceSlug: string, reference: PresetReference) => Promise<void>
+  rebindAndDisableGlobalPresetScope: (workspaceSlug: string, source: PresetReference, replacement?: PresetReference) => Promise<PresetScopeRebindResult>
+  setWorkspacePresetEnabled: (workspaceSlug: string, presetId: string, enabled: boolean) => Promise<void>
+  rebindAgentSessionPresetReference: (sessionId: string, reference: PresetReference, expectedRevision?: number) => Promise<AgentSessionMeta>
+  rebindAutomationPresetReference: (automationId: string, reference: PresetReference | null) => Promise<import('@profer/shared').Automation>
+
+  /** 获取指定工作区的默认预设 ID（新建会话使用） */
+  getDefaultAgentPreset: (workspaceSlug?: string) => Promise<string>
+
+  /** 更新会话绑定的预设 */
+  updateAgentSessionPreset: (sessionId: string, presetId: string) => Promise<AgentSessionMeta>
+
+  /** 设置指定工作区默认预设 */
+  setDefaultAgentPreset: (workspaceSlug: string, presetId: string) => Promise<string>
+
+  /** 在指定工作区新建自定义预设 */
+  createAgentPreset: (workspaceSlug: string, input: AgentPresetCreateInput) => Promise<AgentPreset>
+
+  /** 在指定工作区复制预设为新的自定义预设 */
+  copyAgentPreset: (workspaceSlug: string, fromId: string, name?: string) => Promise<AgentPreset>
+
+  /** 更新指定工作区的自定义预设 */
+  updateAgentPreset: (workspaceSlug: string, presetId: string, updates: AgentPresetUpdateInput) => Promise<AgentPreset>
+
+  /** 删除指定工作区的自定义预设 */
+  deleteAgentPreset: (workspaceSlug: string, presetId: string) => Promise<void>
+
+  /** 获取其他工作区的自定义预设列表（按工作区分组，导入用） */
+  getOtherWorkspacePresets: (currentSlug: string) => Promise<OtherWorkspacePresetsGroup[]>
+
+  /** 从其他工作区导入预设到当前工作区 */
+  importPresetFromWorkspace: (targetSlug: string, sourceSlug: string, presetId: string) => Promise<AgentPreset>
+
+  /** 导出预设为 JSON 文件（弹出保存对话框）；presetIds 省略导出全部；用户取消返回 null */
+  exportAgentPresets: (workspaceSlug: string, presetIds?: string[]) => Promise<{ filePath: string; count: number } | null>
+
+  /** 从 JSON 文件导入预设（弹出打开对话框）；用户取消返回 null，格式非法抛错 */
+  importAgentPresets: (workspaceSlug: string) => Promise<AgentPresetImportResult | null>
+
+  /** 为项目创建或复用隐藏的 Agent 草稿会话 */
+  ensureProjectDraftAgentSession: (workspaceId: string, channelId?: string, modelId?: string) => Promise<AgentSessionMeta>
+
+  /** 获取 Agent 会话 SDKMessage（Phase 4 新格式）。传 opts.tail/before 时返回分页结果 */
+  getAgentSessionSDKMessages: {
+    (id: string): Promise<SDKMessage[]>
+    (id: string, opts: { tail?: number; before?: number }): Promise<{ messages: SDKMessage[]; total: number; startIndex: number; endIndex: number; hasMore: boolean }>
+  }
+
+  /** 更新 Agent 会话标题 */
+  updateAgentSessionTitle: (id: string, title: string) => Promise<AgentSessionMeta>
+
+  /** 手动重新生成 Agent 会话标题（绕过定稿锁定） */
+  regenerateAgentSessionTitle: (id: string, channelId?: string, modelId?: string) => Promise<AgentSessionMeta | null>
+
+  /** 更新空闲 Agent 会话的渠道与模型 */
+  updateAgentSessionModel: (id: string, channelId?: string, modelId?: string) => Promise<AgentSessionMeta>
+
+  /** 删除 Agent 会话 */
+  deleteAgentSession: (id: string) => Promise<void>
+
+  /** 迁移 Chat 对话记录到 Agent 会话 */
+  migrateChatToAgent: (conversationId: string, agentSessionId: string) => Promise<void>
+
+  /** 切换 Agent 会话置顶状态 */
+  togglePinAgentSession: (id: string) => Promise<AgentSessionMeta>
+
+  /** 清除 Agent 会话完成状态（兼容清除旧版 manualWorking） */
+  clearAgentCompletionState: (id: string) => Promise<AgentSessionMeta>
+
+  /** 标记 Agent 会话为「未读」（持久化 completedButUnconfirmed，侧边栏「标记未读」入口） */
+  setAgentCompletionState: (id: string) => Promise<AgentSessionMeta>
+
+  /** 更新 Agent 会话中断说明状态（state 非 null 置位：点击中断记录行；null 清除：消费/移除中断 chip 时调用） */
+  updateAgentInterruptionState: (input: UpdateAgentInterruptStateInput) => Promise<AgentSessionMeta>
+
+  /** 切换 Agent 会话归档状态 */
+  toggleArchiveAgentSession: (id: string) => Promise<AgentSessionMeta>
+
+  /** 搜索 Agent 会话消息内容 */
+  searchAgentSessionMessages: (query: string) => Promise<AgentMessageSearchResult[]>
+
+  /** 搜索当前工作区可引用的 Agent 会话 */
+  searchAgentSessionReferences: (input: AgentSessionReferenceSearchInput) => Promise<AgentSessionReferenceSearchResult[]>
+
+  /** 迁移 Agent 会话到另一个工作区 */
+  moveAgentSessionToWorkspace: (input: MoveSessionToWorkspaceInput) => Promise<AgentSessionMeta>
+  listSessionProcesses: (input: ListSessionProcessesInput) => Promise<SessionProcessInfo[]>
+  getSessionProcessCount: (sessionId: string) => Promise<number>
+  killProcess: (input: KillProcessInput) => Promise<{ ok: boolean; message: string }>
+  /** Pi 运行进程登记或状态变化（用于即时刷新服务栏） */
+  onRuntimeProcessesChanged: (callback: (data: { sessionId: string }) => void) => () => void
+
+  /** 分叉 Agent 会话 */
+  forkAgentSession: (input: ForkSessionInput) => Promise<AgentSessionMeta>
+
+  /** 快照回退（同一会话内回退到指定点，恢复文件 + 截断对话） */
+  rewindSession: (input: RewindSessionInput) => Promise<RewindSessionResult>
+
+  /** 扫描所有会话的孤儿记录和文件系统不一致 */
+  findOrphanSessions: () => Promise<SessionHealth[]>
+
+  /** 生成 Agent 会话标题 */
+  generateAgentTitle: (input: AgentGenerateTitleInput) => Promise<string | null>
+
+  /** 发送 Agent 消息 */
+  sendAgentMessage: (input: AgentSendInput) => Promise<void>
+
+  /** 中止 Agent 执行 */
+  stopAgent: (sessionId: string) => Promise<void>
+  startGoal: (sessionId: string, goal: string, contract?: import('@profer/shared').AgentGoalContract) => Promise<import('@profer/shared').AgentGoalState>
+  getGoal: (sessionId: string) => Promise<import('@profer/shared').AgentGoalState | null>
+  updateGoal: (sessionId: string, patch: { goal?: string; contract?: import('@profer/shared').AgentGoalContract; limits?: Partial<import('@profer/shared').AgentGoalLimits> }) => Promise<import('@profer/shared').AgentGoalState>
+  getGoalHistory: (sessionId: string) => Promise<import('@profer/shared').AgentGoalState[]>
+  listGoals: () => Promise<import('@profer/shared').AgentGoalState[]>
+  pauseGoal: (sessionId: string) => Promise<import('@profer/shared').AgentGoalState>
+  resumeGoal: (sessionId: string) => Promise<import('@profer/shared').AgentGoalState>
+  stopGoal: (sessionId: string) => Promise<import('@profer/shared').AgentGoalState>
+  clearGoal: (sessionId: string) => Promise<void>
+  onGoalEvent: (callback: (event: import('@profer/shared').AgentGoalEvent) => void) => () => void
+
+  /** 更新指定会话的队列自动发送开关 */
+  updateAgentQueueAutoSend: (sessionId: string, enabled: boolean) => Promise<import('@profer/shared').AgentSessionMeta>
+
+  // ===== Agent 队列消息 =====
+
+  /** 流式追加发送 Agent 消息（Agent 运行中） */
+  queueAgentMessage: (input: AgentQueueMessageInput) => Promise<string>
+
+  // ===== Agent 后台任务管理 =====
+
+  /** 获取任务输出 */
+  getTaskOutput: (input: GetTaskOutputInput) => Promise<GetTaskOutputResult>
+  /** 获取 Claude/Pi runtime 能力快照 */
+  getAgentRuntimeCapabilities: (runtime: import('@profer/shared').AgentRuntime) => Promise<import('@profer/shared').AgentRuntimeCapabilities>
+
+  /** 停止任务 */
+  stopTask: (input: StopTaskInput) => Promise<void>
+
+  // ===== Agent 工作区管理相关 =====
+
+  /** 获取 Agent 工作区列表 */
+  listAgentWorkspaces: () => Promise<AgentWorkspace[]>
+
+  /** 创建 Agent 工作区 */
+  createAgentWorkspace: (name: string) => Promise<AgentWorkspace>
+
+  /** 更新 Agent 工作区（改名 / 收纳切换） */
+  updateAgentWorkspace: (id: string, updates: { name?: string; archived?: boolean }) => Promise<AgentWorkspace>
+
+  /** 删除 Agent 工作区 */
+  deleteAgentWorkspace: (id: string) => Promise<void>
+
+  /** 重排工作区顺序 */
+  reorderAgentWorkspaces: (orderedIds: string[]) => Promise<AgentWorkspace[]>
+
+  /** 订阅工作区列表变更（创建/删除/重命名/重排后由主进程广播），返回取消订阅函数 */
+  onAgentWorkspacesChanged: (callback: () => void) => () => void
+
+  // ===== 工作区能力（MCP + Skill） =====
+
+  /** 获取工作区能力摘要 */
+  getWorkspaceCapabilities: (workspaceSlug: string) => Promise<WorkspaceCapabilities>
+
+  /** 获取工作区 MCP 配置 */
+  getWorkspaceMcpConfig: (workspaceSlug: string) => Promise<WorkspaceMcpConfig>
+
+  /** 保存工作区 MCP 配置 */
+  saveWorkspaceMcpConfig: (workspaceSlug: string, config: WorkspaceMcpConfig) => Promise<void>
+
+  /** 测试 MCP 服务器连接 */
+  testMcpServer: (name: string, entry: import('@profer/shared').McpServerEntry) => Promise<{ success: boolean; message: string }>
+
+  /** 获取工作区 Skill 列表（含活跃和不活跃） */
+  getWorkspaceSkills: (workspaceSlug: string) => Promise<SkillMeta[]>
+
+  /** 获取工作区 Skills 目录绝对路径 */
+  getWorkspaceSkillsDir: (workspaceSlug: string) => Promise<string>
+
+  /** 创建工作区 Skill */
+  createWorkspaceSkill: (workspaceSlug: string, skillSlug: string, name: string, description: string, content: string) => Promise<void>
+  /** 将工作区 Skill 提升为用户全局 Skill，并按工作区范围启用。 */
+  promoteWorkspaceSkillToGlobal: (workspaceSlug: string, skillSlug: string, targetWorkspaceSlugs: string[], keepWorkspaceCopy?: boolean) => Promise<import('@profer/shared').GlobalSkillManifest>
+
+  /** 删除工作区 Skill */
+  deleteWorkspaceSkill: (workspaceSlug: string, skillSlug: string) => Promise<void>
+
+  /** 切换工作区 Skill 启用/禁用 */
+  toggleWorkspaceSkill: (workspaceSlug: string, skillSlug: string, enabled: boolean, sourceSkillId?: string) => Promise<void>
+
+  /** 获取其他工作区的 Skill 列表 */
+  getOtherWorkspaceSkills: (currentSlug: string) => Promise<OtherWorkspaceSkillsGroup[]>
+
+  /** 获取默认 Skills 的 slug 列表（来自 ~/.proma/default-skills/） */
+  getDefaultSkillSlugs: () => Promise<string[]>
+
+  /** 从其他工作区导入 Skill */
+  importSkillFromWorkspace: (targetSlug: string, sourceSlug: string, skillSlug: string) => Promise<SkillMeta>
+
+  /** 从源工作区同步更新已导入的 Skill */
+  updateSkillFromSource: (targetSlug: string, skillSlug: string) => Promise<SkillMeta>
+
+  /** 读取 SKILL.md 全文内容 */
+  readSkillContent: (workspaceSlug: string, skillSlug: string) => Promise<string>
+
+  /** 写入 SKILL.md 全文内容 */
+  writeSkillContent: (workspaceSlug: string, skillSlug: string, content: string) => Promise<void>
+
+  /** 列出 Skill 目录下的子文件树（不含 SKILL.md） */
+  listSkillFiles: (workspaceSlug: string, skillSlug: string) => Promise<import('@profer/shared').SkillFileNode[]>
+
+  /** 读取 Skill 目录下的子文件内容 */
+  readSkillFile: (workspaceSlug: string, skillSlug: string, relativePath: string) => Promise<import('@profer/shared').SkillFileContent>
+
+  /** 写入 Skill 目录下的子文件内容（文本） */
+  writeSkillFile: (workspaceSlug: string, skillSlug: string, relativePath: string, content: string) => Promise<void>
+
+  /** 在 Skill 目录下创建文件或目录 */
+  createSkillEntry: (workspaceSlug: string, skillSlug: string, relativePath: string, type: 'file' | 'directory') => Promise<void>
+
+  /** 删除 Skill 目录下的文件或目录 */
+  deleteSkillEntry: (workspaceSlug: string, skillSlug: string, relativePath: string) => Promise<void>
+
+  /** 重命名/移动 Skill 目录下的文件或目录 */
+  renameSkillEntry: (workspaceSlug: string, skillSlug: string, fromRelative: string, toRelative: string) => Promise<void>
+
+  /** 刷新 renderer 后重新绑定并回放仍在运行的 Agent 流 */
+  restoreActiveAgentStreams: () => Promise<string[]>
+
+  /** 读取授权文件当前 SHA-256 revision，供正式 viewer 加载前后校验。 */
+  getAgentFilePreviewRevision: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => Promise<string | null>
+  /** 当前用户可见的正式 PPTX viewer 上报 ready/error。 */
+  reportAgentFilePreview: (report: import('@profer/shared').AgentFilePreviewReport) => Promise<boolean>
+  /** 当前用户可见的正式 PPTX viewer 上报页级观察结果。 */
+  reportAgentFilePreviewInspection: (result: import('@profer/shared').AgentFilePreviewInspectResult) => Promise<boolean>
+
+  /** 订阅 Agent 流式事件（返回清理函数） */
+  onAgentStreamEvent: (callback: (event: AgentStreamEvent) => void) => () => void
+
+  /** 订阅 Agent 流式完成事件 */
+  onAgentStreamComplete: (callback: (data: AgentStreamCompletePayload) => void) => () => void
+
+  /** 订阅 Agent 流式错误事件 */
+  onAgentStreamError: (callback: (data: { sessionId: string; error: string }) => void) => () => void
+
+  /** 订阅 Agent 标题自动更新事件 */
+  onAgentTitleUpdated: (callback: (data: { sessionId: string; title: string }) => void) => () => void
+
+  /** 订阅 Agent 会话元数据更新事件 */
+  onAgentSessionUpdated: (callback: (data: { session: AgentSessionMeta }) => void) => () => void
+
+  // ===== Agent 权限系统 =====
+
+  /** 响应权限请求 */
+  respondPermission: (response: PermissionResponse) => Promise<void>
+
+  /** 热切换指定会话的权限模式（运行中生效，仅影响该 session） */
+  updateSessionPermissionMode: (sessionId: string, mode: ProferPermissionMode, expectedRevision?: number) => Promise<AgentSessionMeta>
+  /** 切换当前会话的 ChatGPT Codex Fast Mode。 */
+  updateSessionCodexFastMode: (sessionId: string, enabled: boolean) => Promise<AgentSessionMeta>
+  /** 切换当前会话的 ChatGPT Codex 推理档位（跨会话持久化）。 */
+  updateSessionOpenAIThinkingLevel: (sessionId: string, level: AgentThinkingLevel | null) => Promise<AgentSessionMeta>
+  /** 切换当前会话的推理强度覆盖（Claude/Pi 通用；null=清除覆盖，运行中拒绝，下一轮生效）。 */
+  updateSessionAgentEffort: (sessionId: string, effort: AgentEffort | null) => Promise<AgentSessionMeta>
+  /** 切换当前会话的 AI 速课堂带教模式（fast/balanced/strict，跨会话持久化，运行中允许，下一轮生效）。 */
+  updateSessionStudyTeachingMode: (sessionId: string, mode: StudyTeachingMode) => Promise<AgentSessionMeta>
+  /** 查询某 Pi 模型可用的推理档位能力（renderer 思考档位菜单动态展示）。 */
+  getPiReasoningCapability: (provider: ProviderType, modelId: string | undefined) => Promise<ReasoningCapability | undefined>
+
+  /** 切换空闲会话的 Agent runtime；跨 runtime 时清除旧 SDK session ID。 */
+  updateSessionAgentRuntime: (sessionId: string, runtime: AgentRuntime) => Promise<AgentSessionMeta>
+
+  /** 获取工作区记忆摘要 */
+  getWorkspaceMemorySummary: (workspaceSlug: string) => Promise<WorkspaceMemorySummary>
+  /** 获取工作区每日 Token 消耗，用于热力图展示。团队工作区返回空数组 */
+  getWorkspaceHeatmapDaily: (workspaceId: string) => Promise<Array<{ date: string; tokens: number }>>
+  /** 读取 CDUT Studio 工作区资料 */
+  readWorkspaceProfile: (workspaceSlug: string) => Promise<SkillFileContent>
+  /** 写入 CDUT Studio 工作区资料 */
+  writeWorkspaceProfile: (workspaceSlug: string, content: string) => Promise<void>
+  /** 列出工作区 auto memory 文件树 */
+  listWorkspaceAutoMemoryFiles: (workspaceSlug: string) => Promise<SkillFileNode[]>
+  /** 读取工作区 auto memory 文件 */
+  readWorkspaceAutoMemoryFile: (workspaceSlug: string, relativePath: string) => Promise<SkillFileContent>
+  /** 写入工作区 auto memory 文件 */
+  writeWorkspaceAutoMemoryFile: (workspaceSlug: string, relativePath: string, content: string) => Promise<void>
+  /** 列出工作区 memory-archive 主题记忆文件树 */
+  listWorkspaceMemoryArchiveFiles: (workspaceSlug: string) => Promise<SkillFileNode[]>
+  /** 读取工作区 memory-archive 主题记忆文件 */
+  readWorkspaceMemoryArchiveFile: (workspaceSlug: string, relativePath: string) => Promise<SkillFileContent>
+  /** 写入工作区 memory-archive 主题记忆文件 */
+  writeWorkspaceMemoryArchiveFile: (workspaceSlug: string, relativePath: string, content: string) => Promise<void>
+  /** 搜索工作区 memory-archive 正文 */
+  searchMemoryArchive: (workspaceSlug: string, query: string, topK?: number) => Promise<Array<{ relativePath: string; content: string; startIndex: number; endIndex: number; score: number; matchedTokens: string[] }>>
+  /** 解析双链名称 → 命中记忆文件 */
+  resolveMemoryWikilink: (workspaceSlug: string, name: string) => Promise<MemoryWikilinkTarget | null>
+  /** 查询记忆反链：列出引用过当前文件的其它记忆文件 */
+  getMemoryBacklinks: (workspaceSlug: string, currentAbsolutePath: string, currentLinkName: string) => Promise<MemoryBacklink[]>
+
+  // ===== Chat 工具管理 =====
+
+  /** 获取所有工具信息 */
+  getChatTools: () => Promise<ChatToolInfo[]>
+
+  /** 获取工具凭据 */
+  getChatToolCredentials: (toolId: string, provider?: string) => Promise<Record<string, string>>
+
+  /** 更新工具开关状态 */
+  updateChatToolState: (toolId: string, state: ChatToolState) => Promise<void>
+
+  /** 更新工具凭据 */
+  updateChatToolCredentials: (toolId: string, credentials: Record<string, string>) => Promise<void>
+
+  /** 创建自定义工具 */
+  createCustomChatTool: (meta: ChatToolMeta) => Promise<void>
+
+  /** 删除自定义工具 */
+  deleteCustomChatTool: (toolId: string) => Promise<void>
+
+  /** 监听自定义工具配置变更 */
+  onCustomToolChanged: (callback: () => void) => () => void
+
+  /** 测试工具连接 */
+  testChatTool: (toolId: string) => Promise<{ success: boolean; message: string }>
+
+  // ===== AskUserQuestion 交互式问答 =====
+
+  /** 响应 AskUser 请求 */
+  respondAskUser: (response: AskUserResponse) => Promise<void>
+
+  // ===== ExitPlanMode 计划审批 =====
+
+  /** 响应 ExitPlanMode 请求 */
+  respondExitPlanMode: (response: ExitPlanModeResponse) => Promise<void>
+
+  /** 获取所有待处理的交互请求快照（渲染进程重载后恢复状态） */
+  getPendingRequests: () => Promise<PendingRequestsSnapshot>
+
+  // ===== Project Graph =====
+
+  /** 获取当前会话的 Task Graph */
+  getGraph: (sessionId: string) => Promise<import('@profer/project-core').TaskGraph>
+
+  /** 获取当前会话的 Graph 摘要 */
+  getGraphSummary: (sessionId: string) => Promise<import('@profer/project-core').GraphSummary>
+
+  /** 追加 Graph 事件到 JSONL（渲染进程主动持久化） */
+  appendGraphEvent: (sessionId: string, event: import('@profer/project-core').GraphEvent) => Promise<void>
+
+  /** 回溯放弃抽取：通读会话增量轮次抽取放弃方向写进图，返回刷新后的图 */
+  runRetrospective: (sessionId: string) => Promise<import('@profer/project-core').RetrospectiveResult>
+
+  // ===== Agent 附件 =====
+
+  /** 保存文件到 Agent session 工作目录 */
+  saveFilesToAgentSession: (input: AgentSaveFilesInput) => Promise<AgentSavedFile[]>
+
+  /** 保存文件到工作区文件目录 */
+  saveFilesToWorkspaceFiles: (input: AgentSaveWorkspaceFilesInput) => Promise<AgentSavedFile[]>
+
+  /** 获取工作区文件目录路径 */
+  getWorkspaceFilesPath: (workspaceSlug: string) => Promise<string>
+
+  /** 打开文件夹选择对话框 */
+  openFolderDialog: () => Promise<{ path: string; name: string } | null>
+
+  /** 附加外部目录到 Agent 会话 */
+  attachDirectory: (input: AgentAttachDirectoryInput) => Promise<string[]>
+
+  /** 移除会话的附加目录 */
+  detachDirectory: (input: AgentAttachDirectoryInput) => Promise<string[]>
+
+  /** 附加外部文件到 Agent 会话 */
+  attachFile: (input: AgentAttachFileInput) => Promise<string[]>
+
+  /** 移除会话的附加文件 */
+  detachFile: (input: AgentAttachFileInput) => Promise<string[]>
+
+  /** 附加外部目录到工作区（所有会话可访问） */
+  attachWorkspaceDirectory: (input: WorkspaceAttachDirectoryInput) => Promise<string[]>
+
+  /** 移除工作区的附加目录 */
+  detachWorkspaceDirectory: (input: WorkspaceAttachDirectoryInput) => Promise<string[]>
+
+  /** 附加外部文件到工作区（所有会话可访问） */
+  attachWorkspaceFile: (input: WorkspaceAttachFileInput) => Promise<string[]>
+
+  /** 移除工作区的附加文件 */
+  detachWorkspaceFile: (input: WorkspaceAttachFileInput) => Promise<string[]>
+
+  /** 获取工作区附加目录列表 */
+  getWorkspaceDirectories: (workspaceSlug: string) => Promise<string[]>
+
+  /** 获取工作区附加文件列表 */
+  getWorkspaceAttachedFiles: (workspaceSlug: string) => Promise<string[]>
+  /** 获取工作区 worktree 仓库配置列表 */
+  getWorktreeRepos: (workspaceSlug: string) => Promise<import('@profer/shared').WorkspaceWorktreeRepo[]>
+  /** 添加 worktree 仓库到工作区配置 */
+  addWorktreeRepo: (workspaceSlug: string, repo: import('@profer/shared').WorkspaceWorktreeRepo) => Promise<import('@profer/shared').WorkspaceWorktreeRepo[]>
+  /** 从工作区配置移除 worktree 仓库 */
+  removeWorktreeRepo: (workspaceSlug: string, repoPath: string) => Promise<import('@profer/shared').WorkspaceWorktreeRepo[]>
+
+  // ===== Agent 文件系统操作 =====
+
+  /** 获取 session 工作路径 */
+  getAgentSessionPath: (workspaceId: string, sessionId: string) => Promise<string | null>
+
+  /** 列出目录内容 */
+  listDirectory: (dirPath: string, access?: import('@profer/shared').FileAccessOptions) => Promise<FileEntry[]>
+
+  /** 删除文件/目录 */
+  deleteFile: (filePath: string) => Promise<void>
+
+  /** 移动文件/目录到系统回收站 */
+  moveToTrash: (filePath: string) => Promise<void>
+
+  /** 递归读取目录中所有文件 */
+  readDirectoryRecursive: (dirPath: string) => Promise<Array<{ relativePath: string; data: Uint8Array }>>
+
+  /** 打开原生文件夹选择对话框，递归读取所有文件并返回 */
+  selectAndUploadFolder: () => Promise<Array<{ relativePath: string; data: Uint8Array; sourcePath?: string }> | null>
+
+  /** 用系统默认应用打开文件 */
+  openFile: (filePath: string) => Promise<void>
+
+  /** 将剪贴板文本写入临时预览文件并返回绝对路径 */
+  writeClipboardPreview: (filename: string, content: string) => Promise<string>
+
+  /** 用系统默认应用打开任意文件（无工作区限制） */
+  systemOpenFile: (filePath: string, appName?: string, access?: import('@profer/shared').FileAccessOptions) => Promise<void>
+
+  /** 扫描系统中可用的编辑器应用（仅 macOS） */
+  scanEditors: () => Promise<import('@profer/shared').EditorApp[]>
+
+  /** 查询本机为该文件类型注册的默认打开应用（含图标 dataURL） */
+  getDefaultAppForFile: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => Promise<import('@profer/shared').DefaultAppInfo | null>
+
+  /** 在系统文件管理器中显示文件 */
+  showInFolder: (filePath: string) => Promise<void>
+
+  /** 在系统文件管理器中显示文件（无工作区限制，支持候选基础目录） */
+  showItemInFolder: (filePath: string, candidateBasePaths?: string[]) => Promise<boolean>
+
+  /** 解析文件路径并读取内容（供内联预览使用） */
+  resolveAndReadFile: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => Promise<{ resolvedPath: string; content: string } | null>
+
+  /** 判断路径类型（预览面板区分目录链接、丢失路径与不可预览路径） */
+  describePath: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => Promise<{ kind: 'file' | 'directory' | 'missing' | 'denied' }>
+
+  /** 写入文本文件（供 Markdown 内联编辑使用） */
+  writeTextFile: (filePath: string, content: string, access?: import('@profer/shared').FileAccessOptions) => Promise<boolean>
+
+  /** 仅解析文件路径（供 PDF/图片等用 cdut-file:// 加载） */
+  resolveFilePath: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => Promise<import('@profer/shared').ResolvedFileUrl | null>
+
+  /** 在当前 Agent 会话授权范围内异步搜索一个同名候选。 */
+  searchFileCandidate: (request: import('@profer/shared').FileSearchCandidateRequest) => Promise<import('@profer/shared').FileSearchCandidateResult>
+  /** 取消当前文件候选搜索。 */
+  cancelFileSearch: (requestId: string) => Promise<boolean>
+
+  /** 解析 HTML 预览路径，并授权加载同目录的相对资源 */
+  resolveHtmlPreviewPath: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => Promise<import('@profer/shared').ResolvedFileUrl | null>
+
+  /** 注册文件路径到 cdut-file:// 协议（不做路径校验，供团队文件预览） */
+  registerPreviewPath: (filePath: string) => Promise<string | null>
+
+  /** 为内联 PDF 预览生成临时 HTML 文件，返回文件路径 */
+  preparePdfPreview: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => Promise<{ tmpHtmlUrl: string } | null>
+
+  /** 解析双平行拓扑引用锚点（如 #f1:p1-b11 或 #p1-b11），反查目标文档文件路径、页码与坐标 */
+  resolveDocumentAnchor: (
+    anchor: string,
+    access?: import('@profer/shared').FileAccessOptions & { label?: string },
+  ) => Promise<{
+    fileId: string
+    filePath: string
+    fileName: string
+    pageNumber: number
+    blockId: string
+    bbox?: [number, number, number, number]
+    label?: string
+    format?: 'pdf' | 'docx' | 'pptx' | 'xlsx'
+    sheetName?: string
+    cellRef?: string
+  } | null>
+
+  /** 读取文件为 base64（带路径校验，供内联图片预览等） */
+  readBinaryBase64: (filePath: string, access?: import('@profer/shared').FileAccessOptions, maxSize?: number) => Promise<string | null>
+
+  /** 截图导出：将 HTML 渲染为 PNG 并复制到剪贴板或保存文件 */
+  screenshotCapture: (input: { html: string; isDark: boolean; width?: number; mode: 'clipboard' | 'file'; css?: string; themeClass?: string }) => Promise<{ success: boolean; message: string; filePath?: string }>
+
+  /** 重命名文件/目录 */
+  renameFile: (filePath: string, newName: string) => Promise<void>
+
+  /** 移动文件/目录到目标目录 */
+  moveFile: (filePath: string, targetDir: string) => Promise<void>
+
+  /** 列出附加目录内容 */
+  listAttachedDirectory: (dirPath: string, access?: import('@profer/shared').FileAccessOptions) => Promise<FileEntry[]>
+
+  /** 读取附加目录文件内容为 base64（限制在已附加目录范围内） */
+  readAttachedFile: (filePath: string, sessionId?: string, workspaceSlug?: string) => Promise<string>
+
+  /** 在文件管理器中显示附加目录文件 */
+  showAttachedInFolder: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => Promise<void>
+
+  /** 重命名附加目录文件/目录（无工作区路径限制） */
+  renameAttachedFile: (filePath: string, newName: string, access?: import('@profer/shared').FileAccessOptions) => Promise<void>
+
+  /** 移动附加目录文件/目录（无工作区路径限制） */
+  moveAttachedFile: (filePath: string, targetDir: string, access?: import('@profer/shared').FileAccessOptions) => Promise<void>
+
+  /** 删除附加目录文件/目录（无工作区路径限制） */
+  deleteAttachedFile: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => Promise<void>
+
+  /** 将附加目录文件/目录移入系统回收站（无工作区路径限制） */
+  moveAttachedToTrash: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => Promise<void>
+
+  /** 检查路径类型（文件 or 目录），用于拖拽检测 */
+  checkPathsType: (paths: string[]) => Promise<{ directories: string[]; files: string[] }>
+
+  /** 获取拖拽文件的本地路径（替代已废弃的 File.path） */
+  getPathForFile: (file: File) => string
+
+  /** 搜索工作区文件（用于 @ 引用，支持附加目录） */
+  searchWorkspaceFiles: (rootPath: string, query: string, limit?: number, additionalPaths?: string[], sessionPaths?: string[]) => Promise<FileSearchResult>
+
+  // GitHub Release
+  getLatestRelease: () => Promise<GitHubRelease | null>
+  listReleases: (options?: GitHubReleaseListOptions) => Promise<GitHubRelease[]>
+  getReleaseByTag: (tag: string) => Promise<GitHubRelease | null>
+
+  /** 版本更新日志（内置本地 CHANGELOG） */
+  getChangelog: () => Promise<ChangelogEntry[]>
+
+  /** 本地系统公告栏（内置 bulletin.json） */
+  getBulletins: () => Promise<BulletinItem[]>
+
+  // 工作区文件变化通知
+  onCapabilitiesChanged: (callback: () => void) => () => void
+  onWorkspaceFilesChanged: (callback: () => void) => () => void
+
+  // ===== Lark 用户云端能力 =====
+  getLarkCliStatus: () => Promise<LarkCliStatus>
+  refreshLarkCliStatus: () => Promise<LarkCliStatus>
+  installLarkCli: () => Promise<LarkCliOperationResult>
+  startLarkLogin: () => Promise<LarkLoginStartResult>
+  cancelLarkLogin: () => Promise<void>
+  onLarkLoginEvent: (callback: (event: LarkLoginEvent) => void) => () => void
+  getLarkMcpStatus: () => Promise<LarkMcpStatus>
+  saveLarkMcpCredentials: (input: LarkMcpCredentialsInput) => Promise<LarkMcpSetupResult>
+  enableLarkMcpForWorkspace: (workspaceSlug: string) => Promise<LarkMcpSetupResult>
+  disableLarkMcpForWorkspace: (workspaceSlug: string) => Promise<LarkMcpSetupResult>
+  startLarkMcpLogin: () => Promise<LarkLoginStartResult>
+  cancelLarkMcpLogin: () => Promise<void>
+  testLarkMcpConnection: () => Promise<LarkMcpSetupResult>
+  onLarkMcpLoginEvent: (callback: (event: LarkLoginEvent) => void) => () => void
+
+  // ===== 飞书集成 =====
+
+  /** 获取飞书配置 */
+  getFeishuConfig: () => Promise<FeishuConfig>
+  /** 获取解密后的 App Secret */
+  getDecryptedFeishuSecret: () => Promise<string>
+  /** 保存飞书配置（appSecret 为明文） */
+  saveFeishuConfig: (input: FeishuConfigInput) => Promise<FeishuConfig>
+  /** 测试飞书连接 */
+  testFeishuConnection: (appId: string, appSecret: string) => Promise<FeishuTestResult>
+  /** 启动飞书 Bridge */
+  startFeishuBridge: () => Promise<void>
+  /** 停止飞书 Bridge */
+  stopFeishuBridge: () => Promise<void>
+  /** 获取飞书 Bridge 状态 */
+  getFeishuStatus: () => Promise<FeishuBridgeState>
+  /** 获取活跃绑定列表 */
+  listFeishuBindings: () => Promise<FeishuChatBinding[]>
+  /** 更新绑定（修改工作区/会话） */
+  updateFeishuBinding: (input: FeishuUpdateBindingInput) => Promise<FeishuChatBinding | null>
+  /** 移除绑定 */
+  removeFeishuBinding: (chatId: string) => Promise<boolean>
+  /** 上报用户在场状态 */
+  reportFeishuPresence: (report: FeishuPresenceReport) => Promise<void>
+  /** 订阅飞书 Bridge 状态变化 */
+  onFeishuStatusChanged: (callback: (state: FeishuBridgeState) => void) => () => void
+
+  // --- 多 Bot v2 API ---
+
+  /** 获取多 Bot 配置 */
+  getFeishuMultiConfig: () => Promise<import('@profer/shared').FeishuMultiBotConfig>
+  /** 保存单个 Bot 配置 */
+  saveFeishuBotConfig: (input: import('@profer/shared').FeishuBotConfigInput) => Promise<import('@profer/shared').FeishuBotConfig>
+  /** 获取单个 Bot 解密后的 App Secret */
+  getDecryptedFeishuBotSecret: (botId: string) => Promise<string>
+  /** 删除 Bot */
+  removeFeishuBot: (botId: string) => Promise<boolean>
+  /** 启动单个 Bot */
+  startFeishuBot: (botId: string) => Promise<void>
+  /** 停止单个 Bot */
+  stopFeishuBot: (botId: string) => Promise<void>
+  /** 获取多 Bot 状态 */
+  getFeishuMultiStatus: () => Promise<import('@profer/shared').FeishuMultiBridgeState>
+
+  // --- 扫码注册 ---
+
+  /** 启动扫码注册流程，等待用户扫码 + 飞书确认后返回 App ID/Secret */
+  registerFeishuApp: () => Promise<import('@profer/shared').FeishuRegisterAppResult>
+  /** 取消正在进行的扫码注册流程 */
+  cancelFeishuRegistration: () => Promise<void>
+  /** 监听二维码 URL 生成 */
+  onFeishuRegisterQrcode: (callback: (payload: import('@profer/shared').FeishuRegisterAppQRCode) => void) => () => void
+  /** 监听注册流程状态变化 */
+  onFeishuRegisterStatus: (callback: (payload: import('@profer/shared').FeishuRegisterAppStatus) => void) => () => void
+
+  // ===== 钉钉集成 =====
+
+  /** 获取钉钉配置 */
+  getDingTalkConfig: () => Promise<DingTalkConfig>
+  /** 获取解密后的 Client Secret */
+  getDecryptedDingTalkSecret: () => Promise<string>
+  /** 保存钉钉配置（clientSecret 为明文） */
+  saveDingTalkConfig: (input: DingTalkConfigInput) => Promise<DingTalkConfig>
+  /** 测试钉钉连接 */
+  testDingTalkConnection: (clientId: string, clientSecret: string) => Promise<DingTalkTestResult>
+  /** 启动钉钉 Bridge */
+  startDingTalkBridge: () => Promise<void>
+  /** 停止钉钉 Bridge */
+  stopDingTalkBridge: () => Promise<void>
+  /** 获取钉钉 Bridge 状态 */
+  getDingTalkStatus: () => Promise<DingTalkBridgeState>
+  /** 订阅钉钉 Bridge 状态变化 */
+  onDingTalkStatusChanged: (callback: (state: DingTalkBridgeState) => void) => () => void
+
+  // --- 钉钉多 Bot v2 API ---
+
+  /** 获取多 Bot 配置 */
+  getDingTalkMultiConfig: () => Promise<import('@profer/shared').DingTalkMultiBotConfig>
+  /** 保存单个 Bot 配置 */
+  saveDingTalkBotConfig: (input: import('@profer/shared').DingTalkBotConfigInput) => Promise<import('@profer/shared').DingTalkBotConfig>
+  /** 获取单个 Bot 解密后的 Client Secret */
+  getDecryptedDingTalkBotSecret: (botId: string) => Promise<string>
+  /** 删除 Bot */
+  removeDingTalkBot: (botId: string) => Promise<boolean>
+  /** 启动单个 Bot */
+  startDingTalkBot: (botId: string) => Promise<void>
+  /** 停止单个 Bot */
+  stopDingTalkBot: (botId: string) => Promise<void>
+  /** 获取多 Bot 状态 */
+  getDingTalkMultiStatus: () => Promise<import('@profer/shared').DingTalkMultiBridgeState>
+
+  // ===== 微信集成 =====
+
+  /** 获取微信配置 */
+  getWeChatConfig: () => Promise<WeChatConfig>
+  /** 开始扫码登录 */
+  startWeChatLogin: () => Promise<void>
+  /** 登出微信 */
+  logoutWeChat: () => Promise<void>
+  /** 启动微信 Bridge（用已有凭证） */
+  startWeChatBridge: () => Promise<void>
+  /** 停止微信 Bridge */
+  stopWeChatBridge: () => Promise<void>
+  /** 获取微信 Bridge 状态 */
+  getWeChatStatus: () => Promise<WeChatBridgeState>
+  /** 订阅微信 Bridge 状态变化 */
+  onWeChatStatusChanged: (callback: (state: WeChatBridgeState) => void) => () => void
+
+  /** 订阅菜单关闭标签页事件（Cmd+W 被菜单拦截后转发） */
+  onMenuCloseTab: (callback: () => void) => () => void
+
+  /** 重新注册全局快捷键（设置变更后） */
+  reregisterGlobalShortcuts: () => Promise<Record<string, boolean>>
+  // ===== 菜单栏 =====
+
+  /** 订阅菜单栏打开 Agent 会话事件 */
+  onTrayOpenAgentSession: (callback: (data: TrayOpenAgentSessionData) => void) => () => void
+  /** 订阅菜单栏创建会话事件 */
+  onTrayCreateSession: (callback: (data: TrayCreateSessionData) => void) => () => void
+
+  // ===== 数据迁移 =====
+
+  /** 获取工作区导出预览信息 */
+  migrationGetExportPreview: (workspaceId: string) => Promise<unknown>
+  /** 获取所有工作区的 Skills/MCP 预览（团队分发模式） */
+  migrationGetShareExportPreview: () => Promise<unknown>
+  /** 执行导出 */
+  migrationExport: (options: unknown) => Promise<MigrationExportResult>
+  /** 执行 v2 多工作区导出 */
+  migrationExportV2: (options: unknown) => Promise<MigrationExportResult>
+  /** 解析导入文件，返回预览信息 */
+  migrationParseImportFile: (filePath: string) => Promise<unknown>
+  /** 确认导入 */
+  migrationConfirmImport: (options: unknown) => Promise<{ success: boolean }>
+  /** 打开文件选择对话框（选择 .profer-backup 或 .profer-share） */
+  migrationOpenFileDialog: () => Promise<string | null>
+  /** 打开文件保存对话框（选择导出路径） */
+  migrationSaveFileDialog: (mode: string) => Promise<string | null>
+  /** 订阅双击迁移文件触发的导入事件 */
+  onMigrationOpenImportFile: (callback: (data: { filePath: string }) => void) => () => void
+
+  // ===== 存储管理 =====
+
+  /** 获取各目录存储统计 */
+  getStorageStats: () => Promise<unknown>
+  /** 按选项清理存储 */
+  cleanupStorage: (options: unknown) => Promise<unknown>
+  /** 清理临时文件（快速） */
+  cleanupTempStorage: () => Promise<unknown>
+  /** 预览历史会话整理：只统计可收敛的超限行与体积，不写入 */
+  previewSessionCompaction: () => Promise<unknown>
+  /** 执行历史会话整理：就地收敛超限行，不删除任何会话 */
+  applySessionCompaction: () => Promise<unknown>
+  /** 按需取回被外部化的会话消息完整内容 */
+  resolveSessionMessageBlobs: (message: unknown) => Promise<unknown>
+  /** 取消迁移导入（清理临时解压目录） */
+  migrationCancelImport: (tempDir: string) => Promise<void>
+
+  // ===== 任务 / 日程（Planning）=====
+  /** 打开或聚焦单例独立任务/日程窗口。 */
+  openPlanningWindow: () => Promise<void>
+  listTodos: (input?: TodoListQuery & { workspaceId?: string }) => Promise<Todo[]>
+  createTodo: (input: CreateTodoInput) => Promise<Todo>
+  startTodoAgent: (input: StartTodoAgentInput) => Promise<StartTodoAgentResult>
+  updateTodo: (input: UpdateTodoInput) => Promise<Todo | undefined>
+  deleteTodo: (id: string, workspaceId?: string) => Promise<boolean>
+  listCalendarEvents: (input?: CalendarEventListQuery & { workspaceId?: string }) => Promise<CalendarEvent[]>
+  createCalendarEvent: (input: CreateCalendarEventInput) => Promise<CalendarEvent>
+  updateCalendarEvent: (input: UpdateCalendarEventInput) => Promise<CalendarEvent | undefined>
+  deleteCalendarEvent: (id: string, workspaceId?: string) => Promise<boolean>
+  listPlanningGroups: (scope: PlanningGroupScope, workspaceId?: string) => Promise<PlanningGroup[]>
+  createPlanningGroup: (input: CreatePlanningGroupInput) => Promise<PlanningGroup>
+  updatePlanningGroup: (input: UpdatePlanningGroupInput) => Promise<PlanningGroup | undefined>
+  deletePlanningGroup: (scope: PlanningGroupScope, id: string, workspaceId?: string) => Promise<boolean>
+  listPlanningTags: (workspaceId?: string) => Promise<PlanningTag[]>
+  createPlanningTag: (input: CreatePlanningTagInput) => Promise<PlanningTag>
+  updatePlanningTag: (input: UpdatePlanningTagInput) => Promise<PlanningTag | undefined>
+  deletePlanningTag: (id: string, workspaceId?: string) => Promise<boolean>
+  listActivePlanningReminders: (workspaceId?: string) => Promise<ActivePlanningReminder[]>
+  acknowledgePlanningReminder: (id: string, workspaceId?: string) => Promise<PlanningReminder | undefined>
+  snoozePlanningReminder: (input: SnoozePlanningReminderInput, workspaceId?: string) => Promise<PlanningReminder | undefined>
+  onPlanningRemindersDue: (callback: (reminders: ActivePlanningReminder[]) => void) => () => void
+  onPlanningChanged: (callback: (change: PlanningChange) => void) => () => void
+  onPlanningAgentOperation: (callback: (operation: PlanningAgentOperation) => void) => () => void
+  /** 独立规划窗口启动 Todo Agent 时，主窗口在此接收会话交接并接管打开/发送任务。 */
+  onTodoAgentSessionReady: (callback: (activation: TodoAgentSessionActivation) => void) => () => void
+
+  // ===== 定时任务（Automation）=====
+  /** 获取全部定时任务 */
+  listAutomations: () => Promise<Automation[]>
+  /** 创建定时任务 */
+  createAutomation: (input: CreateAutomationInput) => Promise<Automation>
+  /** 更新定时任务 */
+  updateAutomation: (input: UpdateAutomationInput) => Promise<Automation | undefined>
+  /** 删除定时任务 */
+  deleteAutomation: (id: string) => Promise<boolean>
+  /** 切换启用/暂停 */
+  toggleAutomation: (id: string, active: boolean) => Promise<Automation | undefined>
+  /** 立即运行一次 */
+  runAutomationNow: (id: string) => Promise<void>
+  /** 订阅任务列表变更事件 */
+  onAutomationChanged: (callback: () => void) => () => void
+  listRecommendations: () => Promise<import('@profer/shared').Recommendation[]>
+  refreshRecommendations: () => Promise<import('@profer/shared').Recommendation[]>
+  respondToRecommendation: (input: import('@profer/shared').RecommendationFeedbackInput) => Promise<import('@profer/shared').Recommendation>
+  onRecommendationsChanged: (callback: () => void) => () => void
+
+  // ===== 身份认证（Phase 1: 占位类型）=====
+  auth: {
+    getDeviceIdentity: () => Promise<import('../types/identity').DeviceIdentity>
+    getUserIdentity: () => Promise<import('../types/identity').UserIdentity>
+    updateProfile: (updates: Record<string, unknown>) => Promise<import('../types/identity').UserIdentity>
+    login: (credentials: Record<string, unknown>) => Promise<unknown>
+    register: (credentials: { email: string; password: string; displayName: string; inviteCode?: string; otpToken?: string; emailOtp?: string }) => Promise<unknown>
+    getRegistrationOptions: () => Promise<{ openRegistration: boolean }>
+    sendRegistrationOtp: (email: string) => Promise<{ success: boolean; otpToken?: string; resendAfterSec?: number; error?: string }>
+    verifyRegistrationOtp: (email: string, otpToken: string, code: string) => Promise<{ success: boolean; error?: string }>
+    logout: () => Promise<{ channelsCleared?: boolean; channelsBackedUp?: boolean; warning?: string }>
+    listDevices: () => Promise<{ ok: boolean; devices?: Array<{ id: string; deviceId: string | null; deviceName: string; platform: string | null; appVersion?: string | null; createdAt: number; lastUsedAt: number }>; currentDeviceId?: string; error?: string }>
+    revokeDevice: (slotId: string) => Promise<{ ok: boolean; error?: string }>
+    getAuthStatus: () => Promise<{ isLoggedIn: boolean; teamAccountId?: string; teamEmail?: string }>
+    getServerInfo: () => Promise<Array<{ baseUrl: string; email: string; isLoggedIn: boolean }>>
+    getTeamAuth: () => Promise<{ baseUrl: string; token: string; teamEmail?: string; teamAccountId?: string } | null>
+  }
+
+  // ===== 同步（Phase 1: 占位类型）=====
+  sync: {
+    getStatus: (workspaceId?: string) => Promise<{ workspaces: unknown[] }>
+    triggerSync: (workspaceId: string) => Promise<void>
+    getPendingChanges: (workspaceId: string) => Promise<unknown[]>
+    discardPendingChanges: (workspaceId: string) => Promise<void>
+    onStatusChanged: (callback: (data: unknown) => void) => () => void
+  }
+
+  // ===== 团队管理（Phase 1: 占位类型）=====
+  team: {
+    listWorkspaces: () => Promise<import('@profer/shared').AgentWorkspace[]>
+    onWorkspacesSynced: (callback: () => void) => () => void
+    createWorkspace: (name: string) => Promise<import('@profer/shared').AgentWorkspace>
+    deleteWorkspace: (workspaceId: string) => Promise<void>
+    getMembers: (workspaceId: string) => Promise<unknown[]>
+    createInvitation: (input: { workspaceId: string; email: string; role: string }) => Promise<unknown>
+    listInvitations: (workspaceId: string) => Promise<unknown[]>
+    cancelInvitation: (input: { workspaceId: string; invitationId: string }) => Promise<void>
+    getStats: (workspaceId: string) => Promise<{ totalSize: number; fileCount: number; dirCount: number; memberCount: number; onlineCount: number; pendingInvites: number } | null>
+    verifyInvitation: (token: string) => Promise<unknown>
+    acceptInvitation: (token: string) => Promise<import('@profer/shared').AgentWorkspace>
+    declineInvitation: (token: string) => Promise<void>
+    updateMemberRole: (input: { workspaceId: string; userId: string; role: string }) => Promise<void>
+    removeMember: (input: { workspaceId: string; userId: string }) => Promise<void>
+    leaveWorkspace: (workspaceId: string) => Promise<void>
+    transferOwnership: (input: { workspaceId: string; targetUserId: string }) => Promise<void>
+    restoreWorkspace: (workspaceId: string) => Promise<void>
+    getAuditLogs: (workspaceId: string, limit?: number, before?: number) => Promise<Array<{ action: string; user_email: string; entity_type: string; entity_id: string; detail: string; created_at: number }>>
+    getAnnouncements: (workspaceId: string) => Promise<Array<{ id: string; workspaceId: string; authorId: string; authorName: string; title: string; content: string; isPinned: boolean; createdAt: number; updatedAt: number }>>
+    createAnnouncement: (workspaceId: string, title: string, content: string, isPinned: boolean) => Promise<unknown>
+    deleteAnnouncement: (workspaceId: string, announcementId: string) => Promise<{ success: boolean }>
+    getNotificationSettings: () => Promise<{ enabled: boolean; fileUpload: boolean; fileDelete: boolean; memberJoin: boolean; memberLeave: boolean; invitation: boolean }>
+    updateNotificationSettings: (settings: { enabled?: boolean; fileUpload?: boolean; fileDelete?: boolean; memberJoin?: boolean; memberLeave?: boolean; invitation?: boolean }) => Promise<void>
+  }
+
+  // ===== SSE 实时事件 =====
+  sse: {
+    connect: (workspaceId: string) => Promise<void>
+    disconnect: (workspaceId: string) => Promise<void>
+    disconnectAll: () => Promise<void>
+    onEvent: (callback: (workspaceId: string, event: { type: string; data: unknown; workspaceId: string; timestamp: number }) => void) => () => void
+    onConnectionChanged: (callback: (status: { workspaceId: string; status: string }) => void) => () => void
+  }
+
+  // ===== 技能市场 =====
+  skillMarketplace: {
+    publish: (input: { workspaceId: string; workspaceSlug: string; skillSlug: string }) => Promise<{ success: boolean; skillSlug: string }>
+    unpublish: (input: { workspaceId: string; workspaceSlug: string; skillSlug: string }) => Promise<{ success: boolean; skillSlug: string }>
+    listTeamSkills: (workspaceId: string) => Promise<Array<{ slug: string; name: string; description: string; version: string; publishedBy: string; publishedAt: number }>>
+    installTeamSkill: (input: { workspaceId: string; skillSlug: string; targetWorkspaceSlug: string }) => Promise<{ success: boolean; skillSlug: string }>
+    checkForUpdates: (workspaceSlug: string) => Promise<Array<import('@profer/shared').SkillMeta>>
+  }
+
+  // ===== 全局 Skill 体系 =====
+  globalSkill: {
+    list: (workspaceSlug?: string) => Promise<Array<import('@profer/shared').GlobalSkillMeta>>
+    read: (skillId: string) => Promise<string>
+    readWorkspaceCopy: (workspaceSlug: string, workspaceSkillId: string) => Promise<string>
+    saveWorkspaceCopy: (workspaceSlug: string, workspaceSkillId: string, content: string) => Promise<void>
+    save: (skillId: string, content: string, workspaceSlug: string | undefined, scope: 'global' | 'workspace') => Promise<import('@profer/shared').GlobalSkillManifest | import('@profer/shared').WorkspaceSkillCopyResult>
+    copyToUser: (skillId: string, slug?: string) => Promise<import('@profer/shared').GlobalSkillManifest>
+    createUser: (slug: string, name: string, description: string, content: string) => Promise<import('@profer/shared').GlobalSkillManifest>
+    copyToWorkspace: (skillId: string, workspaceSlug: string) => Promise<import('@profer/shared').WorkspaceSkillCopyResult>
+    deleteUser: (skillId: string, confirmationToken?: string) => Promise<void>
+    getDeleteBlockers: (skillId: string) => Promise<import('@profer/shared').GlobalSkillDeleteBlockers>
+    setEnabled: (workspaceSlug: string, skillId: string, enabled: boolean) => Promise<void>
+    restore: (workspaceSlug: string, skillId: string) => Promise<void>
+    getOverrides: (workspaceSlug: string) => Promise<import('@profer/shared').WorkspaceSkillOverridesFile>
+  }
+
+  // ===== 全局元 Skill（master 库）=====
+  skillMaster: {
+    list: () => Promise<Array<import('@profer/shared').MasterSkillMeta>>
+    read: (slug: string) => Promise<string>
+    save: (slug: string, content: string, note?: string) => Promise<import('@profer/shared').MasterSkillVersion>
+    renameMeta: (slug: string, patches: { name?: string; description?: string }) => Promise<void>
+    listHistory: (slug: string) => Promise<Array<import('@profer/shared').MasterSkillVersion>>
+    rollback: (slug: string, snapshotId: string, note?: string) => Promise<import('@profer/shared').MasterSkillVersion>
+    syncToWorkspaces: (slug: string, targetWorkspaceSlugs: string[], options?: { force?: boolean; forceSlugs?: string[] }) => Promise<Array<import('@profer/shared').SyncSkillResult>>
+    detectConflict: (workspaceSlug: string, skillSlug: string) => Promise<import('@profer/shared').SkillConflict>
+  }
+
+  // ===== 团队共享知识记忆 =====
+  teamMemory: {
+    list: (workspaceId: string, includeArchived?: boolean) => Promise<TeamMemoryApiResult<Array<Omit<TeamMemoryDocument, 'content'>>>>
+    read: (workspaceId: string, memoryId: string) => Promise<TeamMemoryApiResult<TeamMemoryDocument>>
+    create: (workspaceId: string, input: { path: string; title: string; content: string; changeSummary?: string }) => Promise<TeamMemoryApiResult<TeamMemoryDocument>>
+    update: (workspaceId: string, memoryId: string, input: { expectedVersion: number; path?: string; title?: string; content?: string; changeSummary?: string }) => Promise<TeamMemoryApiResult<TeamMemoryDocument>>
+    listRevisions: (workspaceId: string, memoryId: string) => Promise<TeamMemoryApiResult<TeamMemoryRevision[]>>
+    archive: (workspaceId: string, memoryId: string) => Promise<TeamMemoryApiResult<TeamMemoryDocument>>
+    unarchive: (workspaceId: string, memoryId: string) => Promise<TeamMemoryApiResult<TeamMemoryDocument>>
+  }
+
+  // ===== 团队文件操作 =====
+  teamFile: {
+    upload: (input: { workspaceId: string; workspaceSlug: string; fileName: string; fileData: Uint8Array; sourcePath?: string }) => Promise<{ success: boolean; path: string; size: number; error?: string }>
+    download: (input: { workspaceId: string; workspaceSlug: string; filePath: string; uploadedBy?: string; sha256?: string }) => Promise<string | null>
+    delete: (input: { workspaceId: string; workspaceSlug: string; filePath: string }) => Promise<boolean>
+    getManifest: (workspaceId: string, workspaceSlug?: string) => Promise<Array<{ name: string; path: string; isDirectory: boolean; size: number; modifiedAt: number; sha256: string; fileId?: string; uploadedBy: string; uploadedByName: string; localExists?: boolean; syncStatus?: 'synced' | 'cloud-only' }> | null>
+    createDirectory: (input: { workspaceId: string; dirPath: string }) => Promise<boolean>
+    move: (input: { workspaceId: string; workspaceSlug: string; fromPath: string; toDir: string }) => Promise<{ success: boolean; fromPath: string; toPath?: string; error?: string }>
+    rename: (input: { workspaceId: string; workspaceSlug: string; path: string; newName: string }) => Promise<{ success: boolean; fromPath: string; toPath?: string; error?: string } | null>
+    search: (workspaceId: string, options: { q: string; page?: number; limit?: number }) => Promise<{ files: Array<{ name: string; path: string; isDirectory: boolean; size: number; modifiedAt: number; sha256: string; uploadedBy: string; uploadedByName: string }>; total: number; page: number; limit: number; totalPages: number } | null>
+    getMetadata: (workspaceId: string, fileId: string) => Promise<{ ok: boolean; status?: number; data?: unknown; error?: string }>
+    patchMetadata: (workspaceId: string, fileId: string, body: Record<string, unknown>) => Promise<{ ok: boolean; status?: number; data?: unknown; error?: string }>
+    getTags: (workspaceId: string) => Promise<{ ok: boolean; data?: unknown; error?: string }>
+    getStatuses: (workspaceId: string) => Promise<{ ok: boolean; data?: unknown; error?: string }>
+    setPreference: (workspaceId: string, fileId: string, body: Record<string, unknown>) => Promise<{ ok: boolean; status?: number; error?: string }>
+    getActivities: (workspaceId: string, fileId: string, cursor?: string) => Promise<{ ok: boolean; data?: unknown; error?: string }>
+    listTrash: (workspaceId: string) => Promise<{ ok: boolean; status?: number; data?: import('@profer/shared').TeamTrashEntry[]; error?: string }>
+    restoreTrash: (workspaceId: string, entryId: string) => Promise<{ ok: boolean; status?: number; data?: { success: boolean; restoredPath: string }; error?: string }>
+    purgeTrash: (workspaceId: string, entryId: string) => Promise<{ ok: boolean; status?: number; data?: { success: boolean; state: string }; error?: string }>
+  }
+
+  // ===== CDUT 专区特区账户 =====
+  cdutZone: {
+    getAccount: () => Promise<CdutAccountProfile>
+    /** 查询本地已保存的特区账户元数据（供登录窗一键填充引导） */
+    getSavedAccount: () => Promise<CdutSavedAccountSummary>
+    login: (input: CdutLoginInput) => Promise<CdutLoginResult>
+    logout: () => Promise<{ success: boolean }>
+    onStatusChanged: (callback: (profile: CdutAccountProfile) => void) => () => void
+    onMutationRequest: (callback: (request: CdutMutationConfirmRequest) => void) => () => void
+    confirmMutation: (result: CdutMutationConfirmResult) => Promise<{ handled: boolean }>
+    /** 订阅统一门禁拦截通知（拉起专属门禁弹窗） */
+    onGatekeeperBlocked: (callback: (event: CdutGatekeeperNoticeEvent) => void) => () => void
+    /** 回传统一门禁用户决策 */
+    gatekeeperRespond: (decision: CdutGatekeeperDecision) => Promise<{ handled: boolean }>
+    /** 调用 8 大业务域工具（支持在线抓取与高仿真离线演示数据回退） */
+    callDomainTool: (params: CdutToolInvokeParams) => Promise<CdutDomainToolResult>
+    /** 读取业务域离线缓存（SWR 秒开渲染；无缓存返回 null） */
+    readDomainCache: (name: CdutDomainCacheName) => Promise<unknown>
+    /** 写入业务域离线缓存（网络成功后原子落盘） */
+    writeDomainCache: (input: { name: CdutDomainCacheName; payload: unknown }) => Promise<{ success: boolean }>
+  }
+
+  // ===== 长期记忆图谱（用户习惯与偏好） =====
+  longTermMemory: {
+    /** 读取全量长期记忆图谱 */
+    getGraph: () => Promise<LongTermMemoryGraph>
+    /** 手动新增记忆节点 */
+    addNode: (input: LongTermMemoryNodeInput) => Promise<LongTermMemoryNode>
+    /** 更新单个记忆节点（仅 category/title/content/tags/confidence 生效） */
+    updateNode: (node: LongTermMemoryNode) => Promise<LongTermMemoryNode | null>
+    /** 删除记忆节点 */
+    deleteNode: (nodeId: string) => Promise<{ success: boolean }>
+    /** 检索测试（星图面板即时模拟 RAG 命中） */
+    queryTest: (input: { query: string; topK?: number }) => Promise<LongTermMemoryHit[]>
+    /** 订阅图谱变更（多窗口同步） */
+    onChanged: (callback: () => void) => () => void
+  }
+
+  // ===== CDUT Science (CSLab) 专区 =====
+  cslab: {
+    verifyKey: (password: string) => Promise<CsLabAuthResult>
+    getAuthStatus: () => Promise<CsLabAuthStatus>
+    initPassword: (password: string) => Promise<CsLabAuthResult>
+    verifyPassword: (password: string) => Promise<CsLabAuthResult>
+    lockSession: () => Promise<void>
+    getTelemetry: () => Promise<CsLabTelemetry>
+    getNodes: () => Promise<CsLabNode[]>
+    getLogs: () => Promise<CsLabLogEntry[]>
+    ping: () => Promise<{ timestamp: number; latencyMs: number }>
+
+    /** 实验室沙箱 */
+    listLabs: () => Promise<CsLabLab[]>
+    createLab: (input: CsLabCreateLabInput) => Promise<CsLabLab>
+    createDemoLab: () => Promise<CsLabDemoLabResult>
+    openLab: (labId: string) => Promise<CsLabLabSnapshot>
+    getLabSnapshot: (labId: string) => Promise<CsLabLabSnapshot>
+    renameLab: (input: { labId: string; name: string }) => Promise<CsLabLab>
+    deleteLab: (labId: string) => Promise<void>
+    togglePinLab: (labId: string) => Promise<CsLabLab>
+    toggleArchiveLab: (labId: string) => Promise<CsLabLab>
+
+    /** 数据铁笼 */
+    ingestFiles: (input: CsLabIngestRequest) => Promise<CsLabIngestResult[]>
+    listAssets: (labId: string) => Promise<CsLabAssetSummary[]>
+    getAssetTable: (input: { labId: string; uri: string }) => Promise<CsLabTablePayload | null>
+    getTableCell: (input: {
+      labId: string
+      tableUri: string
+      column: string
+      rowIndex: number
+    }) => Promise<CsLabCellValue>
+    resolveDerivedTable: (input: { labId: string; uri: string }) => Promise<string | null>
+    getAssetFileInfo: (input: { labId: string; uri: string }) => Promise<CsLabAssetFileInfo>
+    getAssetDataUrl: (input: { labId: string; uri: string }) => Promise<CsLabAssetDataUrl>
+    exportTable: (input: {
+      labId: string
+      tableUri: string
+      format: CsLabTableExportFormat
+    }) => Promise<CsLabTableExportResult>
+
+    /** 论文与活体胶囊 */
+    listManuscripts: (labId: string) => Promise<CsLabManuscriptSummary[]>
+    createManuscript: (input: { labId: string; title?: string }) => Promise<CsLabManuscript>
+    getManuscript: (input: { labId: string; uri: string }) => Promise<CsLabManuscript | null>
+    saveManuscript: (input: CsLabSaveManuscriptInput) => Promise<CsLabManuscript>
+    saveManuscriptAs: (input: CsLabSaveManuscriptAsIpcInput) => Promise<CsLabSaveManuscriptAsResult>
+    showSaveFileDialog: (options?: CsLabSaveFileDialogOptions) => Promise<CsLabSaveFileDialogResult | null>
+    exportDocx: (input: { labId: string; manuscriptUri: string }) => Promise<CsLabDocxSyncResult>
+    syncDocx: (input: CsLabDocxSyncInput) => Promise<CsLabDocxSyncResult>
+    importDocx: (input: { labId: string; docxPath: string; title?: string }) => Promise<CsLabDocxImportResult>
+    updateCapsule: (input: { labId: string; capsuleId: string }) => Promise<CsLabCapsule>
+    getCapsuleLineage: (input: {
+      labId: string
+      capsuleId: string
+    }) => Promise<CsLabCapsuleLineage | null>
+
+    /** 环境能力 */
+    getPythonCapability: () => Promise<CsLabPythonCapability>
+    getToolRuntime: (labId: string) => Promise<CsLabToolRuntimeStatus>
+    installToolDeps: (input: CsLabInstallToolDepsInput) => Promise<CsLabToolRuntimeStatus>
+
+    /** Zotero 文献同步 */
+    getZoteroStatus: (labId: string) => Promise<CsLabZoteroStatus>
+    discoverZotero: (input: { labId: string; dataDir?: string }) => Promise<CsLabZoteroDiscovery>
+    setZoteroDataDir: (input: { labId: string; dataDir: string }) => Promise<CsLabZoteroDiscovery>
+    syncZotero: (input: {
+      labId: string
+      dataDir?: string
+      forceFull?: boolean
+    }) => Promise<CsLabZoteroSyncResult>
+    listZoteroLiterature: (labId: string) => Promise<CsLabLiteratureItem[]>
+    listZoteroAnnotations: (input: {
+      labId: string
+      literatureUri: string
+    }) => Promise<CsLabZoteroAnnotation[]>
+    startZoteroWatch: (labId: string) => Promise<{ watching: boolean; message: string }>
+    stopZoteroWatch: (labId: string) => Promise<{ watching: boolean }>
+    getZoteroBridgeStatus: () => Promise<CsLabZoteroBridgeStatus>
+
+    /** 文献阅读 */
+    getLiteratureItem: (input: {
+      labId: string
+      uri: string
+    }) => Promise<CsLabLiteratureItem | null>
+    getLiteratureUrl: (input: {
+      labId: string
+      uri: string
+    }) => Promise<{ url: string; name: string; pageCount?: number }>
+
+    /** 图表逆向数字化 */
+    digitizePlot: (input: CsLabPlotDigitizeInput) => Promise<CsLabPlotDigitizeResult>
+    saveDigitizedFigure: (
+      input: CsLabDigitizedFigureInput,
+    ) => Promise<CsLabDigitizedFigureResult>
+
+    /** 公式识别与验算 */
+    ocrFormula: (input: { labId: string; imageDataUrl: string }) => Promise<CsLabFormulaOcrResult>
+    verifyFormula: (input: CsLabFormulaVerifyInput) => Promise<CsLabFormulaVerifyResult>
+
+    /** 跨文献 GraphRAG */
+    buildLiteratureIndex: (input: {
+      labId: string
+      force?: boolean
+    }) => Promise<CsLabLiteratureSearchResult>
+    searchLiterature: (input: {
+      labId: string
+      query: string
+      topK?: number
+      literatureUri?: string
+    }) => Promise<CsLabLiteratureSearchResult>
+
+    /** 实验规程与批次 */
+    listProtocols: (labId: string) => Promise<CsLabProtocol[]>
+    createProtocol: (input: CsLabCreateProtocolInput) => Promise<CsLabProtocol>
+    updateProtocol: (input: CsLabUpdateProtocolInput) => Promise<CsLabProtocol>
+    listRuns: (input: { labId: string; protocolUri?: string }) => Promise<CsLabRun[]>
+    createRun: (input: CsLabCreateRunInput) => Promise<CsLabRun>
+    updateRun: (input: CsLabUpdateRunInput) => Promise<CsLabRun>
+    linkRunAsset: (input: {
+      labId: string
+      runUri: string
+      assetUri: string
+      relation: 'consumes' | 'produces'
+    }) => Promise<CsLabRun>
+    unlinkRunAsset: (input: {
+      labId: string
+      runUri: string
+      assetUri: string
+      relation: 'consumes' | 'produces'
+    }) => Promise<CsLabRun>
+
+    /** Vault 笔记与 Canvas */
+    listVaultNotes: (labId: string) => Promise<CsLabVaultNoteSummary[]>
+    readVaultNote: (input: { labId: string; relPath: string }) => Promise<CsLabVaultReadResult>
+    searchVaultNotes: (input: {
+      labId: string
+      query: string
+      limit?: number
+    }) => Promise<CsLabVaultNoteSummary[]>
+    getNoteBacklinks: (input: {
+      labId: string
+      relPath: string
+    }) => Promise<CsLabVaultNoteSummary[]>
+    getVaultIndexStatus: (labId: string) => Promise<CsLabVaultIndexStatus>
+    rebuildVaultIndex: (input: { labId: string; force?: boolean }) => Promise<CsLabVaultIndexResult>
+    startVaultWatch: (labId: string) => Promise<{ watching: boolean; message: string }>
+    stopVaultWatch: (labId: string) => Promise<{ watching: boolean; message: string }>
+    listCanvases: (labId: string) => Promise<CsLabCanvasSummary[]>
+    createCanvas: (input: { labId: string; title: string }) => Promise<CsLabCanvasCreateResult>
+    readCanvas: (input: { labId: string; relPath: string }) => Promise<CsLabCanvasReadResult>
+    writeCanvas: (input: CsLabCanvasWriteInput) => Promise<CsLabCanvasWriteResult>
+
+    /** 自定义科研工具与 uv */
+    listCustomTools: (labId: string) => Promise<CsLabCustomToolScan>
+    refreshCustomTools: (labId: string) => Promise<CsLabCustomToolScan>
+    runCustomTool: (input: CsLabCustomToolRunInput) => Promise<CsLabCustomToolRunResult>
+    startCustomToolWatch: (labId: string) => Promise<{ watching: boolean; message: string }>
+    stopCustomToolWatch: (labId: string) => Promise<{ watching: boolean; message: string }>
+    getToolTrust: (sessionId: string) => Promise<boolean>
+    ensureUv: (labId: string) => Promise<CsLabUvEnsureResult>
+
+    /** 会话级实验室绑定 */
+    bindSessionLab: (input: { sessionId: string; labId: string }) => Promise<CsLabSessionLabBinding>
+    unbindSessionLab: (input: { sessionId: string }) => Promise<CsLabSessionLabBinding>
+
+    /** 局域网仪器共享盘 */
+    listShareSources: (labId: string) => Promise<CsLabShareSourceSummary[]>
+    addShareSource: (input: CsLabShareSourceInput) => Promise<CsLabShareSourceSummary>
+    removeShareSource: (input: { labId: string; sourceId: string }) => Promise<{ ok: boolean }>
+    testShareSource: (input: { labId: string; sourceId: string }) => Promise<CsLabShareScanResult>
+    scanShareNow: (input: { labId: string; sourceId?: string }) => Promise<CsLabShareScanResult>
+    startShareWatch: (labId: string) => Promise<{ watching: boolean; message: string }>
+    stopShareWatch: (input: {
+      labId: string
+      sourceId?: string
+    }) => Promise<{ watching: boolean; message: string }>
+    listShareCandidates: (input: {
+      labId: string
+      sourceId?: string
+    }) => Promise<CsLabShareCandidate[]>
+
+    /** 远程学术算力网关 */
+    listHpcProfiles: (labId: string) => Promise<CsLabHpcProfileSummary[]>
+    saveHpcProfile: (input: CsLabHpcProfileInput) => Promise<CsLabHpcProfileSummary>
+    deleteHpcProfile: (input: {
+      labId: string
+      profileId: string
+    }) => Promise<{ ok: boolean }>
+    testHpcConnection: (input: {
+      labId: string
+      profileId: string
+    }) => Promise<CsLabHpcTestResult>
+    submitHpcJob: (input: CsLabComputeContract) => Promise<CsLabHpcJob>
+    listHpcJobs: (labId: string) => Promise<CsLabHpcJob[]>
+    cancelHpcJob: (input: { labId: string; key: string }) => Promise<CsLabHpcJob>
+    refreshHpcJob: (input: { labId: string; key: string }) => Promise<CsLabHpcJob>
+    harvestHpcJob: (input: { labId: string; key: string }) => Promise<CsLabHpcJob>
+    rehydrateHpcJobs: (labId: string) => Promise<CsLabHpcJob[]>
+    answerHpcMfa: (input: {
+      requestId: string
+      value: string
+    }) => Promise<{ ok: boolean }>
+
+    /** 晶体结构与谱图 */
+    getMolAsset: (input: { labId: string; uri: string }) => Promise<CsLabMolAsset | null>
+    getTableSeries: (input: {
+      labId: string
+      tableUri: string
+      maxPoints?: number
+    }) => Promise<CsLabTableSeries | null>
+
+    /** 科学引擎：晶体分析 / PXRD / 拟合 / 体数据 */
+    analyzeCrystal: (input: {
+      labId: string
+      uri: string
+      tolerance?: number
+    }) => Promise<CsLabCrystalAnalysis>
+    simulatePxrd: (input: {
+      labId: string
+      uri: string
+      options?: CsLabPxrdOptions
+    }) => Promise<CsLabPxrdPattern>
+    fitPeaks: (input: CsLabFitRequest) => Promise<CsLabFitResult>
+    smoothSeries: (input: CsLabSmoothRequest) => Promise<{ x: number[]; y: number[] }>
+    getVolumeGrid: (input: {
+      labId: string
+      uri: string
+      maxDimension?: number
+    }) => Promise<CsLabVolumeGrid>
+
+    /** 出版绘图 */
+    savePlot: (input: { labId: string; plot: CsLabPlotDocument }) => Promise<CsLabPlotSummary>
+    listPlots: (labId: string) => Promise<CsLabPlotSummary[]>
+    loadPlot: (input: { labId: string; plotId: string }) => Promise<CsLabPlotDocument | null>
+    exportFigure: (input: {
+      labId: string
+      plot: CsLabPlotDocument
+      options: CsLabPlotExportOptions
+    }) => Promise<CsLabPlotExportResult>
+    snapshotStructure: (input: CsLabStructureSnapshotSubmitInput) => Promise<CsLabStructureSnapshotResult>
+
+    /** 科学助理独立窗口 */
+    openAgentWindow: (input: CsLabAgentWindowInput) => Promise<CsLabAgentWindowRef | null>
+    sendToAgentWindow: (input: CsLabAgentContext) => Promise<{ delivered: boolean }>
+    getAgentWindowContext: (windowId: string) => Promise<CsLabAgentContext | null>
+    undoPlotUpdate: (input: {
+      labId: string
+      plotId: string
+      undoToken: string
+    }) => Promise<CsLabPlotUndoResult>
+
+    /** 学术审稿 */
+    reviewManuscript: (input: CsLabReviewRequest) => Promise<CsLabReviewResult>
+
+    /** 事件订阅（返回取消函数） */
+    onIngestProgress: (handler: (progress: CsLabIngestProgress) => void) => () => void
+    onAssetChanged: (handler: (event: CsLabAssetChangedEvent) => void) => () => void
+    onCapsuleStale: (handler: (event: CsLabCapsuleStaleEvent) => void) => () => void
+    onZoteroSynced: (handler: (event: CsLabZoteroSyncedEvent) => void) => () => void
+    onZoteroStatus: (handler: (event: CsLabZoteroStatusEvent) => void) => () => void
+    onToolDepsProgress: (handler: (progress: CsLabToolDepsProgress) => void) => () => void
+    onVaultChanged: (handler: (event: CsLabVaultChangedEvent) => void) => () => void
+    onDagJobsCancelled: (handler: (event: CsLabDagJobsCancelledEvent) => void) => () => void
+    onToolsChanged: (handler: (event: { labId: string; scan: CsLabCustomToolScan }) => void) => () => void
+    onShareStatus: (handler: (event: CsLabShareStatusEvent) => void) => () => void
+    onHpcJob: (handler: (event: CsLabHpcJobEvent) => void) => () => void
+    onHpcMfa: (handler: (event: CsLabHpcMfaRequest) => void) => () => void
+    onPlotUpdated: (handler: (event: CsLabPlotUpdatedEvent) => void) => () => void
+    onAgentContext: (handler: (context: CsLabAgentContext) => void) => () => void
+    onStructureFocused: (handler: (event: CsLabStructureFocusedEvent) => void) => () => void
+    onRequestStructureSnapshot: (
+      handler: (event: CsLabStructureSnapshotRequest) => void,
+    ) => () => void
+  }
+
+  // ===== CDUT 专区 · 智联万站（Yanhu Express）内置浏览器 =====
+  yanhuExpress: {
+    /** 初始化或从落盘拓扑恢复（仅实例化激活标签，其余休眠） */
+    initOrRestore: () => Promise<YanhuTabsState>
+    getTabsState: () => Promise<YanhuTabsState>
+    /** 呈现原生视图（挂载子页面时调用） */
+    showView: () => Promise<YanhuTabsState>
+    /** 隐藏原生视图（离开子页面时调用，保留标签存活） */
+    hideView: () => Promise<{ success: boolean }>
+    /** 上报 renderer 测得的视图布局（CSS 像素，主进程换算为原生边界） */
+    updateBounds: (layout: YanhuViewLayout) => Promise<{ success: boolean }>
+    /** 同步深浅主题到底层视图与网页媒体特征 */
+    syncTheme: (input: YanhuSyncThemeInput) => Promise<{ success: boolean }>
+    createTab: (input?: YanhuCreateTabInput) => Promise<YanhuTabsState>
+    activateTab: (input: YanhuTabRefInput) => Promise<YanhuTabsState>
+    closeTab: (input: YanhuTabRefInput) => Promise<YanhuTabsState>
+    closeOtherTabs: (input: YanhuTabRefInput) => Promise<YanhuTabsState>
+    closeRightTabs: (input: YanhuCloseRightInput) => Promise<YanhuTabsState>
+    reorderTabs: (input: YanhuReorderTabsInput) => Promise<YanhuTabsState>
+    navigate: (input: YanhuNavigateInput) => Promise<YanhuTabsState>
+    goBack: (input?: YanhuTabRefInput) => Promise<YanhuTabsState>
+    goForward: (input?: YanhuTabRefInput) => Promise<YanhuTabsState>
+    reload: (input?: YanhuTabRefInput) => Promise<YanhuTabsState>
+    /** 一键自愈：净化陈旧动态签名后重载当前标签 */
+    retryWithClean: (input?: YanhuTabRefInput) => Promise<YanhuTabsState>
+    /** 弹出标签栏原生上下文菜单（系统绘制，悬浮于网页视图之上） */
+    showTabMenu: (input?: YanhuTabRefInput) => Promise<{ success: boolean }>
+    /** 在系统默认浏览器打开外链（仅 http/https） */
+    openExternal: (url: string) => Promise<{ success: boolean }>
+    onTabsChanged: (callback: (state: YanhuTabsState) => void) => () => void
+    onLoadingChanged: (callback: (event: YanhuLoadingChangedEvent) => void) => () => void
+    onUrlChanged: (callback: (event: YanhuUrlChangedEvent) => void) => () => void
+
+    // ===== 桌宠「砚小龙」（独立阉割版 Pi 运行时） =====
+    /** 主渲染窗口：同步智联万站视口矩形（CSS 像素） */
+    petSyncViewport: (rect: YanhuPetViewport) => Promise<{ success: boolean }>
+    /** 桌宠窗口：上报紧凑包裹窗口几何（DIP） */
+    petUpdateGeometry: (geometry: YanhuPetWindowGeometry) => Promise<{ success: boolean }>
+    /** 桌宠窗口：拉取启动引导数据（配置 + 历史 + 视口） */
+    petGetBootstrap: () => Promise<YanhuPetBootstrap>
+    petGetConfig: () => Promise<YanhuPetConfig>
+    petSaveConfig: (patch: Partial<YanhuPetConfig>) => Promise<YanhuPetConfig>
+    petGetHistory: () => Promise<YanhuPetMessage[]>
+    petClearHistory: () => Promise<{ success: boolean }>
+    /** 发起一次桌宠对话（流式事件经 onPetStream 推送） */
+    petSendChat: (input: YanhuPetChatInput) => Promise<{ success: boolean; error?: string }>
+    petAbortChat: () => Promise<{ success: boolean }>
+    /** 订阅桌宠流式事件（主进程 -> 桌宠窗口） */
+    onPetStream: (callback: (event: YanhuPetStreamEvent) => void) => () => void
+    /** 订阅桌宠状态（视口尺寸 / 呈现态 / 最新配置）变更 */
+    onPetStateChanged: (callback: (state: YanhuPetStateEvent) => void) => () => void
+    /** 订阅桌宠记忆被清空（原生菜单触发时同步 UI） */
+    onPetHistoryCleared: (callback: () => void) => () => void
+    /** 新手引导：查询桌宠窗口就绪与对话运行态 */
+    petGetChatStatus: () => Promise<YanhuPetChatStatus>
+    /** 新手引导：把演示指令填入桌宠输入框（不代发送） */
+    petTourFill: (text: string) => Promise<{ success: boolean }>
+    /** 新手引导：前置桌宠窗口并展开伴随卡片 */
+    petTourPresent: () => Promise<YanhuPetChatStatus>
+    /** 新手引导：结束桌宠保活 */
+    petTourRelease: () => Promise<{ success: boolean }>
+    /** 新手引导：订阅主进程下发的输入框填充事件（桌宠窗口消费） */
+    onPetTourFill: (callback: (event: YanhuPetTourFillEvent) => void) => () => void
+    /** 桌宠透明区域鼠标穿透控制 */
+    petSetIgnoreMouse: (ignore: boolean) => Promise<{ success: boolean }>
+    /** 唤起桌宠原生上下文菜单 */
+    petShowContextMenu: () => Promise<{ success: boolean }>
+    /** 特权指令：唤起「智联万站 · 实时底层诊断控制台」 */
+    openDiagnosticConsole: () => Promise<{ success: boolean }>
+  }
+
+  // ===== AI 速课堂（学习资料） =====
+  study: {
+    ingestDocuments: (input: StudyIngestDocumentsInput) => Promise<StudyDocumentOutline[]>
+    listDocuments: (sessionId: string) => Promise<StudyDocumentOutline[]>
+    getOutline: (input: StudyDocumentQueryInput) => Promise<StudyDocumentOutline | null>
+    removeDocument: (input: StudyDocumentQueryInput) => Promise<{ success: boolean }>
+    toggleDocumentActive: (input: StudyToggleDocumentActiveInput) => Promise<{ success: boolean; enabled: boolean }>
+    setDocumentsActive: (input: StudySetDocumentsActiveInput) => Promise<{ success: boolean }>
+    // Chrome 风格动态多 Tab 拓扑
+    getTabs: (sessionId: string) => Promise<AiClassTabsState>
+    saveTabs: (input: { sessionId: string; tabs: AiClassRightTabItem[]; activeTabId: string }) => Promise<AiClassTabsState>
+    // 思维导图
+    getMindmap: (input: { sessionId: string; mindmapId?: string }) => Promise<MindMapData | null>
+    saveMindmapCoords: (input: {
+      sessionId: string
+      mindmapId: string
+      coords: Record<string, { x: number; y: number }>
+    }) => Promise<MindMapData | null>
+    exportOpml: (input: {
+      sessionId: string
+      mindmapId?: string
+    }) => Promise<{ success: boolean; filePath?: string; canceled?: boolean; error?: string }>
+    // 抽认卡与 FSRS-7
+    getFlashcards: (input: { sessionId: string; deckId?: string }) => Promise<FlashcardDeck | null>
+    updateCardRating: (input: StudyCardRatingInput) => Promise<FlashcardItem | null>
+    // 测验与 FIM
+    getQuiz: (input: { sessionId: string; quizId?: string }) => Promise<QuizSession | null>
+    submitQuizAnswer: (input: StudyQuizAnswerInput) => Promise<QuizSession | null>
+    resetQuiz: (input: { sessionId: string; quizId: string }) => Promise<QuizSession | null>
+    // 双轨联动生成
+    generateArtifact: (input: StudyGenerateArtifactInput) => Promise<StudyGenerateArtifactResult>
+    // 已生成成果总览（右侧工作台常驻列表）
+    listArtifacts: (sessionId: string) => Promise<StudyArtifactSummary[]>
+  }
+
+  // ===== AI 速课堂（专属工作区 / 会话 / 资料树图谱） =====
+  cdutAiClass: {
+    listSessions: () => Promise<AiClassSessionSummary[]>
+    createSession: (courseName: string) => Promise<AiClassSessionSummary>
+    /** 新手引导：确保演示课堂与《红楼梦》资料就绪（幂等） */
+    ensureDemoSession: () => Promise<{
+      session: AiClassSessionSummary
+      created: boolean
+      documentIngested: boolean
+      novelPath: string | null
+    }>
+    deleteSession: (sessionId: string) => Promise<{ success: boolean }>
+    /** 按用户选定模式生成资料树图谱（用户主动触发，不再静默偷跑） */
+    generateGraphRelations: (input: StudyGraphGenerateInput) => Promise<KnowledgeGraphData>
+    /** 动态测算三档生成模式的 Token 与费用预估 */
+    estimateGraphCost: (sessionId: string) => Promise<StudyGraphCostEstimate>
+    /** 监听图谱推演进度事件；返回解绑清理闭包 */
+    onGraphProgress: (callback: (data: StudyGraphProgressEvent) => void) => () => void
+    /** 全域跨文档高精度混合检索（AI 导师与渲染端共用） */
+    searchStudyKnowledge: (input: StudySearchKnowledgeInput) => Promise<StudySearchKnowledgeResult>
+  }
+}
+
+interface MigrationExportResult {
+  success: boolean
+  filePath: string
+  warnings?: string[]
+}
+
+/**
+ * 实现 ElectronAPI 接口
+ */
+
+/** 启动时去重：多个初始化组件同时调用 getSettings()，共享同一个 Promise */
+let _settingsPromise: Promise<AppSettings> | null = null
+
+const electronAPI: ElectronAPI = {
+  getPlatformInfo: () => ({ platform: process.platform, arch: process.arch }),
+
+  // 运行时
+  getRuntimeStatus: () => {
+    return ipcRenderer.invoke(IPC_CHANNELS.GET_RUNTIME_STATUS)
+  },
+
+  reinitRuntime: () => {
+    return ipcRenderer.invoke(IPC_CHANNELS.REINIT_RUNTIME)
+  },
+
+  getGitRepoStatus: (dirPath: string) => {
+    return ipcRenderer.invoke(IPC_CHANNELS.GET_GIT_REPO_STATUS, dirPath)
+  },
+
+  getUnstagedChanges: (dirPath: string, sessionPath?: string, workspaceFilesPath?: string, extraPaths?: string[], sessionId?: string) => {
+    return ipcRenderer.invoke(IPC_CHANNELS.GET_UNSTAGED_CHANGES, dirPath, sessionPath, workspaceFilesPath, extraPaths, sessionId)
+  },
+
+  getFileDiff: (input: import('@profer/shared').GetFileDiffInput) => {
+    return ipcRenderer.invoke(IPC_CHANNELS.GET_FILE_DIFF, input)
+  },
+
+  getUntrackedContent: (input: import('@profer/shared').GetFileDiffInput) => {
+    return ipcRenderer.invoke(IPC_CHANNELS.GET_UNTRACKED_CONTENT, input)
+  },
+
+  revertFile: (input: import('@profer/shared').RevertFileInput) => {
+    return ipcRenderer.invoke(IPC_CHANNELS.REVERT_FILE, input)
+  },
+
+  invalidateGitDiffCache: (changedPath?: string) => {
+    return ipcRenderer.invoke(IPC_CHANNELS.INVALIDATE_GIT_DIFF_CACHE, changedPath)
+  },
+
+  getDiffContents: (input: import('@profer/shared').GetFileDiffInput) => {
+    return ipcRenderer.invoke(IPC_CHANNELS.GET_DIFF_CONTENTS, input)
+  },
+
+  listWorktrees: (repoPath: string, sessionId: string) => {
+    return ipcRenderer.invoke(IPC_CHANNELS.LIST_WORKTREES, repoPath, sessionId)
+  },
+
+  getWorktreeChanges: (worktreePath: string, baseBranch: string, sessionId: string) => {
+    return ipcRenderer.invoke(IPC_CHANNELS.GET_WORKTREE_CHANGES, worktreePath, baseBranch, sessionId)
+  },
+
+  openDetachedPreview: (input: DetachedPreviewWindowInput) => {
+    return ipcRenderer.invoke(IPC_CHANNELS.OPEN_DETACHED_PREVIEW, input) as Promise<string | null>
+  },
+
+  getDetachedPreviewData: (previewId: string) => {
+    return ipcRenderer.invoke(IPC_CHANNELS.GET_DETACHED_PREVIEW_DATA, previewId) as Promise<DetachedPreviewWindowData | null>
+  },
+
+  openAgentBrowser: (sessionId: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.OPEN_BROWSER, sessionId)
+  },
+  setAgentBrowserForeground: (sessionId: string | null) => {
+    ipcRenderer.send(AGENT_IPC_CHANNELS.SET_BROWSER_FOREGROUND, sessionId)
+  },
+  listAgentBrowserTabs: (sessionId: string) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.LIST_BROWSER_TABS, sessionId),
+  createAgentBrowserTab: (input: import('@profer/shared').BrowserCreateTabInput) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.CREATE_BROWSER_TAB, input),
+  selectAgentBrowserTab: (input: import('@profer/shared').BrowserTabInput) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.SELECT_BROWSER_TAB, input),
+  closeAgentBrowserTab: (input: import('@profer/shared').BrowserTabInput) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.CLOSE_BROWSER_TAB, input),
+  getAgentBrowserState: (sessionId: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_BROWSER_STATE, sessionId)
+  },
+  setAgentBrowserLayout: (layout: import('@profer/shared').BrowserViewLayout) => {
+    ipcRenderer.send(AGENT_IPC_CHANNELS.SET_BROWSER_LAYOUT, layout)
+  },
+  navigateAgentBrowser: (input: import('@profer/shared').BrowserNavigateInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.NAVIGATE_BROWSER, input)
+  },
+  goBackAgentBrowser: (sessionId: string) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.GO_BACK_BROWSER, sessionId),
+  goForwardAgentBrowser: (sessionId: string) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.GO_FORWARD_BROWSER, sessionId),
+  reloadAgentBrowser: (sessionId: string) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.RELOAD_BROWSER, sessionId),
+  translateAgentBrowser: (input: import('@profer/shared').BrowserTabInput) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.TRANSLATE_BROWSER, input),
+  pasteAgentBrowserClipboard: (input: import('@profer/shared').BrowserTabInput) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.PASTE_BROWSER_CLIPBOARD, input),
+  onAgentBrowserDownloadBlocked: (callback: (event: import('@profer/shared').BrowserDownloadBlockedEvent) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, payload: import('@profer/shared').BrowserDownloadBlockedEvent) => callback(payload)
+    ipcRenderer.on(AGENT_IPC_CHANNELS.BROWSER_DOWNLOAD_BLOCKED, listener)
+    return () => ipcRenderer.removeListener(AGENT_IPC_CHANNELS.BROWSER_DOWNLOAD_BLOCKED, listener)
+  },
+  onAgentBrowserLocalFileSelection: (
+    callback: (event: import('@profer/shared').BrowserLocalFileSelectionEvent) => void,
+  ) => {
+    const listener = (_event: Electron.IpcRendererEvent, payload: import('@profer/shared').BrowserLocalFileSelectionEvent) => callback(payload)
+    ipcRenderer.on(AGENT_IPC_CHANNELS.BROWSER_LOCAL_FILE_SELECTION, listener)
+    return () => ipcRenderer.removeListener(AGENT_IPC_CHANNELS.BROWSER_LOCAL_FILE_SELECTION, listener)
+  },
+  hideAgentBrowser: (sessionId: string) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.HIDE_BROWSER, sessionId),
+  openFileInBrowser: (input: {
+    sessionId: string
+    filePath: string
+    theme?: 'light' | 'dark'
+    tokens?: import('@profer/shared').OfvThemeTokens
+    access?: import('@profer/shared').FileAccessOptions
+  }) =>
+    ipcRenderer.invoke(AGENT_IPC_CHANNELS.OPEN_FILE_IN_BROWSER, input),
+  closeAgentBrowser: (sessionId: string) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.CLOSE_BROWSER, sessionId),
+  refreshBrowserPreviewTheme: (input: {
+    theme: 'light' | 'dark'
+    tokens?: import('@profer/shared').OfvThemeTokens
+  }) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.REFRESH_BROWSER_PREVIEW_THEME, input),
+  setAgentBrowserZoom: (input: import('@profer/shared').BrowserTabInput & { zoomFactor: number }) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.SET_BROWSER_ZOOM, input),
+  onAgentBrowserStateChanged: (callback: (state: import('@profer/shared').BrowserViewState) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, state: import('@profer/shared').BrowserViewState) => callback(state)
+    ipcRenderer.on(AGENT_IPC_CHANNELS.BROWSER_STATE_CHANGED, listener)
+    return () => ipcRenderer.removeListener(AGENT_IPC_CHANNELS.BROWSER_STATE_CHANGED, listener)
+  },
+  getBrowserStartPage: () => ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_BROWSER_START_PAGE),
+  addBrowserBookmark: (input: import('@profer/shared').BrowserAddBookmarkInput) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.ADD_BROWSER_BOOKMARK, input),
+  removeBrowserBookmark: (id: string) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.REMOVE_BROWSER_BOOKMARK, id),
+  updateBrowserHomeUrl: (url: string) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.UPDATE_BROWSER_HOME_URL, url),
+  clearBrowserHistory: () => ipcRenderer.invoke(AGENT_IPC_CHANNELS.CLEAR_BROWSER_HISTORY),
+
+  // 通用工具
+  openExternal: (url: string) => {
+    return ipcRenderer.invoke(IPC_CHANNELS.OPEN_EXTERNAL, url)
+  },
+
+  // 窗口控制
+  windowMinimize: () => {
+    return ipcRenderer.invoke(IPC_CHANNELS.WINDOW_MINIMIZE)
+  },
+
+  windowMaximize: () => {
+    return ipcRenderer.invoke(IPC_CHANNELS.WINDOW_MAXIMIZE)
+  },
+
+  windowClose: () => {
+    return ipcRenderer.invoke(IPC_CHANNELS.WINDOW_CLOSE)
+  },
+
+  windowIsMaximized: () => {
+    return ipcRenderer.invoke(IPC_CHANNELS.WINDOW_IS_MAXIMIZED)
+  },
+
+  windowIsFullScreen: () => {
+    return ipcRenderer.invoke(IPC_CHANNELS.WINDOW_IS_FULL_SCREEN)
+  },
+
+  onWindowFullScreenChanged: (callback: (isFullScreen: boolean) => void) => {
+    const handler = (_event: Electron.IpcRendererEvent, isFullScreen: boolean): void => callback(isFullScreen)
+    ipcRenderer.on(IPC_CHANNELS.WINDOW_FULL_SCREEN_CHANGED, handler)
+    return () => ipcRenderer.removeListener(IPC_CHANNELS.WINDOW_FULL_SCREEN_CHANGED, handler)
+  },
+
+  onWindowMaximizeChanged: (callback: (isMaximized: boolean) => void) => {
+    const handler = (_event: Electron.IpcRendererEvent, isMaximized: boolean): void => callback(isMaximized)
+    ipcRenderer.on(IPC_CHANNELS.WINDOW_MAXIMIZE_CHANGED, handler)
+    return () => ipcRenderer.removeListener(IPC_CHANNELS.WINDOW_MAXIMIZE_CHANGED, handler)
+  },
+
+  onArchivedUnreadChanged: (callback: (archivedCount: number) => void) => {
+    const handler = (_event: Electron.IpcRendererEvent, archivedCount: number): void => callback(archivedCount)
+    ipcRenderer.on(IPC_CHANNELS.ARCHIVED_UNREAD_CHANGED, handler)
+    return () => ipcRenderer.removeListener(IPC_CHANNELS.ARCHIVED_UNREAD_CHANGED, handler)
+  },
+
+  onWindowResize: (callback: () => void) => {
+    const handler = (): void => callback()
+    window.addEventListener('resize', handler)
+    return () => window.removeEventListener('resize', handler)
+  },
+
+  // 渠道管理
+  listChannels: () => {
+    return ipcRenderer.invoke(CHANNEL_IPC_CHANNELS.LIST)
+  },
+  getOfficialModelHealth: () => {
+    return ipcRenderer.invoke(CHANNEL_IPC_CHANNELS.GET_OFFICIAL_HEALTH)
+  },
+
+  createChannel: (input: ChannelCreateInput) => {
+    return ipcRenderer.invoke(CHANNEL_IPC_CHANNELS.CREATE, input)
+  },
+
+  updateChannel: (id: string, input: ChannelUpdateInput) => {
+    return ipcRenderer.invoke(CHANNEL_IPC_CHANNELS.UPDATE, id, input)
+  },
+
+  deleteChannel: (id: string) => {
+    return ipcRenderer.invoke(CHANNEL_IPC_CHANNELS.DELETE, id)
+  },
+
+  decryptApiKey: (channelId: string) => {
+    return ipcRenderer.invoke(CHANNEL_IPC_CHANNELS.DECRYPT_KEY, channelId)
+  },
+
+  testChannel: (channelId: string) => {
+    return ipcRenderer.invoke(CHANNEL_IPC_CHANNELS.TEST, channelId)
+  },
+
+  testChannelDirect: (input: FetchModelsInput) => {
+    return ipcRenderer.invoke(CHANNEL_IPC_CHANNELS.TEST_DIRECT, input)
+  },
+
+  fetchModels: (input: FetchModelsInput) => {
+    return ipcRenderer.invoke(CHANNEL_IPC_CHANNELS.FETCH_MODELS, input)
+  },
+
+  getChannelPlanQuota: (channelId: string) => {
+    return ipcRenderer.invoke(CHANNEL_IPC_CHANNELS.GET_PLAN_QUOTA, channelId)
+  },
+
+  syncChannelsFromServer: (serverBaseUrl: string, accessToken: string) => {
+    return ipcRenderer.invoke(CHANNEL_IPC_CHANNELS.SYNC_FROM_SERVER, serverBaseUrl, accessToken)
+  },
+
+  getCommercialMode: () => {
+    return ipcRenderer.invoke(CHANNEL_IPC_CHANNELS.GET_COMMERCIAL_MODE)
+  },
+
+  getAccountCapabilities: (force?: boolean) => {
+    return ipcRenderer.invoke(CHANNEL_IPC_CHANNELS.GET_ACCOUNT_CAPABILITIES, force)
+  },
+
+  getBuildTarget: () => {
+    return ipcRenderer.invoke(CHANNEL_IPC_CHANNELS.GET_BUILD_TARGET)
+  },
+
+  loginXaiOAuth: (channelId: string) => {
+    return ipcRenderer.invoke(CHANNEL_IPC_CHANNELS.XAI_LOGIN, channelId)
+  },
+
+  // 对话管理
+  listConversations: (includeArchived?: boolean) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.LIST_CONVERSATIONS, includeArchived)
+  },
+
+  /** 轻量归档计数（对话 + Agent 会话） */
+  getArchivedCounts: () => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_ARCHIVED_COUNTS)
+  },
+
+  createConversation: (title?: string, modelId?: string, channelId?: string) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.CREATE_CONVERSATION, title, modelId, channelId)
+  },
+
+  getConversationMessages: (id: string) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.GET_MESSAGES, id)
+  },
+
+  getRecentMessages: (id: string, limit: number) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.GET_RECENT_MESSAGES, id, limit)
+  },
+
+  updateConversationTitle: (id: string, title: string) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.UPDATE_TITLE, id, title)
+  },
+
+  regenerateConversationTitle: (id: string, channelId?: string, modelId?: string) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.REGENERATE_TITLE, id, channelId, modelId)
+  },
+
+  updateConversationModel: (id: string, modelId?: string, channelId?: string) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.UPDATE_MODEL, id, modelId, channelId)
+  },
+
+  deleteConversation: (id: string) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.DELETE_CONVERSATION, id)
+  },
+
+  togglePinConversation: (id: string) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.TOGGLE_PIN, id)
+  },
+
+  toggleArchiveConversation: (id: string) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.TOGGLE_ARCHIVE, id)
+  },
+
+  searchConversationMessages: (query: string) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.SEARCH_MESSAGES, query)
+  },
+
+  // 教程
+  getTutorialContent: () => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.GET_TUTORIAL_CONTENT)
+  },
+
+  createWelcomeConversation: () => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.CREATE_WELCOME_CONVERSATION)
+  },
+
+  deleteMessage: (conversationId: string, messageId: string) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.DELETE_MESSAGE, conversationId, messageId)
+  },
+
+  truncateMessagesFrom: (
+    conversationId: string,
+    messageId: string,
+    preserveFirstMessageAttachments = false,
+  ) => {
+    return ipcRenderer.invoke(
+      CHAT_IPC_CHANNELS.TRUNCATE_MESSAGES_FROM,
+      conversationId,
+      messageId,
+      preserveFirstMessageAttachments,
+    )
+  },
+
+  getBranch: (conversationId: string) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.GET_BRANCH, conversationId)
+  },
+
+  setActivePath: (conversationId: string, path: string[]) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.SET_ACTIVE_PATH, conversationId, path)
+  },
+
+  getBranchTree: (conversationId: string) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.GET_BRANCH_TREE, conversationId)
+  },
+
+  forkBranchAt: (
+    conversationId: string,
+    anchorId: string,
+    payload: {
+      role: 'user'
+      content: string
+      attachments?: ChatMessage['attachments']
+      knowledgeReferences?: ChatMessage['knowledgeReferences']
+    },
+  ) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.FORK_BRANCH_AT, conversationId, anchorId, payload)
+  },
+
+  getMessageContent: (conversationId: string, messageId: string) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.GET_MESSAGE_CONTENT, conversationId, messageId)
+  },
+
+  updateContextDividers: (conversationId: string, dividers: string[]) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.UPDATE_CONTEXT_DIVIDERS, conversationId, dividers)
+  },
+
+  // 附件管理
+  saveAttachment: (input: AttachmentSaveInput) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.SAVE_ATTACHMENT, input)
+  },
+
+  readAttachment: (localPath: string) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.READ_ATTACHMENT, localPath)
+  },
+
+  resolveImageUrl: (url: string) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.RESOLVE_IMAGE_URL, url)
+  },
+
+  saveImageAs: (localPath: string, defaultFilename: string) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.SAVE_IMAGE_AS, localPath, defaultFilename)
+  },
+
+  saveResourceFileAs: (resourceRelativePath: string, defaultFilename: string) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.SAVE_RESOURCE_FILE_AS, resourceRelativePath, defaultFilename)
+  },
+
+  deleteAttachment: (localPath: string) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.DELETE_ATTACHMENT, localPath)
+  },
+
+  openFileDialog: () => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.OPEN_FILE_DIALOG)
+  },
+
+  // 通用个人资料库
+  knowledge: {
+    importItems: (filePaths: string[]) => ipcRenderer.invoke(KNOWLEDGE_IPC_CHANNELS.IMPORT_ITEMS, filePaths),
+    listItems: () => ipcRenderer.invoke(KNOWLEDGE_IPC_CHANNELS.LIST_ITEMS),
+    getItem: (itemId: string) => ipcRenderer.invoke(KNOWLEDGE_IPC_CHANNELS.GET_ITEM, itemId),
+    deleteItem: (itemId: string) => ipcRenderer.invoke(KNOWLEDGE_IPC_CHANNELS.DELETE_ITEM, itemId),
+    searchItems: (query: string, itemIds?: string[], topK?: number) => ipcRenderer.invoke(KNOWLEDGE_IPC_CHANNELS.SEARCH_ITEMS, query, itemIds, topK),
+    getLibrarySnapshot: () => ipcRenderer.invoke(KNOWLEDGE_IPC_CHANNELS.GET_LIBRARY_SNAPSHOT),
+    showItemInFolder: (itemId: string) => ipcRenderer.invoke(KNOWLEDGE_IPC_CHANNELS.SHOW_ITEM_IN_FOLDER, itemId),
+  },
+
+  extractAttachmentText: (localPath: string) => {
+    return ipcRenderer.invoke(CHAT_IPC_CHANNELS.EXTRACT_ATTACHMENT_TEXT, localPath)
+  },
+
+  // 用户档案
+  getUserProfile: () => {
+    return ipcRenderer.invoke(USER_PROFILE_IPC_CHANNELS.GET)
+  },
+
+  updateUserProfile: (updates: Partial<UserProfile>) => {
+    return ipcRenderer.invoke(USER_PROFILE_IPC_CHANNELS.UPDATE, updates)
+  },
+
+  // 皮肤管理
+  getSkins: () => ipcRenderer.invoke(SKIN_IPC_CHANNELS.GET_SKINS),
+  getSkinCss: (id: string) => ipcRenderer.invoke(SKIN_IPC_CHANNELS.GET_SKIN_CSS, id),
+  getSkinPreview: (id: string) => ipcRenderer.invoke(SKIN_IPC_CHANNELS.GET_SKIN_PREVIEW, id),
+  selectSkinZip: () => ipcRenderer.invoke(SKIN_IPC_CHANNELS.SELECT_ZIP),
+  selectSkinFolder: () => ipcRenderer.invoke(SKIN_IPC_CHANNELS.SELECT_FOLDER),
+  installSkinZip: (path: string, replace = false) => ipcRenderer.invoke(SKIN_IPC_CHANNELS.INSTALL_ZIP, path, replace),
+  installSkinFolder: (path: string, replace = false) => ipcRenderer.invoke(SKIN_IPC_CHANNELS.INSTALL_FOLDER, path, replace),
+  deleteUserSkin: (id: string) => ipcRenderer.invoke(SKIN_IPC_CHANNELS.DELETE_USER_SKIN, id),
+  openUserSkinsFolder: () => ipcRenderer.invoke(SKIN_IPC_CHANNELS.OPEN_USER_FOLDER),
+  openSkinTemplateFolder: () => ipcRenderer.invoke(SKIN_IPC_CHANNELS.OPEN_TEMPLATE_FOLDER),
+  refreshSkins: () => ipcRenderer.invoke(SKIN_IPC_CHANNELS.REFRESH),
+
+  // 应用设置
+  notifyRendererReady: () => { ipcRenderer.send(SETTINGS_IPC_CHANNELS.RENDERER_READY) },
+  setReviewAgentAutoApproval: (input: { enabled: boolean; grantedBy: string }) =>
+    ipcRenderer.invoke(SETTINGS_IPC_CHANNELS.SET_REVIEW_AGENT_AUTO_APPROVAL, input) as Promise<AppSettings>,
+  getSettings: () => {
+    // 启动时去重：多个初始化组件同时调用 getSettings()，共享同一个 Promise
+    if (!_settingsPromise) {
+      _settingsPromise = ipcRenderer.invoke(SETTINGS_IPC_CHANNELS.GET) as Promise<AppSettings>
+      _settingsPromise.finally(() => {
+        _settingsPromise = null
+      })
+    }
+    return _settingsPromise
+  },
+
+  updateSettings: (updates: Partial<AppSettings>) => {
+    return ipcRenderer.invoke(SETTINGS_IPC_CHANNELS.UPDATE, updates)
+  },
+
+  updateSettingsSync: (updates: Partial<AppSettings>) => {
+    return ipcRenderer.sendSync(SETTINGS_IPC_CHANNELS.UPDATE_SYNC, updates)
+  },
+
+  onDeveloperSettingsChanged: (callback: (settings: DeveloperSettingsSnapshot) => void) => {
+    const listener = (_: unknown, settings: DeveloperSettingsSnapshot): void => callback(settings)
+    ipcRenderer.on(SETTINGS_IPC_CHANNELS.ON_DEVELOPER_SETTINGS_CHANGED, listener)
+    return () => { ipcRenderer.removeListener(SETTINGS_IPC_CHANNELS.ON_DEVELOPER_SETTINGS_CHANGED, listener) }
+  },
+
+  getPocketModeStatus: () => {
+    return ipcRenderer.invoke(SETTINGS_IPC_CHANNELS.GET_POCKET_MODE_STATUS) as Promise<PocketModeStatus>
+  },
+
+  setPocketModeEnabled: (enabled: boolean) => {
+    return ipcRenderer.invoke(SETTINGS_IPC_CHANNELS.SET_POCKET_MODE_ENABLED, enabled) as Promise<PocketModeStatus>
+  },
+  setPocketModePort: (port: number) => {
+    return ipcRenderer.invoke(SETTINGS_IPC_CHANNELS.SET_POCKET_MODE_PORT, port) as Promise<PocketModeStatus>
+  },
+  getProferApkQr: () => {
+    return ipcRenderer.invoke(SETTINGS_IPC_CHANNELS.GET_APK_QR) as Promise<{ url: string; dataUrl: string; fileName: string }>
+  },
+
+  getSystemTheme: () => {
+    return ipcRenderer.invoke(SETTINGS_IPC_CHANNELS.GET_SYSTEM_THEME)
+  },
+
+  getAutoLaunch: () => {
+    return ipcRenderer.invoke(SETTINGS_IPC_CHANNELS.GET_AUTO_LAUNCH)
+  },
+
+  setAutoLaunch: (enabled: boolean) => {
+    return ipcRenderer.invoke(SETTINGS_IPC_CHANNELS.SET_AUTO_LAUNCH, enabled)
+  },
+
+  onSystemThemeChanged: (callback: (isDark: boolean) => void) => {
+    const listener = (_: unknown, isDark: boolean): void => callback(isDark)
+    ipcRenderer.on(SETTINGS_IPC_CHANNELS.ON_SYSTEM_THEME_CHANGED, listener)
+    return () => { ipcRenderer.removeListener(SETTINGS_IPC_CHANNELS.ON_SYSTEM_THEME_CHANGED, listener) }
+  },
+
+  onThemeSettingsChanged: (callback: (payload: { themeMode: string; themeStyle: string; interfaceVariant?: string }) => void) => {
+    const listener = (_: unknown, payload: { themeMode: string; themeStyle: string; interfaceVariant?: string }): void => callback(payload)
+    ipcRenderer.on(SETTINGS_IPC_CHANNELS.ON_THEME_SETTINGS_CHANGED, listener)
+    return () => { ipcRenderer.removeListener(SETTINGS_IPC_CHANNELS.ON_THEME_SETTINGS_CHANGED, listener) }
+  },
+
+  onSkinsChanged: (callback: (payload: { deletedId: string | null }) => void) => {
+    const listener = (_: unknown, payload: { deletedId: string | null }): void => callback(payload)
+    ipcRenderer.on(SKIN_IPC_CHANNELS.ON_SKINS_CHANGED, listener)
+    return () => { ipcRenderer.removeListener(SKIN_IPC_CHANNELS.ON_SKINS_CHANGED, listener) }
+  },
+
+  // 自定义通知音效
+  addCustomNotificationSound: (sourcePath: string, label: string) => {
+    return ipcRenderer.invoke(NOTIFICATION_SOUND_IPC_CHANNELS.ADD, sourcePath, label)
+  },
+  removeCustomNotificationSound: (id: string) => {
+    return ipcRenderer.invoke(NOTIFICATION_SOUND_IPC_CHANNELS.REMOVE, id)
+  },
+  getCustomSoundUrl: (fileName: string) => {
+    return ipcRenderer.invoke(NOTIFICATION_SOUND_IPC_CHANNELS.GET_URL, fileName)
+  },
+
+  // 桌面通知（通过主进程弹出原生 Notification，Windows 点击可靠）
+  showDesktopNotification: (title: string, body: string) => {
+    return ipcRenderer.invoke(DESKTOP_NOTIFICATION_IPC_CHANNELS.SHOW, { title, body })
+  },
+  onDesktopNotificationClicked: (callback: () => void) => {
+    const listener = () => callback()
+    ipcRenderer.on(DESKTOP_NOTIFICATION_IPC_CHANNELS.CLICKED, listener)
+    return () => { ipcRenderer.removeListener(DESKTOP_NOTIFICATION_IPC_CHANNELS.CLICKED, listener) }
+  },
+
+  // Scratch Pad 持久化
+  loadScratchPad: () => {
+    return ipcRenderer.invoke(SCRATCH_PAD_IPC_CHANNELS.LOAD)
+  },
+
+  saveScratchPad: (content: string) => {
+    return ipcRenderer.invoke(SCRATCH_PAD_IPC_CHANNELS.SAVE, content)
+  },
+
+  saveScratchPadSync: (content: string) => {
+    return ipcRenderer.sendSync(SCRATCH_PAD_IPC_CHANNELS.SAVE_SYNC, content)
+  },
+
+  exportScratchPad: (markdown: string, dirPath: string, filename: string) => {
+    return ipcRenderer.invoke(SCRATCH_PAD_IPC_CHANNELS.EXPORT, markdown, dirPath, filename)
+  },
+
+  chooseExportPath: (defaultName: string) => {
+    return ipcRenderer.invoke(SCRATCH_PAD_IPC_CHANNELS.CHOOSE_EXPORT_PATH, defaultName)
+  },
+
+  // 应用图标切换
+  setAppIcon: (variantId: string) => {
+    return ipcRenderer.invoke(APP_ICON_IPC_CHANNELS.SET, variantId)
+  },
+
+  // Dock/Launcher 角标
+  setDockBadgeCount: (count: number) => {
+    return ipcRenderer.invoke(DOCK_BADGE_IPC_CHANNELS.SET_COUNT, count)
+  },
+
+  // 环境检测
+  checkEnvironment: () => {
+    return ipcRenderer.invoke(ENVIRONMENT_IPC_CHANNELS.CHECK)
+  },
+
+  // 第三方安装包（Git / Node.js）
+  fetchInstallerManifest: () => {
+    return ipcRenderer.invoke(INSTALLER_IPC_CHANNELS.MANIFEST)
+  },
+  downloadInstaller: (req: InstallerDownloadRequest) => {
+    return ipcRenderer.invoke(INSTALLER_IPC_CHANNELS.DOWNLOAD, req)
+  },
+  cancelInstallerDownload: (key: string) => {
+    return ipcRenderer.invoke(INSTALLER_IPC_CHANNELS.CANCEL, key)
+  },
+  launchInstaller: (filePath: string) => {
+    return ipcRenderer.invoke(INSTALLER_IPC_CHANNELS.LAUNCH, filePath)
+  },
+  onInstallerProgress: (callback: (payload: InstallerProgressPayload) => void) => {
+    const listener = (_: unknown, payload: InstallerProgressPayload) => callback(payload)
+    ipcRenderer.on(INSTALLER_IPC_CHANNELS.PROGRESS, listener)
+    return () => ipcRenderer.off(INSTALLER_IPC_CHANNELS.PROGRESS, listener)
+  },
+
+  // 代理配置
+  getProxySettings: () => {
+    return ipcRenderer.invoke(PROXY_IPC_CHANNELS.GET_SETTINGS)
+  },
+
+  updateProxySettings: (config: ProxyConfig) => {
+    return ipcRenderer.invoke(PROXY_IPC_CHANNELS.UPDATE_SETTINGS, config)
+  },
+
+  detectSystemProxy: () => {
+    return ipcRenderer.invoke(PROXY_IPC_CHANNELS.DETECT_SYSTEM)
+  },
+
+  // 流式事件订阅
+  onStreamChunk: (callback: (event: StreamChunkEvent) => void) => {
+    const listener = (_: unknown, event: StreamChunkEvent): void => callback(event)
+    ipcRenderer.on(CHAT_IPC_CHANNELS.STREAM_CHUNK, listener)
+    return () => { ipcRenderer.removeListener(CHAT_IPC_CHANNELS.STREAM_CHUNK, listener) }
+  },
+
+  onStreamReasoning: (callback: (event: StreamReasoningEvent) => void) => {
+    const listener = (_: unknown, event: StreamReasoningEvent): void => callback(event)
+    ipcRenderer.on(CHAT_IPC_CHANNELS.STREAM_REASONING, listener)
+    return () => { ipcRenderer.removeListener(CHAT_IPC_CHANNELS.STREAM_REASONING, listener) }
+  },
+
+  onStreamComplete: (callback: (event: StreamCompleteEvent) => void) => {
+    const listener = (_: unknown, event: StreamCompleteEvent): void => callback(event)
+    ipcRenderer.on(CHAT_IPC_CHANNELS.STREAM_COMPLETE, listener)
+    return () => { ipcRenderer.removeListener(CHAT_IPC_CHANNELS.STREAM_COMPLETE, listener) }
+  },
+
+  onStreamError: (callback: (event: StreamErrorEvent) => void) => {
+    const listener = (_: unknown, event: StreamErrorEvent): void => callback(event)
+    ipcRenderer.on(CHAT_IPC_CHANNELS.STREAM_ERROR, listener)
+    return () => { ipcRenderer.removeListener(CHAT_IPC_CHANNELS.STREAM_ERROR, listener) }
+  },
+
+  onStreamToolActivity: (callback: (event: StreamToolActivityEvent) => void) => {
+    const listener = (_: unknown, event: StreamToolActivityEvent): void => callback(event)
+    ipcRenderer.on(CHAT_IPC_CHANNELS.STREAM_TOOL_ACTIVITY, listener)
+    return () => { ipcRenderer.removeListener(CHAT_IPC_CHANNELS.STREAM_TOOL_ACTIVITY, listener) }
+  },
+
+  // Agent 会话管理
+  listAgentSessions: (includeArchived?: boolean) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.LIST_SESSIONS, includeArchived)
+  },
+
+  getAgentSessionMeta: (id: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_SESSION_META, id)
+  },
+
+  createAgentSession: (title?: string, channelId?: string, workspaceId?: string, modelId?: string, presetId?: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.CREATE_SESSION, title, channelId, workspaceId, modelId, presetId)
+  },
+
+  // Agent 预设
+  listAgentPresets: (workspaceSlug?: string, includeInactiveGlobal?: boolean) => {
+    return ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.LIST_PRESETS, workspaceSlug, includeInactiveGlobal)
+  },
+  listGlobalAgentPresets: () => ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.LIST_GLOBAL_PRESETS),
+  createGlobalAgentPreset: (input: AgentPresetCreateInput) => ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.CREATE_GLOBAL_PRESET, input),
+  promoteWorkspacePresetToGlobal: (workspaceSlug: string, presetId: string, targetWorkspaceSlugs: string[], keepWorkspaceCopy = true) => ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.PROMOTE_WORKSPACE_PRESET_TO_GLOBAL, workspaceSlug, presetId, targetWorkspaceSlugs, keepWorkspaceCopy),
+  updateGlobalAgentPreset: (presetId: string, updates: AgentPresetUpdateInput) => ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.UPDATE_GLOBAL_PRESET, presetId, updates),
+  getPresetReferenceReport: (reference: PresetReference) => ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.GET_REFERENCE_REPORT, reference),
+  copyPresetToWorkspace: (reference: PresetReference, workspaceSlug: string, name?: string) => ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.COPY_TO_WORKSPACE, reference, workspaceSlug, name),
+  deleteGlobalAgentPreset: (reference: PresetReference) => ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.DELETE_GLOBAL_PRESET, reference),
+  setDefaultAgentPresetReference: (workspaceSlug: string, reference: PresetReference) => ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.SET_DEFAULT_REFERENCE, workspaceSlug, reference),
+  enableGlobalPresetInWorkspace: (workspaceSlug: string, reference: PresetReference) => ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.ENABLE_GLOBAL_IN_WORKSPACE, workspaceSlug, reference),
+  disableGlobalPresetInWorkspace: (workspaceSlug: string, reference: PresetReference) => ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.DISABLE_GLOBAL_IN_WORKSPACE, workspaceSlug, reference),
+  rebindAndDisableGlobalPresetScope: (workspaceSlug: string, source: PresetReference, replacement?: PresetReference) => ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.REBIND_AND_DISABLE_GLOBAL_SCOPE, workspaceSlug, source, replacement),
+  setWorkspacePresetEnabled: (workspaceSlug: string, presetId: string, enabled: boolean) => ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.SET_WORKSPACE_ENABLED, workspaceSlug, presetId, enabled),
+  rebindAgentSessionPresetReference: (sessionId: string, reference: PresetReference, expectedRevision?: number) => ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.REBIND_SESSION_REFERENCE, sessionId, reference, expectedRevision),
+  rebindAutomationPresetReference: (automationId: string, reference: PresetReference | null) => ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.REBIND_AUTOMATION_REFERENCE, automationId, reference),
+
+  getDefaultAgentPreset: (workspaceSlug?: string) => {
+    return ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.GET_DEFAULT_PRESET, workspaceSlug)
+  },
+
+  updateAgentSessionPreset: (sessionId: string, presetId: string) => {
+    return ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.UPDATE_SESSION_PRESET, sessionId, presetId)
+  },
+
+  setDefaultAgentPreset: (workspaceSlug: string, presetId: string) => {
+    return ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.SET_DEFAULT_PRESET, workspaceSlug, presetId)
+  },
+
+  createAgentPreset: (workspaceSlug: string, input: AgentPresetCreateInput) => {
+    return ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.CREATE_PRESET, workspaceSlug, input)
+  },
+
+  copyAgentPreset: (workspaceSlug: string, fromId: string, name?: string) => {
+    return ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.COPY_PRESET, workspaceSlug, fromId, name)
+  },
+
+  updateAgentPreset: (workspaceSlug: string, presetId: string, updates: AgentPresetUpdateInput) => {
+    return ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.UPDATE_PRESET, workspaceSlug, presetId, updates)
+  },
+
+  deleteAgentPreset: (workspaceSlug: string, presetId: string) => {
+    return ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.DELETE_PRESET, workspaceSlug, presetId)
+  },
+
+  getOtherWorkspacePresets: (currentSlug: string) => {
+    return ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.GET_OTHER_WORKSPACE_PRESETS, currentSlug)
+  },
+
+  importPresetFromWorkspace: (targetSlug: string, sourceSlug: string, presetId: string) => {
+    return ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.IMPORT_PRESET_FROM_WORKSPACE, targetSlug, sourceSlug, presetId)
+  },
+
+  exportAgentPresets: (workspaceSlug: string, presetIds?: string[]) => {
+    return ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.EXPORT_PRESETS, workspaceSlug, presetIds)
+  },
+
+  importAgentPresets: (workspaceSlug: string) => {
+    return ipcRenderer.invoke(AGENT_PRESET_IPC_CHANNELS.IMPORT_PRESETS, workspaceSlug)
+  },
+
+  ensureProjectDraftAgentSession: (workspaceId: string, channelId?: string, modelId?: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.ENSURE_PROJECT_DRAFT_SESSION, workspaceId, channelId, modelId)
+  },
+
+  getAgentSessionSDKMessages: (id: string, opts?: { tail?: number; before?: number }) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_SDK_MESSAGES, id, opts)
+  },
+
+  restoreActiveAgentStreams: () => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.RESTORE_ACTIVE_STREAMS)
+  },
+
+  getAgentFilePreviewRevision: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.FILE_PREVIEW_REVISION, filePath, access)
+  },
+
+  reportAgentFilePreview: (report: import('@profer/shared').AgentFilePreviewReport) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.FILE_PREVIEW_REPORT, report)
+  },
+
+  reportAgentFilePreviewInspection: (result: import('@profer/shared').AgentFilePreviewInspectResult) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.FILE_PREVIEW_INSPECTION_RESULT, result)
+  },
+
+  updateAgentSessionTitle: (id: string, title: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.UPDATE_TITLE, id, title)
+  },
+
+  regenerateAgentSessionTitle: (id: string, channelId?: string, modelId?: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.REGENERATE_TITLE, id, channelId, modelId)
+  },
+
+  updateAgentSessionModel: (id: string, channelId?: string, modelId?: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.UPDATE_SESSION_MODEL, id, channelId, modelId)
+  },
+
+  deleteAgentSession: (id: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.DELETE_SESSION, id)
+  },
+
+  migrateChatToAgent: (conversationId: string, agentSessionId: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.MIGRATE_CHAT_TO_AGENT, conversationId, agentSessionId)
+  },
+
+  togglePinAgentSession: (id: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.TOGGLE_PIN, id)
+  },
+
+  clearAgentCompletionState: (id: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.CLEAR_COMPLETION_STATE, id)
+  },
+
+  setAgentCompletionState: (id: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.SET_COMPLETION_STATE, id)
+  },
+
+  updateAgentInterruptionState: (input: UpdateAgentInterruptStateInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.UPDATE_INTERRUPTION_STATE, input)
+  },
+
+  toggleArchiveAgentSession: (id: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.TOGGLE_ARCHIVE, id)
+  },
+
+  searchAgentSessionMessages: (query: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.SEARCH_MESSAGES, query)
+  },
+
+  searchAgentSessionReferences: (input: AgentSessionReferenceSearchInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.SEARCH_SESSION_REFERENCES, input)
+  },
+
+  moveAgentSessionToWorkspace: (input: MoveSessionToWorkspaceInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.MOVE_SESSION_TO_WORKSPACE, input)
+  },
+
+  listSessionProcesses: (input: ListSessionProcessesInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.LIST_SESSION_PROCESSES, input)
+  },
+
+  getSessionProcessCount: (sessionId: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_SESSION_PROCESS_COUNT, sessionId)
+  },
+
+  killProcess: (input: KillProcessInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.KILL_PROCESS, input)
+  },
+
+  onRuntimeProcessesChanged: (callback: (data: { sessionId: string }) => void) => {
+    const listener = (_: unknown, data: { sessionId: string }): void => callback(data)
+    ipcRenderer.on(AGENT_IPC_CHANNELS.RUNTIME_PROCESSES_CHANGED, listener)
+    return () => { ipcRenderer.removeListener(AGENT_IPC_CHANNELS.RUNTIME_PROCESSES_CHANGED, listener) }
+  },
+
+  forkAgentSession: (input: ForkSessionInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.FORK_SESSION, input)
+  },
+
+  rewindSession: (input: RewindSessionInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.REWIND_SESSION, input)
+  },
+
+  findOrphanSessions: () => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.FIND_ORPHAN_SESSIONS)
+  },
+
+  generateAgentTitle: (input: AgentGenerateTitleInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GENERATE_TITLE, input)
+  },
+
+  sendAgentMessage: (input: AgentSendInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.SEND_MESSAGE, input)
+  },
+
+  stopAgent: (sessionId: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.STOP_AGENT, sessionId)
+  },
+  startGoal: (sessionId: string, goal: string, contract?: import('@profer/shared').AgentGoalContract) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.START_GOAL, sessionId, goal, contract),
+  getGoal: (sessionId: string) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_GOAL, sessionId),
+  updateGoal: (sessionId, patch) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.UPDATE_GOAL, sessionId, patch),
+  getGoalHistory: (sessionId: string) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_GOAL_HISTORY, sessionId),
+  listGoals: () => ipcRenderer.invoke(AGENT_IPC_CHANNELS.LIST_GOALS),
+  pauseGoal: (sessionId: string) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.PAUSE_GOAL, sessionId),
+  resumeGoal: (sessionId: string) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.RESUME_GOAL, sessionId),
+  stopGoal: (sessionId: string) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.STOP_GOAL, sessionId),
+  clearGoal: (sessionId: string) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.CLEAR_GOAL, sessionId),
+  onGoalEvent: (callback: (event: import('@profer/shared').AgentGoalEvent) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, data: import('@profer/shared').AgentGoalEvent) => callback(data)
+    ipcRenderer.on(AGENT_IPC_CHANNELS.GOAL_EVENT, listener)
+    return () => ipcRenderer.removeListener(AGENT_IPC_CHANNELS.GOAL_EVENT, listener)
+  },
+
+  updateAgentQueueAutoSend: (sessionId: string, enabled: boolean) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.UPDATE_QUEUE_AUTO_SEND, sessionId, enabled)
+  },
+
+  // Agent 队列消息
+  queueAgentMessage: (input: AgentQueueMessageInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.QUEUE_MESSAGE, input)
+  },
+
+  // Agent 后台任务管理
+  getTaskOutput: (input: GetTaskOutputInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_TASK_OUTPUT, input)
+  },
+
+  getAgentRuntimeCapabilities: (runtime: import('@profer/shared').AgentRuntime) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_RUNTIME_CAPABILITIES, runtime)
+  },
+
+  stopTask: (input: StopTaskInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.STOP_TASK, input)
+  },
+
+  // Agent 工作区管理
+  listAgentWorkspaces: () => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.LIST_WORKSPACES)
+  },
+
+  createAgentWorkspace: (name: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.CREATE_WORKSPACE, name)
+  },
+
+  updateAgentWorkspace: (id: string, updates: { name?: string; archived?: boolean }) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.UPDATE_WORKSPACE, id, updates)
+  },
+
+  deleteAgentWorkspace: (id: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.DELETE_WORKSPACE, id)
+  },
+
+  reorderAgentWorkspaces: (orderedIds: string[]) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.REORDER_WORKSPACES, orderedIds)
+  },
+
+  onAgentWorkspacesChanged: (callback: () => void) => {
+    const listener = (): void => callback()
+    ipcRenderer.on(AGENT_IPC_CHANNELS.WORKSPACES_CHANGED, listener)
+    return () => { ipcRenderer.removeListener(AGENT_IPC_CHANNELS.WORKSPACES_CHANGED, listener) }
+  },
+
+  // 工作区能力（MCP + Skill）
+  getWorkspaceCapabilities: (workspaceSlug: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_CAPABILITIES, workspaceSlug)
+  },
+
+  getWorkspaceMcpConfig: (workspaceSlug: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_MCP_CONFIG, workspaceSlug)
+  },
+
+  saveWorkspaceMcpConfig: (workspaceSlug: string, config: WorkspaceMcpConfig) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.SAVE_MCP_CONFIG, workspaceSlug, config)
+  },
+
+  testMcpServer: (name: string, entry: import('@profer/shared').McpServerEntry) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.TEST_MCP_SERVER, name, entry) as Promise<{ success: boolean; message: string }>
+  },
+
+  getWorkspaceSkills: (workspaceSlug: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_SKILLS, workspaceSlug)
+  },
+
+  getWorkspaceSkillsDir: (workspaceSlug: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_SKILLS_DIR, workspaceSlug)
+  },
+
+  createWorkspaceSkill: (workspaceSlug: string, skillSlug: string, name: string, description: string, content: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.CREATE_SKILL, workspaceSlug, skillSlug, name, description, content)
+  },
+  promoteWorkspaceSkillToGlobal: (workspaceSlug: string, skillSlug: string, targetWorkspaceSlugs: string[], keepWorkspaceCopy = true) => ipcRenderer.invoke(AGENT_IPC_CHANNELS.PROMOTE_SKILL_TO_GLOBAL, workspaceSlug, skillSlug, targetWorkspaceSlugs, keepWorkspaceCopy),
+
+  deleteWorkspaceSkill: (workspaceSlug: string, skillSlug: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.DELETE_SKILL, workspaceSlug, skillSlug)
+  },
+
+  toggleWorkspaceSkill: (workspaceSlug: string, skillSlug: string, enabled: boolean, sourceSkillId?: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.TOGGLE_SKILL, workspaceSlug, skillSlug, enabled, sourceSkillId)
+  },
+
+  getOtherWorkspaceSkills: (currentSlug: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_OTHER_WORKSPACE_SKILLS, currentSlug)
+  },
+
+  getDefaultSkillSlugs: () => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_DEFAULT_SKILL_SLUGS)
+  },
+
+  importSkillFromWorkspace: (targetSlug: string, sourceSlug: string, skillSlug: string) => {
+    return ipcRenderer.invoke(
+      AGENT_IPC_CHANNELS.IMPORT_SKILL_FROM_WORKSPACE,
+      targetSlug,
+      sourceSlug,
+      skillSlug,
+    )
+  },
+
+  updateSkillFromSource: (targetSlug: string, skillSlug: string) => {
+    return ipcRenderer.invoke(
+      AGENT_IPC_CHANNELS.UPDATE_SKILL_FROM_SOURCE,
+      targetSlug,
+      skillSlug,
+    )
+  },
+
+  readSkillContent: (workspaceSlug: string, skillSlug: string) => {
+    return ipcRenderer.invoke(
+      AGENT_IPC_CHANNELS.READ_SKILL_CONTENT,
+      workspaceSlug,
+      skillSlug,
+    )
+  },
+
+  writeSkillContent: (workspaceSlug: string, skillSlug: string, content: string) => {
+    return ipcRenderer.invoke(
+      AGENT_IPC_CHANNELS.WRITE_SKILL_CONTENT,
+      workspaceSlug,
+      skillSlug,
+      content,
+    )
+  },
+
+  listSkillFiles: (workspaceSlug: string, skillSlug: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.LIST_SKILL_FILES, workspaceSlug, skillSlug)
+  },
+
+  readSkillFile: (workspaceSlug: string, skillSlug: string, relativePath: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.READ_SKILL_FILE, workspaceSlug, skillSlug, relativePath)
+  },
+
+  writeSkillFile: (workspaceSlug: string, skillSlug: string, relativePath: string, content: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.WRITE_SKILL_FILE, workspaceSlug, skillSlug, relativePath, content)
+  },
+
+  createSkillEntry: (workspaceSlug: string, skillSlug: string, relativePath: string, type: 'file' | 'directory') => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.CREATE_SKILL_ENTRY, workspaceSlug, skillSlug, relativePath, type)
+  },
+
+  deleteSkillEntry: (workspaceSlug: string, skillSlug: string, relativePath: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.DELETE_SKILL_ENTRY, workspaceSlug, skillSlug, relativePath)
+  },
+
+  renameSkillEntry: (workspaceSlug: string, skillSlug: string, fromRelative: string, toRelative: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.RENAME_SKILL_ENTRY, workspaceSlug, skillSlug, fromRelative, toRelative)
+  },
+
+  onAgentStreamEvent: (callback: (event: AgentStreamEvent) => void) => {
+    const listener = (_: unknown, event: AgentStreamEvent): void => callback(event)
+    ipcRenderer.on(AGENT_IPC_CHANNELS.STREAM_EVENT, listener)
+    return () => { ipcRenderer.removeListener(AGENT_IPC_CHANNELS.STREAM_EVENT, listener) }
+  },
+
+  onAgentStreamComplete: (callback: (data: AgentStreamCompletePayload) => void) => {
+    const listener = (_: unknown, data: AgentStreamCompletePayload): void => callback(data)
+    ipcRenderer.on(AGENT_IPC_CHANNELS.STREAM_COMPLETE, listener)
+    return () => { ipcRenderer.removeListener(AGENT_IPC_CHANNELS.STREAM_COMPLETE, listener) }
+  },
+
+  onAgentStreamError: (callback: (data: { sessionId: string; error: string }) => void) => {
+    const listener = (_: unknown, data: { sessionId: string; error: string }): void => callback(data)
+    ipcRenderer.on(AGENT_IPC_CHANNELS.STREAM_ERROR, listener)
+    return () => { ipcRenderer.removeListener(AGENT_IPC_CHANNELS.STREAM_ERROR, listener) }
+  },
+
+  // 标题自动更新通知
+  onAgentTitleUpdated: (callback: (data: { sessionId: string; title: string }) => void) => {
+    const listener = (_: unknown, data: { sessionId: string; title: string }): void => callback(data)
+    ipcRenderer.on(AGENT_IPC_CHANNELS.TITLE_UPDATED, listener)
+    return () => { ipcRenderer.removeListener(AGENT_IPC_CHANNELS.TITLE_UPDATED, listener) }
+  },
+
+  onAgentSessionUpdated: (callback: (data: { session: AgentSessionMeta }) => void) => {
+    const listener = (_: unknown, data: { session: AgentSessionMeta }): void => callback(data)
+    ipcRenderer.on(AGENT_IPC_CHANNELS.SESSION_UPDATED, listener)
+    return () => { ipcRenderer.removeListener(AGENT_IPC_CHANNELS.SESSION_UPDATED, listener) }
+  },
+
+  // Agent 权限系统
+  respondPermission: (response: PermissionResponse) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.PERMISSION_RESPOND, response)
+  },
+
+  updateSessionPermissionMode: (sessionId: string, mode: ProferPermissionMode, expectedRevision?: number) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.UPDATE_SESSION_PERMISSION_MODE, sessionId, mode, expectedRevision)
+  },
+
+  updateSessionCodexFastMode: (sessionId: string, enabled: boolean) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.UPDATE_SESSION_CODEX_FAST_MODE, sessionId, enabled)
+  },
+
+  updateSessionOpenAIThinkingLevel: (sessionId: string, level: AgentThinkingLevel | null) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.UPDATE_SESSION_OPENAI_THINKING, sessionId, level)
+  },
+
+  updateSessionAgentEffort: (sessionId: string, effort: AgentEffort | null) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.UPDATE_SESSION_AGENT_EFFORT, sessionId, effort)
+  },
+
+  updateSessionStudyTeachingMode: (sessionId: string, mode: StudyTeachingMode) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.UPDATE_SESSION_STUDY_TEACHING_MODE, sessionId, mode)
+  },
+
+  getPiReasoningCapability: (provider: ProviderType, modelId: string | undefined) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_PI_REASONING_CAPABILITY, provider, modelId)
+  },
+
+  updateSessionAgentRuntime: (sessionId: string, runtime: AgentRuntime) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.UPDATE_SESSION_AGENT_RUNTIME, sessionId, runtime)
+  },
+
+  getWorkspaceMemorySummary: (workspaceSlug: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_WORKSPACE_MEMORY_SUMMARY, workspaceSlug)
+  },
+
+  /** 获取工作区每日活跃会话数（用于热力图）。团队工作区返回空数组 */
+  getWorkspaceHeatmapDaily: (workspaceId: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_WORKSPACE_HEATMAP_DAILY, workspaceId) as Promise<Array<{ date: string; tokens: number }>>
+  },
+
+  readWorkspaceProfile: (workspaceSlug: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.READ_WORKSPACE_PROFILE, workspaceSlug)
+  },
+
+  writeWorkspaceProfile: (workspaceSlug: string, content: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.WRITE_WORKSPACE_PROFILE, workspaceSlug, content)
+  },
+
+  listWorkspaceAutoMemoryFiles: (workspaceSlug: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.LIST_WORKSPACE_AUTO_MEMORY_FILES, workspaceSlug)
+  },
+
+  readWorkspaceAutoMemoryFile: (workspaceSlug: string, relativePath: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.READ_WORKSPACE_AUTO_MEMORY_FILE, workspaceSlug, relativePath)
+  },
+
+  writeWorkspaceAutoMemoryFile: (workspaceSlug: string, relativePath: string, content: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.WRITE_WORKSPACE_AUTO_MEMORY_FILE, workspaceSlug, relativePath, content)
+  },
+
+  listWorkspaceMemoryArchiveFiles: (workspaceSlug: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.LIST_WORKSPACE_MEMORY_ARCHIVE_FILES, workspaceSlug)
+  },
+
+  readWorkspaceMemoryArchiveFile: (workspaceSlug: string, relativePath: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.READ_WORKSPACE_MEMORY_ARCHIVE_FILE, workspaceSlug, relativePath)
+  },
+
+  writeWorkspaceMemoryArchiveFile: (workspaceSlug: string, relativePath: string, content: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.WRITE_WORKSPACE_MEMORY_ARCHIVE_FILE, workspaceSlug, relativePath, content)
+  },
+
+  searchMemoryArchive: (workspaceSlug: string, query: string, topK?: number) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.SEARCH_MEMORY_ARCHIVE, workspaceSlug, query, topK)
+  },
+
+  resolveMemoryWikilink: (workspaceSlug: string, name: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.RESOLVE_MEMORY_WIKILINK, workspaceSlug, name)
+  },
+
+  getMemoryBacklinks: (workspaceSlug: string, currentAbsolutePath: string, currentLinkName: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_MEMORY_BACKLINKS, workspaceSlug, currentAbsolutePath, currentLinkName)
+  },
+
+  // Chat 工具管理
+  getChatTools: () => {
+    return ipcRenderer.invoke(CHAT_TOOL_IPC_CHANNELS.GET_ALL_TOOLS)
+  },
+
+  getChatToolCredentials: (toolId: string, provider?: string) => {
+    return ipcRenderer.invoke(CHAT_TOOL_IPC_CHANNELS.GET_TOOL_CREDENTIALS, toolId, provider)
+  },
+
+  updateChatToolState: (toolId: string, state: ChatToolState) => {
+    return ipcRenderer.invoke(CHAT_TOOL_IPC_CHANNELS.UPDATE_TOOL_STATE, toolId, state)
+  },
+
+  updateChatToolCredentials: (toolId: string, credentials: Record<string, string>) => {
+    return ipcRenderer.invoke(CHAT_TOOL_IPC_CHANNELS.UPDATE_TOOL_CREDENTIALS, toolId, credentials)
+  },
+
+  createCustomChatTool: (meta: ChatToolMeta) => {
+    return ipcRenderer.invoke(CHAT_TOOL_IPC_CHANNELS.CREATE_CUSTOM_TOOL, meta)
+  },
+
+  deleteCustomChatTool: (toolId: string) => {
+    return ipcRenderer.invoke(CHAT_TOOL_IPC_CHANNELS.DELETE_CUSTOM_TOOL, toolId)
+  },
+
+  onCustomToolChanged: (callback: () => void) => {
+    const listener = (): void => callback()
+    ipcRenderer.on(CHAT_TOOL_IPC_CHANNELS.CUSTOM_TOOL_CHANGED, listener)
+    return () => { ipcRenderer.removeListener(CHAT_TOOL_IPC_CHANNELS.CUSTOM_TOOL_CHANGED, listener) }
+  },
+
+  testChatTool: (toolId: string) => {
+    return ipcRenderer.invoke(CHAT_TOOL_IPC_CHANNELS.TEST_TOOL, toolId)
+  },
+
+  // AskUserQuestion 交互式问答
+  respondAskUser: (response: AskUserResponse) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.ASK_USER_RESPOND, response)
+  },
+
+  // ExitPlanMode 计划审批
+  respondExitPlanMode: (response: ExitPlanModeResponse) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.EXIT_PLAN_MODE_RESPOND, response)
+  },
+
+  // 待处理请求恢复
+  getPendingRequests: () => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_PENDING_REQUESTS)
+  },
+
+  // ===== Project Graph =====
+  getGraph: (sessionId: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_GRAPH, sessionId)
+  },
+
+  getGraphSummary: (sessionId: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_GRAPH_SUMMARY, sessionId)
+  },
+
+  appendGraphEvent: (sessionId: string, event: import('@profer/project-core').GraphEvent) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.APPEND_GRAPH_EVENT, sessionId, event)
+  },
+
+  runRetrospective: (sessionId: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.RUN_RETROSPECTIVE, sessionId)
+  },
+
+  // 工作区文件变化通知
+  onCapabilitiesChanged: (callback: () => void) => {
+    const listener = (): void => callback()
+    ipcRenderer.on(AGENT_IPC_CHANNELS.CAPABILITIES_CHANGED, listener)
+    return () => { ipcRenderer.removeListener(AGENT_IPC_CHANNELS.CAPABILITIES_CHANGED, listener) }
+  },
+
+  onWorkspaceFilesChanged: (callback: () => void) => {
+    const listener = (): void => callback()
+    ipcRenderer.on(AGENT_IPC_CHANNELS.WORKSPACE_FILES_CHANGED, listener)
+    return () => { ipcRenderer.removeListener(AGENT_IPC_CHANNELS.WORKSPACE_FILES_CHANGED, listener) }
+  },
+
+  // Agent 附件
+  saveFilesToAgentSession: (input: AgentSaveFilesInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.SAVE_FILES_TO_SESSION, input)
+  },
+
+  saveFilesToWorkspaceFiles: (input: AgentSaveWorkspaceFilesInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.SAVE_FILES_TO_WORKSPACE, input)
+  },
+
+  getWorkspaceFilesPath: (workspaceSlug: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_WORKSPACE_FILES_PATH, workspaceSlug)
+  },
+
+  openFolderDialog: () => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.OPEN_FOLDER_DIALOG)
+  },
+
+  attachDirectory: (input: AgentAttachDirectoryInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.ATTACH_DIRECTORY, input)
+  },
+
+  detachDirectory: (input: AgentAttachDirectoryInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.DETACH_DIRECTORY, input)
+  },
+
+  attachFile: (input: AgentAttachFileInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.ATTACH_FILE, input)
+  },
+
+  detachFile: (input: AgentAttachFileInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.DETACH_FILE, input)
+  },
+
+  attachWorkspaceDirectory: (input: WorkspaceAttachDirectoryInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.ATTACH_WORKSPACE_DIRECTORY, input)
+  },
+
+  detachWorkspaceDirectory: (input: WorkspaceAttachDirectoryInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.DETACH_WORKSPACE_DIRECTORY, input)
+  },
+
+  attachWorkspaceFile: (input: WorkspaceAttachFileInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.ATTACH_WORKSPACE_FILE, input)
+  },
+
+  detachWorkspaceFile: (input: WorkspaceAttachFileInput) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.DETACH_WORKSPACE_FILE, input)
+  },
+
+  getWorkspaceDirectories: (workspaceSlug: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_WORKSPACE_DIRECTORIES, workspaceSlug)
+  },
+
+  getWorkspaceAttachedFiles: (workspaceSlug: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_WORKSPACE_ATTACHED_FILES, workspaceSlug)
+  },
+
+  getWorktreeRepos: (workspaceSlug: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_WORKTREE_REPOS, workspaceSlug)
+  },
+
+  addWorktreeRepo: (workspaceSlug: string, repo: import('@profer/shared').WorkspaceWorktreeRepo) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.ADD_WORKTREE_REPO, workspaceSlug, repo)
+  },
+
+  removeWorktreeRepo: (workspaceSlug: string, repoPath: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.REMOVE_WORKTREE_REPO, workspaceSlug, repoPath)
+  },
+
+  // Agent 文件系统操作
+  getAgentSessionPath: (workspaceId: string, sessionId: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.GET_SESSION_PATH, workspaceId, sessionId)
+  },
+
+  listDirectory: (dirPath: string, access?: import('@profer/shared').FileAccessOptions) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.LIST_DIRECTORY, dirPath, access)
+  },
+
+  deleteFile: (filePath: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.DELETE_FILE, filePath)
+  },
+
+  moveToTrash: (filePath: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.MOVE_TO_TRASH, filePath)
+  },
+
+  /** 打开文件夹选择对话框，递归读取所有文件 */
+  selectAndUploadFolder: async (): Promise<Array<{ relativePath: string; data: Uint8Array; sourcePath?: string }> | null> => {
+    return ipcRenderer.invoke('agent:select-and-upload-folder')
+  },
+
+  /** 递归读取目录中所有文件 */
+  readDirectoryRecursive: (dirPath: string): Promise<Array<{ relativePath: string; data: Uint8Array }>> => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.READ_DIRECTORY_RECURSIVE, dirPath)
+  },
+
+  openFile: (filePath: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.OPEN_FILE, filePath)
+  },
+
+  writeClipboardPreview: (filename: string, content: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.WRITE_CLIPBOARD_PREVIEW, filename, content)
+  },
+
+  systemOpenFile: (filePath: string, appName?: string, access?: import('@profer/shared').FileAccessOptions) => {
+    return ipcRenderer.invoke(IPC_CHANNELS.SYSTEM_OPEN_FILE, filePath, appName, access)
+  },
+
+  scanEditors: () => {
+    return ipcRenderer.invoke(IPC_CHANNELS.SCAN_EDITORS)
+  },
+
+  getDefaultAppForFile: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => {
+    return ipcRenderer.invoke(IPC_CHANNELS.GET_DEFAULT_APP_FOR_FILE, filePath, access) as Promise<import('@profer/shared').DefaultAppInfo | null>
+  },
+
+  showInFolder: (filePath: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.SHOW_IN_FOLDER, filePath)
+  },
+
+  /** 在系统文件管理器中显示文件（无工作区限制，支持候选基础目录） */
+  showItemInFolder: (filePath: string, candidateBasePaths?: string[]): Promise<boolean> => {
+    return ipcRenderer.invoke(IPC_CHANNELS.SHOW_ITEM_IN_FOLDER, filePath, candidateBasePaths)
+  },
+
+  resolveAndReadFile: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => {
+    return ipcRenderer.invoke('file:resolve-and-read', filePath, access) as Promise<{ resolvedPath: string; content: string } | null>
+  },
+
+  describePath: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => {
+    return ipcRenderer.invoke('file:describe-path', filePath, access) as Promise<{ kind: 'file' | 'directory' | 'missing' | 'denied' }>
+  },
+
+  writeTextFile: (filePath: string, content: string, access?: import('@profer/shared').FileAccessOptions) => {
+    return ipcRenderer.invoke('file:write-text', filePath, content, access) as Promise<boolean>
+  },
+
+  resolveFilePath: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => {
+    return ipcRenderer.invoke('file:resolve-path', filePath, access) as Promise<import('@profer/shared').ResolvedFileUrl | null>
+  },
+
+  searchFileCandidate: (request: import('@profer/shared').FileSearchCandidateRequest) => {
+    return ipcRenderer.invoke('file:search-candidate', request) as Promise<import('@profer/shared').FileSearchCandidateResult>
+  },
+
+  cancelFileSearch: (requestId: string) => {
+    return ipcRenderer.invoke('file:cancel-search', requestId) as Promise<boolean>
+  },
+
+  resolveHtmlPreviewPath: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => {
+    return ipcRenderer.invoke('file:resolve-html-preview-path', filePath, access) as Promise<import('@profer/shared').ResolvedFileUrl | null>
+  },
+
+  registerPreviewPath: (filePath: string) => {
+    return ipcRenderer.invoke('file:register-preview-path', filePath) as Promise<string | null>
+  },
+
+  preparePdfPreview: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => {
+    return ipcRenderer.invoke('file:prepare-pdf-preview', filePath, access) as Promise<{ tmpHtmlUrl: string } | null>
+  },
+
+  resolveDocumentAnchor: (
+    anchor: string,
+    access?: import('@profer/shared').FileAccessOptions & { label?: string },
+  ) => {
+    return ipcRenderer.invoke('file:resolve-document-anchor', anchor, access) as Promise<{
+      fileId: string
+      filePath: string
+      fileName: string
+      pageNumber: number
+      blockId: string
+      bbox?: [number, number, number, number]
+      label?: string
+      format?: 'pdf' | 'docx' | 'pptx' | 'xlsx'
+      sheetName?: string
+      cellRef?: string
+    } | null>
+  },
+
+  readBinaryBase64: (filePath: string, access?: import('@profer/shared').FileAccessOptions, maxSize?: number) => {
+    return ipcRenderer.invoke('file:read-binary-base64', filePath, access, maxSize) as Promise<string | null>
+  },
+
+  screenshotCapture: (input: { html: string; isDark: boolean; width?: number; mode: 'clipboard' | 'file'; css?: string; themeClass?: string }) => {
+    return ipcRenderer.invoke(IPC_CHANNELS.SCREENSHOT_CAPTURE, input) as Promise<{ success: boolean; message: string; filePath?: string }>
+  },
+
+  renameFile: (filePath: string, newName: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.RENAME_FILE, filePath, newName)
+  },
+
+  moveFile: (filePath: string, targetDir: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.MOVE_FILE, filePath, targetDir)
+  },
+
+  listAttachedDirectory: (dirPath: string, access?: import('@profer/shared').FileAccessOptions) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.LIST_ATTACHED_DIRECTORY, dirPath, access)
+  },
+
+  readAttachedFile: (filePath: string, sessionId?: string, workspaceSlug?: string) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.READ_ATTACHED_FILE, filePath, sessionId, workspaceSlug)
+  },
+
+  showAttachedInFolder: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.SHOW_ATTACHED_IN_FOLDER, filePath, access)
+  },
+
+  renameAttachedFile: (filePath: string, newName: string, access?: import('@profer/shared').FileAccessOptions) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.RENAME_ATTACHED_FILE, filePath, newName, access)
+  },
+
+  moveAttachedFile: (filePath: string, targetDir: string, access?: import('@profer/shared').FileAccessOptions) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.MOVE_ATTACHED_FILE, filePath, targetDir, access)
+  },
+
+  deleteAttachedFile: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.DELETE_ATTACHED_FILE, filePath, access)
+  },
+
+  moveAttachedToTrash: (filePath: string, access?: import('@profer/shared').FileAccessOptions) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.MOVE_ATTACHED_TO_TRASH, filePath, access)
+  },
+
+  checkPathsType: (paths: string[]) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.CHECK_PATHS_TYPE, paths)
+  },
+
+  getPathForFile: (file: File) => {
+    return webUtils.getPathForFile(file)
+  },
+
+  searchWorkspaceFiles: (rootPath: string, query: string, limit = 20, additionalPaths?: string[], sessionPaths?: string[]) => {
+    return ipcRenderer.invoke(AGENT_IPC_CHANNELS.SEARCH_WORKSPACE_FILES, rootPath, query, limit, additionalPaths, sessionPaths)
+  },
+
+  // GitHub Release
+  getLatestRelease: () => {
+    return ipcRenderer.invoke(GITHUB_RELEASE_IPC_CHANNELS.GET_LATEST_RELEASE)
+  },
+
+  listReleases: (options) => {
+    return ipcRenderer.invoke(GITHUB_RELEASE_IPC_CHANNELS.LIST_RELEASES, options)
+  },
+
+  getReleaseByTag: (tag) => {
+    return ipcRenderer.invoke(GITHUB_RELEASE_IPC_CHANNELS.GET_RELEASE_BY_TAG, tag)
+  },
+
+  // 版本更新日志（内置本地 CHANGELOG）
+  getChangelog: () => ipcRenderer.invoke(CHANGELOG_IPC_CHANNELS.GET),
+
+  // 本地系统公告栏（内置 bulletin.json）
+  getBulletins: () => ipcRenderer.invoke(BULLETIN_IPC_CHANNELS.GET),
+
+  // ===== Lark 用户云端能力 =====
+  getLarkCliStatus: () => ipcRenderer.invoke(LARK_IPC_CHANNELS.GET_STATUS),
+  refreshLarkCliStatus: () => ipcRenderer.invoke(LARK_IPC_CHANNELS.REFRESH_STATUS),
+  installLarkCli: () => ipcRenderer.invoke(LARK_IPC_CHANNELS.INSTALL_CLI),
+  startLarkLogin: () => ipcRenderer.invoke(LARK_IPC_CHANNELS.START_LOGIN),
+  cancelLarkLogin: () => ipcRenderer.invoke(LARK_IPC_CHANNELS.CANCEL_LOGIN),
+  onLarkLoginEvent: (callback: (event: LarkLoginEvent) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, payload: LarkLoginEvent): void => callback(payload)
+    ipcRenderer.on(LARK_IPC_CHANNELS.LOGIN_EVENT, listener)
+    return () => { ipcRenderer.removeListener(LARK_IPC_CHANNELS.LOGIN_EVENT, listener) }
+  },
+  getLarkMcpStatus: () => ipcRenderer.invoke(LARK_IPC_CHANNELS.GET_MCP_STATUS),
+  saveLarkMcpCredentials: (input: LarkMcpCredentialsInput) => ipcRenderer.invoke(LARK_IPC_CHANNELS.SAVE_MCP_CREDENTIALS, input),
+  enableLarkMcpForWorkspace: (workspaceSlug: string) => ipcRenderer.invoke(LARK_IPC_CHANNELS.ENABLE_MCP_FOR_WORKSPACE, workspaceSlug),
+  disableLarkMcpForWorkspace: (workspaceSlug: string) => ipcRenderer.invoke(LARK_IPC_CHANNELS.DISABLE_MCP_FOR_WORKSPACE, workspaceSlug),
+  startLarkMcpLogin: () => ipcRenderer.invoke(LARK_IPC_CHANNELS.START_MCP_LOGIN),
+  cancelLarkMcpLogin: () => ipcRenderer.invoke(LARK_IPC_CHANNELS.CANCEL_MCP_LOGIN),
+  testLarkMcpConnection: () => ipcRenderer.invoke(LARK_IPC_CHANNELS.TEST_MCP_CONNECTION),
+  onLarkMcpLoginEvent: (callback: (event: LarkLoginEvent) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, payload: LarkLoginEvent): void => callback(payload)
+    ipcRenderer.on(LARK_IPC_CHANNELS.MCP_LOGIN_EVENT, listener)
+    return () => { ipcRenderer.removeListener(LARK_IPC_CHANNELS.MCP_LOGIN_EVENT, listener) }
+  },
+
+  // ===== 飞书集成 =====
+
+  getFeishuConfig: () => {
+    return ipcRenderer.invoke(FEISHU_IPC_CHANNELS.GET_CONFIG)
+  },
+
+  getDecryptedFeishuSecret: () => {
+    return ipcRenderer.invoke(FEISHU_IPC_CHANNELS.GET_DECRYPTED_SECRET)
+  },
+
+  saveFeishuConfig: (input: FeishuConfigInput) => {
+    return ipcRenderer.invoke(FEISHU_IPC_CHANNELS.SAVE_CONFIG, input)
+  },
+
+  testFeishuConnection: (appId: string, appSecret: string) => {
+    return ipcRenderer.invoke(FEISHU_IPC_CHANNELS.TEST_CONNECTION, appId, appSecret)
+  },
+
+  startFeishuBridge: () => {
+    return ipcRenderer.invoke(FEISHU_IPC_CHANNELS.START_BRIDGE)
+  },
+
+  stopFeishuBridge: () => {
+    return ipcRenderer.invoke(FEISHU_IPC_CHANNELS.STOP_BRIDGE)
+  },
+
+  getFeishuStatus: () => {
+    return ipcRenderer.invoke(FEISHU_IPC_CHANNELS.GET_STATUS)
+  },
+
+  listFeishuBindings: () => {
+    return ipcRenderer.invoke(FEISHU_IPC_CHANNELS.LIST_BINDINGS)
+  },
+
+  updateFeishuBinding: (input: FeishuUpdateBindingInput) => {
+    return ipcRenderer.invoke(FEISHU_IPC_CHANNELS.UPDATE_BINDING, input)
+  },
+
+  removeFeishuBinding: (chatId: string) => {
+    return ipcRenderer.invoke(FEISHU_IPC_CHANNELS.REMOVE_BINDING, chatId)
+  },
+
+  reportFeishuPresence: (report: FeishuPresenceReport) => {
+    return ipcRenderer.invoke(FEISHU_IPC_CHANNELS.REPORT_PRESENCE, report)
+  },
+
+  onFeishuStatusChanged: (callback: (state: FeishuBridgeState) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, state: FeishuBridgeState): void => callback(state)
+    ipcRenderer.on(FEISHU_IPC_CHANNELS.STATUS_CHANGED, listener)
+    return () => { ipcRenderer.removeListener(FEISHU_IPC_CHANNELS.STATUS_CHANGED, listener) }
+  },
+
+  // --- 多 Bot v2 API ---
+
+  getFeishuMultiConfig: () => {
+    return ipcRenderer.invoke(FEISHU_IPC_CHANNELS.GET_MULTI_CONFIG)
+  },
+
+  saveFeishuBotConfig: (input: import('@profer/shared').FeishuBotConfigInput) => {
+    return ipcRenderer.invoke(FEISHU_IPC_CHANNELS.SAVE_BOT_CONFIG, input)
+  },
+
+  getDecryptedFeishuBotSecret: (botId: string) => {
+    return ipcRenderer.invoke(FEISHU_IPC_CHANNELS.GET_BOT_DECRYPTED_SECRET, botId)
+  },
+
+  removeFeishuBot: (botId: string) => {
+    return ipcRenderer.invoke(FEISHU_IPC_CHANNELS.REMOVE_BOT, botId)
+  },
+
+  startFeishuBot: (botId: string) => {
+    return ipcRenderer.invoke(FEISHU_IPC_CHANNELS.START_BOT, botId)
+  },
+
+  stopFeishuBot: (botId: string) => {
+    return ipcRenderer.invoke(FEISHU_IPC_CHANNELS.STOP_BOT, botId)
+  },
+
+  getFeishuMultiStatus: () => {
+    return ipcRenderer.invoke(FEISHU_IPC_CHANNELS.GET_MULTI_STATUS)
+  },
+
+  // --- 扫码注册 ---
+
+  registerFeishuApp: () => {
+    return ipcRenderer.invoke(FEISHU_IPC_CHANNELS.REGISTER_APP_START)
+  },
+
+  cancelFeishuRegistration: () => {
+    return ipcRenderer.invoke(FEISHU_IPC_CHANNELS.REGISTER_APP_CANCEL)
+  },
+
+  onFeishuRegisterQrcode: (callback: (payload: import('@profer/shared').FeishuRegisterAppQRCode) => void) => {
+    const listener = (_: unknown, payload: import('@profer/shared').FeishuRegisterAppQRCode) => callback(payload)
+    ipcRenderer.on(FEISHU_IPC_CHANNELS.REGISTER_APP_QRCODE, listener)
+    return () => { ipcRenderer.removeListener(FEISHU_IPC_CHANNELS.REGISTER_APP_QRCODE, listener) }
+  },
+
+  onFeishuRegisterStatus: (callback: (payload: import('@profer/shared').FeishuRegisterAppStatus) => void) => {
+    const listener = (_: unknown, payload: import('@profer/shared').FeishuRegisterAppStatus) => callback(payload)
+    ipcRenderer.on(FEISHU_IPC_CHANNELS.REGISTER_APP_STATUS, listener)
+    return () => { ipcRenderer.removeListener(FEISHU_IPC_CHANNELS.REGISTER_APP_STATUS, listener) }
+  },
+
+  // ===== 微信集成 =====
+
+  getWeChatConfig: () => {
+    return ipcRenderer.invoke(WECHAT_IPC_CHANNELS.GET_CONFIG)
+  },
+
+  startWeChatLogin: () => {
+    return ipcRenderer.invoke(WECHAT_IPC_CHANNELS.START_LOGIN)
+  },
+
+  logoutWeChat: () => {
+    return ipcRenderer.invoke(WECHAT_IPC_CHANNELS.LOGOUT)
+  },
+
+  startWeChatBridge: () => {
+    return ipcRenderer.invoke(WECHAT_IPC_CHANNELS.START_BRIDGE)
+  },
+
+  stopWeChatBridge: () => {
+    return ipcRenderer.invoke(WECHAT_IPC_CHANNELS.STOP_BRIDGE)
+  },
+
+  getWeChatStatus: () => {
+    return ipcRenderer.invoke(WECHAT_IPC_CHANNELS.GET_STATUS)
+  },
+
+  onWeChatStatusChanged: (callback: (state: WeChatBridgeState) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, state: WeChatBridgeState): void => callback(state)
+    ipcRenderer.on(WECHAT_IPC_CHANNELS.STATUS_CHANGED, listener)
+    return () => { ipcRenderer.removeListener(WECHAT_IPC_CHANNELS.STATUS_CHANGED, listener) }
+  },
+
+  // ===== 钉钉集成 =====
+
+  getDingTalkConfig: () => {
+    return ipcRenderer.invoke(DINGTALK_IPC_CHANNELS.GET_CONFIG)
+  },
+
+  getDecryptedDingTalkSecret: () => {
+    return ipcRenderer.invoke(DINGTALK_IPC_CHANNELS.GET_DECRYPTED_SECRET)
+  },
+
+  saveDingTalkConfig: (input: DingTalkConfigInput) => {
+    return ipcRenderer.invoke(DINGTALK_IPC_CHANNELS.SAVE_CONFIG, input)
+  },
+
+  testDingTalkConnection: (clientId: string, clientSecret: string) => {
+    return ipcRenderer.invoke(DINGTALK_IPC_CHANNELS.TEST_CONNECTION, clientId, clientSecret)
+  },
+
+  startDingTalkBridge: () => {
+    return ipcRenderer.invoke(DINGTALK_IPC_CHANNELS.START_BRIDGE)
+  },
+
+  stopDingTalkBridge: () => {
+    return ipcRenderer.invoke(DINGTALK_IPC_CHANNELS.STOP_BRIDGE)
+  },
+
+  getDingTalkStatus: () => {
+    return ipcRenderer.invoke(DINGTALK_IPC_CHANNELS.GET_STATUS)
+  },
+
+  onDingTalkStatusChanged: (callback: (state: DingTalkBridgeState) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, state: DingTalkBridgeState): void => callback(state)
+    ipcRenderer.on(DINGTALK_IPC_CHANNELS.STATUS_CHANGED, listener)
+    return () => { ipcRenderer.removeListener(DINGTALK_IPC_CHANNELS.STATUS_CHANGED, listener) }
+  },
+
+  // --- 钉钉多 Bot v2 API ---
+
+  getDingTalkMultiConfig: () => {
+    return ipcRenderer.invoke(DINGTALK_IPC_CHANNELS.GET_MULTI_CONFIG)
+  },
+
+  saveDingTalkBotConfig: (input: import('@profer/shared').DingTalkBotConfigInput) => {
+    return ipcRenderer.invoke(DINGTALK_IPC_CHANNELS.SAVE_BOT_CONFIG, input)
+  },
+
+  getDecryptedDingTalkBotSecret: (botId: string) => {
+    return ipcRenderer.invoke(DINGTALK_IPC_CHANNELS.GET_BOT_DECRYPTED_SECRET, botId)
+  },
+
+  removeDingTalkBot: (botId: string) => {
+    return ipcRenderer.invoke(DINGTALK_IPC_CHANNELS.REMOVE_BOT, botId)
+  },
+
+  startDingTalkBot: (botId: string) => {
+    return ipcRenderer.invoke(DINGTALK_IPC_CHANNELS.START_BOT, botId)
+  },
+
+  stopDingTalkBot: (botId: string) => {
+    return ipcRenderer.invoke(DINGTALK_IPC_CHANNELS.STOP_BOT, botId)
+  },
+
+  getDingTalkMultiStatus: () => {
+    return ipcRenderer.invoke(DINGTALK_IPC_CHANNELS.GET_MULTI_STATUS)
+  },
+
+  onMenuCloseTab: (callback: () => void) => {
+    const listener = (): void => callback()
+    ipcRenderer.on('menu:close-tab', listener)
+    return () => { ipcRenderer.removeListener('menu:close-tab', listener) }
+  },
+
+  reregisterGlobalShortcuts: () => {
+    return ipcRenderer.invoke(SHORTCUT_IPC_CHANNELS.REREGISTER_GLOBAL_SHORTCUTS)
+  },
+
+
+  onTrayOpenAgentSession: (callback: (data: TrayOpenAgentSessionData) => void) => {
+    const listener = (_: unknown, data: TrayOpenAgentSessionData): void => callback(data)
+    ipcRenderer.on(TRAY_IPC_CHANNELS.OPEN_AGENT_SESSION, listener)
+    return () => { ipcRenderer.removeListener(TRAY_IPC_CHANNELS.OPEN_AGENT_SESSION, listener) }
+  },
+
+  onTrayCreateSession: (callback: (data: TrayCreateSessionData) => void) => {
+    const listener = (_: unknown, data: TrayCreateSessionData): void => callback(data)
+    ipcRenderer.on(TRAY_IPC_CHANNELS.CREATE_SESSION, listener)
+    return () => { ipcRenderer.removeListener(TRAY_IPC_CHANNELS.CREATE_SESSION, listener) }
+  },
+
+  migrationGetExportPreview: (workspaceId: string) => {
+    return ipcRenderer.invoke('migration:getExportPreview', workspaceId)
+  },
+
+  migrationGetShareExportPreview: () => {
+    return ipcRenderer.invoke('migration:getShareExportPreview')
+  },
+
+  migrationExport: (options: unknown) => {
+    return ipcRenderer.invoke('migration:export', options)
+  },
+
+  migrationExportV2: (options: unknown) => {
+    return ipcRenderer.invoke('migration:exportV2', options)
+  },
+
+  migrationParseImportFile: (filePath: string) => {
+    return ipcRenderer.invoke('migration:parseImportFile', filePath)
+  },
+
+  migrationConfirmImport: (options: unknown) => {
+    return ipcRenderer.invoke('migration:confirmImport', options)
+  },
+
+  migrationOpenFileDialog: () => {
+    return ipcRenderer.invoke('migration:openFileDialog')
+  },
+
+  migrationSaveFileDialog: (mode: string) => {
+    return ipcRenderer.invoke('migration:saveFileDialog', mode)
+  },
+
+  onMigrationOpenImportFile: (callback: (data: { filePath: string }) => void) => {
+    const listener = (_: unknown, data: { filePath: string }): void => callback(data)
+    ipcRenderer.on('migration:open-import-file', listener)
+    return () => { ipcRenderer.removeListener('migration:open-import-file', listener) }
+  },
+
+  // ===== 存储管理 =====
+
+  getStorageStats: () => {
+    return ipcRenderer.invoke(STORAGE_IPC_CHANNELS.GET_STATS)
+  },
+
+  cleanupStorage: (options: unknown) => {
+    return ipcRenderer.invoke(STORAGE_IPC_CHANNELS.CLEANUP, options)
+  },
+
+  cleanupTempStorage: () => {
+    return ipcRenderer.invoke(STORAGE_IPC_CHANNELS.CLEANUP_TEMP)
+  },
+
+  previewSessionCompaction: () => {
+    return ipcRenderer.invoke(STORAGE_IPC_CHANNELS.SESSION_COMPACTION_PREVIEW)
+  },
+
+  applySessionCompaction: () => {
+    return ipcRenderer.invoke(STORAGE_IPC_CHANNELS.SESSION_COMPACTION_APPLY)
+  },
+
+  resolveSessionMessageBlobs: (message: unknown) => {
+    return ipcRenderer.invoke(STORAGE_IPC_CHANNELS.SESSION_RESOLVE_BLOBS, message)
+  },
+
+  migrationCancelImport: (tempDir: string) => {
+    return ipcRenderer.invoke('migration:cancelImport', tempDir)
+  },
+
+  // ===== 任务 / 日程（Planning）=====
+  openPlanningWindow: () => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.OPEN_WINDOW),
+  listTodos: (input?: TodoListQuery & { workspaceId?: string }) => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.LIST_TODOS, input),
+  createTodo: (input: CreateTodoInput) => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.CREATE_TODO, input),
+  startTodoAgent: (input: StartTodoAgentInput) => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.START_TODO_AGENT, input),
+  updateTodo: (input: UpdateTodoInput) => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.UPDATE_TODO, input),
+  deleteTodo: (id: string, workspaceId?: string) => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.DELETE_TODO, id, workspaceId),
+  listCalendarEvents: (input?: CalendarEventListQuery & { workspaceId?: string }) => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.LIST_CALENDAR_EVENTS, input),
+  createCalendarEvent: (input: CreateCalendarEventInput) => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.CREATE_CALENDAR_EVENT, input),
+  updateCalendarEvent: (input: UpdateCalendarEventInput) => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.UPDATE_CALENDAR_EVENT, input),
+  deleteCalendarEvent: (id: string, workspaceId?: string) => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.DELETE_CALENDAR_EVENT, id, workspaceId),
+  listPlanningGroups: (scope: PlanningGroupScope, workspaceId?: string) => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.LIST_GROUPS, scope, workspaceId),
+  createPlanningGroup: (input: CreatePlanningGroupInput) => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.CREATE_GROUP, input),
+  updatePlanningGroup: (input: UpdatePlanningGroupInput) => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.UPDATE_GROUP, input),
+  deletePlanningGroup: (scope: PlanningGroupScope, id: string, workspaceId?: string) => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.DELETE_GROUP, scope, id, workspaceId),
+  listPlanningTags: (workspaceId?: string) => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.LIST_TAGS, workspaceId),
+  createPlanningTag: (input: CreatePlanningTagInput) => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.CREATE_TAG, input),
+  updatePlanningTag: (input: UpdatePlanningTagInput) => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.UPDATE_TAG, input),
+  deletePlanningTag: (id: string, workspaceId?: string) => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.DELETE_TAG, id, workspaceId),
+  listActivePlanningReminders: (workspaceId?: string) => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.LIST_ACTIVE_REMINDERS, workspaceId),
+  acknowledgePlanningReminder: (id: string, workspaceId?: string) => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.ACKNOWLEDGE_REMINDER, id, workspaceId),
+  snoozePlanningReminder: (input: SnoozePlanningReminderInput, workspaceId?: string) => ipcRenderer.invoke(PLANNING_IPC_CHANNELS.SNOOZE_REMINDER, input, workspaceId),
+  onPlanningRemindersDue: (callback: (reminders: ActivePlanningReminder[]) => void) => {
+    const listener = (_: unknown, reminders: ActivePlanningReminder[]): void => callback(reminders)
+    ipcRenderer.on(PLANNING_IPC_CHANNELS.REMINDER_DUE, listener)
+    return () => { ipcRenderer.removeListener(PLANNING_IPC_CHANNELS.REMINDER_DUE, listener) }
+  },
+  onPlanningChanged: (callback: (change: PlanningChange) => void) => {
+    const listener = (_: unknown, change: PlanningChange): void => callback(change)
+    ipcRenderer.on(PLANNING_IPC_CHANNELS.CHANGED, listener)
+    return () => { ipcRenderer.removeListener(PLANNING_IPC_CHANNELS.CHANGED, listener) }
+  },
+  onPlanningAgentOperation: (callback: (operation: PlanningAgentOperation) => void) => {
+    const listener = (_: unknown, operation: PlanningAgentOperation): void => callback(operation)
+    ipcRenderer.on(PLANNING_IPC_CHANNELS.AGENT_OPERATION, listener)
+    return () => { ipcRenderer.removeListener(PLANNING_IPC_CHANNELS.AGENT_OPERATION, listener) }
+  },
+  onTodoAgentSessionReady: (callback: (activation: TodoAgentSessionActivation) => void) => {
+    const listener = (_: unknown, activation: TodoAgentSessionActivation): void => callback(activation)
+    ipcRenderer.on(PLANNING_IPC_CHANNELS.TODO_AGENT_SESSION_READY, listener)
+    return () => { ipcRenderer.removeListener(PLANNING_IPC_CHANNELS.TODO_AGENT_SESSION_READY, listener) }
+  },
+
+  // ===== 定时任务（Automation）=====
+  listAutomations: () => ipcRenderer.invoke(AUTOMATION_IPC_CHANNELS.LIST),
+  createAutomation: (input: CreateAutomationInput) =>
+    ipcRenderer.invoke(AUTOMATION_IPC_CHANNELS.CREATE, input),
+  updateAutomation: (input: UpdateAutomationInput) =>
+    ipcRenderer.invoke(AUTOMATION_IPC_CHANNELS.UPDATE, input),
+  deleteAutomation: (id: string) =>
+    ipcRenderer.invoke(AUTOMATION_IPC_CHANNELS.DELETE, id),
+  toggleAutomation: (id: string, active: boolean) =>
+    ipcRenderer.invoke(AUTOMATION_IPC_CHANNELS.TOGGLE, id, active),
+  runAutomationNow: (id: string) =>
+    ipcRenderer.invoke(AUTOMATION_IPC_CHANNELS.RUN_NOW, id),
+  onAutomationChanged: (callback: () => void) => {
+    const listener = (): void => callback()
+    ipcRenderer.on(AUTOMATION_IPC_CHANNELS.CHANGED, listener)
+    return () => { ipcRenderer.removeListener(AUTOMATION_IPC_CHANNELS.CHANGED, listener) }
+  },
+  listRecommendations: () => ipcRenderer.invoke(RECOMMENDATION_IPC_CHANNELS.LIST),
+  refreshRecommendations: () => ipcRenderer.invoke(RECOMMENDATION_IPC_CHANNELS.REFRESH),
+  respondToRecommendation: (input: import('@profer/shared').RecommendationFeedbackInput) => ipcRenderer.invoke(RECOMMENDATION_IPC_CHANNELS.FEEDBACK, input),
+  onRecommendationsChanged: (callback: () => void) => {
+    const listener = (): void => callback()
+    ipcRenderer.on(RECOMMENDATION_IPC_CHANNELS.CHANGED, listener)
+    return () => { ipcRenderer.removeListener(RECOMMENDATION_IPC_CHANNELS.CHANGED, listener) }
+  },
+
+  // ===== 身份认证（Phase 1: 占位）=====
+  auth: {
+    getDeviceIdentity: () => ipcRenderer.invoke(AUTH_IPC_CHANNELS.GET_DEVICE_IDENTITY),
+    getUserIdentity: () => ipcRenderer.invoke(AUTH_IPC_CHANNELS.GET_USER_IDENTITY),
+    updateProfile: (updates: Record<string, unknown>) =>
+      ipcRenderer.invoke(AUTH_IPC_CHANNELS.UPDATE_PROFILE, updates),
+    login: (credentials: Record<string, unknown>) =>
+      ipcRenderer.invoke(AUTH_IPC_CHANNELS.LOGIN, credentials),
+    register: (credentials: { email: string; password: string; displayName: string; inviteCode?: string; otpToken?: string; emailOtp?: string }) =>
+      ipcRenderer.invoke(AUTH_IPC_CHANNELS.REGISTER, credentials),
+    getRegistrationOptions: () => ipcRenderer.invoke(AUTH_IPC_CHANNELS.GET_REGISTRATION_OPTIONS),
+    sendRegistrationOtp: (email: string) => ipcRenderer.invoke(AUTH_IPC_CHANNELS.SEND_REGISTRATION_OTP, email),
+    verifyRegistrationOtp: (email: string, otpToken: string, code: string) =>
+      ipcRenderer.invoke(AUTH_IPC_CHANNELS.VERIFY_REGISTRATION_OTP, email, otpToken, code),
+    logout: () => ipcRenderer.invoke(AUTH_IPC_CHANNELS.LOGOUT),
+    listDevices: () => ipcRenderer.invoke(AUTH_IPC_CHANNELS.LIST_DEVICES),
+    revokeDevice: (slotId: string) => ipcRenderer.invoke(AUTH_IPC_CHANNELS.REVOKE_DEVICE, slotId),
+    getAuthStatus: () => ipcRenderer.invoke(AUTH_IPC_CHANNELS.GET_AUTH_STATUS),
+    getServerInfo: () => ipcRenderer.invoke(AUTH_IPC_CHANNELS.GET_SERVER_INFO),
+    getTeamAuth: () => ipcRenderer.invoke(AUTH_IPC_CHANNELS.GET_TEAM_AUTH) as Promise<{ baseUrl: string; token: string } | null>,
+  },
+
+  // ===== 同步（Phase 1: 占位）=====
+  sync: {
+    getStatus: (workspaceId?: string) =>
+      ipcRenderer.invoke(SYNC_IPC_CHANNELS.GET_STATUS, workspaceId),
+    triggerSync: (workspaceId: string) =>
+      ipcRenderer.invoke(SYNC_IPC_CHANNELS.TRIGGER_SYNC, workspaceId),
+    getPendingChanges: (workspaceId: string) =>
+      ipcRenderer.invoke(SYNC_IPC_CHANNELS.GET_PENDING_CHANGES, workspaceId),
+    discardPendingChanges: (workspaceId: string) =>
+      ipcRenderer.invoke(SYNC_IPC_CHANNELS.DISCARD_PENDING_CHANGES, workspaceId),
+    onStatusChanged: (callback: (data: unknown) => void) => {
+      const listener = (_: unknown, data: unknown): void => callback(data)
+      ipcRenderer.on(SYNC_IPC_CHANNELS.STATUS_CHANGED, listener)
+      return () => { ipcRenderer.removeListener(SYNC_IPC_CHANNELS.STATUS_CHANGED, listener) }
+    },
+  },
+
+  // ===== 团队管理（Phase 1: 占位）=====
+  team: {
+    onWorkspacesSynced: (callback: () => void) => {
+      const listener = (): void => callback()
+      ipcRenderer.on('team:workspaces-synced', listener)
+      return () => { ipcRenderer.removeListener('team:workspaces-synced', listener) }
+    },
+    listWorkspaces: () => ipcRenderer.invoke(TEAM_IPC_CHANNELS.LIST_WORKSPACES),
+    createWorkspace: (name: string) => ipcRenderer.invoke(TEAM_IPC_CHANNELS.CREATE_WORKSPACE, name),
+    deleteWorkspace: (workspaceId: string) =>
+      ipcRenderer.invoke(TEAM_IPC_CHANNELS.DELETE_WORKSPACE, workspaceId),
+    getMembers: (workspaceId: string) =>
+      ipcRenderer.invoke(TEAM_IPC_CHANNELS.GET_MEMBERS, workspaceId),
+    createInvitation: (input: { workspaceId: string; email: string; role: string }) =>
+      ipcRenderer.invoke(TEAM_IPC_CHANNELS.CREATE_INVITATION, input),
+    listInvitations: (workspaceId: string) =>
+      ipcRenderer.invoke(TEAM_IPC_CHANNELS.LIST_INVITATIONS, workspaceId),
+    cancelInvitation: (input: { workspaceId: string; invitationId: string }) =>
+      ipcRenderer.invoke(TEAM_IPC_CHANNELS.CANCEL_INVITATION, input),
+    getStats: (workspaceId: string) =>
+      ipcRenderer.invoke(TEAM_IPC_CHANNELS.GET_STATS, workspaceId),
+    verifyInvitation: (token: string) =>
+      ipcRenderer.invoke(TEAM_IPC_CHANNELS.VERIFY_INVITATION, token),
+    acceptInvitation: (token: string) =>
+      ipcRenderer.invoke(TEAM_IPC_CHANNELS.ACCEPT_INVITATION, token),
+    declineInvitation: (token: string) =>
+      ipcRenderer.invoke(TEAM_IPC_CHANNELS.DECLINE_INVITATION, token),
+    updateMemberRole: (input: { workspaceId: string; userId: string; role: string }) =>
+      ipcRenderer.invoke(TEAM_IPC_CHANNELS.UPDATE_MEMBER_ROLE, input),
+    removeMember: (input: { workspaceId: string; userId: string }) =>
+      ipcRenderer.invoke(TEAM_IPC_CHANNELS.REMOVE_MEMBER, input),
+    leaveWorkspace: (workspaceId: string) =>
+      ipcRenderer.invoke(TEAM_IPC_CHANNELS.LEAVE_WORKSPACE, workspaceId),
+    transferOwnership: (input: { workspaceId: string; targetUserId: string }) =>
+      ipcRenderer.invoke(TEAM_IPC_CHANNELS.TRANSFER_OWNERSHIP, input),
+    restoreWorkspace: (workspaceId: string) =>
+      ipcRenderer.invoke(TEAM_IPC_CHANNELS.RESTORE_WORKSPACE, workspaceId),
+    getAuditLogs: (workspaceId: string, limit?: number, before?: number) =>
+      ipcRenderer.invoke('team:get-audit-logs', workspaceId, limit, before),
+    getAnnouncements: (workspaceId: string) =>
+      ipcRenderer.invoke('team:get-announcements', workspaceId),
+    createAnnouncement: (workspaceId: string, title: string, content: string, isPinned: boolean) =>
+      ipcRenderer.invoke('team:create-announcement', workspaceId, title, content, isPinned),
+    deleteAnnouncement: (workspaceId: string, announcementId: string) =>
+      ipcRenderer.invoke('team:delete-announcement', workspaceId, announcementId),
+    getNotificationSettings: () =>
+      ipcRenderer.invoke('team:get-notification-settings'),
+    updateNotificationSettings: (settings: Record<string, unknown>) =>
+      ipcRenderer.invoke('team:update-notification-settings', settings),
+  },
+
+  // ===== SSE 实时事件 =====
+  sse: {
+    connect: (workspaceId: string) => ipcRenderer.invoke('sse:connect', workspaceId),
+    disconnect: (workspaceId: string) => ipcRenderer.invoke('sse:disconnect', workspaceId),
+    disconnectAll: () => ipcRenderer.invoke('sse:disconnect-all'),
+    onEvent: (callback: (workspaceId: string, event: { type: string; data: unknown; workspaceId: string; timestamp: number }) => void) => {
+      const listener = (_: unknown, event: unknown): void => {
+        const payload = event as { type: string; data: unknown; workspaceId: string; timestamp: number }
+        callback(payload.workspaceId, payload)
+      }
+      ipcRenderer.on(SSE_IPC_CHANNELS.EVENT, listener)
+      return () => { ipcRenderer.removeListener(SSE_IPC_CHANNELS.EVENT, listener) }
+    },
+    onConnectionChanged: (callback: (status: { workspaceId: string; status: string }) => void) => {
+      const listener = (_: unknown, status: unknown): void => callback(status as { workspaceId: string; status: string })
+      ipcRenderer.on(SSE_IPC_CHANNELS.CONNECTION_CHANGED, listener)
+      return () => { ipcRenderer.removeListener(SSE_IPC_CHANNELS.CONNECTION_CHANGED, listener) }
+    },
+  },
+
+  // ===== 技能市场 =====
+  skillMarketplace: {
+    publish: (input: { workspaceId: string; workspaceSlug: string; skillSlug: string }) =>
+      ipcRenderer.invoke(SKILL_MARKETPLACE_IPC_CHANNELS.PUBLISH, input),
+    unpublish: (input: { workspaceId: string; workspaceSlug: string; skillSlug: string }) =>
+      ipcRenderer.invoke(SKILL_MARKETPLACE_IPC_CHANNELS.UNPUBLISH, input),
+    listTeamSkills: (workspaceId: string) =>
+      ipcRenderer.invoke(SKILL_MARKETPLACE_IPC_CHANNELS.LIST_TEAM_SKILLS, workspaceId),
+    installTeamSkill: (input: { workspaceId: string; skillSlug: string; targetWorkspaceSlug: string }) =>
+      ipcRenderer.invoke(SKILL_MARKETPLACE_IPC_CHANNELS.INSTALL_TEAM_SKILL, input),
+    checkForUpdates: (workspaceSlug: string) =>
+      ipcRenderer.invoke(SKILL_MARKETPLACE_IPC_CHANNELS.CHECK_FOR_UPDATES, workspaceSlug),
+  },
+
+  // ===== 全局 Skill 体系 =====
+  globalSkill: {
+    list: (workspaceSlug?: string) => ipcRenderer.invoke(GLOBAL_SKILL_IPC_CHANNELS.LIST, workspaceSlug),
+    read: (skillId: string) => ipcRenderer.invoke(GLOBAL_SKILL_IPC_CHANNELS.READ, skillId),
+    readWorkspaceCopy: (workspaceSlug: string, workspaceSkillId: string) => ipcRenderer.invoke(GLOBAL_SKILL_IPC_CHANNELS.READ_WORKSPACE_COPY, workspaceSlug, workspaceSkillId),
+    saveWorkspaceCopy: (workspaceSlug: string, workspaceSkillId: string, content: string) => ipcRenderer.invoke(GLOBAL_SKILL_IPC_CHANNELS.SAVE_WORKSPACE_COPY, workspaceSlug, workspaceSkillId, content),
+    save: (skillId: string, content: string, workspaceSlug: string | undefined, scope: 'global' | 'workspace') => ipcRenderer.invoke(GLOBAL_SKILL_IPC_CHANNELS.SAVE, skillId, content, workspaceSlug ?? '', scope),
+    copyToUser: (skillId: string, slug?: string) => ipcRenderer.invoke(GLOBAL_SKILL_IPC_CHANNELS.COPY_TO_USER, skillId, slug),
+    createUser: (slug: string, name: string, description: string, content: string) => ipcRenderer.invoke(GLOBAL_SKILL_IPC_CHANNELS.CREATE_USER, slug, name, description, content),
+    copyToWorkspace: (skillId: string, workspaceSlug: string) => ipcRenderer.invoke(GLOBAL_SKILL_IPC_CHANNELS.COPY_TO_WORKSPACE, skillId, workspaceSlug),
+    getDeleteBlockers: (skillId: string) => ipcRenderer.invoke(GLOBAL_SKILL_IPC_CHANNELS.GET_DELETE_BLOCKERS, skillId),
+    deleteUser: (skillId: string, confirmationToken?: string) => ipcRenderer.invoke(GLOBAL_SKILL_IPC_CHANNELS.DELETE_USER, skillId, confirmationToken),
+    setEnabled: (workspaceSlug: string, skillId: string, enabled: boolean) => ipcRenderer.invoke(GLOBAL_SKILL_IPC_CHANNELS.SET_ENABLED, workspaceSlug, skillId, enabled),
+    restore: (workspaceSlug: string, skillId: string) => ipcRenderer.invoke(GLOBAL_SKILL_IPC_CHANNELS.RESTORE, workspaceSlug, skillId),
+    getOverrides: (workspaceSlug: string) => ipcRenderer.invoke(GLOBAL_SKILL_IPC_CHANNELS.GET_OVERRIDES, workspaceSlug),
+  },
+
+  // ===== 全局元 Skill（master 库）=====
+  skillMaster: {
+    list: () =>
+      ipcRenderer.invoke(SKILL_MASTER_IPC_CHANNELS.LIST),
+    read: (slug: string) =>
+      ipcRenderer.invoke(SKILL_MASTER_IPC_CHANNELS.READ, slug),
+    save: (slug: string, content: string, note?: string) =>
+      ipcRenderer.invoke(SKILL_MASTER_IPC_CHANNELS.SAVE, slug, content, note),
+    renameMeta: (slug: string, patches: { name?: string; description?: string }) =>
+      ipcRenderer.invoke(SKILL_MASTER_IPC_CHANNELS.RENAME_META, slug, patches),
+    listHistory: (slug: string) =>
+      ipcRenderer.invoke(SKILL_MASTER_IPC_CHANNELS.LIST_HISTORY, slug),
+    rollback: (slug: string, snapshotId: string, note?: string) =>
+      ipcRenderer.invoke(SKILL_MASTER_IPC_CHANNELS.ROLLBACK, slug, snapshotId, note),
+    syncToWorkspaces: (slug: string, targetWorkspaceSlugs: string[], options?: { force?: boolean; forceSlugs?: string[] }) =>
+      ipcRenderer.invoke(SKILL_MASTER_IPC_CHANNELS.SYNC_TO_WORKSPACES, slug, targetWorkspaceSlugs, options),
+    detectConflict: (workspaceSlug: string, skillSlug: string) =>
+      ipcRenderer.invoke(SKILL_MASTER_IPC_CHANNELS.DETECT_CONFLICT, workspaceSlug, skillSlug),
+  },
+
+  // ===== 团队共享知识记忆 =====
+  teamMemory: {
+    list: (workspaceId: string, includeArchived?: boolean) => ipcRenderer.invoke(TEAM_MEMORY_IPC_CHANNELS.LIST, workspaceId, includeArchived),
+    read: (workspaceId: string, memoryId: string) => ipcRenderer.invoke(TEAM_MEMORY_IPC_CHANNELS.READ, workspaceId, memoryId),
+    create: (workspaceId: string, input: { path: string; title: string; content: string; changeSummary?: string }) => ipcRenderer.invoke(TEAM_MEMORY_IPC_CHANNELS.CREATE, workspaceId, input),
+    update: (workspaceId: string, memoryId: string, input: { expectedVersion: number; path?: string; title?: string; content?: string; changeSummary?: string }) => ipcRenderer.invoke(TEAM_MEMORY_IPC_CHANNELS.UPDATE, workspaceId, memoryId, input),
+    listRevisions: (workspaceId: string, memoryId: string) => ipcRenderer.invoke(TEAM_MEMORY_IPC_CHANNELS.LIST_REVISIONS, workspaceId, memoryId),
+    archive: (workspaceId: string, memoryId: string) => ipcRenderer.invoke(TEAM_MEMORY_IPC_CHANNELS.ARCHIVE, workspaceId, memoryId),
+    unarchive: (workspaceId: string, memoryId: string) => ipcRenderer.invoke(TEAM_MEMORY_IPC_CHANNELS.UNARCHIVE, workspaceId, memoryId),
+  },
+
+  // ===== 团队文件操作 =====
+  teamFile: {
+    upload: (input: { workspaceId: string; workspaceSlug: string; fileName: string; fileData: Uint8Array; sourcePath?: string }) =>
+      ipcRenderer.invoke(TEAM_FILE_IPC_CHANNELS.UPLOAD, input),
+    download: (input: { workspaceId: string; workspaceSlug: string; filePath: string; uploadedBy?: string; sha256?: string }) =>
+      ipcRenderer.invoke(TEAM_FILE_IPC_CHANNELS.DOWNLOAD, input),
+    delete: (input: { workspaceId: string; workspaceSlug: string; filePath: string }) =>
+      ipcRenderer.invoke(TEAM_FILE_IPC_CHANNELS.DELETE, input),
+    getManifest: (workspaceId: string, workspaceSlug?: string) =>
+      ipcRenderer.invoke(TEAM_FILE_IPC_CHANNELS.GET_MANIFEST, workspaceId, workspaceSlug),
+    createDirectory: (input: { workspaceId: string; dirPath: string }) =>
+      ipcRenderer.invoke(TEAM_FILE_IPC_CHANNELS.CREATE_DIRECTORY, input),
+    move: (input: { workspaceId: string; workspaceSlug: string; fromPath: string; toDir: string }) =>
+      ipcRenderer.invoke(TEAM_FILE_IPC_CHANNELS.MOVE, input),
+    rename: (input: { workspaceId: string; workspaceSlug: string; path: string; newName: string }) =>
+      ipcRenderer.invoke(TEAM_FILE_IPC_CHANNELS.RENAME, input),
+    search: (workspaceId: string, options: { q: string; page?: number; limit?: number }) =>
+      ipcRenderer.invoke(TEAM_FILE_IPC_CHANNELS.SEARCH, workspaceId, options),
+    getMetadata: (workspaceId: string, fileId: string) => ipcRenderer.invoke(TEAM_FILE_IPC_CHANNELS.GET_METADATA, workspaceId, fileId),
+    patchMetadata: (workspaceId: string, fileId: string, body: Record<string, unknown>) => ipcRenderer.invoke(TEAM_FILE_IPC_CHANNELS.PATCH_METADATA, workspaceId, fileId, body),
+    getTags: (workspaceId: string) => ipcRenderer.invoke(TEAM_FILE_IPC_CHANNELS.GET_TAGS, workspaceId),
+    getStatuses: (workspaceId: string) => ipcRenderer.invoke(TEAM_FILE_IPC_CHANNELS.GET_STATUSES, workspaceId),
+    setPreference: (workspaceId: string, fileId: string, body: Record<string, unknown>) => ipcRenderer.invoke(TEAM_FILE_IPC_CHANNELS.SET_PREFERENCE, workspaceId, fileId, body),
+    getActivities: (workspaceId: string, fileId: string, cursor?: string) => ipcRenderer.invoke(TEAM_FILE_IPC_CHANNELS.GET_ACTIVITIES, workspaceId, fileId, cursor),
+    listTrash: (workspaceId: string) => ipcRenderer.invoke(TEAM_FILE_IPC_CHANNELS.LIST_TRASH, workspaceId),
+    restoreTrash: (workspaceId: string, entryId: string) => ipcRenderer.invoke(TEAM_FILE_IPC_CHANNELS.RESTORE_TRASH, workspaceId, entryId),
+    purgeTrash: (workspaceId: string, entryId: string) => ipcRenderer.invoke(TEAM_FILE_IPC_CHANNELS.PURGE_TRASH, workspaceId, entryId),
+  },
+
+  // ===== CDUT 专区特区账户 =====
+  cdutZone: {
+    getAccount: () => ipcRenderer.invoke(CDUT_ZONE_IPC_CHANNELS.GET_ACCOUNT),
+    getSavedAccount: () => ipcRenderer.invoke(CDUT_ZONE_IPC_CHANNELS.GET_SAVED_ACCOUNT),
+    login: (input: CdutLoginInput) => ipcRenderer.invoke(CDUT_ZONE_IPC_CHANNELS.LOGIN, input),
+    logout: () => ipcRenderer.invoke(CDUT_ZONE_IPC_CHANNELS.LOGOUT),
+    onStatusChanged: (callback: (profile: CdutAccountProfile) => void) => {
+      const handler = (_: unknown, profile: CdutAccountProfile) => callback(profile)
+      ipcRenderer.on(CDUT_ZONE_IPC_CHANNELS.STATUS_CHANGED, handler)
+      return () => ipcRenderer.removeListener(CDUT_ZONE_IPC_CHANNELS.STATUS_CHANGED, handler)
+    },
+    onMutationRequest: (callback: (request: CdutMutationConfirmRequest) => void) => {
+      const handler = (_: unknown, request: CdutMutationConfirmRequest) => callback(request)
+      ipcRenderer.on(CDUT_ZONE_IPC_CHANNELS.ON_MUTATION_REQUEST, handler)
+      return () => ipcRenderer.removeListener(CDUT_ZONE_IPC_CHANNELS.ON_MUTATION_REQUEST, handler)
+    },
+    confirmMutation: (result: CdutMutationConfirmResult) =>
+      ipcRenderer.invoke(CDUT_ZONE_IPC_CHANNELS.CONFIRM_MUTATION, result),
+    onGatekeeperBlocked: (callback: (event: CdutGatekeeperNoticeEvent) => void) => {
+      const handler = (_: unknown, event: CdutGatekeeperNoticeEvent) => callback(event)
+      ipcRenderer.on(CDUT_ZONE_IPC_CHANNELS.GATEKEEPER_BLOCKED, handler)
+      return () => ipcRenderer.removeListener(CDUT_ZONE_IPC_CHANNELS.GATEKEEPER_BLOCKED, handler)
+    },
+    gatekeeperRespond: (decision: CdutGatekeeperDecision) =>
+      ipcRenderer.invoke(CDUT_ZONE_IPC_CHANNELS.GATEKEEPER_RESPOND, decision),
+    callDomainTool: (params: CdutToolInvokeParams) =>
+      ipcRenderer.invoke(CDUT_ZONE_IPC_CHANNELS.CALL_DOMAIN_TOOL, params),
+    readDomainCache: (name: CdutDomainCacheName) =>
+      ipcRenderer.invoke(CDUT_ZONE_IPC_CHANNELS.READ_DOMAIN_CACHE, name),
+    writeDomainCache: (input: { name: CdutDomainCacheName; payload: unknown }) =>
+      ipcRenderer.invoke(CDUT_ZONE_IPC_CHANNELS.WRITE_DOMAIN_CACHE, input),
+  },
+
+  // ===== 长期记忆图谱（用户习惯与偏好） =====
+  longTermMemory: {
+    getGraph: () => ipcRenderer.invoke(LONGTERM_MEMORY_IPC_CHANNELS.READ_GRAPH),
+    addNode: (input: LongTermMemoryNodeInput) =>
+      ipcRenderer.invoke(LONGTERM_MEMORY_IPC_CHANNELS.ADD_NODE, input),
+    updateNode: (node: LongTermMemoryNode) =>
+      ipcRenderer.invoke(LONGTERM_MEMORY_IPC_CHANNELS.UPDATE_NODE, node),
+    deleteNode: (nodeId: string) =>
+      ipcRenderer.invoke(LONGTERM_MEMORY_IPC_CHANNELS.DELETE_NODE, nodeId),
+    queryTest: (input: { query: string; topK?: number }) =>
+      ipcRenderer.invoke(LONGTERM_MEMORY_IPC_CHANNELS.QUERY_TEST, input),
+    onChanged: (callback: () => void) => {
+      const handler = () => callback()
+      ipcRenderer.on(LONGTERM_MEMORY_IPC_CHANNELS.CHANGED, handler)
+      return () => ipcRenderer.removeListener(LONGTERM_MEMORY_IPC_CHANNELS.CHANGED, handler)
+    },
+  },
+
+  // ===== CDUT Science (CSLab) 专区 =====
+  cslab: {
+    verifyKey: (password: string) => ipcRenderer.invoke(CSLAB_IPC_CHANNELS.VERIFY_KEY, password),
+    getAuthStatus: () => ipcRenderer.invoke(CSLAB_IPC_CHANNELS.GET_AUTH_STATUS),
+    initPassword: (password: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.INIT_PASSWORD, password),
+    verifyPassword: (password: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.VERIFY_PASSWORD, password),
+    lockSession: () => ipcRenderer.invoke(CSLAB_IPC_CHANNELS.LOCK_SESSION),
+    getTelemetry: () => ipcRenderer.invoke(CSLAB_IPC_CHANNELS.GET_TELEMETRY),
+    getNodes: () => ipcRenderer.invoke(CSLAB_IPC_CHANNELS.GET_NODES),
+    getLogs: () => ipcRenderer.invoke(CSLAB_IPC_CHANNELS.GET_LOGS),
+    ping: () => ipcRenderer.invoke(CSLAB_IPC_CHANNELS.PING),
+
+    listLabs: () => ipcRenderer.invoke(CSLAB_IPC_CHANNELS.LIST_LABS),
+    createLab: (input: CsLabCreateLabInput) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.CREATE_LAB, input),
+    createDemoLab: () => ipcRenderer.invoke(CSLAB_IPC_CHANNELS.CREATE_DEMO_LAB),
+    openLab: (labId: string) => ipcRenderer.invoke(CSLAB_IPC_CHANNELS.OPEN_LAB, labId),
+    getLabSnapshot: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.GET_LAB_SNAPSHOT, labId),
+    renameLab: (input: { labId: string; name: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.RENAME_LAB, input),
+    deleteLab: (labId: string) => ipcRenderer.invoke(CSLAB_IPC_CHANNELS.DELETE_LAB, labId),
+    togglePinLab: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.TOGGLE_PIN_LAB, labId),
+    toggleArchiveLab: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.TOGGLE_ARCHIVE_LAB, labId),
+
+    ingestFiles: (input: CsLabIngestRequest) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.INGEST_FILES, input),
+    listAssets: (labId: string) => ipcRenderer.invoke(CSLAB_IPC_CHANNELS.LIST_ASSETS, labId),
+    getAssetTable: (input: { labId: string; uri: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.GET_ASSET_TABLE, input),
+    getTableCell: (input: { labId: string; tableUri: string; column: string; rowIndex: number }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.GET_TABLE_CELL, input),
+    resolveDerivedTable: (input: { labId: string; uri: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.RESOLVE_DERIVED_TABLE, input),
+    getAssetFileInfo: (input: { labId: string; uri: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.GET_ASSET_FILE_INFO, input),
+    getAssetDataUrl: (input: { labId: string; uri: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.GET_ASSET_DATA_URL, input),
+    exportTable: (input: { labId: string; tableUri: string; format: CsLabTableExportFormat }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.EXPORT_TABLE, input),
+
+    listManuscripts: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.LIST_MANUSCRIPTS, labId),
+    createManuscript: (input: { labId: string; title?: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.CREATE_MANUSCRIPT, input),
+    getManuscript: (input: { labId: string; uri: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.GET_MANUSCRIPT, input),
+    saveManuscript: (input: CsLabSaveManuscriptInput) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.SAVE_MANUSCRIPT, input),
+    saveManuscriptAs: (input: CsLabSaveManuscriptAsIpcInput) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.SAVE_MANUSCRIPT_AS, input),
+    showSaveFileDialog: (options?: CsLabSaveFileDialogOptions) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.SHOW_SAVE_FILE_DIALOG, options),
+    exportDocx: (input: { labId: string; manuscriptUri: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.EXPORT_DOCX, input),
+    syncDocx: (input: CsLabDocxSyncInput) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.SYNC_DOCX, input),
+    importDocx: (input: { labId: string; docxPath: string; title?: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.IMPORT_DOCX, input),
+    updateCapsule: (input: { labId: string; capsuleId: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.UPDATE_CAPSULE, input),
+    getCapsuleLineage: (input: { labId: string; capsuleId: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.GET_CAPSULE_LINEAGE, input),
+
+    getPythonCapability: () => ipcRenderer.invoke(CSLAB_IPC_CHANNELS.GET_PYTHON_CAPABILITY),
+    getToolRuntime: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.GET_TOOL_RUNTIME, labId),
+    installToolDeps: (input: CsLabInstallToolDepsInput) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.INSTALL_TOOL_DEPS, input),
+
+    getZoteroStatus: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.ZOTERO_GET_STATUS, labId),
+    discoverZotero: (input: { labId: string; dataDir?: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.ZOTERO_DISCOVER, input),
+    setZoteroDataDir: (input: { labId: string; dataDir: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.ZOTERO_SET_DATA_DIR, input),
+    syncZotero: (input: { labId: string; dataDir?: string; forceFull?: boolean }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.ZOTERO_SYNC, input),
+    listZoteroLiterature: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.ZOTERO_LIST_LITERATURE, labId),
+    listZoteroAnnotations: (input: { labId: string; literatureUri: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.ZOTERO_LIST_ANNOTATIONS, input),
+    startZoteroWatch: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.ZOTERO_START_WATCH, labId),
+    stopZoteroWatch: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.ZOTERO_STOP_WATCH, labId),
+    getZoteroBridgeStatus: () =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.ZOTERO_GET_BRIDGE_STATUS),
+
+    getLiteratureItem: (input: { labId: string; uri: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.GET_LITERATURE_ITEM, input),
+    getLiteratureUrl: (input: { labId: string; uri: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.GET_LITERATURE_URL, input),
+
+    digitizePlot: (input: CsLabPlotDigitizeInput) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.DIGITIZE_PLOT, input),
+    saveDigitizedFigure: (input: CsLabDigitizedFigureInput) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.SAVE_DIGITIZED_FIGURE, input),
+
+    ocrFormula: (input: { labId: string; imageDataUrl: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.OCR_FORMULA, input),
+    verifyFormula: (input: CsLabFormulaVerifyInput) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.VERIFY_FORMULA, input),
+
+    buildLiteratureIndex: (input: { labId: string; force?: boolean }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.BUILD_LITERATURE_INDEX, input),
+    searchLiterature: (input: {
+      labId: string
+      query: string
+      topK?: number
+      literatureUri?: string
+    }) => ipcRenderer.invoke(CSLAB_IPC_CHANNELS.SEARCH_LITERATURE, input),
+
+    listProtocols: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.RUN_LIST_PROTOCOLS, labId),
+    createProtocol: (input: CsLabCreateProtocolInput) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.RUN_CREATE_PROTOCOL, input),
+    updateProtocol: (input: CsLabUpdateProtocolInput) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.RUN_UPDATE_PROTOCOL, input),
+    listRuns: (input: { labId: string; protocolUri?: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.RUN_LIST, input),
+    createRun: (input: CsLabCreateRunInput) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.RUN_CREATE, input),
+    updateRun: (input: CsLabUpdateRunInput) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.RUN_UPDATE, input),
+    linkRunAsset: (input: {
+      labId: string
+      runUri: string
+      assetUri: string
+      relation: 'consumes' | 'produces'
+    }) => ipcRenderer.invoke(CSLAB_IPC_CHANNELS.RUN_LINK_ASSET, input),
+    unlinkRunAsset: (input: {
+      labId: string
+      runUri: string
+      assetUri: string
+      relation: 'consumes' | 'produces'
+    }) => ipcRenderer.invoke(CSLAB_IPC_CHANNELS.RUN_UNLINK_ASSET, input),
+
+    listVaultNotes: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.VAULT_LIST_NOTES, labId),
+    readVaultNote: (input: { labId: string; relPath: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.VAULT_READ_NOTE, input),
+    searchVaultNotes: (input: { labId: string; query: string; limit?: number }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.VAULT_SEARCH, input),
+    getNoteBacklinks: (input: { labId: string; relPath: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.VAULT_BACKLINKS, input),
+    getVaultIndexStatus: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.VAULT_INDEX_STATUS, labId),
+    rebuildVaultIndex: (input: { labId: string; force?: boolean }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.VAULT_REBUILD_INDEX, input),
+    startVaultWatch: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.VAULT_START_WATCH, labId),
+    stopVaultWatch: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.VAULT_STOP_WATCH, labId),
+    listCanvases: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.CANVAS_LIST, labId),
+    createCanvas: (input: { labId: string; title: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.CANVAS_CREATE, input),
+    readCanvas: (input: { labId: string; relPath: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.CANVAS_READ, input),
+    writeCanvas: (input: CsLabCanvasWriteInput) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.CANVAS_WRITE, input),
+
+    listCustomTools: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.CUSTOM_TOOL_LIST, labId),
+    refreshCustomTools: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.CUSTOM_TOOL_REFRESH, labId),
+    runCustomTool: (input: CsLabCustomToolRunInput) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.CUSTOM_TOOL_RUN, input),
+    startCustomToolWatch: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.CUSTOM_TOOL_START_WATCH, labId),
+    stopCustomToolWatch: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.CUSTOM_TOOL_STOP_WATCH, labId),
+    getToolTrust: (sessionId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.GET_TOOL_TRUST, sessionId),
+    ensureUv: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.ENSURE_UV, labId),
+
+    bindSessionLab: (input: { sessionId: string; labId: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.BIND_SESSION_LAB, input),
+    unbindSessionLab: (input: { sessionId: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.UNBIND_SESSION_LAB, input),
+
+    // ===== 局域网仪器共享盘 =====
+    listShareSources: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.SHARE_LIST_SOURCES, labId),
+    addShareSource: (input: CsLabShareSourceInput) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.SHARE_ADD_SOURCE, input),
+    removeShareSource: (input: { labId: string; sourceId: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.SHARE_REMOVE_SOURCE, input),
+    testShareSource: (input: { labId: string; sourceId: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.SHARE_TEST_SOURCE, input),
+    scanShareNow: (input: { labId: string; sourceId?: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.SHARE_SCAN_NOW, input),
+    startShareWatch: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.SHARE_START_WATCH, labId),
+    stopShareWatch: (input: { labId: string; sourceId?: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.SHARE_STOP_WATCH, input),
+    listShareCandidates: (input: { labId: string; sourceId?: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.SHARE_LIST_CANDIDATES, input),
+
+    // ===== 远程学术算力网关 =====
+    listHpcProfiles: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.HPC_LIST_PROFILES, labId),
+    saveHpcProfile: (input: CsLabHpcProfileInput) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.HPC_SAVE_PROFILE, input),
+    deleteHpcProfile: (input: { labId: string; profileId: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.HPC_DELETE_PROFILE, input),
+    testHpcConnection: (input: { labId: string; profileId: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.HPC_TEST_CONNECTION, input),
+    submitHpcJob: (input: CsLabComputeContract) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.HPC_SUBMIT_JOB, input),
+    listHpcJobs: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.HPC_LIST_JOBS, labId),
+    cancelHpcJob: (input: { labId: string; key: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.HPC_CANCEL_JOB, input),
+    refreshHpcJob: (input: { labId: string; key: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.HPC_REFRESH_JOB, input),
+    harvestHpcJob: (input: { labId: string; key: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.HPC_HARVEST_JOB, input),
+    rehydrateHpcJobs: (labId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.HPC_REHYDRATE, labId),
+    answerHpcMfa: (input: { requestId: string; value: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.HPC_ANSWER_MFA, input),
+
+    // ===== 晶体结构与谱图 =====
+    getMolAsset: (input: { labId: string; uri: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.GET_MOL_ASSET, input),
+    getTableSeries: (input: { labId: string; tableUri: string; maxPoints?: number }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.GET_TABLE_SERIES, input),
+
+    // ===== 科学引擎 =====
+    analyzeCrystal: (input: { labId: string; uri: string; tolerance?: number }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.ANALYZE_CRYSTAL, input),
+    simulatePxrd: (input: { labId: string; uri: string; options?: CsLabPxrdOptions }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.SIMULATE_PXRD, input),
+    fitPeaks: (input: CsLabFitRequest) => ipcRenderer.invoke(CSLAB_IPC_CHANNELS.FIT_PEAKS, input),
+    smoothSeries: (input: CsLabSmoothRequest) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.SMOOTH_SERIES, input),
+    getVolumeGrid: (input: { labId: string; uri: string; maxDimension?: number }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.GET_VOLUME_GRID, input),
+
+    // ===== 出版绘图 =====
+    savePlot: (input: { labId: string; plot: CsLabPlotDocument }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.SAVE_PLOT, input),
+    listPlots: (labId: string) => ipcRenderer.invoke(CSLAB_IPC_CHANNELS.LIST_PLOTS, labId),
+    loadPlot: (input: { labId: string; plotId: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.LOAD_PLOT, input),
+    exportFigure: (input: {
+      labId: string
+      plot: CsLabPlotDocument
+      options: CsLabPlotExportOptions
+    }) => ipcRenderer.invoke(CSLAB_IPC_CHANNELS.EXPORT_FIGURE, input),
+    snapshotStructure: (input: CsLabStructureSnapshotSubmitInput) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.SNAPSHOT_STRUCTURE, input),
+
+    // ===== 科学助理独立窗口 =====
+    openAgentWindow: (input: CsLabAgentWindowInput) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.OPEN_AGENT_WINDOW, input),
+    sendToAgentWindow: (input: CsLabAgentContext) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.SEND_TO_AGENT_WINDOW, input),
+    getAgentWindowContext: (windowId: string) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.GET_AGENT_WINDOW_CONTEXT, windowId),
+    undoPlotUpdate: (input: { labId: string; plotId: string; undoToken: string }) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.UNDO_PLOT_UPDATE, input),
+
+    // ===== 学术审稿 =====
+    reviewManuscript: (input: CsLabReviewRequest) =>
+      ipcRenderer.invoke(CSLAB_IPC_CHANNELS.REVIEW_SUGGEST, input),
+
+    onIngestProgress: (handler: (progress: CsLabIngestProgress) => void) => {
+      const listener = (_event: unknown, payload: CsLabIngestProgress): void => handler(payload)
+      ipcRenderer.on(CSLAB_IPC_CHANNELS.ON_INGEST_PROGRESS, listener)
+      return () => ipcRenderer.removeListener(CSLAB_IPC_CHANNELS.ON_INGEST_PROGRESS, listener)
+    },
+    onAssetChanged: (handler: (event: CsLabAssetChangedEvent) => void) => {
+      const listener = (_event: unknown, payload: CsLabAssetChangedEvent): void => handler(payload)
+      ipcRenderer.on(CSLAB_IPC_CHANNELS.ON_ASSET_CHANGED, listener)
+      return () => ipcRenderer.removeListener(CSLAB_IPC_CHANNELS.ON_ASSET_CHANGED, listener)
+    },
+    onCapsuleStale: (handler: (event: CsLabCapsuleStaleEvent) => void) => {
+      const listener = (_event: unknown, payload: CsLabCapsuleStaleEvent): void => handler(payload)
+      ipcRenderer.on(CSLAB_IPC_CHANNELS.ON_CAPSULE_STALE, listener)
+      return () => ipcRenderer.removeListener(CSLAB_IPC_CHANNELS.ON_CAPSULE_STALE, listener)
+    },
+    onZoteroSynced: (handler: (event: CsLabZoteroSyncedEvent) => void) => {
+      const listener = (_event: unknown, payload: CsLabZoteroSyncedEvent): void => handler(payload)
+      ipcRenderer.on(CSLAB_IPC_CHANNELS.ON_ZOTERO_SYNCED, listener)
+      return () => ipcRenderer.removeListener(CSLAB_IPC_CHANNELS.ON_ZOTERO_SYNCED, listener)
+    },
+    onZoteroStatus: (handler: (event: CsLabZoteroStatusEvent) => void) => {
+      const listener = (_event: unknown, payload: CsLabZoteroStatusEvent): void => handler(payload)
+      ipcRenderer.on(CSLAB_IPC_CHANNELS.ON_ZOTERO_STATUS, listener)
+      return () => ipcRenderer.removeListener(CSLAB_IPC_CHANNELS.ON_ZOTERO_STATUS, listener)
+    },
+    onToolDepsProgress: (handler: (progress: CsLabToolDepsProgress) => void) => {
+      const listener = (_event: unknown, payload: CsLabToolDepsProgress): void => handler(payload)
+      ipcRenderer.on(CSLAB_IPC_CHANNELS.ON_TOOL_DEPS_PROGRESS, listener)
+      return () => ipcRenderer.removeListener(CSLAB_IPC_CHANNELS.ON_TOOL_DEPS_PROGRESS, listener)
+    },
+    onVaultChanged: (handler: (event: CsLabVaultChangedEvent) => void) => {
+      const listener = (_event: unknown, payload: CsLabVaultChangedEvent): void => handler(payload)
+      ipcRenderer.on(CSLAB_IPC_CHANNELS.ON_VAULT_CHANGED, listener)
+      return () => ipcRenderer.removeListener(CSLAB_IPC_CHANNELS.ON_VAULT_CHANGED, listener)
+    },
+    onDagJobsCancelled: (handler: (event: CsLabDagJobsCancelledEvent) => void) => {
+      const listener = (_event: unknown, payload: CsLabDagJobsCancelledEvent): void =>
+        handler(payload)
+      ipcRenderer.on(CSLAB_IPC_CHANNELS.ON_DAG_JOBS_CANCELLED, listener)
+      return () => ipcRenderer.removeListener(CSLAB_IPC_CHANNELS.ON_DAG_JOBS_CANCELLED, listener)
+    },
+    onToolsChanged: (handler: (event: { labId: string; scan: CsLabCustomToolScan }) => void) => {
+      const listener = (
+        _event: unknown,
+        payload: { labId: string; scan: CsLabCustomToolScan },
+      ): void => handler(payload)
+      ipcRenderer.on(CSLAB_IPC_CHANNELS.ON_TOOLS_CHANGED, listener)
+      return () => ipcRenderer.removeListener(CSLAB_IPC_CHANNELS.ON_TOOLS_CHANGED, listener)
+    },
+    onShareStatus: (handler: (event: CsLabShareStatusEvent) => void) => {
+      const listener = (_event: unknown, payload: CsLabShareStatusEvent): void => handler(payload)
+      ipcRenderer.on(CSLAB_IPC_CHANNELS.ON_SHARE_STATUS, listener)
+      return () => ipcRenderer.removeListener(CSLAB_IPC_CHANNELS.ON_SHARE_STATUS, listener)
+    },
+    onHpcJob: (handler: (event: CsLabHpcJobEvent) => void) => {
+      const listener = (_event: unknown, payload: CsLabHpcJobEvent): void => handler(payload)
+      ipcRenderer.on(CSLAB_IPC_CHANNELS.ON_HPC_JOB, listener)
+      return () => ipcRenderer.removeListener(CSLAB_IPC_CHANNELS.ON_HPC_JOB, listener)
+    },
+    onHpcMfa: (handler: (event: CsLabHpcMfaRequest) => void) => {
+      const listener = (_event: unknown, payload: CsLabHpcMfaRequest): void => handler(payload)
+      ipcRenderer.on(CSLAB_IPC_CHANNELS.ON_HPC_MFA, listener)
+      return () => ipcRenderer.removeListener(CSLAB_IPC_CHANNELS.ON_HPC_MFA, listener)
+    },
+    onPlotUpdated: (handler: (event: CsLabPlotUpdatedEvent) => void) => {
+      const listener = (_event: unknown, payload: CsLabPlotUpdatedEvent): void => handler(payload)
+      ipcRenderer.on(CSLAB_IPC_CHANNELS.ON_PLOT_UPDATED, listener)
+      return () => ipcRenderer.removeListener(CSLAB_IPC_CHANNELS.ON_PLOT_UPDATED, listener)
+    },
+    onStructureFocused: (handler: (event: CsLabStructureFocusedEvent) => void) => {
+      const listener = (_event: unknown, payload: CsLabStructureFocusedEvent): void => handler(payload)
+      ipcRenderer.on(CSLAB_IPC_CHANNELS.ON_STRUCTURE_FOCUSED, listener)
+      return () => ipcRenderer.removeListener(CSLAB_IPC_CHANNELS.ON_STRUCTURE_FOCUSED, listener)
+    },
+    onRequestStructureSnapshot: (handler: (event: CsLabStructureSnapshotRequest) => void) => {
+      const listener = (_event: unknown, payload: CsLabStructureSnapshotRequest): void =>
+        handler(payload)
+      ipcRenderer.on(CSLAB_IPC_CHANNELS.REQUEST_STRUCTURE_SNAPSHOT, listener)
+      return () =>
+        ipcRenderer.removeListener(CSLAB_IPC_CHANNELS.REQUEST_STRUCTURE_SNAPSHOT, listener)
+    },
+    onAgentContext: (handler: (context: CsLabAgentContext) => void) => {
+      const listener = (_event: unknown, payload: CsLabAgentContext): void => handler(payload)
+      ipcRenderer.on(CSLAB_IPC_CHANNELS.ON_AGENT_CONTEXT, listener)
+      return () => ipcRenderer.removeListener(CSLAB_IPC_CHANNELS.ON_AGENT_CONTEXT, listener)
+    },
+  },
+
+  // ===== CDUT 专区 · 智联万站（Yanhu Express）内置浏览器 =====
+  yanhuExpress: {
+    initOrRestore: () => ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.INIT_OR_RESTORE),
+    getTabsState: () => ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.GET_TABS_STATE),
+    showView: () => ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.SHOW_VIEW),
+    hideView: () => ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.HIDE_VIEW),
+    updateBounds: (layout: YanhuViewLayout) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.UPDATE_BOUNDS, layout),
+    syncTheme: (input: YanhuSyncThemeInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.SYNC_THEME, input),
+    createTab: (input?: YanhuCreateTabInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.CREATE_TAB, input ?? {}),
+    activateTab: (input: YanhuTabRefInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.ACTIVATE_TAB, input),
+    closeTab: (input: YanhuTabRefInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.CLOSE_TAB, input),
+    closeOtherTabs: (input: YanhuTabRefInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.CLOSE_OTHER_TABS, input),
+    closeRightTabs: (input: YanhuCloseRightInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.CLOSE_RIGHT_TABS, input),
+    reorderTabs: (input: YanhuReorderTabsInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.REORDER_TABS, input),
+    navigate: (input: YanhuNavigateInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.NAVIGATE, input),
+    goBack: (input?: YanhuTabRefInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.GO_BACK, input),
+    goForward: (input?: YanhuTabRefInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.GO_FORWARD, input),
+    reload: (input?: YanhuTabRefInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.RELOAD, input),
+    retryWithClean: (input?: YanhuTabRefInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.RETRY_WITH_CLEAN, input),
+    showTabMenu: (input?: YanhuTabRefInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.SHOW_TAB_MENU, input),
+    openExternal: (url: string) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.OPEN_EXTERNAL, url),
+    onTabsChanged: (callback: (state: YanhuTabsState) => void) => {
+      const handler = (_: unknown, state: YanhuTabsState) => callback(state)
+      ipcRenderer.on(YANHU_EXPRESS_IPC_CHANNELS.ON_TABS_CHANGED, handler)
+      return () => ipcRenderer.removeListener(YANHU_EXPRESS_IPC_CHANNELS.ON_TABS_CHANGED, handler)
+    },
+    onLoadingChanged: (callback: (event: YanhuLoadingChangedEvent) => void) => {
+      const handler = (_: unknown, event: YanhuLoadingChangedEvent) => callback(event)
+      ipcRenderer.on(YANHU_EXPRESS_IPC_CHANNELS.ON_LOADING_CHANGED, handler)
+      return () => ipcRenderer.removeListener(YANHU_EXPRESS_IPC_CHANNELS.ON_LOADING_CHANGED, handler)
+    },
+    onUrlChanged: (callback: (event: YanhuUrlChangedEvent) => void) => {
+      const handler = (_: unknown, event: YanhuUrlChangedEvent) => callback(event)
+      ipcRenderer.on(YANHU_EXPRESS_IPC_CHANNELS.ON_URL_CHANGED, handler)
+      return () => ipcRenderer.removeListener(YANHU_EXPRESS_IPC_CHANNELS.ON_URL_CHANGED, handler)
+    },
+
+    // ===== 桌宠「砚小龙」 =====
+    petSyncViewport: (rect: YanhuPetViewport) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_SYNC_VIEWPORT, rect),
+    petUpdateGeometry: (geometry: YanhuPetWindowGeometry) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_UPDATE_GEOMETRY, geometry),
+    petGetBootstrap: () => ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_GET_BOOTSTRAP),
+    petGetConfig: () => ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_GET_CONFIG),
+    petSaveConfig: (patch: Partial<YanhuPetConfig>) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_SAVE_CONFIG, patch),
+    petGetHistory: () => ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_GET_HISTORY),
+    petClearHistory: () => ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_CLEAR_HISTORY),
+    petSendChat: (input: YanhuPetChatInput) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_CHAT_SEND, input),
+    petAbortChat: () => ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_CHAT_ABORT),
+    onPetStream: (callback: (event: YanhuPetStreamEvent) => void) => {
+      const handler = (_: unknown, event: YanhuPetStreamEvent) => callback(event)
+      ipcRenderer.on(YANHU_EXPRESS_IPC_CHANNELS.PET_CHAT_STREAM_CHUNK, handler)
+      return () => ipcRenderer.removeListener(YANHU_EXPRESS_IPC_CHANNELS.PET_CHAT_STREAM_CHUNK, handler)
+    },
+    onPetStateChanged: (callback: (state: YanhuPetStateEvent) => void) => {
+      const handler = (_: unknown, state: YanhuPetStateEvent) => callback(state)
+      ipcRenderer.on(YANHU_EXPRESS_IPC_CHANNELS.PET_STATE_CHANGED, handler)
+      return () => ipcRenderer.removeListener(YANHU_EXPRESS_IPC_CHANNELS.PET_STATE_CHANGED, handler)
+    },
+    onPetHistoryCleared: (callback: () => void) => {
+      const handler = () => callback()
+      ipcRenderer.on(YANHU_EXPRESS_IPC_CHANNELS.PET_HISTORY_CLEARED, handler)
+      return () => ipcRenderer.removeListener(YANHU_EXPRESS_IPC_CHANNELS.PET_HISTORY_CLEARED, handler)
+    },
+    petGetChatStatus: () =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_GET_CHAT_STATUS),
+    petTourFill: (text: string) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_TOUR_FILL, { text }),
+    petTourPresent: () =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_TOUR_PRESENT),
+    petTourRelease: () =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_TOUR_RELEASE),
+    onPetTourFill: (callback: (event: YanhuPetTourFillEvent) => void) => {
+      const handler = (_: unknown, event: YanhuPetTourFillEvent) => callback(event)
+      ipcRenderer.on(YANHU_EXPRESS_IPC_CHANNELS.PET_TOUR_FILL, handler)
+      return () => ipcRenderer.removeListener(YANHU_EXPRESS_IPC_CHANNELS.PET_TOUR_FILL, handler)
+    },
+    openDiagnosticConsole: () =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.OPEN_DIAGNOSTIC_CONSOLE),
+    petSetIgnoreMouse: (ignore: boolean) =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_SET_IGNORE_MOUSE, ignore),
+    petShowContextMenu: () =>
+      ipcRenderer.invoke(YANHU_EXPRESS_IPC_CHANNELS.PET_SHOW_CONTEXT_MENU),
+  },
+
+  // ===== AI 速课堂（学习资料） =====
+  study: {
+    ingestDocuments: (input: StudyIngestDocumentsInput) =>
+      ipcRenderer.invoke(STUDY_IPC_CHANNELS.INGEST_DOCUMENTS, input),
+    listDocuments: (sessionId: string) =>
+      ipcRenderer.invoke(STUDY_IPC_CHANNELS.LIST_DOCUMENTS, sessionId),
+    getOutline: (input: StudyDocumentQueryInput) =>
+      ipcRenderer.invoke(STUDY_IPC_CHANNELS.GET_OUTLINE, input),
+    removeDocument: (input: StudyDocumentQueryInput) =>
+      ipcRenderer.invoke(STUDY_IPC_CHANNELS.REMOVE_DOCUMENT, input),
+    toggleDocumentActive: (input: StudyToggleDocumentActiveInput) =>
+      ipcRenderer.invoke(STUDY_IPC_CHANNELS.TOGGLE_DOCUMENT_ACTIVE, input),
+    setDocumentsActive: (input: StudySetDocumentsActiveInput) =>
+      ipcRenderer.invoke(STUDY_IPC_CHANNELS.SET_DOCUMENTS_ACTIVE, input),
+    // Chrome 风格动态多 Tab 拓扑
+    getTabs: (sessionId: string) => ipcRenderer.invoke(STUDY_IPC_CHANNELS.GET_TABS, sessionId),
+    saveTabs: (input: { sessionId: string; tabs: AiClassRightTabItem[]; activeTabId: string }) =>
+      ipcRenderer.invoke(STUDY_IPC_CHANNELS.SAVE_TABS, input),
+    // 思维导图
+    getMindmap: (input: { sessionId: string; mindmapId?: string }) =>
+      ipcRenderer.invoke(STUDY_IPC_CHANNELS.GET_MINDMAP, input),
+    saveMindmapCoords: (input: {
+      sessionId: string
+      mindmapId: string
+      coords: Record<string, { x: number; y: number }>
+    }) => ipcRenderer.invoke(STUDY_IPC_CHANNELS.SAVE_MINDMAP_COORDS, input),
+    exportOpml: (input: { sessionId: string; mindmapId?: string }) =>
+      ipcRenderer.invoke(STUDY_IPC_CHANNELS.EXPORT_OPML, input),
+    // 抽认卡与 FSRS-7
+    getFlashcards: (input: { sessionId: string; deckId?: string }) =>
+      ipcRenderer.invoke(STUDY_IPC_CHANNELS.GET_FLASHCARDS, input),
+    updateCardRating: (input: StudyCardRatingInput) =>
+      ipcRenderer.invoke(STUDY_IPC_CHANNELS.UPDATE_CARD_RATING, input),
+    // 测验与 FIM
+    getQuiz: (input: { sessionId: string; quizId?: string }) =>
+      ipcRenderer.invoke(STUDY_IPC_CHANNELS.GET_QUIZ, input),
+    submitQuizAnswer: (input: StudyQuizAnswerInput) =>
+      ipcRenderer.invoke(STUDY_IPC_CHANNELS.SUBMIT_QUIZ_ANSWER, input),
+    resetQuiz: (input: { sessionId: string; quizId: string }) =>
+      ipcRenderer.invoke(STUDY_IPC_CHANNELS.RESET_QUIZ, input),
+    // 双轨联动生成
+    generateArtifact: (input: StudyGenerateArtifactInput) =>
+      ipcRenderer.invoke(STUDY_IPC_CHANNELS.GENERATE_ARTIFACT, input),
+    // 已生成成果总览（右侧工作台常驻列表）
+    listArtifacts: (sessionId: string) =>
+      ipcRenderer.invoke(STUDY_IPC_CHANNELS.LIST_ARTIFACTS, sessionId),
+  },
+
+  // ===== AI 速课堂（专属工作区 / 会话 / 资料树图谱） =====
+  cdutAiClass: {
+    listSessions: () =>
+      ipcRenderer.invoke(CDUT_AI_CLASS_IPC_CHANNELS.LIST_SESSIONS),
+    createSession: (courseName: string) =>
+      ipcRenderer.invoke(CDUT_AI_CLASS_IPC_CHANNELS.CREATE_SESSION, courseName),
+    ensureDemoSession: () =>
+      ipcRenderer.invoke(CDUT_AI_CLASS_IPC_CHANNELS.ENSURE_DEMO_SESSION),
+    deleteSession: (sessionId: string) =>
+      ipcRenderer.invoke(CDUT_AI_CLASS_IPC_CHANNELS.DELETE_SESSION, sessionId),
+    generateGraphRelations: (input: StudyGraphGenerateInput) =>
+      ipcRenderer.invoke(CDUT_AI_CLASS_IPC_CHANNELS.GENERATE_GRAPH_RELATIONS, input),
+    estimateGraphCost: (sessionId: string) =>
+      ipcRenderer.invoke(CDUT_AI_CLASS_IPC_CHANNELS.ESTIMATE_GRAPH_COST, sessionId),
+    onGraphProgress: (callback: (data: StudyGraphProgressEvent) => void) => {
+      const listener = (_event: Electron.IpcRendererEvent, payload: StudyGraphProgressEvent): void => callback(payload)
+      ipcRenderer.on(CDUT_AI_CLASS_IPC_CHANNELS.GENERATE_PROGRESS, listener)
+      return () => ipcRenderer.removeListener(CDUT_AI_CLASS_IPC_CHANNELS.GENERATE_PROGRESS, listener)
+    },
+    searchStudyKnowledge: (input: StudySearchKnowledgeInput) =>
+      ipcRenderer.invoke(CDUT_AI_CLASS_IPC_CHANNELS.SEARCH_KNOWLEDGE, input),
+  },
+}
+
+// 将 API 暴露到渲染进程的 window 对象上
+contextBridge.exposeInMainWorld('electronAPI', electronAPI)
+
+// 扩展 Window 接口的类型定义
+declare global {
+  interface Window {
+    electronAPI: ElectronAPI
+    agentPreviewAPI?: {
+      onRender: (callback: (task: import('@profer/shared').AgentPreviewRenderTask) => void) => () => void
+      sendResult: (id: string, result: import('@profer/shared').AgentPreviewRenderOutput) => void
+      sendError: (id: string, payload: { code?: string; message?: string }) => void
+      notifyReady: () => void
+      capture: (id: string) => Promise<string>
+    }
+  }
+}
+
+const agentPreviewAPI = {
+  onRender: (callback: (task: import('@profer/shared').AgentPreviewRenderTask) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, task: import('@profer/shared').AgentPreviewRenderTask) => callback(task)
+    ipcRenderer.on('agent-preview:render', listener)
+    return () => ipcRenderer.removeListener('agent-preview:render', listener)
+  },
+  sendResult: (id: string, result: import('@profer/shared').AgentPreviewRenderOutput) => {
+    ipcRenderer.send('agent-preview:result', id, result)
+  },
+  sendError: (id: string, payload: { code?: string; message?: string }) => {
+    ipcRenderer.send('agent-preview:error', id, payload)
+  },
+  notifyReady: () => ipcRenderer.send('agent-preview:ready'),
+  capture: (id: string) => ipcRenderer.invoke('agent-preview:capture', id) as Promise<string>,
+}
+
+// iframe 内容（HTML/PDF）不需要也不能获得主进程预览控制能力。
+if (process.isMainFrame) contextBridge.exposeInMainWorld('agentPreviewAPI', agentPreviewAPI)
+
+// ===== 内容审核专区（review）API =====
+
+/** 渲染进程可用的内容审核 API（三栏工作台数据通道） */
+const reviewAPI = {
+  loadDemoCase: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LOAD_DEMO_CASE) as Promise<import('@profer/shared').ReviewCase>,
+  listCases: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_CASES) as Promise<import('@profer/shared').ReviewCaseSummary[]>,
+  listRuns: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_RUNS, caseId) as Promise<import('@profer/shared').ReviewRun[]>,
+  getCase: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_CASE, caseId) as Promise<import('@profer/shared').ReviewCase | undefined>,
+  createCase: (input: {
+    title: string
+    type: import('@profer/shared').ReviewCaseType
+    applicant: string
+    academicYear: string
+    /** 审核领域包（可缺省；未知 ID 由主进程 resolveDomainPack 回落缺省包） */
+    domainPackId?: import('@profer/shared').ReviewDomainPackId
+    reviewTemplate?: { templateId: string; version: number } | null
+  }) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CREATE_CASE, input) as Promise<import('@profer/shared').ReviewCase>,
+  importDocument: (input: { caseId: string; role: import('@profer/shared').SourceDocument['role']; requestId?: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT, input) as Promise<import('@profer/shared').ImportDocumentsResult>,
+  onImportProgress: (callback: (event: import('@profer/shared').ReviewImportProgressEvent) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, payload: import('@profer/shared').ReviewImportProgressEvent): void => callback(payload)
+    ipcRenderer.on(REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT_PROGRESS, listener)
+    return () => ipcRenderer.removeListener(REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT_PROGRESS, listener)
+  },
+  importDocumentFromPath: (input: { caseId: string; sourcePath: string; role: import('@profer/shared').SourceDocument['role']; requestId?: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.IMPORT_DOCUMENT_FROM_PATH, input) as Promise<import('@profer/shared').SourceDocument>,
+  removeDocuments: (input: { caseId: string; role: import('@profer/shared').SourceDocument['role']; documentIds?: string[] }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.REMOVE_DOCUMENTS, input) as Promise<import('@profer/shared').ReviewCase>,
+  reorderDocuments: (input: { caseId: string; role: import('@profer/shared').SourceDocument['role']; documentIds: string[] }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.REORDER_DOCUMENTS, input) as Promise<import('@profer/shared').ReviewCase>,
+  deleteCase: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.DELETE_CASE, caseId) as Promise<void>,
+  restoreCaseV3: (input: { caseId: string; expectedRevision: number; reason: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESTORE_CASE_V3, input) as Promise<import('@profer/shared').ReviewCommandResult>,
+  updateCaseSettings: (input: import('@profer/shared').UpdateCaseSettingsRequest) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.UPDATE_CASE_SETTINGS, input) as Promise<import('@profer/shared').ReviewCase>,
+  updateRuleOutline: (input: import('@profer/shared').UpdateRuleOutlineRequest) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.UPDATE_RULE_OUTLINE, input) as Promise<import('@profer/shared').ReviewCase>,
+  updateReviewItem: (input: import('@profer/shared').UpdateReviewItemRequest) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.UPDATE_REVIEW_ITEM, input) as Promise<import('@profer/shared').ReviewCase>,
+  createNativeReviewItemV3: (input: import('@profer/shared').CreateNativeReviewItemV3Request) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CREATE_NATIVE_REVIEW_ITEM_V3, input) as Promise<import('@profer/shared').ReviewCase>,
+  getImagePreviewPath: (input: { caseId: string; documentId: string; blockId: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_IMAGE_PREVIEW_PATH, input) as Promise<string | null>,
+  getWorkspaceDocumentPreviewPath: (input: { caseId: string; documentVersionId: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_WORKSPACE_DOCUMENT_PREVIEW_PATH, input) as Promise<string | null>,
+  confirmRulePack: (input: { caseId: string; rulePackId: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CONFIRM_RULE_PACK, input) as Promise<import('@profer/shared').ReviewCase>,
+  generateRuleOutline: (input: import('@profer/shared').GenerateRuleOutlineRequest) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GENERATE_RULE_OUTLINE, input) as Promise<import('@profer/shared').RuleOutlineItem[]>,
+  extractItems: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.EXTRACT_ITEMS, caseId) as Promise<import('@profer/shared').ReviewItem[]>,
+  runReview: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RUN_REVIEW, caseId) as Promise<import('@profer/shared').ReviewRun>,
+  // ===== V2 通道（M5） =====
+  listTemplatesV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_TEMPLATES_V2) as Promise<import('@profer/shared').TemplateVersion[]>,
+  listTemplateVersionsV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_TEMPLATE_VERSIONS_V2) as Promise<import('@profer/shared').TemplateVersion[]>,
+  listArchivedTemplatesV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_ARCHIVED_TEMPLATES_V2) as Promise<import('@profer/shared').TemplateVersion[]>,
+  reorderTemplatesV2: (templateIds: string[]) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.REORDER_TEMPLATES_V2, templateIds) as Promise<import('@profer/shared').TemplateVersion[]>,
+  removeTemplateFromLibraryV2: (templateId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.REMOVE_TEMPLATE_V2, templateId) as Promise<boolean>,
+  restoreTemplateToLibraryV2: (templateId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESTORE_TEMPLATE_V2, templateId) as Promise<import('@profer/shared').TemplateVersion>,
+  getTemplateV2: (templateId: string, version?: number) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_TEMPLATE_V2, templateId, version) as Promise<import('@profer/shared').TemplateVersion | undefined>,
+  publishTemplateV2: (templateId: string, version: number) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.PUBLISH_TEMPLATE_V2, templateId, version) as Promise<import('@profer/shared').TemplateVersion>,
+  listRunsV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_RUNS_V2, caseId) as Promise<import('@profer/shared').ReviewRunV2[]>,
+  getRunV2: (caseId: string, runId: string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_RUN_V2, { caseId, runId }) as Promise<import('@profer/shared').ReviewRunV2 | undefined>,
+  cancelRunV2: (runId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CANCEL_RUN_V2, runId) as Promise<boolean>,
+  migrateCaseV2: (caseId: string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.MIGRATE_CASE_V2, caseId) as Promise<{ migrated: boolean; note: string; caseV2?: import('@profer/shared').ReviewCaseV2 }>,
+  seedFixtureV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SEED_FIXTURE_V2) as Promise<boolean>,
+  createCaseV2: (input: { caseId: string; templateId: string; version: number; payload: unknown; /** @deprecated transport-only; Main rebinds Actor */ actor?: import('@profer/shared').Actor; requestId?: string; expectedRevision?: number }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CREATE_CASE_V2, input) as Promise<import('@profer/shared').ReviewCaseV2 | undefined>,
+  /** Real Main-framed candidate read; denies until current privileged B1 authority is installed. */
+  readCurrentAuthorRevisionV3: (input: {templateId:string;expectedRevision?:number}) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.AUTHOR_READ_LATEST_V3,input) as Promise<{
+      schemaVersion:'review-v3-author-current-read/1';templateId:string;revision:number;
+      sourceDigest:string;document:unknown;state:'candidate-held';displayOnly:true
+    }>,
+  /** Append-only local candidate author revision; Main supplies identity and revision CAS. */
+  saveLocalCandidateAuthorV3: (input: {document:import('../main/lib/review/review-template-plan-adapter-v3-b1').B1AuthorDocument;expectedRevision:number}) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.AUTHOR_SAVE_LOCAL_V3,input) as Promise<{revision:number}>,
+  /** B1 rules compile locally for preview, without publishing school policy. */
+  previewLocalCandidateAuthorV3: (input: {document:import('../main/lib/review/review-template-plan-adapter-v3-b1').B1AuthorDocument}) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.AUTHOR_PREVIEW_LOCAL_V3,input) as Promise<import('../main/lib/review/review-template-plan-adapter-v3-b1').ImmutablePlanDescriptorB1>,
+  /** Freeze only the persisted, still-current B1 revision in the local candidate vault. */
+  freezeLocalCandidateAuthorV3: (input: {document:import('../main/lib/review/review-template-plan-adapter-v3-b1').B1AuthorDocument;expectedRevision:number}) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.AUTHOR_FREEZE_LOCAL_V3,input) as Promise<{fingerprint:string}>,
+  /** Reuse frozen D4 G01–G08 candidates with explicit object/scenario selection. */
+  listD4Templates: () =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LOCAL_D4_LIST_V3) as Promise<import('@profer/shared').D4ClientTemplate[]>,
+  attachD4TechnicalPlanV3: (input:{caseId:string;d4:import('@profer/shared').D4ClientSelection}) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LOCAL_D4_ATTACH_PLAN_V3,input) as Promise<{
+      caseId:string;templateId:string;templateVersion:number;checks:number;fingerprint:string
+    }>,
+  attachB1TechnicalPlanV3: (input:{caseId:string;templateId:string;fingerprint:string}) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LOCAL_B1_ATTACH_PLAN_V3,input) as Promise<{
+      caseId:string;templateId:string;templateVersion:number;checks:number;fingerprint:string
+    }>,
+  /** Native Main Case source bytes rehashed and staged into real B2/B30 candidate read. */
+  readLocalNativeProductV3: (caseId:string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LOCAL_PRODUCT_CURRENT_V3,caseId) as Promise<import('../main/lib/review/review-v3-main-local-product-intake').C11MainLocalProductRead>,
+  interruptLocalNativeProductV3: (caseId:string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LOCAL_PRODUCT_INTERRUPT_V3,caseId) as Promise<import('../main/lib/review/review-v3-main-local-product-intake').C11MainLocalProductRead>,
+  chooseLocalNativeProductTemplateV3: (input:{caseId:string;templateId:string;templateVersion:string}) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LOCAL_PRODUCT_MANUAL_CHOICE_V3,input) as Promise<import('../main/lib/review/review-v3-main-local-product-intake').C11MainLocalTechnicalChoiceAck>,
+  prepareLocalNativeUnmatchedV3: (input:{
+    caseId:string;intent:import('../main/lib/review/review-v3-b3-unmatched-author-bootstrap').B29HumanAuthorIntent
+  })=>ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LOCAL_PRODUCT_UNMATCHED_V3,input) as Promise<
+    import('../main/lib/review/review-v3-b3-unmatched-author-bootstrap').B29UnmatchedAuthorDraft>,
+  /** C Main-only B20 source view; requires separate trusted picker, B vault/ledger and current Owner. */
+  readCurrentB20CandidateV3: (templateId:string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.B20_CANDIDATE_READ_V3,{templateId}) as Promise<{
+      schemaVersion:'review-v3-cmain-b20-candidate-preview/1';
+      templateId:string;caseCandidateId:string;ownerId:string;ownerGeneration:number;
+      authorRevision:number;authorRevisionDigest:string;frozenFingerprint:string;
+      candidateProvenance:unknown;state:'candidate-held';displayOnly:true;candidateOnly:true;
+      publicationAllowed:false;businessWriteAllowed:false;schoolPolicyVerified:false;
+    }>,
+  /** Main validates selected B20 archive, opens a REAL OS picker and re-verifies original bytes.
+   * No Renderer pathname/private key/Principal/Owner is accepted. */
+  repickCurrentB20ArchiveV3: (templateId:string,archiveId:string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.B20_NATIVE_REPICK_V3,{templateId,archiveId}) as
+    Promise<{schemaVersion:'review-v3-main-native-b20-repick/1';
+      status:'picked-for-candidate-only';publicationAllowed:false;
+      businessWriteAllowed:false;schoolPolicyVerified:false}>,
+  /** Read/write separation: this requires a real published school-policy issuer in Main. */
+  upgradeCanonicalPlanV3: (input: {
+    caseId:string;requestId:string;expectedRevision:number;
+    payload:{plan:import('@profer/shared').CanonicalPlan;previousFingerprint:string;
+      acknowledgement:string;removalAck?:{
+        previousFingerprint:string;nextFingerprint:string;
+        acknowledgedRemovedIdentities:readonly string[]
+      }}
+  }) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.UPGRADE_CANONICAL_PLAN_V3,input) as
+    Promise<import('@profer/shared').ReviewCommandResult<import('@profer/shared').CanonicalPlan>>,
+  getAggregateV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_AGGREGATE_V2, caseId) as Promise<import('@profer/shared').CaseAggregateV2 | undefined>,
+  updateFieldsV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.UPDATE_FIELDS_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  /** 导入草案补录/编辑申报事项（必填分项）；Main 用已发布模板校验并 CAS 落盘。 */
+  upsertCaseSubjectV2: (input: {
+    caseId: string
+    command: {
+      requestId: string; expectedRevision: number
+      payload: { subjectId?: string; title: string; type?: string; sectionId?: string; fieldValues?: Record<string, unknown> }
+      payloadHash?: string
+    }
+  }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.UPSERT_CASE_SUBJECT_V2, input) as Promise<
+      import('@profer/shared').ReviewCommandResult<import('@profer/shared').ReviewSubject>
+    >,
+  exportReportV2: (caseId: string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.EXPORT_REPORT_V2, caseId) as Promise<{ file: string; decision: { result: string; reason: string; at: string } | null }>,
+  createAssignmentV2: (input: { sessionId: string; turnId: string; caseId?: string; templateId?: string; templateVersion?: number; actions: string[]; workRole?: 'reviewer' | 'student' }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.ASSIGNMENT_CREATE_V2, input) as Promise<{ id: string }>,
+  revokeAssignmentV2: (assignmentId: string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.ASSIGNMENT_REVOKE_V2, assignmentId) as Promise<boolean>,
+  listAssignmentsV2: (sessionId?: string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.ASSIGNMENT_LIST_V2, sessionId) as Promise<Array<Record<string, unknown>>>,
+  getCaseTimelineV2: (input: { caseId: string; filterOperator?: 'human' | 'agent' | 'mock' | 'school' | 'system' | 'unknown' }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CASE_TIMELINE_V2, input) as Promise<Array<Record<string, unknown>>>,
+  getRunObservationsV2: (caseId: string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_RUN_OBSERVATIONS_V2, caseId) as Promise<Array<Record<string, unknown>>>,
+  getWorkspaceRunValidityV2: (input: { caseId: string; runId: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_WORKSPACE_RUN_VALIDITY_V2, input) as Promise<boolean>,
+  correctObservationV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CORRECT_OBSERVATION_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  setEvidenceLinkV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SET_EVIDENCE_LINK_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  recordStageDecisionV2: (input: { caseId: string; command: Record<string, unknown>; templateId: string; version: number }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RECORD_STAGE_DECISION_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  resolveSupplementV2: (input: { caseId: string; command: Record<string, unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESOLVE_SUPPLEMENT_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  respondSupplementV2: (input: { caseId: string; command: Record<string, unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESPOND_SUPPLEMENT_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  /** T07 评分视图（actor 由 Main 派生；Renderer 只声明角色） */
+  getT07View: (input: {
+    batchId: string; claim?: { role: 'judge' | 'organizer'; reviewerId?: string }
+    safeMaterials?: import('../main/lib/review/review-v3-t07-rating-workflow').T07SafeCaseMaterial[]
+  }) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.T07_GET_VIEW, input) as Promise<{
+    revision: number
+    updatedAt: string
+    view: import('../main/lib/review/review-v3-t07-rating-workflow').T07View
+  }>,
+  /** 未匹配业务候选 → 可编辑模板草稿（只保存 draft，不发布） */
+  createFallbackTemplateDraft: (input: {
+    document: import('../main/lib/review/review-template-plan-adapter-v3-b1').B1AuthorDocument
+    templateId: string
+  }) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.FALLBACK_TEMPLATE_DRAFT_V3, input) as Promise<{
+    template: import('@profer/shared').TemplateVersion
+    sourceCandidates: Array<{ documentVersionId: string; locator: string }>
+    notes: string[]
+  }>,
+  /** 把 50 套 D4 冻结候选发布为可执行模板；不写政策引用，判据全语义 */
+  publishD4DemoTemplates: () =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.D4_DEMO_PUBLISH_V3) as Promise<{
+      published: Array<{ templateId: string; version: number; sections: number; criteria: number }>
+      renamed: Array<{ templateId: string; version: number; sections: number; criteria: number }>
+      skipped: Array<{ templateId: string; version: number; reason: string }>
+      failed: Array<{ templateId: string; version: number; reason: string }>
+    }>,
+  /** 已发布模板规则运行：编译冻结计划 → T04 确定性检查 → 真实 ReviewRunV2 */
+  runTemplateRuleReview: (input: { caseId: string; phase?: 'submission' | 'decision' }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.TEMPLATE_RULE_RUN_V3, input) as Promise<{
+      runId: string; planFingerprint: string; status: 'completed' | 'partially-completed'
+      ruleIds: string[]
+      checks: Array<{ checkId: string; ruleId: string; status: string; reason: string }>
+    }>,
+  /** T01 受控模型起草（渠道与凭据在 Main；返回模型原始文本与实际模型标识） */
+  requestT01ModelDraft: (input: { system: string; user: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.T01_MODEL_DRAFT, input) as Promise<{
+      raw: string; channelName: string; modelId: string
+    }>,
+  /** 只读案卷存储诊断：损坏/可恢复案卷、主账落后副本等（不自动修复） */
+  listCaseStorageIssuesV3: () =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_CASE_STORAGE_ISSUES_V3) as Promise<
+      Array<{ caseId: string; code: string; message: string; canReadFromBackup: boolean }>
+    >,
+  /** T06 选择物理来源（Main 弹出真实 OS 选择器，渲染层只拿到不透明 entryId） */
+  pickT06PhysicalSource: (input: { sourceKind: 'folder' | 'zip' }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.T06_PICK_PHYSICAL_SOURCE, input) as Promise<
+      import('../main/lib/review/review-v3-t06-main-service').T06PhysicalSelection | null
+    >,
+  /** T06 提交物理入库（建案 + 逐原件入库 + 批次回执；requestId 幂等） */
+  commitT06PhysicalImport: (input: import('../main/lib/review/review-v3-t06-main-service').T06PhysicalCommitRequest) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.T06_COMMIT_PHYSICAL_IMPORT, input) as Promise<
+      import('../main/lib/review/review-v3-t06-main-service').T06CommitReceipt
+    >,
+  /** T05 可信阶段能力投影（只读；渲染层只展示，不构成授权） */
+  getT05StageCapability: (input: { caseId: string; claim?: { role?: string } }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.T05_STAGE_CAPABILITY, input) as Promise<{
+      mode: 'local-business'; actorLabel: string; actorRole: 'reviewer' | 'teacher'
+      eligibleTaskIds: string[]; hasCurrentRun: boolean
+      currentRunId?: string; currentRunReason?: string
+    }>,
+  /** T05 可信阶段决定（Main 重核身份/Run/准备度后原子写入） */
+  recordT05StageDecision: (input: {
+    caseId: string; templateId: string; version: number; expectedRevision: number
+    taskId: string; action: string; reason: string
+    supplementRequiredElements?: string[]; supplementReason?: string
+    requestId: string; claim?: { role?: string }
+  }) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.T05_RECORD_STAGE_DECISION, input) as Promise<{
+    ok: true; revision: number; decisionId?: string; nextTaskId?: string; supplementId?: string
+  }>,
+  /** T02 暂存来源只读预览（Main 派生 B2 ctx；不产生 DocumentVersion） */
+  getT02StagedInventory: (caseId: string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.T02_STAGED_INVENTORY_V3, caseId) as Promise<{
+      schemaVersion: 'review-v3-t02-staged-inventory/1'
+      candidateOnly: true
+      checkpoint: 'staging-only'
+      total: number; parsed: number; partial: number; failed: number
+      imagesAwaitingInspection: number
+      sources: import('../main/lib/review/review-v3-t02-staged-source-preview').T02StagedSourcePreview[]
+    }>,
+  /** T09 签发学生离线应答包 */
+  issueT09StudentPackage: (input: {
+    caseId: string; supplementId: string; recipientId: string
+  }) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.T09_ISSUE_STUDENT, input) as Promise<{
+    packageId: string; actionId: string; json: string
+  }>,
+  /** T09 从当前可信 T07 轮次签发独立评委评分任务 */
+  issueT09JudgePackage: (input: { caseId: string; batchId: string; assignmentId: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.T09_ISSUE_JUDGE, input) as Promise<{
+      packageId: string; actionId: string; json: string; batchId: string; round: number
+    }>,
+  /** T09 预览学生/评委离线回件（只校验不写入） */
+  previewT09Package: (input: { caseId: string; packageJson: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.T09_PREVIEW_REPLY, input) as Promise<{
+      preview: import('../main/lib/review/review-v3-t09-offline-codec').T09Preview
+    }>,
+  /** T09 导入离线回件（附件先登记原件，再原子答复补件；actionId 幂等） */
+  importT09Package: (input: { caseId: string; packageJson: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.T09_IMPORT_REPLY, input) as Promise<
+      | { status: 'accepted' | 'duplicate'; receipt: import('../main/lib/review/review-v3-t09-offline-codec').T09Receipt }
+      | { status: 'conflict' | 'rejected'; preview: import('../main/lib/review/review-v3-t09-offline-codec').T09Preview }
+    >,
+  /** T07 建立评分轮次（Main 从已发布模板派生量表，渲染层不传状态） */
+  initT07State: (input: {
+    batchId: string; claim?: { role: 'judge' | 'organizer'; reviewerId?: string }
+  }) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.T07_INIT_STATE, input) as Promise<{
+    revision: number
+    updatedAt: string
+    view: import('../main/lib/review/review-v3-t07-rating-workflow').T07View
+  }>,
+  /** T07 评分动作（分配/回避/评分/同分/冻结/重开） */
+  applyT07Action: (input: {
+    batchId: string; claim?: { role: 'judge' | 'organizer'; reviewerId?: string }
+    action: import('../main/lib/review/review-v3-t07-rating-workflow').T07Action
+    expectedRevision: number
+    initialState?: import('../main/lib/review/review-v3-t07-rating-workflow').T07State
+    safeMaterials?: import('../main/lib/review/review-v3-t07-rating-workflow').T07SafeCaseMaterial[]
+  }) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.T07_APPLY_ACTION, input) as Promise<{
+    revision: number
+    view: import('../main/lib/review/review-v3-t07-rating-workflow').T07View
+    ranking: import('../main/lib/review/review-v3-t07-rating-workflow').T07RankingRow[]
+  }>,
+  recordWorkspaceDispositionV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RECORD_WORKSPACE_DISPOSITION_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  openWorkspaceSupplementV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.OPEN_WORKSPACE_SUPPLEMENT_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  acknowledgeWorkspaceMaterialV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.ACKNOWLEDGE_WORKSPACE_MATERIAL_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  decideWorkspaceCaseV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.DECIDE_WORKSPACE_CASE_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  recordWorkspaceSubjectAdjudicationV2: (input: { caseId: string; command: import('@profer/shared').ReviewCommandV2<unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RECORD_WORKSPACE_SUBJECT_ADJUDICATION_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  runBatchV2: (batchId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RUN_BATCH_V2, batchId) as Promise<import('@profer/shared').BatchStateV2>,
+  processBatchAutomationV2: (batchId: string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.BATCH_AUTO_PROCESS_V2, batchId) as Promise<import('@profer/shared').BatchAutomationReport>,
+  previewBatchGroupV2: (input: import('@profer/shared').BatchGroupActionRequest) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.BATCH_GROUP_PREVIEW_V2, input) as Promise<import('@profer/shared').BatchGroupPreview>,
+  applyBatchGroupV2: (input: import('@profer/shared').BatchGroupApplyRequest) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.BATCH_GROUP_APPLY_V2, input) as Promise<import('@profer/shared').BatchGroupApplyResult>,
+  runReviewV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RUN_REVIEW_V2, caseId) as Promise<import('@profer/shared').ReviewRunV2>,
+  getPiReviewSessionV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_PI_REVIEW_SESSION_V2, caseId) as Promise<string | null>,
+  getBackgroundPiReviewStateV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_BACKGROUND_PI_REVIEW_STATE_V2, caseId) as Promise<import('@profer/shared').ReviewBackgroundPiRunState>,
+  startBackgroundPiReviewV2: (input: import('@profer/shared').ReviewBackgroundPiStartRequest) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.START_BACKGROUND_PI_REVIEW_V2, input) as Promise<import('@profer/shared').ReviewBackgroundPiRunState>,
+  stopBackgroundPiReviewV2: (input: { caseId: string; runId: string }) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.STOP_BACKGROUND_PI_REVIEW_V2, input) as Promise<import('@profer/shared').ReviewBackgroundPiRunState>,
+  preparePiReviewV2: (input: { caseId: string; sessionId: string; turnId: string; resumeRunId?: string; inheritReadReceipts?: boolean }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.PREPARE_PI_REVIEW_V2, input) as Promise<{ assignmentId: string; runId: string; caseDirectory: string; userMessage: string; continuedRun?: boolean; inheritedReadDocumentNames?: string[] }>,
+  abortPiReviewV2: (input: { caseId: string; sessionId: string; assignmentId: string; runId: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.ABORT_PI_REVIEW_V2, input) as Promise<boolean>,
+  castRatingV2: (input: { caseId: string; command: Record<string, unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CAST_RATING_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  resolveAppealV2: (input: { caseId: string; command: Record<string, unknown> }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.RESOLVE_APPEAL_V2, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  submitLocalF13Appeal: (input: import('../main/lib/review/review-v3-f13-main-service').F13SubmitAppealCommand) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.F13_SUBMIT_LOCAL_APPEAL, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  reviewLocalF13Appeal: (input: import('../main/lib/review/review-v3-f13-main-service').F13ReviewAppealCommand) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.F13_REVIEW_LOCAL_APPEAL, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  withdrawLocalF13Appeal: (input: import('../main/lib/review/review-v3-f13-main-service').F13WithdrawAppealCommand) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.F13_WITHDRAW_LOCAL_APPEAL, input) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  createPolicyV2: (input: { policyId: string; title: string; content: string; enteredBy: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CREATE_POLICY_V2, input) as Promise<{ policyId: string; version: number; contentHash: string }>,
+  saveTemplateDraftV2: (template: import('@profer/shared').TemplateVersion) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SAVE_TEMPLATE_DRAFT_V2, template) as Promise<import('@profer/shared').TemplateVersion>,
+  createBatchV2: (batch: import('@profer/shared').ReviewBatch) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CREATE_BATCH_V2, { batch }) as Promise<import('@profer/shared').BatchStateV2>,
+  getBatchV2: (batchId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_BATCH_V2, batchId) as Promise<import('@profer/shared').BatchStateV2 | undefined>,
+  listBatchesV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_BATCHES_V2) as Promise<import('@profer/shared').BatchStateV2[]>,
+  batchActionV2: (input: { action: 'finalize' | 'reopen' | 'retry' | 'recover' | 'configure-automation' | 'finalize-completed'; batchId: string; newBatchId?: string; reason?: string; snapshot?: Record<string, unknown>; caseIds?: string[]; mode?: import('@profer/shared').BatchAutomationMode; confirmed?: boolean }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.BATCH_ACTION_V2, input) as Promise<import('@profer/shared').BatchStateV2>,
+  listCasesV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LIST_CASES_V2) as Promise<Array<{ caseId: string; title: string; stage: string; revision: number; templateId: string; templateVersion: number; updatedAt: string }>>,
+  openAggregateV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_AGGREGATE_V2, caseId) as Promise<import('@profer/shared').CaseAggregateV2 | undefined>,
+  submitCaseV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SUBMIT_CASE_V2, caseId) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
+  registerMaterialPathV2: (input: { caseId: string; sourcePath: string; role: 'application' | 'evidence' | 'rule' | 'attachment'; materialSlotId?: string; fileName?: string; replacesVersionIds?: string[] }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.REGISTER_MATERIAL_PATH_V2, input) as Promise<string | undefined>,
+  pickRegisterMaterialV2: (input: { caseId: string; role: 'application' | 'evidence' | 'rule' | 'attachment'; materialSlotId?: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.PICK_REGISTER_MATERIAL_V2, input) as Promise<string[]>,
+  bootCheckV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.BOOT_CHECK_V2) as Promise<{ templatesSeeded: number; templatesPublished: number; migratableCases: string[]; notes: string[] }>,
+  getLatestRun: (caseId: string) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LATEST_RUN, caseId) as Promise<import('@profer/shared').ReviewLatestRunResult>,
+  getRun: (input: { caseId: string; runId: string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_RUN, input) as Promise<import('@profer/shared').ReviewRun | undefined>,
+  assistantChat: (input: import('@profer/shared').AssistantChatRequest) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.ASSISTANT_CHAT, input) as Promise<{ content: string; references: string[]; degraded: boolean }>,
+  exportReport: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.EXPORT_REPORT, caseId) as Promise<import('@profer/shared').ExportReportResult>,
+  getModelGatewayStatus: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_MODEL_GATEWAY_STATUS) as Promise<import('@profer/shared').ReviewModelGatewayStatus>,
+  getModuleSettingsV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.GET_MODULE_SETTINGS_V2) as Promise<import('@profer/shared').ReviewModuleSettingsV2>,
+  saveModuleSettingsV2: (input: import('@profer/shared').ReviewModuleSettingsV2) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SAVE_MODULE_SETTINGS_V2, input) as Promise<import('@profer/shared').ReviewModuleSettingsV2>,
+}
+
+if (process.isMainFrame) contextBridge.exposeInMainWorld('reviewAPI', reviewAPI)
+
+declare global {
+  interface Window {
+    reviewAPI: typeof reviewAPI
+  }
+}

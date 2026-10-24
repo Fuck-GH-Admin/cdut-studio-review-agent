@@ -1,0 +1,55 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-01-r2",
+  "revisionOf": "nb-01-r1",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewer": "docs-r07-qa-nb-01-20261023",
+  "reviewedAtUtc": "2026-10-23T14:05:00Z",
+  "bindingNote": "per-file manualSha256 是 lead 合入 candidate 的唯一依据；8 篇全部 accepted，全部计入 acceptedHashes。",
+  "sourceBinding": [
+    {"path": "apps/electron/src/main/lib/review/review-d2-runtime.ts", "blobsha": "0870321252376c4a6a024cd6af15790587d1ce12", "sha256": "2c440458a579d12a808a835e769a9cb4dc9fcac9e6394d1e4009679d5267388a", "lines": 547, "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-d2-runtime.ts.md", "manualSha256": "429a0a51a75c0d6e951ccb159e9928224300fd01a735bc5f7e96ac6293db9a2e", "verdict": "accepted", "inheritedFrom": "nb-01-r1"},
+    {"path": "apps/electron/src/main/lib/review/review-v3-main-d4-local-plan.ts", "blobsha": "35fc991f1bc3ef98ae588e13a2506db451191fe6", "sha256": "ab5a01e5fff0754f4fed4b62ca5d521c205c528e0a3b39a5efa2b2058e6624bb", "lines": 133, "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-main-d4-local-plan.ts.md", "manualSha256": "fd9ceffb2b316f8b6735eddaf93e9fd9c6f45d09ee0b7edd57e19cb73aca895e", "verdict": "accepted", "inheritedFrom": "nb-01-r1"},
+    {"path": "apps/electron/src/main/lib/review/review-v3-main-d4-local-plan.test.ts", "blobsha": "8c0327df279844e7e571326d8362256aa010088a", "sha256": "10bb69d8c003d05627201276e7a6ba878fb8ad4235aa8b631aeeee9109a79395", "lines": 211, "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-main-d4-local-plan.test.ts.md", "manualSha256": "847a1a8bbac0f8b7634bc295244bb1bf9aa29b6c63abb6d2999fdbc7a1f5afc3", "verdict": "accepted", "inheritedFrom": "nb-01-r1"},
+    {"path": "apps/electron/src/main/lib/review/review-v3-main-local-product-intake.ts", "blobsha": "9e7448447f36e1f952795405f7db69a04c73428b", "sha256": "bc0fcac058df834c7155b56d1cce3acc7937074e2b252fdf0130b7727c6be9dd", "lines": 327, "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-main-local-product-intake.ts.md", "manualSha256": "f98b50c20ad15772a54540591039bc776ee0c25ccb9e45816da74ffb4db00b53", "verdict": "accepted", "inheritedFrom": "nb-01-r2 (changed; supersedes nb-01-r1 9f25de4b23bede272c3b470c19264197e7df13086234416232bcbfad25dce1ab)"},
+    {"path": "apps/electron/src/main/lib/review/review-v3-d4-content-router.ts", "blobsha": "a423ace067a12a4d3ea38779bf16e53f80c2de74", "sha256": "5cf6f338a3229e8d61a1f7ac31a1fbf9d24ae2740f38a22d1814f59e281a1bef", "lines": 135, "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-d4-content-router.ts.md", "manualSha256": "1907b32345cd6868113db0138547a350389a038c768ad3c832fc7e33cb2434cd", "verdict": "accepted", "inheritedFrom": "nb-01-r1"},
+    {"path": "apps/electron/src/main/lib/review/review-v3-d4-content-router.test.ts", "blobsha": "ba5a78528a7665daf56636924f66fa4e2b9c48f9", "sha256": "e782870fcf8efe080430858f6e4847ba5c6d27bef21e0a38390a15a279fc71d1", "lines": 94, "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-d4-content-router.test.ts.md", "manualSha256": "4a428b706096f138cd72b6d116c08fa2c7000b39e933b06e338d2834458bcc15", "verdict": "accepted", "inheritedFrom": "nb-01-r1"},
+    {"path": "apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.ts", "blobsha": "fc412011105e2ae70d6d37d79c2df80dd7ef376c", "sha256": "3ce6dc0388f391e440743df5f4a3599b427c982cfb7a157b28479160cd012934", "lines": 248, "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.ts.md", "manualSha256": "b6530366385b863ea78c6fae85aef1834f80725ec8cbb5da134f0023ecd00b28", "verdict": "accepted", "inheritedFrom": "nb-01-r1"},
+    {"path": "apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.test.ts", "blobsha": "d1d2b994d22c4da48b7703f30f30bf09d5d58690", "sha256": "8f6f1714040d49630e83f3816a28c4fc54c507840404de96d2de003c7b98899a", "lines": 65, "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.test.ts.md", "manualSha256": "f31ae1a7de171ad736079581930a1ea85ec0dc271528a2a0c30c54505bbe588f", "verdict": "accepted", "inheritedFrom": "nb-01-r1"}
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-d2-runtime.ts.md": "429a0a51a75c0d6e951ccb159e9928224300fd01a735bc5f7e96ac6293db9a2e",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-main-d4-local-plan.ts.md": "fd9ceffb2b316f8b6735eddaf93e9fd9c6f45d09ee0b7edd57e19cb73aca895e",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-main-d4-local-plan.test.ts.md": "847a1a8bbac0f8b7634bc295244bb1bf9aa29b6c63abb6d2999fdbc7a1f5afc3",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-main-local-product-intake.ts.md": "f98b50c20ad15772a54540591039bc776ee0c25ccb9e45816da74ffb4db00b53",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-d4-content-router.ts.md": "1907b32345cd6868113db0138547a350389a038c768ad3c832fc7e33cb2434cd",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-d4-content-router.test.ts.md": "4a428b706096f138cd72b6d116c08fa2c7000b39e933b06e338d2834458bcc15",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.ts.md": "b6530366385b863ea78c6fae85aef1834f80725ec8cbb5da134f0023ecd00b28",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-intake-routing-adapter-v3-b3.test.ts.md": "f31ae1a7de171ad736079581930a1ea85ec0dc271528a2a0c30c54505bbe588f"
+  },
+  "rejectedHashes": {},
+  "supersededManualHashes": {
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-main-local-product-intake.ts.md": {
+      "nb-01-r1": "9f25de4b23bede272c3b470c19264197e7df13086234416232bcbfad25dce1ab",
+      "nb-01-r2": "f98b50c20ad15772a54540591039bc776ee0c25ccb9e45816da74ffb4db00b53"
+    }
+  },
+  "deliveryHashes": {
+    "READY.json": "139a5d47956bef7512256ca63e33d5ece99816e021a8432499032f19bb9babb5",
+    "MANIFEST.json": "191c00846680c8b6253e114bc39957762ec6e096e100093a87a71cc864e144df",
+    "DONE.json": "aacd141e8109f24a09c376d898990f20ccf2a87a24198fa9f5c644258542eac4",
+    "R07-nb-01-r2-05fb2565.zip": "14d4dc5b89cef8ffe40b72c80ec7c008336be1c461b23852de28f41dfadc9d5a",
+    "changes.diff": "30f10a02553571d09fb2f97395bd66b6195a0b27dd00b564ae38b9ad0ba708e4",
+    "UNVERIFIED.md": "947b297ec200df5d1703786810e77d25f2cc39e9bf83b519f8c83f9aa5ec7213",
+    "FINDINGS-RESPONSE.md": "72d72cad10c6796531244bdafffc4e88cb55799a5b9e0fe067d3a46d8bb27e86",
+    "COVERAGE.mechanical.tsv": "ff2f7819b41257fd18909660aee26413384ec24ad8eb2f25d010339a5ea5fc30",
+    "SOURCE-EVIDENCE.mechanical.tsv": "e0dac5acf3b7f3358839f6bea70af1f0e055e9653aed1c4fb3228db5b20e6efb"
+  },
+  "zip": {
+    "path": "deliveries/nb-01-r2/R07-nb-01-r2-05fb2565.zip",
+    "sha256": "14d4dc5b89cef8ffe40b72c80ec7c008336be1c461b23852de28f41dfadc9d5a",
+    "bytes": 57785,
+    "entries": 11,
+    "layout": "SEAL-DELIVERY v2: stage/** + 2 mechanical TSV + MANIFEST; READY/DONE excluded by design",
+    "boundBy": "READY.zip.sha256 = DONE.zipSha256 = QA recomputation (self-bound in seal)"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "dsh-r07-stage2-result/1",
+  "track": "runtime-permission",
+  "root": "docs-r07-index-qa-extra-01-20261024",
+  "startedAtUtc": "2026-10-23T21:29:21Z",
+  "firstArtifactAtUtc": "2026-10-23T21:42:00Z",
+  "windowEndUtc": "2026-10-23T21:59:21Z",
+  "finishedAtUtc": "2026-10-23T22:03:00Z",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "status": "TRACK_VERIFICATION_INCOMPLETE_WITH_GAPS",
+  "coverage": {
+    "chainsPlanned": 7,
+    "chainsKeyEdgesVerified": 4,
+    "chainsPartialOrGap": 3,
+    "registerEdges": 37,
+    "edgesVerified": 18,
+    "edgesInvestigatorVerifiedSpotChecked": 14,
+    "edgesPendingOrUnknown": 5
+  },
+  "verifiedSummary": {
+    "C1-provider": "全链证实（本人逐行）：assertEnabledModelForChannel 三重守卫分支（agent-model-selection.ts:24，caller collaboration-tools:800/session-manager:1923）、listEnabledAgentModelsForChannel 自检面（:54，caller collaboration-tools:708）、resolveAgentModelRouting 三态策略（agent-model-routing.ts:27，caller orchestrator:1232）、subagent 模型经 orchestrator:2082 deepSeekSubagentModel 传参（下游消费边待验）、applyAgentModelRoutingToEnv 生产死导出（C-03）。",
+    "C3-gateway": "证实（本人抽查 + 本轨调查组逐行）：review-model-gateway=远程 API 网关（provider 白名单 4 项 :156-158 / shared review.ts:478 本轨亲读；performChatCompletion :303-433 HTTP 直发/代理尊重用户配置/Abort+429 退避）；6 条链（rule-outline/extract-items/run-review V1/assistant-chat/gateway-status/T01）入口→回写 case.json 或 runs/*.json 已登记 file:line；AgentFabricGateway=本地 loopback 网关（fabric-server:123-136 Bearer+sha256 配对、submitTask 能力闸 :189-213、持久化 ~/.cdutai/agent-fabric/*）与 A1 无调用关系。",
+    "C6-review-bypass": "证实：createPiReviewModelClient 一次性 Pi 会话 permissionMode:'bypassPermissions'（pi-review-agent-client.ts:144 本轨亲读）完全绕过 orchestrator；isAuthorizedDirectReviewTool 5 工具白名单+binding 校验（review-strict-pi-tools.ts:51-58 本轨亲读）；orchestrator canUseTool 短路（:1851-1854）旁路用户审批/权限模式；V2 运行链（IPC 无 sender guard vs 工具路径 requireAssignment）落 runs-v2。",
+    "C7-cancel": "证实（调查组）：网关 Abort+退避可中断；cancelAsyncRun 三杀+cancelled/failed 终态；watchdog 240s/20min 判定+abortReviewTurn+cleanupActiveSession；stopBackgroundPiReview stopAgentAndWait→finish+revoke。"
+  },
+  "gaps": [
+    "C4 凭据/OAuth/代理生产端/子进程：内部调查组中断，未核（agent-runtime-credentials / codex-oauth-service / agent-runtime-env / pi-request-proxy 生产端 / pi-powershell-tool / pi-harness-lifecycle 子进程清理）。「凭据严禁进 process.env/日志」等既有断言=线索待验。",
+    "C5 工具权限/MCP/模型自检差异：agent-permission-service 导出 API、mcp-validator/pi-mcp-tools/lark-mcp-service 接入边、「模型自检 vs 实际可调用」差异均未核，不结论。",
+    "C2 内部边：pi-prompt-chain/pi-message-adapter/pi-harness-lifecycle 传播边、sanitizeContextForInference 副作用、buildModel 内部 fallback 语义未逐边。",
+    "C3 内部边：ai-review-service 各链行号来自本轨调查组（已抽查 5 处全部命中），未 100% 逐行复核；review-ipc.ts blob 未取（CONFLICTS C-02 sourceBlob 缺）。",
+    "CONFLICTS C-05（决策 #27 一致性）未查台账。"
+  ],
+  "conflicts": {"doc_error": 1, "implementation_gap": 2, "unknown": 2, "file": "manager/STAGE2/runtime-permission/CONFLICTS.json"},
+  "artifacts": [
+    "manager/STAGE2/runtime-permission/CHAINS.md",
+    "manager/STAGE2/runtime-permission/CHAIN-REGISTER.tsv",
+    "manager/STAGE2/runtime-permission/CONFLICTS.json",
+    "manager/STAGE2/runtime-permission/RESULT.json",
+    "manager/STAGE2/runtime-permission/DONE.json"
+  ],
+  "boundaries": "只读冻结源；未改产品/测试/依赖/作者 seal/已有 review/candidate；未写阶段三文档；未自行覆盖主责文档；已证实实现缺陷仅登记（C-02/C-03）留阶段三设计差异报告；真实运行 NOT_RUN（静态断言不冒充实测）；历史未来时间只记 UNVERIFIED 未改 seal；未开 ACP 根。",
+  "claimsPolicy": "register 中 status=证实 的边为本轨（本人或本轨内部调查组+本人抽查）读源所得 file:line；待验/未知 不冒充已验；未 accepted 的稿件未作证据。"
+}

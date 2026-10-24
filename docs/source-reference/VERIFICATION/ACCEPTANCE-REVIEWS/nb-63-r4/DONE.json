@@ -1,0 +1,34 @@
+{
+  "schema": "dsh-r07-independent-review-done/1",
+  "batch": "nb-63-r4",
+  "revisionOf": "nb-63-r3",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-03-20261023",
+  "reviewerSession": "docs-r07-qa-nb-03-20261023",
+  "batchVerdict": "accepted",
+  "completedAtUtc": "2026-10-23T18:16:31Z",
+  "counts": {
+    "files": 13,
+    "accepted": 13,
+    "revision_required": 0,
+    "findings": 4,
+    "optionalNotes": 0
+  },
+  "sealBinding": {
+    "sealId": "seal-f63749e2d6801247",
+    "zipSha256": "987c872f11900426cdff0ecd57661f6fe2dd83441681bb12e617fbb25fc556e9",
+    "manifestSha256": "c8db7b28806aeba6a96e0f68afe3f2a91869b1fe6591f10c8cfec11d52e0fb0a",
+    "readySha256": "07169fedbb64adcd4477fc04d8390c2d1a1b387d407a6af100cdb64c47627e1c",
+    "doneSha256": "0aa4b5ce685856f993051159c9332c54c227e28a4449950052eaebd473e1028b",
+    "sealedAtUtc": "2026-10-23T18:07:15Z"
+  },
+  "notRun": [
+    "pytest/python 运行 NOT_RUN",
+    "tsc/build NOT_RUN",
+    "GUI NOT_RUN",
+    "模型/产品调用 NOT_RUN"
+  ],
+  "note": "NB63-NOTE-02 闭合，四条 findings 全清；RESPONSE/diff 补齐（r3 缺失原因已如实披露）；nb-63 线以 r4 为最终版。",
+  "resultSha256": "8699d0aac36acb1128a2daa974b9b68be8453c458ad33c820bdbd64d5ac54ec9",
+  "reviewedHashesSha256": "27a9d800a5d5cb8129588cb8b190a00d619420a1ad98ebe1e744057f81a43e25"
+}

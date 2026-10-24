@@ -1,0 +1,57 @@
+{
+  "schema": "dsh-r07-review-done/1",
+  "batch": "nb-89",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "sealId": "seal-f43ff3760c5b3215",
+  "reviewedAtUtc": "2026-10-24T19:00:00Z",
+  "batchVerdict": "accepted",
+  "fileVerdicts": {
+    "apps/electron/src/renderer/components/content-review/review-v3-t05-stage-actions.ts": "accepted",
+    "apps/electron/src/renderer/components/content-review/review-v3-t06-batch-intake.test.ts": "accepted",
+    "apps/electron/src/renderer/components/content-review/review-v3-t06-batch-intake.ts": "accepted",
+    "apps/electron/src/renderer/components/content-review/review-v3-t06-physical-intake.test.ts": "accepted",
+    "apps/electron/src/renderer/components/content-review/review-v3-t06-physical-intake.ts": "accepted",
+    "apps/electron/src/renderer/components/content-review/review-v3-t06-physical-manifest.ts": "accepted",
+    "apps/electron/src/renderer/components/content-review/review-v3-t06-template-route.test.ts": "accepted",
+    "apps/electron/src/renderer/components/content-review/review-v3-t06-template-route.ts": "accepted",
+    "apps/electron/src/renderer/components/content-review/review-v3-t08-case-report.test.ts": "accepted",
+    "apps/electron/src/renderer/components/content-review/review-v3-t08-case-report.ts": "accepted",
+    "apps/electron/src/renderer/components/content-review/review-v3-t08-pdf.test.ts": "accepted",
+    "apps/electron/src/renderer/components/content-review/review-v3-t08-pdf.ts": "accepted",
+    "apps/electron/src/renderer/components/content-review/review-v3-t08-suggestion.test.ts": "accepted",
+    "apps/electron/src/renderer/components/content-review/review-v3-t08-suggestion.ts": "accepted",
+    "apps/electron/src/renderer/components/content-review/review-v3-t09-offline-form.test.ts": "accepted",
+    "apps/electron/src/renderer/components/content-review/review-v3-t09-offline-form.ts": "accepted",
+    "apps/electron/src/renderer/components/content-review/review-workspace-recheck-independent.test.ts": "accepted",
+    "apps/electron/src/renderer/components/content-review/review-workspace-view-model.test.ts": "accepted"
+  },
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0,
+    "findings": 3
+  },
+  "findingsIndex": [
+    "NB89-N1",
+    "NB89-N2",
+    "NB89-N3"
+  ],
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass_with_findings"
+  },
+  "runStatus": "NOT_RUN",
+  "artifacts": [
+    "reviews/nb-89/RESULT.json",
+    "reviews/nb-89/RESULT.md",
+    "reviews/nb-89/REVIEWED-HASHES.json",
+    "handoffs/nb-89-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-89-REVIEW-TO-LEAD.md"
+  ],
+  "mergeRule": "全 18 篇 acceptedHashes 可合；3 findings 入 ACCEPTED-ERRATA G4 前关闭。",
+  "note": "已 seal D0 不回写。"
+}

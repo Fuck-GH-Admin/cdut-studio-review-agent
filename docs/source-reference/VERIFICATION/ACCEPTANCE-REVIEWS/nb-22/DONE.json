@@ -1,0 +1,33 @@
+{
+  "schema": "dsh-r07-review-done/1",
+  "batch": "nb-22",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-09-20261023",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-23T19:55:00Z",
+  "sealId": "seal-f480e1cce3dcd5bd",
+  "status": "REVIEW_COMPLETE_ACCEPTED_WITH_ERRATA",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "minorFindings": 2
+  },
+  "artifacts": [
+    "reviews/nb-22/RESULT.json",
+    "reviews/nb-22/RESULT.md",
+    "reviews/nb-22/REVIEWED-HASHES.json",
+    "reviews/nb-22/DONE.json",
+    "handoffs/nb-22-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-22-REVIEW-TO-LEAD.md"
+  ],
+  "notRun": [
+    "product tests (bun test, 93 declarations)",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "boundaries": "QA 只读复核：未改作者正文/源码/测试/依赖/candidate/全局 FILES/COVERAGE/MANIFEST/INDEX/inventory/g0；未 commit/push；sealed 字节未改写；NOT_RUN。",
+  "next": "lead 按 18 exact manualSha256 机械合入并归档 inventory/g0/nb-22.json；NB22-N-01/02 并 ACCEPTED-ERRATA 或 rN 关闭；QA 续 nb-66 验收/预读，nb-17-r1 复验优先"
+}

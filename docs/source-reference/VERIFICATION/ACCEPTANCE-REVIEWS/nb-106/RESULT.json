@@ -1,0 +1,256 @@
+{
+  "schema": "dsh-r07-review-result/2",
+  "batch": "nb-106",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-09-20261023",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-24T04:50:00Z",
+  "sealId": "seal-37377d40fcb344b5",
+  "sealedAtUtc": "2026-10-23T20:20:20Z",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 17,
+    "accepted": 17,
+    "revision_required": 0,
+    "unknown": 0,
+    "blocking": 0,
+    "nonBlocking": 1
+  },
+  "gates": {
+    "G0": "PASS",
+    "G1": "PASS",
+    "G2": "PASS_WITH_NOTES",
+    "note": "对照预读基线（reviews/nb-106/SOURCE-CHECKLIST.md，8 不变量+32 测试断言体全备）；仅系统性行号漂移记 minor"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/renderer/components/agent-skills/SkillDetailSheetFrame.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/SkillDetailSheetFrame.tsx.md",
+      "sourceBlob": "f2db2b135c812812f5b52711aaa1b999e73eb04e",
+      "sourceSha256": "80c45059f0c9fad4f65482a1cce2a8230268abda0ee24ec6fdd141b1b873f206",
+      "manualSha256": "fba58734b581ddb3c1d0a1247a9a6e5a3e171469ae09d4bbca72315d799d90ce",
+      "verdict": "accepted",
+      "findings": [
+        "NB106-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent-skills/SyncMasterSkillDialog.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/SyncMasterSkillDialog.tsx.md",
+      "sourceBlob": "68acc39c288d5d0ba8bdbf1b0a870dd24c30aaa3",
+      "sourceSha256": "bd45ee93fb4090531c78e67ce2b5dde8131815af8cfb85c6a44e141ccc54a210",
+      "manualSha256": "aa7a1b7637ca6a5acc7f3bcf5d4baecc7b24b0a1b4d05658ba310dea2371267d",
+      "verdict": "accepted",
+      "findings": [
+        "NB106-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent-skills/WorkspaceMemoryTab.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/WorkspaceMemoryTab.tsx.md",
+      "sourceBlob": "57ad277ad7fbf9f5b03ea2342930613fa8a3eb86",
+      "sourceSha256": "0f2829e85eed1b124b49fb44f8dd486b4f729b42cdbec21c099d1afe5b3e64bc",
+      "manualSha256": "1a01339168b29522160916d45670c501513233b2efb728eb3cfbe3ffe62b494f",
+      "verdict": "accepted",
+      "findings": [
+        "NB106-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent-skills/WorkspaceScopeSelectDialog.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/WorkspaceScopeSelectDialog.tsx.md",
+      "sourceBlob": "ad91a354b08d785dcc91901209f561a958cf13b3",
+      "sourceSha256": "718fb81972f927c50ca781366625355422c7683427f852c96eea2cb71c923dd9",
+      "manualSha256": "ce719352469168152e36cae2547837151bcd4318e99c33052e14e23ade89d903",
+      "verdict": "accepted",
+      "findings": [
+        "NB106-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent-skills/global-capability-adapter.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/global-capability-adapter.test.ts.md",
+      "sourceBlob": "5ad3e6ce98f03b03ed7a030ea44b08fafc4000f6",
+      "sourceSha256": "8b8d56155652fc22ffde0e9cf9c5a47c1561897d59c0bed2d8c00b750e270788",
+      "manualSha256": "40cf9745a28a06c1444fb8e7c13318cce864b78159b8b58bfce596fcc88ab0d4",
+      "verdict": "accepted",
+      "findings": [
+        "NB106-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent-skills/global-capability-adapter.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/global-capability-adapter.ts.md",
+      "sourceBlob": "da5170054ce313f691bf6360ee1dec6ba58de3a0",
+      "sourceSha256": "3e654e5921c03c9b86f9e36d28f8d2815c5a0f8139bd2e51c263b5d7a525fea3",
+      "manualSha256": "996ba357d98896ec52d98d2027848be53448e7f198f0c9e4cb7cae4eb1f4f32d",
+      "verdict": "accepted",
+      "findings": [
+        "NB106-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent-skills/skillMdUtils.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/skillMdUtils.ts.md",
+      "sourceBlob": "3a7560d693ad19fde8c3249851d9f1a999c74313",
+      "sourceSha256": "83e76bc82b9cd8240c9ad9c4571fbbe888ed3d54055176c078ef8b007aa16d76",
+      "manualSha256": "6e929fc1d63aae4e4af22ea737e1b730d9592cf5c7113a16d42271c20b3a5d0a",
+      "verdict": "accepted",
+      "findings": [
+        "NB106-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent-skills/useAgentSkillsData.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/useAgentSkillsData.ts.md",
+      "sourceBlob": "e3ef114565ead8ce6d6447c8a43f45be6505eb19",
+      "sourceSha256": "0d43c2da25270cabe6b3bb3dc114f6f7b1869ab0c5dc06e48cb956dabce9d7f8",
+      "manualSha256": "e5e22d8c5effbfcb6ff3a2f9e03d84fc16d599665d22c1768caac2d52f2eb0b8",
+      "verdict": "accepted",
+      "findings": [
+        "NB106-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-zone/yanhu/YanhuExpressView.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/YanhuExpressView.tsx.md",
+      "sourceBlob": "3c6f032b6a29aa9346c506e91f20e10f0fb3773e",
+      "sourceSha256": "4de377115d78bfec075d22f24252c8ae41af863906d4b918f7c0de7d2252b209",
+      "manualSha256": "e39fa1e7bc866fa7c9dd49acff83cb53a22cbb5dd9024a3d7a8126419b723239",
+      "verdict": "accepted",
+      "findings": [
+        "NB106-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-zone/yanhu/YanhuNavBar.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/YanhuNavBar.tsx.md",
+      "sourceBlob": "d18e7743258aaa434b0eb438c156f053340f02be",
+      "sourceSha256": "628ab39b1c60ee69ed3a544e27791a3076473494a96232d2514f5303d676a145",
+      "manualSha256": "be45737ccb870f1cc4624bf205e5200ea33f0b35251657be9f8867b042af66fb",
+      "verdict": "accepted",
+      "findings": [
+        "NB106-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-zone/yanhu/YanhuTabStrip.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/YanhuTabStrip.tsx.md",
+      "sourceBlob": "da9d998d49632366a7848794dda02c6e77489b4f",
+      "sourceSha256": "8fa872bde2bd07d00cbc83ca9924a5a319e381bf2debf2e0c3c64bb40e160dd2",
+      "manualSha256": "ad3de1f64b7e3f0f61f093647ad8978e00a1d5762a10a562fbb59388ad933a82",
+      "verdict": "accepted",
+      "findings": [
+        "NB106-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-zone/yanhu/pet/YanhuPetAvatar.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/pet/YanhuPetAvatar.tsx.md",
+      "sourceBlob": "705829b5fa694d0a3cb9db8312224f1d7b00e8e1",
+      "sourceSha256": "284b03ba3410677f5e256fe2bb096da7b3b924d1dc67c27abe3bd1326e41ea7c",
+      "manualSha256": "1a420025c9713913ff04739bb030e55338faaf1addff25ae1206925396c44e99",
+      "verdict": "accepted",
+      "findings": [
+        "NB106-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-zone/yanhu/pet/YanhuPetDialog.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/pet/YanhuPetDialog.tsx.md",
+      "sourceBlob": "3dce53f6583561e8cf0e6c60827c2b12ce9d59c1",
+      "sourceSha256": "d1679f6a266e6fb5738b0bf9b8fe78b8e35a458614aff58e7e54fe3efe287650",
+      "manualSha256": "9745e6a574801d3e6c079c63d42de0547bb2c7da93a7fbf7ef1877964a886082",
+      "verdict": "accepted",
+      "findings": [
+        "NB106-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-zone/yanhu/pet/YanhuPetFloatingHost.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/pet/YanhuPetFloatingHost.tsx.md",
+      "sourceBlob": "3f13ae9e1130272df3d13e13e4361d738481ad75",
+      "sourceSha256": "bed31234b4148dd624501b5eacc2a600f61f66d4a067b0630a63b6894be234a1",
+      "manualSha256": "d8633a9bdb654c74797ba12623b4d7b686b3fecad5acceb64645b3219f18c68f",
+      "verdict": "accepted",
+      "findings": [
+        "NB106-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-zone/yanhu/pet/YanhuPetSpeechBubble.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/pet/YanhuPetSpeechBubble.tsx.md",
+      "sourceBlob": "6a869bbd0bb1e45a9cc6cbad33e4539077c06f1a",
+      "sourceSha256": "316e9711b8cd89e35edee3c63e9d9b31429c4cff181fb5c0c9ff6be9baa61471",
+      "manualSha256": "9914cea6965d06b8247c6387ea2a766d332256ff40c956e9cef6ad14dd165011",
+      "verdict": "accepted",
+      "findings": [
+        "NB106-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-zone/yanhu/pet/pet-geometry.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/pet/pet-geometry.test.ts.md",
+      "sourceBlob": "1276c03a0562980221360c46f548e47f7404fc91",
+      "sourceSha256": "7e4be646832ebacd481e59927255556a579308e7d8b2b0bec23f8242d5377920",
+      "manualSha256": "be1d1410f2c45c3b77c390691bc08102e33a9a43c13ba12b1fa6b6e39ae2794d",
+      "verdict": "accepted",
+      "findings": [
+        "NB106-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/cdut-zone/yanhu/pet/pet-geometry.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/pet/pet-geometry.ts.md",
+      "sourceBlob": "5b9098ec34b7dcc2dc96e8e7194910146edc0797",
+      "sourceSha256": "bb86c4011a87fe3fc1179eb2ebad4d591e94aae2b0ad92307583c09649f6b001",
+      "manualSha256": "48acd754720fd1f95056be69890545bbb1f8c6161cbbc578ea6d75b1fa14846d",
+      "verdict": "accepted",
+      "findings": [
+        "NB106-N-01"
+      ]
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/SkillDetailSheetFrame.tsx.md": "fba58734b581ddb3c1d0a1247a9a6e5a3e171469ae09d4bbca72315d799d90ce",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/SyncMasterSkillDialog.tsx.md": "aa7a1b7637ca6a5acc7f3bcf5d4baecc7b24b0a1b4d05658ba310dea2371267d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/WorkspaceMemoryTab.tsx.md": "1a01339168b29522160916d45670c501513233b2efb728eb3cfbe3ffe62b494f",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/WorkspaceScopeSelectDialog.tsx.md": "ce719352469168152e36cae2547837151bcd4318e99c33052e14e23ade89d903",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/global-capability-adapter.test.ts.md": "40cf9745a28a06c1444fb8e7c13318cce864b78159b8b58bfce596fcc88ab0d4",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/global-capability-adapter.ts.md": "996ba357d98896ec52d98d2027848be53448e7f198f0c9e4cb7cae4eb1f4f32d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/skillMdUtils.ts.md": "6e929fc1d63aae4e4af22ea737e1b730d9592cf5c7113a16d42271c20b3a5d0a",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/useAgentSkillsData.ts.md": "e5e22d8c5effbfcb6ff3a2f9e03d84fc16d599665d22c1768caac2d52f2eb0b8",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/YanhuExpressView.tsx.md": "e39fa1e7bc866fa7c9dd49acff83cb53a22cbb5dd9024a3d7a8126419b723239",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/YanhuNavBar.tsx.md": "be45737ccb870f1cc4624bf205e5200ea33f0b35251657be9f8867b042af66fb",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/YanhuTabStrip.tsx.md": "ad3de1f64b7e3f0f61f093647ad8978e00a1d5762a10a562fbb59388ad933a82",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/pet/YanhuPetAvatar.tsx.md": "1a420025c9713913ff04739bb030e55338faaf1addff25ae1206925396c44e99",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/pet/YanhuPetDialog.tsx.md": "9745e6a574801d3e6c079c63d42de0547bb2c7da93a7fbf7ef1877964a886082",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/pet/YanhuPetFloatingHost.tsx.md": "d8633a9bdb654c74797ba12623b4d7b686b3fecad5acceb64645b3219f18c68f",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/pet/YanhuPetSpeechBubble.tsx.md": "9914cea6965d06b8247c6387ea2a766d332256ff40c956e9cef6ad14dd165011",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/pet/pet-geometry.test.ts.md": "be1d1410f2c45c3b77c390691bc08102e33a9a43c13ba12b1fa6b6e39ae2794d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/yanhu/pet/pet-geometry.ts.md": "48acd754720fd1f95056be69890545bbb1f8c6161cbbc578ea6d75b1fa14846d"
+  },
+  "findings": [
+    {
+      "id": "NB106-N-01",
+      "severity": "minor",
+      "files": "all-17",
+      "claim": "各篇 §2 行号手估漂移 ±1~10（例：computePushBackCoordinates :68-131 实 :78-132、YanhuPetDialog submit :110-125 实 :102-110、GlobalCapabilityAdapter :32-48 实 :35-48、deleteMcp 守卫 :157 实 :153、pet-geometry.test describe :31-36 实 :34）；「r1 校订说明：行号经源文件逐行读取核对」表述过强。行为/测试结论全部不受影响（同 nb-17-N-01/nb-22-N-01/NB94-N-01 类）。",
+      "sourceEvidence": "单文件 grep -n 逐符号抽核（对照 QA 预读基线）。",
+      "action": "errata 或任一 rN 顺带重导（并入行号类合并清单）"
+    }
+  ],
+  "notRun": [
+    "product tests (32 declarations)",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network",
+    "real pet window"
+  ],
+  "verificationNotes": [
+    "G0 机械复算 0 错误：17 源绑定==SCOPE==MANIFEST；17 手册 hash 磁盘=MANIFEST=READY；链一致；ZIP 20 条目安全逐字节一致；changes.diff 空树重放 17/17。",
+    "G2 对照预读基线逐条吻合：A adapter 契约红线（不重算/不绕过、presetItem 拒 workspace scope）✓；B 双副本 confirm+bump+isBuiltin 禁删+并发闸 ✓；C 提升两步语义 ✓；D SKILL.md 保守重写 ✓；E isTrustedHost 仅 UI 三态绿锁 ✓；F YANHU_DEV_COMMAND 纯前端拦截零 Token（:102-110 submit 不调 onSend）✓；G pet-geometry 三算法逐式吻合（minYp 钳制/强制翻转/底对齐/PET_UNION_WIDTH=592）✓；H 同步预检 detectConflict+forceSlugs ✓。测试 3+29=32 声明一致（pet-geometry.test 断言数学 392/592 抽核吻合）。",
+    "QA 自查留痕：预读清单「13 方法」笔误自校为 12（源 interface 实测 12 方法）；NOT_RUN 不变；哈希脚本生成。"
+  ]
+}

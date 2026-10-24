@@ -1,0 +1,134 @@
+{
+ "schema": "dsh-r07-qa-done/1",
+ "batch": "nb-117",
+ "id": "NB-117",
+ "revisionOf": null,
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewRoot": "reviews/nb-117",
+ "reviewedAtUtc": "2026-10-24T14:25:00Z",
+ "status": "REVIEW_COMPLETE_REVISION_REQUIRED",
+ "batchVerdict": "revision_required",
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PARTIAL",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 14,
+  "revision_required": 4,
+  "unknown": 0
+ },
+ "acceptedManuals": 14,
+ "acceptedHashesCount": 14,
+ "revisionRequiredManuals": {
+  "agent-autosend-turn.test.ts.md": [
+   {
+    "id": "F-01",
+    "severity": "minor_factual",
+    "claim": "§2 称「17 用例，2 describe」——实际 **16 用例**（grep test( = 16）。",
+    "sourceEvidence": "grep -c test( = 16",
+    "action": "rN 修正为 16"
+   }
+  ],
+  "agent-autosend-turn.ts.md": [
+   {
+    "id": "F-02",
+    "severity": "minor_factual",
+    "claim": "§2 称「导出 3 条（:8/:11/:41）」——实际 **4 条**（`AutoSendTurnState` 接口 :25 也是 export，其正文已提及 :25-39 却未计）。",
+    "sourceEvidence": "grep -c ^export = 4（AutoSendTurnDecision/shouldStartAutoSendFromIdle/AutoSendTurnState/evaluateAutoSendTurn）",
+    "action": "rN 修正为 4"
+   }
+  ],
+  "agent-channel-selection.test.ts.md": [
+   {
+    "id": "F-03",
+    "severity": "minor_factual",
+    "claim": "§2 称「11 用例，2 describe」——实际 **10 用例**（grep test( = 10）。",
+    "sourceEvidence": "grep -c test( = 10",
+    "action": "rN 修正为 10"
+   }
+  ],
+  "agent-message-queue.ts.md": [
+   {
+    "id": "F-04",
+    "severity": "minor_factual",
+    "claim": "§2 称「导出 12 条」——实际 **14 条**（grep ^export = 14：:3/:5/:12/:27/:35/:43/:51/:74/:81/:102/:108/:125/:137/:157）。",
+    "sourceEvidence": "grep -c ^export = 14",
+    "action": "rN 修正为 14"
+   }
+  ]
+ },
+ "findingsSummary": {
+  "agent-autosend-turn.test.ts.md": [
+   {
+    "id": "F-01",
+    "severity": "minor_factual",
+    "claim": "§2 称「17 用例，2 describe」——实际 **16 用例**（grep test( = 16）。",
+    "sourceEvidence": "grep -c test( = 16",
+    "action": "rN 修正为 16"
+   }
+  ],
+  "agent-autosend-turn.ts.md": [
+   {
+    "id": "F-02",
+    "severity": "minor_factual",
+    "claim": "§2 称「导出 3 条（:8/:11/:41）」——实际 **4 条**（`AutoSendTurnState` 接口 :25 也是 export，其正文已提及 :25-39 却未计）。",
+    "sourceEvidence": "grep -c ^export = 4（AutoSendTurnDecision/shouldStartAutoSendFromIdle/AutoSendTurnState/evaluateAutoSendTurn）",
+    "action": "rN 修正为 4"
+   }
+  ],
+  "agent-channel-selection.test.ts.md": [
+   {
+    "id": "F-03",
+    "severity": "minor_factual",
+    "claim": "§2 称「11 用例，2 describe」——实际 **10 用例**（grep test( = 10）。",
+    "sourceEvidence": "grep -c test( = 10",
+    "action": "rN 修正为 10"
+   }
+  ],
+  "agent-message-queue.ts.md": [
+   {
+    "id": "F-04",
+    "severity": "minor_factual",
+    "claim": "§2 称「导出 12 条」——实际 **14 条**（grep ^export = 14：:3/:5/:12/:27/:35/:43/:51/:74/:81/:102/:108/:125/:137/:157）。",
+    "sourceEvidence": "grep -c ^export = 14",
+    "action": "rN 修正为 14"
+   }
+  ]
+ },
+ "batchFindings": [
+  "M-01",
+  "M-02"
+ ],
+ "resultSha256": "b32ddd353cd31fc25d6f2c2b8ddffa353e9e98f807da06e3481c05f241b91ec3",
+ "reviewedHashesSha256": "f1af3e0b1924c2c049d8c152e224928f62afde6dfdb783d1836f17de7d231b23",
+ "zip": {
+  "path": "deliveries/nb-117/R07-nb-117-05fb2565.zip",
+  "sha256": "9b2891cc5b2f5b0b045b7518c06f6d4e6ba3490298b782763e1f519519a176e0",
+  "entries": 21,
+  "note": "18 手册+MANIFEST+2 mechanical TSV；不含 READY/DONE（v2）；无穿越/0 mismatch"
+ },
+ "sealId": "seal-e95c34dac08fc153",
+ "artifacts": [
+  "reviews/nb-117/RESULT.json",
+  "reviews/nb-117/RESULT.md",
+  "reviews/nb-117/REVIEWED-HASHES.json",
+  "reviews/nb-117/DONE.json",
+  "handoffs/nb-117-REVIEW-TO-AUTHOR.md",
+  "handoffs/nb-117-REVIEW-TO-LEAD.md"
+ ],
+ "priorReviewsUntouched": true,
+ "parentPreserved": null,
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "GUI"
+ ],
+ "writtenOnlyIn": "reviews/nb-117 + handoffs；未写 deliveries/inventory/manager/candidate/全局 FILES/MANIFEST",
+ "next": "作者开 nb-117-r1 修 F-01..F-04；lead 按 14 个 acceptedHashes 合入；全组 14 批首审至此完成"
+}

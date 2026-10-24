@@ -1,0 +1,34 @@
+{
+  "schema": "dsh-r07-review-done/1",
+  "batch": "nb-94",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-09-20261023",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-24T00:40:00Z",
+  "sealId": "seal-a76d4becbd9b0a1f",
+  "status": "REVIEW_COMPLETE_REVISION_REQUIRED",
+  "batchVerdict": "revision_required",
+  "counts": {
+    "files": 18,
+    "contentAccepted": 18,
+    "deliveryDefects": 1,
+    "minorFindings": 1
+  },
+  "artifacts": [
+    "reviews/nb-94/RESULT.json",
+    "reviews/nb-94/RESULT.md",
+    "reviews/nb-94/REVIEWED-HASHES.json",
+    "reviews/nb-94/DONE.json",
+    "handoffs/nb-94-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-94-REVIEW-TO-LEAD.md"
+  ],
+  "notRun": [
+    "product tests (45 declarations / 50 runtime)",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "boundaries": "QA 只读复核：未改作者正文/源码/测试/依赖/candidate/全局 FILES/COVERAGE/MANIFEST/INDEX/inventory/g0；未 commit/push；sealed 字节未改写；NOT_RUN。",
+  "next": "作者开 deliveries/nb-94-r1 仅重生成 changes.diff（内容不动，顺带 N-01 行号 errata 可选）；lead 可先行按 18 acceptedHashes 预合但闭链以 r1 为准；QA 续 nb-80-r2 复验优先、nb-106 预读（选批前重读 JSON）"
+}

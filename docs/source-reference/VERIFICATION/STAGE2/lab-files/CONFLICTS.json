@@ -1,0 +1,426 @@
+{
+ "schema": "dsh-r07-stage2-labfiles-conflicts/1",
+ "atUtc": "2026-10-23T21:45:00Z",
+ "track": "lab-files",
+ "sourceFrozen": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "typeLegend": {
+  "doc_error": "手册与源码事实不符",
+  "implementation_gap": "实现缺陷/缺口（留阶段三设计差异）",
+  "unknown": "证据不足未定"
+ },
+ "counts": {
+  "doc_error": 0,
+  "implementation_gap": 11,
+  "unknown": 2
+ },
+ "items": [
+  {
+   "id": "CF-01",
+   "type": "implementation_gap",
+   "severity": "medium",
+   "files": [
+    {
+     "sourceFile": "apps/electron/src/main/lib/cslab/cslab-manuscript.ts",
+     "sourceBlob": "bc53a315cacac33f1857b2529ccd7cd72f3d03f2",
+     "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-manuscript.ts.md",
+     "manualSha256": "5c2bdc6d50526bce1ba947bfdcaa24c269df68d844da2a1e6d79e1718c158f83",
+     "batch": "nb-74",
+     "ownerAuthor": "docs-r07-author-nb-01-20261023",
+     "ownerReviewer": "docs-r07-qa-nb-01-20261023"
+    }
+   ],
+   "sourceEvidence": [
+    "cslab-manuscript.ts:264-267 文件写①md",
+    "cslab-manuscript.ts:268-271 文件写②sidecar",
+    "cslab-manuscript.ts:274-306 withTransaction DB 登记",
+    "cslab-db.ts:307-311 BEGIN IMMEDIATE/COMMIT/ROLLBACK"
+   ],
+   "description": "文稿保存双写非原子：两个文件写先落盘、DB 事务殿后，任一步失败产生文件↔DB 分叉（DB 旧/文件新或 md↔sidecar 分叉）；全文无补偿/回滚。",
+   "suggestedFix": "阶段三设计差异：引入写前 staging 或 DB-first+文件失败补偿；至少在 manual 补失败序语义。当前不修产品。",
+   "authorHandoff": {
+    "to": "docs-r07-author-nb-01-20261023",
+    "note": "nb-74 主责手册 cslab-manuscript.ts.md §保存 仅写『双写（原子）+事务』，未覆盖跨存储失败序",
+    "manualFix": "§保存 补一句：文件写①②先于 DB 事务，失败序=文件已新/DB 旧"
+   },
+   "stage3Note": "留阶段三设计差异报告"
+  },
+  {
+   "id": "CF-02",
+   "type": "implementation_gap",
+   "severity": "low",
+   "files": [
+    {
+     "sourceFile": "apps/electron/src/main/lib/cslab/cslab-manuscript.ts",
+     "sourceBlob": "bc53a315cacac33f1857b2529ccd7cd72f3d03f2",
+     "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-manuscript.ts.md",
+     "manualSha256": "5c2bdc6d50526bce1ba947bfdcaa24c269df68d844da2a1e6d79e1718c158f83",
+     "batch": "nb-74",
+     "ownerAuthor": "docs-r07-author-nb-01-20261023",
+     "ownerReviewer": "docs-r07-qa-nb-01-20261023"
+    }
+   ],
+   "sourceEvidence": [
+    "cslab-manuscript.ts:326 先 saveManuscript(沙箱+DB)",
+    "cslab-manuscript.ts:337-345 md 外部写",
+    "cslab-manuscript.ts:351-367 docx 外部写"
+   ],
+   "description": "saveManuscriptAs 部分完成态：沙箱/DB 先更新、用户目标后写；外部写失败时内部状态已变更，无回滚/无状态标记。",
+   "suggestedFix": "阶段三：外部写失败时回滚沙箱/DB 或显式标记 partial。手册 §另存为 补失败序。",
+   "authorHandoff": {
+    "to": "docs-r07-author-nb-01-20261023",
+    "note": "nb-74 主责手册 §另存为 三步描述顺序正确但无失败态",
+    "manualFix": "§另存为 补『外部写失败→沙箱/DB 已更新』语义"
+   },
+   "stage3Note": "留阶段三"
+  },
+  {
+   "id": "CF-03",
+   "type": "unknown",
+   "severity": "low",
+   "files": [
+    {
+     "sourceFile": "apps/electron/src/main/lib/cslab/cslab-manuscript.ts",
+     "sourceBlob": "bc53a315cacac33f1857b2529ccd7cd72f3d03f2",
+     "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-manuscript.ts.md",
+     "manualSha256": "5c2bdc6d50526bce1ba947bfdcaa24c269df68d844da2a1e6d79e1718c158f83",
+     "batch": "nb-74",
+     "ownerAuthor": "docs-r07-author-nb-01-20261023",
+     "ownerReviewer": "docs-r07-qa-nb-01-20261023"
+    }
+   ],
+   "sourceEvidence": [
+    "cslab-manuscript.ts:417-422 writeLinkedDocx=attachDocx 覆盖写沙箱副本",
+    "cslab-manuscript.ts:430-452 writeExportDocx 绝不覆盖",
+    "cslab-manuscript.ts:456-459 writeDocxBuffer 兼容别名"
+   ],
+   "description": "接口语义二分（覆盖 linked 副本 vs 绝不覆盖）依赖注释区分，三个别名同实现（attachDocx/writeLinkedDocx/writeDocxBuffer）；是否存在调用方误用别名达成覆盖=未逐查（渲染层调用面未全扫）。",
+   "suggestedFix": "去重引用：规范符号=attachDocx（CHAINS.md §8）；建议阶段三收敛别名或类型上区分 export/link。",
+   "authorHandoff": {
+    "to": "docs-r07-author-nb-01-20261023",
+    "note": "手册 §写盘 表述与源一致（writeLinkedDocx『覆盖写回=attachDocx』『export 不覆盖』已分列），暂无 doc_error",
+    "manualFix": "可选：标注别名族与语义二分"
+   },
+   "stage3Note": "留阶段三（接口一致性）"
+  },
+  {
+   "id": "CF-04",
+   "type": "implementation_gap",
+   "severity": "low",
+   "files": [
+    {
+     "sourceFile": "apps/electron/src/main/lib/cslab/cslab-manuscript.ts",
+     "sourceBlob": "bc53a315cacac33f1857b2529ccd7cd72f3d03f2",
+     "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-manuscript.ts.md",
+     "manualSha256": "5c2bdc6d50526bce1ba947bfdcaa24c269df68d844da2a1e6d79e1718c158f83",
+     "batch": "nb-74",
+     "ownerAuthor": "docs-r07-author-nb-01-20261023",
+     "ownerReviewer": "docs-r07-qa-nb-01-20261023"
+    }
+   ],
+   "sourceEvidence": [
+    "cslab-manuscript.ts:465-477 readDocxBuffer catch→return null"
+   ],
+   "description": "读取静默降级：『无副本』与『读失败/无权限』同返回 null，调用方无法区分，故障被吞。",
+   "suggestedFix": "阶段三：返回 discriminated union 或错误透传。手册 §读 已写『容错 null』，如实；补区分语义。",
+   "authorHandoff": {
+    "to": "docs-r07-author-nb-01-20261023",
+    "note": "手册 §读 『readDocxBuffer 容错 null』表述属实（非 doc_error），但缺失败区分说明",
+    "manualFix": "§读 补 null 二义性说明"
+   },
+   "stage3Note": "留阶段三"
+  },
+  {
+   "id": "CF-05",
+   "type": "implementation_gap",
+   "severity": "medium",
+   "files": [
+    {
+     "sourceFile": "apps/electron/src/main/lib/cslab/cslab-ooxml.ts",
+     "sourceBlob": "7584ac570da8464de528ae1f5e88cd10217ea3ec",
+     "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-ooxml.ts.md",
+     "manualSha256": "3fa83fb0b9373f5da953de4b951561b634665cb85b2b5747661a3f359f9ddfe0",
+     "batch": "nb-74",
+     "ownerAuthor": "docs-r07-author-nb-01-20261023",
+     "ownerReviewer": "docs-r07-qa-nb-01-20261023"
+    },
+    {
+     "sourceFile": "apps/electron/src/main/lib/cslab/cslab-ooxml-worker.ts",
+     "sourceBlob": "16a42b50d09a8946f13c6427e699b75e58f21f5b",
+     "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-ooxml-worker.ts.md",
+     "manualSha256": "9919caed81db5d353a7dcfa987cdc112dced73233e186c69dc4e9c8a64823a6b",
+     "batch": "nb-74",
+     "ownerAuthor": "docs-r07-author-nb-01-20261023",
+     "ownerReviewer": "docs-r07-qa-nb-01-20261023"
+    }
+   ],
+   "sourceEvidence": [
+    "cslab-ooxml.ts:1121-1122 worker 产物缺失→executeOoxmlTask 进程内降级",
+    "cslab-ooxml-worker.ts:5 头注『避免大 docx 解压占用主线程』",
+    "cslab-ooxml.ts:1125-1128 30s 看门狗 terminate"
+   ],
+   "description": "降级路径违背 worker 立项目的：产物缺失时大 docx 解压在主线程执行（无隔离、无看门狗）；超时语义只覆盖 worker 分支。",
+   "suggestedFix": "阶段三：降级分支加同款看门狗或限制输入大小。手册已如实记录降级（非 doc_error）。",
+   "authorHandoff": {
+    "to": "docs-r07-author-nb-01-20261023",
+    "note": "cslab-ooxml.ts.md §3.4 已如实写『缺失→进程内降级』，与源一致",
+    "manualFix": "可选：补『降级分支无超时』警示"
+   },
+   "stage3Note": "留阶段三设计差异报告"
+  },
+  {
+   "id": "CF-06",
+   "type": "implementation_gap",
+   "severity": "medium",
+   "files": [
+    {
+     "sourceFile": "apps/electron/src/main/lib/cslab/cslab-paths.ts",
+     "sourceBlob": "6a27002041239844fa3f79391e88caf94ab30079",
+     "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-paths.ts.md",
+     "manualSha256": "6458f39339b3a713aa183bdb629941f828c1e5f16a7257e021396713be6750d1",
+     "batch": "nb-07",
+     "ownerAuthor": "docs-r07-author-nb-07-20261023",
+     "ownerReviewer": "docs-r07-qa-nb-07-20261023"
+    }
+   ],
+   "sourceEvidence": [
+    "cslab-paths.ts:320-333 resolveLabRelativePath 纯词法 root+sep 前缀校验",
+    "cslab-paths.ts:261 同类 cwd 包含性校验"
+   ],
+   "description": "穿越边界为词法 containment，未见 fs.realpath/symlink 解析：沙箱内 symlink 指向外部时词法界内、物理界外（推断，静态未实测 NOT_RUN）。",
+   "suggestedFix": "阶段三：落盘前 realpath 复核或拒绝 symlink。手册 §红线② 只述词法规则，无 symlink 说明。",
+   "authorHandoff": {
+    "to": "docs-r07-author-nb-07-20261023",
+    "note": "nb-07 主责手册 cslab-paths.ts.md §红线②(:86) 词法规则描述与源一致，缺 symlink 边界说明",
+    "manualFix": "§红线② 补『未解析 symlink，物理越界风险（推断）』"
+   },
+   "stage3Note": "留阶段三设计差异报告（安全边界）"
+  },
+  {
+   "id": "CF-07",
+   "type": "implementation_gap",
+   "severity": "high",
+   "files": [
+    {
+     "sourceFile": "apps/electron/src/main/lib/cslab/cslab-router.ts",
+     "sourceBlob": "651d2f30e26a3ef2e081530c49fb0c9684a96d7f",
+     "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-router.ts.md",
+     "manualSha256": "26b720c5e112763bf73bbc6fa7c2dffd964406a5402989e89aa99f61a5403b6d",
+     "batch": "nb-07",
+     "ownerAuthor": "docs-r07-author-nb-07-20261023",
+     "ownerReviewer": "docs-r07-qa-nb-07-20261023"
+    },
+    {
+     "sourceFile": "apps/electron/src/main/lib/cslab/cslab-tool-registry.ts",
+     "sourceBlob": "79baca87608886553b541c6d6d367c8890a9fb44",
+     "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-tool-registry.ts.md",
+     "manualSha256": "c3ba0a7f56d17059e2e73602d1fcf97fba3052474c946589177c215947307766",
+     "batch": "nb-75",
+     "ownerAuthor": "docs-r07-author-nb-06-20261023",
+     "ownerReviewer": "docs-r07-qa-nb-06-20261023"
+    }
+   ],
+   "sourceEvidence": [
+    "cslab-router.ts:1473-1481 CUSTOM_TOOL_RUN 无信任门",
+    "agent-orchestrator.ts:1932-1955 agent 路径有 decideCsLabToolGate",
+    "cslab-tool-trust.ts:38-45 isCsLabToolTrusted"
+   ],
+   "description": "信任门不对称：agent 路径执行工具前过 decideCsLabToolGate（plan 拒/bypass+trusted 放/非交互拒/一次性确认），渲染层 CUSTOM_TOOL_RUN IPC 直调 runLabTool 无同等门（假定用户面板动作，推断）；渲染层被攻破即可执行 runtime/tools 任意 .py。",
+   "suggestedFix": "阶段三：IPC 路径补同等信任/确认门或显式记录豁免依据。",
+   "authorHandoff": {
+    "to": "docs-r07-author-nb-01-20261023",
+    "note": "涉及 router/tool-registry 手册（nb-74 等），核手册是否声称双路等价门禁",
+    "manualFix": "若手册称『统一信任门』则为 doc_error，改『agent 路径有门/IPC 路径无门』"
+   },
+   "stage3Note": "留阶段三设计差异报告（安全）"
+  },
+  {
+   "id": "CF-08",
+   "type": "implementation_gap",
+   "severity": "medium",
+   "files": [
+    {
+     "sourceFile": "apps/electron/src/main/lib/cslab/cslab-tool-registry.ts",
+     "sourceBlob": "79baca87608886553b541c6d6d367c8890a9fb44",
+     "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-tool-registry.ts.md",
+     "manualSha256": "c3ba0a7f56d17059e2e73602d1fcf97fba3052474c946589177c215947307766",
+     "batch": "nb-75",
+     "ownerAuthor": "docs-r07-author-nb-06-20261023",
+     "ownerReviewer": "docs-r07-qa-nb-06-20261023"
+    },
+    {
+     "sourceFile": "apps/electron/src/main/lib/cslab/cslab-python-runtime.ts",
+     "sourceBlob": "d168b809f2ea10200d0c1515d885438b10397972",
+     "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-python-runtime.ts.md",
+     "manualSha256": "a1c430b0aca51cdf242f62c8f480c7844436cbda3b96d3b73f7d059ff013dc0a",
+     "batch": "nb-74",
+     "ownerAuthor": "docs-r07-author-nb-01-20261023",
+     "ownerReviewer": "docs-r07-qa-nb-01-20261023"
+    }
+   ],
+   "sourceEvidence": [
+    "cslab-tool-registry.ts:570-583 runLabTool 无 AbortSignal/kill",
+    "cslab-python-runtime.ts:372-382 同",
+    "grep 全路径无取消 API"
+   ],
+   "description": "Python 工具运行无取消：120s 超时内用户/会话停止无法中止子进程（仅超时杀）。",
+   "suggestedFix": "阶段三：接 AbortSignal 或会话停止联动 kill。",
+   "authorHandoff": {
+    "to": "docs-r07-author-nb-01-20261023",
+    "note": "若手册称可取消则 doc_error",
+    "manualFix": "手册补『无取消，仅超时』"
+   },
+   "stage3Note": "留阶段三"
+  },
+  {
+   "id": "CF-09",
+   "type": "implementation_gap",
+   "severity": "medium",
+   "files": [
+    {
+     "sourceFile": "apps/electron/src/main/lib/cslab/cslab-python.ts",
+     "sourceBlob": "e5fa5a08d38134ff8efc2932a989d8b409933578",
+     "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-python.ts.md",
+     "manualSha256": "c7dc9e504304d23fb916ee3af287aca73841582ddcad0fb9d69a87d7b1d3c4d3",
+     "batch": "nb-74",
+     "ownerAuthor": "docs-r07-author-nb-01-20261023",
+     "ownerReviewer": "docs-r07-qa-nb-01-20261023"
+    },
+    {
+     "sourceFile": "apps/electron/src/main/lib/cslab/cslab-python-runtime.ts",
+     "sourceBlob": "d168b809f2ea10200d0c1515d885438b10397972",
+     "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-python-runtime.ts.md",
+     "manualSha256": "a1c430b0aca51cdf242f62c8f480c7844436cbda3b96d3b73f7d059ff013dc0a",
+     "batch": "nb-74",
+     "ownerAuthor": "docs-r07-author-nb-01-20261023",
+     "ownerReviewer": "docs-r07-qa-nb-01-20261023"
+    }
+   ],
+   "sourceEvidence": [
+    "cslab-python.ts:108-112 exec 无 cwd",
+    "cslab-python-runtime.ts:379-380 自定红线『副作用必须落在实验室沙箱内』",
+    "cslab-python.ts:24 cachedProbe、python-runtime:188 profileStatusCache 仅 :348 清"
+   ],
+   "description": "extractor 路径 exec 无 cwd——脚本 __pycache__/临时物可能落沙箱外（与自定红线冲突，推断）；探针/状态缓存不随脚本消失失效。",
+   "suggestedFix": "阶段三：补 cwd=labDir + 缓存失效策略。",
+   "authorHandoff": {
+    "to": "docs-r07-author-nb-01-20261023",
+    "note": "python/runtime 手册核红线表述",
+    "manualFix": "红线条目补 tryParseWithPython 例外说明或修实现"
+   },
+   "stage3Note": "留阶段三"
+  },
+  {
+   "id": "CF-10",
+   "type": "implementation_gap",
+   "severity": "low",
+   "files": [
+    {
+     "sourceFile": "apps/electron/src/main/lib/cslab/cslab-python-runtime.ts",
+     "sourceBlob": "d168b809f2ea10200d0c1515d885438b10397972",
+     "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-python-runtime.ts.md",
+     "manualSha256": "a1c430b0aca51cdf242f62c8f480c7844436cbda3b96d3b73f7d059ff013dc0a",
+     "batch": "nb-74",
+     "ownerAuthor": "docs-r07-author-nb-01-20261023",
+     "ownerReviewer": "docs-r07-qa-nb-01-20261023"
+    }
+   ],
+   "sourceEvidence": [
+    "cslab-python-runtime.ts:142-147 venv 坏静默回退系统 python",
+    "cslab-tool-registry.ts:559-560 报错口径"
+   ],
+   "description": "venv 损坏→静默回退系统 python，用户工具缺依赖时报『工具错误』而非『运行时缺失』，降级不可见。",
+   "suggestedFix": "阶段三：降级显式上报。",
+   "authorHandoff": {
+    "to": "docs-r07-author-nb-01-20261023",
+    "note": "",
+    "manualFix": "补降级语义"
+   },
+   "stage3Note": "留阶段三"
+  },
+  {
+   "id": "CF-11",
+   "type": "implementation_gap",
+   "severity": "low",
+   "files": [
+    {
+     "sourceFile": "apps/electron/src/main/lib/cslab/cslab-tool-registry.ts",
+     "sourceBlob": "79baca87608886553b541c6d6d367c8890a9fb44",
+     "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-tool-registry.ts.md",
+     "manualSha256": "c3ba0a7f56d17059e2e73602d1fcf97fba3052474c946589177c215947307766",
+     "batch": "nb-75",
+     "ownerAuthor": "docs-r07-author-nb-06-20261023",
+     "ownerReviewer": "docs-r07-qa-nb-06-20261023"
+    }
+   ],
+   "sourceEvidence": [
+    "cslab-tool-registry.ts:604-608 审计 exitCode 取 error.code"
+   ],
+   "description": "超时/被杀时 error.code 为 undefined/ETIMEDOUT（推断 Node error 形状），审计无法区分超时与崩溃。",
+   "suggestedFix": "阶段三：审计补 timeout 标记。",
+   "authorHandoff": {
+    "to": "docs-r07-author-nb-01-20261023",
+    "note": "",
+    "manualFix": "audit 字段语义补注"
+   },
+   "stage3Note": "留阶段三"
+  },
+  {
+   "id": "CF-12",
+   "type": "implementation_gap",
+   "severity": "medium",
+   "files": [
+    {
+     "sourceFile": "apps/electron/src/main/lib/cslab/cslab-tool-registry.ts",
+     "sourceBlob": "79baca87608886553b541c6d6d367c8890a9fb44",
+     "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-tool-registry.ts.md",
+     "manualSha256": "c3ba0a7f56d17059e2e73602d1fcf97fba3052474c946589177c215947307766",
+     "batch": "nb-75",
+     "ownerAuthor": "docs-r07-author-nb-06-20261023",
+     "ownerReviewer": "docs-r07-qa-nb-06-20261023"
+    }
+   ],
+   "sourceEvidence": [
+    "cslab-tool-registry.ts:301-313 扫描接受 runtime/tools 任意 .py",
+    "cslab-tool-registry.ts:501-504 fingerprint 仅驱动重扫"
+   ],
+   "description": "扫描→执行间无签名/哈希钉扎：清单成员可被运行前替换（无完整性校验）。",
+   "suggestedFix": "阶段三：manifest 记录 hash 并在执行前复核。",
+   "authorHandoff": {
+    "to": "docs-r07-author-nb-01-20261023",
+    "note": "",
+    "manualFix": "工具信任模型补完整性说明"
+   },
+   "stage3Note": "留阶段三（安全）"
+  },
+  {
+   "id": "CF-13",
+   "type": "unknown",
+   "severity": "unknown",
+   "files": [
+    {
+     "sourceFile": "apps/electron/src/main/lib/cslab/cslab-hpc.ts",
+     "sourceBlob": "4ef171ec80f6006555d0875adfe1b6aeeefa86b5",
+     "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-hpc.ts.md",
+     "manualSha256": "ddd8ace29661b7dea7ebb6f1c691e05665d36015e1bed596c85d87240ba6fc55",
+     "batch": "nb-73",
+     "ownerAuthor": "docs-r07-author-extra-01-20261024",
+     "ownerReviewer": "docs-r07-qa-extra-01-20261024"
+    }
+   ],
+   "sourceEvidence": [
+    "cslab-hpc.ts:1654 submitHpcJob 消费点(router)",
+    "cslab-hpc.ts:606 sftp.writeFile",
+    "cslab-hpc-db.ts:312+ upsertHpcJobRow"
+   ],
+   "description": "submitHpcJob 的 SSH 会话生命周期、任务轮询/状态回写循环、取消/恢复语义本轮未读完（证据缺口，不冒充已验）。",
+   "suggestedFix": "阶段二补查或阶段三并案核查；结论暂标 unknown。",
+   "authorHandoff": {
+    "to": "docs-r07-author-nb-01-20261023",
+    "note": "cslab-hpc.ts 手册（batch 待查）若已描述取消/恢复，阶段三对照",
+    "manualFix": "待证据补齐后定"
+   },
+   "stage3Note": "证据缺口登记"
+  }
+ ],
+ "notes": "已验收手册在关键点（writeExportDocx 绝不覆盖/Worker 30s/词法越界）与源一致，本轨未发现 doc_error；CF-01..06 为实现缺口与接口一致性/覆盖说明问题。产品修复一律不做，留阶段三设计差异报告。"
+}

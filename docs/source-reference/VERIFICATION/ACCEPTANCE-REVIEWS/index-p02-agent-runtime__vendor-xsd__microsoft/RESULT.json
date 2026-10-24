@@ -1,0 +1,323 @@
+{
+  "schema": "dsh-r07-index-review/1",
+  "batch": "index-p02-agent-runtime__vendor-xsd__microsoft",
+  "groupId": "p02-agent-runtime__vendor-xsd__microsoft",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-index-author-extra-01-20261024",
+  "reviewerSession": "docs-r07-index-qa-extra-01-20261024",
+  "reviewedAtUtc": "2026-10-23T19:20:00Z",
+  "sealedAtUtc": "2026-10-23T18:56:44+00:00",
+  "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+  "artifactSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 21,
+    "accepted": 21,
+    "revision_required": 0,
+    "unknown": 0,
+    "blocking": 0,
+    "nonBlocking": 1
+  },
+  "gates": {
+    "G0_INDEX": "PASS",
+    "G1_INDEPENDENT_SOURCE_REVIEW": "PASS_WITH_N-01",
+    "G2_SEAL_CONSISTENCY": "PASS",
+    "note": "G0 等价 21/21（锚点逐行实存、七项齐、sourceBlob/sourceSha256 三方 0 差异、targetMd 与锁一致、DONE/MANIFEST/READY/artifactSha256/manifestSha256/readySha256 链全对，QA 自算）。G1 家族级独立复核全部命中：SCHEMA_MAPPINGS microsoft 4 条（base.py:52-55）、_get_schema_path（:685-699）、_validate_single_file_xsd（:750-761，:756 open/:758-759 base_url parse/:761 XMLSchema）、导入图（7 文件均 xs:import ISO wml.xsd；族内唯一边 wml-cex-2018.xsd:2→wml-2018.xsd；无 xs:include）、失败影响（validate.py:107 sys.exit(0 if success else 1)、:93-95 拒 .xlsx、base.py:676-679 FAILED、:611-619 原件差集+IGNORED_VALIDATION_ERRORS:14-17、:785-786 异常转错误）、调用链（docx/SKILL.md:76/:78、pptx/editing.md:42/:53/:84 pack.py --original 内联校验、xlsx 无校验入口=QA 独立证实）、三副本逐字节一致（QA 实测）、休眠三件（wml-2010/wml-sdtdatahash-2020/wml-symex-2015）负向检索一致、W14/W16CID 常量（docx.py:19-20/:256-257）、mce/mc.xsd:9-10 出处注释对照。内容引证抽样命中（wml-2010:20-21/:28、wml-2012:17/:28/:44/:60-65、wml-2018:5、wml-cid:5、wml-symex:5、docx/SKILL.md:76 逐字）。唯一偏差 N-01（wml-cex 内容行号 ±2，三副本条目重复）。"
+  },
+  "g0Evidence": {
+    "stockScript": "QA 自算等价 G0：锚点 21/21、七项 21/21、哈希三方一致 21/21、封版链 6 项全对"
+  },
+  "files": [
+    {
+      "path": "apps/electron/default-skills/docx/scripts/office/schemas/microsoft/wml-2010.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--docx--scripts--office--schemas--microsoft--wml-2010.xsd",
+      "line": 17,
+      "sourceBlob": "f65f777730d82162f4248f03c703b1b85fda5fe2",
+      "sourceSha256": "568b26ee156cb9549aa439ca2158965f77b7c1602b7e0316f40ac6cf586e35f2",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实；休眠（零引用）负向检索 QA 独立复核一致"
+    },
+    {
+      "path": "apps/electron/default-skills/docx/scripts/office/schemas/microsoft/wml-2012.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--docx--scripts--office--schemas--microsoft--wml-2012.xsd",
+      "line": 27,
+      "sourceBlob": "6b00755a9a8733f0fb171a47b25d0d7b4c70dee8",
+      "sourceSha256": "0fa75578a000439a7988ba0c59fdc69f774bbd416cbacc14d07125b3f686cb74",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实"
+    },
+    {
+      "path": "apps/electron/default-skills/docx/scripts/office/schemas/microsoft/wml-2018.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--docx--scripts--office--schemas--microsoft--wml-2018.xsd",
+      "line": 37,
+      "sourceBlob": "f321d333a5e6ef98cbdfeeeaa334923e4cfc8a6c",
+      "sourceSha256": "be0ff793a22dd31384650c3a4da14c2fa8062751c2e97b0e5ee852bda13c60ad",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实"
+    },
+    {
+      "path": "apps/electron/default-skills/docx/scripts/office/schemas/microsoft/wml-cex-2018.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--docx--scripts--office--schemas--microsoft--wml-cex-2018.xsd",
+      "line": 47,
+      "sourceBlob": "364c6a9b8df6e252bb5ae39e2ca031fcbfc4e8a5",
+      "sourceSha256": "fddc2b880cabb9005aebbc7e783e53c19fec1c03df7d0e2f2076a33a0fdfd081",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [
+        "IDX-EX2-N-01"
+      ],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实；内容行号漂移见 N-01"
+    },
+    {
+      "path": "apps/electron/default-skills/docx/scripts/office/schemas/microsoft/wml-cid-2016.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--docx--scripts--office--schemas--microsoft--wml-cid-2016.xsd",
+      "line": 57,
+      "sourceBlob": "fed9d15b7f504e14ac82793d79db2d7ad83d56ed",
+      "sourceSha256": "127ca209fa73d7cb708449cb355c871867948a96e4a74f7bf5811ef62d17991d",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实"
+    },
+    {
+      "path": "apps/electron/default-skills/docx/scripts/office/schemas/microsoft/wml-sdtdatahash-2020.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--docx--scripts--office--schemas--microsoft--wml-sdtdatahash-2020.xsd",
+      "line": 67,
+      "sourceBlob": "680cf15400cd57ce2bf17a58ecd29caa0d8a8422",
+      "sourceSha256": "842e7163409c8d74f4d7088a8bc99500d80bc75332681a0980055b08f374a604",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实；休眠（零引用）负向检索 QA 独立复核一致"
+    },
+    {
+      "path": "apps/electron/default-skills/docx/scripts/office/schemas/microsoft/wml-symex-2015.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--docx--scripts--office--schemas--microsoft--wml-symex-2015.xsd",
+      "line": 77,
+      "sourceBlob": "89ada90837b2db3f3d453212ae426520acedbbea",
+      "sourceSha256": "16f6f8072249f431370723c2cd8974672e0d9c897e00e97dd918079df934871b",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实；休眠（零引用）负向检索 QA 独立复核一致"
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/office/schemas/microsoft/wml-2010.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--pptx--scripts--office--schemas--microsoft--wml-2010.xsd",
+      "line": 89,
+      "sourceBlob": "f65f777730d82162f4248f03c703b1b85fda5fe2",
+      "sourceSha256": "568b26ee156cb9549aa439ca2158965f77b7c1602b7e0316f40ac6cf586e35f2",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实；休眠（零引用）负向检索 QA 独立复核一致"
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/office/schemas/microsoft/wml-2012.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--pptx--scripts--office--schemas--microsoft--wml-2012.xsd",
+      "line": 99,
+      "sourceBlob": "6b00755a9a8733f0fb171a47b25d0d7b4c70dee8",
+      "sourceSha256": "0fa75578a000439a7988ba0c59fdc69f774bbd416cbacc14d07125b3f686cb74",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实"
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/office/schemas/microsoft/wml-2018.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--pptx--scripts--office--schemas--microsoft--wml-2018.xsd",
+      "line": 109,
+      "sourceBlob": "f321d333a5e6ef98cbdfeeeaa334923e4cfc8a6c",
+      "sourceSha256": "be0ff793a22dd31384650c3a4da14c2fa8062751c2e97b0e5ee852bda13c60ad",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实"
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/office/schemas/microsoft/wml-cex-2018.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--pptx--scripts--office--schemas--microsoft--wml-cex-2018.xsd",
+      "line": 119,
+      "sourceBlob": "364c6a9b8df6e252bb5ae39e2ca031fcbfc4e8a5",
+      "sourceSha256": "fddc2b880cabb9005aebbc7e783e53c19fec1c03df7d0e2f2076a33a0fdfd081",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [
+        "IDX-EX2-N-01"
+      ],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实；内容行号漂移见 N-01"
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/office/schemas/microsoft/wml-cid-2016.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--pptx--scripts--office--schemas--microsoft--wml-cid-2016.xsd",
+      "line": 129,
+      "sourceBlob": "fed9d15b7f504e14ac82793d79db2d7ad83d56ed",
+      "sourceSha256": "127ca209fa73d7cb708449cb355c871867948a96e4a74f7bf5811ef62d17991d",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实"
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/office/schemas/microsoft/wml-sdtdatahash-2020.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--pptx--scripts--office--schemas--microsoft--wml-sdtdatahash-2020.xsd",
+      "line": 139,
+      "sourceBlob": "680cf15400cd57ce2bf17a58ecd29caa0d8a8422",
+      "sourceSha256": "842e7163409c8d74f4d7088a8bc99500d80bc75332681a0980055b08f374a604",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实；休眠（零引用）负向检索 QA 独立复核一致"
+    },
+    {
+      "path": "apps/electron/default-skills/pptx/scripts/office/schemas/microsoft/wml-symex-2015.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--pptx--scripts--office--schemas--microsoft--wml-symex-2015.xsd",
+      "line": 149,
+      "sourceBlob": "89ada90837b2db3f3d453212ae426520acedbbea",
+      "sourceSha256": "16f6f8072249f431370723c2cd8974672e0d9c897e00e97dd918079df934871b",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实；休眠（零引用）负向检索 QA 独立复核一致"
+    },
+    {
+      "path": "apps/electron/default-skills/xlsx/scripts/office/schemas/microsoft/wml-2010.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--xlsx--scripts--office--schemas--microsoft--wml-2010.xsd",
+      "line": 161,
+      "sourceBlob": "f65f777730d82162f4248f03c703b1b85fda5fe2",
+      "sourceSha256": "568b26ee156cb9549aa439ca2158965f77b7c1602b7e0316f40ac6cf586e35f2",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实；休眠（零引用）负向检索 QA 独立复核一致"
+    },
+    {
+      "path": "apps/electron/default-skills/xlsx/scripts/office/schemas/microsoft/wml-2012.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--xlsx--scripts--office--schemas--microsoft--wml-2012.xsd",
+      "line": 171,
+      "sourceBlob": "6b00755a9a8733f0fb171a47b25d0d7b4c70dee8",
+      "sourceSha256": "0fa75578a000439a7988ba0c59fdc69f774bbd416cbacc14d07125b3f686cb74",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实"
+    },
+    {
+      "path": "apps/electron/default-skills/xlsx/scripts/office/schemas/microsoft/wml-2018.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--xlsx--scripts--office--schemas--microsoft--wml-2018.xsd",
+      "line": 181,
+      "sourceBlob": "f321d333a5e6ef98cbdfeeeaa334923e4cfc8a6c",
+      "sourceSha256": "be0ff793a22dd31384650c3a4da14c2fa8062751c2e97b0e5ee852bda13c60ad",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实"
+    },
+    {
+      "path": "apps/electron/default-skills/xlsx/scripts/office/schemas/microsoft/wml-cex-2018.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--xlsx--scripts--office--schemas--microsoft--wml-cex-2018.xsd",
+      "line": 191,
+      "sourceBlob": "364c6a9b8df6e252bb5ae39e2ca031fcbfc4e8a5",
+      "sourceSha256": "fddc2b880cabb9005aebbc7e783e53c19fec1c03df7d0e2f2076a33a0fdfd081",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [
+        "IDX-EX2-N-01"
+      ],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实；内容行号漂移见 N-01"
+    },
+    {
+      "path": "apps/electron/default-skills/xlsx/scripts/office/schemas/microsoft/wml-cid-2016.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--xlsx--scripts--office--schemas--microsoft--wml-cid-2016.xsd",
+      "line": 201,
+      "sourceBlob": "fed9d15b7f504e14ac82793d79db2d7ad83d56ed",
+      "sourceSha256": "127ca209fa73d7cb708449cb355c871867948a96e4a74f7bf5811ef62d17991d",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实"
+    },
+    {
+      "path": "apps/electron/default-skills/xlsx/scripts/office/schemas/microsoft/wml-sdtdatahash-2020.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--xlsx--scripts--office--schemas--microsoft--wml-sdtdatahash-2020.xsd",
+      "line": 211,
+      "sourceBlob": "680cf15400cd57ce2bf17a58ecd29caa0d8a8422",
+      "sourceSha256": "842e7163409c8d74f4d7088a8bc99500d80bc75332681a0980055b08f374a604",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实；休眠（零引用）负向检索 QA 独立复核一致"
+    },
+    {
+      "path": "apps/electron/default-skills/xlsx/scripts/office/schemas/microsoft/wml-symex-2015.xsd",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__vendor-xsd__microsoft.md",
+      "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--xlsx--scripts--office--schemas--microsoft--wml-symex-2015.xsd",
+      "line": 221,
+      "sourceBlob": "89ada90837b2db3f3d453212ae426520acedbbea",
+      "sourceSha256": "16f6f8072249f431370723c2cd8974672e0d9c897e00e97dd918079df934871b",
+      "manualSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "QA 独立复核：七项齐、锚点实存于声明行、sourceBlob/sourceSha256 与锁+冻结源三方一致；家族说明（命名空间/三副本/SCHEMA_MAPPINGS:52-55 加载映射/_get_schema_path:685-699/_validate_single_file_xsd:750-761/导入图/失败影响 validate.py:107）经 QA 逐项实读比对属实；休眠（零引用）负向检索 QA 独立复核一致"
+    }
+  ],
+  "findings": [
+    {
+      "id": "IDX-EX2-N-01",
+      "severity": "nonBlocking",
+      "file": "apps/electron/default-skills/{docx,pptx,xlsx}/scripts/office/schemas/microsoft/wml-cex-2018.xsd（三副本条目重复同表述）",
+      "entry": "apps--electron--default-skills--{docx,pptx,xlsx}--scripts--office--schemas--microsoft--wml-cex-2018.xsd",
+      "title": "wml-cex-2018.xsd 内容行号小漂移（±2）",
+      "evidence": "条目称「durableId 必填/dateUtc/intelligentPlaceholder 属性 :13-17，根 :18」；QA 实读：三属性实为 :15-17（:13-14 为 extLst element/sequence），根元素 `commentsExtensible` 实为 :19（:18 是 `</xsd:complexType>`）。另 SCHEMA_MAPPINGS 闭合括号行引用不一（家族说明 :43-59 / pptx 条目 :43-58，实际 :43-59）。内容主体（durableId required/dateUtc/intelligentPlaceholder 语义）正确。",
+      "fix": "行号改 :15-17 / :19，映射范围统一 :43-59。非阻断≠已修，登记待 errata。"
+    }
+  ],
+  "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局账；未 commit/push；未跑产品测试/GUI/构建/lxml 校验 smoke（NOT_RUN）；结论只覆盖本批。"
+}

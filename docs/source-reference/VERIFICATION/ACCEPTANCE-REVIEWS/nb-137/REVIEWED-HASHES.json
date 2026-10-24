@@ -1,0 +1,42 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-137",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-extra-03-20261024",
+  "authorSession": "docs-r07-author-extra-03-20261024",
+  "reviewedAtUtc": "2026-10-23T21:10:00Z",
+  "batchVerdict": "accepted",
+  "bindingNote": "18/18 source 绑定==scope；manualSha256 四方一致；18 篇逐篇真值审查+9 组抽验全中",
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/macos-signature.cjs.md": "f941c62067f9111b38363d9776953364b47cac886f522217f38fc20c0235ea03",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/memory-archive-backup.mjs.md": "5aeb7dcd39a9ba7715f4b4e9dd4d93045c02dc5c30dedf823a04073854ab2b2a",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/memory-search-verify.mjs.md": "3c435fbdd60a95cb71c30014e775a00d87940c3586664e1cc0dc803306331727",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/nsis-icon-refresh.nsh.md": "0e81941aa7df80b92233ca37020377635694a07424bf655ddcd03658b943bdad",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/package-closure.test.ts.md": "1729de7347f679056b473866d1a40a9d2093b489b1c3ceb59f6710e8514583a3",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/packaged-cli-contract.cjs.md": "f2151760d99d7d533910562e21242a4a0111b065d181a6920d82afb9fb4370c9",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/packaged-pi-probe.cjs.md": "4c6bab4cbb49cd5a073803fdede3a5cca3bcca108f49772690883f59081b15c1",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/packaging-guards.test.ts.md": "739da6d24daac6afec13246f20c0f77f51fe7a77f9ae2b968eb4e266c72c534b",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/packaging-host.cjs.md": "6beaac62812182932d00ac5ee7666e9d4f6776ed24292bfae3cc362bfd81159e",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/plugin-rpc-smoke.ts.md": "9b118344abd2abe8373e1456af0833c2f2793b2d181d979a08a62b90b298921e",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/plugin-smoke.ts.md": "a2a7f5de2c53b2f90d490e58b1d947140aa7e200487445db360267590a7f2075",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/review-authoring-v1.ts.md": "948bcbe7d850ea1166ac5bd46e3c8d5a6071d03eaf357a399ba73ce2536fbafa",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/review-d2-plan.ts.md": "782da70888340c75cd1a6ccafe2de8a9d27e6a91ffcac54b03de4b349e8222dc",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/review-semantic-demo.ts.md": "9cf1ad27a1db5cba44c472654db694f2b88aa2951ba011c1b204aa1fd2ba4140",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/run-electron-builder.cjs.md": "64a6c05d37d468912e0748354f999b61d730ff2b6e9f21acdbadf6e15a5bef1d",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/set-exe-icon.ts.md": "7680c4d0925f42e443c21dfb8dcefc41c56e79be32fdbbfa1fa6950a4e8d1966",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/settings-macos-contract.test.ts.md": "1dc7d9eb1f3ba677bc6ad8f0ecc527dbfd62dc2fd50e838d33e1a6403e582c3d",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/sign-update-metadata.cjs.md": "54a9f2481db3820db829b3b349ad5f6793d958725644808196751f273124b15b"
+  },
+  "rejectedHashes": {},
+  "deliveryHashes": {
+    "MANIFEST.json": "93885734579afbd8c14c1b56c5e70d88098eb3da58b0456ab433b1e112e024b7",
+    "READY.json": "4171ae2373295f8ef61dca5d160843045d66daf8c82a36d06ba96ae49b5e179b",
+    "DONE.json": "fa54d933fab5ad7ceaf49e6b787e9e8acee748901552d77b47b69e2ecc23d618"
+  },
+  "zip": {
+    "path": "deliveries/nb-137/R07-nb-137-05fb2565.zip",
+    "sha256": "edad70b2006d876b0fd94addcf910b5265cf38cbfaa37bd58872adc76381cde5",
+    "bytes": 93574,
+    "entries": 21
+  }
+}

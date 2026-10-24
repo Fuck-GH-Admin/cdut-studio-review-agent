@@ -1,0 +1,35 @@
+{
+ "schema": "r07-reviewed-hashes/2",
+ "batch": "nb-105-r1",
+ "revisionOf": "nb-105",
+ "reviewer": "docs-r07-qa-ui-20261023",
+ "reviewedAtUtc": "2026-10-24T01:45:00Z",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/AgentPresetSettings.tsx.md": "bac7957ff7d9a4e2e3603e31ba5a661f74aa96ea74b1eef04085dd828ee6defd",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/AgentSkillsToolbar.tsx.md": "51117866c352ff3afac3212406e30ace10ddc003d66400e1928bf97f07dbb5a1",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/AgentSkillsView.tsx.md": "f59c54960d358c24e9ae6cda50eba1787515c92e358f58805e362eefe388cc36",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/CreateGlobalSkillDialog.tsx.md": "5631c786603823386d623d2039aba36cfdef7ae991ee055547a3dd4f887ca8ab",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/CreateWorkspaceSkillDialog.tsx.md": "3b6482cbcc602ce8bb453d0e0fe14e18ee3940df8eca77faeacfddf37bee0f06",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/GlobalCapabilitiesView.tsx.md": "e79e108d0d603f607dbde135c39703d882dfe490ee3e0cd18d7a67374376a8dd",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/GlobalPresetScopePanel.tsx.md": "ef94673e1863e057a4cbe1fe59366928fad2fd56a323644ee02a5ed5baafac08",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/GlobalPresetSettings.tsx.md": "ffa499faef6da7e02d8983737a12cf71749d0de00e7a7e56e30cd5a997642e51",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/ImportPresetDialog.tsx.md": "6468541899f565fed30fd79979fabed5ca5eccd8d476e7542b015d10289ff63e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/ImportSkillDialog.tsx.md": "cc8221b404c1f1da87f72757192fa16a833c07bb7ade00cd98e209e396457cc0",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/MasterSkillDetailSheet.tsx.md": "447976dd65953aa70ebc9021d28e642a3b492e8319fe5fc21828d126a45c4baa",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/MasterSkillsTab.tsx.md": "6fcb6dfa3dd05f54ffa5284f27c7a846b8a8608e4c4ad3ff31d94afa71117594",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/McpCard.tsx.md": "e2f5cb06380f43d668ce114517f51d4bc4cf48b0945b87ea9dd2046d9cc3c5fb",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/McpDetailSheet.tsx.md": "8d446f707cd7d70dbd647c3f5e2fb12db1876776f00972a8e29656238bc4e096",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/SkillCard.tsx.md": "7aa8409689af9feff9824f1dbf729ea1fd4cb1847b8f462aba5b4579fa847b2c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/SkillDetailHeader.tsx.md": "9107908c55df3c023f738fa8f957447b3623099749ad0a4da7092d5499f8472f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/SkillDetailLayout.tsx.md": "a1352f687bd0435f278b68a51fe9d8e21c37f4e250cacac1e21c5ef8550a947c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent-skills/SkillDetailSheet.tsx.md": "d200e7900bd40058cb90f05f71c6804042300876393847d1ed07e2ed1fbe6799"
+ },
+ "sealedArtifacts": {
+  "READY.json": "8a5bdfebf24228c47bdc62082938db1cbaa8d554d0356e3cbe7b1c30e69cf9d5",
+  "DONE.json": "f414e8d5f36aeac07d1e46bd84f6e695674c330e08e7e73df6030a8cba39dec5",
+  "MANIFEST.json": "a06b35d83db6a5bdade75c0e961c37d20855335668cacdd90eb17d62c37894af",
+  "R07-nb-105-r1-05fb2565.zip": "133b19ac172b882c578f9490c4f4285ec19475492a3c399153df39dee7a4ed9f"
+ },
+ "openNotes": []
+}

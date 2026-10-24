@@ -1,0 +1,242 @@
+{
+  "schema": "r07-review-result/1",
+  "batch": "nb-29",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-07-20261023",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "reviewedAtUtc": "2026-10-23T17:17:00Z",
+  "sealId": "seal-8ccdc6c2f7fc1367",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 14,
+    "accepted": 14,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "g0": {
+    "result": "PASS",
+    "hashChain": "MANIFEST/READY/DONE/ZIP 实算一致（DONE 三 hash + sealId 匹配）",
+    "zip": "R07-nb-29 ZIP 17 条目无穿越/绝对路径/符号链接/外批/reviews，无 READY/DONE，逐条目==盘上字节",
+    "sourceBinding": "14/14 sha256+blob+lines==SCOPE==MANIFEST==冻结树",
+    "manualBinding": "14/14 manualSha256==stage==READY.manualHashes 无 drift",
+    "scope": "delivery SCOPE==manager/assignments/nb-29-SCOPE.json",
+    "changesDiff": "空树重放 14/14 逐字节一致",
+    "humanColumns": "SOURCE-EVIDENCE/COVERAGE 人工列 14/14 非空",
+    "metadata": "14/14 手册 11 键齐全"
+  },
+  "g1": {
+    "result": "PASS",
+    "chapters": "7 源手册 11 章、7 测试手册 6 章",
+    "lineRefs": "带名引用 33/33 在范围（preload/index.ts:4916-5032 实测 5105 行在范围）；测试起始行抽核 22 处全部吻合",
+    "三分法": "14/14",
+    "notRun": "14/14 NOT_RUN"
+  },
+  "g2": {
+    "result": "PASS",
+    "method": "14 手册逐篇完整阅读+回源复核；重点实测：rating-adapter 五导出全树零消费者（作者否定结论正确，QA 预读旧注已作废）、round-setup 四调用点行号全对（main-service:15/review-ipc.ts:797 require/Workbench.tsx:18/test:3）、T07 同分三分支/账本重放//1 只读//2 固化/RECOVERY_REQUIRED/锁语义与源一致、e2e DEPENDENCY_UNRESOLVED 拒止与 mock 边界如实",
+    "findingsTotal": 2,
+    "notesTotal": 0
+  },
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t07-rating-adapter.ts.md": "2621d20f12166bf5287c751d12e4dec69e48fe845579c757c91eda763d51a3f5",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t07-rating-workflow.test.ts.md": "67735e8683f50eff41754d5b7b67f97d1f1951969c25df8e1b624bb5221174fc",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t07-rating-workflow.ts.md": "8db710d60bf45e3b7a29c692091b4a06c68221cb51c34ea98445691ce5a237c9",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t07-round-setup.test.ts.md": "dec6ceda7b24e1af00664dea62d4fe517e2006b2710115623f661229c935fd17",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t07-round-setup.ts.md": "8e574c5a2769f0cf1184b1da416cfdf9e276dd9eb89cf5280fe8c4e4d553e544",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t07-state-store.ts.md": "b4204ae991160cfef61f05de8237dd491c87e262337e6395fee1678c77e3e02a",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-import-ledger-v3-b2.test.ts.md": "d33ea2c128c36240a0b68be647e41fe02cdeae4a9ae6584fe041357113357361",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-import-ledger-v3-b2.ts.md": "0f336f7a8de2c7d5f492f2af1af19fb2f0d5e4350da5888135401c22c4be4d50",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.test.ts.md": "2114e78b7c44e2e18f5826c5646a9869ca7500dcfc1640d8b34759c027fe3f6b",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.ts.md": "48e41c3376eb30feb597433528dba71ed71ba8a0deace5d40c81d90d8e9fa0a5",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/single-case-mvp.e2e.test.ts.md": "4f4835c45d74406ce44ca0d5a48fd82613252de4543e07d30b6617240e876f45",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/single-case-workspace.e2e.test.ts.md": "d1c475342dfc7f0dd8442f3715c2d0f7df1d5dcc8b0285dfdf5a6348abb180ad",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/template-store.test.ts.md": "bb583c8804fb4887b95d6a3443d295c34bcfc2ae3ddddafbda69dd8eb1c8065e",
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/template-store.ts.md": "71f56db370e0b7c4c346248870e9d3d9e6d54dc6265e78550a377aa5032914f6"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t07-rating-adapter.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t07-rating-adapter.ts.md",
+      "sourceBlob": "338dc172c3826e4a2c928b8af111770905762e88",
+      "sourceSha256": "c733da5efef8cd8cf573255686ceb6d8fe981f1e745e68acf85b733ac8fc12ee",
+      "sourceLines": 77,
+      "manualSha256": "2621d20f12166bf5287c751d12e4dec69e48fe845579c757c91eda763d51a3f5",
+      "manualLines": 81,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t07-rating-workflow.test.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t07-rating-workflow.test.ts.md",
+      "sourceBlob": "ddeb7f0d532d137dad1d040265771824a23dc64d",
+      "sourceSha256": "78bc9dd71407097cf838355a7a9a34775702a6a9b8e9dd715a0b4da7b18af803",
+      "sourceLines": 125,
+      "manualSha256": "67735e8683f50eff41754d5b7b67f97d1f1951969c25df8e1b624bb5221174fc",
+      "manualLines": 65,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t07-rating-workflow.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t07-rating-workflow.ts.md",
+      "sourceBlob": "a0f18ba5437763426f0e67503c0d4cd8f0793a89",
+      "sourceSha256": "0105db6736778235ec51ee690334b6842427a43109b23691e637607e191210fb",
+      "sourceLines": 471,
+      "manualSha256": "8db710d60bf45e3b7a29c692091b4a06c68221cb51c34ea98445691ce5a237c9",
+      "manualLines": 140,
+      "verdict": "accepted",
+      "findings": [
+        {
+          "id": "F-NB29-01",
+          "severity": "low",
+          "claim": "§2/§10 称『导出类型 18 + 导出函数 4』；实测导出语句 20 条 = export type 16 + export function 4（逐条清单在 §2 表内正确列出 20 项）。类型计数 18 应为 16。",
+          "sourceEvidence": "冻结树 review-v3-t07-rating-workflow.ts `grep -c '^export '`=20、`^export type|^export interface`=16、`^export function`=4。",
+          "action": "§2/§10 计数改为『16 类型 + 4 函数』（表格无需改动）。"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t07-round-setup.test.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t07-round-setup.test.ts.md",
+      "sourceBlob": "333580116635d3586de3c605dab011f476fbfe35",
+      "sourceSha256": "daff7802c8ba143e37b9c4a9e3185759f7e99c632d06d1e7d47da5d6a17c020c",
+      "sourceLines": 54,
+      "manualSha256": "dec6ceda7b24e1af00664dea62d4fe517e2006b2710115623f661229c935fd17",
+      "manualLines": 54,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t07-round-setup.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t07-round-setup.ts.md",
+      "sourceBlob": "767093d42e1ed29a34a01945d7dc640f2397ae24",
+      "sourceSha256": "bfdf2b1838a13be74f7ea83dd38290631a140a9246abd91e84039730053fe12e",
+      "sourceLines": 88,
+      "manualSha256": "8e574c5a2769f0cf1184b1da416cfdf9e276dd9eb89cf5280fe8c4e4d553e544",
+      "manualLines": 77,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t07-state-store.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t07-state-store.ts.md",
+      "sourceBlob": "441a5b1d79349240b4bd300e836a9c77a52fe4f5",
+      "sourceSha256": "f692f8a03b4a155618f1351f0c2b4ef8e9501478d24b0c3fd2adf80667eb206c",
+      "sourceLines": 91,
+      "manualSha256": "b4204ae991160cfef61f05de8237dd491c87e262337e6395fee1678c77e3e02a",
+      "manualLines": 82,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-import-ledger-v3-b2.test.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-import-ledger-v3-b2.test.ts.md",
+      "sourceBlob": "dd9d9f693f1f79d55c994bca0dad4ca111d85cdc",
+      "sourceSha256": "3d9793112559d73dc63875d26440df084fb2de59537fc97d0fbbe793209f2851",
+      "sourceLines": 281,
+      "manualSha256": "d33ea2c128c36240a0b68be647e41fe02cdeae4a9ae6584fe041357113357361",
+      "manualLines": 72,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-import-ledger-v3-b2.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-import-ledger-v3-b2.ts.md",
+      "sourceBlob": "273b8ea71ed739f01238c5bcf1f57be7a39a6502",
+      "sourceSha256": "742164b4338fa7534e70ea001d9e40beaa94ae8b72f13b99f4fbde9d13898932",
+      "sourceLines": 368,
+      "manualSha256": "0f336f7a8de2c7d5f492f2af1af19fb2f0d5e4350da5888135401c22c4be4d50",
+      "manualLines": 107,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.test.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.test.ts.md",
+      "sourceBlob": "f0d0b442e59ab1dc75089b592a6f449481577383",
+      "sourceSha256": "6bba64cb0ed7f7067a799fa74b905baf872c61ca4ab6b5e3c60a063d019d38a7",
+      "sourceLines": 88,
+      "manualSha256": "2114e78b7c44e2e18f5826c5646a9869ca7500dcfc1640d8b34759c027fe3f6b",
+      "manualLines": 64,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.ts.md",
+      "sourceBlob": "e911663006cb105aad382a6a107630534e014739",
+      "sourceSha256": "dc26b9c7ee3409b52237ce07fe676b5fa5e38f7e61a5e27e266350742062c2cf",
+      "sourceLines": 247,
+      "manualSha256": "48e41c3376eb30feb597433528dba71ed71ba8a0deace5d40c81d90d8e9fa0a5",
+      "manualLines": 91,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/single-case-mvp.e2e.test.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/single-case-mvp.e2e.test.ts.md",
+      "sourceBlob": "351f256e872ad247cb9fa933326c40b53f949116",
+      "sourceSha256": "82eb1a3e950c2a14a364c390f9b0d151e6cd700fe07faa1a01a8ff9d9f9e0d32",
+      "sourceLines": 224,
+      "manualSha256": "4f4835c45d74406ce44ca0d5a48fd82613252de4543e07d30b6617240e876f45",
+      "manualLines": 64,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/single-case-workspace.e2e.test.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/single-case-workspace.e2e.test.ts.md",
+      "sourceBlob": "81e398a22bf7f3f9c63b4783d376d5c3b13bb2d1",
+      "sourceSha256": "2b4b1858a7235da9efe413f5dd21e4c81e24bfc448af90bb3148b9c1e0f74bfb",
+      "sourceLines": 301,
+      "manualSha256": "d1c475342dfc7f0dd8442f3715c2d0f7df1d5dcc8b0285dfdf5a6348abb180ad",
+      "manualLines": 60,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/template-store.test.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/template-store.test.ts.md",
+      "sourceBlob": "487d07bba14ca6d96dac754ae8971d035bb2ffcd",
+      "sourceSha256": "1797df65174f32be802b83e1eea101cb6e94402f30975d5472ab5fa6d61be52d",
+      "sourceLines": 305,
+      "manualSha256": "bb583c8804fb4887b95d6a3443d295c34bcfc2ae3ddddafbda69dd8eb1c8065e",
+      "manualLines": 94,
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/template-store.ts",
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/template-store.ts.md",
+      "sourceBlob": "d77fcd289db11c3a31aa6207e655793ce87f9d7a",
+      "sourceSha256": "4907533fdf6e101b19a3ced30f3558f580f02bf1dd752da871df55cde6872abc",
+      "sourceLines": 604,
+      "manualSha256": "71f56db370e0b7c4c346248870e9d3d9e6d54dc6265e78550a377aa5032914f6",
+      "manualLines": 118,
+      "verdict": "accepted",
+      "findings": [
+        {
+          "id": "F-NB29-02",
+          "severity": "low",
+          "claim": "§2/§10 称『17 导出』；实测 `^export` 18 条（TEMPLATE_SCHEMA_VERSION/isSafeTemplateId/readRetirement/isTemplateVersionRetired/getTemplate/listTemplates/listTemplateVersions/listArchivedTemplates/reorderTemplates/removeTemplateFromLibrary/restoreTemplateToLibrary/isAuthoringCandidateDraft/saveDraft/saveAuthoringCandidateDraft/TemplateValidationIssue/validateTemplate/publishTemplate/deprecateTemplate）。§2 表格 17 行是因 remove/restore 合行，符号清单本身完整正确。",
+          "sourceEvidence": "template-store.ts `grep -c '^export '`=18。",
+          "action": "§2/§10 计数改为『18 导出（表 17 行，remove/restore 合行）』。"
+        }
+      ],
+      "notes": []
+    }
+  ]
+}

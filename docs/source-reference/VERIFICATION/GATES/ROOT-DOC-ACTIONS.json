@@ -1,0 +1,158 @@
+{
+  "schema": "dsh-r07-root-doc-actions/1",
+  "atUtc": "2026-10-23T23:22:01Z",
+  "rule": "仅具体事实必须改；lead 不改 ROOT 三份正文；源码缺陷（文档如实记）与文档真错分开",
+  "source": "final-hour/GATES/STAGE4-FINDINGS.json",
+  "sourceStatus": "TARGETED_REPAIRS_REQUESTED",
+  "runtime": "NOT_RUN",
+  "rootDocs": {
+    "API-REFERENCE.md": {
+      "sha256_16": "a7b0674eb2df400d"
+    },
+    "CODEBASE-MAP.md": {
+      "sha256_16": "2cad6f0d171697fe"
+    },
+    "BUSINESS-FLOW.md": {
+      "sha256_16": "32847ccc17b85d94"
+    },
+    "CURRENT-ARCHITECTURE.md": {
+      "sha256_16": "0f633ff9a470fb7a"
+    },
+    "DESIGN-VS-IMPLEMENTATION.md": {
+      "sha256_16": "0d1b7485f81a36d8"
+    }
+  },
+  "counts": {
+    "actions": 0,
+    "closed": 4,
+    "open": 0,
+    "blocking": 0,
+    "precision": 0
+  },
+  "actions": [
+    {
+      "findingId": "S4-REPORT-01",
+      "severity": "blocking",
+      "source": "review-v3-report-snapshot.ts:26-36",
+      "fact": "Comparator sorts descending; latestReportDecision takes at(-1), selecting earliest any decision and no finality filtering. Existing draft incorrectly promises final/latest decision bound reportRun.",
+      "requiredFix": null,
+      "status": "CLOSED_ALREADY_FIXED_VERIFIED_BY_S5",
+      "assignedTo": "Codex（ROOT 正文，lead 不改）",
+      "note": "具体事实必须改；源码缺陷按文档如实记，不当产品修复要求",
+      "prevStatus": "OPEN_TARGETED_REPAIR_REQUESTED",
+      "closedAtUtc": "2026-10-23T23:22:01Z",
+      "closureEvidence": {
+        "S5gate": "final-hour/GATES/STAGE5-DSH.json status=S5PASS",
+        "S5verdict": "S5PASS",
+        "S5findings": "0 事实错误。未产出 ROOT-DOC-ACTIONS.json（无错可派）。",
+        "S5repairEffectVerified": "修复版正文（CURRENT-ARCHITECTURE 0f633ff9…、BUSINESS-FLOW 32847ccc…、DESIGN-VS-IMPLEMENTATION 0d1b7485…）经本 QA 逐条回源：4 项要求事实均已落实——S4-REPORT-01 报告选择实况（desc+at(-1)=最早+无 finality）三文档如实；S4-SOURCE-02 parseRevision 重建（BUSINESS-FLOW §6）；S4-READY-03 businessReady 含 completed（D03/§5）；S4-GATE-04 T03 限 T05/原生路径（D05/BF §7）",
+        "verifiedStageHashes": {
+          "CURRENT-ARCHITECTURE.md": "0f633ff9a470fb7adb28ae31e54d8980549b9ac3cd7a0115ed054add6f2f1872",
+          "BUSINESS-FLOW.md": "32847ccc17b85d94574f92d358a19f8d4622321dbb2508490c272349e3027dd5",
+          "DESIGN-VS-IMPLEMENTATION.md": "0d1b7485f81a36d8d60cd160b4cdceab38ec54fdcad87b942bbbffa5cc97c218"
+        },
+        "note": "初稿 findings 针对草稿 hash（7bcad7f7…/3b9aa130…）；修复版正文已由 S5 逐条回源证实4项事实全部落实"
+      }
+    },
+    {
+      "findingId": "S4-SOURCE-02",
+      "severity": "precision",
+      "source": "pi-case-review-service.ts:312-330",
+      "fact": "Pi source input carries version/block/quote; parseRevision/location rebuilt from current document, not compared as caller fields.",
+      "requiredFix": null,
+      "status": "CLOSED_ALREADY_FIXED_VERIFIED_BY_S5",
+      "assignedTo": "Codex（ROOT 正文，lead 不改）",
+      "note": "具体事实必须改；源码缺陷按文档如实记，不当产品修复要求",
+      "prevStatus": "OPEN_TARGETED_REPAIR_REQUESTED",
+      "closedAtUtc": "2026-10-23T23:22:01Z",
+      "closureEvidence": {
+        "S5gate": "final-hour/GATES/STAGE5-DSH.json status=S5PASS",
+        "S5verdict": "S5PASS",
+        "S5findings": "0 事实错误。未产出 ROOT-DOC-ACTIONS.json（无错可派）。",
+        "S5repairEffectVerified": "修复版正文（CURRENT-ARCHITECTURE 0f633ff9…、BUSINESS-FLOW 32847ccc…、DESIGN-VS-IMPLEMENTATION 0d1b7485…）经本 QA 逐条回源：4 项要求事实均已落实——S4-REPORT-01 报告选择实况（desc+at(-1)=最早+无 finality）三文档如实；S4-SOURCE-02 parseRevision 重建（BUSINESS-FLOW §6）；S4-READY-03 businessReady 含 completed（D03/§5）；S4-GATE-04 T03 限 T05/原生路径（D05/BF §7）",
+        "verifiedStageHashes": {
+          "CURRENT-ARCHITECTURE.md": "0f633ff9a470fb7adb28ae31e54d8980549b9ac3cd7a0115ed054add6f2f1872",
+          "BUSINESS-FLOW.md": "32847ccc17b85d94574f92d358a19f8d4622321dbb2508490c272349e3027dd5",
+          "DESIGN-VS-IMPLEMENTATION.md": "0d1b7485f81a36d8d60cd160b4cdceab38ec54fdcad87b942bbbffa5cc97c218"
+        },
+        "note": "初稿 findings 针对草稿 hash（7bcad7f7…/3b9aa130…）；修复版正文已由 S5 逐条回源证实4项事实全部落实"
+      }
+    },
+    {
+      "findingId": "S4-READY-03",
+      "severity": "precision",
+      "source": "pi-case-review-service.ts:835",
+      "fact": "businessReady also requires status completed.",
+      "requiredFix": null,
+      "status": "CLOSED_ALREADY_FIXED_VERIFIED_BY_S5",
+      "assignedTo": "Codex（ROOT 正文，lead 不改）",
+      "note": "具体事实必须改；源码缺陷按文档如实记，不当产品修复要求",
+      "prevStatus": "OPEN_TARGETED_REPAIR_REQUESTED",
+      "closedAtUtc": "2026-10-23T23:22:01Z",
+      "closureEvidence": {
+        "S5gate": "final-hour/GATES/STAGE5-DSH.json status=S5PASS",
+        "S5verdict": "S5PASS",
+        "S5findings": "0 事实错误。未产出 ROOT-DOC-ACTIONS.json（无错可派）。",
+        "S5repairEffectVerified": "修复版正文（CURRENT-ARCHITECTURE 0f633ff9…、BUSINESS-FLOW 32847ccc…、DESIGN-VS-IMPLEMENTATION 0d1b7485…）经本 QA 逐条回源：4 项要求事实均已落实——S4-REPORT-01 报告选择实况（desc+at(-1)=最早+无 finality）三文档如实；S4-SOURCE-02 parseRevision 重建（BUSINESS-FLOW §6）；S4-READY-03 businessReady 含 completed（D03/§5）；S4-GATE-04 T03 限 T05/原生路径（D05/BF §7）",
+        "verifiedStageHashes": {
+          "CURRENT-ARCHITECTURE.md": "0f633ff9a470fb7adb28ae31e54d8980549b9ac3cd7a0115ed054add6f2f1872",
+          "BUSINESS-FLOW.md": "32847ccc17b85d94574f92d358a19f8d4622321dbb2508490c272349e3027dd5",
+          "DESIGN-VS-IMPLEMENTATION.md": "0d1b7485f81a36d8d60cd160b4cdceab38ec54fdcad87b942bbbffa5cc97c218"
+        },
+        "note": "初稿 findings 针对草稿 hash（7bcad7f7…/3b9aa130…）；修复版正文已由 S5 逐条回源证实4项事实全部落实"
+      }
+    },
+    {
+      "findingId": "S4-GATE-04",
+      "severity": "precision",
+      "source": "stage-workflow.ts:81-195",
+      "fact": "Legacy recordStageDecision itself has no T03/Run currentity gate and emits synthetic run@rev; restrict extraT03 claim to T05/native path.",
+      "requiredFix": null,
+      "status": "CLOSED_ALREADY_FIXED_VERIFIED_BY_S5",
+      "assignedTo": "Codex（ROOT 正文，lead 不改）",
+      "note": "具体事实必须改；源码缺陷按文档如实记，不当产品修复要求",
+      "prevStatus": "OPEN_TARGETED_REPAIR_REQUESTED",
+      "closedAtUtc": "2026-10-23T23:22:01Z",
+      "closureEvidence": {
+        "S5gate": "final-hour/GATES/STAGE5-DSH.json status=S5PASS",
+        "S5verdict": "S5PASS",
+        "S5findings": "0 事实错误。未产出 ROOT-DOC-ACTIONS.json（无错可派）。",
+        "S5repairEffectVerified": "修复版正文（CURRENT-ARCHITECTURE 0f633ff9…、BUSINESS-FLOW 32847ccc…、DESIGN-VS-IMPLEMENTATION 0d1b7485…）经本 QA 逐条回源：4 项要求事实均已落实——S4-REPORT-01 报告选择实况（desc+at(-1)=最早+无 finality）三文档如实；S4-SOURCE-02 parseRevision 重建（BUSINESS-FLOW §6）；S4-READY-03 businessReady 含 completed（D03/§5）；S4-GATE-04 T03 限 T05/原生路径（D05/BF §7）",
+        "verifiedStageHashes": {
+          "CURRENT-ARCHITECTURE.md": "0f633ff9a470fb7adb28ae31e54d8980549b9ac3cd7a0115ed054add6f2f1872",
+          "BUSINESS-FLOW.md": "32847ccc17b85d94574f92d358a19f8d4622321dbb2508490c272349e3027dd5",
+          "DESIGN-VS-IMPLEMENTATION.md": "0d1b7485f81a36d8d60cd160b4cdceab38ec54fdcad87b942bbbffa5cc97c218"
+        },
+        "note": "初稿 findings 针对草稿 hash（7bcad7f7…/3b9aa130…）；修复版正文已由 S5 逐条回源证实4项事实全部落实"
+      }
+    }
+  ],
+  "closedHistory": {
+    "origin": "final-hour/GATES/STAGE4-FINDINGS.json @ 22:53:35Z",
+    "draftHashes": {
+      "CURRENT-ARCHITECTURE.md": "7bcad7f7…",
+      "BUSINESS-FLOW.md": "3b9aa130…"
+    },
+    "fixedHashes": {
+      "CODEBASE-MAP.md": "2cad6f0d171697fed62ceb252688f0a333a3c188db05aef3148ce590ac902b15",
+      "API-REFERENCE.md": "a7b0674eb2df400d2aa060ac47cae4e0842632e5f84c1f9c514f2978801fb4d0",
+      "CURRENT-ARCHITECTURE.md": "0f633ff9a470fb7adb28ae31e54d8980549b9ac3cd7a0115ed054add6f2f1872",
+      "BUSINESS-FLOW.md": "32847ccc17b85d94574f92d358a19f8d4622321dbb2508490c272349e3027dd5",
+      "DESIGN-VS-IMPLEMENTATION.md": "0d1b7485f81a36d8d60cd160b4cdceab38ec54fdcad87b942bbbffa5cc97c218"
+    },
+    "rule": "保留历史来源；4 项为旧 STAGE4-FINDINGS 初稿，实际早已修并由 STAGE4PASS + S5PASS 再次证实，非当前待修；禁止再让 Root 重写已正确正文"
+  },
+  "s5Gate": {
+    "status": "S5PASS",
+    "gate": "STAGE5-ROOT3-DESIGN-VS-IMPLEMENTATION",
+    "reviewedAtUtc": "2026-10-23T23:08:55Z",
+    "verdict": "S5PASS"
+  },
+  "stageHashes": {
+    "CODEBASE-MAP.md": "2cad6f0d171697fed62ceb252688f0a333a3c188db05aef3148ce590ac902b15",
+    "API-REFERENCE.md": "a7b0674eb2df400d2aa060ac47cae4e0842632e5f84c1f9c514f2978801fb4d0",
+    "CURRENT-ARCHITECTURE.md": "0f633ff9a470fb7adb28ae31e54d8980549b9ac3cd7a0115ed054add6f2f1872",
+    "BUSINESS-FLOW.md": "32847ccc17b85d94574f92d358a19f8d4622321dbb2508490c272349e3027dd5",
+    "DESIGN-VS-IMPLEMENTATION.md": "0d1b7485f81a36d8d60cd160b4cdceab38ec54fdcad87b942bbbffa5cc97c218"
+  }
+}

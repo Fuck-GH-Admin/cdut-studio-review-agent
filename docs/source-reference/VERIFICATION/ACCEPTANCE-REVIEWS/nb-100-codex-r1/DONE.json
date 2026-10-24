@@ -1,0 +1,43 @@
+{
+  "schema": "dsh-r07-review-done/2",
+  "batch": "nb-100",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-09-20261023",
+  "reviewerSession": "Codex /root/module_api",
+  "reviewedAtUtc": "2026-10-23T22:52:31.502785+00:00",
+  "state": "QA_COMPLETE",
+  "batchVerdict": "revision_required",
+  "counts": {
+    "filesReviewed": 17,
+    "accepted": 5,
+    "revisionRequired": 12,
+    "openNonBlocking": 4
+  },
+  "reviewedSeal": {
+    "root": "deliveries/nb-100",
+    "readySha256": "98c72f422660fcb86154d87465a58cb4cd2415ee88481895dbc76e9256c52e91",
+    "doneSha256": "c17e5211ea650dcc982f578e0c141beeb6f99f78576dc120a084f4c84d249092",
+    "manifestSha256": "58a8228dbdc28260f8436891d5455769302084141046de6a389a809ad963d15e",
+    "zipSha256": "d8f9f2950fd69f7e7f45463f834e4b0b640f97b8d58b7a8771e4e502eaa7ad14",
+    "zipBytes": 45178,
+    "zipEntries": 20,
+    "sealId": "seal-37ffd93b1bf882d2"
+  },
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/origin/CsLabPeakFitDrawer.tsx.md": "ce8118fddb4ebfa5259e50082d80d003a9e26dc382478ac3da24a3a29da4943c",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/origin/cslab-plot-export.ts.md": "600f3fdd369d318983ca94102eee96d2ceb28f18ce86df1ad131a75601ee90f7",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/origin/cslab-plot-render-model.ts.md": "5b5b2de7f23fbb04c297cde09da691acf09f802ebeb62b9224e0acf32aa2e86a",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/index.ts.md": "61be3efd0c050a00b41fba7c03619e6639e4e46a292c896393d058ccd4cd52e3",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-supplemental-images.ts.md": "7879c9b14468ac6451cd61117fe2a0b36cb7c2c7c6e49bf8165cf306f8a2c217"
+  },
+  "outputs": {
+    "RESULT.json": "844cc73cacc17ab16dcfcdcad0a4c4c350654b489b5860a1df7ec42794da73ad",
+    "RESULT.md": "17a79121574e76a7854a0b965d0146cf3016256ae9250bf6bea87529a6e4d582",
+    "REVIEWED-HASHES.json": "64e7488d3262604817f4ecea7dcbf28a8ac400a030f1fbd3375616efa6600e9b",
+    "FINDINGS.md": "a9c681de14da6cc9370f9fbc23a4c061f4c375f6a67c3705214020051a25f5c9"
+  },
+  "notes": [
+    "Prepared in isolated scratch; shared review namespace publication coordinated with root",
+    "5accepted include private-index and4minor-citation notes; no fabricated complete acceptance"
+  ]
+}

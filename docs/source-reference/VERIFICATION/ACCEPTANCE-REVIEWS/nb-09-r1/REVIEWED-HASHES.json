@@ -1,0 +1,48 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-09-r1",
+  "revisionOf": "nb-09",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-23T16:50:31Z",
+  "sealId": "seal-f67c1fca2f34bcc2",
+  "note": "17/17 accepted。manualSha256 为 QA 实算 r1 封版字节（=MANIFEST=READY=磁盘）；11 篇与 r0 acceptedHashes 同 hash（字节未变，按子批规则重新登记），6 篇为修订新 hash。合入以本表为准（r0 acceptedHashes 不再使用）。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/owner-rules.test.ts.md": "85cc22254eb6ba1d9c0cd4f80c2ff52e44bcd2877901f727e1759e5061e65d3d",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-c0-authority.ts.md": "3d125506121cb2c23bb4775bd439561133fffdafd9cb65683d5ae4c22f4a7361",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-c0-case-service.ts.md": "55d4faabd501ce026df04fd69659fec87326f7d5c37efae77ca46dc44a9e6e1d",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-c0-field-kind.test.ts.md": "6f1e71bffd48846e71f9198a85909b9831670d9f23df622247278085f989f58c",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-c0-ipc.test.ts.md": "d8878a29b50786d73008dab5065be42f81f0669ef05a0fe2678b33774885bb8c",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-c0-subject-upsert.test.ts.md": "891c6e515908cf208a1eb8d7178dde032a84c37cb9a052db8de2caac4343d9b1",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-d2-execution-gates.ts.md": "e2aaa688bc8e7c9ce1061bc221e7d79d6f73eccf104447d38bddcf0d193f8c0f",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-d2-runtime.test.ts.md": "761573b3bc79f08f56d290102181efa40bdc4242b86c1822442239d04b2f162d",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-d3-workspace-locks.ts.md": "91d10c6b55fe879c7be95e859f617cf6eb4bd240a11bca9651a1b69b6cadef96",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-ipc-actor-guard.test.ts.md": "abda2de3ddf249d47944a8ed065d2a60f55f4eba7fd7b02444fffea900e08a98",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-ipc-actor-guard.ts.md": "7057bb4ceadb1f7e0cb1b8e4fd3850f09a4771e4b47a32a4a582aaca975ac1c9",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/case-store-v2.test.ts.md": "ab4915e320d78db198c37ffe39fe2d6f47ec2eac39eb5076fb8c004def758c88",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/case-store-v2.ts.md": "ba77185d1c9020638bd8e00cba29bc55789e14df9644e126725487d1e25efc14",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/case-store.test.ts.md": "aa9f7a68293bd2ad844444d8c997375ba6d79cfb97c02a8cfe0cb136a2313f62",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/case-store.ts.md": "4d4092ece518b480b0a393908e1b0c1c0c242cccc8490fc6bdd46da8cea0c791",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-case-disk-tx.test.ts.md": "e17e0367c2e8980bdd3a5be6f6608d89cd98743499b76057c6b79ed15165c314",
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-case-disk-tx.ts.md": "236e222bb91f819a278ac27f5c696d286da3bd2da564d316657166c73939e69b"
+  },
+  "revisionRequiredManuals": {},
+  "changedFromParent": {
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-c0-case-service.ts.md": {"before": "6ca11ac1a80aca23eaeaa20525a0eb0a370d301aa3bf619ceae7686c056bb0b6", "after": "55d4faabd501ce026df04fd69659fec87326f7d5c37efae77ca46dc44a9e6e1d"},
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-d2-execution-gates.ts.md": {"before": "00ad5c6e9b873f78ce06d806ff771b90032f86c054fff241f056ca90bd3cc693", "after": "e2aaa688bc8e7c9ce1061bc221e7d79d6f73eccf104447d38bddcf0d193f8c0f"},
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/case-store-v2.ts.md": {"before": "306ed94c122c0943f70fefc0ab78f93e63c7dbd157c2811f0d81c40b23b81c08", "after": "ba77185d1c9020638bd8e00cba29bc55789e14df9644e126725487d1e25efc14"},
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/case-store.test.ts.md": {"before": "4f79587a15424a841e608d540a92f8906908aeaa8065af241ae54383ab3528a8", "after": "aa9f7a68293bd2ad844444d8c997375ba6d79cfb97c02a8cfe0cb136a2313f62"},
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/case-store.ts.md": {"before": "2296b684eddfc91105ada0b79a254e6c0b8dfb3dcefdb5fff82fca481a8d8cb7", "after": "4d4092ece518b480b0a393908e1b0c1c0c242cccc8490fc6bdd46da8cea0c791"},
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-case-disk-tx.ts.md": {"before": "42fb7180d650d004e13099ad620165c4b462f784ab4a925062c7e824b34d37a4", "after": "236e222bb91f819a278ac27f5c696d286da3bd2da564d316657166c73939e69b"}
+  },
+  "sourceBinding": {"verifiedCount": 17, "note": "17/17 blob+sha256 与 nb-09-SCOPE.json 重算全等，见 RESULT.json files[].sourceBlob/sourceSha256"},
+  "sealBinding": {
+    "manifestSha256": "bf3e59886ce59dc3473a3c0f350398545c2511ff762dbb101059d637d5c2c68d",
+    "readySha256": "1a33c056ff7d7045b1ac43c5236f16cefc6250907c23ac6886066fb0246a25ea",
+    "zipSha256": "169ff706135c911a77eb5316d6b61ed22bcc9301aaf9609f3026d25aef5ff54b",
+    "zipBytes": 87867,
+    "zipEntries": 20,
+    "beforeEqualsParentStage": "6/6",
+    "changesDiffReplay": "6/6 byte-identical"
+  }
+}

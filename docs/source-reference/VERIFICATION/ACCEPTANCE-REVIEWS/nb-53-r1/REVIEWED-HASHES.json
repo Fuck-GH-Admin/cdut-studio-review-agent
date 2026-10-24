@@ -1,0 +1,210 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-53-r1",
+  "revisionOf": "nb-53",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-01-20261023",
+  "authorSession": "docs-r07-author-nb-01-20261023",
+  "reviewedAtUtc": "2026-10-24T01:10:00Z",
+  "batchVerdict": "accepted",
+  "bindingNote": "18 篇当前字节 manual hash 全记录；13 篇与父批 accepted 字节相同，5 篇为 r1 新 hash。",
+  "sourceBinding": [
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-adapter-module-smoke.test.ts",
+      "sourceBlob": "8d0b2774f51fbee335144065288836e1337b3160",
+      "sourceSha256": "6f8804a04c4e75f3cbaea0bb8c58d18a5808e2311ccb8ca789913934726bd535",
+      "lines": 32,
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-adapter-module-smoke.test.ts.md",
+      "manualSha256": "761f155eace73dd8e76b6d9057398f15cde35c9d2002a22841505b2b99355c6d",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-agent-adapter.test.ts",
+      "sourceBlob": "832341d308138810b81d1fb771fbe1831db736cf",
+      "sourceSha256": "def3a0267b9f71b8f5c34151f265f5bdf606a2679c161723423265a521e71363",
+      "lines": 185,
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-agent-adapter.test.ts.md",
+      "manualSha256": "912c7ed701bbc42dc1b310a41288aebea31fa7039b1484d9d2cee467fa1c31ae",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-agent-adapter.ts",
+      "sourceBlob": "1a532c23d79ff7e1a9272faf8304ada473901273",
+      "sourceSha256": "0ba1ed4af088b6fb473ae72364d9f5720f5789e65ff5f29f321818027c8de5f9",
+      "lines": 3534,
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-agent-adapter.ts.md",
+      "manualSha256": "7b7e78718dcec5c962ec897f4a8f07424564cf3c696857e26d16e02233c74878",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-agent-bash.test.ts",
+      "sourceBlob": "7c0bf331e8abf2b88daec4e9ce087d440ea2fa18",
+      "sourceSha256": "644d163a7f660c257f8ca78710d97d58a031c0735b89ce43882000699d323128",
+      "lines": 329,
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-agent-bash.test.ts.md",
+      "manualSha256": "720fd5f5ed4a422d83ac15fa877f2a19981a45fc94fbcd4748ab926225cf07c8",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-agent-proxy.test.ts",
+      "sourceBlob": "608f045cbf2fa30c123e76985a9b7b31f59a0c76",
+      "sourceSha256": "80fc7994a08541b424ef51bd5ded47b74b967ec28e8c6e4742b49a6dfdf40549",
+      "lines": 130,
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-agent-proxy.test.ts.md",
+      "manualSha256": "293c70701023e0618c3fa4f6747e0d1a1d14e7f54f45ef2423a156dadda60e51",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-builtin-tools.test.ts",
+      "sourceBlob": "b83b5528232751df20902675156e7e9974675f90",
+      "sourceSha256": "327b5a8588babe42e4406dec5b19b40356f879f53e2a753ccd6922b3b48ca581",
+      "lines": 626,
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-builtin-tools.test.ts.md",
+      "manualSha256": "c4c97b7676e3327ad37dbb5a8477f83c46ba87ea0f57c0ee45d9f0b220d2e9ab",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-builtin-tools.ts",
+      "sourceBlob": "dff85ddd398a9e38b74511b1fc2bf84628c60a37",
+      "sourceSha256": "d23370e6863b06a7b27e6870be7ec365ea6136f3fbeb292601b0dc672ab1ffc6",
+      "lines": 2272,
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-builtin-tools.ts.md",
+      "manualSha256": "71f0c77759ffe6b7cc09a3faa59cdc4f274a18b8b1670ef5fcc021c9519b80ad",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-codex-fast-mode.test.ts",
+      "sourceBlob": "8789f472660ec36c3deaf671b62e806bf646e577",
+      "sourceSha256": "46fe9a109956842c543e1e7bf5a242d71feb5d6f54173f9534d44c1c8e5da02b",
+      "lines": 118,
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-codex-fast-mode.test.ts.md",
+      "manualSha256": "7e7e41b38528bedd336a71f1eb49a8f31a022947dd6890084b97f1b9371cd9d7",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-codex-fast-mode.ts",
+      "sourceBlob": "66792f90fb9ff0bb0d9315a7508416151bb4301e",
+      "sourceSha256": "0b7de9fab8633bed47e9ec2583fb1c866f1542f7c1c3be7d861a8b2d39061541",
+      "lines": 45,
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-codex-fast-mode.ts.md",
+      "manualSha256": "7287615cc184b4081aecf0c6b335957baced619f205f5cd0261714a755c9afa3",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-codex-request-settings.ts",
+      "sourceBlob": "941091019f4eece220767c55e93281f875f371a2",
+      "sourceSha256": "3f2cd47ee9337f34d7a4c24719c3b03e932f63e445335b244e1554aa0d32c9fa",
+      "lines": 141,
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-codex-request-settings.ts.md",
+      "manualSha256": "889c1d0b78caf0e5f4f2a6ef3f8b184a7ea893a476bbab3029fc4ad5e4926865",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-codex-title-generator.test.ts",
+      "sourceBlob": "8814004112c155336f5f7e6e8973eedbdeb1d13a",
+      "sourceSha256": "8a58092fa0468b6cc953cde0be9fe90ce2a3a1ce0be578a0baaec0fba0e6cb8d",
+      "lines": 77,
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-codex-title-generator.test.ts.md",
+      "manualSha256": "c556b085419682da9c56a078caa03e25193b88c0e4f0db1d79f23f3ed94b284e",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-codex-title-generator.ts",
+      "sourceBlob": "92546200354a4f31d1c89ed9941f6fd285602b3d",
+      "sourceSha256": "bfc41717a85b2bedc3cae5fff0e4763270ca89798efeb732a0ce7832d72aa2a3",
+      "lines": 168,
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-codex-title-generator.ts.md",
+      "manualSha256": "6b0e8320139a170cf82c2365e78e67acd1a6f389a3352ee5338989444a46ccd3",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-cslab-tools.ts",
+      "sourceBlob": "4d1e8cbdce80383a4b0bec34b340236c54522537",
+      "sourceSha256": "6bcfd2210cccbdbc47103df29abb2adf29c88ad5bd85252955629e8efa9885b8",
+      "lines": 221,
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-cslab-tools.ts.md",
+      "manualSha256": "24eda9298c49064c3e7e4087ca5bf112e5a5a8f210276b8a0e9ab81b5baf8a14",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-deepseek-reasoning-request-settings.ts",
+      "sourceBlob": "a496332a9a4bb2a3df669b5f48bb1d6159b76777",
+      "sourceSha256": "6bacbba02175119c1b494fe0e2d2da14a3bb4f89795c3c81a29a45f654389e98",
+      "lines": 66,
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-deepseek-reasoning-request-settings.ts.md",
+      "manualSha256": "f1609941b76f9c0a4048d15ae6a78eff4da3db5b6500e81bf89b29aba173ba83",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-harness-lifecycle.test.ts",
+      "sourceBlob": "96cb869d71557d524df06cfb6b4907dc0dfb53cb",
+      "sourceSha256": "0a4bfebc5e924fb525c7a50daf6b6efbe314f4c52b6155c15bda79ba7511dcd7",
+      "lines": 24,
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-harness-lifecycle.test.ts.md",
+      "manualSha256": "5dfe20cbcb7163c5006f2a66eeb347c7560b7b7a4a9088d4ebccc8abe9843279",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-harness-lifecycle.ts",
+      "sourceBlob": "106fdcc814363c42b713eb796726b9230020978e",
+      "sourceSha256": "082909132210464c0009fc7c53f3752b7ac1c91432eac1a3a3c8c253bf499bb5",
+      "lines": 42,
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-harness-lifecycle.ts.md",
+      "manualSha256": "3ee7decd31b16966d2b83e025d70dc5afc95fb39e8f2050ac42ee631a0547443",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-idle-compaction.test.ts",
+      "sourceBlob": "da74346713f1a1971efdd124271813cd7baa1ecf",
+      "sourceSha256": "0ae690039b37170d7810a4730c143c0fe337e7291038cbb440544654d108801d",
+      "lines": 50,
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-idle-compaction.test.ts.md",
+      "manualSha256": "a3f7912d8359634b7773833b702bef6c599d8b2b7c25e24e4e1f759e1d659e6c",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-mcp-tools.ts",
+      "sourceBlob": "899c75bb96741b8bbae149904c07c4b338fc06ad",
+      "sourceSha256": "c4014982450af0a076cd36f7fed22c669110f270067240a4765e87a4f3701872",
+      "lines": 478,
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-mcp-tools.ts.md",
+      "manualSha256": "18eec0eedc0ff2221c64c6ac187a07364dab073ff824902f212663f4f8cd714b",
+      "verdict": "accepted"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-adapter-module-smoke.test.ts.md": "761f155eace73dd8e76b6d9057398f15cde35c9d2002a22841505b2b99355c6d",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-agent-adapter.test.ts.md": "912c7ed701bbc42dc1b310a41288aebea31fa7039b1484d9d2cee467fa1c31ae",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-agent-adapter.ts.md": "7b7e78718dcec5c962ec897f4a8f07424564cf3c696857e26d16e02233c74878",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-agent-bash.test.ts.md": "720fd5f5ed4a422d83ac15fa877f2a19981a45fc94fbcd4748ab926225cf07c8",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-agent-proxy.test.ts.md": "293c70701023e0618c3fa4f6747e0d1a1d14e7f54f45ef2423a156dadda60e51",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-builtin-tools.test.ts.md": "c4c97b7676e3327ad37dbb5a8477f83c46ba87ea0f57c0ee45d9f0b220d2e9ab",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-builtin-tools.ts.md": "71f0c77759ffe6b7cc09a3faa59cdc4f274a18b8b1670ef5fcc021c9519b80ad",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-codex-fast-mode.test.ts.md": "7e7e41b38528bedd336a71f1eb49a8f31a022947dd6890084b97f1b9371cd9d7",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-codex-fast-mode.ts.md": "7287615cc184b4081aecf0c6b335957baced619f205f5cd0261714a755c9afa3",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-codex-request-settings.ts.md": "889c1d0b78caf0e5f4f2a6ef3f8b184a7ea893a476bbab3029fc4ad5e4926865",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-codex-title-generator.test.ts.md": "c556b085419682da9c56a078caa03e25193b88c0e4f0db1d79f23f3ed94b284e",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-codex-title-generator.ts.md": "6b0e8320139a170cf82c2365e78e67acd1a6f389a3352ee5338989444a46ccd3",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-cslab-tools.ts.md": "24eda9298c49064c3e7e4087ca5bf112e5a5a8f210276b8a0e9ab81b5baf8a14",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-deepseek-reasoning-request-settings.ts.md": "f1609941b76f9c0a4048d15ae6a78eff4da3db5b6500e81bf89b29aba173ba83",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-harness-lifecycle.test.ts.md": "5dfe20cbcb7163c5006f2a66eeb347c7560b7b7a4a9088d4ebccc8abe9843279",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-harness-lifecycle.ts.md": "3ee7decd31b16966d2b83e025d70dc5afc95fb39e8f2050ac42ee631a0547443",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-idle-compaction.test.ts.md": "a3f7912d8359634b7773833b702bef6c599d8b2b7c25e24e4e1f759e1d659e6c",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-mcp-tools.ts.md": "18eec0eedc0ff2221c64c6ac187a07364dab073ff824902f212663f4f8cd714b"
+  },
+  "rejectedHashes": {},
+  "deliveryHashes": {
+    "READY.json": "db34a52f9417f35309715262bed8607b5c4c855f59a71877d7f778435941cf5b",
+    "MANIFEST.json": "063234bac98290bf13100097ebad9ddbdfb028f1fa4a60880dce74632185f6bc",
+    "DONE.json": "ffdf49c8de06cc1ed6db829b24af26c868e10ea781e4a4c3ebac0ae7c2eec5ca",
+    "R07-nb-53-r1-05fb2565.zip": "c4c82747643879722ecaedf1485bf14ef061b9ae03d862b31766fc3addca2cc6",
+    "UNVERIFIED.md": "0550dc1685b24ab0a41593e75065d0270127c803f32b97986bef0214d7d5277c",
+    "FINDINGS-RESPONSE.md": "e8be7174e35e3677bcee0dfb16b100e29d8f0095591a287a70cbc3eeb4c0fb7b"
+  },
+  "zip": {
+    "path": "deliveries/nb-53-r1/R07-nb-53-r1-05fb2565.zip",
+    "sha256": "c4c82747643879722ecaedf1485bf14ef061b9ae03d862b31766fc3addca2cc6",
+    "bytes": 64111,
+    "entries": 21
+  }
+}

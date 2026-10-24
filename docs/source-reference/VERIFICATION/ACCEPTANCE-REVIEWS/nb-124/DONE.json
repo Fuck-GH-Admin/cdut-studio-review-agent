@@ -1,0 +1,33 @@
+{
+  "schema": "dsh-r07-independent-review-done/1",
+  "batch": "nb-124",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-03-20261023",
+  "reviewerSession": "docs-r07-qa-nb-03-20261023",
+  "batchVerdict": "accepted",
+  "completedAtUtc": "2026-10-23T20:40:42Z",
+  "counts": {
+    "files": 10,
+    "accepted": 10,
+    "revision_required": 0,
+    "findings": 0,
+    "optionalNotes": 0
+  },
+  "sealBinding": {
+    "sealId": "seal-b290758531a33481",
+    "zipSha256": "ab7677d5f1b49ffae9f75e02ab3f8bd47253a1f2950274a147d5d3a444e4bddd",
+    "manifestSha256": "6d3e685da9acc8f5726395b25293df75145b1caaf9929f40d87beac19519ed50",
+    "readySha256": "cef25ad9e2ac88effc39700eccf72f3981b2a456295cdf6cb633a62d7e0ce0d3",
+    "doneSha256": "ede0fb6700488dde9ff72f0cbadb0ea9c9873ab9bd49f55288054f5512797647",
+    "sealedAtUtc": "2026-10-23T20:38:40Z"
+  },
+  "notRun": [
+    "bun test NOT_RUN（12 test 只读断言）",
+    "tsc/build NOT_RUN",
+    "GUI NOT_RUN",
+    "模型/产品调用 NOT_RUN"
+  ],
+  "note": "无 finding——10/10 accepted（本组首个全清批次）。test 计数/符号表/关键语义全对。",
+  "resultSha256": "48f3db6a42249b0c4c7570b01e75c5e98ced740dc67c4c354b34f2fc2052fb4d",
+  "reviewedHashesSha256": "e21e94eb231ae3c38717bbf536a20f7c22eef8be311b746d52d8b6f5ee0dc4b0"
+}

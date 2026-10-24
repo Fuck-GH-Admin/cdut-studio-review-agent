@@ -1,0 +1,31 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-05-r1",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T15:57:15Z",
+  "manuals": [
+    {
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/ipc.ts.md",
+      "manualSha256": "7a8d945a0915a74c0fb9583f963b834565c57aa61f500c739aeb3c9c6bf5dff5",
+      "path": "apps/electron/src/main/ipc.ts",
+      "sourceBlob": "691ae29c3cc881dee4dc1d2d31544d8b8eb98e01",
+      "sourceSha256": "cdd428a90cce993183cd6f52bdccdad225815544801ddbc7a2470dd6e7c6dd88",
+      "lines": 8114,
+      "verdict": "accepted"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/ipc.ts.md": "7a8d945a0915a74c0fb9583f963b834565c57aa61f500c739aeb3c9c6bf5dff5"
+  },
+  "rejectedHashes": {},
+  "chain": {
+    "manifestSha256": "4411cbb3323ffcdb22991d23f14ae3f384076db598da37489f79589a025c6862",
+    "readySha256": "ac5c7a40f7391e9b7c2c901636e63bebfbe1799171aef5d3fb02232851fc4605",
+    "doneSha256": "b5bdeb91c94d380efc046a674ff131932a5e432c3f229e0eda8a70575b31c4f6",
+    "zipSha256": "220d6ba350b119d583e53255b3938dfb41d2edce8548f1bafd63f01e530f0f0a",
+    "sealId": "seal-ce3f146e62a6ede5",
+    "supersededByRecord": "deliveries/nb-05/SUPERSEDED-BY.json（QA 实算与 parentSealed/r1 字段全部一致）"
+  }
+}

@@ -1,0 +1,85 @@
+{
+ "schema": "dsh-r07-stage2-conflicts/1",
+ "revision": "r1",
+ "track": "app-ipc-config",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "atUtc": "2026-10-23T21:41:00Z",
+ "terminologyNote": "全部证据=静态源码核对；真实运行 NOT_RUN。",
+ "items": [
+  {
+   "id": "CONFLICTS-01",
+   "type": "doc_error",
+   "title": "electron-builder.yml.md 当前手册沿用旧路径 ~/.proma（逐字读手册确认，非误派）",
+   "manualClaim": "candidate/source-reference/…/electron-builder.yml.md:58「`default-skills` → 首启同步 `~/.proma/default-skills/`（`apps/electron/src/main/index.ts:940-941`）」——手册确实沿用旧路径（:55 `@proma/**` 系 workspace symlink 排除项，不同概念不构成本项）",
+   "sourceEvidence": "静态源码核对：seed 目标=`~/.cdutai/default-skills/`（getDefaultSkillsDir config-paths.ts:564-574；权威根 :24-58；:71 明示不读取/不迁移 ~/.proma）；index.ts:940-941 仅为 bundle 来源解析非同步目标——手册「同步目标」记载有误且引证语义偏移",
+   "sourceHash": {
+    "electron-builder.yml": "d7ab69972da9afb7f1d2fe6c9031ecaab53796db",
+    "config-paths.ts": "952a2ca9aef8ef930af1e6f6f954557f67d6d6ab"
+   },
+   "manualHash": "d579753dc5f263eef8f79f8a74d9ca09f647243d14f9fabb7f850ede0f0b8e4f",
+   "manualPath": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/electron-builder.yml.md",
+   "owner": "nb-142/docs-r07-author-extra-03-20261024",
+   "classificationBasis": "经理口径：仅当当前手册沿用旧路径才是 doc_error——已逐字读手册 :58 行确认沿用，故 doc_error 成立；源注释陈旧另列 CONFLICTS-05 不混派",
+   "suggestedFix": "唯一作者 handoff→nb-142：手册 :58 改为「首启同步 ~/.cdutai/default-skills/（getDefaultSkillsDir config-paths.ts:564-574）」，引证改 seed 链（config-paths.ts:956 起）；不改 seal、QA 不自覆盖主责文档"
+  },
+  {
+   "id": "CONFLICTS-02",
+   "type": "implementation_gap",
+   "title": "双配置根：apps/cli ~/.profer(-dev) vs 主应用 ~/.cdutai",
+   "sourceEvidence": "apps/cli/src/paths.ts:5-8/:21/:28 vs config-paths.ts:24-58（静态源码核对）",
+   "sourceHash": {
+    "apps/cli/src/paths.ts": "e3329e0eefd6152686881ba4f2df86f527b8f362",
+    "config-paths.ts": "952a2ca9aef8ef930af1e6f6f954557f67d6d6ab"
+   },
+   "manualHash": "3ae6ae7b74efba1430ecc9a9284df75d5dfa96823b9d9c4507626bf4cb311a59",
+   "manualPath": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/cli/src/paths.ts.md",
+   "owner": "nb-141/docs-r07-author-extra-05-20261024 + nb-05b/docs-r07-author-models-20261023",
+   "status": "两根并存=静态证实；影响=推断（nb-141 记录），NOT_RUN",
+   "suggestedFix": "留阶段三设计差异报告；当前不修"
+  },
+  {
+   "id": "CONFLICTS-03",
+   "type": "implementation_gap",
+   "title": "settings 落盘非原子写",
+   "sourceEvidence": "settings-service.ts:93→:117 writeFileSync 直写（对照 agent-workspace-manager.ts:89-91 renameSync）",
+   "sourceHash": {
+    "settings-service.ts": "0a42875cbb4c79dd63e36120edd9c767d5651568"
+   },
+   "manualHash": "1113956fe1fbb6ccea06f37d1cc104ad1bec5fedc568a389d5c389259c5e6f76",
+   "manualPath": "…/settings-service.ts.md",
+   "owner": "nb-133/docs-r07-author-extra-01-20261024",
+   "status": "静态证实；崩溃丢写=推断",
+   "suggestedFix": "留阶段三；当前不修"
+  },
+  {
+   "id": "CONFLICTS-04",
+   "type": "implementation_gap",
+   "title": "certificate-error 对 cdut.edu.cn 域放行任意证书（信任放宽面，静态证实）",
+   "sourceEvidence": "index.ts:150-154 isCdutDomain 命中即 safeCallback(true) 不校验证书链；yanhu-domain-gatekeeper.ts:25-33 仅校验 hostname 后缀",
+   "sourceHash": {
+    "index.ts": "bc7093234e6a119379cee9a3051215f71307025f",
+    "yanhu-domain-gatekeeper.ts": "dd5fad8cf00d48a194295d808b465b6c8a42191d"
+   },
+   "manualHash": "index.ts.md hash 待主责核（本轨以 source hash 绑定）",
+   "manualPath": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/index.ts.md",
+   "owner": "nb-05b/docs-r07-author-models-20261023",
+   "status": "放行分支行为=静态证实；是否设计意图=未知（非 doc_error）",
+   "suggestedFix": "阶段三设计差异报告评估；当前不修"
+  },
+  {
+   "id": "CONFLICTS-05",
+   "type": "implementation_gap",
+   "title": "electron-builder.yml:71 源注释 ~/.proma 陈旧（与手册 doc_error 同根分列）",
+   "sourceEvidence": "electron-builder.yml:71 注释「同步到 ~/.proma/default-skills/」；代码=~/.cdutai",
+   "sourceHash": {
+    "electron-builder.yml": "d7ab69972da9afb7f1d2fe6c9031ecaab53796db"
+   },
+   "manualHash": "d579753dc5f263eef8f79f8a74d9ca09f647243d14f9fabb7f850ede0f0b8e4f",
+   "manualPath": "同 CONFLICTS-01",
+   "owner": "nb-142/docs-r07-author-extra-03-20261024",
+   "status": "源注释陈旧=静态证实（按经理口径单列 implementation 差异）",
+   "suggestedFix": "源注释修正留阶段三/上游；手册修复见 CONFLICTS-01"
+  }
+ ],
+ "symbolCollisionsNote": "唯一规范路径：isCdutDomain×2（index.ts:10 导入 yanhu-domain-gatekeeper.ts:25；fingerprint-engine.ts:65 异签名）、index.ts×3、paths.ts×3、settings.ts(types)≠settings-service.ts。"
+}

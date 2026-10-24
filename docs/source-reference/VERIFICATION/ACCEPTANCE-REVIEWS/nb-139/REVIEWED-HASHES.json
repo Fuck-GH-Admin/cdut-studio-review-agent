@@ -1,0 +1,37 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-139",
+  "revisionOf": null,
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T22:55:00Z",
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/cslab/cslab-formula-verifier.py.md": "614895d9c9e39b39e49c170e8e801bf179e73603b1f6a2f77703047dc881fb15",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/cslab/cslab-instrument-extractor.py.md": "2daa01a7d2f2b4c9958aac5b2e23fc65ff1e8c12ec7698dda0e00a4425c0cf29",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/cslab/cslab-lease-copy.ps1.md": "2f2897ec0f9b9e232aad13da8b30377f717c55e91d75e02bcd82098a796e205c",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/cslab/cslab-plot-digitizer.py.md": "efe5ef415362275b6286bdda5400c6d8c18e717aa770fceb30bed16cc102a0ed",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/cslab/cslab-tool-runner.py.md": "300729121732575f33473868b41fd7c4389f2f8796f9fad06d2a56900d613e59",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/cslab/cslab-tool-scanner.py.md": "d69988aebfa2c8ae0b6a25aeac98e4ead55ab5b66a58cade6296903e00256b6b",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/entitlements.mac.plist.md": "69f5a98777a2253eaff985189bcd83a0a885f9b352ba43a4233c827764997e34",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/generate-icons.sh.md": "60a56c0a3817fae6aee4b22eb76065fa71809611ef944e884e473d8fa0679f60",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/ppt-style-packs/academic-editorial/pack.json.md": "c9dbcbe659c0b2a2cce55f6017e96f7ff25c65aa68a300bec5f7e35a51bc78ad",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/ppt-style-packs/profer-cloud-dancer/pack.json.md": "9ce68df1e44dbb245964980a88927d1586665b2c6b95ba6ac939a50495a2ce71",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/review-v3-t09-offline-editor.html.md": "a7e756a17ad1f8876074f5a5af7bcaf354a4dd1baa50bf81cad6965372155a61",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-g-stage-recheck/service-probe.ts.md": "2f3ff76dfa6cbadd8c377d8d7c0aaeec4944083389535edfaa86e4bacb8d1689",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-n-stage-recheck/rating-outbox-probe.ts.md": "f73ca250057b778c9659754791895d4b881aa98b27b6be58c8b95c70653a2c20",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-n-stage-recheck/service-probe.ts.md": "32088da043ced1202a0eb52b0cb1a715968d8d3757c68e5aac2ecf01fc8a4dbd",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-ui-acceptance/scripts/electron-flags.cjs.md": "da201a8de62ebc8fb4027731c19ea326ee8b79f8217906a7f01dd4ef709575fd",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-ui-acceptance/scripts/import.py.md": "4d0b900eff64fcaa48095db6da831a83ccf4b882632d8beedbef64ea93263704",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-ui-acceptance/scripts/mock-model.mjs.md": "afc220ded43eb3993f64eaf927e5051b15a9b4fdfb631ec819992117328360dd",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-ui-acceptance/scripts/ui.mjs.md": "21f71d1e57fb056856078ef457b92701c2a2632658acb8a5800fe380cbdd091a"
+  },
+  "revisionRequiredHashes": {},
+  "rejectedHashes": {},
+  "chain": {
+    "sealId": "seal-aba7249849fe2e24",
+    "manifestSha256": "26bbfa04af4d47d8a89acbab6c951451528625900794077cc702655519c9871b",
+    "readySha256": "dd92826ef08aed8bdd65cd4249455f163bbe11b2150d3945ab3b935a5e76db7a",
+    "zipSha256": "2e7854e7f1047edeb8a0a69e7e910abad23e395a272ec1bcba614ab95b2ec6e2"
+  }
+}

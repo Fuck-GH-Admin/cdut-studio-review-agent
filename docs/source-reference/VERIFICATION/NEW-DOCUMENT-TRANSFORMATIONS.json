@@ -1,0 +1,142 @@
+[
+  {
+    "stageArtifact": "BUSINESS-FLOW.md",
+    "stageSha256": "32847ccc17b85d94574f92d358a19f8d4622321dbb2508490c272349e3027dd5",
+    "portableArtifact": "BUSINESS-FLOW.md",
+    "portableSha256": "15231e9bffa838c18083a9c9aabc619b50ea06d4981f7cc8c14e1c72c9b58b62",
+    "changeScope": "new document link-root rewrite only"
+  },
+  {
+    "stageArtifact": "API-REFERENCE.md",
+    "stageSha256": "a7b0674eb2df400d2aa060ac47cae4e0842632e5f84c1f9c514f2978801fb4d0",
+    "portableArtifact": "API-REFERENCE.md",
+    "portableSha256": "3179ab8d28954df9b98b2fa74d4fc870b6052de1998a0a0d2093a9411bb06abd",
+    "changeScope": "new document link-root rewrite only"
+  },
+  {
+    "stageArtifact": "DESIGN-VS-IMPLEMENTATION.md",
+    "stageSha256": "0d1b7485f81a36d8d60cd160b4cdceab38ec54fdcad87b942bbbffa5cc97c218",
+    "portableArtifact": "DESIGN-VS-IMPLEMENTATION.md",
+    "portableSha256": "da61cfabb67d2bfc7d467729302e3f340777524b8ae6b5c0e211b50c99035c35",
+    "changeScope": "new document link-root rewrite only"
+  },
+  {
+    "stageArtifact": "AGENT-TOOL-SCHEMAS.tsv",
+    "stageSha256": "0345dbd4f74d5d7a58733626bba5a3ccb57941e8094449f903fc8070ac4f5473",
+    "portableArtifact": "AGENT-TOOL-SCHEMAS.tsv",
+    "portableSha256": "0345dbd4f74d5d7a58733626bba5a3ccb57941e8094449f903fc8070ac4f5473",
+    "changeScope": "byte-identical"
+  },
+  {
+    "stageArtifact": "API-REGISTRY.md",
+    "stageSha256": "da311f98c8bba1334e7a73c3496e081f37a2d3c6dcfc9c02ac9a6de82d5a6cf9",
+    "portableArtifact": "API-REGISTRY.md",
+    "portableSha256": "d4022a247763d9655c97e7983f868e1677b0138ab0d14afe9cf886feb95368ba",
+    "changeScope": "new document link-root rewrite only"
+  },
+  {
+    "stageArtifact": "IPC-SITES.tsv",
+    "stageSha256": "9721910c5ae219384e5cfb137100e2be79e4ecf42cedeb7940520ebbc821cf1d",
+    "portableArtifact": "IPC-SITES.tsv",
+    "portableSha256": "9721910c5ae219384e5cfb137100e2be79e4ecf42cedeb7940520ebbc821cf1d",
+    "changeScope": "byte-identical"
+  },
+  {
+    "stageArtifact": "CURRENT-ARCHITECTURE.md",
+    "stageSha256": "0f633ff9a470fb7adb28ae31e54d8980549b9ac3cd7a0115ed054add6f2f1872",
+    "portableArtifact": "CURRENT-ARCHITECTURE.md",
+    "portableSha256": "5e1624f8087bbd1af6e9e4979b95e264244b7e27e46495032c562c4a96cf7cf8",
+    "changeScope": "new document link-root rewrite only"
+  },
+  {
+    "stageArtifact": "PRELOAD-CONTRACTS.tsv",
+    "stageSha256": "bddf4676c47f8e4f02d3c3ba0712dd70b18f89e175f39e5903c2e05b7add225d",
+    "portableArtifact": "PRELOAD-CONTRACTS.tsv",
+    "portableSha256": "bddf4676c47f8e4f02d3c3ba0712dd70b18f89e175f39e5903c2e05b7add225d",
+    "changeScope": "byte-identical"
+  },
+  {
+    "stageArtifact": "MAP-VALIDATION.json",
+    "stageSha256": "b021f1c9227d2797ba9f7bc332c4b4f4fba7d6283189a66341399c39eb4ba84e",
+    "portableArtifact": "MAP-VALIDATION.json",
+    "portableSha256": "b021f1c9227d2797ba9f7bc332c4b4f4fba7d6283189a66341399c39eb4ba84e",
+    "changeScope": "byte-identical"
+  },
+  {
+    "stageArtifact": "EXPORTED-DECLARATIONS.tsv",
+    "stageSha256": "930f9bcb22fa98524a08cadc050a0a69a0f32fd16e14183df419c424e78a70ae",
+    "portableArtifact": "EXPORTED-DECLARATIONS.tsv",
+    "portableSha256": "930f9bcb22fa98524a08cadc050a0a69a0f32fd16e14183df419c424e78a70ae",
+    "changeScope": "byte-identical"
+  },
+  {
+    "stageArtifact": "CODEBASE-MAP.md",
+    "stageSha256": "2cad6f0d171697fed62ceb252688f0a333a3c188db05aef3148ce590ac902b15",
+    "portableArtifact": "CODEBASE-MAP.md",
+    "portableSha256": "7009b9b07ee43d402f605840f6c7118bd2f206676c3925a7ef77dbbae77413bc",
+    "changeScope": "new document link-root rewrite only"
+  },
+  {
+    "stageArtifact": "DIRECTORY-OWNERSHIP.tsv",
+    "stageSha256": "e01baa8b20fabd516e5be4a52c8cd0b061de1e6fbb39f69bfa3f6bb8308cfc25",
+    "portableArtifact": "DIRECTORY-OWNERSHIP.tsv",
+    "portableSha256": "e01baa8b20fabd516e5be4a52c8cd0b061de1e6fbb39f69bfa3f6bb8308cfc25",
+    "changeScope": "byte-identical"
+  },
+  {
+    "stageArtifact": "MODULE-REFERENCE/p01-app-shell/OVERVIEW.md",
+    "stageSha256": "47de97e6d218ce4cc9bfecc19bfc89a76a761714b415dbc7c164e996ba87940d",
+    "portableArtifact": "MODULE-REFERENCE/p01-app-shell/OVERVIEW.md",
+    "portableSha256": "129df3b8f633fb5c48631c839701ddb991c902e580cc1885b6e636fc48f24da7",
+    "changeScope": "new document link-root rewrite only"
+  },
+  {
+    "stageArtifact": "MODULE-REFERENCE/p03-integrations/OVERVIEW.md",
+    "stageSha256": "b1325acb79528febc82a8841858fbeb8bb3fc1a46b6c21d31bbdf8a5411e3504",
+    "portableArtifact": "MODULE-REFERENCE/p03-integrations/OVERVIEW.md",
+    "portableSha256": "039895859f7eea98caf0456df8b7a9421c246d5e99760c8b8764df79fec82c51",
+    "changeScope": "new document link-root rewrite only"
+  },
+  {
+    "stageArtifact": "MODULE-REFERENCE/p08-renderer-ui/OVERVIEW.md",
+    "stageSha256": "9d86a5c8f85e33d0d21ad06feb189a2a77fbbf22b22129a5a7729f1c7f3f7228",
+    "portableArtifact": "MODULE-REFERENCE/p08-renderer-ui/OVERVIEW.md",
+    "portableSha256": "63ee6a91df23788917cd1ae2ca23c871eecb547ef76fe0c364609a4da29b48fd",
+    "changeScope": "new document link-root rewrite only"
+  },
+  {
+    "stageArtifact": "MODULE-REFERENCE/p05-review-engine/OVERVIEW.md",
+    "stageSha256": "a16d3ec948b354bb565541a4dd2397774c1ad5deb9d06a7e29f750afcb4a99f6",
+    "portableArtifact": "MODULE-REFERENCE/p05-review-engine/OVERVIEW.md",
+    "portableSha256": "3c630e174a43f717835f24f4fc63915338993b50fd35e8aedcb868eb44cc0c85",
+    "changeScope": "new document link-root rewrite only"
+  },
+  {
+    "stageArtifact": "MODULE-REFERENCE/p02-agent-runtime/OVERVIEW.md",
+    "stageSha256": "7b114164d137aed5d6703491da010df4435dac9d46a7d2f8c55714a6eecd75b5",
+    "portableArtifact": "MODULE-REFERENCE/p02-agent-runtime/OVERVIEW.md",
+    "portableSha256": "f80a6dcab915d156782cdce62cd3477388e8f2f3c050a2e0349c68e5bb2251a1",
+    "changeScope": "new document link-root rewrite only"
+  },
+  {
+    "stageArtifact": "MODULE-REFERENCE/p06-review-batch/OVERVIEW.md",
+    "stageSha256": "725045b06970eba972ba0698df4b6db19bb5025745dccb9b38ad7e15eede6d8e",
+    "portableArtifact": "MODULE-REFERENCE/p06-review-batch/OVERVIEW.md",
+    "portableSha256": "5ea9c615efab6f0533ee479017e722af30b7c803eb5b8c108359413e05c184a0",
+    "changeScope": "new document link-root rewrite only"
+  },
+  {
+    "stageArtifact": "MODULE-REFERENCE/p04-review-case-core/OVERVIEW.md",
+    "stageSha256": "ca77501f8ef8e8d354e43b7af5655810fe9e1b67384781d6b34ff3e6d440c715",
+    "portableArtifact": "MODULE-REFERENCE/p04-review-case-core/OVERVIEW.md",
+    "portableSha256": "034fc93714fa3330b804cff764e8635cc197ca07bd5256c7527c04e62ca9ca6f",
+    "changeScope": "new document link-root rewrite only"
+  },
+  {
+    "stageArtifact": "MODULE-REFERENCE/p07-shared-libs/OVERVIEW.md",
+    "stageSha256": "003eba4c6e88b0e78ddee9da0bac3586dea2d6549fef3c0b6d028a339a82383c",
+    "portableArtifact": "MODULE-REFERENCE/p07-shared-libs/OVERVIEW.md",
+    "portableSha256": "d99b8bae5317887ffa75526dc994ad0bc0c29f7cf5598137aec2890de5221259",
+    "changeScope": "new document link-root rewrite only"
+  }
+]

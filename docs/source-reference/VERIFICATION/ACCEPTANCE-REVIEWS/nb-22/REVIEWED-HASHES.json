@@ -1,0 +1,42 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-22",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-23T19:55:00Z",
+  "sealId": "seal-f480e1cce3dcd5bd",
+  "note": "18/18 accepted（NB22-N-01/N-02 待 errata/rN 关闭）。manualSha256 为 QA 实算封版字节。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-remote-indirect-access.p05.test.ts.md": "36e4badb20a3e609d376799d5a5b7c2e8b86db97096b0990438486d6c1dc78e8",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-remote-path-access.p05.test.ts.md": "3ee79acd2021c03a434cda9891f3a373d827964699d308f902ec68e03de6c933",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-remote-reconnect-search.p05.test.ts.md": "9d8fd63100432574456ebc9f248b83794c307501d88fb670fa833baf2984d822",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-remote-websocket-relay.p05.test.ts.md": "c3e8a2bebe20a0b2451cea686c9a1c8b95f39b9e0327d47e006134fa6c73ae35",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-run-graph.test.ts.md": "1e5a21ae4f2c3f60ca82e5546a76f94efae3c7dcda862b3a06eb470200506c68",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-run-graph.ts.md": "99bbf1b0a2e9e9e82e0339eed4114d416764079de58a2bfca86f5e922f2bf605",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-runtime-contract.test.ts.md": "dbdcc747c579f6177844e4da8bc2033e07f201116455e5f044720274019941a0",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-runtime-contract.ts.md": "9e01f1cbc17e337f4a803adccef87265d751e4187969201f549af6fb31a182b6",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.test.ts.md": "352ba11079c62a8018411fcb9998f1968b0cda30d6517f7a4b4caa9b96e6b2b5",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts.md": "2f457fbad920c3261c71a09fbc4e0ffc43de6fc8bccaa6e1f80d20c33f4a64bd",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-startup-io-recovery.p06.test.ts.md": "c515395a29b306c0a99062357db78621fa24ea167368d15ea687d9a1e04353e1",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-strict-pi-tools.ts.md": "be9756a635d38bb898e013fdca0b2123a03bc2501970e207b8686372e92abd53",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-strict-profile.p02.probe.test.ts.md": "fc9b71de2fdc35b1d3fca40d95ffbbb4f494d0b519639c4bfe510d340a6a2e53",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-template-author-store-v3-b1.test.ts.md": "650ad4de6376424d7c8d45d6fe06bec6da2b241dc9c4e973badbc2b453626efe",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-template-author-store-v3-b1.ts.md": "98917b6e5253318fb440491d026a355a6cd8703d7909a291f9352789ca236206",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.ts.md": "2eab41654e2fe0263aa824e9c5e9a1806209f5ccbd4b64743277942b7964bca0",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-tombstone-index-scale.p04.test.ts.md": "4c50bbbd2dedfa617fba0ff4c2e7068f31deface14db0c9020792a13e7ddf921",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-tools.test.ts.md": "7b57e3b0581c1ecb0ea39c47badd2a54fa7f89644753c7f3368a58cca5593849"
+  },
+  "revisionRequiredManuals": {},
+  "sourceBinding": {
+    "verifiedCount": 18,
+    "note": "blob+sha256 脚本实算==MANIFEST==SCOPE"
+  },
+  "sealBinding": {
+    "manifestSha256": "e65d0d0d810212070d6a48793315bab7585b1022ddabc5735edf289c7f9fa2cb",
+    "readySha256": "5053262346f091fa1d8a06a1f02a6010dee9b9486e6813d9e39874c4daea50b8",
+    "zipSha256": "83965a2555c3ed118ecf90fccee01a48552511b3347ad84d67df224e5794a6cc",
+    "zipBytes": 54006,
+    "zipEntries": 21,
+    "changesDiffReplay": "18/18 byte-identical"
+  }
+}

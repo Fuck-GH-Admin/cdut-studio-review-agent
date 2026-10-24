@@ -1,0 +1,68 @@
+{
+ "schema": "dsh-r07-review-done/2",
+ "batch": "nb-62",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-ui-20261023",
+ "reviewerSession": "docs-r07-qa-ui-20261023",
+ "reviewedAtUtc": "2026-10-23T18:35:00Z",
+ "state": "QA_COMPLETE",
+ "batchVerdict": "accepted",
+ "counts": {
+  "filesReviewed": 16,
+  "accepted": 16,
+  "revisionRequired": 0,
+  "openNonBlocking": 0
+ },
+ "reviewedSeal": {
+  "root": "deliveries/nb-62",
+  "readySha256": "82e5180a064071f1bb84a7d905beadb0118183e9cd212159012d3d4e525df791",
+  "doneSha256": "501af1eeb372c002dc993f80dcfbbaeab326599a7f96b25764fd872e11dcfe61",
+  "manifestSha256": "b8064f0dc7a031062b1aec2a94864fccca373cb812faf30f11f64eef58ae1b97",
+  "zipSha256": "0bae990960f5aa7733438c92f8d803a35c4dd6a25537290edec3370a87638a6c",
+  "zipBytes": 43909,
+  "zipEntries": 19,
+  "note": "seal v2；新批无 before；源 16/16 blob+sha+行数与冻结树一致"
+ },
+ "findings": {
+  "open": []
+ },
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/__init__.py.md": "f7b3ba4ae2be3e3fac98834d3e1303dc4c308fa2fdcc94850c3b2a5041eb6757",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/accept_changes.py.md": "8d1891e7354cbb8d98ff8eef81f44e6ad9724e9a01e9ada07102645fbb05010d",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/comment.py.md": "64f3f2bece0ea47fde8080939ee44bf5f9d7a2040ce117c1c18a240b248fd896",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/helpers/__init__.py.md": "a3131e160176e968a352161025f5ab1166c0ed57d1b1dc892fc832aa9c75614d",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/helpers/merge_runs.py.md": "9edd603b1104c24d889671d8fec3a92b6b22a7d0b49d3859c75ce302c90ee588",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/helpers/simplify_redlines.py.md": "27e68af5f8b102ba3ca5366ca62730b13b3f15b206731a5b75a8180b7cf84549",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/pack.py.md": "05748388a215941a9568eb809ff88b2c4eb19965b3357e832d3e216347a3cf9d",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/soffice.py.md": "8bb2160f7a2bfe0a5fabb4b6125049d7451de818bc2c3e8e71128e7ea754d95e",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/unpack.py.md": "397a7ef056a18e098f72a692bc4d35e0f03abd220580cc7b25a72fcadabe6d85",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/validate.py.md": "1952f47c4b552abffec163943bf027efe0edece13cd03d47aa334fe90859181c",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/validators/__init__.py.md": "c54752c5389d28543b1d26ad7ed0401cf483ba87cc146e1e2e377ad8eb3805b4",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/validators/base.py.md": "e61afb256dc9edf178b5b98ca12256bbe5991c1eef6f42368e04cda196c0f70b",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/validators/docx.py.md": "6178ea188d9dbffcdc1f428f2173c4850e080e1e50ab08234fbb2f7728688ce3",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/validators/pptx.py.md": "4dfb49276c93641e7d7979fae61bf4267f22e8fecdd3f39cb6a67d57cbda5820",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/validators/redlining.py.md": "3a65a54a537f9e08ec133ed9ab5ef23d23fccc298c2b35e06265991d9a10d9a0",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/thumbnail.py.md": "770d5ba4f0dfc97e903084210818740758f98c125dd41002a32e318f057ae7aa"
+ },
+ "outputs": {
+  "RESULT.json": "984cd521d19dc12a0306501e93a62f3e2afb7947347068f0185e8794703a67fa",
+  "RESULT.md": "847a29f28c943e9196736f20be87eedab21ccc8a1cb88ea4686391e904e2a892",
+  "REVIEWED-HASHES.json": "b237b6c0656102bfa557a42a37759eb411a90833bc983b0992538e99943cf5d6"
+ },
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network",
+  "pytest（无专属测试存在）"
+ ],
+ "boundaries": [
+  "未改源码/测试/依赖/作者正文/candidate/全局 FILES/COVERAGE/MANIFEST/INDEX",
+  "已 seal 不回写；NOT_RUN 不等于测试通过",
+  "accepted 仅限静态文档 scope；运行期行为未知"
+ ],
+ "notes": [
+  "kind=script 批全过；§9 测试口径诚实；无低级备注"
+ ]
+}

@@ -1,0 +1,30 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "index-p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case",
+ "groupId": "p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T20:02:00Z",
+ "sealedAtUtc": "2026-10-23T19:24:02+00:00",
+ "artifactSha256": "b84b7019ce3b1f24d5a52715751b4af0fa6b29051001bebc605cb16263ccb046",
+ "note": "QA 实算封版链全对。3/3 accepted（5 条非阻断 minor MVP-N-01..05 已登记，非阻断≠已修）。",
+ "acceptedManuals": {
+  "MODULE-REFERENCE/p05-review-engine/INDEX/p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case.md@apps/electron/src/main/lib/review/fixtures/mvp-single-case/application/student-application.txt": "b84b7019ce3b1f24d5a52715751b4af0fa6b29051001bebc605cb16263ccb046",
+  "MODULE-REFERENCE/p05-review-engine/INDEX/p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case.md@apps/electron/src/main/lib/review/fixtures/mvp-single-case/evidence/competition-certificate.txt": "b84b7019ce3b1f24d5a52715751b4af0fa6b29051001bebc605cb16263ccb046",
+  "MODULE-REFERENCE/p05-review-engine/INDEX/p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case.md@apps/electron/src/main/lib/review/fixtures/mvp-single-case/rules/comprehensive-rules.txt": "b84b7019ce3b1f24d5a52715751b4af0fa6b29051001bebc605cb16263ccb046"
+ },
+ "sourceBindings": {
+  "apps/electron/src/main/lib/review/fixtures/mvp-single-case/application/student-application.txt": {
+   "sourceBlob": "f4c18a4752042493eed9378d75e601c4e4f6924e",
+   "sourceSha256": "d00b61bb9a0d4d4c3f8abff252604944078a1e1e09e903a581e9435918f0b0f2"
+  },
+  "apps/electron/src/main/lib/review/fixtures/mvp-single-case/evidence/competition-certificate.txt": {
+   "sourceBlob": "88df337b525fab8a6d34df0f05d00a70a10c38df",
+   "sourceSha256": "0125f5f26c49e10f34f6c74ef1fd8e782e3d8f6a592c83b03947c11ac9aaa2e9"
+  },
+  "apps/electron/src/main/lib/review/fixtures/mvp-single-case/rules/comprehensive-rules.txt": {
+   "sourceBlob": "2160ed6441350e39c27de0fca60b3c9b79c63717",
+   "sourceSha256": "7bce30331312c7e281a5b32beaeaba5b6030fc00eb24e5879d8521b85464114d"
+  }
+ }
+}

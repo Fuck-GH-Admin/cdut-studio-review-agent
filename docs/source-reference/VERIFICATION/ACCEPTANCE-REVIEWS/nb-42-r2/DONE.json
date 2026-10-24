@@ -1,0 +1,58 @@
+{
+ "schema": "dsh-r07-qa-done/1",
+ "batch": "nb-42-r2",
+ "id": "NB-42",
+ "revisionOf": "nb-42-r1",
+ "rootRevisionOf": "nb-42",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewRoot": "reviews/nb-42-r2",
+ "reviewedAtUtc": "2026-10-23T21:28:22Z",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PASS",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 18,
+  "revision_required": 0,
+  "unknown": 0
+ },
+ "acceptedManuals": 18,
+ "acceptedHashesCount": 18,
+ "findingsClosure": {
+  "F-01 残留": "CLOSED（types :23「33 个导出」+:62「33 导出+8 事件 union」；残留 36 仅为行号子串 :336/:368，无计数 36）",
+  "F-05 残留": "CLOSED（graph-parser 17 用例（stripMetaTags 2 含 :118）、graph-state 12 用例；分组 17+12+6+6+18+6+5=70 自洽）"
+ },
+ "resultSha256": "0a95a42d5698ebe6f308c96e6db7f85b72dbfd725e92619e57cac4970a722405",
+ "reviewedHashesSha256": "260c71fdb716b5557eaf3c8880521bcc6604181758a8bcacae1b73df8e65387c",
+ "zip": {
+  "path": "deliveries/nb-42-r2/R07-nb-42-r2-05fb2565.zip",
+  "sha256": "99eac0a682e175fd60e8b110b47885368f83e787d97de842d3a995d4f8eb4d3c",
+  "note": "v2 无穿越/0 mismatch"
+ },
+ "sealId": "seal-eff8e3b232a8c9b4",
+ "artifacts": [
+  "reviews/nb-42-r2/RESULT.json",
+  "reviews/nb-42-r2/RESULT.md",
+  "reviews/nb-42-r2/REVIEWED-HASHES.json",
+  "reviews/nb-42-r2/DONE.json",
+  "handoffs/nb-42-r2-REVIEW-TO-AUTHOR.md",
+  "handoffs/nb-42-r2-REVIEW-TO-LEAD.md"
+ ],
+ "priorReviewsUntouched": true,
+ "parentPreserved": "nb-42/nb-42-r1 交付未动；2 篇 before/=r1 字节",
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "real model/network"
+ ],
+ "writtenOnlyIn": "reviews/nb-42-r2 + handoffs",
+ "next": "lead 按 18 个新 acceptedHashes 合入；nb-42 全链闭合"
+}

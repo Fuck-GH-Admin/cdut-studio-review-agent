@@ -1,0 +1,37 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-18-r1",
+  "revisionOf": "nb-18",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T21:46:28Z",
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-a-host-technical-handoff.ts.md": "29e1d896e1c517b2391da941f1a23bb8a17ad16e3a85440557c9bc2dfc9cea55",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-a23-physical-host-observer.ts.md": "9c48e0c75b2aa2f9e7561a1d4f60655832031e582b5dc7c6fcd49b29b2ebd98f",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-a25-c11-local-execution-ports.test.ts.md": "a24b5b23e16a5d852c0bd2bf7e830fe5ea819ed7a4aa02db3bcd2879f10466a9",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-a25-c11-local-execution-ports.ts.md": "32efb4396938fcb9c1dc7f1669a23ff25dd57f7d9331fcd9f263257c0e29e11d",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-a26-native-pi-session-factory.test.ts.md": "576b6e8549380bafcf9c01563820881e7fa60c8c488599a414e720fab9227489",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-a26-native-pi-session-factory.ts.md": "cb85604fcdff2657b29c57be7b6e031c0e84d6831a842c52652d07d5f0f74c8e",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-b-bulk-remediation-cycle.ts.md": "2baa7643a4285f95d3921f20c20d119405b2fdd58b2f438378daa793e7ecd07f",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-b-candidate-readiness-workbench.ts.md": "1ece7d942d1d38c969276b7e219db6b473d59ed7ca00c21a7c4e6ae607734bef",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-b30-current-materials-read.test.ts.md": "bf97e6eaec282d353c92dcad6f9249657e6752af1da13721fc5051fe3a269b6f",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-b30-current-materials-read.ts.md": "490fba6ec3dcd2825e70a19a4baa4896fd39ba0d606f4f6115db40ae7c484b63",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-b33-currentity-snapshot.test.ts.md": "fcc1212c68149e048206f0724e4967c4c9dc71a6cc4463820e4f1aa5f7b863f1",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-b33-currentity-snapshot.ts.md": "bc3d8959e4ec79925acf8263f3908e9ab040449b90806296bd5c264525fc82fe",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-b4-bulk-evidence-workbench.ts.md": "2b67f27e8308f555896af8e982749879e631d83bb0dfa4c6bf27f065d6eae9c7",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-b4-conflict-and-instance-guard.ts.md": "4a9e324d4df2715a381de56905d7f19b536c74c638ddf404d3a5968b1813b5df",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-b4-high-risk-semantic-evidence.ts.md": "b05ae1aa45d481e6daea51d5402832c199e1b815e3b9dd70d6f4d46a45eb7b08",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-b4-object-isolation.ts.md": "5d76903a184e7d2d900f7314e99b407531a75e7c4c39f9bc8d2d9b201ab069ef",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-b4-obligation-lineage.ts.md": "b8a209759763fbd0683fc17a370bb1ee7b95a75c0fe5c04e7e6a451d6cb3f241",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-b4-original-byte-verifier.ts.md": "938b125455501e3042b5425819565ee958053a9cc7bd660d7e080df5f27e3e4a"
+  },
+  "revisionRequiredHashes": {},
+  "rejectedHashes": {},
+  "chain": {
+    "sealId": "seal-492ad9dac92a3f8a",
+    "manifestSha256": "4753ca5f7af0f2ab5cb72bf785cbfa7c7c44dea27bc04001f576467e8cb89b13",
+    "readySha256": "5fea46b94333208ca695210e96903d441592601bb3eb782920d2a9ff7661af2a",
+    "zipSha256": "ae90d977dd44dd29643d9249da868a83dc2ab0d69c303836992dd0295ae80d1d"
+  }
+}

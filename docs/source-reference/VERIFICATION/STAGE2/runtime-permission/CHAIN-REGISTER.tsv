@@ -1,0 +1,38 @@
+chainId	edgeId	symbol	entryEdge	calleeOrConsumer	finalOutput	status	evidence
+C1-provider	E1	agent-model-selection.assertEnabledModelForChannel	apps/electron/src/main/lib/agent-model-selection.ts:24	called agent-collaboration-tools.ts:800 / agent-session-manager.ts:1923	委托/会话启动前模型校验（throw 或返回 modelId）	证实	本轨亲读：三重分支（modelId空/无channelId/渠道缺失或未启用/模型不在渠道或未启用）
+C1-provider	E2	agent-model-selection.listEnabledAgentModelsForChannel	apps/electron/src/main/lib/agent-model-selection.ts:54	called agent-collaboration-tools.ts:708	渠道启用模型清单（自检面）	证实	本轨亲读：同上守卫+enabled 过滤
+C1-provider	E3	agent-model-routing.resolveAgentModelRouting	apps/electron/src/main/lib/agent-model-routing.ts:27	called agent-orchestrator.ts:1232	AgentModelRoutingPolicy（deepSeekFamily/enable1MContext/subagentModel）	证实	本轨亲读：deepseek 判定+1M 三态+DEEPSEEK_SUBAGENT_MODEL_ID=deepseek-v4-flash
+C1-provider	E4	agent-orchestrator 消费 modelRouting.subagentModel	apps/electron/src/main/lib/agent-orchestrator.ts:2082	deepSeekSubagentModel 参数（下游 SDK 装配，边待验）	子agent会话模型路由	证实(入口边)	本轨亲读：:1232 计算→:2082 传参；下游 consumer 未逐边核
+C1-provider	E5	agent-model-routing.applyAgentModelRoutingToEnv	apps/electron/src/main/lib/agent-model-routing.ts:48	生产零调用（仅 agent-model-routing.test.ts）	env.CLAUDE_CODE_SUBAGENT_MODEL 写/删	证实(死导出)	本轨亲grep：非测试无调用方→接口不一致（见 CONFLICTS C-03）
+C1-provider	E6	pi-model-registry.normalizePiApi/buildModel/buildCodexModel	apps/electron/src/main/lib/adapters/pi-model-registry.ts:233/:615/:754	provider 归一与 SDK 模型装配（内部边待验）	Pi SDK 模型实例	待验	仅签名亲核；fallback 语义未逐边
+C2-pi	E1	pi-agent-adapter.buildPiRetrySettings	apps/electron/src/main/lib/adapters/pi-agent-adapter.ts:159	provider+isReviewRequest→PiRetrySettings	重试策略（review/普通分流）	证实(签名)	本轨亲读签名；内部分支待验
+C2-pi	E2	pi-agent-adapter.buildPiRemoteConnectionSettings/applyPiProxySettingsForQuery	apps/electron/src/main/lib/adapters/pi-agent-adapter.ts:345/:379	连接/代理设置装配	远端连接参数	证实(签名)	代理消费边见 C4
+C2-pi	E3	pi-agent-adapter 错误面 friendlyErrorMessage/isPromptTooLongError/isThinkingSignatureError/isRuntimeNotFoundError/mapSDKErrorToTypedError	apps/electron/src/main/lib/adapters/pi-agent-adapter.ts:534/:545/:553/:626/:654	SDK 错误→TypedError	错误分型出口	证实(签名)	本轨亲读
+C2-pi	E4	pi-agent-adapter.sanitizeContextForInference	apps/electron/src/main/lib/adapters/pi-agent-adapter.ts:878	推理前上下文净化	推断输入	待验	副作用边界未核
+C2-pi	E5	abortRequested 状态	apps/electron/src/main/lib/adapters/pi-agent-adapter.ts:273/:487	取消标记字段	取消传播起点	证实(字段)	传播链见 C7
+C3-gateway	E1	review-model-gateway.isAllowedProvider	apps/electron/src/main/lib/review/review-model-gateway.ts:156-158	REVIEW_MODEL_PROVIDERS 白名单（packages/shared/src/types/review.ts:478，4 项）	provider 白名单闸	证实	本轨亲读；头注释「三种」与代码 4 项矛盾→CONFLICTS C-01
+C3-gateway	E2	performChatCompletion	apps/electron/src/main/lib/review/review-model-gateway.ts:303-433	ollama ${baseUrl}/api/chat / openai 系 /chat/completions；Bearer :353-358；代理尊重用户配置 :362-363	HTTP 直发远程模型	证实(抽查+调查组逐行)	本轨亲核抽查 E1/E2 面；其余行号为本轨调查组实读
+C3-gateway	E3	resolveReviewGatewayChannel→decryptApiKey	apps/electron/src/main/lib/review/review-model-gateway.ts:246-261	密文渠道 key 解密（~/.cdutai/channels.json）	请求凭据装配	证实(调查组)	负发现：网关层无授权符号（S2）
+C3-gateway	E4	review:generate-rule-outline 链	apps/electron/src/main/lib/review/review-ipc.ts:1422-1433	→ ai-review-service.generateRuleOutline :356 → chatCompletion :410 → updateCase :422	~/.cdutai/review-cases/{caseId}/case.json（case-store.ts:64-69 原子写）	证实	本轨亲核 handler 头（无 sender guard=负发现 S1 亲验）；下游边=调查组实读
+C3-gateway	E5	review:extract-items 链	apps/electron/src/main/lib/review/review-ipc.ts:1435-1443	→ ai-review-service.extractItems :495 → chatCompletionWithMeta :549 → updateCase :562	同上 case.json	证实(调查组)	无 sender guard
+C3-gateway	E6	review:run-review(V1) 链	apps/electron/src/main/lib/review/review-ipc.ts:1452-1458	→ run-service.startReviewRun :57 → ai-review-service.runAiReview :803 → saveRun :131	~/.cdutai/review-cases/{caseId}/runs/{runId}.json	证实(调查组)	150s 超时 REVIEW_RUN_TIMEOUT_MS
+C3-gateway	E7	review:assistant-chat	apps/electron/src/main/lib/review/review-ipc.ts:1471-1482	→ ai-review-service.reviewAssistantChat :1032 → chatCompletion :1083	返回 reply，无持久化；失败 staticAssistantAnswer 降级	证实(调查组)	无 sender guard
+C3-gateway	E8	review:get-model-gateway-status	apps/electron/src/main/lib/review/review-ipc.ts:1495-1497	→ getReviewModelGatewayStatus review-model-gateway.ts:207-242	只读 channels.json 状态	证实(调查组)	无网络无持久化
+C3-gateway	E9	review-v3:t01-model-draft	apps/electron/src/main/lib/review/review-ipc.ts:977-982	assertC0ReviewMainSender :978（review-c0-authority.ts:21）→ requestT01ModelDraft :31	返回 {raw,channelName,modelId}，不持久化	证实(调查组)	对照组：有 sender guard
+C3-gateway	E10	review-v2:run-review / run-batch + review_start_run	apps/electron/src/main/lib/review/review-ipc.ts:1087-1091/:1070-1085；pi-review-ops-tools.ts:431-455	requireAssignment :443 → run-async-service.assembleAndRunReview :102 → run-service-v2.runReviewCaseV2 :97 → saveRunV2	~/.cdutai/review-cases/{caseId}/runs-v2/{runId}.json+artifacts/	证实(调查组)	IPC 无 sender guard；工具路径有 requireAssignment
+C3-gateway	E11	AgentFabricGateway.submitTask	packages/agent-fabric/src/gateway.ts:189-213	fabric-server requireCaller :123-136（Bearer+sha256 配对）→ acceptNewTask :215-249（assertCapability TASK_SUBMIT :229）	~/.cdutai/agent-fabric/{tasks,results,artifacts.json,...}（fabric-store.ts:48-163）	证实(调查组)	fabric=本地 loopback 网关，与 A1 无调用关系
+C4-credential	E1	agent-runtime-credentials.ts	（待验）	（待验）	运行时凭据装配	未知-缺口	调查组B失败，本轨未核
+C4-credential	E2	codex-oauth-service.ts	（待验）	（待验）	OAuth token 存取/刷新	未知-缺口	同上
+C4-credential	E3	pi-request-proxy.ts	（待验；消费边 C2-E2:379 亲核）	（待验）	代理请求设置	待验	消费端证实、生产端未核
+C4-credential	E4	子进程（pi-powershell-tool.ts/pi-harness-lifecycle.ts）	（待验）	（待验）	子进程 env 继承/清理	未知-缺口	同上
+C5-permission	E1	agent-permission-service.ts	（导出 API 未核，grep 'export function' 0 命中=导出风格待验）	（待验）	权限判定	未知-缺口	调查组B失败
+C5-permission	E2	mcp-validator/pi-mcp-tools/lark-mcp-service	（待验）	（待验）	MCP 注册与校验	未知-缺口	同上
+C5-permission	E3	模型自检 vs 实际可调用差异	候选：pi-model-registry.ts:573/:608/:836、agent-model-selection.ts:54	（待验）	清单面≠调用面差异	未知-缺口	同上；不结论
+C6-review-bypass	E1	createPiReviewModelClient 一次性 Pi 会话	apps/electron/src/main/lib/review/pi-review-agent-client.ts:77-202	permissionMode:'bypassPermissions' :144（本轨亲核）；toolProfile:'review' :148；customTools 仅 review 工具 :87-94；rmSync :181	绕过 orchestrator 直连 Pi 运行时→runReviewCaseV2 落盘	证实	本轨亲核 :144；余为调查组实读
+C6-review-bypass	E2	isAuthorizedDirectReviewTool	apps/electron/src/main/lib/review/review-strict-pi-tools.ts:51-58	STRICT_RUNTIME_TOOL_NAMES :41-45 + verifyCurrentBinding :35-41	5 工具白名单直连授权	证实	本轨亲读逐行
+C6-review-bypass	E3	orchestrator canUseTool 短路	apps/electron/src/main/lib/agent-orchestrator.ts:1851-1854	review 直连档仅 5 工具放行，绕过用户审批/权限模式/SAFE_TOOLS	工具面收窄（selectDirectReviewStrictTools :1706）	证实(调查组)	绕行语义=权限子系统旁路
+C6-review-bypass	E4	review-v2:prepare-pi-review	apps/electron/src/main/lib/review/review-ipc.ts:1093-1107	assertOrdinaryAgentSession+runtime=pi+预设 review-operator → preparePiReviewRunV2 :452-529	指派+binding 建立	证实(调查组)	abort 链 review-ipc.ts:1132-1143
+C7-cancel	E1	review-model-gateway 取消/超时	apps/electron/src/main/lib/review/review-model-gateway.ts:368-374/:379-401/:413-424	AbortController+timer；429 退避可 abort；finally clearTimeout	取消语义区分	证实(调查组)	抽查 :368-374 面
+C7-cancel	E2	run-async-service.cancelAsyncRun	apps/electron/src/main/lib/review/run-async-service.ts:215-225	三处同杀；错误落 cancelled/failed :192-205；finally 延迟清表 :206-208	run 状态终结	证实(调查组)	
+C7-cancel	E3	pi-review-watchdog + abortReviewTurn	apps/electron/src/main/lib/adapters/pi-review-watchdog.ts:22/:24/:98-121；pi-agent-adapter.ts:2822-2894	首字节 240s/20min 无进展判定；abortReviewTurn :2847-2858；cleanupActiveSession :2578-2597	看门狗中止+会话清理	证实(调查组)	
+C7-cancel	E4	stopBackgroundPiReview	apps/electron/src/main/lib/review/review-pi-run-bridge.ts:110-128	stopAgentAndWait :121 → finish+revokeAssignment	后台审核停止+指派撤销	证实(调查组)	

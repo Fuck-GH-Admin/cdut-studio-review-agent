@@ -1,0 +1,60 @@
+{
+ "schema": "dsh-r07-qa-done/1",
+ "batch": "nb-99",
+ "id": "NB-99",
+ "revisionOf": null,
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewRoot": "reviews/nb-99",
+ "reviewedAtUtc": "2026-10-24T11:45:00Z",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PASS",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 17,
+  "revision_required": 0,
+  "unknown": 0
+ },
+ "acceptedManuals": 17,
+ "acceptedHashesCount": 17,
+ "revisionRequiredManuals": {},
+ "findingsSummary": {},
+ "batchFindings": [
+  "M-01",
+  "M-02"
+ ],
+ "resultSha256": "0626383237ac36ba7ad82656c0c3656119d702c1eb10e468ff69459ab4ee9edf",
+ "reviewedHashesSha256": "0439c2567b8f9c0c15e1f347943f52ad77ba32a1918340f4a3be84f7006f49c8",
+ "zip": {
+  "path": "deliveries/nb-99/R07-nb-99-05fb2565.zip",
+  "sha256": "eac3450d9a6a43bf4f13d546e410c71e22b931a647f1ed4ed3d0440df0dadff0",
+  "entries": 20,
+  "note": "17 手册+MANIFEST+2 mechanical TSV；不含 READY/DONE（v2）；无穿越/0 mismatch"
+ },
+ "sealId": "seal-247a39d912d52328",
+ "artifacts": [
+  "reviews/nb-99/RESULT.json",
+  "reviews/nb-99/RESULT.md",
+  "reviews/nb-99/REVIEWED-HASHES.json",
+  "reviews/nb-99/DONE.json",
+  "handoffs/nb-99-REVIEW-TO-AUTHOR.md",
+  "handoffs/nb-99-REVIEW-TO-LEAD.md"
+ ],
+ "priorReviewsUntouched": true,
+ "parentPreserved": null,
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "GUI"
+ ],
+ "writtenOnlyIn": "reviews/nb-99 + handoffs；未写 deliveries/inventory/manager/candidate/全局 FILES/MANIFEST",
+ "next": "lead 按 17 个 acceptedHashes 合入；无返修"
+}

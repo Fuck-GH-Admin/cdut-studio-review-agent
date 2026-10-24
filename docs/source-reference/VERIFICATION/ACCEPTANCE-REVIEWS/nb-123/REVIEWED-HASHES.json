@@ -1,0 +1,104 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "nb-123",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T20:58:00Z",
+ "sealId": "seal-a5a2b013540e425d",
+ "note": "18/18 accepted on content; batchVerdict revision_required only for D0 chain mislabel (B-01) + UNVERIFIED aggregate count errata (N-01). Merge after nb-123-r1 reseal, hash re-check per this table (identical bytes -> identical hashes).",
+ "acceptedManuals": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/shortcut-dispatch.test.ts.md": "a4db7dfc0eede20899e8e4159170dacc4d29b45085208d3f15b6f31d3bcddbb6",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/shortcut-registry.test.ts.md": "5cb6985becc6bbf434027707c8570cb80e94828bdf3aec450a9a00ec8704d35a",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/shortcut-registry.ts.md": "6f162fcdee005c7a4fa19ace7c0232ef851c4287679cb102c49e912bbbf2e835",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/slugify.test.ts.md": "65144c7b57ae10ac129e0bf870c4ab98d56f3a469fe81722a99c1f32dfa42793",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/slugify.ts.md": "830cebaa07dc0eed88f9f776507c7cdf87e769b3073988109056a32e8d4ec184",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/spatial-navigation.test.ts.md": "27c0b8125d8e8a7aa831f04317a28c9a8021c94f0e87a804d3179dd78dd9f095",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/spatial-navigation.ts.md": "2c3a02ba98fb3293d9520b42ba25f998cac9dac741c9a7ce2f31c3fa483affb5",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/tab-activation.ts.md": "4230f2d7df8730f27740e9a7bd8a94a691065bd1099e4d4e9e26713f6e33fc26",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/tab-preview-position.test.ts.md": "584d8868cec4646530e99a3b1a15ed8e88b41c7e6ba0833a316ad73de4206a14",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/tab-preview-position.ts.md": "70b3795b4edec5cf3d885ea34255b38bdb4f3df960b99da4089f0ab1fcd71f33",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/tab-switching.ts.md": "29e8b4817fa697e293d69602e1d7d8abe4565cea5db95616f88ff238d50effc6",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/task-graph-events.test.ts.md": "f5e03cb17d47a06e481dfebf22a943e1826af4858f9c8c534fe4fdf8c1b9b433",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/task-graph-events.ts.md": "a01da031d0d458c53a093f6ffcd7055ef7892aa0525a2088480d4e61c6f6807e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/task-graph-layout.test.ts.md": "bf74b1b7cf051e6fab9091cccb7bfe070dee8eec265008c464d5880c0722e703",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/task-graph-layout.ts.md": "52ce730ff9b1185395f5feb5d2d7e7336dc8616aa24f5c8e7f3f1d25aca0b301",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/team-layout-mode.test.ts.md": "38a520095b94f1114682d7d9673c8a6ec1efaef345b9caa13216bc37492a38ef",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/team-layout-mode.ts.md": "06a0dcc3c361387da85fd774fd9ec296598873a257012af691097d5132149094",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/tips.ts.md": "484106005558ec6d12e8e746a1e6f6e94db7cffd1f064f68500a8e10b5cb9744"
+ },
+ "revisionRequiredManuals": {},
+ "reviewedSourceBindings": {
+  "apps/electron/src/renderer/lib/shortcut-dispatch.test.ts": {
+   "blob": "44be651fa4228b05e43c4be5ac8cf93d43539d8d",
+   "sha256": "29ca3637d9dd46f5f139dfe8b9703d1da82e1f10c76a4f7b512c5dfbc9aec41f"
+  },
+  "apps/electron/src/renderer/lib/shortcut-registry.test.ts": {
+   "blob": "4e5360d48fd15a272fe32271a9116a991ffcc4c7",
+   "sha256": "12b3e0571e95e986aeb00f78c1a8df32d6ae714ae643231be534371ec30e9ac2"
+  },
+  "apps/electron/src/renderer/lib/shortcut-registry.ts": {
+   "blob": "413e4359761087b2f8bfe182f866eeba1d7e02d1",
+   "sha256": "87e079f08105b87fd4fc06459b95e6933913ddba9dd7f7fa4c71fef0d3828894"
+  },
+  "apps/electron/src/renderer/lib/slugify.test.ts": {
+   "blob": "8fa25b2b2284afa1ce9ca1a41d0a4a2c13a047a0",
+   "sha256": "095a3e4d12d394c0a1b934d5969aba1a8d96406161cfedea2ea8879f6851b6bc"
+  },
+  "apps/electron/src/renderer/lib/slugify.ts": {
+   "blob": "dc233fb8e9abca8dec80a2d73d72161a931a9137",
+   "sha256": "010fbf1a4f53d797a3ad90dd0fe1105a2bc9df29ae177bf1bc5cdcf162d34db9"
+  },
+  "apps/electron/src/renderer/lib/spatial-navigation.test.ts": {
+   "blob": "378d4e020214ec3b8c5d1eab6bff21953cc0251e",
+   "sha256": "3865dd0825b8c555d8f7623bd6c5dc632e3c794c88bd3954c964cff7afe12702"
+  },
+  "apps/electron/src/renderer/lib/spatial-navigation.ts": {
+   "blob": "23f721525c694f43e52e8e045f527fbc8b47a704",
+   "sha256": "8cc8360480b764227c60a684772c2ff113b443a4591d3a920d44f29adc4ac9b6"
+  },
+  "apps/electron/src/renderer/lib/tab-activation.ts": {
+   "blob": "2645e8f77cd2d08a7343b5e5f21a7d4f3bd91c8b",
+   "sha256": "8c9c2b468a92d2727b981d9ae4cd3e0bc289a42551d05764b6eba28670c45f56"
+  },
+  "apps/electron/src/renderer/lib/tab-preview-position.test.ts": {
+   "blob": "8e9d5753d8302e719ca23370ea1b0a944084b3e1",
+   "sha256": "4ad0e79e87dd5ba60f5dfcc9e6a648127b9d2bbd65c7ab700e046aeff9b73306"
+  },
+  "apps/electron/src/renderer/lib/tab-preview-position.ts": {
+   "blob": "22fa67c2f2a2e8ff94ef108fe52b0466bfdd1462",
+   "sha256": "f4b8cf2bb3636735cd3caa1e8ff6cff2f6e71a17bd54bf78453b1e51f3f38337"
+  },
+  "apps/electron/src/renderer/lib/tab-switching.ts": {
+   "blob": "a93965896151d233ad2d98458bae73b8ceed8d60",
+   "sha256": "c30212de2034addb32b9176ae452bb02642032b8b2448b1ede4e8a4b1c29c2e4"
+  },
+  "apps/electron/src/renderer/lib/task-graph-events.test.ts": {
+   "blob": "ce72355eeb75a707b0ea1e1d91e87c845827b27a",
+   "sha256": "7f064f01bee92bdd031ff867bf51a3dbab4447ca6c4ac1b43714c3656abf3618"
+  },
+  "apps/electron/src/renderer/lib/task-graph-events.ts": {
+   "blob": "e088da0f465234bd3fa935a910f798ce267c2078",
+   "sha256": "42d0d62218acd945ae0d65500687a12acb642d5863f109c5a3cb654b4f0ee95f"
+  },
+  "apps/electron/src/renderer/lib/task-graph-layout.test.ts": {
+   "blob": "205270932e0595b3e42c3b37d7d2ab36a8d25278",
+   "sha256": "2ca50b3fd98798bbf776fcbf3f91bd2842c0fd8de56687d25cc2ab812f46c8f4"
+  },
+  "apps/electron/src/renderer/lib/task-graph-layout.ts": {
+   "blob": "921249c3b820490cecc867e24f4198cb1d6106ed",
+   "sha256": "7eb75d999bc564e06992b12dce9709c19dd65f3fdb3055009aa121a646d1f547"
+  },
+  "apps/electron/src/renderer/lib/team-layout-mode.test.ts": {
+   "blob": "de16db726a682026113a05a27cc05d8c4181ca96",
+   "sha256": "2152f8d810ee430d79c6b2a6423098a3da6eddccea3e42efe45be3cad0230a83"
+  },
+  "apps/electron/src/renderer/lib/team-layout-mode.ts": {
+   "blob": "be228c8d0679ecf6dbafeb753e5688275b2cbc50",
+   "sha256": "2f2dd915ff511b3f63b1613fbb982e05217c2a19129a9ae3863119df9fe00e8b"
+  },
+  "apps/electron/src/renderer/lib/tips.ts": {
+   "blob": "a0451fe9a32ca02df97eeb2f648573f16583b105",
+   "sha256": "6ec35befe31d72a456d3a653392089aeba1cb0fe53d6a73a9330294a2f22b4d2"
+  }
+ }
+}

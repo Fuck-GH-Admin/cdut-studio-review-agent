@@ -1,0 +1,280 @@
+{
+  "schema": "dsh-r07-review-result/2",
+  "batch": "nb-82",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "reviewedAtUtc": "2026-10-24T09:30:00Z",
+  "sealedAtUtc": "2026-10-23T18:18:09Z",
+  "sealId": "seal-23d161e252555a15",
+  "runStatus": "NOT_RUN",
+  "batchVerdict": "accepted",
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass_with_findings"
+  },
+  "g0Evidence": {
+    "sealChain": "manifestSha/readySha/zipSha 三层独立重算全相等；zip 21 条目合规",
+    "manualHashes": "18/18 磁盘=MANIFEST=READY 全等",
+    "scopeBinding": "18/18 源 blob+sha256+lines 与 nb-82-SCOPE 全等"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/main/lib/process-monitor.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/process-monitor.test.ts.md",
+      "sourceBlob": "cfad599f36b847ac4d4dba3948fd1fdead35c911",
+      "sourceSha256": "13fafdbdfe09dd738ca399b13f7580a2065fd3d57537fd20f749c5d2e81699d4",
+      "manualSha256": "6f3af621086ff7886ec3f25127ad3909ca2fc686fefa6bd029c26ee58ede1c47",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/process-monitor.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/process-monitor.ts.md",
+      "sourceBlob": "afcd37f68d400975a8ae8bed361aaf5467dad3f0",
+      "sourceSha256": "c1c4951a1b885425ba1e66cec8e17800b494523d0a6a14fa09c737cbeea9f026",
+      "manualSha256": "00cad3297cc4711f590b53357e848811b891cacc6f670c1829422fb3c7090fd5",
+      "verdict": "accepted",
+      "findings": [
+        "NB82-N2"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/remote-agent-event-log.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-agent-event-log.test.ts.md",
+      "sourceBlob": "21b84e69d90e8617b7e59b08a9495808ee992ff9",
+      "sourceSha256": "3b58c4a6f6bfce8e1e6bbee15356f5067907b63d9c9174422f3d747ec28ead65",
+      "manualSha256": "4739832c462b0a877d5acb50db88e5f2cd1e7582b90ca785fa1ae1d2ba67c42b",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/remote-agent-event-log.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-agent-event-log.ts.md",
+      "sourceBlob": "d4da416a55c558d60ea4f76a084bb3796d65f644",
+      "sourceSha256": "5003e3ed2b6b9a6f518767427a30db2491e2a5d13d25112dd4545fa45cf29b55",
+      "manualSha256": "4f9f82d1f336828e2e0a07615efbb9f97bfcffe7619001e2e89ea0589a51ebd8",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/remote-file-access.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-file-access.test.ts.md",
+      "sourceBlob": "023dc16f0721efb91d710cd07626dcc6a1ff963d",
+      "sourceSha256": "2d9eb6fd2202290bd661c6c69406e74e283b800e766fb4fd46cacdcab22d282b",
+      "manualSha256": "be0aa907dba05ff5c99fcdf880e7b428c3a2eadaf8661f749b2ca539e7484105",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/remote-file-access.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-file-access.ts.md",
+      "sourceBlob": "1522e98403a7f1be7d0a074faae1a9e1920d0407",
+      "sourceSha256": "d3d866bd9811ce48aeb669b591e94dea78a71e5d6dba50db35aeceed88b59146",
+      "manualSha256": "91af319709240efc83e3fc349e9b65d7375c5ef8e96577b3c40c66675bddd42b",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/remote-relay-client.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-relay-client.ts.md",
+      "sourceBlob": "320516b0ca5445f9f6232999cf3feb4d1991ab6c",
+      "sourceSha256": "4f669fdff3b5ebcf7d265f4212c29d06471f2daeb9cbd3cad0fb88e4b5a73e33",
+      "manualSha256": "00cd0fa6dff970a309a4b3111c6c39d0ad0ade989ce231f1607be6ddfa5ac5d4",
+      "verdict": "accepted",
+      "findings": [
+        "NB82-N1"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/remote-service-commands.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-service-commands.test.ts.md",
+      "sourceBlob": "76800cfc74f36450f65e47af3c67e870070e3abd",
+      "sourceSha256": "d79a1676d12b890d8c0223005ebc3094408ae8d22c31a195660da9e0501dcd85",
+      "manualSha256": "f673c50899e712b778b25d39ba65bc1de803f166f6babe8b76b1bc200bf43c33",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/remote-service-exploration-session.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-service-exploration-session.test.ts.md",
+      "sourceBlob": "585280a9262b2198c35fcdc15b957b09978cb18b",
+      "sourceSha256": "0cbf0c83fb5631ae0bab4fe3f811ea328ddf86151c51b579fd6b926c8febc457",
+      "manualSha256": "1cf0bfbb30ad005042934dc90f34bfed81d165917a4d56fa3d6e6ecbf7b32504",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/remote-service-heatmap.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-service-heatmap.test.ts.md",
+      "sourceBlob": "96ce85282a9f0e6cc898b8253c45c184d803f840",
+      "sourceSha256": "7468dfe1599f901fcde15ea4962629ffb609e65bc6ec13611b9067e8dbebdb77",
+      "manualSha256": "75e441aab92f9fb61c1bf2a203691605ba83dbbc868b2b73b64a3f28ef8eeb23",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/remote-service-send-message.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-service-send-message.test.ts.md",
+      "sourceBlob": "534a696cd145879674e828af2685d8455312eb5f",
+      "sourceSha256": "c76d0a5b953c94b55af189a6449bf827daaa96223420d071f01bebed8ceb628d",
+      "manualSha256": "f82e3cfc3225f80fc71534f4e3eac1fbb01e0d1b5e66c57918ba9b7beaf1b448",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/remote-service-workspace-file-search.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-service-workspace-file-search.test.ts.md",
+      "sourceBlob": "1c4f06382fd52ca1b8092883013d4cbbeb9581a4",
+      "sourceSha256": "a7b22d5edfa7d7f2d49928825a7dfc75b22b56dabd544c46c0614d4655b75ae1",
+      "manualSha256": "daa3f7f081a65ba9a56764bfb3d4ab64fcba5e0655f81b32dbd325882165a9c0",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/remote-service.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-service.ts.md",
+      "sourceBlob": "671b012057d79739bd9fdb2e93a7faa370959645",
+      "sourceSha256": "5c93c9ddb2477311e32eeafbdb7046e72d4b3ac1194e8151ab9c9265ffb2c90b",
+      "manualSha256": "d9be727949d1b6862256677caf43d8c0bec3812993eea3fdfde21dc8f23f20ea",
+      "verdict": "accepted",
+      "findings": [
+        "NB82-N3",
+        "NB82-N4"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/remote-workspace-file-search.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-workspace-file-search.test.ts.md",
+      "sourceBlob": "4d09e41b91173f7f4a73fa40b1c49d4b2b954b77",
+      "sourceSha256": "6ebaceeafce30ba507c02db079c5206459836b169b8057bcae8ca11c744ffd87",
+      "manualSha256": "c10b32e90ca01d827714eddff43b704d12e927b09409b5da5886b72be6c292ee",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/remote-workspace-file-search.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-workspace-file-search.ts.md",
+      "sourceBlob": "f8428da8a6e96946c67be2fdc9bfcb0c80ed8a89",
+      "sourceSha256": "fda14c5b9600c5c290f6126306fd3fc3b576fe97559be36ae8f6d7eba88d8e92",
+      "manualSha256": "7e8a47771b1bb85b82679dda16553e3f1576dc2f3323e3dab5e48439a48db2b4",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/skin-manager-service.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/skin-manager-service.test.ts.md",
+      "sourceBlob": "bc9b6c9881d31645e3ea1d9bda6fda3f3f6e84b6",
+      "sourceSha256": "a5787c0f4a478ab86863402e25cf8a6eafddb612c08fe5fd952ab847dba7637c",
+      "manualSha256": "e8be30c5dc7ec3c13186bb33809714a4d5604bc990e0935da6e57a583055d56b",
+      "verdict": "accepted",
+      "findings": [
+        "NB82-N6"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/skin-manager-service.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/skin-manager-service.ts.md",
+      "sourceBlob": "8c3bb923a1e0a0813da60ba706604c9464434cf3",
+      "sourceSha256": "5251c53087048e601869446a6f641a94ae1913bc9631c067a0d0baa589e67cf8",
+      "manualSha256": "0f34acd52649dff8e7010d1e8e1d02cd81e7a81233655b44e5c14c6ccdba3c22",
+      "verdict": "accepted",
+      "findings": [
+        "NB82-N5"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/skin-name-guards.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/skin-name-guards.ts.md",
+      "sourceBlob": "55c94fa22da77294822e49ab6b2fd4f9703f4ca7",
+      "sourceSha256": "d46a22b0f542aeb42d9da4bc15531b3ef02cca0747c7e7c9c50469b12b7bf556",
+      "manualSha256": "51d39368df7bd984432b49ef1da2b8f9dfe90efa2563b215ccb46f3680bf21c0",
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "NB82-N1",
+      "file": "apps/electron/src/main/lib/remote-relay-client.ts",
+      "severity": "minor",
+      "claim": "§10 称『3 导出』，实际 4 个（DEFAULT_REMOTE_RELAY_URL/RemoteRelayClientOptions/RemoteRelaySink/RemoteRelayClient；表 3 行合并了 Options/Sink）。",
+      "sourceEvidence": "grep -c \"^export \" remote-relay-client.ts = 4。",
+      "action": "3→4。"
+    },
+    {
+      "id": "NB82-N2",
+      "file": "apps/electron/src/main/lib/process-monitor.ts",
+      "severity": "minor",
+      "claim": "§2/§10/§11 称『17 导出』，实际 19 个（表 9 行含两组 6 合并行，共 19 名）。",
+      "sourceEvidence": "grep -c \"^export \" process-monitor.ts = 19。",
+      "action": "17→19（或注明表行口径）。"
+    },
+    {
+      "id": "NB82-N3",
+      "file": "apps/electron/src/main/lib/remote-service.ts",
+      "severity": "minor",
+      "claim": "§4/§9/§10 称『测试 5 文件 31 用例』，但 §9 自列分项合计 24（commands 7+exploration 11+send-message 3+ws-search 2+heatmap 1）；实测亦 24。",
+      "sourceEvidence": "5 测试文件 grep 计数 7/11/3/2/1 = 24。",
+      "action": "31→24。"
+    },
+    {
+      "id": "NB82-N4",
+      "file": "apps/electron/src/main/lib/remote-service.ts",
+      "severity": "minor",
+      "claim": "§3.3 称命令面『~50 命令』，实际 switch 共 74 个 case 标签（grep 定案；含 chat_* 遗留系列）。",
+      "sourceEvidence": "grep -c \"^    case \" remote-service.ts = 74。",
+      "action": "~50→74（或按剔除遗留 chat 系后的口径注明）。"
+    },
+    {
+      "id": "NB82-N5",
+      "file": "apps/electron/src/main/lib/skin-manager-service.ts",
+      "severity": "minor",
+      "claim": "§9/§10 称『测试 8 用例』，实际 10（test.each 保留名 6 + con.png/正常包/预览超限/限额内 4）。",
+      "sourceEvidence": "skin-manager-service.test.ts：test.each(6) + test( 4 = 10。",
+      "action": "8→10。"
+    },
+    {
+      "id": "NB82-N6",
+      "file": "apps/electron/src/main/lib/skin-manager-service.test.ts",
+      "severity": "minor",
+      "claim": "§2/§5 称『8 个 test()』但自家清单即列 10 项（6+4）；§6『8 中 7』口径混乱。实测 10 用例。",
+      "sourceEvidence": "同 NB82-N5。",
+      "action": "统一为 10（§6 按 7 保留名+2 预览+1 放行 修正）。"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/process-monitor.test.ts.md": "6f3af621086ff7886ec3f25127ad3909ca2fc686fefa6bd029c26ee58ede1c47",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/process-monitor.ts.md": "00cad3297cc4711f590b53357e848811b891cacc6f670c1829422fb3c7090fd5",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-agent-event-log.test.ts.md": "4739832c462b0a877d5acb50db88e5f2cd1e7582b90ca785fa1ae1d2ba67c42b",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-agent-event-log.ts.md": "4f9f82d1f336828e2e0a07615efbb9f97bfcffe7619001e2e89ea0589a51ebd8",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-file-access.test.ts.md": "be0aa907dba05ff5c99fcdf880e7b428c3a2eadaf8661f749b2ca539e7484105",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-file-access.ts.md": "91af319709240efc83e3fc349e9b65d7375c5ef8e96577b3c40c66675bddd42b",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-relay-client.ts.md": "00cd0fa6dff970a309a4b3111c6c39d0ad0ade989ce231f1607be6ddfa5ac5d4",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-service-commands.test.ts.md": "f673c50899e712b778b25d39ba65bc1de803f166f6babe8b76b1bc200bf43c33",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-service-exploration-session.test.ts.md": "1cf0bfbb30ad005042934dc90f34bfed81d165917a4d56fa3d6e6ecbf7b32504",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-service-heatmap.test.ts.md": "75e441aab92f9fb61c1bf2a203691605ba83dbbc868b2b73b64a3f28ef8eeb23",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-service-send-message.test.ts.md": "f82e3cfc3225f80fc71534f4e3eac1fbb01e0d1b5e66c57918ba9b7beaf1b448",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-service-workspace-file-search.test.ts.md": "daa3f7f081a65ba9a56764bfb3d4ab64fcba5e0655f81b32dbd325882165a9c0",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-service.ts.md": "d9be727949d1b6862256677caf43d8c0bec3812993eea3fdfde21dc8f23f20ea",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-workspace-file-search.test.ts.md": "c10b32e90ca01d827714eddff43b704d12e927b09409b5da5886b72be6c292ee",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/remote-workspace-file-search.ts.md": "7e8a47771b1bb85b82679dda16553e3f1576dc2f3323e3dab5e48439a48db2b4",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/skin-manager-service.test.ts.md": "e8be30c5dc7ec3c13186bb33809714a4d5604bc990e0935da6e57a583055d56b",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/skin-manager-service.ts.md": "0f34acd52649dff8e7010d1e8e1d02cd81e7a81233655b44e5c14c6ccdba3c22",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/skin-name-guards.ts.md": "51d39368df7bd984432b49ef1da2b8f9dfe90efa2563b215ccb46f3680bf21c0"
+  },
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "notes": [
+    "G2：18 文件 4649 行全文逐行读（remote-service 2156 行五段、process-monitor 629 两段完整）+ 18 篇手册全文；10 测试文件 58 用例（8/5/5/7/11/1/3/2/6/10）复算——除 skin-manager 8vs10 外全部行号/断言吻合。",
+    "红线逐条对源命中：远程披露边界（mayPublishAgentEventToRemote 深度>32 fail closed/只检 ID 形态）、review 会话默认拒绝、客户端 roots 永不采纳（ws-search/file-access 同策略）、附件绝不授权整个 configDir、CSLab 信任仅显式 bypass 授予/切回撤销、Relay ticket 仅握手发送/帧限 4MB+256KB、pid 无转世双因子 kill、皮肤包禁符号链接/ZIP 路径穿越/Windows 保留名跨平台统一拒。",
+    "6 条 findings 全为计数口径（每文件 ≤2，grep 定案：31→24 用例、~50→74 命令、17→19/3→4 导出、8→10 用例×2）；无行为/红线/测试存在性错误。",
+    "manualSha256 脚本生成=READY 三方核验。"
+  ]
+}

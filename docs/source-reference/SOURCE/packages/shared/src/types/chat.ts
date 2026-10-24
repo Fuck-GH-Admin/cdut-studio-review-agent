@@ -1,0 +1,618 @@
+/**
+ * Chat 相关类型定义
+ *
+ * 包含消息、对话、流式事件等核心类型，
+ * 以及 Chat 模块的 IPC 通道常量。
+ */
+
+import type { ProviderType } from './channel'
+import type { KnowledgeReference } from './knowledge-base'
+
+// ===== 附件相关 =====
+
+/** 附件文件大小上限：100MB */
+export const MAX_ATTACHMENT_SIZE = 100 * 1024 * 1024
+
+/** 文件附件 */
+export interface FileAttachment {
+  /** 附件唯一标识 */
+  id: string
+  /** 原始文件名 */
+  filename: string
+  /** MIME 类型 */
+  mediaType: string
+  /** 相对路径: {conversationId}/{uuid}.ext */
+  localPath: string
+  /** 文件大小（字节） */
+  size: number
+}
+
+/** 保存附件输入 */
+export interface AttachmentSaveInput {
+  /** 对话 ID */
+  conversationId: string
+  /** 原始文件名 */
+  filename: string
+  /** MIME 类型 */
+  mediaType: string
+  /** base64 编码的文件数据 */
+  data: string
+}
+
+/** 保存附件结果 */
+export interface AttachmentSaveResult {
+  /** 保存后的附件信息 */
+  attachment: FileAttachment
+}
+
+/** 通用图片渲染支持的位图 MIME 白名单（拒绝 SVG 等可执行/矢量类型） */
+export type ChatImageMediaType = 'image/png' | 'image/jpeg' | 'image/gif' | 'image/webp'
+
+/** 远程图片确认结果：供渲染层通用图片渲染能力消费 */
+export interface ResolveImageUrlResult {
+  /** 是否确认是受支持的位图 */
+  ok: boolean
+  /** 已确认图片时的 MIME 类型 */
+  mediaType?: ChatImageMediaType
+  /** 已确认图片时可直接用于 <img src> 的 data URL */
+  dataUrl?: string
+  /** 未通过确认时的原因（仅用于日志，不面向用户） */
+  reason?: string
+}
+
+/** 文件选择对话框结果 */
+export interface FileDialogResult {
+  /** 已读取为 base64 的小文件列表 */
+  files: FileDialogFile[]
+  /** 超过内存导入上限的大文件，仅返回路径，供 Agent 作为附加文件引用 */
+  largeFiles?: FileDialogLargeFile[]
+  /** 无法读取或无法识别的文件 */
+  skippedFiles?: FileDialogSkippedFile[]
+}
+
+export interface FileDialogFile {
+  filename: string
+  mediaType: string
+  data: string
+  size: number
+}
+
+export interface FileDialogLargeFile {
+  filename: string
+  mediaType: string
+  size: number
+  path: string
+}
+
+export interface FileDialogSkippedFile {
+  filename: string
+  mediaType?: string
+  size?: number
+  path?: string
+  reason: 'unreadable'
+  message?: string
+}
+
+/** MinerU 解析结果中的图片文件 */
+export interface PaperImage {
+  /** 文件在 zip 中的相对路径（如 "images/figure_1.png"） */
+  name: string
+  /** 图片二进制数据的 Base64 编码 */
+  data: string
+  /** MIME 类型（如 "image/png"） */
+  mimeType: string
+}
+
+/** 论文精读 — MinerU 解析结果 */
+export interface PaperParseResult {
+  /** 解析后的 Markdown 内容（含 LaTeX 公式、HTML 表格） */
+  markdown: string
+  /** PDF 页数 */
+  pages: number
+  /** 消耗的积分 */
+  creditsUsed: number
+  /** 从 MinerU zip 中提取的图片（客户端自行落盘 + 重写路径） */
+  images?: PaperImage[]
+}
+
+/** 论文精读 — PDF 页数估算结果 */
+export interface PageEstimate {
+  /** 估算页数 */
+  pages: number
+  /** 预计消耗积分 */
+  estimatedCredits: number
+}
+
+// ===== 消息相关 =====
+
+export type MessageRole = 'user' | 'assistant' | 'system'
+
+/**
+ * 被截断的历史段（持久化在 sidecar JSONL，仅历史数据兼容）
+ *
+ * 旧的"重发时截断并写入 sidecar"模型已被分支树取代。保留本类型仅用于
+ * 已有 `.discarded.jsonl` 文件的兼容读取 + 历史搜索能命中旧段。新写入不再产生。
+ */
+export interface DiscardedSegmentRecord {
+  /** 该记录的全局唯一 ID（用于还原与定位） */
+  entryId: string
+  /** 触发截断时的时间戳 */
+  discardedAt: number
+  /** 触发截断的入口原因 */
+  reason: 'inline-edit' | 'edit-resend' | 'resend'
+  /** 触发截断的那条 user message 的 ID（用于 UI 关联） */
+  anchorMessageId: string
+  /** 整段被丢弃的消息列表 */
+  segment: ChatMessage[]
+}
+
+/**
+ * 聊天消息
+ *
+ * 消息之间通过 `parentId` 形成 DAG（或简单的链）。一条 user 消息可以有多个
+ * assistant 回复子节点，多条 user 消息也可以拥有同一个 parent（即兄弟节点）。
+ * 任何时刻 ChatView 展示的是 `ConversationMeta.activePath` 这条 root→leaf 链。
+ */
+export interface ChatMessage {
+  /** 消息唯一标识 */
+  id: string
+  /** 父亲节点 ID（首条 user 消息为 null） */
+  parentId: string | null
+  /** 发送者角色 */
+  role: MessageRole
+  /** 消息内容 */
+  content: string
+  /** 创建时间戳 */
+  createdAt: number
+  /** 使用的模型 ID（assistant 消息） */
+  model?: string
+  /** 推理内容（如果模型支持） */
+  reasoning?: string
+  /** 是否被用户中止 */
+  stopped?: boolean
+  /** 流式生成时遇到的错误信息 */
+  error?: string
+  /** 文件附件列表 */
+  attachments?: FileAttachment[]
+  /** 工具活动记录（assistant 消息，工具调用历史） */
+  toolActivities?: ChatToolActivity[]
+  /** 资料库轻量引用。独立于附件，删除消息时不得删除资料实体。 */
+  knowledgeReferences?: KnowledgeReference[]
+}
+
+// ===== 对话相关 =====
+
+/**
+ * 对话（包含消息列表，仅用于运行时）
+ */
+export interface Conversation {
+  /** 对话唯一标识 */
+  id: string
+  /** 对话标题 */
+  title: string
+  /** 消息列表 */
+  messages: ChatMessage[]
+  /** 默认使用的模型 ID */
+  modelId?: string
+  /** 系统提示词 */
+  systemMessage?: string
+  /** 创建时间戳 */
+  createdAt: number
+  /** 更新时间戳 */
+  updatedAt: number
+}
+
+/**
+ * 对话轻量索引项
+ *
+ * 存储在 ~/.proma/conversations.json 中，
+ * 不包含消息列表，用于快速加载对话列表。
+ */
+export interface ConversationMeta {
+  /** 对话唯一标识 */
+  id: string
+  /** 对话标题 */
+  title: string
+  /** 默认使用的模型 ID */
+  modelId?: string
+  /** 使用的渠道 ID */
+  channelId?: string
+  /** 上下文分隔线对应的消息 ID 列表 */
+  contextDividers?: string[]
+  /** 上下文长度（轮数），'infinite' 表示全部包含 */
+  contextLength?: number | 'infinite'
+  /** 是否置顶 */
+  pinned?: boolean
+  /** 是否已归档 */
+  archived?: boolean
+  /**
+   * 最近一次「自动命名窗口」写入标题的时间。
+   *
+   * 存在即说明当前标题由自动流程产生，允许在定稿前继续精修；
+   * 缺失且标题不是默认名时代表标题由用户手动命名（或历史遗留），自动流程必须永久退让。
+   */
+  titleAutoGeneratedAt?: number
+  /** 自动命名窗口内已发起的模型调用次数；达到上限后停止自动改名。 */
+  titleRefineAttempts?: number
+  /** 标题定稿时间。存在即命中锁定：自动流程不再改名，只能由用户手动重命名或重新生成。 */
+  titleLockedAt?: number
+  /**
+   * 主视图展示的"当前激活分支"消息 ID 序列（root→leaf）。
+   * - 不存在或为空：取首条消息为起点（用于兼容性）
+   * - 列表长度 ≥ 1 时：必须构成从某条 parentId=null 的根消息开始的合法链
+   */
+  activePath?: string[]
+  /** 创建时间戳 */
+  createdAt: number
+  /** 更新时间戳 */
+  updatedAt: number
+}
+
+/**
+ * 单条消息在分支树中的概要信息
+ *
+ * 给 BranchTreeView 用，避免把全量 ChatMessage（含 content / attachments）传到 UI。
+ */
+export interface BranchTreeNode {
+  /** 消息 ID */
+  id: string
+  /** 父亲消息 ID */
+  parentId: string | null
+  /** 角色 */
+  role: MessageRole
+  /** 创建时间戳 */
+  createdAt: number
+  /** 摘要文本（首 100 字） */
+  preview: string
+  /** 子节点引用（按创建时间正序） */
+  childIds: string[]
+}
+
+/**
+ * 对话消息 DAG 的快照
+ *
+ * 由后端按主 JSONL 构建，UI 拿到后用 id → node map 渲染树。
+ */
+export interface BranchTreeSnapshot {
+  /** 该对话下所有节点的 map */
+  nodes: Record<string, BranchTreeNode>
+  /** 所有"parentId 为 null"的根节点 ID 列表（通常 1 个） */
+  rootIds: string[]
+  /** 当前激活路径（仅在切换展示时使用） */
+  activePath: string[]
+}
+
+// ===== 消息搜索 =====
+
+/**
+ * 搜索结果中"版本来源"的标记
+ *
+ * 用于在 UI 里区分命中的是当前可见内容、消息内的版本历史，还是已被截断的历史段。
+ */
+export interface MessageSearchVersion {
+  /** 命中来自哪个视角 */
+  source: 'current' | 'history' | 'discarded'
+  /** 仅 history 时存在：该条历史在 history 数组中的索引 */
+  index?: number
+  /** 命中版本产生的时间戳（history / discarded 才有） */
+  editedAt?: number
+  /** 触发版本产生的原因（history / discarded 才有） */
+  reason?: 'inline-edit' | 'edit-resend' | 'resend'
+}
+
+/**
+ * 消息搜索结果
+ */
+export interface MessageSearchResult {
+  /** 对话 ID */
+  conversationId: string
+  /** 对话标题 */
+  conversationTitle: string
+  /** 消息 ID（current / history 命中指当前 messageId；discarded 命中指原 messageId） */
+  messageId: string
+  /** 消息角色 */
+  role: MessageRole
+  /** 匹配上下文片段（约 80 字符） */
+  snippet: string
+  /** snippet 内匹配起始位置 */
+  matchStart: number
+  /** 匹配长度 */
+  matchLength: number
+  /** 是否已归档 */
+  archived?: boolean
+  /** 版本来源标签（默认视为 current） */
+  version?: MessageSearchVersion
+  /** 仅 discarded 命中存在：所属历史段的 entryId */
+  segmentEntryId?: string
+}
+
+// ===== 消息发送 =====
+
+/**
+ * 发送消息的输入参数
+ */
+export interface ChatSendInput {
+  /** 对话 ID */
+  conversationId: string
+  /** 本次发送的唯一流式代次，用于丢弃迟到的旧事件。 */
+  runId: string
+  /** 用户消息内容 */
+  userMessage: string
+  /** 消息历史（用于上下文） */
+  messageHistory: ChatMessage[]
+  /** 渠道 ID */
+  channelId: string
+  /** 模型 ID */
+  modelId: string
+  /** 系统提示词（可选） */
+  systemMessage?: string
+  /** 上下文长度（轮数），'infinite' 表示全部包含 */
+  contextLength?: number | 'infinite'
+  /** 上下文分隔线对应的消息 ID 列表 */
+  contextDividers?: string[]
+  /** 文件附件列表 */
+  attachments?: FileAttachment[]
+  /** 本轮新增的资料库引用，由主进程根据 itemId 重新标准化。 */
+  knowledgeReferences?: KnowledgeReference[]
+  /** 是否启用思考模式 */
+  thinkingEnabled?: boolean
+  /** 本次请求启用的工具 ID 列表（由前端工具选择器决定） */
+  enabledToolIds?: string[]
+  /**
+   * 重发 / 编辑后重发场景：该 user 消息节点已由 forkBranchAt 创建并写入 JSONL。
+   * 为 true 时 sendMessage 不再追加一条重复的 user 消息，且从发送给模型的历史中剔除该节点本身。
+   */
+  pendingUserMessageId?: string
+}
+
+// ===== 标题生成 =====
+
+/**
+ * 生成对话标题的输入参数
+ */
+export interface GenerateTitleInput {
+  /** 用户消息内容（用于生成标题） */
+  userMessage: string
+  /** 渠道 ID */
+  channelId: string
+  /** 模型 ID */
+  modelId: string
+  /**
+   * 自动命名窗口内累计到的「有信息量」用户消息。
+   *
+   * 给定时改用多轮窗口 prompt（概括主题，不许照抄原文）；缺省时退回单条消息 prompt。
+   */
+  contextMessages?: string[]
+}
+
+// ===== 流式事件载荷 =====
+
+/**
+ * 流式内容片段事件
+ */
+export interface StreamChunkEvent {
+  /** 对话 ID */
+  conversationId: string
+  /** 本次流式运行的唯一代次。 */
+  runId: string
+  /** 内容增量 */
+  delta: string
+}
+
+/**
+ * 流式推理片段事件
+ */
+export interface StreamReasoningEvent {
+  /** 对话 ID */
+  conversationId: string
+  /** 本次流式运行的唯一代次。 */
+  runId: string
+  /** 推理增量 */
+  delta: string
+}
+
+/**
+ * 流式完成事件
+ */
+export interface StreamCompleteEvent {
+  /** 对话 ID */
+  conversationId: string
+  /** 本次流式运行的唯一代次。 */
+  runId: string
+  /** 使用的模型 */
+  model: string
+  /** 助手消息 ID */
+  messageId: string
+}
+
+/**
+ * 流式错误事件
+ */
+export interface StreamErrorEvent {
+  /** 对话 ID */
+  conversationId: string
+  /** 本次流式运行的唯一代次。 */
+  runId: string
+  /** 错误信息 */
+  error: string
+  /** 结构化错误代码（如 'insufficient_credits'），供 UI 程序化处理与引导 */
+  code?: string
+  /** 错误标题（结构化错误时展示，如「额度不足」） */
+  errorTitle?: string
+}
+
+/**
+ * Chat 工具活动（记忆工具调用状态）
+ */
+export interface ChatToolActivity {
+  /** 工具调用 ID */
+  toolCallId: string
+  /** 工具名称 */
+  toolName: string
+  /** 活动类型：开始 / 结果 */
+  type: 'start' | 'result'
+  /** 执行结果（仅 result 时存在） */
+  result?: string
+  /** 是否遇到错误 */
+  isError?: boolean
+  /** 工具调用参数（result 事件中携带，用于语义化短语和结构化结果渲染） */
+  input?: Record<string, unknown>
+}
+
+/**
+ * 流式工具活动事件
+ */
+export interface StreamToolActivityEvent {
+  /** 对话 ID */
+  conversationId: string
+  /** 本次流式运行的唯一代次。 */
+  runId: string
+  /** 工具活动详情 */
+  activity: ChatToolActivity
+}
+
+// ===== 模型选项 =====
+
+/**
+ * 模型选项（扁平化的渠道+模型组合）
+ *
+ * 用于渲染进程的模型选择器下拉列表
+ */
+export interface ModelOption {
+  /** 渠道 ID */
+  channelId: string
+  /** 渠道名称 */
+  channelName: string
+  /** 模型 ID */
+  modelId: string
+  /** 模型显示名称 */
+  modelName: string
+  /** AI 供应商类型 */
+  provider: ProviderType
+  /** 当前用户有效模型倍率（代管渠道由服务端注入）。 */
+  multiplier?: number
+  /** 该逻辑模型当前选择的协议候选。 */
+  protocol?: 'openai' | 'anthropic'
+  /** 同名模型被合并的渠道数量，供模型选择器观察路由池。 */
+  channelCount?: number
+}
+
+// ===== 分页加载相关 =====
+
+/**
+ * 最近消息加载结果
+ *
+ * 用于分页加载：首次仅加载尾部 N 条消息，
+ * 向上滚动时再加载全部。
+ */
+export interface RecentMessagesResult {
+  /** 本次返回的消息列表（按时间正序） */
+  messages: ChatMessage[]
+  /** 对话中的总消息数 */
+  total: number
+  /** 是否还有更多历史消息 */
+  hasMore: boolean
+}
+
+// ===== IPC 通道常量 =====
+
+/**
+ * Chat 相关 IPC 通道常量
+ */
+export const CHAT_IPC_CHANNELS = {
+  // 对话管理
+  /** 获取对话列表 */
+  LIST_CONVERSATIONS: 'chat:list-conversations',
+  /** 创建对话 */
+  CREATE_CONVERSATION: 'chat:create-conversation',
+  /** 获取对话消息（全部） */
+  GET_MESSAGES: 'chat:get-messages',
+  /** 获取对话最近 N 条消息（分页加载） */
+  GET_RECENT_MESSAGES: 'chat:get-recent-messages',
+  /** 更新对话标题 */
+  UPDATE_TITLE: 'chat:update-title',
+  /** 自动命名窗口：流结束后由主进程按前几轮有效用户消息生成/精修标题 */
+  AUTO_TITLE: 'chat:auto-title',
+  /** 重新生成对话标题（绕过定稿锁定，用前几轮有效消息重命名并重新锁定） */
+  REGENERATE_TITLE: 'chat:regenerate-title',
+  /** 删除对话 */
+  DELETE_CONVERSATION: 'chat:delete-conversation',
+  /** 更新对话使用的模型/渠道 */
+  UPDATE_MODEL: 'chat:update-conversation-model',
+
+  // 消息发送
+  /** 发送消息（触发 AI 流式响应） */
+  SEND_MESSAGE: 'chat:send-message',
+  /** 向对话追加一条可见、持久的资料引用消息。 */
+  ADD_KNOWLEDGE_REFERENCES: 'chat:add-knowledge-references',
+  /** 中止生成 */
+  STOP_GENERATION: 'chat:stop-generation',
+  /** 删除消息 */
+  DELETE_MESSAGE: 'chat:delete-message',
+  /** 从指定消息开始截断后续消息（包含该消息）— 已废弃，改用分支模型 */
+  TRUNCATE_MESSAGES_FROM: 'chat:truncate-messages-from',
+  /** 获取当前对话的"激活分支"线性消息流（root→leaf） */
+  GET_BRANCH: 'chat:get-branch',
+  /** 设置对话的激活分支消息 ID 序列 */
+  SET_ACTIVE_PATH: 'chat:set-active-path',
+  /** 获取对话全量分支树快照（nodes + rootIds + activePath） */
+  GET_BRANCH_TREE: 'chat:get-branch-tree',
+  /** 在指定 anchor 的兄弟位置 fork 一条新 user message（用于重发/编辑重发） */
+  FORK_BRANCH_AT: 'chat:fork-branch-at',
+  /** 按消息 ID 拉取单条消息的完整 content（hover popover 用） */
+  GET_MESSAGE_CONTENT: 'chat:get-message-content',
+  /** 更新上下文分隔线 */
+  UPDATE_CONTEXT_DIVIDERS: 'chat:update-context-dividers',
+  /** 生成对话标题 */
+  GENERATE_TITLE: 'chat:generate-title',
+
+  // 附件管理
+  /** 保存附件到本地 */
+  SAVE_ATTACHMENT: 'chat:save-attachment',
+  /** 读取附件（返回 base64） */
+  READ_ATTACHMENT: 'chat:read-attachment',
+  /** 另存图片到用户选择的位置（原生 Save As 对话框） */
+  SAVE_IMAGE_AS: 'chat:save-image-as',
+  /** 确认远程 URL 是否为图片，返回可直接渲染的 data URL（通用图片渲染能力） */
+  RESOLVE_IMAGE_URL: 'chat:resolve-image-url',
+  /** 保存应用内置资源文件到用户选择的位置（原生 Save As 对话框） */
+  SAVE_RESOURCE_FILE_AS: 'chat:save-resource-file-as',
+  /** 删除附件 */
+  DELETE_ATTACHMENT: 'chat:delete-attachment',
+  /** 打开文件选择对话框 */
+  OPEN_FILE_DIALOG: 'chat:open-file-dialog',
+  /** 提取附件文档的文本内容 */
+  EXTRACT_ATTACHMENT_TEXT: 'chat:extract-attachment-text',
+  /** 论文精读 — 打开对话框选 PDF 并调用 MinerU 解析 */
+  PARSE_PAPER: 'chat:parse-paper',
+  /** 论文精读 — 给定文件路径直接调用 MinerU 解析 */
+  PARSE_PAPER_BY_PATH: 'chat:parse-paper-by-path',
+  /** 论文精读 — 估算 PDF 页数和积分 */
+  ESTIMATE_PAPER_PAGES: 'chat:estimate-paper-pages',
+
+  // 置顶管理
+  /** 切换对话置顶状态 */
+  TOGGLE_PIN: 'chat:toggle-pin',
+  /** 切换对话归档状态 */
+  TOGGLE_ARCHIVE: 'chat:toggle-archive',
+  /** 搜索对话消息内容 */
+  SEARCH_MESSAGES: 'chat:search-messages',
+
+  // 教程
+  /** 获取教程内容 */
+  GET_TUTORIAL_CONTENT: 'chat:get-tutorial-content',
+  /** 创建欢迎对话（含教程附件） */
+  CREATE_WELCOME_CONVERSATION: 'chat:create-welcome-conversation',
+
+  // 流式事件（主进程 → 渲染进程推送）
+  /** 内容片段 */
+  STREAM_CHUNK: 'chat:stream:chunk',
+  /** 推理片段 */
+  STREAM_REASONING: 'chat:stream:reasoning',
+  /** 流式完成 */
+  STREAM_COMPLETE: 'chat:stream:complete',
+  /** 流式错误 */
+  STREAM_ERROR: 'chat:stream:error',
+  /** 工具活动事件（记忆工具调用/结果指示） */
+  STREAM_TOOL_ACTIVITY: 'chat:stream:tool-activity',
+} as const

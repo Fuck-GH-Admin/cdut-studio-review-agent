@@ -1,0 +1,159 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-34-r2",
+  "revisionOf": "nb-34",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-30-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "sealId": "seal-e48c87c2da829c9e",
+  "reviewedAtUtc": "2026-10-23T22:13:15Z",
+  "reviewedManualHashes": {
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/highlight/index.ts.md": {
+      "manualSha256": "aa02f83d0efedc46d7798ff0940c464f779631342d32d319c1bb3065e4dac371",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/highlight/language-detector.ts.md": {
+      "manualSha256": "be7c0ef0299765f3d4596d9e69c26afd150cd08de13d67d98bf110bc724bd296",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/highlight/shiki-service.ts.md": {
+      "manualSha256": "a96616406ca814aed82ab8cfa6137cdb7622850417a4c642f53cc20efca5b292",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/index.ts.md": {
+      "manualSha256": "ba9494baa5d849ca3aac144ba4bd1fa59ede683a87da891aecc2663cbbacd116",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/office-engine/docx-reflow-solver.ts.md": {
+      "manualSha256": "49a79e3223cc57b844a1cac86bde4c01998110203288563af3e0fff4ae3cdfa2",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/office-engine/index.ts.md": {
+      "manualSha256": "1bb6eebc01a6d0333b9231dc060a50035a056d5cd7f3ab721a55a6027d0d5817",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/office-engine/office-engine.test.ts.md": {
+      "manualSha256": "27c5a96711cb719da1d4f972546ab8ffb628f2701da5f533c21e1b789c1415fc",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/office-engine/office-serializer.ts.md": {
+      "manualSha256": "c3f0239f6d3b47189e87f6da133e166118a89b0e85b6374f1323674b4fd8c3ee",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/office-engine/ooxml-zip-reader.ts.md": {
+      "manualSha256": "a35b573afdc56775c5cabb5b9e408e1a2fd24c55bbf0149eac3cf1e0513cfebc",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/office-engine/pptx-topology-solver.ts.md": {
+      "manualSha256": "d7e2c249426e3c79b01db2be7282b49212f60fe15fcf2304b301bed22d1a6762",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/office-engine/types.ts.md": {
+      "manualSha256": "7f6c8c7add67159489a8ae15e505be1a7f5589261bcd9c2e9ac22cf7d9f770dc",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/office-engine/xlsx-grid-solver.ts.md": {
+      "manualSha256": "cf1f8931a43fa5fae5512cd80bf28f0c61934df2db260eca4e465b3181cb303d",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/__tests__/max-regret-router.test.ts.md": {
+      "manualSha256": "fa058474a9ea354229d71c14dee6e37bdb02e39f1981e06d2c160b2873290278",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/__tests__/pdf-engine.test.ts.md": {
+      "manualSha256": "1346cced9ad50b12ca81442b06edbf3fed3ba8999edc173299ed76b6f53d9b4a",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/__tests__/source-preserving-aligner.test.ts.md": {
+      "manualSha256": "86f915c5e118d132b870413de7ce18d3bc8708672f4e7ea965b952f59e5a24f9",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/__tests__/table-decomposer.test.ts.md": {
+      "manualSha256": "b3393e01618f6180087890b0f84343a69d6fbf875650167ab0b52a0756c4755b",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/__tests__/trapdoc-guard.test.ts.md": {
+      "manualSha256": "025eadf4e53322115156fa88176ab1bd9eac9eb2654dcae5a867d45fbe780eca",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/pdf-engine/academic-enricher.ts.md": {
+      "manualSha256": "3c0159de4ba54993f8534fd25c03ef787ac82243960e7b39c864b6cf96414861",
+      "verdict": "accepted"
+    }
+  },
+  "sourceBindings": {
+    "packages/core/src/highlight/index.ts": {
+      "sourceBlob": "7e897c46f11c123b3428418e2d6203d170c090f5",
+      "sourceSha256": "6b317865f059780ab0f80d973f1bb86b7dde5cf83155fba1a5676131bc3e3e35"
+    },
+    "packages/core/src/highlight/language-detector.ts": {
+      "sourceBlob": "d16db1f692b1b965cc8ab3a1b8f6e7b11b532099",
+      "sourceSha256": "a818ab12db177fbe5c04745abbc18f27105a8f6f28520751e1b6ad9e341f56b3"
+    },
+    "packages/core/src/highlight/shiki-service.ts": {
+      "sourceBlob": "f4460ca3943a4fdda1111795d882e6344ebf9a2a",
+      "sourceSha256": "edfd594ddc8ade1963d8ca2f758f1dd41c265efae1117ccd6b7456071cb760c0"
+    },
+    "packages/core/src/index.ts": {
+      "sourceBlob": "46f852943acad287bbd43908dbf25c230ea1e21e",
+      "sourceSha256": "4a7cc72db07079268af6d55ecc590a6a1f2d63ebce1bac4ec1df60dc21f61ceb"
+    },
+    "packages/core/src/office-engine/docx-reflow-solver.ts": {
+      "sourceBlob": "2d59b32930699f151c002aa71067b874df0dd2ee",
+      "sourceSha256": "7e1e7f528510c6a91ed6ecafb1d3ff1f461fce570f3e0f92c1306d81fb5f623c"
+    },
+    "packages/core/src/office-engine/index.ts": {
+      "sourceBlob": "422bc94c89774cc06f1de0212490a4da8d7a50fe",
+      "sourceSha256": "6a2d87bc8c9c98ce45b2e5c19a3e02f4a90cc142f974cd6dfbeedcd37d9de4de"
+    },
+    "packages/core/src/office-engine/office-engine.test.ts": {
+      "sourceBlob": "8c0bcc4b82ca0a361a591eb47fcf6f77535783df",
+      "sourceSha256": "c203bbd47f8ed67e6f9af93daeda3f3834d00b4865bdef013d6dc9e1ffb081bf"
+    },
+    "packages/core/src/office-engine/office-serializer.ts": {
+      "sourceBlob": "271e8f5db2c200a2d547ec47b62c4e5059dd3bad",
+      "sourceSha256": "e87ed3bbc8cd50c75e93cefeec9602e522464e264ec0ead76aea773e137e0155"
+    },
+    "packages/core/src/office-engine/ooxml-zip-reader.ts": {
+      "sourceBlob": "eed923c02a907a82c73ff7e2b17cc62afdf00f64",
+      "sourceSha256": "e4f16ebf9e548536b4c7d35104b20e7a38b3424ce3a0f53e8db67cc0e6b6de1c"
+    },
+    "packages/core/src/office-engine/pptx-topology-solver.ts": {
+      "sourceBlob": "7376010b087ee7654688de99f3789ba2db27b872",
+      "sourceSha256": "6d32238507396554c5fd07884850b70b31e7366cfe2526ed9a9e0323dcf56364"
+    },
+    "packages/core/src/office-engine/types.ts": {
+      "sourceBlob": "cf777b1c0ec43d248b42997ab313e8b02f0a1599",
+      "sourceSha256": "9ed497496b47d80b68e4d9503ec18e0ef396aaf55809e1e4220f32029bbce8ac"
+    },
+    "packages/core/src/office-engine/xlsx-grid-solver.ts": {
+      "sourceBlob": "a9750ca2123c297b86fbdc0c786a1e1b1a591a0f",
+      "sourceSha256": "827713598d1c0bb6c33e07e04245600261d07d07da4e83f6873c21eaeccb1725"
+    },
+    "packages/core/src/pdf-engine/__tests__/max-regret-router.test.ts": {
+      "sourceBlob": "5cd5a69a75fd5c9b1eb0900f0f916d20cd1ace72",
+      "sourceSha256": "a77db8d268478b13ad9157b8043a8973dc5757670d38e683f7d9d9a95f592a08"
+    },
+    "packages/core/src/pdf-engine/__tests__/pdf-engine.test.ts": {
+      "sourceBlob": "3dd6d5c8d969f40e5584f0c45600e7d04e1c4451",
+      "sourceSha256": "2c0d8a3c9cf86ab093b4c24a1689a232b85a34b87d4c4cee1a382100c36a99a3"
+    },
+    "packages/core/src/pdf-engine/__tests__/source-preserving-aligner.test.ts": {
+      "sourceBlob": "a52bc9237adeac97fc11df07869050fd08609159",
+      "sourceSha256": "cd9de7904f426b0711ee341506be266238608759142dbd021fd3a5844e5ec058"
+    },
+    "packages/core/src/pdf-engine/__tests__/table-decomposer.test.ts": {
+      "sourceBlob": "49b74f9de6e39c6e7e097d1796195cc09a6cee67",
+      "sourceSha256": "1a415ffe8b9a15764581f57e9b3c7a168b9baba3b285c15f37e3059e06839074"
+    },
+    "packages/core/src/pdf-engine/__tests__/trapdoc-guard.test.ts": {
+      "sourceBlob": "d11ad9410a06a07bd495ee939424e53706b14af8",
+      "sourceSha256": "43c1277beecbe2f792b899c996a0dc4d86ec689ee0fcbbb72b884cf6f74fc966"
+    },
+    "packages/core/src/pdf-engine/academic-enricher.ts": {
+      "sourceBlob": "9b090ec03a1de09dc30eb26703e0758858f63052",
+      "sourceSha256": "cb52ec1919a2c9809459cd57e9cd7e3db49f1bd00163ed2774054fe7017b9745"
+    }
+  },
+  "qaNotes": "18/18 accepted；NB34R1-N1 核销；17 篇绑定 r1/父批证据。NOT_RUN。"
+}

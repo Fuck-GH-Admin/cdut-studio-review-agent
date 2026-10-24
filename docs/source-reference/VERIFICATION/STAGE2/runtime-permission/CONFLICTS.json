@@ -1,0 +1,70 @@
+{
+  "schema": "dsh-r07-stage2-conflicts/1",
+  "track": "runtime-permission",
+  "root": "docs-r07-index-qa-extra-01-20261024",
+  "atUtc": "2026-10-23T22:01:00Z",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "note": "类型仅 doc_error / implementation_gap / unknown。已证实实现缺陷如实保留供阶段三设计差异报告，当前不做产品修复。manual hash 栏为 TEAM-FILE-OWNERSHIP（atUtc 2026-10-23T21:25:05Z）登记的手册路径与源 blob；手册正文 hash 未逐一实算=标注。",
+  "items": [
+    {
+      "id": "C-01",
+      "type": "doc_error",
+      "title": "review-model-gateway.ts 头注释「三种 provider」与代码 4 项不符",
+      "sourceEvidence": "apps/electron/src/main/lib/review/review-model-gateway.ts:4「只允许 REVIEW_MODEL_PROVIDERS 里的三种 provider」，注释列举 openai/custom/ollama；实际 REVIEW_MODEL_PROVIDERS=['openai','deepseek','custom','ollama']（packages/shared/src/types/review.ts:478，本轨亲读），deepseek 未入注释；isAllowedProvider :156-158 按 4 项放行。",
+      "sourceBlob": "6d2715a038dbcaa7f85a774fe4a62a1703eec91f",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-model-gateway.ts.md",
+      "manualHashNote": "未实算（本轨只读时间窗内）；主责合改时以当前 manual 字节为准",
+      "primaryOwner": "docs-r07-author-models-20261023（batch pilot-models）",
+      "suggestedFix": "头注释改「四种 provider」并补 deepseek 一行（或解释 deepseek 归属 OpenAI 兼容线），与 review.ts:478 对齐；若手册复述「三种」一并校正（本轨 grep「三种|三个 provider|3 种」在该 manual 0 命中，正文口径待主责自查）。",
+      "handoff": "handoffs/STAGE2-runtime-permission-TO-LEAD.md（唯一作者 handoff，不自行覆盖主责文档）"
+    },
+    {
+      "id": "C-02",
+      "type": "implementation_gap",
+      "title": "review AI 网关 6 个 IPC 入口无 sender/actor 守卫，与同文件 T01 入口不一致",
+      "sourceEvidence": "review-ipc.ts 有 guard 的对照：review-v3:t01-model-draft handler :977-982 使用 assertC0ReviewMainSender（review-c0-authority.ts:21，本轨亲读）；无 guard：GENERATE_RULE_OUTLINE :1422-1433（本轨亲读 handler 头）、EXTRACT_ITEMS :1435-1443、RUN_REVIEW :1452-1458、ASSISTANT_CHAT :1471-1482、RUN_REVIEW_V2 :1087-1091、RUN_BATCH_V2 :1070-1085（调查组逐一读 handler 体，负检索 grep 'assertC0ReviewMainSender(event)|assertMainWindowSender(event' 43 处不含此 6 个）。影响：网关层仅有 provider 白名单一道技术闸（review-model-gateway.ts 内授权符号 0 命中），授权依赖 IPC 层而 6 处缺失。",
+      "sourceBlob": "（review-ipc.ts blob 未取，见 RESULT.gaps）",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-ipc.ts.md",
+      "manualHashNote": "未实算",
+      "primaryOwner": "TEAM-FILE-OWNERSHIP 中 review-ipc.ts 条目主责（nb 线作者；待 lead 按归属表指派）",
+      "suggestedFix": "阶段三设计差异报告裁定：6 个 AI 网关入口统一补 sender 守卫或明确豁免理由；本轨不改产品。",
+      "handoff": "handoffs/STAGE2-runtime-permission-TO-LEAD.md"
+    },
+    {
+      "id": "C-03",
+      "type": "implementation_gap",
+      "title": "applyAgentModelRoutingToEnv 生产零调用（死导出）+ 子agent 模型路由双接口并存",
+      "sourceEvidence": "agent-model-routing.ts:48 applyAgentModelRoutingToEnv 唯一调用方为 agent-model-routing.test.ts:50/:60（本轨亲 grep 全 main 树）；生产路径 agent-orchestrator.ts:1232 resolveAgentModelRouting 后于 :2082 以 deepSeekSubagentModel 参数直传（本轨亲读），同一关切两套接口，env 版是否应接线或删除无定论。",
+      "sourceBlob": "5cb1da85f98ca02a0f92dfc2b84606da8c1aeefe",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-model-routing.ts.md",
+      "manualHashNote": "未实算",
+      "primaryOwner": "docs-r07-author-nb-05-20261023（batch nb-49）",
+      "suggestedFix": "阶段三裁定：删除死导出或接线；若手册把它写成生效机制=另立 doc_error（本轨未查该 manual 正文，标注待验）。",
+      "handoff": "handoffs/STAGE2-runtime-permission-TO-LEAD.md"
+    },
+    {
+      "id": "C-04",
+      "type": "unknown",
+      "title": "凭据/OAuth/代理生产端/子进程/MCP/权限服务/模型自检差异 未完成核对",
+      "sourceEvidence": "本轨内部调查组（凭据/MCP/自检）中断无产出；本人在 30 分钟窗口内优先完成 C1 全链与 C3/C6/C7 抽查。未核清单：agent-runtime-credentials.ts、codex-oauth-service.ts、agent-runtime-env.ts、pi-request-proxy.ts 生产端、pi-powershell-tool.ts、pi-harness-lifecycle.ts 子进程清理、agent-permission-service.ts 导出 API、mcp-validator.ts/pi-mcp-tools.ts/lark-mcp-service.ts、「模型自检 vs 实际可调用」差异。既有手册/accepted 事实中相关结论一律视为线索待验，不冒充已验。",
+      "sourceBlob": "n/a",
+      "manual": "n/a",
+      "manualHashNote": "n/a",
+      "primaryOwner": "n/a（本轨自欠）",
+      "suggestedFix": "续轮补核（缺口清单=RESULT.gaps），或 lead 改派；不得据此宣称本轨全绿。",
+      "handoff": "handoffs/STAGE2-runtime-permission-TO-LEAD.md"
+    },
+    {
+      "id": "C-05",
+      "type": "unknown",
+      "title": "REVIEW_MODEL_PROVIDERS 白名单条目与「已移出白名单」历史决策的一致性未核",
+      "sourceEvidence": "review-model-gateway.ts:5-7 注释称 openai-responses 已移出白名单（决策 #27）；本轨未查决策台账与 shared 类型是否仍有残留引用（未检索）。",
+      "sourceBlob": "6d2715a038dbcaa7f85a774fe4a62a1703eec91f",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-model-gateway.ts.md",
+      "manualHashNote": "未实算",
+      "primaryOwner": "docs-r07-author-models-20261023",
+      "suggestedFix": "阶段三核对决策 #27 与代码现状；本轨登记不结论。",
+      "handoff": "handoffs/STAGE2-runtime-permission-TO-LEAD.md"
+    }
+  ]
+}

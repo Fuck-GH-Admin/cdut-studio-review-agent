@@ -1,0 +1,112 @@
+{
+  "schema": "dsh-r07-index-review-result/1",
+  "batch": "index-p01-app-shell__docs__assets",
+  "groupId": "p01-app-shell__docs__assets",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-index-author-20261023",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T20:35:00Z",
+  "sealedAtUtc": "2026-10-23T18:04:43Z",
+  "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__docs__assets.md",
+  "artifactSha256": "03fdaa25b2fd791971b2d7d59319f1f8fee45066352af61bb0fd6e3a94a1ea2a",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 6,
+    "accepted": 6,
+    "revision_required": 0,
+    "unknown": 0,
+    "blocking": 0,
+    "nonBlocking": 0
+  },
+  "gates": {
+    "G0_INDEX": "PASS",
+    "G1_INDEPENDENT_SOURCE_REVIEW": "PASS",
+    "G2_SEAL_CONSISTENCY": "PASS",
+    "note": "G0 等价 6/6、封版三方哈希全对；change 标注与锁一致；零消费者负向检索 QA 独立复核。"
+  },
+  "g0Evidence": {
+    "stockScript": "ERRATA-E1 沿登记；等价检查 6/6 PASS"
+  },
+  "files": [
+    {
+      "path": "docs/assets/screenshots/profer-main-demo.png",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__docs__assets.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__docs__assets.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#docs--assets--screenshots--profer-main-demo.png",
+      "line": 8,
+      "sourceBlob": "9033aacad65f8ffa6dfa04a59d2b6c2c5d300e2d",
+      "sourceSha256": "b2fc6a7a62aaa5684ada8637631756e85598280a85502e02ccff58cc400fac5a",
+      "manualSha256": "03fdaa25b2fd791971b2d7d59319f1f8fee45066352af61bb0fd6e3a94a1ea2a",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "零仓内消费者经 QA 负向全树检索复核（screenshots 同词命中均为无关项：guizang skill 文档、ui.mjs 自有截图目录）；对外物料定性=推断，标注诚实。"
+    },
+    {
+      "path": "docs/assets/screenshots/proma-agent-demo.png",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__docs__assets.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__docs__assets.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#docs--assets--screenshots--proma-agent-demo.png",
+      "line": 18,
+      "sourceBlob": "4243e5b7b48817a56736295074ab3de38270c543",
+      "sourceSha256": "0b4d93d2ffdf2ee4679a56ea07d688e4643b0eeb9025a87f1ce1ad586e8147cf",
+      "manualSha256": "03fdaa25b2fd791971b2d7d59319f1f8fee45066352af61bb0fd6e3a94a1ea2a",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "零仓内消费者经 QA 负向全树检索复核（screenshots 同词命中均为无关项：guizang skill 文档、ui.mjs 自有截图目录）；对外物料定性=推断，标注诚实。"
+    },
+    {
+      "path": "docs/assets/screenshots/proma-chat-demo.png",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__docs__assets.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__docs__assets.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#docs--assets--screenshots--proma-chat-demo.png",
+      "line": 28,
+      "sourceBlob": "01320d2e86c7bac0c05958ef93fec1a4be9a7bfb",
+      "sourceSha256": "d1ee59db8adc73225e1535ed8a600bf0854762cfab0c06cbce4fae9f0545c332",
+      "manualSha256": "03fdaa25b2fd791971b2d7d59319f1f8fee45066352af61bb0fd6e3a94a1ea2a",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "零仓内消费者经 QA 负向全树检索复核（screenshots 同词命中均为无关项：guizang skill 文档、ui.mjs 自有截图目录）；对外物料定性=推断，标注诚实。"
+    },
+    {
+      "path": "docs/assets/screenshots/proma-mcp-demo.png",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__docs__assets.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__docs__assets.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#docs--assets--screenshots--proma-mcp-demo.png",
+      "line": 38,
+      "sourceBlob": "59f283691082a7cdd07d1e92a810455b3b3028c4",
+      "sourceSha256": "761599cb075591d3978427fc8b5ce6deb900f5471209b73cb638f3a81e6f4b4a",
+      "manualSha256": "03fdaa25b2fd791971b2d7d59319f1f8fee45066352af61bb0fd6e3a94a1ea2a",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "零仓内消费者经 QA 负向全树检索复核（screenshots 同词命中均为无关项：guizang skill 文档、ui.mjs 自有截图目录）；对外物料定性=推断，标注诚实。"
+    },
+    {
+      "path": "docs/assets/screenshots/proma-skills-demo.png",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__docs__assets.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__docs__assets.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#docs--assets--screenshots--proma-skills-demo.png",
+      "line": 48,
+      "sourceBlob": "6446017e440181a4e0c93bbcda00afce78232668",
+      "sourceSha256": "10b5f1328f151e3eb4f54651e8ca203d6e62935a63af3041debe108a6c335189",
+      "manualSha256": "03fdaa25b2fd791971b2d7d59319f1f8fee45066352af61bb0fd6e3a94a1ea2a",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "零仓内消费者经 QA 负向全树检索复核（screenshots 同词命中均为无关项：guizang skill 文档、ui.mjs 自有截图目录）；对外物料定性=推断，标注诚实。"
+    },
+    {
+      "path": "docs/assets/screenshots/proma-typeless-input.png",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__docs__assets.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__docs__assets.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#docs--assets--screenshots--proma-typeless-input.png",
+      "line": 58,
+      "sourceBlob": "aec7cf252063289d8a267afaaaf18dd8053ddec5",
+      "sourceSha256": "8195a7c90a596d4d6a9df5a563b632f421af6c55fd2d1a3f633e94341d8ac12b",
+      "manualSha256": "03fdaa25b2fd791971b2d7d59319f1f8fee45066352af61bb0fd6e3a94a1ea2a",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "零仓内消费者经 QA 负向全树检索复核（screenshots 同词命中均为无关项：guizang skill 文档、ui.mjs 自有截图目录）；对外物料定性=推断，标注诚实。"
+    }
+  ],
+  "findings": [],
+  "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局账；未跑产品测试/typecheck/构建/GUI；未 commit/push；结论只覆盖本批。"
+}

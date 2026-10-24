@@ -1,0 +1,263 @@
+{
+  "schema": "r07-review-result/1",
+  "batch": "nb-109",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-07-20261023",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "reviewedAtUtc": "2026-10-23T20:57:10Z",
+  "sealId": "seal-c9a05632bfce1644",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "g0": {
+    "result": "PASS",
+    "hashChain": "DONE/READY/ZIP 实算一致",
+    "zip": "逐条目==盘上、无 READY-DONE",
+    "sourceBinding": "18/18==SCOPE==MANIFEST",
+    "manualBinding": "18/18 无 drift",
+    "changesDiff": "重放 18/18 逐字节==stage",
+    "humanColumns": "18/18",
+    "metadata": "18/18"
+  },
+  "g1": {
+    "result": "PASS",
+    "lineRefs": "带名引用 25/25 在范围"
+  },
+  "g2": {
+    "result": "FULL",
+    "method": "18 源文件 4571 行逐行深读（事实库 reviews/nb-109/SOURCE-CHECKLIST.md §1-12）+18 手册逐篇对照；重点实测：15 文件导出计数、2 测试文件用例计数（6/3）、100MB 分流/OFV 弃用注释/PPTX revision 双检/reveal flash 红线/空目录 800ms 重试/四级归一等语义锚点",
+    "positives": [
+      "15 文件导出计数与手册全对（2/2/1×12/index 5/MentionList 3/FileBrowser 3）",
+      "2 测试文件用例计数精确（nav 6/layout 3）且断言锚点逐条对应（含 192.168 回归双断言、7 种本机地址全列）",
+      "语义红线与缺陷注释如实转写：reveal flash 末关键帧「不要改 globals.css」红线、OFV imagePlugin 弃用缘由、mousedown 防漏选、blur 100ms、800ms 空目录重试、mx-2 留白清选、URL 脏标记、「本地文件预览不弹风险告知」",
+      "竞态治理注释成体系：mention 四重校验、SearchBar 三 ref、BrowserViewport 双序号+五观察者、PPTX revision 双检+聚光灯「挂载后才消费」",
+      "诚实登记：tree-row-layout/mention-utils/silurus-bridge 等非本批、移动失败仅 console.error、无专属测试文件如实声明"
+    ],
+    "findingsTotal": 0,
+    "notesTotal": 0
+  },
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/BrowserPanel.tsx.md": "a2bd9c3c7c1c3d73a6b674eaaf264d5a48d2bd60ede1116585e3b88b392c6aa8",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/BrowserStartPage.tsx.md": "3deeae3cbc1c55ce9b5de95d3f7b06f29ed232facaf9244752dd5724a552f9f3",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/BrowserTabContent.tsx.md": "cf26a3e2881f2d0ef115d6fe9bb3a5e291067cb532a81112526f1c268abdd480",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/BrowserViewport.tsx.md": "36955a62fdc7f76293da59dff8918fd5708f1ad1c9617190238bfd7e10f23b79",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/browser-start-page-navigation.test.ts.md": "e7de923fc77add09898ce7437688a0134be7827af43f7aacab44c306c86a76db",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/browser-start-page-navigation.ts.md": "8e0a05742020f181f689a40a47d8b18d73d51d273dcec08e580b80ef63cb5571",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/browser-viewport-layout.test.ts.md": "55f787b3f12e2f8c99832f007607ff5e46f677b98eaed0afec081e81aebdf754",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/browser-viewport-layout.ts.md": "5088879c82a932fae845ba5ad4653239c46339086510bc570581c68012d7dfec",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/DefaultAppMenuItem.tsx.md": "3869c2ca4cb90b424963f5af96bbad393420f34a8b42be26c047de310c194a11",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/FileBrowser.tsx.md": "b7a0fd768096d08c78cb892bdf387a9f7fd5f8f9bf5062ef7fc713b8cd68132c",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/FileDropZone.tsx.md": "fda03708c926f85b8b3eaa58c963ef823dd0e8ab6da86391ec113bb38be8a5cf",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/FileMentionList.tsx.md": "3c38414ddebe159eded33091be4828db5313870d9c821a256e2a45abb41ee01c",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/FilePreviewDialog.tsx.md": "e5aae3a9d8fe6b30b6822488b4d142b4fdfa0123b2361a28247dc003d63d681a",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/FileSearchBar.tsx.md": "4b4a5a1390fc8c69a092d0f712202cac00b666b1533a1a134a7c889d139f3b5b",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/FileTypeIcon.tsx.md": "1b153c27597d06c77dfe9f19f4195bdb160c05c41a4b194cfcd29ea8a9d17143",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/file-mention-suggestion.tsx.md": "25c4982d44d6db8811f037233054143c651743b25838088a2b82a406cda203e4",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/index.ts.md": "63792c378048e4490b27e6d53b0b4cd9b3e9ec199a721aa9ee72dfe2c9ca2d9c",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/office-preview/OfficePreview.tsx.md": "4d39efbeed862a49adef1268e914b22b89f58e85161ef21e4bbc7d9a83334cce"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/renderer/components/browser/BrowserPanel.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/BrowserPanel.tsx.md",
+      "sourceBlob": "feb3cb2ea9d49399b72b1ddb3a252266e562d358",
+      "sourceSha256": "499e0a8098b4c2e58be744403cf5b0dc00f7f26851746065c95714e28153ab12",
+      "sourceLines": 537,
+      "manualSha256": "a2bd9c3c7c1c3d73a6b674eaaf264d5a48d2bd60ede1116585e3b88b392c6aa8",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/browser/BrowserStartPage.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/BrowserStartPage.tsx.md",
+      "sourceBlob": "32bdc2291666944a640d1e0141709bf0cce09fd0",
+      "sourceSha256": "e7e84f0abca68ea73078c331142cd26d53c4e6c3ed47a91f6e1a984f9150080e",
+      "sourceLines": 141,
+      "manualSha256": "3deeae3cbc1c55ce9b5de95d3f7b06f29ed232facaf9244752dd5724a552f9f3",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/browser/BrowserTabContent.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/BrowserTabContent.tsx.md",
+      "sourceBlob": "76628ce868e5d91f0706d9bad81fa22ba76c6576",
+      "sourceSha256": "348ae5d513ffae4ae1f0a8fccecb042753f2930d45ad2ad31c51fcc3ce955eba",
+      "sourceLines": 65,
+      "manualSha256": "cf26a3e2881f2d0ef115d6fe9bb3a5e291067cb532a81112526f1c268abdd480",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/browser/BrowserViewport.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/BrowserViewport.tsx.md",
+      "sourceBlob": "1ce5bb7550591cf041e687c631d41d9238aa5496",
+      "sourceSha256": "d5f3034ebe716747d32a81781a42646ed3cf130ed5dc54ce427ad2ee5464875b",
+      "sourceLines": 217,
+      "manualSha256": "36955a62fdc7f76293da59dff8918fd5708f1ad1c9617190238bfd7e10f23b79",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/browser/browser-start-page-navigation.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/browser-start-page-navigation.test.ts.md",
+      "sourceBlob": "fd53450a4a9a8c13b8198748b3d9ad55c5ff7c43",
+      "sourceSha256": "b6907d20c5198c997859059f0122e5078c24b2a1f99762004b899abf597699b7",
+      "sourceLines": 66,
+      "manualSha256": "e7de923fc77add09898ce7437688a0134be7827af43f7aacab44c306c86a76db",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/browser/browser-start-page-navigation.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/browser-start-page-navigation.ts.md",
+      "sourceBlob": "82372e0893f7dd8aec4fcf9063066e2103d476ec",
+      "sourceSha256": "8672511fac68b686c04542b71356c2b8d24a62775be1357c71b598c32b938280",
+      "sourceLines": 42,
+      "manualSha256": "8e0a05742020f181f689a40a47d8b18d73d51d273dcec08e580b80ef63cb5571",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/browser/browser-viewport-layout.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/browser-viewport-layout.test.ts.md",
+      "sourceBlob": "a024e342927e95b1e056110d1cf1b56a30a66022",
+      "sourceSha256": "0cb78e562a5715821792128a92f0d839eff199a4d1e36e5842e712490fb931ed",
+      "sourceLines": 31,
+      "manualSha256": "55f787b3f12e2f8c99832f007607ff5e46f677b98eaed0afec081e81aebdf754",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/browser/browser-viewport-layout.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/browser-viewport-layout.ts.md",
+      "sourceBlob": "6347b6cdc20824981e9bef122ea03b5341e30c86",
+      "sourceSha256": "86822d6e0fe4534d0865d166359eb7f9b5f24595e725e8a7983f6b0d12843ac5",
+      "sourceLines": 33,
+      "manualSha256": "5088879c82a932fae845ba5ad4653239c46339086510bc570581c68012d7dfec",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/file-browser/DefaultAppMenuItem.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/DefaultAppMenuItem.tsx.md",
+      "sourceBlob": "53e7875250d5aabd6e180ce4b82614d2fb2fab11",
+      "sourceSha256": "004821daf5db7adc4bacd71eb9642559178899fbec761d64b6d2d179ab8b7bd5",
+      "sourceLines": 58,
+      "manualSha256": "3869c2ca4cb90b424963f5af96bbad393420f34a8b42be26c047de310c194a11",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/file-browser/FileBrowser.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/FileBrowser.tsx.md",
+      "sourceBlob": "6d83907eace733acbd8ec4ba7d1bf2e114b39327",
+      "sourceSha256": "edcab2c4534b564cc631022130ea1f56ca6e3f1ca1c25d41daedb9c9cbd6b5c1",
+      "sourceLines": 1323,
+      "manualSha256": "b7a0fd768096d08c78cb892bdf387a9f7fd5f8f9bf5062ef7fc713b8cd68132c",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/file-browser/FileDropZone.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/FileDropZone.tsx.md",
+      "sourceBlob": "d91170d1aef32e9b2787c6a45f3d089ccbf34625",
+      "sourceSha256": "c1dbc3f34411b3f1ba9f7405e2cbd2b72b69bacec0969ca32799eaece2895c8c",
+      "sourceLines": 336,
+      "manualSha256": "fda03708c926f85b8b3eaa58c963ef823dd0e8ab6da86391ec113bb38be8a5cf",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/file-browser/FileMentionList.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/FileMentionList.tsx.md",
+      "sourceBlob": "ef555f7358dffe36f351750274e9ea81ed2656ea",
+      "sourceSha256": "145869fac3b3cf4292b7d78762431a7ed08905f5574abf430d56a0ffeab4a6af",
+      "sourceLines": 535,
+      "manualSha256": "3c38414ddebe159eded33091be4828db5313870d9c821a256e2a45abb41ee01c",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/file-browser/FilePreviewDialog.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/FilePreviewDialog.tsx.md",
+      "sourceBlob": "00d9c52a0bf7e127b6797c0e9eb292a0f34312ad",
+      "sourceSha256": "e859f12f9c1ad770eca1bc8712b2a2a79c643b600162983dcc624c75010dfb92",
+      "sourceLines": 262,
+      "manualSha256": "e5aae3a9d8fe6b30b6822488b4d142b4fdfa0123b2361a28247dc003d63d681a",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/file-browser/FileSearchBar.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/FileSearchBar.tsx.md",
+      "sourceBlob": "564efe313c3f581ee9c41cf6116ee811ddb4b050",
+      "sourceSha256": "563edf38ddcf7ed8ffffc3b4e0f0cb083861b0339cd9e023b73ad184fc404ee5",
+      "sourceLines": 356,
+      "manualSha256": "4b4a5a1390fc8c69a092d0f712202cac00b666b1533a1a134a7c889d139f3b5b",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/file-browser/FileTypeIcon.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/FileTypeIcon.tsx.md",
+      "sourceBlob": "12e420950ac15e26ab71de9d74b49c536a1f1276",
+      "sourceSha256": "9639bc960b7b886c4afab5a93eecc6facedc296744b0a9dc17cec70cab10934e",
+      "sourceLines": 40,
+      "manualSha256": "1b153c27597d06c77dfe9f19f4195bdb160c05c41a4b194cfcd29ea8a9d17143",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/file-browser/file-mention-suggestion.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/file-mention-suggestion.tsx.md",
+      "sourceBlob": "2a5185cb34fb2541829546aceab9cd1d76af7726",
+      "sourceSha256": "c0160e01345ba3d00d6c61a58a2b3b3fe55d805daf787f290bf2056d4a3abeb7",
+      "sourceLines": 222,
+      "manualSha256": "25c4982d44d6db8811f037233054143c651743b25838088a2b82a406cda203e4",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/file-browser/index.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/index.ts.md",
+      "sourceBlob": "65cadb567cef09bbcc7ab5333ec36ccb4bf4ebe1",
+      "sourceSha256": "4e765a6bc10055b50169ddf20dade6eb4fe7d23c4c6e37179134fc51dea79156",
+      "sourceLines": 9,
+      "manualSha256": "63792c378048e4490b27e6d53b0b4cd9b3e9ec199a721aa9ee72dfe2c9ca2d9c",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/file-browser/office-preview/OfficePreview.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/office-preview/OfficePreview.tsx.md",
+      "sourceBlob": "fef6bf2fe367dece8543514c2f2aef6ce724684f",
+      "sourceSha256": "03e77cd8556da9e6ab1a0d31e65f4466c9eb6a04186f11f2c39ae91407a1f1bf",
+      "sourceLines": 298,
+      "manualSha256": "4d39efbeed862a49adef1268e914b22b89f58e85161ef21e4bbc7d9a83334cce",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    }
+  ]
+}

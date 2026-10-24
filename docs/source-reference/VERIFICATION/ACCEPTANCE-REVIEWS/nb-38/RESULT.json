@@ -1,0 +1,345 @@
+{
+ "schema": "dsh-r07-qa-result/1",
+ "batch": "nb-38",
+ "id": "NB-38",
+ "revisionOf": null,
+ "reviewRoot": "reviews/nb-38",
+ "priorReviewRoots": [
+  "reviews/nb-38/SOURCE-CHECKLIST.md",
+  "reviews/nb-38/PRE_READ_DONE.json"
+ ],
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "sourceHeadVerified": true,
+ "sourceWorktreeClean": true,
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewedAtUtc": "2026-10-23T20:10:00Z",
+ "scopeSource": "manager/assignments/nb-38-SCOPE.json",
+ "scopeFileCount": 18,
+ "scopeLines": 1672,
+ "deliveryRoot": "deliveries/nb-38",
+ "sealSpec": "seal_delivery.py/1（v2）",
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "GUI/rendering",
+  "real model/network"
+ ],
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PASS",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 18,
+  "revision_required": 0,
+  "unknown": 0
+ },
+ "batchVerdict": "accepted",
+ "files": [
+  {
+   "path": "packages/ui/src/primitives/alert.tsx",
+   "kind": "source",
+   "package": "p07-ui",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/alert.tsx.md",
+   "sourceBlob": "4a3d875605320f7320afa41ec657c4c1a1e32fe6",
+   "sourceSha256": "9a910af4adf94364616e3e32021fdbdeeb123a89e36d27dd1dba883705f91e78",
+   "sourceLines": 59,
+   "manualSha256": "8ae14cdb8c1914919c72de0248cf2ffb097f1405f20ce8bc827b16431f047bae",
+   "manualLines": 66,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/ui/src/primitives/badge.tsx",
+   "kind": "source",
+   "package": "p07-ui",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/badge.tsx.md",
+   "sourceBlob": "7580e6578f02304cdc8c90a12df026c45b1b4283",
+   "sourceSha256": "4cf51bc22e99025d2622727e5301985fc6f5f5d07e747850c507f892ae7e36fe",
+   "sourceLines": 36,
+   "manualSha256": "187dd4af34934950851475ac471c1ae529e87b7819bdfe4e9fd764371fa9d8da",
+   "manualLines": 66,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/ui/src/primitives/button.tsx",
+   "kind": "source",
+   "package": "p07-ui",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/button.tsx.md",
+   "sourceBlob": "b074c88495f6aca25903b2c156fa5df2b91be27f",
+   "sourceSha256": "3833d9afb93aebaa08374c9315b2409ac6717a707eb269400bf9b4e94795a051",
+   "sourceLines": 63,
+   "manualSha256": "ce5ab5a02ce169a20202c0d4c3d157ca4640725f645a2838c4e8396c8279405a",
+   "manualLines": 68,
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "N-02",
+     "severity": "non_blocking",
+     "claim": "行号小漂移（±1-2）；消费者口径正确（116+包内 2=118 与 QA 矩阵全等）。",
+     "sourceEvidence": "grep 矩阵对账",
+     "action": "可不修"
+    }
+   ]
+  },
+  {
+   "path": "packages/ui/src/primitives/collapsible.tsx",
+   "kind": "source",
+   "package": "p07-ui",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/collapsible.tsx.md",
+   "sourceBlob": "8a8dbb1b4d64588a6ba5d3defec1bfe971951b05",
+   "sourceSha256": "30b10d77df45e3cab9cf38d248efd813f7de8d010b79761005e6ffa02c7bf98f",
+   "sourceLines": 16,
+   "manualSha256": "211c7eb9832aa5fa64249522685f43c966197cc2fe8fe64b19a1c362159db2ca",
+   "manualLines": 61,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/ui/src/primitives/command.tsx",
+   "kind": "source",
+   "package": "p07-ui",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/command.tsx.md",
+   "sourceBlob": "ebfe7eddc3d1ab528cdc8446e9608c9122e3a2cf",
+   "sourceSha256": "3027920a892ef89e7570b66fff9b6096308be3916b8954fbfb36b6ddaaab0785",
+   "sourceLines": 152,
+   "manualSha256": "e642e925df8b6c2dd5b0f9cce16470426760badb8c90b9d9f3c697e3c9c622cb",
+   "manualLines": 66,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/ui/src/primitives/confirm-dialog.tsx",
+   "kind": "source",
+   "package": "p07-ui",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/confirm-dialog.tsx.md",
+   "sourceBlob": "ceda5dedddb20e3396a1917ca1c8f5600fb327c7",
+   "sourceSha256": "ad61a99dcc87ae6915ac530444a424dc1e70e4b853228e5050b16dd980c0d978",
+   "sourceLines": 64,
+   "manualSha256": "0179a4d9adee6b19653e06650c90d859250ffcb0f2b2240ddd99b11d34a38ff5",
+   "manualLines": 69,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/ui/src/primitives/context-menu.tsx",
+   "kind": "source",
+   "package": "p07-ui",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/context-menu.tsx.md",
+   "sourceBlob": "433d1921766a3c911ee201909ffa3e5a4685d8d3",
+   "sourceSha256": "68ef13c9c22ebed188f84593ae4f9ddd84e55867ff2cd65d4bd71fb0fe506585",
+   "sourceLines": 201,
+   "manualSha256": "420ddd178d6a8d36acafe355c99a96245287d0570d12156e7661c7d6a1d1e460",
+   "manualLines": 69,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/ui/src/primitives/dialog.tsx",
+   "kind": "source",
+   "package": "p07-ui",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/dialog.tsx.md",
+   "sourceBlob": "c5887392e69d3028c4f3927279782f3d899ba1a2",
+   "sourceSha256": "227dbf1df26c553864ee17d36d4055bf66cb1c085c4618e8f9d5fc3cb70d1706",
+   "sourceLines": 138,
+   "manualSha256": "64528bbb251e8c8dc45ae7506c5a31b3675771778f2845cec3a65de36fe075c1",
+   "manualLines": 71,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/ui/src/primitives/dropdown-menu.tsx",
+   "kind": "source",
+   "package": "p07-ui",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/dropdown-menu.tsx.md",
+   "sourceBlob": "2d2e8a2bc8b36cd7a5765ce49329e8b460d2c294",
+   "sourceSha256": "f5c4be2dedcb536337411ec8eb939ff89d287eb5607d3bc2a68c6d58be59ce7b",
+   "sourceLines": 204,
+   "manualSha256": "ab25724e187bd2b35502326762737e1d7718b5fa29c5231f0e72043bba39a346",
+   "manualLines": 69,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/ui/src/primitives/image-lightbox.tsx",
+   "kind": "source",
+   "package": "p07-ui",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/image-lightbox.tsx.md",
+   "sourceBlob": "843b4d7ca6555351c7bcafb13a629a080a2d4955",
+   "sourceSha256": "cf65ed5683baa5ff7812e3f1551246ebd6d5a9f006759356af0791cc926b7b42",
+   "sourceLines": 127,
+   "manualSha256": "199f53c8381fb660dca15481b9f1918816e637afa182b67eb86dd677b7fa34fc",
+   "manualLines": 74,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/ui/src/primitives/input.tsx",
+   "kind": "source",
+   "package": "p07-ui",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/input.tsx.md",
+   "sourceBlob": "e687d8ce8ba31603178b57e608a04cf2cbb8ea81",
+   "sourceSha256": "3c1fa6b5bf0ec17397ac87a320a2073dff0b8fcb77671cdd2049c50f7997f414",
+   "sourceLines": 32,
+   "manualSha256": "ec5973b30f57a813563dc56f179faf89708d1ff16b905595bd940e64d3cc64c8",
+   "manualLines": 61,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/ui/src/primitives/label.tsx",
+   "kind": "source",
+   "package": "p07-ui",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/label.tsx.md",
+   "sourceBlob": "e8ecdeb1d3b7eb623cbcd293888a196790987eee",
+   "sourceSha256": "7d40ccdffb473b506758b0a6bac21b6fe6909af83ba0dd79eaef4f31fd47ab63",
+   "sourceLines": 24,
+   "manualSha256": "8559cf0ddd03728d4da7c071c42eb9e77f01f85112fa08001996fc6c2a39b8db",
+   "manualLines": 59,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/ui/src/primitives/loading-indicator.tsx",
+   "kind": "source",
+   "package": "p07-ui",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/loading-indicator.tsx.md",
+   "sourceBlob": "98c2d23df2fa0f1fee756e8a68d24d5e491692bc",
+   "sourceSha256": "16c35e341f065222a3f697f276eee9d9967444b28af634cc51a4b82e62a0dfb1",
+   "sourceLines": 112,
+   "manualSha256": "d2c874fecef58355d70163646778fb0513a250fa62ccddeb3fc41ea4491af690",
+   "manualLines": 71,
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "N-01",
+     "severity": "non_blocking",
+     "claim": "可选补充：源 JSDoc（:28-29「3x3 点阵动画（纯 CSS）」）描述的是 Spinner 组件行为，本体未实现动画——手册 §1 写「Spinner/静态点」实现准确，但未记录该注释-实现归属差异。",
+     "sourceEvidence": "loading-indicator.tsx:3（import Spinner）/:28 注释；spinner.tsx 属批外",
+     "action": "rN 可选"
+    }
+   ]
+  },
+  {
+   "path": "packages/ui/src/primitives/popover.tsx",
+   "kind": "source",
+   "package": "p07-ui",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/popover.tsx.md",
+   "sourceBlob": "f93687ec3f8743a0d5ee5517f52ae7f621efc63d",
+   "sourceSha256": "0667fddfe33fd53eb3304c004dbdec9f7fc8558bd1fdedcf2c6fb4099ffdc0a1",
+   "sourceLines": 44,
+   "manualSha256": "b58289c7bec072a23caeaba4ddd2b0b2943f6784b6c97ea5fc4842f0a0c485f9",
+   "manualLines": 61,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/ui/src/primitives/scroll-area.tsx",
+   "kind": "source",
+   "package": "p07-ui",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/scroll-area.tsx.md",
+   "sourceBlob": "27f33452edd2f9f5242907335513e0f4fe1270e7",
+   "sourceSha256": "91ab6e6259ad5f0e76e406a1003d29b8e4620a0c811cb87c6b0ad679d9ef140e",
+   "sourceLines": 46,
+   "manualSha256": "a4f92b37b91bd545727dafb411d4ec74ad5457bcb995a23c95d1790874f710ea",
+   "manualLines": 59,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/ui/src/primitives/select.tsx",
+   "kind": "source",
+   "package": "p07-ui",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/select.tsx.md",
+   "sourceBlob": "a960e6aa8c100cb2defcd0ab29fd8d179f665250",
+   "sourceSha256": "5b3544d5749cd9577a404ce7272c6b4e6008fbf0457b031bce666a63e4db92a6",
+   "sourceLines": 168,
+   "manualSha256": "ff1b9ea27bfb30f00940cd873a682e0405774e17021c9746ca837eaad2cd493a",
+   "manualLines": 66,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/ui/src/primitives/separator.tsx",
+   "kind": "source",
+   "package": "p07-ui",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/separator.tsx.md",
+   "sourceBlob": "ddeb2e18b52cf9e827934140c41f9fad1c092421",
+   "sourceSha256": "4a6f67d165fda22af511d6094b6b527d105d7decb8fea32c7399538e9d473380",
+   "sourceLines": 31,
+   "manualSha256": "189ea9e2be1b8b37a12fb69e4f0e7a6dec86e9b5ed123577aaf5521a85b04cce",
+   "manualLines": 59,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/ui/src/primitives/sheet.tsx",
+   "kind": "source",
+   "package": "p07-ui",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/sheet.tsx.md",
+   "sourceBlob": "002ad41b74c4e575d9939a4323ce65e62df351d5",
+   "sourceSha256": "b26ea04ddcccbfdafc5b2f334b397a17f53e77af23b6a02003d4c6a79b2dfbf2",
+   "sourceLines": 155,
+   "manualSha256": "c90d87104199f94c4cb8fe97eb552494386bb77cf11222d4ebc119a57f1f246c",
+   "manualLines": 74,
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/alert.tsx.md": "8ae14cdb8c1914919c72de0248cf2ffb097f1405f20ce8bc827b16431f047bae",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/badge.tsx.md": "187dd4af34934950851475ac471c1ae529e87b7819bdfe4e9fd764371fa9d8da",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/button.tsx.md": "ce5ab5a02ce169a20202c0d4c3d157ca4640725f645a2838c4e8396c8279405a",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/collapsible.tsx.md": "211c7eb9832aa5fa64249522685f43c966197cc2fe8fe64b19a1c362159db2ca",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/command.tsx.md": "e642e925df8b6c2dd5b0f9cce16470426760badb8c90b9d9f3c697e3c9c622cb",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/confirm-dialog.tsx.md": "0179a4d9adee6b19653e06650c90d859250ffcb0f2b2240ddd99b11d34a38ff5",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/context-menu.tsx.md": "420ddd178d6a8d36acafe355c99a96245287d0570d12156e7661c7d6a1d1e460",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/dialog.tsx.md": "64528bbb251e8c8dc45ae7506c5a31b3675771778f2845cec3a65de36fe075c1",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/dropdown-menu.tsx.md": "ab25724e187bd2b35502326762737e1d7718b5fa29c5231f0e72043bba39a346",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/image-lightbox.tsx.md": "199f53c8381fb660dca15481b9f1918816e637afa182b67eb86dd677b7fa34fc",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/input.tsx.md": "ec5973b30f57a813563dc56f179faf89708d1ff16b905595bd940e64d3cc64c8",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/label.tsx.md": "8559cf0ddd03728d4da7c071c42eb9e77f01f85112fa08001996fc6c2a39b8db",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/loading-indicator.tsx.md": "d2c874fecef58355d70163646778fb0513a250fa62ccddeb3fc41ea4491af690",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/popover.tsx.md": "b58289c7bec072a23caeaba4ddd2b0b2943f6784b6c97ea5fc4842f0a0c485f9",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/scroll-area.tsx.md": "a4f92b37b91bd545727dafb411d4ec74ad5457bcb995a23c95d1790874f710ea",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/select.tsx.md": "ff1b9ea27bfb30f00940cd873a682e0405774e17021c9746ca837eaad2cd493a",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/separator.tsx.md": "189ea9e2be1b8b37a12fb69e4f0e7a6dec86e9b5ed123577aaf5521a85b04cce",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/sheet.tsx.md": "c90d87104199f94c4cb8fe97eb552494386bb77cf11222d4ebc119a57f1f246c"
+ },
+ "rejectedHashes": {},
+ "batchFindings": [
+  {
+   "id": "M-01",
+   "severity": "info",
+   "claim": "正面确认（QA 独立预读全部回源为真）：command.tsx 生产不可达（0 消费者/无 barrel/符号级核，潜在死代码照实记录）；confirm-dialog loading 阻关守卫；image-lightbox 空 src 短路/reset(1) 语义/背景点击关闭；loading-indicator 计时 100ms+cleanup；sheet Windows 右侧特例 shouldHideClose=hideClose||(side 右 且 isWindows)（:66-69 实测）；dialog 手册「SettingsDialog.tsx:10 绕过封装直引 radix dialog」照实记录（实测为真）；消费者计数全部对账相符（button 116+2、input 21+1、select 14（session-core 同名 ./select 为误报）、popover 18+1、dialog 40+command=41）。",
+   "sourceEvidence": "全树 grep 矩阵 + sed 实测；reviews/nb-38/SOURCE-CHECKLIST.md",
+   "action": "记录"
+  },
+  {
+   "id": "M-02",
+   "severity": "info",
+   "claim": "批内 0 测试文件；18 件均无 *.test.* import（button 唯一相关为 ui-workspace-contract.test.ts:32 路径契约字符串断言，手册已正确区分非组件行为）；GUI/渲染 NOT_RUN。",
+   "sourceEvidence": "全树检索",
+   "action": "记录"
+  }
+ ],
+ "zip": {
+  "path": "deliveries/nb-38/R07-nb-38-05fb2565.zip",
+  "sha256": "3502dcba00c24a44a17e59197a15e85542cb4af8703d4f9d03598914f34a1590",
+  "entries": 21,
+  "note": "18 手册+MANIFEST+2 mechanical TSV；不含 READY/DONE（v2）；无穿越/0 mismatch"
+ },
+ "diffReplay": "changes.diff new-file 补丁与 stage 字节一致",
+ "parentPreserved": null,
+ "notClaimed": [
+  "测试运行结果",
+  "typecheck/build 结果",
+  "GUI 渲染实测",
+  "G3 跨模块"
+ ]
+}

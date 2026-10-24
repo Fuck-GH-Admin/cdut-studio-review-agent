@@ -1,0 +1,74 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-17-r1",
+  "revisionOf": "nb-17",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-23T20:35:00Z",
+  "sealId": "seal-6b5a0ccbe833249f",
+  "note": "18/18 accepted（NB17-F-01/F-02/N-01 全关闭；残余 NB17R1-L1 转 errata）。合入以本表为准（7 新 + 11 同 r0）。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/ai-review-service.ts.md": "7fb9dee959a34cd3ad68b97a6728ddbdfa227e7a06e1daf1199928d3d822ff5b",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/application-service.ts.md": "733dbe3834860b3bc828a42bfd3afde1ae54ee4142994e077484391b10d0a57e",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/boot-check.test.ts.md": "15fce6eb0ef74fe36b251906c8956d6d1270556b95dfedc8388bc4e80f0bdd7e",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/boot-check.ts.md": "47c840a02477e23633533cb2ebaf71c324881f924f2c2cfbb12fbdce37a124ea",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/builtin-templates.ts.md": "9bd50018b5c104db426236eeef75e9177986a3ee7a5681b7315295e01bb233ed",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/document-capability-library.test.ts.md": "0d7975802233ca4688b8797a50411c43b18aa3e593fb492cf53d5aa939a89f8e",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/document-capability-library.ts.md": "f049d11627f3411ead48ed40dcdb4ab777a561b8012cc2fbbe08d12838dc79d7",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/document-preview-path.test.ts.md": "d2d3655e570fcb4d868d91f20dc8b3d5b2a655e8c33af6cf457e0c3e001f0c52",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/document-preview-path.ts.md": "62fa372d7bb461c822baec21a975693c2d8575d79196317c912f58f5b8cbcb55",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/document-service.test.ts.md": "20b1d03025b468dcc5243d4db920a22882194d5db0cd50cad188bb7d2ba2df8f",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/document-service.ts.md": "ecdef898f1f0155f7260567dc8dc51134c04633e1adcd93ed04710d071439311",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/effective-rules.test.ts.md": "e6808b5f33cbce9ef6b22a175726e8607d3691bf992ab9bd3008836de509437b",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/effective-rules.ts.md": "3dde7ad625d220276f04693b387c7e658c9ad6f871b524e4c072c55212d82326",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/field-validation.test.ts.md": "127b869a1788fca7df8de90c98fc8c984e9d19bf32a509cb4aa67790c1f38773",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/model-identity-runtime.test.ts.md": "fa4aeb088872be6a73c3068cdf66359d2c17755de4d8c655ea6287584bf3c5c5",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/policy-store.ts.md": "51cc26f561f69a5ff7060d9ced3b5353e3878daf099429bff122f8249719cc84",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/rating-service.test.ts.md": "a9f3d3e91300b2d86ecbd7dcc197cf2bc047c5737427c66dff6a21bd06cb5f37",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/rating-service.ts.md": "44be093e9cbb14875ac008e5e53b4fc1f74882ab3adc811d52d96abce4b09fd4"
+  },
+  "revisionRequiredManuals": {},
+  "changedFromParent": {
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/ai-review-service.ts.md": {
+      "before": "7b12e397390b4c5ae0d1b525b24e72abe97666e0bbe47d9df95cf5793f8c67bd",
+      "after": "7fb9dee959a34cd3ad68b97a6728ddbdfa227e7a06e1daf1199928d3d822ff5b"
+    },
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/application-service.ts.md": {
+      "before": "f9d6deb379a542986fc210824f878384e2ea7ed2b2746161595ab3286a50c935",
+      "after": "733dbe3834860b3bc828a42bfd3afde1ae54ee4142994e077484391b10d0a57e"
+    },
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/boot-check.ts.md": {
+      "before": "c27897c682aaeeaec246940532814cd3b861f745ef430ddd3a46ca17bab0f820",
+      "after": "47c840a02477e23633533cb2ebaf71c324881f924f2c2cfbb12fbdce37a124ea"
+    },
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/document-preview-path.ts.md": {
+      "before": "cc47bc38189f51f63acd74c0e06117e08096ce3eaa8c498b8683343bdb495206",
+      "after": "62fa372d7bb461c822baec21a975693c2d8575d79196317c912f58f5b8cbcb55"
+    },
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/document-service.ts.md": {
+      "before": "378683eac0ea8ba5705bff03dd00315906720f6e115ac835ad6add72ac8917e5",
+      "after": "ecdef898f1f0155f7260567dc8dc51134c04633e1adcd93ed04710d071439311"
+    },
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/policy-store.ts.md": {
+      "before": "c66faa3de0d9d7608b6f56fff24df2f18a2d7497015020fcebf5de0d9cb69d79",
+      "after": "51cc26f561f69a5ff7060d9ced3b5353e3878daf099429bff122f8249719cc84"
+    },
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/rating-service.ts.md": {
+      "before": "75cd94bc6947236282514878b5ee7f7b427c60c737aedade3e840927e1ce5a54",
+      "after": "44be093e9cbb14875ac008e5e53b4fc1f74882ab3adc811d52d96abce4b09fd4"
+    }
+  },
+  "sourceBinding": {
+    "verifiedCount": 18,
+    "note": "blob+sha256 脚本实算==MANIFEST==SCOPE"
+  },
+  "sealBinding": {
+    "manifestSha256": "ebaca3fa774125a06e21a17c211821ae45928710e4093edd4d01a28cf5ca1b4b",
+    "readySha256": "3239ab987324370c383e0d82e2ec86a0927e00a4126b0bdb9931d838d15b4f5d",
+    "zipSha256": "923da705ebcc7d1c67f40217c4098e2d6dc1976b744f9c5d1866809b1dbbbcd1",
+    "zipBytes": 58404,
+    "zipEntries": 21,
+    "beforeEqualsParentStage": "7/7",
+    "changesDiffReplay": "7/7 byte-identical"
+  }
+}

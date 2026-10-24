@@ -1,0 +1,41 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-118",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-02-20261024",
+ "reviewerSession": "docs-r07-qa-extra-02-20261024",
+ "authorSessionInSealChain": "docs-r07-author-nb-09-20261023",
+ "reviewedAtUtc": "2026-10-23T21:40:00Z",
+ "sealId": "seal-75060440ee5e7fe9",
+ "status": "REVIEW_COMPLETE_REVISION_REQUIRED",
+ "batchVerdict": "revision_required",
+ "counts": {
+  "files": 18,
+  "accepted": 18,
+  "revision_required": 0,
+  "unknown": 0,
+  "blocking": 1,
+  "minorFindings": 1
+ },
+ "artifacts": [
+  "reviews/nb-118/SOURCE-CHECKLIST.md",
+  "reviews/nb-118/PRE_READ_DONE.json",
+  "reviews/nb-118/RESULT.json",
+  "reviews/nb-118/RESULT.md",
+  "reviews/nb-118/REVIEWED-HASHES.json",
+  "reviews/nb-118/DONE.json",
+  "handoffs/nb-118-REVIEW-TO-AUTHOR.md",
+  "handoffs/nb-118-REVIEW-TO-LEAD.md"
+ ],
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "Worker runtime",
+  "real render interaction",
+  "real model/network"
+ ],
+ "boundaries": "QA read-only review: no changes to author content/source/tests/deps/candidate/global ledger/old seals; sealed bytes untouched; product tests and real models NOT_RUN.",
+ "next": "author opens deliveries/nb-118-r1 (chain fields + UNVERIFIED aggregate count fix); QA hash-level re-verify; then group awaits r1 re-verifications"
+}

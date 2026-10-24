@@ -1,0 +1,35 @@
+{
+ "schema": "r07-reviewed-hashes/2",
+ "batch": "nb-116-r1",
+ "revisionOf": "nb-116",
+ "reviewer": "docs-r07-qa-ui-20261023",
+ "reviewedAtUtc": "2026-10-24T05:45:00Z",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/planning-atoms.ts.md": "d0af74b09b79f4a8c78a4f7afff1fd6ce6418723981873ef1d78db2968d496a8",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/preview-atoms.ts.md": "1cccea4d71aff9cb5a197039d2f0898c812bc4db5e53fdc0938aedc62218c1f0",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/proxy-atoms.ts.md": "7ba9d16b2412078789a465ddd722be597cef3a9e328090dfd2b7f5973b94913b",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/search-atoms.ts.md": "7cdc6b3180437736e78391d413ed632a8b649e86034b3cf375741c3c1bbc0157",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/settings-tab.ts.md": "719fa8889cd4e034c080b5f1c314d2a27083a4b0982aa0b4f041e98d1361bc46",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/shortcut-atoms.ts.md": "e0d972226b6d0e2403c74dfa0906ddfc7f08b379813071e5d85de3056a779c54",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/sidebar-atoms.ts.md": "5cabf4fe904818de9c7b13e7a30093b913d137063c677ecd8abd223b32849e4c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/study-atoms.test.ts.md": "5a9002a7ff7aee76b3c1dc8fbe39eb93857ba4a327c258ec1bfde9499a39c60c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/study-atoms.ts.md": "739a5d541711e6659a6b05da05c41233661bdc12a03698847cd5d9dfc05d483a",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/study-retrieval-atoms.ts.md": "802f3b37a261773cd41fe3fe47e18a2e5c1235513ecc4caca9a2125a32f54f96",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/tab-atoms.test.ts.md": "53a6465e69cfb282fa94ed114d85c0a3ffde2ae2135a3fec939159b9548066f5",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/tab-atoms.ts.md": "5548deace431f46d613dbc21e48e886b39605d3eb929476a26e7300e911d21d6",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/tab-group-atoms.test.ts.md": "3c70422a65d91237554567c7bd37b80f7609a513b774449d484b54ddff6f9bc1",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/tab-group-atoms.ts.md": "6c59dc09b50ca5dbb4885ce54a005c0a605d4dd2bdba43cf1780f992e86313fc",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/team-atoms.ts.md": "db559bb82b7f8ac2d5754fff236c593f319d5c48892001cc5cd6faf63fcf2fcf",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/theme.ts.md": "376fa493d44c6bd6b902443f38cabd4a797d53367312efefd347b5c7ee8ceaa2",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/ui-preferences.ts.md": "77dce030147603b1cc08ed14d554a0dd8182aa5093530822f2454e9609edfbb5",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/ui-scale.ts.md": "0342cd74c93d8b379c27cac143c11b94c57fef4d30aa55f8605b28ceca1ea6b8"
+ },
+ "sealedArtifacts": {
+  "READY.json": "e4bec82fa41047144bfb88d2a3ca9c2a37661f8e236d2347adebb4abdf7d1a03",
+  "DONE.json": "48063d911aaf6fcc989b73272aac63e66fd146ad0277a0e642240be2a4c0fa79",
+  "MANIFEST.json": "4ff088f4660b7934f39995e63e4826dd02693d346e2cc87c713813ad28d22384",
+  "R07-nb-116-r1-05fb2565.zip": "6c5fcdd9e6a7e4e0cbcb020a658961c83e356d6a6525e75fa72798ef4328d6d5"
+ },
+ "openNotes": []
+}

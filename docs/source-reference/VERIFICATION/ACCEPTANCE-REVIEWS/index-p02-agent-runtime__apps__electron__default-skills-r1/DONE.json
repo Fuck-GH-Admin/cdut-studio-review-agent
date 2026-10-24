@@ -1,0 +1,39 @@
+{
+  "schema": "dsh-r07-index-review-done/1",
+  "batch": "index-p02-agent-runtime__apps__electron__default-skills-r1",
+  "groupId": "p02-agent-runtime__apps__electron__default-skills-r1",
+  "revisionOf": "p02-agent-runtime__apps__electron__default-skills",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-index-author-extra-01-20261024",
+  "reviewerSession": "docs-r07-index-qa-extra-01-20261024",
+  "reviewedAtUtc": "2026-10-23T19:28:00Z",
+  "sealedAtUtc": "2026-10-23T19:22:47+00:00",
+  "status": "REVIEW_COMPLETE_ACCEPTED",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 29,
+    "accepted": 29,
+    "revision_required": 0,
+    "unknown": 0,
+    "findingsBlocking": 0,
+    "findingsNonBlocking": 0
+  },
+  "artifactSha256": "e050bae07399674926952c4b9b624505d4ed7ec31f82317ce23325640641792c",
+  "artifacts": [
+    "reviews/index-p02-agent-runtime__apps__electron__default-skills-r1/RESULT.json",
+    "reviews/index-p02-agent-runtime__apps__electron__default-skills-r1/REVIEWED-HASHES.json",
+    "reviews/index-p02-agent-runtime__apps__electron__default-skills-r1/SOURCE-CHECKLIST.md",
+    "reviews/index-p02-agent-runtime__apps__electron__default-skills-r1/DONE.json"
+  ],
+  "notRun": [
+    "产品测试",
+    "typecheck",
+    "构建",
+    "Electron/GUI",
+    "运行时验证（本轮统一 NOT_RUN）"
+  ],
+  "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局账；未 commit/push；结论只覆盖本批。",
+  "findingsSummary": "无新增 findings。r0 的 F-01（docx/LICENSE.txt 假陈述）/N-01（pptx/pdf 分类误标）/N-02（背景行三处）经 r1 逐行 diff 复验全部 resolved 且表述与 QA 实读一致；其余 24 条目与 r0 逐字节一致；旧 r0 seal 字节未动（复算一致）。",
+  "mergePolicy": "29/29 accepted，lead 按本表 r1 字节合入（artifactSha256=e050bae07399674926952c4b9b624505d4ed7ec31f82317ce23325640641792c）；r0 字节保留不改。",
+  "next": "lead 合入 default-skills r1（29）与 vendor-xsd/microsoft（21）；本组 2 批次全部闭环，QA 待团队 JSON 扩容新 batch 或新 r1（返修优先）。"
+}

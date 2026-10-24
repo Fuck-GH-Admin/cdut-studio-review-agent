@@ -1,0 +1,2962 @@
+{
+  "schema": "dsh-r07-unverified-timestamps/1",
+  "atUtc": "2026-10-23T21:16:40Z",
+  "rule": "时间戳取实际 date -u；手填未来时间戳记 UNVERIFIED，不归责、禁止就地改 seal",
+  "counts": {
+    "unverified": 328
+  },
+  "items": [
+    {
+      "file": "reviews/index-p01-app-shell__/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T17:45:00Z",
+      "fileMtime": "2026-10-23T17:41:44Z",
+      "offsetMinutes": 3,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T17:45:00Z",
+      "fileMtime": "2026-10-23T17:40:54Z",
+      "offsetMinutes": 4,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:20:00Z",
+      "fileMtime": "2026-10-23T19:12:51Z",
+      "offsetMinutes": 187,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:20:00Z",
+      "fileMtime": "2026-10-23T19:12:51Z",
+      "offsetMinutes": 187,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell____pycache__/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:22:00Z",
+      "fileMtime": "2026-10-23T17:51:29Z",
+      "offsetMinutes": 31,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell____pycache__/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:22:00Z",
+      "fileMtime": "2026-10-23T17:50:35Z",
+      "offsetMinutes": 31,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell___context/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:05:00Z",
+      "fileMtime": "2026-10-23T17:47:02Z",
+      "offsetMinutes": 18,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell___context/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:05:00Z",
+      "fileMtime": "2026-10-23T17:45:57Z",
+      "offsetMinutes": 19,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell___cursor/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:15:00Z",
+      "fileMtime": "2026-10-23T17:49:28Z",
+      "offsetMinutes": 26,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell___cursor/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:15:00Z",
+      "fileMtime": "2026-10-23T17:49:13Z",
+      "offsetMinutes": 26,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__apps/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:35:00Z",
+      "fileMtime": "2026-10-23T17:53:30Z",
+      "offsetMinutes": 41,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__apps/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:35:00Z",
+      "fileMtime": "2026-10-23T17:53:05Z",
+      "offsetMinutes": 42,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__apps-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:25:00Z",
+      "fileMtime": "2026-10-23T19:13:30Z",
+      "offsetMinutes": 191,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__apps-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:25:00Z",
+      "fileMtime": "2026-10-23T19:13:30Z",
+      "offsetMinutes": 191,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__apps__electron/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:50:00Z",
+      "fileMtime": "2026-10-23T17:56:22Z",
+      "offsetMinutes": 54,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__apps__electron/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:50:00Z",
+      "fileMtime": "2026-10-23T17:56:05Z",
+      "offsetMinutes": 54,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__apps__electron-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:35:00Z",
+      "fileMtime": "2026-10-23T19:14:52Z",
+      "offsetMinutes": 200,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__apps__electron-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:35:00Z",
+      "fileMtime": "2026-10-23T19:14:52Z",
+      "offsetMinutes": 200,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__apps__electron__resources/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:02:00Z",
+      "fileMtime": "2026-10-23T17:58:05Z",
+      "offsetMinutes": 64,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__apps__electron__resources/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:02:00Z",
+      "fileMtime": "2026-10-23T17:58:05Z",
+      "offsetMinutes": 64,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__apps__electron__resources-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:35:00Z",
+      "fileMtime": "2026-10-23T19:14:52Z",
+      "offsetMinutes": 200,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__apps__electron__resources-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:35:00Z",
+      "fileMtime": "2026-10-23T19:14:52Z",
+      "offsetMinutes": 200,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__apps__electron__resources__cslab/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:20:00Z",
+      "fileMtime": "2026-10-23T18:01:10Z",
+      "offsetMinutes": 79,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__apps__electron__resources__cslab/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:20:00Z",
+      "fileMtime": "2026-10-23T18:01:10Z",
+      "offsetMinutes": 79,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__apps__electron__resources__cslab-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:55:00Z",
+      "fileMtime": "2026-10-23T19:16:48Z",
+      "offsetMinutes": 218,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__apps__electron__resources__cslab-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:55:00Z",
+      "fileMtime": "2026-10-23T19:16:48Z",
+      "offsetMinutes": 218,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__apps__electron__resources__ppt-style-packs/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:32:00Z",
+      "fileMtime": "2026-10-23T18:03:28Z",
+      "offsetMinutes": 89,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__apps__electron__resources__ppt-style-packs/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:32:00Z",
+      "fileMtime": "2026-10-23T18:03:28Z",
+      "offsetMinutes": 89,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__assets/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:45:00Z",
+      "fileMtime": "2026-10-23T18:05:36Z",
+      "offsetMinutes": 99,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__assets/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:45:00Z",
+      "fileMtime": "2026-10-23T18:05:36Z",
+      "offsetMinutes": 99,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__assets-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:45:00Z",
+      "fileMtime": "2026-10-23T19:15:46Z",
+      "offsetMinutes": 209,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__assets-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:45:00Z",
+      "fileMtime": "2026-10-23T19:15:46Z",
+      "offsetMinutes": 209,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__assets__CDUT/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:58:00Z",
+      "fileMtime": "2026-10-23T18:08:26Z",
+      "offsetMinutes": 110,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__assets__CDUT/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:58:00Z",
+      "fileMtime": "2026-10-23T18:08:26Z",
+      "offsetMinutes": 110,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__assets__IP/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:58:00Z",
+      "fileMtime": "2026-10-23T18:08:26Z",
+      "offsetMinutes": 110,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__assets__IP/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:58:00Z",
+      "fileMtime": "2026-10-23T18:08:26Z",
+      "offsetMinutes": 110,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__docs/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:25:00Z",
+      "fileMtime": "2026-10-23T18:15:34Z",
+      "offsetMinutes": 129,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__docs/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:25:00Z",
+      "fileMtime": "2026-10-23T18:15:34Z",
+      "offsetMinutes": 129,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__docs__assets/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:35:00Z",
+      "fileMtime": "2026-10-23T18:16:30Z",
+      "offsetMinutes": 138,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__docs__assets/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:35:00Z",
+      "fileMtime": "2026-10-23T18:16:30Z",
+      "offsetMinutes": 138,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__docs__design__review-agent/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:05:00Z",
+      "fileMtime": "2026-10-23T18:48:19Z",
+      "offsetMinutes": 137,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__docs__design__review-agent/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:05:00Z",
+      "fileMtime": "2026-10-23T18:48:19Z",
+      "offsetMinutes": 137,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__release-notes/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:18:00Z",
+      "fileMtime": "2026-10-23T18:49:28Z",
+      "offsetMinutes": 149,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__release-notes/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:18:00Z",
+      "fileMtime": "2026-10-23T18:49:28Z",
+      "offsetMinutes": 149,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__skins/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:28:00Z",
+      "fileMtime": "2026-10-23T18:50:29Z",
+      "offsetMinutes": 158,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__skins/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:28:00Z",
+      "fileMtime": "2026-10-23T18:50:29Z",
+      "offsetMinutes": 158,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__specs__gui/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:40:00Z",
+      "fileMtime": "2026-10-23T18:51:11Z",
+      "offsetMinutes": 169,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__specs__gui/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:40:00Z",
+      "fileMtime": "2026-10-23T18:51:11Z",
+      "offsetMinutes": 169,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__tutorial/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:40:00Z",
+      "fileMtime": "2026-10-23T18:51:11Z",
+      "offsetMinutes": 169,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__tutorial/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:40:00Z",
+      "fileMtime": "2026-10-23T18:51:11Z",
+      "offsetMinutes": 169,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__work/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:40:00Z",
+      "fileMtime": "2026-10-23T18:51:11Z",
+      "offsetMinutes": 169,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__work/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:40:00Z",
+      "fileMtime": "2026-10-23T18:51:11Z",
+      "offsetMinutes": 169,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__work__reports/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:00:00Z",
+      "fileMtime": "2026-10-23T18:54:29Z",
+      "offsetMinutes": 186,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__work__reports/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:00:00Z",
+      "fileMtime": "2026-10-23T18:54:29Z",
+      "offsetMinutes": 186,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__work__reports-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:45:00Z",
+      "fileMtime": "2026-10-23T19:15:46Z",
+      "offsetMinutes": 209,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p01-app-shell__work__reports-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:45:00Z",
+      "fileMtime": "2026-10-23T19:15:46Z",
+      "offsetMinutes": 209,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:31:00Z",
+      "fileMtime": "2026-10-23T20:01:34Z",
+      "offsetMinutes": 89,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:30:00Z",
+      "fileMtime": "2026-10-23T20:01:34Z",
+      "offsetMinutes": 88,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:25:00Z",
+      "fileMtime": "2026-10-23T19:21:44Z",
+      "offsetMinutes": 3,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:25:00Z",
+      "fileMtime": "2026-10-23T19:21:44Z",
+      "offsetMinutes": 3,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:38:00Z",
+      "fileMtime": "2026-10-23T19:26:32Z",
+      "offsetMinutes": 11,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:35:00Z",
+      "fileMtime": "2026-10-23T19:25:45Z",
+      "offsetMinutes": 9,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:05:00Z",
+      "fileMtime": "2026-10-23T20:02:47Z",
+      "offsetMinutes": 2,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:05:00Z",
+      "fileMtime": "2026-10-23T20:02:47Z",
+      "offsetMinutes": 2,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p02-agent-runtime__vendor-xsd__ecma/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:38:00Z",
+      "fileMtime": "2026-10-23T19:53:02Z",
+      "offsetMinutes": 45,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p02-agent-runtime__vendor-xsd__ecma/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:35:00Z",
+      "fileMtime": "2026-10-23T19:52:25Z",
+      "offsetMinutes": 43,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p02-agent-runtime__vendor-xsd__ecma-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:31:00Z",
+      "fileMtime": "2026-10-23T20:01:34Z",
+      "offsetMinutes": 89,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p02-agent-runtime__vendor-xsd__ecma-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:30:00Z",
+      "fileMtime": "2026-10-23T20:01:34Z",
+      "offsetMinutes": 88,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p02-agent-runtime__vendor-xsd__mce/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:52:00Z",
+      "fileMtime": "2026-10-23T19:55:34Z",
+      "offsetMinutes": 56,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p02-agent-runtime__vendor-xsd__mce/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:50:00Z",
+      "fileMtime": "2026-10-23T19:55:14Z",
+      "offsetMinutes": 55,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p02-agent-runtime__vendor-xsd__microsoft/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:20:00Z",
+      "fileMtime": "2026-10-23T19:17:23Z",
+      "offsetMinutes": 3,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p03-integrations__demo-data/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:52:00Z",
+      "fileMtime": "2026-10-23T19:36:21Z",
+      "offsetMinutes": 16,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p03-integrations__demo-data/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:48:00Z",
+      "fileMtime": "2026-10-23T19:34:59Z",
+      "offsetMinutes": 13,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:05:00Z",
+      "fileMtime": "2026-10-23T19:40:07Z",
+      "offsetMinutes": 25,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:02:00Z",
+      "fileMtime": "2026-10-23T19:39:34Z",
+      "offsetMinutes": 22,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p08-renderer-ui__apps__electron__src__renderer__components__onboarding/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:18:00Z",
+      "fileMtime": "2026-10-23T19:47:15Z",
+      "offsetMinutes": 31,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p08-renderer-ui__apps__electron__src__renderer__components__onboarding/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:15:00Z",
+      "fileMtime": "2026-10-23T19:46:49Z",
+      "offsetMinutes": 28,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p08-renderer-ui__renderer-assets/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:13:00Z",
+      "fileMtime": "2026-10-23T19:58:53Z",
+      "offsetMinutes": 74,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/index-p08-renderer-ui__renderer-assets/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:10:00Z",
+      "fileMtime": "2026-10-23T19:58:15Z",
+      "offsetMinutes": 72,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-03/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T12:05:00Z",
+      "fileMtime": "2026-10-23T11:48:34Z",
+      "offsetMinutes": 16,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-03/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T12:05:00Z",
+      "fileMtime": "2026-10-23T11:48:19Z",
+      "offsetMinutes": 17,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-06/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T16:10:00Z",
+      "fileMtime": "2026-10-23T15:56:37Z",
+      "offsetMinutes": 13,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-06/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T16:10:00Z",
+      "fileMtime": "2026-10-23T15:54:45Z",
+      "offsetMinutes": 15,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-06-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T16:55:00Z",
+      "fileMtime": "2026-10-23T16:52:35Z",
+      "offsetMinutes": 2,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-06-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T16:55:00Z",
+      "fileMtime": "2026-10-23T16:51:32Z",
+      "offsetMinutes": 3,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-10/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T16:05:00Z",
+      "fileMtime": "2026-10-23T15:49:33Z",
+      "offsetMinutes": 15,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-10/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T16:05:00Z",
+      "fileMtime": "2026-10-23T15:47:10Z",
+      "offsetMinutes": 18,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-102/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-25T00:15:00Z",
+      "fileMtime": "2026-10-23T21:05:56Z",
+      "offsetMinutes": 1629,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-102/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-25T00:15:00Z",
+      "fileMtime": "2026-10-23T21:05:56Z",
+      "offsetMinutes": 1629,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-105/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:45:00Z",
+      "fileMtime": "2026-10-23T18:19:46Z",
+      "offsetMinutes": 265,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-105/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:45:00Z",
+      "fileMtime": "2026-10-23T18:19:46Z",
+      "offsetMinutes": 265,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-105-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T01:45:00Z",
+      "fileMtime": "2026-10-23T19:33:53Z",
+      "offsetMinutes": 371,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-105-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T01:45:00Z",
+      "fileMtime": "2026-10-23T19:33:53Z",
+      "offsetMinutes": 371,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-106/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T04:50:00Z",
+      "fileMtime": "2026-10-23T20:25:25Z",
+      "offsetMinutes": 505,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-106/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T04:50:00Z",
+      "fileMtime": "2026-10-23T20:24:48Z",
+      "offsetMinutes": 505,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-108-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:32:00Z",
+      "fileMtime": "2026-10-23T20:20:48Z",
+      "offsetMinutes": 11,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-108-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:32:00Z",
+      "fileMtime": "2026-10-23T20:20:04Z",
+      "offsetMinutes": 12,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-11/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T17:10:00Z",
+      "fileMtime": "2026-10-23T16:11:04Z",
+      "offsetMinutes": 59,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-11/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T17:10:00Z",
+      "fileMtime": "2026-10-23T16:09:15Z",
+      "offsetMinutes": 61,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-11-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:40:00Z",
+      "fileMtime": "2026-10-23T17:08:24Z",
+      "offsetMinutes": 272,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-11-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:40:00Z",
+      "fileMtime": "2026-10-23T17:08:24Z",
+      "offsetMinutes": 272,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-111/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T08:05:00Z",
+      "fileMtime": "2026-10-23T20:20:50Z",
+      "offsetMinutes": 704,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-111/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T08:05:00Z",
+      "fileMtime": "2026-10-23T20:20:50Z",
+      "offsetMinutes": 704,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-113/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:05:00Z",
+      "fileMtime": "2026-10-23T19:56:04Z",
+      "offsetMinutes": 69,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-114/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T13:05:00Z",
+      "fileMtime": "2026-10-23T20:50:18Z",
+      "offsetMinutes": 975,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-114/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T13:05:00Z",
+      "fileMtime": "2026-10-23T20:50:18Z",
+      "offsetMinutes": 975,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-116/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T02:10:00Z",
+      "fileMtime": "2026-10-23T19:36:53Z",
+      "offsetMinutes": 393,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-116/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T02:10:00Z",
+      "fileMtime": "2026-10-23T19:36:53Z",
+      "offsetMinutes": 393,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-116-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T05:45:00Z",
+      "fileMtime": "2026-10-23T20:23:24Z",
+      "offsetMinutes": 562,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-116-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T05:45:00Z",
+      "fileMtime": "2026-10-23T20:23:24Z",
+      "offsetMinutes": 562,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-117/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T14:25:00Z",
+      "fileMtime": "2026-10-23T20:55:11Z",
+      "offsetMinutes": 1050,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-117/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T14:25:00Z",
+      "fileMtime": "2026-10-23T20:55:11Z",
+      "offsetMinutes": 1050,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-118/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:40:00Z",
+      "fileMtime": "2026-10-23T20:01:18Z",
+      "offsetMinutes": 99,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-118/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:40:00Z",
+      "fileMtime": "2026-10-23T20:01:18Z",
+      "offsetMinutes": 99,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-118-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:05:00Z",
+      "fileMtime": "2026-10-23T20:22:40Z",
+      "offsetMinutes": 102,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-118-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:05:00Z",
+      "fileMtime": "2026-10-23T20:22:40Z",
+      "offsetMinutes": 102,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-119/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:40:00Z",
+      "fileMtime": "2026-10-23T20:01:18Z",
+      "offsetMinutes": 99,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-119/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:40:00Z",
+      "fileMtime": "2026-10-23T20:01:18Z",
+      "offsetMinutes": 99,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-119-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:05:00Z",
+      "fileMtime": "2026-10-23T20:22:40Z",
+      "offsetMinutes": 102,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-119-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:05:00Z",
+      "fileMtime": "2026-10-23T20:22:40Z",
+      "offsetMinutes": 102,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-12/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:10:00Z",
+      "fileMtime": "2026-10-23T16:34:46Z",
+      "offsetMinutes": 155,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-12/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:10:00Z",
+      "fileMtime": "2026-10-23T16:34:25Z",
+      "offsetMinutes": 156,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-12-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:05:00Z",
+      "fileMtime": "2026-10-23T17:11:09Z",
+      "offsetMinutes": 294,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-12-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:05:00Z",
+      "fileMtime": "2026-10-23T17:11:09Z",
+      "offsetMinutes": 294,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-122/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:40:00Z",
+      "fileMtime": "2026-10-23T20:37:00Z",
+      "offsetMinutes": 63,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-122/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:40:00Z",
+      "fileMtime": "2026-10-23T20:37:00Z",
+      "offsetMinutes": 63,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-123/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:58:00Z",
+      "fileMtime": "2026-10-23T19:45:40Z",
+      "offsetMinutes": 72,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-123/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:58:00Z",
+      "fileMtime": "2026-10-23T19:45:40Z",
+      "offsetMinutes": 72,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-123-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:05:00Z",
+      "fileMtime": "2026-10-23T20:22:40Z",
+      "offsetMinutes": 102,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-123-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:05:00Z",
+      "fileMtime": "2026-10-23T20:22:40Z",
+      "offsetMinutes": 102,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-125/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:45:00Z",
+      "fileMtime": "2026-10-23T20:11:57Z",
+      "offsetMinutes": 93,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-127/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:02:00Z",
+      "fileMtime": "2026-10-23T20:36:36Z",
+      "offsetMinutes": 25,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-127/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:02:00Z",
+      "fileMtime": "2026-10-23T20:35:47Z",
+      "offsetMinutes": 26,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-127-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:12:00Z",
+      "fileMtime": "2026-10-23T20:40:48Z",
+      "offsetMinutes": 31,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-127-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:12:00Z",
+      "fileMtime": "2026-10-23T20:40:01Z",
+      "offsetMinutes": 32,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-127-r2/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:22:00Z",
+      "fileMtime": "2026-10-23T20:47:01Z",
+      "offsetMinutes": 35,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-127-r2/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:22:00Z",
+      "fileMtime": "2026-10-23T20:46:23Z",
+      "offsetMinutes": 36,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-13-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T23:10:00Z",
+      "fileMtime": "2026-10-23T19:10:17Z",
+      "offsetMinutes": 240,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-13-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T23:10:00Z",
+      "fileMtime": "2026-10-23T19:10:17Z",
+      "offsetMinutes": 240,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-135/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:18:00Z",
+      "fileMtime": "2026-10-23T20:07:13Z",
+      "offsetMinutes": 11,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-135/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:18:00Z",
+      "fileMtime": "2026-10-23T20:06:27Z",
+      "offsetMinutes": 12,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-135-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:40:00Z",
+      "fileMtime": "2026-10-23T20:22:28Z",
+      "offsetMinutes": 18,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-135-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:40:00Z",
+      "fileMtime": "2026-10-23T20:21:53Z",
+      "offsetMinutes": 18,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-136/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:45:00Z",
+      "fileMtime": "2026-10-23T19:40:15Z",
+      "offsetMinutes": 65,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-136/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:45:00Z",
+      "fileMtime": "2026-10-23T19:39:11Z",
+      "offsetMinutes": 66,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-136-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:05:00Z",
+      "fileMtime": "2026-10-23T20:22:40Z",
+      "offsetMinutes": 102,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-136-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:05:00Z",
+      "fileMtime": "2026-10-23T20:22:40Z",
+      "offsetMinutes": 102,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-137/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:10:00Z",
+      "fileMtime": "2026-10-23T20:31:23Z",
+      "offsetMinutes": 39,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-137/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:10:00Z",
+      "fileMtime": "2026-10-23T20:31:23Z",
+      "offsetMinutes": 39,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-138/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:10:00Z",
+      "fileMtime": "2026-10-23T20:17:42Z",
+      "offsetMinutes": 112,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-139/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:55:00Z",
+      "fileMtime": "2026-10-23T20:24:10Z",
+      "offsetMinutes": 151,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-14-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T17:30:00Z",
+      "fileMtime": "2026-10-23T17:23:36Z",
+      "offsetMinutes": 6,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-14-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T17:30:00Z",
+      "fileMtime": "2026-10-23T17:23:36Z",
+      "offsetMinutes": 6,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-140-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:05:00Z",
+      "fileMtime": "2026-10-23T20:22:40Z",
+      "offsetMinutes": 102,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-140-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:05:00Z",
+      "fileMtime": "2026-10-23T20:22:40Z",
+      "offsetMinutes": 102,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-142/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:48:00Z",
+      "fileMtime": "2026-10-23T19:45:42Z",
+      "offsetMinutes": 2,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-142/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:48:00Z",
+      "fileMtime": "2026-10-23T19:45:42Z",
+      "offsetMinutes": 2,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-142-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:35:00Z",
+      "fileMtime": "2026-10-23T20:19:27Z",
+      "offsetMinutes": 16,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-142-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:35:00Z",
+      "fileMtime": "2026-10-23T20:19:27Z",
+      "offsetMinutes": 16,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-144/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:52:00Z",
+      "fileMtime": "2026-10-23T19:33:50Z",
+      "offsetMinutes": 18,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-144/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:52:00Z",
+      "fileMtime": "2026-10-23T19:32:40Z",
+      "offsetMinutes": 19,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-144-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:05:00Z",
+      "fileMtime": "2026-10-23T20:22:40Z",
+      "offsetMinutes": 102,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-144-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:05:00Z",
+      "fileMtime": "2026-10-23T20:22:40Z",
+      "offsetMinutes": 102,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-15-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:10:00Z",
+      "fileMtime": "2026-10-23T17:37:27Z",
+      "offsetMinutes": 33,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-15-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:10:00Z",
+      "fileMtime": "2026-10-23T17:37:27Z",
+      "offsetMinutes": 33,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-16/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T17:55:00Z",
+      "fileMtime": "2026-10-23T17:32:18Z",
+      "offsetMinutes": 23,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-16/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T17:55:00Z",
+      "fileMtime": "2026-10-23T17:32:18Z",
+      "offsetMinutes": 23,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-16-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:20:00Z",
+      "fileMtime": "2026-10-23T17:38:39Z",
+      "offsetMinutes": 41,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-16-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:20:00Z",
+      "fileMtime": "2026-10-23T17:38:39Z",
+      "offsetMinutes": 41,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-17/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:05:00Z",
+      "fileMtime": "2026-10-23T17:46:24Z",
+      "offsetMinutes": 79,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-17/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:05:00Z",
+      "fileMtime": "2026-10-23T17:46:24Z",
+      "offsetMinutes": 79,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-17-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:35:00Z",
+      "fileMtime": "2026-10-23T18:02:54Z",
+      "offsetMinutes": 152,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-17-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:35:00Z",
+      "fileMtime": "2026-10-23T18:02:54Z",
+      "offsetMinutes": 152,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-21/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T17:25:00Z",
+      "fileMtime": "2026-10-23T17:14:38Z",
+      "offsetMinutes": 10,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-21/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T17:25:00Z",
+      "fileMtime": "2026-10-23T17:14:11Z",
+      "offsetMinutes": 11,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-22/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:55:00Z",
+      "fileMtime": "2026-10-23T17:55:36Z",
+      "offsetMinutes": 119,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-22/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:55:00Z",
+      "fileMtime": "2026-10-23T17:55:36Z",
+      "offsetMinutes": 119,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-23/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T17:25:00Z",
+      "fileMtime": "2026-10-23T16:59:56Z",
+      "offsetMinutes": 25,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-23/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T17:25:00Z",
+      "fileMtime": "2026-10-23T16:59:20Z",
+      "offsetMinutes": 26,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-23-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:45:00Z",
+      "fileMtime": "2026-10-23T17:16:10Z",
+      "offsetMinutes": 89,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-23-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:45:00Z",
+      "fileMtime": "2026-10-23T17:16:10Z",
+      "offsetMinutes": 89,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-24/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:55:00Z",
+      "fileMtime": "2026-10-23T17:33:36Z",
+      "offsetMinutes": 81,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-24/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:55:00Z",
+      "fileMtime": "2026-10-23T17:33:16Z",
+      "offsetMinutes": 82,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-24-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T15:55:00Z",
+      "fileMtime": "2026-10-23T21:04:32Z",
+      "offsetMinutes": 1130,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-24-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T15:55:00Z",
+      "fileMtime": "2026-10-23T21:04:32Z",
+      "offsetMinutes": 1130,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-30/DONE.json",
+      "field": "completedAtUtc",
+      "recorded": "2026-10-23T23:59:00Z",
+      "fileMtime": "2026-10-23T15:57:58Z",
+      "offsetMinutes": 481,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-36/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T17:45:00Z",
+      "fileMtime": "2026-10-23T17:21:29Z",
+      "offsetMinutes": 24,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-36/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T17:45:00Z",
+      "fileMtime": "2026-10-23T17:19:54Z",
+      "offsetMinutes": 25,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-37-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:20:00Z",
+      "fileMtime": "2026-10-23T17:13:04Z",
+      "offsetMinutes": 67,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-37-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:20:00Z",
+      "fileMtime": "2026-10-23T17:13:04Z",
+      "offsetMinutes": 67,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-38/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:10:00Z",
+      "fileMtime": "2026-10-23T17:47:47Z",
+      "offsetMinutes": 142,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-38/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:10:00Z",
+      "fileMtime": "2026-10-23T17:47:47Z",
+      "offsetMinutes": 142,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-40-r2/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T17:20:00Z",
+      "fileMtime": "2026-10-23T17:17:36Z",
+      "offsetMinutes": 2,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-42/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:35:00Z",
+      "fileMtime": "2026-10-23T18:00:47Z",
+      "offsetMinutes": 214,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-42/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:35:00Z",
+      "fileMtime": "2026-10-23T18:00:47Z",
+      "offsetMinutes": 214,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-42-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T16:45:00Z",
+      "fileMtime": "2026-10-23T21:06:48Z",
+      "offsetMinutes": 1178,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-42-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T16:45:00Z",
+      "fileMtime": "2026-10-23T21:06:48Z",
+      "offsetMinutes": 1178,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-43/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:30:00Z",
+      "fileMtime": "2026-10-23T17:25:31Z",
+      "offsetMinutes": 124,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-43/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:30:00Z",
+      "fileMtime": "2026-10-23T17:26:12Z",
+      "offsetMinutes": 124,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-43-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T01:40:00Z",
+      "fileMtime": "2026-10-23T18:08:30Z",
+      "offsetMinutes": 451,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-43-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T01:40:00Z",
+      "fileMtime": "2026-10-23T18:08:30Z",
+      "offsetMinutes": 451,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-44/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:05:00Z",
+      "fileMtime": "2026-10-23T17:28:37Z",
+      "offsetMinutes": 36,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-44/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:05:00Z",
+      "fileMtime": "2026-10-23T17:28:37Z",
+      "offsetMinutes": 36,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-44-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T23:35:00Z",
+      "fileMtime": "2026-10-23T19:13:17Z",
+      "offsetMinutes": 262,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-44-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T23:35:00Z",
+      "fileMtime": "2026-10-23T19:13:17Z",
+      "offsetMinutes": 262,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-44-r2/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T05:10:00Z",
+      "fileMtime": "2026-10-23T20:16:55Z",
+      "offsetMinutes": 533,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-44-r2/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T05:10:00Z",
+      "fileMtime": "2026-10-23T20:16:55Z",
+      "offsetMinutes": 533,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-46/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:40:00Z",
+      "fileMtime": "2026-10-23T17:48:18Z",
+      "offsetMinutes": 232,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-46/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:40:00Z",
+      "fileMtime": "2026-10-23T17:48:18Z",
+      "offsetMinutes": 232,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-46-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T10:40:00Z",
+      "fileMtime": "2026-10-23T19:36:28Z",
+      "offsetMinutes": 904,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-46-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T10:40:00Z",
+      "fileMtime": "2026-10-23T19:36:28Z",
+      "offsetMinutes": 904,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-47/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T17:35:00Z",
+      "fileMtime": "2026-10-23T17:13:12Z",
+      "offsetMinutes": 22,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-47/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T17:35:00Z",
+      "fileMtime": "2026-10-23T17:13:12Z",
+      "offsetMinutes": 22,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-47-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T15:10:00Z",
+      "fileMtime": "2026-10-23T21:00:12Z",
+      "offsetMinutes": 1090,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-47-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T15:10:00Z",
+      "fileMtime": "2026-10-23T21:00:12Z",
+      "offsetMinutes": 1090,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-48/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T23:10:00Z",
+      "fileMtime": "2026-10-23T18:15:03Z",
+      "offsetMinutes": 295,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-48/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T23:10:00Z",
+      "fileMtime": "2026-10-23T18:14:45Z",
+      "offsetMinutes": 295,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-48-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T17:35:00Z",
+      "fileMtime": "2026-10-23T21:11:05Z",
+      "offsetMinutes": 1224,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-48-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T17:35:00Z",
+      "fileMtime": "2026-10-23T21:11:05Z",
+      "offsetMinutes": 1224,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-49/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T17:45:00Z",
+      "fileMtime": "2026-10-23T17:37:32Z",
+      "offsetMinutes": 7,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-49-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:35:00Z",
+      "fileMtime": "2026-10-23T19:38:48Z",
+      "offsetMinutes": 56,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-50/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T00:45:00Z",
+      "fileMtime": "2026-10-23T18:37:29Z",
+      "offsetMinutes": 368,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-50/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T00:45:00Z",
+      "fileMtime": "2026-10-23T18:37:29Z",
+      "offsetMinutes": 368,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-50-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T18:15:00Z",
+      "fileMtime": "2026-10-23T21:12:08Z",
+      "offsetMinutes": 1263,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-50-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T18:15:00Z",
+      "fileMtime": "2026-10-23T21:12:08Z",
+      "offsetMinutes": 1263,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-51/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:45:00Z",
+      "fileMtime": "2026-10-23T18:07:31Z",
+      "offsetMinutes": 37,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-51-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:30:00Z",
+      "fileMtime": "2026-10-23T18:21:19Z",
+      "offsetMinutes": 69,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-52/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T02:35:00Z",
+      "fileMtime": "2026-10-23T19:25:44Z",
+      "offsetMinutes": 429,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-52/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T02:35:00Z",
+      "fileMtime": "2026-10-23T19:25:44Z",
+      "offsetMinutes": 429,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-52-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T19:00:00Z",
+      "fileMtime": "2026-10-23T21:15:14Z",
+      "offsetMinutes": 1305,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-52-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T19:00:00Z",
+      "fileMtime": "2026-10-23T21:15:14Z",
+      "offsetMinutes": 1305,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-53/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T23:30:00Z",
+      "fileMtime": "2026-10-23T17:37:20Z",
+      "offsetMinutes": 353,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-53/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T23:30:00Z",
+      "fileMtime": "2026-10-23T17:37:20Z",
+      "offsetMinutes": 353,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-53-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T01:10:00Z",
+      "fileMtime": "2026-10-23T17:55:09Z",
+      "offsetMinutes": 435,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-53-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T01:10:00Z",
+      "fileMtime": "2026-10-23T17:55:09Z",
+      "offsetMinutes": 435,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-55/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T23:10:00Z",
+      "fileMtime": "2026-10-23T17:53:45Z",
+      "offsetMinutes": 316,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-55/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T23:10:00Z",
+      "fileMtime": "2026-10-23T17:53:45Z",
+      "offsetMinutes": 316,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-56/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:15:00Z",
+      "fileMtime": "2026-10-23T18:16:41Z",
+      "offsetMinutes": 58,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-59/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T04:25:00Z",
+      "fileMtime": "2026-10-23T19:44:39Z",
+      "offsetMinutes": 520,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-59/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T04:25:00Z",
+      "fileMtime": "2026-10-23T19:44:39Z",
+      "offsetMinutes": 520,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-59-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T19:40:00Z",
+      "fileMtime": "2026-10-23T21:15:58Z",
+      "offsetMinutes": 1344,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-59-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T19:40:00Z",
+      "fileMtime": "2026-10-23T21:15:58Z",
+      "offsetMinutes": 1344,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-60/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T00:40:00Z",
+      "fileMtime": "2026-10-23T18:03:03Z",
+      "offsetMinutes": 397,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-60/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T00:40:00Z",
+      "fileMtime": "2026-10-23T18:03:03Z",
+      "offsetMinutes": 397,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-61-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:20:00Z",
+      "fileMtime": "2026-10-23T17:54:17Z",
+      "offsetMinutes": 26,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-61-r2/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:25:00Z",
+      "fileMtime": "2026-10-23T19:09:05Z",
+      "offsetMinutes": 16,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-62/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:35:00Z",
+      "fileMtime": "2026-10-23T17:35:15Z",
+      "offsetMinutes": 60,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-62/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T18:35:00Z",
+      "fileMtime": "2026-10-23T17:35:15Z",
+      "offsetMinutes": 60,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-65/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T03:50:00Z",
+      "fileMtime": "2026-10-23T18:14:26Z",
+      "offsetMinutes": 576,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-65/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T03:50:00Z",
+      "fileMtime": "2026-10-23T18:14:26Z",
+      "offsetMinutes": 576,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-65-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T22:30:00Z",
+      "fileMtime": "2026-10-23T20:16:50Z",
+      "offsetMinutes": 1573,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-65-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T22:30:00Z",
+      "fileMtime": "2026-10-23T20:16:50Z",
+      "offsetMinutes": 1573,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-66/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:25:00Z",
+      "fileMtime": "2026-10-23T18:06:44Z",
+      "offsetMinutes": 198,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-66/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:25:00Z",
+      "fileMtime": "2026-10-23T18:06:44Z",
+      "offsetMinutes": 198,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-66-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:50:00Z",
+      "fileMtime": "2026-10-23T18:19:03Z",
+      "offsetMinutes": 271,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-66-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:50:00Z",
+      "fileMtime": "2026-10-23T18:19:03Z",
+      "offsetMinutes": 271,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-67/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T01:50:00Z",
+      "fileMtime": "2026-10-23T18:01:57Z",
+      "offsetMinutes": 468,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-67/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T01:50:00Z",
+      "fileMtime": "2026-10-23T18:01:57Z",
+      "offsetMinutes": 468,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-67-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T04:10:00Z",
+      "fileMtime": "2026-10-23T18:20:27Z",
+      "offsetMinutes": 590,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-67-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T04:10:00Z",
+      "fileMtime": "2026-10-23T18:20:27Z",
+      "offsetMinutes": 590,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-68/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T05:45:00Z",
+      "fileMtime": "2026-10-23T20:01:15Z",
+      "offsetMinutes": 584,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-68/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T05:45:00Z",
+      "fileMtime": "2026-10-23T20:01:15Z",
+      "offsetMinutes": 584,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-72/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:05:00Z",
+      "fileMtime": "2026-10-23T17:41:25Z",
+      "offsetMinutes": 84,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-72/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:05:00Z",
+      "fileMtime": "2026-10-23T17:41:25Z",
+      "offsetMinutes": 84,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-72-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T23:55:00Z",
+      "fileMtime": "2026-10-23T19:22:59Z",
+      "offsetMinutes": 272,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-72-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T23:55:00Z",
+      "fileMtime": "2026-10-23T19:22:59Z",
+      "offsetMinutes": 272,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-74/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T02:45:00Z",
+      "fileMtime": "2026-10-23T18:10:32Z",
+      "offsetMinutes": 514,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-74/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T02:45:00Z",
+      "fileMtime": "2026-10-23T18:10:32Z",
+      "offsetMinutes": 514,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-74-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T04:10:00Z",
+      "fileMtime": "2026-10-23T18:20:27Z",
+      "offsetMinutes": 590,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-74-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T04:10:00Z",
+      "fileMtime": "2026-10-23T18:20:27Z",
+      "offsetMinutes": 590,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-75/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T06:30:00Z",
+      "fileMtime": "2026-10-23T19:11:03Z",
+      "offsetMinutes": 679,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-75/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T06:30:00Z",
+      "fileMtime": "2026-10-23T19:11:03Z",
+      "offsetMinutes": 679,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-79/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:45:00Z",
+      "fileMtime": "2026-10-23T17:49:03Z",
+      "offsetMinutes": 116,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-79/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T19:45:00Z",
+      "fileMtime": "2026-10-23T17:49:03Z",
+      "offsetMinutes": 116,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-79-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T00:15:00Z",
+      "fileMtime": "2026-10-23T19:23:53Z",
+      "offsetMinutes": 291,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-79-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T00:15:00Z",
+      "fileMtime": "2026-10-23T19:23:53Z",
+      "offsetMinutes": 291,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-80/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:15:00Z",
+      "fileMtime": "2026-10-23T18:14:52Z",
+      "offsetMinutes": 240,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-80/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:15:00Z",
+      "fileMtime": "2026-10-23T18:14:52Z",
+      "offsetMinutes": 240,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-81/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T15:00:00Z",
+      "fileMtime": "2026-10-23T20:11:34Z",
+      "offsetMinutes": 1128,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-81/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T15:00:00Z",
+      "fileMtime": "2026-10-23T20:11:34Z",
+      "offsetMinutes": 1128,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-81-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-25T00:50:00Z",
+      "fileMtime": "2026-10-23T21:11:36Z",
+      "offsetMinutes": 1658,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-81-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-25T00:50:00Z",
+      "fileMtime": "2026-10-23T21:11:36Z",
+      "offsetMinutes": 1658,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-82/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T09:30:00Z",
+      "fileMtime": "2026-10-23T19:27:44Z",
+      "offsetMinutes": 842,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-82/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T09:30:00Z",
+      "fileMtime": "2026-10-23T19:27:44Z",
+      "offsetMinutes": 842,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-84/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:15:00Z",
+      "fileMtime": "2026-10-23T17:57:20Z",
+      "offsetMinutes": 138,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-84/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:15:00Z",
+      "fileMtime": "2026-10-23T17:57:20Z",
+      "offsetMinutes": 138,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-85/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T13:30:00Z",
+      "fileMtime": "2026-10-23T19:42:51Z",
+      "offsetMinutes": 1067,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-85/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T13:30:00Z",
+      "fileMtime": "2026-10-23T19:42:51Z",
+      "offsetMinutes": 1067,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-85-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T22:30:00Z",
+      "fileMtime": "2026-10-23T20:16:50Z",
+      "offsetMinutes": 1573,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-85-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T22:30:00Z",
+      "fileMtime": "2026-10-23T20:16:50Z",
+      "offsetMinutes": 1573,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-86/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T16:30:00Z",
+      "fileMtime": "2026-10-23T19:52:40Z",
+      "offsetMinutes": 1237,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-86/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T16:30:00Z",
+      "fileMtime": "2026-10-23T19:52:40Z",
+      "offsetMinutes": 1237,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-86-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T22:30:00Z",
+      "fileMtime": "2026-10-23T20:16:50Z",
+      "offsetMinutes": 1573,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-86-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T22:30:00Z",
+      "fileMtime": "2026-10-23T20:16:50Z",
+      "offsetMinutes": 1573,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-87/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:50:00Z",
+      "fileMtime": "2026-10-23T18:01:21Z",
+      "offsetMinutes": 169,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-87/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:50:00Z",
+      "fileMtime": "2026-10-23T18:01:21Z",
+      "offsetMinutes": 169,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-87-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T00:40:00Z",
+      "fileMtime": "2026-10-23T19:27:38Z",
+      "offsetMinutes": 312,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-87-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T00:40:00Z",
+      "fileMtime": "2026-10-23T19:27:38Z",
+      "offsetMinutes": 312,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-88/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:25:00Z",
+      "fileMtime": "2026-10-23T18:07:16Z",
+      "offsetMinutes": 198,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-88/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:25:00Z",
+      "fileMtime": "2026-10-23T18:07:16Z",
+      "offsetMinutes": 198,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-88-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T01:00:00Z",
+      "fileMtime": "2026-10-23T19:28:26Z",
+      "offsetMinutes": 332,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-88-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T01:00:00Z",
+      "fileMtime": "2026-10-23T19:28:26Z",
+      "offsetMinutes": 332,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-89/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T19:00:00Z",
+      "fileMtime": "2026-10-23T20:00:58Z",
+      "offsetMinutes": 1379,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-89/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T19:00:00Z",
+      "fileMtime": "2026-10-23T20:00:58Z",
+      "offsetMinutes": 1379,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-90/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T02:50:00Z",
+      "fileMtime": "2026-10-23T19:43:22Z",
+      "offsetMinutes": 427,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-90/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T02:50:00Z",
+      "fileMtime": "2026-10-23T19:43:22Z",
+      "offsetMinutes": 427,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-90-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T04:05:00Z",
+      "fileMtime": "2026-10-23T20:06:00Z",
+      "offsetMinutes": 479,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-90-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T04:05:00Z",
+      "fileMtime": "2026-10-23T20:06:00Z",
+      "offsetMinutes": 479,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-92/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:05:00Z",
+      "fileMtime": "2026-10-23T18:14:25Z",
+      "offsetMinutes": 231,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-92/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T22:05:00Z",
+      "fileMtime": "2026-10-23T18:14:25Z",
+      "offsetMinutes": 231,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-92-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T01:20:00Z",
+      "fileMtime": "2026-10-23T19:29:31Z",
+      "offsetMinutes": 350,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-92-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T01:20:00Z",
+      "fileMtime": "2026-10-23T19:29:31Z",
+      "offsetMinutes": 350,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-93/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T18:45:00Z",
+      "fileMtime": "2026-10-23T20:34:11Z",
+      "offsetMinutes": 1331,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-93/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T18:45:00Z",
+      "fileMtime": "2026-10-23T20:34:11Z",
+      "offsetMinutes": 1331,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-93-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-25T00:50:00Z",
+      "fileMtime": "2026-10-23T21:11:36Z",
+      "offsetMinutes": 1658,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-93-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-25T00:50:00Z",
+      "fileMtime": "2026-10-23T21:11:36Z",
+      "offsetMinutes": 1658,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-94/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T00:40:00Z",
+      "fileMtime": "2026-10-23T19:19:23Z",
+      "offsetMinutes": 321,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-94/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T00:40:00Z",
+      "fileMtime": "2026-10-23T19:19:23Z",
+      "offsetMinutes": 321,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-94-r1/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T06:50:00Z",
+      "fileMtime": "2026-10-23T20:49:29Z",
+      "offsetMinutes": 601,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-94-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T06:50:00Z",
+      "fileMtime": "2026-10-23T20:49:29Z",
+      "offsetMinutes": 601,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-96/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T20:15:00Z",
+      "fileMtime": "2026-10-23T19:33:07Z",
+      "offsetMinutes": 42,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-96-r1/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-23T21:20:00Z",
+      "fileMtime": "2026-10-23T20:10:43Z",
+      "offsetMinutes": 69,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-97/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T21:30:00Z",
+      "fileMtime": "2026-10-23T20:10:13Z",
+      "offsetMinutes": 1520,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-97/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T21:30:00Z",
+      "fileMtime": "2026-10-23T20:10:13Z",
+      "offsetMinutes": 1520,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-98/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T04:40:00Z",
+      "fileMtime": "2026-10-23T20:12:40Z",
+      "offsetMinutes": 507,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-98/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T04:40:00Z",
+      "fileMtime": "2026-10-23T20:11:58Z",
+      "offsetMinutes": 508,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-99/DONE.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T11:45:00Z",
+      "fileMtime": "2026-10-23T20:43:29Z",
+      "offsetMinutes": 902,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    },
+    {
+      "file": "reviews/nb-99/RESULT.json",
+      "field": "reviewedAtUtc",
+      "recorded": "2026-10-24T11:45:00Z",
+      "fileMtime": "2026-10-23T20:43:29Z",
+      "offsetMinutes": 902,
+      "status": "UNVERIFIED_HAND_ENTERED_FUTURE_TIMESTAMP",
+      "action": "不据此归责、不就地改 seal；字节链完好即接受"
+    }
+  ]
+}

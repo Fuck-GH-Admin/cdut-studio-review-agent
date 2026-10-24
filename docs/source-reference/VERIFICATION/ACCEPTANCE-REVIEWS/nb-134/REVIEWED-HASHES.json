@@ -1,0 +1,113 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "nb-134",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-qa-extra-06-20261024",
+ "reviewedAtUtc": "2026-10-23T20:52:41Z",
+ "reviewedSealId": "seal-0e1ad0720de1fda7",
+ "deliveryRoot": "deliveries/nb-134",
+ "zipSha256": "98cf4c7095108a52ca42ecaa1e2f84b721f6ccee702a3a56dac32dc3b8ea8f09",
+ "manifestSha256": "868ad3990e3dd6f976488ccb28884463b3c92cb3e823346e2ec352bbcc1c54b5",
+ "readySha256": "cf5e0872ed94608747d40eb81a76c782634685962993ad4570d96e451561f8c1",
+ "sourceBlobs": {
+  "apps/electron/src/main/lib/sync-types.ts": {
+   "blob": "53b397b42da02053a3c44fec5a06334f2bbb1d50",
+   "sha256": "fd0f621bbb53f4567fce2863e1d9f6051b0372b1f5813f324b7f454583683f7c",
+   "lines": 93
+  },
+  "apps/electron/src/main/lib/system-proxy-detector.ts": {
+   "blob": "337787a4ad8db7a6def5ddcf7d6b37d2bbb7d5c2",
+   "sha256": "a2b19587c1b91b0003eebbbb02e6f85df3ac1d7e45887e5bf0e020faaf32e121",
+   "lines": 203
+  },
+  "apps/electron/src/main/lib/task-graph-event-converter.test.ts": {
+   "blob": "e0fea12dd992090021e8fb0e87677b72aa3a8737",
+   "sha256": "7f88596aa919ce912ac6130bf79f856847b00b7b0393e2760a2e6ff88dd28240",
+   "lines": 155
+  },
+  "apps/electron/src/main/lib/task-graph-event-converter.ts": {
+   "blob": "46a9de6832ed3b71caec3d9993b70e77c398e6d4",
+   "sha256": "6927743f8c2f46361d1cbb2061b614d4dbdffa7aeba2c221de01036666af0cae",
+   "lines": 255
+  },
+  "apps/electron/src/main/lib/text-insertion-service.ts": {
+   "blob": "e586b948b5bb7dc801bd841fe1034a81a6e9e1af",
+   "sha256": "4c69430c1d62ec9496285133f4add11bfbc272751c20374bee26d530db73913d",
+   "lines": 270
+  },
+  "apps/electron/src/main/lib/token-crypto.ts": {
+   "blob": "a21f865c1c20e17a1f72ef487ea3d8b845aaee49",
+   "sha256": "c1ac5f8565d31b2efc5edf8a28bcb3d2d1e613af9120c8f850dae46fadc98912",
+   "lines": 109
+  },
+  "apps/electron/src/main/lib/tray-menu-model.ts": {
+   "blob": "4c1119e4f33e4d8099a8d4342f9354d5decc2634",
+   "sha256": "9e1dd5a7b2f1dfa23c70fa0c2615980662d9ed8b80dac72c4a950afa327c8bc8",
+   "lines": 61
+  },
+  "apps/electron/src/main/lib/tutorial-service.ts": {
+   "blob": "58f75e6eb0d6eb7ab2a8383ad24a8f79f86c6719",
+   "sha256": "93a07b9d6a88868b7cab5b6701ed1c1d514557ca3e70e57651408feec11233e9",
+   "lines": 141
+  },
+  "apps/electron/src/main/lib/user-profile-service.ts": {
+   "blob": "1d7efaf836cfafecfb25cb92d1798ff37d57df68",
+   "sha256": "e24f39915d491e88c4001ba4103131b7af92f24686423221a34458aa60f374c0",
+   "lines": 67
+  },
+  "apps/electron/src/main/lib/web-search-service.ts": {
+   "blob": "0320d88965d12fd441c591487b24ea759e036034",
+   "sha256": "5835b49b6aff1995d48e7364555ea9732ade5994cc64a8c7a67820f3909c0ab7",
+   "lines": 246
+  },
+  "apps/electron/src/main/lib/wechat-bridge.ts": {
+   "blob": "bfcff56c26a25de73e9c863b494794fba0f0bcd7",
+   "sha256": "f3c3e910fc5af66ab3f52a9464003ca4cd67081ac49c30297512288f87b5afc5",
+   "lines": 922
+  },
+  "apps/electron/src/main/lib/wechat-config.ts": {
+   "blob": "4e451f64eccc7316c5dcea2e2d1122330a839571",
+   "sha256": "fb6a602ebb92b2dff8ed7fe651e6dbc4814c9cb72102a3898f6fafee3246c225",
+   "lines": 87
+  },
+  "apps/electron/src/main/lib/windows-env.ts": {
+   "blob": "c198868752eaf675b2cd9480a5d16ac0924e362b",
+   "sha256": "03d05f37f44632862cf85273828ee2c268bc8c7d179e8ddebcaaa8055dfd5349",
+   "lines": 193
+  },
+  "apps/electron/src/main/lib/wsl-detector.ts": {
+   "blob": "7fd1db25708683aa6f21ff896ceed7bd8ffbe048",
+   "sha256": "058549f3968bcc2ccd741dd79bf56777741c67eb47b27db3c7e4650bd260c68c",
+   "lines": 187
+  },
+  "apps/electron/src/main/lib/xai-oauth-credentials.ts": {
+   "blob": "5bb3d2ca0683dffc8117cf9c96b180f09121190c",
+   "sha256": "858de05aa96c67a014636eb257e8e703ba1e08623a725e4da35518296851621e",
+   "lines": 62
+  },
+  "apps/electron/src/main/lib/xai-oauth-service.ts": {
+   "blob": "86594234a319e160692db5b33101b0acf89892c8",
+   "sha256": "daa8f8e3cd85e888c894a92545438eb7cb148998895ae4e37c667faccf49eb5a",
+   "lines": 127
+  }
+ },
+ "manualHashes": {
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/sync-types.ts.md": "ebd75dffd1ff6e131aac1e11cd1989a6df5caf4dc06880d9327e21f52b043cf1",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/system-proxy-detector.ts.md": "1b132060674612ea9a2a2b767177f66d4fa1525693fc97c48475a6724e32ea9d",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/task-graph-event-converter.test.ts.md": "66d29c4cc62ea33a11007fa3c260c66c8690de898cfdcb526488876a603654a9",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/task-graph-event-converter.ts.md": "a0f3665875ea28d49fbd90760e15b1946877f85370cb02564f6c477e005ae238",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/text-insertion-service.ts.md": "6be652209037d28511036ff79df645a45f291cc1ab17f6ea9cff3a68211c29fb",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/token-crypto.ts.md": "2d57118f43d1864fa8d471fb4f4c1d5d07389554bbee610f64b42b6c6fe88825",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/tray-menu-model.ts.md": "0f2b7347afdee5d00f6895a9bdcb91c1cda7f2751978eba40deb346852b58833",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/tutorial-service.ts.md": "dfc89084f39c6908fff87b32a6233804a70bff9a15568119d1202763b6da46c0",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/user-profile-service.ts.md": "fa6d415a56dc9a7e2317be14441c80b4bf0ceb3813ed1a494fd745aeb3938a50",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/web-search-service.ts.md": "c384c630db74af19913710f39e3b59aa44a586cce194d95edb57254d9f3518a9",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/wechat-bridge.ts.md": "d195bdad23efb174f7d50dc412d625ba871e6bbbaa4092cc892b7195c1489108",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/wechat-config.ts.md": "52c96868232cd07733789c1b4933428e3cc3ce93cb610973126b5c5193014d1b",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/windows-env.ts.md": "b02f2f3f0ec66915b5de4af2b1c38b6130f555c5eb0cab2c921c27f01880f9a5",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/wsl-detector.ts.md": "54e4242a6988672cd56915585cd1c026817235c3d73b2d44c7acc0188335f658",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/xai-oauth-credentials.ts.md": "30e6479a43c15dc0a47d0f9e42c9b1d8b8d6c6e9099d138a311b2025bdfe44fa",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/xai-oauth-service.ts.md": "d6cb8799ee95758818b6607ed1e249f043decc42dfae1f45a50fa22492457484"
+ },
+ "note": "复核时防漂移基线"
+}

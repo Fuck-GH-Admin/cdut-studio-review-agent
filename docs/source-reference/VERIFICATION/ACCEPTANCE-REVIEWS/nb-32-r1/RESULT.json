@@ -1,0 +1,243 @@
+{
+  "schema": "dsh-r07-review-result/1",
+  "batch": "nb-32-r1",
+  "revisionOf": "nb-32",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T21:49:35Z",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass"
+  },
+  "g0Evidence": {
+    "chain": "自洽（sealId seal-6d32e121458a4429，revisionOf nb-32）；18 manualHashes=磁盘 0 mismatch",
+    "revisionChain": "before/ 18/18==nb-32 stage；changes.diff 4 hunks/3 文件重放==stage；FINDINGS-RESPONSE 在",
+    "zip": "21 条目 0 穿越/字节 mismatch"
+  },
+  "g2Evidence": {
+    "fixVerification": "三点对基线精确关闭：F01 '9 个 throw 点（7 类消息）+3 类 warning'（基线 throw=9、warnings.push=3 精确）；F02 LATEX_SYMBOLS 45→**56**（基线裸键=56）；F03 'cslab-plot-doc 10 符号+cslab-plot-svg 3 符号'（基线分源导入 10/3 精确）",
+    "noNewErrors": "修订区无新错误",
+    "evidenceBinding": "未变文件==旧 acceptedHashes 同源绑定（15/15）"
+  },
+  "files": [
+    {
+      "path": "packages/shared/src/utils/cslab-fitting.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-fitting.test.ts.md",
+      "sourceBlob": "e787c008db121c798ad82bf8ae35a464c3cde1d6",
+      "sourceSha256": "e8d9f38a99938c383a8ffee1fce172837067f19625f3175bdca90cfc79dc0e1e",
+      "manualSha256": "d2cb403e9d68c72dcbe31fe9367fe36d47c1372de88d2df9e233f3f0ff22b5b6",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-fitting.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-fitting.ts.md",
+      "sourceBlob": "216687ba324f1bd914a53bfd1987de54bad468f4",
+      "sourceSha256": "3a22a09f98907b7f57ef59edb8bebe64991a3f553a157b484b3af60047c20222",
+      "manualSha256": "b0e914b7f21a77566113a768dc7b3cb473410e5cbde48da1ee8330fbbcbb6a35",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-isosurface.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-isosurface.ts.md",
+      "sourceBlob": "a9375f346f9cf656242d88996090dca73828aa39",
+      "sourceSha256": "a48650b89928abe8cea66c23073c3cb967285e43a035f36b2cd1c7e4c3dec063",
+      "manualSha256": "714d83fdb3e00cd6012e90e0c02554c2512da9d931c821ff4be7274cd38b0a43",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-marginalia.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-marginalia.ts.md",
+      "sourceBlob": "817bf8d0aea376c4cb48208dd6365b30c7814a0a",
+      "sourceSha256": "bfbf76d6c2949e312cb84f03416fc547fa1cf9c026b5dea259ae2ec22df48c45",
+      "manualSha256": "f382b19532d0d71e583e42a41d84b54a7d56756d4106f853b96681b66046a132",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-plot-doc.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-plot-doc.test.ts.md",
+      "sourceBlob": "e567f52b22a91c467c59040f4d94b9bba39930d5",
+      "sourceSha256": "0d668a7380ef9ee4ca1cd559acb3364caab043989815d758c168c54603370cb1",
+      "manualSha256": "ce6927847b1ac27394ec528eeb297126e2078c2b782d34c12b3c3d9e768adb70",
+      "verdict": "accepted",
+      "findings": "F03",
+      "evidenceBinding": "r1-hunk-verified"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-plot-doc.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-plot-doc.ts.md",
+      "sourceBlob": "f4025bdef5508ff245a070fba07c49132699bdf0",
+      "sourceSha256": "aa0a4b1a711c7a006ab43166047972ea83a00f5d00da276c32d5b93cba1e160d",
+      "manualSha256": "99c6db89f40e7c751898234e5e677900a0d5a89d97b63172ee3b3a15b45e162a",
+      "verdict": "accepted",
+      "findings": "F02",
+      "evidenceBinding": "r1-hunk-verified"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-plot-svg.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-plot-svg.ts.md",
+      "sourceBlob": "87cafa6c32cb7337c060f3ab00023d133690b9e2",
+      "sourceSha256": "219472b8898bc935af258d220ff6da2dfcad8d1fbe3f7f6637f27b6874a1ed94",
+      "manualSha256": "2d56f4041fd85e70fb9388ceff92b84ec7b983bc5a1b371c020cb38d82ca9b89",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-plot.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-plot.ts.md",
+      "sourceBlob": "a8dd3e2f0ff7f206c82682c2a8c1ddaf29203fba",
+      "sourceSha256": "92c972cdc32aeb3b5c14e3eb83a5a8cea896c0f70756b852f437ff39fe45ac67",
+      "manualSha256": "786283b545244adb9a697b51e696698edc90020de1c79ecd5e092949fef4f72b",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-polyhedra.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-polyhedra.test.ts.md",
+      "sourceBlob": "9d4d95b64de14e617e86bc017a896025742936f8",
+      "sourceSha256": "a7dfd4a16a0f2a94923f4a119e0092adeee48cdb8285e2f086b4232d5c37b49a",
+      "manualSha256": "c2aaa9cf5cb23aeffa293039572c3862cec37816c3a43369cf1ab94581f15d46",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-polyhedra.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-polyhedra.ts.md",
+      "sourceBlob": "a12f2dba2d474bcbf88fa51322d9add2c88658b0",
+      "sourceSha256": "3fa3e44d12b66fa5968e27045744d169e900ff0024c091e4e5470884acd17f30",
+      "manualSha256": "173e7ef1671b9e571087bc5a8e079ac38a04f53e38c76c1b84c2829600f6f6e5",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-poscar.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-poscar.test.ts.md",
+      "sourceBlob": "f8d1e98c9548f358223e101fe2af7b93f1aa6e5a",
+      "sourceSha256": "1579bb1df2a982dc5c7f7b71e37200d0a6d8edff9edb6bd3dcf49ea107139aff",
+      "manualSha256": "71326a5fcc4923bece59d75458e505a53f7624362790c1144952057a976e7a52",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-poscar.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-poscar.ts.md",
+      "sourceBlob": "3682969f7b487dfc25ced60d49af162fdb6fa1bc",
+      "sourceSha256": "a7036d67cbe1246c9dafe3c0388c1a3f48e6bee487659ee62f68d558583e3190",
+      "manualSha256": "db115d6f6d1b70891c9bee6cf3197c71419d5897382af6d7b5a58aaf7ca4ea15",
+      "verdict": "accepted",
+      "findings": "F01",
+      "evidenceBinding": "r1-hunk-verified"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-pxrd.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-pxrd.test.ts.md",
+      "sourceBlob": "a6d749c2e3b77d19508c27c5eab282d709446916",
+      "sourceSha256": "22c383778c5e5fb61ab7bb6819d053adf4d87fd211978a739a181049de506458",
+      "manualSha256": "0ba0d16635641ddaa407c58f00a13d7a1ce45799870fd17ddc972d73f1755fdc",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-pxrd.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-pxrd.ts.md",
+      "sourceBlob": "df4b4106de0788329346516962b624671814395d",
+      "sourceSha256": "fc21fa4fcb69ec9b757f92abf9004e7f0b345ec089352fcb7e6d8a74dff7db8b",
+      "manualSha256": "7c58ed1066aa9ee26b3dfd8c4466b33f1799631c4543cf9c95bff34c1cfae165",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-scattering-data.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-scattering-data.ts.md",
+      "sourceBlob": "53442a72b6385d1e7175f7985b6dee388fc0af22",
+      "sourceSha256": "6a7c54d0c6ea9c1fb6716af49d36d17c44a2dbe0a8f34fda6d8ff9cc269544e5",
+      "manualSha256": "08cf911acfb2831f3a3b0b09c6c729e67cb9ac6d759ef4269e7d403b2bcc27ff",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-space-group-data.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-space-group-data.test.ts.md",
+      "sourceBlob": "4e15ba799873f5db335a0da935fff56281e20655",
+      "sourceSha256": "7e557dc5170b490d2d80e3260a7e237cc41479390dc0507fe177bd47d3493175",
+      "manualSha256": "5b7e3d707ad079dcc66d8df7ea328b70aabe2d15a4276fcc55a17ea35b733ab4",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-space-group-data.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-space-group-data.ts.md",
+      "sourceBlob": "4a01d2e784e064c9e4c6df25df4d78f56f64a8dc",
+      "sourceSha256": "d69b89345afc11987e51c45e092ed202e572bb036ef1db5552b9782368b61d26",
+      "manualSha256": "c9b39a2052620f021ccc9084fd4fe4cc634458e4e53b740ddea4e0aa272663eb",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-symmetry.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-symmetry.test.ts.md",
+      "sourceBlob": "72f049fd6160abfca4de7b32a338760f3c65ef58",
+      "sourceSha256": "37d91c3fce7d358562ff185b875ed5103068a57f46b07f6ff9ad4443b90ad068",
+      "manualSha256": "498a7b19394d07787ab4a10746e5ce91f5227ab14b8ad415a176e74ff51cd081",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-fitting.test.ts.md": "d2cb403e9d68c72dcbe31fe9367fe36d47c1372de88d2df9e233f3f0ff22b5b6",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-fitting.ts.md": "b0e914b7f21a77566113a768dc7b3cb473410e5cbde48da1ee8330fbbcbb6a35",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-isosurface.ts.md": "714d83fdb3e00cd6012e90e0c02554c2512da9d931c821ff4be7274cd38b0a43",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-marginalia.ts.md": "f382b19532d0d71e583e42a41d84b54a7d56756d4106f853b96681b66046a132",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-plot-doc.test.ts.md": "ce6927847b1ac27394ec528eeb297126e2078c2b782d34c12b3c3d9e768adb70",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-plot-doc.ts.md": "99c6db89f40e7c751898234e5e677900a0d5a89d97b63172ee3b3a15b45e162a",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-plot-svg.ts.md": "2d56f4041fd85e70fb9388ceff92b84ec7b983bc5a1b371c020cb38d82ca9b89",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-plot.ts.md": "786283b545244adb9a697b51e696698edc90020de1c79ecd5e092949fef4f72b",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-polyhedra.test.ts.md": "c2aaa9cf5cb23aeffa293039572c3862cec37816c3a43369cf1ab94581f15d46",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-polyhedra.ts.md": "173e7ef1671b9e571087bc5a8e079ac38a04f53e38c76c1b84c2829600f6f6e5",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-poscar.test.ts.md": "71326a5fcc4923bece59d75458e505a53f7624362790c1144952057a976e7a52",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-poscar.ts.md": "db115d6f6d1b70891c9bee6cf3197c71419d5897382af6d7b5a58aaf7ca4ea15",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-pxrd.test.ts.md": "0ba0d16635641ddaa407c58f00a13d7a1ce45799870fd17ddc972d73f1755fdc",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-pxrd.ts.md": "7c58ed1066aa9ee26b3dfd8c4466b33f1799631c4543cf9c95bff34c1cfae165",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-scattering-data.ts.md": "08cf911acfb2831f3a3b0b09c6c729e67cb9ac6d759ef4269e7d403b2bcc27ff",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-space-group-data.test.ts.md": "5b7e3d707ad079dcc66d8df7ea328b70aabe2d15a4276fcc55a17ea35b733ab4",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-space-group-data.ts.md": "c9b39a2052620f021ccc9084fd4fe4cc634458e4e53b740ddea4e0aa272663eb",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-symmetry.test.ts.md": "498a7b19394d07787ab4a10746e5ce91f5227ab14b8ad415a176e74ff51cd081"
+  },
+  "findings": [],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network",
+    "bun 测试运行"
+  ],
+  "notes": "旧 reviews/nb-32/ 保留未动；nb-32 链 r0→r1 闭合。"
+}

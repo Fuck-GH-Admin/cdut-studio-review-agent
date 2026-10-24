@@ -1,0 +1,43 @@
+{
+  "schema": "dsh-r07-review-done/1",
+  "batch": "nb-80-r2",
+  "revisionOf": "nb-80-r1",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-09-20261023",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-23T23:35:00Z",
+  "sealId": "seal-58c9dd0ff97203a6",
+  "status": "REVIEW_COMPLETE_ACCEPTED_WITH_ERRATA",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "gapsClosed": 1,
+    "residualMinor": 2
+  },
+  "artifacts": [
+    "reviews/nb-80-r2/RESULT.json",
+    "reviews/nb-80-r2/RESULT.md",
+    "reviews/nb-80-r2/REVIEWED-HASHES.json",
+    "reviews/nb-80-r2/DONE.json",
+    "handoffs/nb-80-r2-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-80-r2-REVIEW-TO-LEAD.md"
+  ],
+  "deliveryBinding": {
+    "deliveryRoot": "deliveries/nb-80-r2",
+    "sealId": "seal-58c9dd0ff97203a6",
+    "sealedAtUtc": "2026-10-23T23:20:37Z",
+    "manifestSha256": "b0d888150e83707f9fde77a129aceb2d846d45adea62d147f73b94b5030d05a3",
+    "zipSha256": "50c57c36059623c71d2369410bcad44e6a83718181b21d8fba928eb73a865917"
+  },
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network",
+    "real browser/CDP"
+  ],
+  "boundaries": "QA 只读复核：未改作者手册/源码/测试/依赖/candidate/全局 FILES/COVERAGE/MANIFEST/INDEX/inventory/g0；未 commit/push；父批字节只读保留；NOT_RUN。",
+  "next": "lead 按 18 exact manualSha256 合入；nb-80 系列闭链；13 缺口全闭（12 codex RQ+4 minor→nb-100-r1；NB80R1-F-01→nb-80-r2）；残余 errata（cdp/policy 行号漂移）交 lead"
+}

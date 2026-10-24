@@ -1,0 +1,49 @@
+{
+  "schema": "dsh-r07-review-done/1",
+  "batch": "nb-55",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "sealId": "seal-a15b4c81cc7797fa",
+  "reviewedAtUtc": "2026-10-23T23:10:00Z",
+  "batchVerdict": "accepted",
+  "fileVerdicts": {
+    "apps/electron/src/main/lib/adapters/pi-review-ops-tools.ts": "accepted",
+    "apps/electron/src/main/lib/adapters/pi-review-watchdog.test.ts": "accepted",
+    "apps/electron/src/main/lib/adapters/pi-review-watchdog.ts": "accepted",
+    "apps/electron/src/main/lib/adapters/pi-runtime-smoke.test.ts": "accepted",
+    "apps/electron/src/main/lib/adapters/pi-skill-resources.test.ts": "accepted",
+    "apps/electron/src/main/lib/adapters/pi-skill-resources.ts": "accepted",
+    "apps/electron/src/main/lib/adapters/pi-skills-override.test.ts": "accepted",
+    "apps/electron/src/main/lib/adapters/pi-streaming-control.test.ts": "accepted",
+    "apps/electron/src/main/lib/adapters/pi-streaming-control.ts": "accepted",
+    "apps/electron/src/main/lib/adapters/windows-shell-installer.ts": "accepted"
+  },
+  "counts": {
+    "files": 10,
+    "accepted": 10,
+    "revision_required": 0,
+    "unknown": 0,
+    "findings": 3
+  },
+  "findingsIndex": [
+    "NB55-N1",
+    "NB55-N2",
+    "NB55-N3"
+  ],
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass_with_findings"
+  },
+  "runStatus": "NOT_RUN",
+  "artifacts": [
+    "reviews/nb-55/RESULT.json",
+    "reviews/nb-55/RESULT.md",
+    "reviews/nb-55/REVIEWED-HASHES.json",
+    "handoffs/nb-55-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-55-REVIEW-TO-LEAD.md"
+  ],
+  "mergeRule": "全 10 篇 acceptedHashes 可合；3 findings 入 ACCEPTED-ERRATA G4 前关闭。",
+  "note": "已 seal D0 不回写。"
+}

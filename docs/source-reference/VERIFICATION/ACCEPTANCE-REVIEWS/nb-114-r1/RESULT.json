@@ -1,0 +1,98 @@
+{
+ "schema": "dsh-r07-qa-result/1",
+ "batch": "nb-114-r1",
+ "id": "NB-114",
+ "revisionOf": "nb-114",
+ "reviewRoot": "reviews/nb-114-r1",
+ "priorReviewRoots": [
+  "reviews/nb-114"
+ ],
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "sourceHeadVerified": true,
+ "sourceWorktreeClean": true,
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewedAtUtc": "2026-10-24T21:10:00Z",
+ "scopeSource": "manager/assignments/nb-114-SCOPE.json",
+ "scopeFileCount": 18,
+ "scopeLines": 1057,
+ "deliveryRoot": "deliveries/nb-114-r1",
+ "sealSpec": "seal_delivery.py/1（v2）",
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "real model/network"
+ ],
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PASS",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 18,
+  "revision_required": 0,
+  "unknown": 0
+ },
+ "batchVerdict": "accepted",
+ "files": [],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/active-view.ts.md": "f5f9ac9ecd4697461933abfcaa987665af5af3e1e4a87831556384267bdc4d47",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/agent-atoms-lifecycle.test.ts.md": "5f2e698a6b8660deb7236df3890f16bd98459618fb67f8a585c2e7c13cd46de5",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/agent-atoms.test.ts.md": "04d3c8380ea0cb044a27d3aba757f86a312d83c01db5f0e8704ca89198740864",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/agent-live-messages.test.ts.md": "33ce51afe93c8e17df1235ca5f8764382b78678d2798c7d9336a4cd72334be48",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/agent-preset-atoms.ts.md": "c33f4187bc37fa97cdd9c2c8adbc3ed0223e56591440ac04561024c90e827af8",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/agent-stream-completion.test.ts.md": "a4df09180fc6d4cf8f8a88a283177be20b8eef69a32f71fd80ec50ade161dc9d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/app-mode.ts.md": "c03cb8ab0faa54645a909fc255deecd70554f06fc291d8b194ddd4da94faabaa",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/automation-atoms.ts.md": "a3de1c9cf6eb64e10bbbec9d610556611af9cf4d5eb9a46982488917dc8306ab",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/browser-atoms.ts.md": "6cedb8c9ad0ccae13a0617ded67d39e7311e0e4ef6298b64077db930826c7800",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/bulletin-atoms.ts.md": "9888ecde717a1a48d62c127c54f73a3e873d13d586ca4f0a99e74d2556201a14",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/cdut-account-atoms.ts.md": "32fdd9a748f7458b718f1eb0e7f755a4f021628702c5b51d11631529750e6612",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/coach-tour-atoms.ts.md": "7bbc5ce2db725eee5599d73eb224ff8f9359b2f7a42576cc99aefaab21879a80",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/conversation-atoms.ts.md": "35034ec9fbc397bbd3686bbc0264b3090b26ddf9137de5b7b5a3cb77191eb3bb",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/cslab-atoms.ts.md": "8ac52e7561066cbb1e7b1f942419fb4bd58245162085bffdf480ddf23ec10290",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/cslab-origin-atoms.ts.md": "1264350cc794cc4caf65a1cb902a1c5023bd884434a7bf3427a54b53ac1ae12d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/cslab-tour-atoms.ts.md": "dac7cf794e536fd1aa3fef4c5160bd9bf37eee17f65fea56eb3b5c094427abb5",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/cslab-vesta-atoms.ts.md": "eb2ade0497c7a710648b9486f5bc2e90947f31d6307a7bbdd164b6f2a7715f65",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/developer-mode.ts.md": "b872b39eb5b560d34f46950338578cde571f8e95b140fa2c1f9b81469cd893dd"
+ },
+ "rejectedHashes": {},
+ "supersededManualHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/automation-atoms.ts.md": {
+   "oldManualSha256": "d7ac47f4df386df2ad9cd84f94ab43618ce4720e9860e94dc3a5ebe01ed737f5",
+   "newManualSha256": "a3de1c9cf6eb64e10bbbec9d610556611af9cf4d5eb9a46982488917dc8306ab"
+  },
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/conversation-atoms.ts.md": {
+   "oldManualSha256": "10f1406096aad9009c32d678a8c754abea5e07a25e272736398fe1b21f1864fb",
+   "newManualSha256": "35034ec9fbc397bbd3686bbc0264b3090b26ddf9137de5b7b5a3cb77191eb3bb"
+  },
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/cslab-atoms.ts.md": {
+   "oldManualSha256": "12fead37d1237c5504a21aba50fd31cd0df07c117fbc8261214e7b4ae29abdb1",
+   "newManualSha256": "8ac52e7561066cbb1e7b1f942419fb4bd58245162085bffdf480ddf23ec10290"
+  },
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/cslab-vesta-atoms.ts.md": {
+   "oldManualSha256": "2ded38d7cde89b007c87fc2e07fabd99b2f3a2bec56dec5ac460f630d0e8d948",
+   "newManualSha256": "eb2ade0497c7a710648b9486f5bc2e90947f31d6307a7bbdd164b6f2a7715f65"
+  }
+ },
+ "findingsClosure": {
+  "F-01": "CLOSED（cslab-atoms DrawerMode 17→18 态 + 30+→59 导出 ✓）",
+  "F-02": "CLOSED（conversation 15→21 ✓）",
+  "F-03": "CLOSED（automation 6→8 ✓）",
+  "F-04": "CLOSED（vesta 9→10 ✓）"
+ },
+ "batchFindings": [],
+ "zip": {
+  "path": "deliveries/nb-114-r1/R07-nb-114-r1-05fb2565.zip",
+  "sha256": "2ae42fac5303d85a2440388bde292957082cf777004093410c20863174dd5b05",
+  "note": "v2 无穿越/0 mismatch"
+ },
+ "parentPreserved": "r0 交付未动；4 篇 before/=父批原字节",
+ "notClaimed": [
+  "测试运行结果",
+  "typecheck/build 结果",
+  "G3 跨模块"
+ ]
+}

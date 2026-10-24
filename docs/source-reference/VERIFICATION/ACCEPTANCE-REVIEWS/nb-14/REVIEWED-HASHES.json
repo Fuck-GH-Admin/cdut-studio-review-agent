@@ -1,0 +1,36 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-14",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-23T16:58:32Z",
+  "sealId": "seal-910d78c7a7cee3ea",
+  "note": "14/14 accepted（4 条非阻断 minor 待 errata/rN 关闭，见 RESULT.json findings）。manualSha256 为 QA 实算封版字节（=MANIFEST=READY=磁盘）。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-case-review-service.test.ts.md": "d2dcd023e3a4269bc5cd408f17a271d6d11b74a78a4a6116e0d517761b38747a",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-case-review-service.ts.md": "a510f50d68a5691a822bfe4e1d307f07bd04aef5e6e3849df67455729453f1a5",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-document-coverage.test.ts.md": "ca729a029dd3caa6a6a6cae571a7c13e9f3bfd3c38665c62cab3665f7f32ac43",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-document-coverage.ts.md": "ede752e86c15f9df2106d4e94a03476fbea148a818cdf601bf63fc86f1b1a84e",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-review-agent-client.test.ts.md": "10945581f195eaf20a4b2ecaf2b09f642da49080d40a2e42bdd0e0c2f4454199",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-review-agent-client.ts.md": "2d6b8265f83fe0a1f1f381905d406cca2b31041a36b27041c3888cb01c66a8d5",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-review-executor.test.ts.md": "4f3f1deead02110f50dbeb82ccdf48afcbfacaec5b9c048dec62fa23361da6d4",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-review-executor.ts.md": "e90224ee2bfa597d1979139ad21790aa5735f371015dbf0e82089f11846cbf22",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-review-prompt-contract.test.ts.md": "1927c5f4a1ae5a50dac06d405f6efea75d492363a2712d34c633cfb6e473d529",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-review-prompt-contract.ts.md": "9ca6b160ed3abb0f2b0db5352ead8923bbbff401b0d5ea96e37dd364494a0519",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t04-published-plan.test.ts.md": "216057ce60e77cabc9860e072c0fa69c6e777709a0d5d68b1f00ef8a70513afc",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t04-published-plan.ts.md": "05f8480ac3681fb2cb841a3bcc1656182a5921fbf4a9b61db5ad48bde6713a52",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t04-rules-scoring.test.ts.md": "798a69a562cd9923e3650876c150fd79d032601402019b6e7474bf1326f6e8c8",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t04-rules-scoring.ts.md": "317f5c9e01c5dd22b104af5a50b63983d61f852d776ee85b76cba7129ab937a5"
+  },
+  "revisionRequiredManuals": {},
+  "sourceBinding": {"verifiedCount": 14, "note": "14/14 blob+sha256 与 nb-14-SCOPE.json 独立重算全等（另见 reviews/nb-14/PRE_READ_DONE.json sourceBindings）"},
+  "sealBinding": {
+    "manifestSha256": "d4de72abdd1c4d18…（完整值见 deliveries/nb-14/MANIFEST.json 实算；READY.manifestSha256 一致）",
+    "readySha256": "0eb0c1f6082237c3d87df51bf6c1496486a913edbae9d1c77e16e1d6ba62871c",
+    "zipSha256": "542de6e864384bdcfa4b9436d8851a8bf99c0c99eed8b20fec31d78bc686cff2",
+    "zipBytes": 58712,
+    "zipEntries": 17,
+    "changesDiffReplay": "14/14 byte-identical"
+  },
+  "errataPending": ["NB14-N-01", "NB14-N-02", "NB14-N-03", "NB14-N-04"]
+}

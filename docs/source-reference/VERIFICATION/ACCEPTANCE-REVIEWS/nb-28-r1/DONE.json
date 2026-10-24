@@ -1,0 +1,34 @@
+{
+  "schema": "dsh-r07-independent-review-done/1",
+  "batch": "nb-28-r1",
+  "revisionOf": "nb-28",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-03-20261023",
+  "reviewerSession": "docs-r07-qa-nb-03-20261023",
+  "batchVerdict": "accepted",
+  "completedAtUtc": "2026-10-23T17:48:20Z",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "findings": 3,
+    "optionalNotes": 0
+  },
+  "sealBinding": {
+    "sealId": "seal-4210c45ff817f1b9",
+    "zipSha256": "7d49c80f66b602a0319ab03e49f5a9e9088a234161228140d84c40a2e8b61b22",
+    "manifestSha256": "17ae3508fab5fc1d8815f24469d00b876709138fc5f1848c5a96c3061b57b1b1",
+    "readySha256": "1d81a0f4afa7bf98054b5ae557e8b5324e712b561d0893a67df4e2f3a3d40a75",
+    "doneSha256": "1bec77cffcb126b4c328ff62cbcfe63eba2f73bbe1680bd78de796fd8a108148",
+    "sealedAtUtc": "2026-10-23T17:37:03Z"
+  },
+  "notRun": [
+    "bun test NOT_RUN",
+    "tsc/build NOT_RUN",
+    "GUI NOT_RUN",
+    "模型/产品调用 NOT_RUN"
+  ],
+  "note": "NB28-COUNT-01/02（7 test）与 NB28-G1-01（changes.diff 重生成自洽、草稿残留清除）均闭合；16 篇与父批逐字节一致。",
+  "resultSha256": "cb19679e98b630899a8ad26045b717cf8156086759218e27d4e70a80aeffbc54",
+  "reviewedHashesSha256": "16e899448465b6a5c732f034a774547576565699a80b9ba95b70351f2ac0eafe"
+}

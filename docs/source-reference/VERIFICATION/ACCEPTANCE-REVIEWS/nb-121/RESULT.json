@@ -1,0 +1,240 @@
+{
+ "schema": "dsh-r07-review-result/1",
+ "batch": "nb-121",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-06-20261024",
+ "reviewerSession": "docs-r07-qa-extra-06-20261024",
+ "reviewedSealId": "seal-bdf6c0926e739f28",
+ "reviewedAtUtc": "2026-10-23T20:26:24Z",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 18,
+  "accepted": 18,
+  "revision_required": 0,
+  "unknown": 0,
+  "findings": {
+   "blocking": 0,
+   "minor": 2
+  }
+ },
+ "g0": {
+  "mechanical": "PASS（链自洽、sealId 复算 seal-bdf6c0926e739f28 一致、18 manual 字节三方一致、源绑定 18/18==manager scope、ZIP 21 条目无 READY/DONE/reviews）",
+  "format": "PASS（18/18 front matter 11 项、source 11 章/test 6 章、status=authored、NOT_RUN）"
+ },
+ "g1": {
+  "unverified": "PASS（5 节显式披露；批外 dark-mode-guards.test.ts:119-131 静态守卫声明回源属实；34 test 计数与预读独立计数一致）",
+  "evidence": "SOURCE-EVIDENCE.tsv 18 行与预读真值吻合"
+ },
+ "g2": {
+  "method": "18/18 手册对照独立预读 + 回源抽查（model-logo 键数 54/54/23/23/17/17+45 import 机械复算全对、normalize-latex :243/:1245、同名函数排除、stub alias、8 消费方行号）；模型库断言≠运行 NOT_RUN"
+ },
+ "files": [
+  {
+   "path": "apps/electron/src/renderer/lib/markdown-rich-text.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/markdown-rich-text.test.ts.md",
+   "sourceBlob": "1992a4d4ca0a7f700437fa9f2037d4d5eef415f2",
+   "sourceSha256": "1e3c3e839bfa068f098c9de98d54af4e08a3b9ba1900d6fef338c0f277fd7e80",
+   "manualSha256": "bf66f6d6713222436789a0f2d64fe5841b3127fb532859ed2692d7d24ddd8465",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/markdown-rich-text.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/markdown-rich-text.ts.md",
+   "sourceBlob": "e9d6e1c9f32c0e554f3717d8f42860a5fb0f372f",
+   "sourceSha256": "dc3ab918ba12008b458879f50ca5434542712a51e16fdbd6c228f7a331d3700b",
+   "manualSha256": "98e416852f139dc64c12f8a5d9b12354984763598d90a68008312c4efc7ea8ee",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/model-1m-toggle.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/model-1m-toggle.test.ts.md",
+   "sourceBlob": "2d1d3388d17681f416e14a6241116251ea613534",
+   "sourceSha256": "f839fabffee8e7f8e248d5ca136a5b30249f340561de00aa0b590a8849686dae",
+   "manualSha256": "023e3d369f897d6a695336d22579d80b097e43d233452a39807b610d9b753e12",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/model-1m-toggle.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/model-1m-toggle.ts.md",
+   "sourceBlob": "d6929ea629165930c979a3bc6c32f8864621e19e",
+   "sourceSha256": "7933852e3c7ee386390113e29252ea5f82234b4a512eda393b9f335710dbe7ff",
+   "manualSha256": "d928c1d2877fae973f1e0090d2467d0da7f4fda3ef386aa6b883c890b2f8acf2",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/model-logo.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/model-logo.test.ts.md",
+   "sourceBlob": "2765e52e95257bd2a5c95d2e42ebb632e4e73481",
+   "sourceSha256": "fa76467d0674ffa29daa76758ca9fae49671cbfd0aeef8aa8669160b8b49362e",
+   "manualSha256": "039a1acb31d813210f785137e5cc1f623d2e54908188a224f4e75432c47e406b",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/model-logo.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/model-logo.ts.md",
+   "sourceBlob": "8599dfc45a01649f24aa4f71dade0712b9b52e88",
+   "sourceSha256": "9ff80dfcb0f53d5732e65317fb31e867b7c64558ac8af300eb0efc0481eba6fe",
+   "manualSha256": "205f6b3e35a670985c525f6fcef5f83ad3da121e63b735d3c413e05ff70e418e",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/navigation-actions.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/navigation-actions.ts.md",
+   "sourceBlob": "6b66f33c13e53ad56fdf8cfd3131f2c564795b18",
+   "sourceSha256": "acaa7792599ebafadf5dcc01c6cc20003792da291544c1f3e6f851231a2d5fb2",
+   "manualSha256": "cfbb58d0ca72fa81aa24eacbffe8f66b02049c3dcc4a41301d39bc6d5bdb2f2f",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/navigation-controller.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/navigation-controller.test.ts.md",
+   "sourceBlob": "3766e0c039712775a88b7b2a5db4c202921c5e56",
+   "sourceSha256": "b0da1336a91b594d65598f69fc02f095e698a40be1efb1b29c52fdb45aa858cd",
+   "manualSha256": "fb77ab81e4df6ba0c320d63f578fe5d2c5b0641d50262a218618dd093c44bf99",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/navigation-controller.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/navigation-controller.ts.md",
+   "sourceBlob": "2a77d1f8510d6ef6ddbaf365bd7354633af10543",
+   "sourceSha256": "363fca3502f71f09b5e271c1804fc53251a5708de009455e27f63604098b10fd",
+   "manualSha256": "37d57a8d00d5b9382e2df7cf84df713da5d7cbf8bacbbdac5939510e335541c1",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB121-N-02",
+     "severity": "minor",
+     "claim": "§4 四处括注调用点行号的文件路径误写为 use-left-sidebar.ts：实为 NavigationInputProvider.tsx:120/:306、ExitPlanModeBanner.tsx:148、AskUserBanner.tsx:299、ContentReviewView.tsx:155（行号本身正确，路径张冠李戴；use-left-sidebar 自身另有调用点）",
+     "sourceEvidence": "全树 grep：NavigationInputProvider.tsx:120/306 isEditableTarget、ExitPlanModeBanner.tsx:148、AskUserBanner.tsx:299、ContentReviewView.tsx:155；use-left-sidebar.ts:120/148/155/299/306 为无关行",
+     "action": "errata：四处括注路径改为各自文件"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/node-canvas-stub.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/node-canvas-stub.ts.md",
+   "sourceBlob": "66c72af798aa47245a165a5e99d5bbe51d55bf42",
+   "sourceSha256": "6d03e289784f59ca2732fe51cc0e023b005658c2dfb0bcf642b025a6667be184",
+   "manualSha256": "b5ccabf09878e90e9e99ad4f658cb4cefe527c0e242fa8b2a240a9dc593c7e34",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/node-zlib-stub.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/node-zlib-stub.ts.md",
+   "sourceBlob": "9c3062b39571cd6d51c244b2689c079783f4ce8b",
+   "sourceSha256": "2d59f69a5744544f744bfe82d8778ece3984945ba4c1153eefc9be40f88920d6",
+   "manualSha256": "cc414dd2c764aaf82c9d8ebf4b0ebe19f325daf30f321ecb2651e9f69672e1b5",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/normalize-latex.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/normalize-latex.ts.md",
+   "sourceBlob": "16d56978369cd8bd75c47a7c8dabcc7fd6996366",
+   "sourceSha256": "9b129c43325cfc82a6fb71f454aa5102a693c691ce6debf4dfbe5c5dda02685d",
+   "manualSha256": "d39a63464a5acd251e43e35f50a2e51cdbbd7d5dbc8e820a4111546a4d4e8a59",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/normalize-markdown-emphasis.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/normalize-markdown-emphasis.test.ts.md",
+   "sourceBlob": "3dee8281f63716865f6d7354bdfdef8cc278396f",
+   "sourceSha256": "48429443d436cf0c879be57387f2785606851b54056349d8d503e1659814d562",
+   "manualSha256": "2dca3188e3c5390a40ddf0c608ab5bb3cf5a7e0074f9519a9e69cdf79141356e",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/normalize-markdown-emphasis.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/normalize-markdown-emphasis.ts.md",
+   "sourceBlob": "d59d2f426067debca2e5814e3f26445df6a6ea43",
+   "sourceSha256": "7daa9cf6d978113f692198e3344224e4c703cf7e027e83992ac13b577abc392e",
+   "manualSha256": "1f415096915bd917d137d68473fc1ccbf2aecc5fc01bd937d1979369db909af5",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/ofv-extensions.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/ofv-extensions.ts.md",
+   "sourceBlob": "62913c7c855059009ca688b0f5691a08331c2219",
+   "sourceSha256": "a70e5ca9ff4c6173e4bdace28d161884bb68810e4d4809d8513725d38709032a",
+   "manualSha256": "295f8231ef801a8647cb7c661382454e7135140927775e2782094702ca246f44",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB121-N-01",
+     "severity": "minor",
+     "claim": "§3.1 OFV_EXTRA_EXTS 分组计数自相矛盾：Office 长尾标\"15\"但括号内实列 16 项（.dot/.xlsb/.xlt/.pps/.odt/.ods/.odp/.fodt/.fods/.fodp/.rtf/.wps/.et/.dps/.numbers/.key）；分组标签合计 8+6+15+7+7=43 与 §2 总数 44 不符（总数 44 与源码一致，分组标签错）",
+     "sourceEvidence": "ofv-extensions.ts:39-54 集合机械计数 44（8+6+16+7+7）",
+     "action": "errata：Office 长尾改 16，分组合计=44"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/ofv-plugins.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/ofv-plugins.ts.md",
+   "sourceBlob": "06e553e4c16b78b267af992af58980b5b3d4f482",
+   "sourceSha256": "c28ec2318468ab90e360f8c79b6eaad176a761dc5c41b9d2d30ab2e14336486c",
+   "manualSha256": "e0497365dd086d4860300f4481c6e53cc483e6246e83cca7dc2509a6117b957a",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/ofv-theme-tokens.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/ofv-theme-tokens.test.ts.md",
+   "sourceBlob": "b4ec052e1b98ee9d9359f2d09c3eaad518e43fc7",
+   "sourceSha256": "fb86b57deeaed698e9b1cf8de493ccaa9c2fb101bad5c79267695db0729576bc",
+   "manualSha256": "7a9dd0f58c4578b9ec3c0435827a305343c7700fbb538fb0775c3327ec151ab0",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/ofv-theme-tokens.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/ofv-theme-tokens.ts.md",
+   "sourceBlob": "ada3942e41c89bb09d267c3da1b94b84d43ac1e5",
+   "sourceSha256": "dff35ea527c218b5bd409e71ed29ccc22963a14401fadd5224736f39bc6cb996",
+   "manualSha256": "448c313b1d6b54093a3dddddc02d91c6d03ddd48da107c66e6fb0ed15832c665",
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/markdown-rich-text.test.ts.md": "bf66f6d6713222436789a0f2d64fe5841b3127fb532859ed2692d7d24ddd8465",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/markdown-rich-text.ts.md": "98e416852f139dc64c12f8a5d9b12354984763598d90a68008312c4efc7ea8ee",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/model-1m-toggle.test.ts.md": "023e3d369f897d6a695336d22579d80b097e43d233452a39807b610d9b753e12",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/model-1m-toggle.ts.md": "d928c1d2877fae973f1e0090d2467d0da7f4fda3ef386aa6b883c890b2f8acf2",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/model-logo.test.ts.md": "039a1acb31d813210f785137e5cc1f623d2e54908188a224f4e75432c47e406b",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/model-logo.ts.md": "205f6b3e35a670985c525f6fcef5f83ad3da121e63b735d3c413e05ff70e418e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/navigation-actions.ts.md": "cfbb58d0ca72fa81aa24eacbffe8f66b02049c3dcc4a41301d39bc6d5bdb2f2f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/navigation-controller.test.ts.md": "fb77ab81e4df6ba0c320d63f578fe5d2c5b0641d50262a218618dd093c44bf99",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/navigation-controller.ts.md": "37d57a8d00d5b9382e2df7cf84df713da5d7cbf8bacbbdac5939510e335541c1",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/node-canvas-stub.ts.md": "b5ccabf09878e90e9e99ad4f658cb4cefe527c0e242fa8b2a240a9dc593c7e34",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/node-zlib-stub.ts.md": "cc414dd2c764aaf82c9d8ebf4b0ebe19f325daf30f321ecb2651e9f69672e1b5",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/normalize-latex.ts.md": "d39a63464a5acd251e43e35f50a2e51cdbbd7d5dbc8e820a4111546a4d4e8a59",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/normalize-markdown-emphasis.test.ts.md": "2dca3188e3c5390a40ddf0c608ab5bb3cf5a7e0074f9519a9e69cdf79141356e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/normalize-markdown-emphasis.ts.md": "1f415096915bd917d137d68473fc1ccbf2aecc5fc01bd937d1979369db909af5",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/ofv-extensions.ts.md": "295f8231ef801a8647cb7c661382454e7135140927775e2782094702ca246f44",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/ofv-plugins.ts.md": "e0497365dd086d4860300f4481c6e53cc483e6246e83cca7dc2509a6117b957a",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/ofv-theme-tokens.test.ts.md": "7a9dd0f58c4578b9ec3c0435827a305343c7700fbb538fb0775c3327ec151ab0",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/ofv-theme-tokens.ts.md": "448c313b1d6b54093a3dddddc02d91c6d03ddd48da107c66e6fb0ed15832c665"
+ },
+ "errataQueue": [
+  "NB121-N-01",
+  "NB121-N-02"
+ ],
+ "notes": [
+  "语义质量高：ofv-extensions 两处注释/代码差异照实、markdown-rich-text 测试 1-2 归属批外 CopyButton 照实、#659/倒序/stub 接线正确",
+  "2 minor：分组计数矛盾、引用路径误写（行为结论不受影响，转 ERRATA 关闭）",
+  "NOT_RUN：产品测试/typecheck/build/GUI/真实渲染；未改源码/测试/依赖/作者正文/candidate/全局总账"
+ ]
+}

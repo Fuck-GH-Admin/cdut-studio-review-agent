@@ -1,0 +1,67 @@
+{
+  "schema": "dsh-r07-review-done/1",
+  "batch": "nb-03",
+  "package": "p03-integrations",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewer": "docs-r07-qa-nb-03-20261023",
+  "author": "docs-r07-author-nb-03-20261023",
+  "status": "REVIEW_COMPLETE_ACCEPTED",
+  "gates": {
+    "G0": "PASS",
+    "G1": "PASS",
+    "G2": "PASS"
+  },
+  "filesReviewed": 10,
+  "accepted": 10,
+  "revisionRequired": 0,
+  "unknown": 0,
+  "blockingFindings": 0,
+  "nonBlockingFindings": 2,
+  "findings": [
+    {
+      "id": "NB03-ST-01",
+      "severity": "low",
+      "blocking": false,
+      "claim": "§3.8 步骤 3 把 `creates` 的权重写成 `weight: input.weight ?? 1`（`longterm-memory-store.ts.md:144`，引用 `:351-365`）",
+      "sourceLine": "apps/electron/src/main/lib/longterm-memory/longterm-memory-store.ts:358",
+      "sourceFact": "实际表达式是 `weight: typeof input.weight === \"number\" ? input.weight : 1`，不是空值合并。",
+      "impact": "对声明类型 `number | undefined` 两者可观察行为相同（`undefined→1`、`0→0`、`NaN→NaN→clamp 0`），不改变任何结论；仅在传入非 number 的非空值（类型外）时不同。",
+      "action": "把该短语改为源码表达式，或补一句“非 number 一律取 1”。仅文字修订，无需改结构。"
+    },
+    {
+      "id": "NB03-IP-01",
+      "severity": "low",
+      "blocking": false,
+      "claim": "§7 与 §10 写“五个 handler 都忽略 `_event`”（`longterm-memory-ipc.ts.md:130`、`:160`）",
+      "sourceLine": "apps/electron/src/main/lib/longterm-memory/longterm-memory-ipc.ts:42",
+      "sourceFact": "`READ_GRAPH` 的 handler 签名为 `(): LongTermMemoryGraph =>`，根本不接收 event 参数；只有 ADD/UPDATE/DELETE/QUERY_TEST 四个取 `_event` 且未使用。",
+      "impact": "“无 sender 校验”的结论不变（且 READ_GRAPH 更彻底：连 sender 都拿不到）；但“五个都忽略 `_event`”与逐入口实证不符。",
+      "action": "按入口列写：READ_GRAPH 无 event 形参；其余 4 个形参为 `_event` 且未使用。建议在 §7 逐条列出 5 个入口的证据行号（42/48/57/72/81）。"
+    }
+  ],
+  "outputs": [
+    "reviews/nb-03/RESULT.json",
+    "reviews/nb-03/RESULT.md",
+    "reviews/nb-03/REVIEWED-HASHES.json",
+    "reviews/nb-03/SOURCE-CHECKLIST.md",
+    "reviews/nb-03/DONE.json",
+    "handoffs/nb-03-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-03-REVIEW-TO-LEAD.md"
+  ],
+  "testsRun": [],
+  "buildsRun": [],
+  "notRun": [
+    "bun test",
+    "typecheck",
+    "Electron/GUI",
+    "real model/network",
+    "build/package"
+  ],
+  "boundaries": [
+    "未改作者正文/stage/ZIP/READY/MANIFEST/DONE",
+    "未改源码/测试/依赖/README/AGENTS",
+    "未写 candidate、未改全局 FILES/COVERAGE/MANIFEST/INDEX",
+    "未 commit/push"
+  ],
+  "reviewedAtUtc": "2026-10-23T12:05:00Z"
+}

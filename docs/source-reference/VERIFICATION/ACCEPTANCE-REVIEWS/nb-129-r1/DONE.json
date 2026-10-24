@@ -1,0 +1,66 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-129-r1",
+ "revisionOf": "nb-129",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-models-20261023",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T20:04:25.432263+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "files": 18,
+ "accepted": 18,
+ "revisionRequired": 0,
+ "unknown": 0,
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/clipboard-agent-tools.ts.md": "a71d39e3913b6b2d269423a0ae1f957f932eec1ed51114c5fc8058e56c7855d7",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/command-execution.ts.md": "c04947348c63f06763cf87d3489f9483ad2f1b5e6bb6103cf8c8a71f2d0f2912",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/config-paths.test.ts.md": "84a356f06cc1f3ae6dee049722950b76de5ff9a5e91db84d1baeb0dfcb91c57a",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/default-skill-slug-migration.test.ts.md": "b40f8a91df86090145c999803c946b8912997e65268edf433074ff82a4a4d237",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/default-skill-slugs.test.ts.md": "569f6d20066cf212e558646746c220c2f24d5a3993af48a585adb03cf644b031",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/default-skill-slugs.ts.md": "f45a66c02c3021873f70e33f067ce4c4d9ab4a55ba5fb2fc45e19e673040d030",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/detached-preview-window.ts.md": "905d8fb82d575887951dcb26bead4a540fa842bc29bdfe17876911af64443681",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/device-durable-store.ts.md": "f8260d55877268a4f8a9b1209c056f40a4b3014020a84720d939e9c42b5a0b8a",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/dock-badge-service.ts.md": "ddadb407804a82da2eff1e46e77598613e3ec4f25d25187fd12c78c9fb6c99d6",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/environment-checker.ts.md": "d6b166a3d8700ff900f078f63ce4c63df9fa4555f851857619f6a76728042ac5",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/error-patterns.test.ts.md": "6460ac90a708e460da0a651fc4abe332be4aef3bb99ea67fe5dc7242e0c0622e",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/error-patterns.ts.md": "8d3d356a7b50614b31c1fa9333e2bc70b81136914051c74ebf7e220a2becf57f",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/execution-service.test.ts.md": "299ca63d95cd93b1c8972ca425c92e0d3b19343accbd956c8ac63f1efab6f932",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/execution-service.ts.md": "43e750b9d1e32afa0be9fb9a6aaf555872897d943a8a3b288a810e29831f1c5c",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/feishu-bridge-manager.ts.md": "f9e9859259da3a092f87ba654afa4db99c6cd695ab1e8320e7a9b45f52fcfe65",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/feishu-bridge.ts.md": "ef9320b8a4c003f52324e1d47f7b970eaa26af2cbe17abcd69c9e75e9b16ef09",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/feishu-config.ts.md": "eccc1bee16e421f382e88f522198a1c47b090fb378172124597e46f3069088fb",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/feishu-message.ts.md": "c87e4bd4cb13debd910c5d195b2d27939fada3d36464f9ade60596c3761cc86c"
+ },
+ "revisionHashes": {},
+ "findings": {
+  "revision": [],
+  "notes": []
+ },
+ "deliverySeal": {
+  "sealId": "seal-1b4ddc8ed631f55e",
+  "sealedAtUtc": "2026-10-23T20:03:17Z",
+  "readySha256": "bfa56ecfb1292274d5e12e233d80f7bcea05549e150df1761126e52112e06d36",
+  "doneSha256": "c7520287eae2eb583131559ff61ba0acfbaf7addf4db19b44052b1bc38468f5c",
+  "manifestSha256": "57a7fe6630d5ba505610d36ba5452982150adf23f2d64b3f625f5448e52c158c",
+  "zipSha256": "73f649d41cddf14c4529f13cdbba2fb8624808f056d42757b10ec6f0321a7dec"
+ },
+ "notRun": [
+  "bun test",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "artifacts": {
+  "RESULT.json": "1ab9282924b90ca10f2f1fcc2df9daae3c47c6559190659315ae979d22dbd75f",
+  "RESULT.md": "93721c86526815100d29c72c57aa3eda136980e76f41e56f4c98f67e23d4819e",
+  "REVIEWED-HASHES.json": "1442150f534d568de26039934960a1d05d79cd07d9b0f7845de1088aab0ebb27"
+ },
+ "next": "lead 合入"
+}

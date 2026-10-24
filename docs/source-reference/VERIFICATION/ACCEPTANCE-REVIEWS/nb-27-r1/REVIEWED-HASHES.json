@@ -1,0 +1,118 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-27-r1",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-03-20261023",
+  "reviewedAtUtc": "2026-10-23T17:40:01Z",
+  "batchVerdict": "accepted",
+  "manuals": {
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/business-workflow.test.ts.md": {
+      "manualSha256": "ba10faa5c4d7193b64f1d8981d4052cadc2c6e460af5a248a46fd4cc6cd6a24d",
+      "sourceSha256": "9dc22633d92de7bb1e0c7e5c1790678e09708865f51fee30606824d0f8fc996c",
+      "sourceBlob": "f924b2ce617f8119e335c2e602cb3df99fa2744f",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/business-workflow.ts.md": {
+      "manualSha256": "4985b8a0001fe7e7c011140413aa5bff94e05ca6751b46880a4a34cc0d900bdb",
+      "sourceSha256": "871cbe473d2027cef0229e991027a03cd98d1c5beda3a1cdafa247cb6627f450",
+      "sourceBlob": "841b00eb9df1afd77aed43c63061a0ab27de5037",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/external-ports.test.ts.md": {
+      "manualSha256": "89ac01c09efb846085f753329c813d0edebe58fd84446d86eb49dcf27139e23b",
+      "sourceSha256": "c28eeb0d1b32e75ec615c96311595c172a7cd227a84f3d988f99623de0a85f86",
+      "sourceBlob": "50222aaa3b631ff1cedb395a70cd5d731e1eeb96",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/external-ports.ts.md": {
+      "manualSha256": "a51f15c8a2222273d0bd6a8a87334ed3414ff8814e1adddac85a268d1009be54",
+      "sourceSha256": "921fb381f2b3bd99526104575a00fa84efdd1e1377a413db039c6716b3cd1e6a",
+      "sourceBlob": "de8d2bc1b600112184acd59a8af51fa94ab54879",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/f03-policy-resolution.test.ts.md": {
+      "manualSha256": "45ecbddc9863938b22a4e731a9651982c07231f738c1b4aa7df18cb9e6fd502a",
+      "sourceSha256": "5428b9d7e17712dd36fdcf118940adac456711a26bef5917576f6a814b88b75a",
+      "sourceBlob": "3cafef0db20bd216e3c3f7087a941b5ffe2409ed",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/f03-policy-resolution.ts.md": {
+      "manualSha256": "858178276efb4d127920febcc46b5cce58463e6b698559ce74ac01c5baed3e8f",
+      "sourceSha256": "0b583430ccc427d82637f4ec3b55cd9a3e949440400ac407bcc223e8f00949a4",
+      "sourceBlob": "68bbf29ac3f5b15c908db38089b2b25980087240",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/judging-service.test.ts.md": {
+      "manualSha256": "ca2e0aa6ef8c69bd44932d65a5dcd960cc8d61b52133b3a2623dc387ee6159b0",
+      "sourceSha256": "3934c8c7670ac4a70882a63348a84533f76fde11355d2207894907fe1e5aef70",
+      "sourceBlob": "d68661e703d3dbeaa9cfd0491724d3aa38a71040",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/judging-service.ts.md": {
+      "manualSha256": "fca67642900726e7ed2ad23cd2190d5e1f180eaf548355eaf7839f315e6d5ca8",
+      "sourceSha256": "c744d43ed4ca0c90773fc32903c865f014ee4a5f58d3ae14b2f973d444778836",
+      "sourceBlob": "ece9bbdc899349495f6c7d14519f53ab49136a45",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/mock-review-engine.test.ts.md": {
+      "manualSha256": "45ce2eb81cf3931a587ec080d2617a7cdacd43e6ccda7c61645a7c26fe1b7be5",
+      "sourceSha256": "9759c524369d392628ff34b3054057f564592cf20e3c7cf9f7f8a6aa0ade7dec",
+      "sourceBlob": "84118556c72317a728633c74d9beeba5a14bd258",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/mock-review-engine.ts.md": {
+      "manualSha256": "befbdf39caa962a0f3b41c88eb94b484f2184991a1098c8666be0fbb9b825cf6",
+      "sourceSha256": "dec6a56afec5dea724963a9008ba1f3d153042f13ccbdf609d12967bf7a5cf27",
+      "sourceBlob": "8dfe1ebe41c0e4476173b6461c77cfa90d5b0361",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/offline-roundtrip.test.ts.md": {
+      "manualSha256": "348310ae9a38b072ba9164f7d70cc842b9d654d2b2659d67dc6b062a4b9e1593",
+      "sourceSha256": "b15ae2205b50b800165d0c1299db2943742e6745e0940db58f4056aaad583eb6",
+      "sourceBlob": "2a9fb2e4d0c059cf77ea1f3871a335552d84b099",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/offline-roundtrip.ts.md": {
+      "manualSha256": "355ad4903ee08d9d70f78b8615afd9b7f99569efde3a9ec38586a5ffe42260f2",
+      "sourceSha256": "38a99d8c890b82f3425420b7ea6c5568039f5bc06f2c1152f86ba21f9a50eae5",
+      "sourceBlob": "390d1cda9bb88dd1f3ccb11302ba51d38b86a8a8",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/resource-check.test.ts.md": {
+      "manualSha256": "70bb2b317dbd8b8d84ca507c1ed9a27c140a043132ff6dc9a6b9acdc6f8566e4",
+      "sourceSha256": "86392583ced3240cddd5e815689a65b744be70b673666d072d21d17516d72583",
+      "sourceBlob": "1b67bedc21082a58d6bf064135d233b8bfd2a5f9",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/resource-check.ts.md": {
+      "manualSha256": "0cea0a85b359a973de4ecc67a329fd92792fb73ba06d3ba92acd053f6e8b021c",
+      "sourceSha256": "8884e49cf093ee15a44288bfd9be44f182614df54bb4f06ba58ff24689aa854c",
+      "sourceBlob": "e86543f3f967500fc954250f1f55faeffdeca871",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-import-checkpoint-v3-b2.test.ts.md": {
+      "manualSha256": "35188d48a101aa7f68053fecf51a04f22b41733fd71b0d03734872213fbefca0",
+      "sourceSha256": "db69d54a060707f14988742af901b845fc645c0d819040c9d47b8b91d470d409",
+      "sourceBlob": "bd6d6cd21e796f7309e68c3899cff4f22ba12066",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-import-checkpoint-v3-b2.ts.md": {
+      "manualSha256": "2b28aed99db2344b7218039f334d4a6b47a9f2a063f7b8bd63e21cd24ba43188",
+      "sourceSha256": "e276187fbd6714128710a45da442f39d73f53170483f5f85823083a3951afe66",
+      "sourceBlob": "35b4d9e757b5b1530c7ca0407c405e8513b5caf7",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-import-handoff-v3-b2.test.ts.md": {
+      "manualSha256": "308a64612feedf80a01ece4a1b9307b86def7386f26a40702479352741eee3da",
+      "sourceSha256": "2daee4cdcc7dd08dc15648e815208bf3f32658a572917d636b87cd16146995e7",
+      "sourceBlob": "dddf137852aade9fd224c27a1458887467cfd26b",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-import-handoff-v3-b2.ts.md": {
+      "manualSha256": "de3d1fbda14999bd0a1fb87d9442a088a215669de34a91f48b2eb48c5ccb6a3f",
+      "sourceSha256": "daf7449cafc5c4633902b3bd040d7ce954ec70f3219b1b30920d9302f0e956c4",
+      "sourceBlob": "b1a8e05ffb49cf26888b5252700eb508cca4e3b4",
+      "verdict": "accepted"
+    }
+  }
+}

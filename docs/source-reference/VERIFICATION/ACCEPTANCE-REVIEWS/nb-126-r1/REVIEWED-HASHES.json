@@ -1,0 +1,61 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "nb-126-r1",
+ "revisionOf": "nb-126",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-qa-extra-05-20261024",
+ "reviewedAtUtc": "2026-10-23T20:21:29Z",
+ "deliverySeal": {
+  "sealId": "seal-19f87a8a96bf168f",
+  "sealedAtUtc": "2026-10-23T20:18:32Z",
+  "readySha256": "3d1dba0221ec7b041cc1e92b3b94ad3e588d018cd22ef282395e3cda0e3ef01e",
+  "doneSha256": "46f7cbae9ee86e93359f43c5e30eb81e7fb7c3ad5f9f6e3df814cc059e073a35",
+  "manifestSha256": "c96c62a29ccbe10be0421eef8c44a91c4648a586aa462d060641ff406bb6367c",
+  "zipSha256": "2fde77f4e6be6e13f8d28cf8e1f9f2f4d3e31b988620ba134bf34a07b389978f"
+ },
+ "sourceBlobs": {
+  "apps/electron/src/renderer/hooks/usePreviewQuotedSelection.ts": "3046a7d5384abe32196bbeaffb1701e4bd016f9a",
+  "apps/electron/src/renderer/hooks/useProjectActions.ts": "42dd1930561cd91a790ef4d9bb363334578ccdf5",
+  "apps/electron/src/renderer/hooks/useScrollPositionMemory.ts": "ff2546e3f41e1b1087ab0f769982d90509715f90",
+  "apps/electron/src/renderer/hooks/useScrollSpy.ts": "3ce938538ad40128eb1e0bb994be28f79a7d1270",
+  "apps/electron/src/renderer/hooks/useShortcut.ts": "7b944f602c2322b722e88e7eb98dbc00e292cd53",
+  "apps/electron/src/renderer/hooks/useSyncActiveTabSideEffects.ts": "96e56fdcb78838b26cba916fd04aed9366de143a",
+  "apps/electron/src/renderer/hooks/useTocHeadings.ts": "c02e84dcd7d497590c1a539dde312b415bd3e319",
+  "apps/electron/src/renderer/workers/cslab-crystallography.worker.ts": "9c77ecd2acb14eab7c5fbeacad4d33eccb3c8fcf",
+  "apps/electron/src/renderer/workers/cslab-fitting.worker.ts": "a06ea3c1d7b73efd8758e7dc4a2fa2b00c43eaa4"
+ },
+ "sourceSha256": {
+  "apps/electron/src/renderer/hooks/usePreviewQuotedSelection.ts": "064f77a9310f27f0805f10bcb1f1746dec842bbd053143a9882527011335852a",
+  "apps/electron/src/renderer/hooks/useProjectActions.ts": "c6a60ae598f826d45e6b2e086ef4e85799d412c3ee7df28ea9c410302f616254",
+  "apps/electron/src/renderer/hooks/useScrollPositionMemory.ts": "a31b5ebef3bd0ae46fc56a82950fc4d1a677af4f2f3e0e7494e65174aa240d0c",
+  "apps/electron/src/renderer/hooks/useScrollSpy.ts": "74330045f4c9d2d5a0821878312d2c2931069fff47afac4878983c81fd2114bb",
+  "apps/electron/src/renderer/hooks/useShortcut.ts": "92045a0d144b59ae9e73c96bf0a9dde9a30fcd65267510c1e0f9cd9959d2501e",
+  "apps/electron/src/renderer/hooks/useSyncActiveTabSideEffects.ts": "a36cc934a934b45509b9e7f058cf392cda2b743e9c22621d845ddadd236c9afe",
+  "apps/electron/src/renderer/hooks/useTocHeadings.ts": "5966d37c91a102416733ff93f10945cb202136eba31992b2a7b1864b4b60411d",
+  "apps/electron/src/renderer/workers/cslab-crystallography.worker.ts": "e3abab89eaf7a5b94b3e02d0ce4a5170ab710f956e65d5b45182693a1373bc27",
+  "apps/electron/src/renderer/workers/cslab-fitting.worker.ts": "f906f704ce18ccf3c6b9bb58e211aefac4a7840f66d87bfdd75004593a4e7904"
+ },
+ "manualSha256": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/usePreviewQuotedSelection.ts.md": "e3ab397f43fe52ed665f7a66c9344ed3ca930329d2ae7ce16c74febc932c4e98",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useProjectActions.ts.md": "76c2c390813553e07d1932e66af06ee8fd4306b661965156874f7a73cd3bcb67",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useScrollPositionMemory.ts.md": "ceaa9b75321a3803d6677f5dd58f60d1598d5a1776ee109078b70390a4f1ed1a",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useScrollSpy.ts.md": "d48261624153bab9ab3c514304ba2a3bd92aca8f3658d52e31ce0af8e0df9d7d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useShortcut.ts.md": "dc2b018a8eb95b6081579c4bed893eecac72ce1185f6d4a2cf1460a1b7724dbf",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useSyncActiveTabSideEffects.ts.md": "0d93cdffc87eac97333c0f4aabdc9ebf9ce0fbb0b6cb340fe01f45e06646009b",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useTocHeadings.ts.md": "66ce95678da2e9c5e71962b892d55557c8e6c6242a13ec4541e7d31573561b14",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/workers/cslab-crystallography.worker.ts.md": "3ecb1e0aa525bead4ea0b76d59035bb94163817bcd47cbb313fe1a48824d6cdd",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/workers/cslab-fitting.worker.ts.md": "5e0ffb57ccb17aaf2f95ce7e7161ff337b8c752df4208ec1ce97818dd2cee776"
+ },
+ "parentManualSha256": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/usePreviewQuotedSelection.ts.md": "48e4eb341fdcd271748e1502315e0ac0dd49fc59b62bc24112f2735120b03265",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useProjectActions.ts.md": "28e891e47d90cbd937b983eda77dfb9ac4179b1689838621270382ffce8145b2",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useScrollPositionMemory.ts.md": "6634ebd5bad3ba4ea245d4a426ed71eb68dca95da907f6aa4b0147eba3052042",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useScrollSpy.ts.md": "d48261624153bab9ab3c514304ba2a3bd92aca8f3658d52e31ce0af8e0df9d7d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useShortcut.ts.md": "35cab2f7b201c234ceb7ea4107be390c1c09632ca821fcf76fb3ea27036b6746",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useSyncActiveTabSideEffects.ts.md": "0d93cdffc87eac97333c0f4aabdc9ebf9ce0fbb0b6cb340fe01f45e06646009b",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useTocHeadings.ts.md": "66ce95678da2e9c5e71962b892d55557c8e6c6242a13ec4541e7d31573561b14",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/workers/cslab-crystallography.worker.ts.md": "3ecb1e0aa525bead4ea0b76d59035bb94163817bcd47cbb313fe1a48824d6cdd",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/workers/cslab-fitting.worker.ts.md": "435d281213c24f3a6c49e07601b5e4f27ab2bba30ac54b53dd9630545fd77eed"
+ },
+ "note": "9/9 accepted；5 篇修订 after-hash=FINDINGS-RESPONSE 与 READY 双向一致；4 篇=父版字节。"
+}

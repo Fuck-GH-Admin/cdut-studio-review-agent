@@ -1,0 +1,55 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-127-r2",
+ "revisionOf": "nb-127-r1",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-04-20261024",
+ "reviewerSession": "docs-r07-qa-extra-04-20261024",
+ "reviewedAtUtc": "2026-10-23T21:22:00Z",
+ "status": "REVIEW_COMPLETE",
+ "batchVerdict": "accepted",
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "deliverySeal": {
+  "sealId": "seal-e6fbb27d09a01ef5",
+  "sealedAtUtc": "2026-10-23T20:44:35Z",
+  "readySha256": "aa09a4752e5b8d7bdd4c54ce97f6e65803ebe665d81b34c447092539bb8d0263",
+  "doneSha256": "3d1719165be82610f07a1953e9471ada90f9dc47e08b1c9e8493c24ec403d208",
+  "manifestSha256": "3cd74ddb9e95681915348c04a9499d5215b058eb110bb7b3717db328a7c9203b",
+  "zipSha256": "b8226f159d45baa7454a8229acb1c3cae490a2a47bd86e14be304abd8225196e"
+ },
+ "fileVerdicts": {
+  "apps/electron/src/renderer/App.tsx": "accepted",
+  "apps/electron/src/renderer/contexts/AppShellContext.tsx": "accepted",
+  "apps/electron/src/renderer/contexts/session-context.tsx": "accepted",
+  "apps/electron/src/renderer/index.html": "accepted",
+  "apps/electron/src/renderer/main.tsx": "accepted",
+  "apps/electron/src/renderer/styles/globals.css": "accepted",
+  "apps/electron/src/renderer/styles/ofv-profer-theme.css": "accepted",
+  "apps/electron/src/renderer/styles/skin-base.css": "accepted",
+  "apps/electron/src/renderer/viewer.html": "accepted",
+  "apps/electron/src/renderer/viewer/main.ts": "accepted",
+  "apps/electron/src/renderer/vite-env.d.ts": "accepted"
+ },
+ "resolvedFindings": [
+  "QA-127-F02 resolved (5->4 x3 + optional split)",
+  "QA-127-F03 resolved (13->18, line list matches QA exactly)",
+  "QA-127-N01 resolved (364 methodology reproduces)",
+  "QA-127-N02 resolved (6-way wording unified x4)"
+ ],
+ "acceptedCount": 11,
+ "revisionCount": 0,
+ "resultSha256": "fa1e31d81359f1d74170e1d6771ed102d0babe3eebe7261be1a33c9312804c82",
+ "reviewedHashesSha256": "dcc0e4c905af9baeb4c1ece02e4cb3287135bcfd21e30b719acc778ec3b25054",
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network/IPC"
+ ],
+ "note": "nb-127 链闭环（r0 9/2 -> r1 9/2 -> r2 11/11 accepted）；组三批 42/42 全 accepted。合入以 r2 acceptedHashes 为准。本 DONE 为复核封版。"
+}

@@ -1,0 +1,32 @@
+{
+ "schema": "dsh-r07-stage2-issues-result/1",
+ "generatedAtUtc": "2026-10-23T21:57:44Z",
+ "partition": "p04-review-case-core / p05-review-engine / p06-review-batch",
+ "reviewerSession": "docs-r07-qa-extra-05-20261024",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "basis": ["inventory/OPEN-ISSUES.json(1317@21:40:51Z→落盘快照)", "inventory/FILES.tsv", "inventory/ACCEPTED.json", "inventory/INDEX-ACCEPTED.json", "candidate/source-reference(exact hash)", "baseline/source@05fb2565"],
+ "counts": {
+  "partitionRecords": 195,
+  "closedFamily": 117,
+  "openConfirmedAuthorAction": 10,
+  "openOptional": 26,
+  "openDocumentedGapNote": 1,
+  "unverified": 41
+ },
+ "authorActions": {
+  "p05": ["review-identity-authority.test.ts.md (8→12 test)", "review-principal-service.ts.md (自斥计数→13)", "pi-review-executor.ts.md (15→13 工具)", "pi-review-agent-client.ts.md (toolProfile customTools→review)", "review-v3-t04-rules-scoring.ts.md (18→19 导出)", "pi-case-review-service.ts.md (补记死比较怪癖)"],
+  "p06": ["review-v3-t07-rating-workflow.ts.md (18→16 类型)", "template-store.ts.md (17→18 导出)"],
+  "p04": ["review-v3-main-author-revision-read.ts.md (命中 2→4)", "review-v3-main-local-technical-review.ts.md (:150→:151)"]
+ },
+ "leadActions": ["索引审计 10 条（2 index-gap + 8 nb-24r1 系）", "claim 回源 41 条（7 nb-09 系 + 34 id 异形）", "阶段三移交 NB14-N-04 实现怪癖"],
+ "personallyVerifiedEvidence": {
+  "review-identity-authority.test.ts": "test( = 12",
+  "pi-review-agent-client.ts:148": "toolProfile: 'review'",
+  "review-v3-t04-rules-scoring.ts": "^export = 19",
+  "review-v3-t07-rating-workflow.ts": "export type=16 / function=4",
+  "template-store.ts": "^export = 18",
+  "review-tools.ts": "buildReviewTools name: = 13"
+ },
+ "notRun": ["bun test", "typecheck", "build", "runtime"],
+ "artifacts": ["manager/STAGE2/issues-p04-p06/RECONCILIATION.json", "manager/STAGE2/issues-p04-p06/SUMMARY.md", "manager/STAGE2/issues-p04-p06/TO-AUTHORS.md", "handoffs/STAGE2-issues-p04-p06-TO-LEAD.md"]
+}

@@ -1,0 +1,118 @@
+{
+  "schema": "r07-reviewed-hashes/1",
+  "batch": "nb-109",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "sealId": "seal-c9a05632bfce1644",
+  "reviewedAtUtc": "2026-10-23T20:57:10Z",
+  "manuals": [
+    {
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/BrowserPanel.tsx.md",
+      "manualSha256": "a2bd9c3c7c1c3d73a6b674eaaf264d5a48d2bd60ede1116585e3b88b392c6aa8",
+      "sourceSha256": "499e0a8098b4c2e58be744403cf5b0dc00f7f26851746065c95714e28153ab12",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/BrowserStartPage.tsx.md",
+      "manualSha256": "3deeae3cbc1c55ce9b5de95d3f7b06f29ed232facaf9244752dd5724a552f9f3",
+      "sourceSha256": "e7e84f0abca68ea73078c331142cd26d53c4e6c3ed47a91f6e1a984f9150080e",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/BrowserTabContent.tsx.md",
+      "manualSha256": "cf26a3e2881f2d0ef115d6fe9bb3a5e291067cb532a81112526f1c268abdd480",
+      "sourceSha256": "348ae5d513ffae4ae1f0a8fccecb042753f2930d45ad2ad31c51fcc3ce955eba",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/BrowserViewport.tsx.md",
+      "manualSha256": "36955a62fdc7f76293da59dff8918fd5708f1ad1c9617190238bfd7e10f23b79",
+      "sourceSha256": "d5f3034ebe716747d32a81781a42646ed3cf130ed5dc54ce427ad2ee5464875b",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/browser-start-page-navigation.test.ts.md",
+      "manualSha256": "e7de923fc77add09898ce7437688a0134be7827af43f7aacab44c306c86a76db",
+      "sourceSha256": "b6907d20c5198c997859059f0122e5078c24b2a1f99762004b899abf597699b7",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/browser-start-page-navigation.ts.md",
+      "manualSha256": "8e0a05742020f181f689a40a47d8b18d73d51d273dcec08e580b80ef63cb5571",
+      "sourceSha256": "8672511fac68b686c04542b71356c2b8d24a62775be1357c71b598c32b938280",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/browser-viewport-layout.test.ts.md",
+      "manualSha256": "55f787b3f12e2f8c99832f007607ff5e46f677b98eaed0afec081e81aebdf754",
+      "sourceSha256": "0cb78e562a5715821792128a92f0d839eff199a4d1e36e5842e712490fb931ed",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/browser/browser-viewport-layout.ts.md",
+      "manualSha256": "5088879c82a932fae845ba5ad4653239c46339086510bc570581c68012d7dfec",
+      "sourceSha256": "86822d6e0fe4534d0865d166359eb7f9b5f24595e725e8a7983f6b0d12843ac5",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/DefaultAppMenuItem.tsx.md",
+      "manualSha256": "3869c2ca4cb90b424963f5af96bbad393420f34a8b42be26c047de310c194a11",
+      "sourceSha256": "004821daf5db7adc4bacd71eb9642559178899fbec761d64b6d2d179ab8b7bd5",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/FileBrowser.tsx.md",
+      "manualSha256": "b7a0fd768096d08c78cb892bdf387a9f7fd5f8f9bf5062ef7fc713b8cd68132c",
+      "sourceSha256": "edcab2c4534b564cc631022130ea1f56ca6e3f1ca1c25d41daedb9c9cbd6b5c1",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/FileDropZone.tsx.md",
+      "manualSha256": "fda03708c926f85b8b3eaa58c963ef823dd0e8ab6da86391ec113bb38be8a5cf",
+      "sourceSha256": "c1dbc3f34411b3f1ba9f7405e2cbd2b72b69bacec0969ca32799eaece2895c8c",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/FileMentionList.tsx.md",
+      "manualSha256": "3c38414ddebe159eded33091be4828db5313870d9c821a256e2a45abb41ee01c",
+      "sourceSha256": "145869fac3b3cf4292b7d78762431a7ed08905f5574abf430d56a0ffeab4a6af",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/FilePreviewDialog.tsx.md",
+      "manualSha256": "e5aae3a9d8fe6b30b6822488b4d142b4fdfa0123b2361a28247dc003d63d681a",
+      "sourceSha256": "e859f12f9c1ad770eca1bc8712b2a2a79c643b600162983dcc624c75010dfb92",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/FileSearchBar.tsx.md",
+      "manualSha256": "4b4a5a1390fc8c69a092d0f712202cac00b666b1533a1a134a7c889d139f3b5b",
+      "sourceSha256": "563edf38ddcf7ed8ffffc3b4e0f0cb083861b0339cd9e023b73ad184fc404ee5",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/FileTypeIcon.tsx.md",
+      "manualSha256": "1b153c27597d06c77dfe9f19f4195bdb160c05c41a4b194cfcd29ea8a9d17143",
+      "sourceSha256": "9639bc960b7b886c4afab5a93eecc6facedc296744b0a9dc17cec70cab10934e",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/file-mention-suggestion.tsx.md",
+      "manualSha256": "25c4982d44d6db8811f037233054143c651743b25838088a2b82a406cda203e4",
+      "sourceSha256": "c0160e01345ba3d00d6c61a58a2b3b3fe55d805daf787f290bf2056d4a3abeb7",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/index.ts.md",
+      "manualSha256": "63792c378048e4490b27e6d53b0b4cd9b3e9ec199a721aa9ee72dfe2c9ca2d9c",
+      "sourceSha256": "4e765a6bc10055b50169ddf20dade6eb4fe7d23c4c6e37179134fc51dea79156",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/office-preview/OfficePreview.tsx.md",
+      "manualSha256": "4d39efbeed862a49adef1268e914b22b89f58e85161ef21e4bbc7d9a83334cce",
+      "sourceSha256": "03e77cd8556da9e6ab1a0d31e65f4466c9eb6a04186f11f2c39ae91407a1f1bf",
+      "verdict": "accepted"
+    }
+  ]
+}

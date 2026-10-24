@@ -1,0 +1,193 @@
+{
+  "schema": "r07-independent-gate/1",
+  "gate": "CODEBASE-MAP",
+  "status": "PASS",
+  "reviewedAtUtc": "2026-10-23T21:51:10.872002+00:00",
+  "reviewer": "Codex independent_gates",
+  "sourceSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "prerequisite": {
+    "path": "final-hour/GATES/INDEX.json",
+    "status": "PASS",
+    "sha256": "e79925b868004d8b70d3b4a9b1273e9d3f00455f3fec3eabaf525876249333e8"
+  },
+  "artifact": {
+    "path": "final-hour/stage/CODEBASE-MAP.md",
+    "sha256": "2cad6f0d171697fed62ceb252688f0a333a3c188db05aef3148ce590ac902b15"
+  },
+  "supportingArtifacts": {
+    "final-hour/stage/DIRECTORY-OWNERSHIP.tsv": "e01baa8b20fabd516e5be4a52c8cd0b061de1e6fbb39f69bfa3f6bb8308cfc25",
+    "final-hour/stage/MAP-VALIDATION.json": "b021f1c9227d2797ba9f7bc332c4b4f4fba7d6283189a66341399c39eb4ba84e"
+  },
+  "checks": {
+    "gfmLocalLinkTargetsParsedAndResolved": 112,
+    "directoryPartitionRows": 71,
+    "partitionFiles": 3083,
+    "partitionDeep": 2378,
+    "partitionIndex": 705,
+    "eachPartitionPrefixOwnerCountRecomputed": true,
+    "importantEdgesAndDataAuthoritySourceRead": true,
+    "sourceTrace": {
+      "apps/electron/src/main/index.ts": {
+        "sha256": "7bc8571522c42f4e67587cdd0aa05e41f1ae72965e1da2977775c0cf17a68b5b",
+        "verified": [
+          "903 app.whenReady→bootstrap",
+          "945 register IPC,948-951 install local authority,991 window,999-1001 migration then seed",
+          "457/757-767 bounds write debounce"
+        ]
+      },
+      "apps/electron/src/preload/index.ts": {
+        "sha256": "87e00255321d55eb5edea8dce84389e7ebca1861324e7fb97e0f9c79dd435471",
+        "verified": [
+          "4705 electronAPI unconditional,4738 agentPreviewAPI main-frame,5099 reviewAPI main-frame",
+          "2904 send invoke,3079 stream subscription"
+        ]
+      },
+      "apps/electron/src/main/ipc.ts": {
+        "sha256": "cdd428a90cce993183cd6f52bdccdad225815544801ddbc7a2470dd6e7c6dd88",
+        "verified": [
+          "3842 SEND_MESSAGE with sensitive sender checks then runAgent",
+          "6220 review,6223 lab,6226 memory registrations"
+        ]
+      },
+      "apps/electron/src/main/lib/agent-service.ts": {
+        "sha256": "b95ba3366b750539ad63803a67e7f684d9a2353eac64f0c5fc58a228c850b8c8",
+        "verified": [
+          "54 PiAgentAdapter singleton,55 orchestrator",
+          "277→297 runAgent→sendMessage;404→422 headless"
+        ]
+      },
+      "apps/electron/src/main/lib/agent-orchestrator.ts": {
+        "sha256": "292fb67098040c978e77b535f310254f68e74d8a84d19725c71cd3829c64f935",
+        "verified": [
+          "2554 adapter.query",
+          "3698 abort;finally ownership release separately"
+        ]
+      },
+      "apps/electron/src/main/lib/agent-fabric/agent-fabric-service.ts": {
+        "sha256": "fac9b378f3b5f1ef0a5ea12404399807d3f58b20b4df772df038dcedce684118",
+        "verified": [
+          "80 disabled returns null",
+          "88-101 executor/store/gateway assembly"
+        ]
+      },
+      "apps/electron/src/main/lib/review/review-ipc.ts": {
+        "sha256": "910c0189e44065729e7f53d2e41f3b8f8bbfc9c6c17c904298a90b47b5a074bd",
+        "verified": [
+          "86 legacy guard for canonical plan andT07",
+          "107 register→110 CMain V3 author plan IPC"
+        ]
+      },
+      "apps/electron/src/main/lib/review/case-store.ts": {
+        "sha256": "9f1429abcda9856e21a435a912473e6564725ae14b9195ca2c44609a79039111",
+        "verified": [
+          "207 native state compatibility write guard;legacy case.json is not universal authority"
+        ]
+      },
+      "apps/electron/src/main/lib/review/case-store-v2.ts": {
+        "sha256": "643676c9fd19a7795c02e18ba79be83008f8a578c9ee67b097b8d496a7d651bf",
+        "verified": [
+          "31 state.v2 path,51 parse-failure prior-valid fallback",
+          "167 durable writer+disk lock,179 per-case queue+disk transaction",
+          "203 submitCommand request id/CAS/archived/receipt+revision"
+        ]
+      },
+      "apps/electron/src/main/lib/cslab/cslab-router.ts": {
+        "sha256": "c5ea566daf30f176827aedeb6dd12fa2a8e97e6af9fde736f0ba6fbaf396e27c",
+        "verified": [
+          "391 registration;705 manuscript;1791 export dialog then exportFigure"
+        ]
+      },
+      "apps/electron/src/main/lib/cslab/cslab-manuscript.ts": {
+        "sha256": "cb8404c048d4ab1d2456781a470f8d1b2ab2277bd8ed6caaa43163350634bb60",
+        "verified": [
+          "50 lab central_meta sqlite",
+          "244 save→264/268 file writes then274 DBtransaction"
+        ]
+      },
+      "apps/electron/src/main/lib/cslab/cslab-db.ts": {
+        "sha256": "cef684d005bfd960775267e40943778b3fb20f72d8fdc830c3b1ce2948bce795",
+        "verified": [
+          "122 schema;307 DBtransaction"
+        ]
+      },
+      "apps/electron/src/main/lib/cslab/cslab-ooxml.ts": {
+        "sha256": "5f5f382811e2d11f15acc0a0ccc1295b31c914830e6ae54fbd9cd9bb9bb120c1",
+        "verified": [
+          "1120 missing bundle inline fallback;worker branch30s watchdog"
+        ]
+      },
+      "apps/electron/src/main/lib/cslab/cslab-paths.ts": {
+        "sha256": "0a95f2ec4b90eebf555f51c7c2fb76ac4d040d98045c0fe741c6a5d27f0ce9dd",
+        "verified": [
+          "320 lexical containment"
+        ]
+      },
+      "apps/electron/src/main/lib/cslab/cslab-hpc-db.ts": {
+        "sha256": "51edd9bec55aff44f7bdc2ee37fb3e2989393b88d56e2d4933d7a9d30b88f5bf",
+        "verified": [
+          "121 per-lab hpc_jobs.sqlite"
+        ]
+      },
+      "apps/electron/src/main/lib/cslab/cslab-figure-export.ts": {
+        "sha256": "a54e7f04d4f32b5f570e371ff276fc49438f7729a6039246e7438da5cc3dba4d",
+        "verified": [
+          "183 exportPlotToFile→215 external target write"
+        ]
+      },
+      "apps/electron/src/main/lib/config-paths.ts": {
+        "sha256": "1d2394a1c81263d942ee2a81217e561812f4a78a0cdd8c271e9de39029f6e1a0",
+        "verified": [
+          "27 development selection,57 pure resolve,80 mkdir getter;334/350 session paths"
+        ]
+      },
+      "apps/electron/src/renderer/main.tsx": {
+        "sha256": "6ae6ad4c1fce85748dee9d1c4714b5250069ab805156c50996375c2e515049d6",
+        "verified": [
+          "1059 detached branch,1123 main render"
+        ]
+      },
+      "apps/electron/src/renderer/App.tsx": {
+        "sha256": "e7a71f9dce5f5a3fb35fc0418771b11f2f8c54e9b1ad72c206a161493cd33e6e",
+        "verified": [
+          "38 settings read,58 ready,118 AppShell"
+        ]
+      },
+      "apps/electron/src/renderer/components/tabs/MainArea.tsx": {
+        "sha256": "23038c0af38434064ea4a106d6652eb061f45ebff9af488d6e84d16d63862e19",
+        "verified": [
+          "321 activeView branches;review inside CDUT zone"
+        ]
+      },
+      "packages/session-core/src/index.ts": {
+        "sha256": "f2cd2c60e6e5a501fcdd850b1154f7c467a02baba31711c0072dfe86d5c6a966",
+        "verified": [
+          "root pure export;node subpath IO"
+        ]
+      },
+      "packages/project-core/src/index.ts": {
+        "sha256": "0d39218ef24c5e3b6dd72f18c8d3753828cefbc0b60a370639e39b61ce4268cb",
+        "verified": [
+          "headless pure graph entry"
+        ]
+      },
+      "packages/core/package.json": {
+        "sha256": "caa860714ad3f9fcfd997baf75d22804de93a6eb4e178c314b531817e5e727cd",
+        "verified": [
+          "9 export root/subpaths"
+        ]
+      }
+    },
+    "issues": []
+  },
+  "limits": [
+    "静态关键链导航门禁；不是对每一运行路径或全部自然语言手册的全面验收。",
+    "118 deep条目仍staged/unaccepted，不以地图通过转accepted。",
+    "图中C11安装能力与普通Pi/未装配executor保持区别；未据版本后缀猜测权威。"
+  ],
+  "runtime": "NOT_RUN: no tests/typecheck/build/GUI/real model/worker/Python/HPC",
+  "postGateCorrection": {
+    "scope": "HPC getHpcDbPath引用保持源121；接受数字明确初始21:46:51UTC索引快照，避免后续接受变化混淆。",
+    "sourceEvidence": "cslab-hpc-db.ts:121 getHpcDbPath→123 hpc_jobs.sqlite",
+    "status": "PASS: changed references verified; no new chain assertion"
+  }
+}

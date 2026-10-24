@@ -1,0 +1,249 @@
+{
+  "schema": "dsh-r07-review-result/1",
+  "batch": "nb-31-r1",
+  "revisionOf": "nb-31",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T21:48:52Z",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass"
+  },
+  "g0Evidence": {
+    "chain": "自洽（sealId seal-6784ca0a1725368f，revisionOf nb-31）；18 manualHashes=磁盘 0 mismatch",
+    "revisionChain": "before/ 18/18==nb-31 stage；changes.diff 重放==stage；FINDINGS-RESPONSE 在（hash 表==两侧字节）",
+    "zip": "21 条目 0 穿越/字节 mismatch"
+  },
+  "g2Evidence": {
+    "fixVerification": "三点全关闭，对基线精确：F01 测试用例 1→**2** ✓（test( 机械=2）；F02 导出 18→**19** ✓（export 语句=19）；F03 被测符号 17→**16** ✓（4 const+12 fn 导入实测=16）",
+    "noNewErrors": "修订区逐 hunk 无新错误",
+    "evidenceBinding": "未变文件==旧 acceptedHashes 同源绑定（15/15）"
+  },
+  "files": [
+    {
+      "path": "packages/shared/src/utils/automation-schedule.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/automation-schedule.ts.md",
+      "sourceBlob": "732b50916edfea52f38bb1a4f0a6d0d7355e99ac",
+      "sourceSha256": "263a767e8727487b104ddd46ad3f1fe5b1f908fd1a971a9bb8b564d8ec3e870c",
+      "manualSha256": "d59edc6a432d7b87b52509b65629b956a4b0efe625f4b58a9470426f2913887d",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/beijing-time.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/beijing-time.test.ts.md",
+      "sourceBlob": "68a75151b1bc1eec1c56c9c052514ae1b249bac2",
+      "sourceSha256": "277aa4834cdf6b6f057a7c5e5f5c5b8207474ec9bdfa2fc7b5eaf76f7d966b6a",
+      "manualSha256": "cbf33376e345de14be08c50dbf202fabffd79e839778e4dd88599660133b46b8",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/beijing-time.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/beijing-time.ts.md",
+      "sourceBlob": "b0c998dcad99223832cba0ee5d793de39fd84d1b",
+      "sourceSha256": "fc0f31d51c00d056b0f19132d7e80b3820c7828ada071f2cc18fe83ca57e86d8",
+      "manualSha256": "11c76a8354207c467c38ffaa7c1f948f492f3371853d28135648682ef670c73d",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/capabilities-diff.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/capabilities-diff.test.ts.md",
+      "sourceBlob": "72a9fcadaf45a81bebd5b374826ce150d26ec912",
+      "sourceSha256": "9dc721bd301926ace1d61d779062aab31e21df3d66e7da94848a6fbdc0f7ab5d",
+      "manualSha256": "bcaf8e2ad85306d5818580ec618fd4d92bd295bea83883b39bce48f3f77066d7",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/capabilities-diff.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/capabilities-diff.ts.md",
+      "sourceBlob": "6ef1af64ca3a4d2892a50452f9447ba0d214555f",
+      "sourceSha256": "91318a48f9b0c029df92172b52e440e442f611c5a98f7f87c4f93f77c3cba16b",
+      "manualSha256": "403bedcdc1a7171fbaf3e47b994dbc21b16d0605f76e71b368a963b793b4754b",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/channel-plan-quota.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/channel-plan-quota.test.ts.md",
+      "sourceBlob": "216a88321aefe58b002c690d8d4840fb888c394a",
+      "sourceSha256": "3afd8e8e0abb810ef81c36d80efad10bb862d9342ad5d0fdb270cdd69548875c",
+      "manualSha256": "ae168e6f87b4073328a2ecccfe28257090b5f686ebc05ab9e1065aef5246a98b",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/channel-plan-quota.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/channel-plan-quota.ts.md",
+      "sourceBlob": "66e8d636309f895412e7c98823f16ffc0c952a0b",
+      "sourceSha256": "6ce61b113b2b9021ee4dec8e9f09d2f874c64f32dc22f98e036373b91d5a16dd",
+      "manualSha256": "d6cad3fab1d3c79b794ea092dee0bab495b59eb610c35590ae7e04cecfd85443",
+      "verdict": "accepted",
+      "findings": [
+        "F01"
+      ],
+      "evidenceBinding": "r1-hunk-verified"
+    },
+    {
+      "path": "packages/shared/src/utils/context-entropy-pruner.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/context-entropy-pruner.test.ts.md",
+      "sourceBlob": "93b753f4621fc8e716189b774a07859a6ec7d3e7",
+      "sourceSha256": "d7114b2809fb8d1266a5711dd9d15ab066c5f34ad635469106320e718236455e",
+      "manualSha256": "469f5060d37391fedb11e0a2c50975eeed41b954fe1df45bc2ac513a0cf8b3f3",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/context-entropy-pruner.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/context-entropy-pruner.ts.md",
+      "sourceBlob": "b6480920fb490ec136d87325ddfdef06db9119c1",
+      "sourceSha256": "fcecc4d1842bc8e1fa4cd8b39a72d30a0b8aa1835524fde3bd6bd45dd339cc5f",
+      "manualSha256": "0777e2a4453a9f41a5738cca68f05e401073829ad68ba65248c4e08b56dca92e",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/context-usage.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/context-usage.ts.md",
+      "sourceBlob": "afc9bfe34db0194f23f24e0ed3c5d76383868045",
+      "sourceSha256": "70d845f51a530850a6adfcc3c11039e3cbd3d7468fee9b507f0ff26badd30f74",
+      "manualSha256": "1480e05716d80b5db98e03c809178bc2d31128d53520a3ac6bde883a674b0a0f",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/context-window.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/context-window.test.ts.md",
+      "sourceBlob": "77548f7358ce347038141a16a5c406a7ed60cbab",
+      "sourceSha256": "20e2efbfe065ff315f7fe71efe8c148ea851b8f616916f5d88b75a1e85dcd2f4",
+      "manualSha256": "c73434dc80073f71405b4f87fb8796b38d6742a1dc65304f3390b2417676a045",
+      "verdict": "accepted",
+      "findings": [
+        "F03"
+      ],
+      "evidenceBinding": "r1-hunk-verified"
+    },
+    {
+      "path": "packages/shared/src/utils/context-window.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/context-window.ts.md",
+      "sourceBlob": "cb9e6cb9e36a4f53cfb3cb4a8691ce8b60da9d4d",
+      "sourceSha256": "eaa558975a794b67371e51f3180c9570aadaadbd182bf4cdea4f7e71f4a3d22a",
+      "manualSha256": "0a49f91145ed870d44d6367b6b64ed34c9a9cee774292f37b031e65f03a0ba6e",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-analysis.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-analysis.ts.md",
+      "sourceBlob": "434aaaba0df94f427e295c3eebf8ad2379891ad9",
+      "sourceSha256": "9871bb77e38e81e2d3745e98bf528b91216b3ec963071eac3f6e9b2f87d09117",
+      "manualSha256": "5b8d1a3d7b4a614a85a4ae74ed4d041a8ad058888f15972c3d16adcd4e7039e9",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-canvas.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-canvas.ts.md",
+      "sourceBlob": "f288f1951ebc07a09380b7379456b94a72616a8e",
+      "sourceSha256": "26ce8ad7e4702ecb4d08a296933d84141235e7a5fb8719d6c993a43a21879b95",
+      "manualSha256": "1791941bb73bf02cbd56c37f17fd81226931b7e6f544ffa931f56d9bc220cfc3",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-cif.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-cif.test.ts.md",
+      "sourceBlob": "6afe346ecffaa8a7e28860f3e87963697d8875e1",
+      "sourceSha256": "80b3aa2fae142cfd7ee280b0c97b891b2e45a315771fd5f94cfc5ba21d0304bd",
+      "manualSha256": "f595e66658fa34d0323ec17383247c908840cd5e2584abf56abb729eca13d678",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-cif.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-cif.ts.md",
+      "sourceBlob": "0758a1c0f59359ee79e2b911402afec65d8fd16e",
+      "sourceSha256": "35e722087306ed9e2de1c341828ece4954b264415c6ff4560e65ef3db5c10b1a",
+      "manualSha256": "0550bcce0cdbaaba184bca194f82e945af640db98062e22399778879efe22d62",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-crystal.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-crystal.ts.md",
+      "sourceBlob": "1aa3e8d226e735d1990a061627958ffa0323eeb8",
+      "sourceSha256": "7fe31abddbd7ae1951901cd33bea7239f94657fb061dbc8277cddaa5baf80162",
+      "manualSha256": "da47924ca87385ab34b352a32d6773097766f332a4b4580fced07b36691103b0",
+      "verdict": "accepted",
+      "findings": [
+        "F02"
+      ],
+      "evidenceBinding": "r1-hunk-verified"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-dag.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-dag.ts.md",
+      "sourceBlob": "6100ed86c10ebb2eac57f5013d07e5dc7bc86e29",
+      "sourceSha256": "612c1966d44292112b26cf830347d93ceb770cac2c151c5e2a10327f2dd56f66",
+      "manualSha256": "dc791b3db3adb5c599f69c8e190f8e8869b0770ad47a8c3accc207f33d0b6942",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/automation-schedule.ts.md": "d59edc6a432d7b87b52509b65629b956a4b0efe625f4b58a9470426f2913887d",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/beijing-time.test.ts.md": "cbf33376e345de14be08c50dbf202fabffd79e839778e4dd88599660133b46b8",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/beijing-time.ts.md": "11c76a8354207c467c38ffaa7c1f948f492f3371853d28135648682ef670c73d",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/capabilities-diff.test.ts.md": "bcaf8e2ad85306d5818580ec618fd4d92bd295bea83883b39bce48f3f77066d7",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/capabilities-diff.ts.md": "403bedcdc1a7171fbaf3e47b994dbc21b16d0605f76e71b368a963b793b4754b",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/channel-plan-quota.test.ts.md": "ae168e6f87b4073328a2ecccfe28257090b5f686ebc05ab9e1065aef5246a98b",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/channel-plan-quota.ts.md": "d6cad3fab1d3c79b794ea092dee0bab495b59eb610c35590ae7e04cecfd85443",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/context-entropy-pruner.test.ts.md": "469f5060d37391fedb11e0a2c50975eeed41b954fe1df45bc2ac513a0cf8b3f3",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/context-entropy-pruner.ts.md": "0777e2a4453a9f41a5738cca68f05e401073829ad68ba65248c4e08b56dca92e",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/context-usage.ts.md": "1480e05716d80b5db98e03c809178bc2d31128d53520a3ac6bde883a674b0a0f",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/context-window.test.ts.md": "c73434dc80073f71405b4f87fb8796b38d6742a1dc65304f3390b2417676a045",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/context-window.ts.md": "0a49f91145ed870d44d6367b6b64ed34c9a9cee774292f37b031e65f03a0ba6e",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-analysis.ts.md": "5b8d1a3d7b4a614a85a4ae74ed4d041a8ad058888f15972c3d16adcd4e7039e9",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-canvas.ts.md": "1791941bb73bf02cbd56c37f17fd81226931b7e6f544ffa931f56d9bc220cfc3",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-cif.test.ts.md": "f595e66658fa34d0323ec17383247c908840cd5e2584abf56abb729eca13d678",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-cif.ts.md": "0550bcce0cdbaaba184bca194f82e945af640db98062e22399778879efe22d62",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-crystal.ts.md": "da47924ca87385ab34b352a32d6773097766f332a4b4580fced07b36691103b0",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-dag.ts.md": "dc791b3db3adb5c599f69c8e190f8e8869b0770ad47a8c3accc207f33d0b6942"
+  },
+  "findings": [],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network",
+    "bun 测试运行"
+  ],
+  "notes": "旧 reviews/nb-31/（qa-nb-30 已封）保留未动；nb-31 链 r0→r1 闭合。"
+}

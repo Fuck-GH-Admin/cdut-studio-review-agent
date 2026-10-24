@@ -1,0 +1,113 @@
+{
+ "schema": "dsh-r07-index-review-result/1",
+ "batch": "index-p02-agent-runtime__apps__electron__default-skills__skill-creator",
+ "groupId": "p02-agent-runtime__apps__electron__default-skills__skill-creator",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-02-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T19:45:00Z",
+ "sealedAtUtc": "2026-10-23T19:06:14+00:00",
+ "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__skill-creator.md",
+ "artifactSha256": "11b02deba71110d677d2359c5648d4c0edad7cb0fd99e823c908afaf42efac12",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 4,
+  "accepted": 4,
+  "revision_required": 0,
+  "unknown": 0,
+  "blocking": 0,
+  "nonBlocking": 2
+ },
+ "gates": {
+  "G0_INDEX": "PASS",
+  "G1_INDEPENDENT_SOURCE_REVIEW": "PASS",
+  "G2_SEAL_CONSISTENCY": "PASS_WITH_NOTES",
+  "note": "G0 等价 4/4、封版链四方哈希全对、锚点/行号命中。G1 独立实读 SKILL.md(490 行)+4 件+aggregate_benchmark.py/generate_review.py/viewer.html：引证精确命中（SKILL.md:166/:230/:236/:239/:332/:466-473、aggregate_benchmark.py:113-116/:156-160/:373-376、generate_review.py:131/:398、viewer.html 10 处字段依赖、schemas.md 8 个 schema 标题 :7/:39/:86/:163/:197/:219/:309/:384、comparator.md:7/:196、history.json 零生产方负向成立）；「谁加载→何时生效→行为约束」三要素齐全（子代理提示=运行时行为规范，未写『普通文档』）。仅共通链行号微漂与封版元数据倒挂（N-01/N-02）。"
+ },
+ "g0Evidence": {
+  "stockScript": "ERRATA-E1 沿登记；QA 等价检查 4/4 PASS"
+ },
+ "files": [
+  {
+   "path": "apps/electron/default-skills/skill-creator/agents/analyzer.md",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__skill-creator.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__skill-creator.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--skill-creator--agents--analyzer.md",
+   "line": 17,
+   "sourceBlob": "14e41d6068635f4dd3fb878fd1626312395dda63",
+   "sourceSha256": "bf68f4cac5a56c673a928c2e6d619586c5b93ea364026ab37547772cb45a663a",
+   "manualSha256": "11b02deba71110d677d2359c5648d4c0edad7cb0fd99e823c908afaf42efac12",
+   "verdict": "accepted",
+   "findings": [
+    "N-01"
+   ],
+   "note": "七项齐全；消费三要素（谁加载→何时生效→行为约束）逐条实测属实。"
+  },
+  {
+   "path": "apps/electron/default-skills/skill-creator/agents/comparator.md",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__skill-creator.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__skill-creator.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--skill-creator--agents--comparator.md",
+   "line": 27,
+   "sourceBlob": "80e00eb45db3ee53a132fc2ba97fd59a7339e563",
+   "sourceSha256": "fe1fc9787c495d864c5d6eada47396478572325fde1b33a96d78bf4b849b7a3e",
+   "manualSha256": "11b02deba71110d677d2359c5648d4c0edad7cb0fd99e823c908afaf42efac12",
+   "verdict": "accepted",
+   "findings": [
+    "N-01"
+   ],
+   "note": "七项齐全；消费三要素（谁加载→何时生效→行为约束）逐条实测属实。"
+  },
+  {
+   "path": "apps/electron/default-skills/skill-creator/agents/grader.md",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__skill-creator.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__skill-creator.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--skill-creator--agents--grader.md",
+   "line": 37,
+   "sourceBlob": "558ab05c0a9a8bb062ef4c51823d4d76c3acf7c4",
+   "sourceSha256": "57134da0c1a4eea33fbd74a1c9c44aa814f07d6bc64de303edb586f941e5d21a",
+   "manualSha256": "11b02deba71110d677d2359c5648d4c0edad7cb0fd99e823c908afaf42efac12",
+   "verdict": "accepted",
+   "findings": [
+    "N-01"
+   ],
+   "note": "七项齐全；消费三要素（谁加载→何时生效→行为约束）逐条实测属实。"
+  },
+  {
+   "path": "apps/electron/default-skills/skill-creator/references/schemas.md",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__skill-creator.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__skill-creator.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--skill-creator--references--schemas.md",
+   "line": 47,
+   "sourceBlob": "b6eeaa2d4a34c1653069585c6c5603da39a5bdbe",
+   "sourceSha256": "8e8876180a8989b406a4d3edddf875b04cdfd5805cc8616686d552b11ce4455f",
+   "manualSha256": "11b02deba71110d677d2359c5648d4c0edad7cb0fd99e823c908afaf42efac12",
+   "verdict": "accepted",
+   "findings": [
+    "N-01"
+   ],
+   "note": "七项齐全；消费三要素（谁加载→何时生效→行为约束）逐条实测属实。"
+  }
+ ],
+ "findings": [
+  {
+   "id": "N-01",
+   "severity": "low",
+   "type": "citation_precision",
+   "file": "(共通链)",
+   "manualLines": "家族背景/各件打包列",
+   "detail": "electron-builder.yml extraResources 实为 :70-75（filter :74-75；写 :71-73）；index.ts bundledGlobalSkillsDir 赋值起 :939（ternary :940-941；写 :940-941）。",
+   "action": "合并 errata 修正；非阻断。"
+  },
+  {
+   "id": "N-02",
+   "severity": "low",
+   "type": "delivery_metadata",
+   "file": "deliveries/index-p02-agent-runtime__apps__electron__default-skills__skill-creator/DONE.json",
+   "manualLines": "startedAtUtc/sealedAtUtc",
+   "detail": "startedAtUtc 19:20:00Z 晚于 sealedAtUtc 19:06:14Z，元数据倒挂（MANIFEST/READY/DONE 哈希链全对）。",
+   "action": "下次重封更正；非阻断。"
+  }
+ ],
+ "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局账；产品测试/typecheck/构建/GUI/评测循环实跑 NOT_RUN；结论只覆盖本批。非阻断≠已修。"
+}

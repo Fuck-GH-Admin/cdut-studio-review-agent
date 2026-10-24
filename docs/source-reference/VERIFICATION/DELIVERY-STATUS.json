@@ -1,0 +1,22 @@
+{
+  "assembledAtUtc": "2026-10-23T23:22:23.468183+00:00",
+  "sourceBaseline": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "inventorySnapshot": "2026-10-23T21:46:51.255169+00:00",
+  "trackedSourceFiles": 3083,
+  "deep": 2378,
+  "indexOnly": 705,
+  "states": {
+    "ACCEPTED": 2965,
+    "STAGED_UNACCEPTED": 118
+  },
+  "uniqueManualArtifacts": 2415,
+  "requiredTopLevelDocs": {
+    "CODEBASE-MAP.md": true,
+    "API-REFERENCE.md": true,
+    "CURRENT-ARCHITECTURE.md": true,
+    "BUSINESS-FLOW.md": true,
+    "DESIGN-VS-IMPLEMENTATION.md": true
+  },
+  "runtime": "NOT_RUN",
+  "publication": "DRAFT_PENDING_ROOT_FINAL_REVIEW"
+}

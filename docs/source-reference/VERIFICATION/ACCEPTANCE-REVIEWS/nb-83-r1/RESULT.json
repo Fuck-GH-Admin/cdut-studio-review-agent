@@ -1,0 +1,149 @@
+{
+ "schema": "dsh-r07-review-result/1",
+ "batch": "nb-83-r1",
+ "revisionOf": "nb-83",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-models-20261023",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T18:04:44.388774+00:00",
+ "deliverySeal": {
+  "sealId": "seal-76f882de54e90923",
+  "sealedAtUtc": "2026-10-23T17:59:56Z",
+  "readySha256": "c67b43fe0c66c6e480e1aaf77cc898a204502c463b7ad5b593a246d541239c19",
+  "doneSha256": "bef37533773621e901696c5202663db6b2f37eb346df883e3fefa433b1100852",
+  "manifestSha256": "ee7e5708e3b3a348e6d735ddcd6a5e0700a40019fbd422e5bbe0a9e5a06cb97a",
+  "zipSha256": "782e190502b26a588973c4d11cf93262f183d61ccedecc06f11f4606f38bec4d"
+ },
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "gatesNote": "G0 链自洽；变更恰 2 篇（8 篇 accepted 字节保持）；G2 修复全中：NB83-CNT-01「19 个导出：todos 4+groups 4+tags 4+calendar 4+提醒 3」精确；NB83-AMB-01 可选消歧同步落实",
+ "batchVerdict": "accepted",
+ "files": [
+  {
+   "path": "apps/electron/src/main/lib/skin-preview-cache.test.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/skin-preview-cache.test.ts.md",
+   "sourceBlob": "7d6b43ededfbd431ae799ff11d50c930a9420538",
+   "sourceSha256": "e78e284074989abb34befc5ca54409e9c10b9b5b3687dc35f6cd9292b39e4c20",
+   "lines": 61,
+   "manualSha256": "eb86c0a4a3d4944150bb066178a49eb675f9a5a90a166dbb8301f31d10bf982e",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/skin-service.test.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/skin-service.test.ts.md",
+   "sourceBlob": "eee8576e662f33b4dfdcd7dc4adab8ecb4be56e7",
+   "sourceSha256": "3868298709c083a2ddd56a293ccf32fdb5f2968ea7c9b6a22ea633ba8bdd4d50",
+   "lines": 59,
+   "manualSha256": "eb532b8df7ab81df660c37e3502f047922347cb42fa27f2b77ffacf2da604e5b",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/skin-service.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/skin-service.ts.md",
+   "sourceBlob": "e6215761e6708c9e1eed8a4be1c821d320abe661",
+   "sourceSha256": "01a07d2183d6cbd70b47152c146f981dce7f018d0c6149ca610c4e7618534c5f",
+   "lines": 620,
+   "manualSha256": "d2cde9b5592d51213365165f0d0811eaa5a375629c968d1ac205a264ab8fc6e4",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/team-file-service.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/team-file-service.ts.md",
+   "sourceBlob": "524a6a5a83f9426dd0db9c58202b3d5ff479edfd",
+   "sourceSha256": "95c355ca2d86f1766c592b9c12dc70fe5929348b43e3e2ef527c952fd26dc041",
+   "lines": 637,
+   "manualSha256": "f74d4d820e133e0bd2ad9f6890281e812b10c90647170371ba33ff38c1c74e80",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/team-manager.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/team-manager.ts.md",
+   "sourceBlob": "d4f9879a2e41c6993b4150e2b32baed0f2cbbedf",
+   "sourceSha256": "e2f914b029092877cf232281268bab313c79724ad31df3363a0d2cd936ebd8b5",
+   "lines": 409,
+   "manualSha256": "8b9437bcaad5ee15910b4c5b268456f5ba61e29211159ad290d257019519d4c4",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/team-memory-agent-tools.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/team-memory-agent-tools.ts.md",
+   "sourceBlob": "93b07b4ea201662f73c2dab5f53ff0688e38ae88",
+   "sourceSha256": "3ad44201bc542f36434a00d95779696a026bdaa8cc3d7f785cb3d52d67ced956",
+   "lines": 32,
+   "manualSha256": "de0773362bf8464b31fae4ff976d87fbdcd2f029628a5c0fd36b90d4ea699f0e",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/team-memory-service.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/team-memory-service.ts.md",
+   "sourceBlob": "1d3b9be40bf95b0b81dedfe118c5299a4c53985f",
+   "sourceSha256": "06c90a326b02ef227d33579fbdf622d7398785eb68858a067ab76d14e09c9a79",
+   "lines": 31,
+   "manualSha256": "49084bccc0d013e7b568dad7698728900f087c2d0ba77f60920c48e088fb923f",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/team-notification-service.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/team-notification-service.ts.md",
+   "sourceBlob": "334e9f4775014dbf780ecd47530418a316e2e5fe",
+   "sourceSha256": "9103d19d3c7bf799cf43db9d680f71c5713c6dfa6b7c4c24619d83be502e57c1",
+   "lines": 250,
+   "manualSha256": "e6bd4ef45c4452eed5f460e5796ead12d8d7214e26f45010133e1910512895a3",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/team-planning-service.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/team-planning-service.ts.md",
+   "sourceBlob": "4a215bfebef7b02424a76683b7288d85e9af950e",
+   "sourceSha256": "72cfc1cad96d4e0811c0c9bc5231b752b023295b5966a6b07b8378d0a28bcedc",
+   "lines": 36,
+   "manualSha256": "34ddf782cf5a82cef34d2a3908da4a6ca3b97256950be75663480f3677fbaca8",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "demo-data/matlab-benchmarks/generate_max_mat.py",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/demo-data/matlab-benchmarks/generate_max_mat.py.md",
+   "sourceBlob": "9427cae7962fd1fc7fd17543399ee16bb95906e0",
+   "sourceSha256": "398c03cd9ae0329d26dd8abeb7159d1600487822000e1a2270f1824fc2ea715b",
+   "lines": 70,
+   "manualSha256": "d8c9d23fc8df7eec1a80ae020c78b6b59b2713928102794c1f7f83d4daf28ca1",
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "findings": [],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/skin-preview-cache.test.ts.md": "eb86c0a4a3d4944150bb066178a49eb675f9a5a90a166dbb8301f31d10bf982e",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/skin-service.test.ts.md": "eb532b8df7ab81df660c37e3502f047922347cb42fa27f2b77ffacf2da604e5b",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/skin-service.ts.md": "d2cde9b5592d51213365165f0d0811eaa5a375629c968d1ac205a264ab8fc6e4",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/team-file-service.ts.md": "f74d4d820e133e0bd2ad9f6890281e812b10c90647170371ba33ff38c1c74e80",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/team-manager.ts.md": "8b9437bcaad5ee15910b4c5b268456f5ba61e29211159ad290d257019519d4c4",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/team-memory-agent-tools.ts.md": "de0773362bf8464b31fae4ff976d87fbdcd2f029628a5c0fd36b90d4ea699f0e",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/team-memory-service.ts.md": "49084bccc0d013e7b568dad7698728900f087c2d0ba77f60920c48e088fb923f",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/team-notification-service.ts.md": "e6bd4ef45c4452eed5f460e5796ead12d8d7214e26f45010133e1910512895a3",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/team-planning-service.ts.md": "34ddf782cf5a82cef34d2a3908da4a6ca3b97256950be75663480f3677fbaca8",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/demo-data/matlab-benchmarks/generate_max_mat.py.md": "d8c9d23fc8df7eec1a80ae020c78b6b59b2713928102794c1f7f83d4daf28ca1"
+ },
+ "revisionHashes": {},
+ "notRun": [
+  "bun test",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "limits": "静态复验；按 r1 新 hash",
+ "next": "10 篇可合入；nb-83 系列闭环"
+}

@@ -1,0 +1,70 @@
+{
+  "schema": "dsh-r07-index-review-result/1",
+  "batch": "index-p01-app-shell__apps-r1",
+  "groupId": "p01-app-shell__apps",
+  "revisionOf": "index-p01-app-shell__apps",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-index-author-20261023",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T22:25:00Z",
+  "sealedAtUtc": "2026-10-23T19:09:24+00:00",
+  "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps.md",
+  "artifactSha256": "7ae04e2705414a7b1d01d6bbd81553aebb5c9acecdb1ac36ecaf94bf32ef5cd7",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 2,
+    "accepted": 2,
+    "revision_required": 0,
+    "unknown": 0,
+    "blocking": 0,
+    "nonBlocking": 0
+  },
+  "gates": {
+    "G0_INDEX": "PASS",
+    "G1_INDEPENDENT_SOURCE_REVIEW": "PASS",
+    "G2_SEAL_CONSISTENCY": "PASS",
+    "note": "G0 等价全过、封版链全对；findings closure 逐条 resolved；无回归。"
+  },
+  "revisionVerification": {
+    "findingsClosure": [
+      {
+        "id": "IDX-G05-F-01",
+        "status": "resolved",
+        "evidence": "icon.ico 消费/打包/影响三列已更正为「无已知消费者；win.icon 实输入=resources/icon.ico（buildResources 优先解析，getResource 语义）；删除零已知影响；仅 resources 缺失时 projectDir 兜底=推断」——与 QA 证据一致"
+      }
+    ]
+  },
+  "g0Evidence": {
+    "stockScript": "ERRATA-E1 沿登记；等价检查 PASS"
+  },
+  "files": [
+    {
+      "path": "apps/electron/icon.ico",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#apps--electron--icon.ico",
+      "line": 8,
+      "sourceBlob": "e7ccd653e984a56f52ceab23b7c1a5be9bbb078b",
+      "sourceSha256": "fc85c47b37322b04c94001926cd1a7edcb98db83c52a1ed52c4ed3ff20be616e",
+      "manualSha256": "7ae04e2705414a7b1d01d6bbd81553aebb5c9acecdb1ac36ecaf94bf32ef5cd7",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "r1 复验：F-01 三列修正逐项比对属实（win.icon 归属、兜底推断、产线不读本文件）"
+    },
+    {
+      "path": "apps/electron/icon.png",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#apps--electron--icon.png",
+      "line": 18,
+      "sourceBlob": "62e892e15c6a5d6994f02953677cd485d2469a5f",
+      "sourceSha256": "80ddd90c0b410c709e905b0370b88805a72eb9ede8336817c6c03fcee98bcfb6",
+      "manualSha256": "7ae04e2705414a7b1d01d6bbd81553aebb5c9acecdb1ac36ecaf94bf32ef5cd7",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "r1 复验：与 r0 accepted 结论一致"
+    }
+  ],
+  "findings": [],
+  "boundaries": "QA 只读复核：未改旧 seal（r0/r1 并存）/源码/全局账；未 commit/push；结论只覆盖本批。"
+}

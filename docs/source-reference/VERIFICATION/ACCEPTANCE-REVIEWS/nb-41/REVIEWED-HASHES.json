@@ -1,0 +1,136 @@
+{
+  "schema": "r07-reviewed-hashes/1",
+  "batch": "nb-41",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "sealId": "seal-e458e44fda060ceb",
+  "reviewedAtUtc": "2026-10-23T17:55:00Z",
+  "manuals": [
+    {
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/task.ts.md",
+      "manualSha256": "bd99864441669cffd7dd95039142678ddb2cc312d9a04bee8fb21bdebf170f7d",
+      "sourceBlob": "3269181747073d91ecac8785f2630558b66ef681",
+      "sourceSha256": "effad25de250417b467876c34e02932d6b6c3425a2e4dca3dc0fdc661118f4e2",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/tsconfig.json.md",
+      "manualSha256": "38b1d9c1c8de7738c90314643c9e97a7ee4d642c61d61bbf1c40c80182fab112",
+      "sourceBlob": "73a65ef2ef6e5658643310ffc67e5391df2cbbc1",
+      "sourceSha256": "1de5fbec4888f903fd7d0695642e6c2cb46ae9f5e944df0d93a4fd1aaa2325d6",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/package.json.md",
+      "manualSha256": "d0d64d81cadb05780ff6fd365c8d438972232d932de6eea060694d14cf8bbb43",
+      "sourceBlob": "8e637f118bb3f4e4e4c2d718b537b9513f6b1937",
+      "sourceSha256": "19dc9b37435c2101354a89993f2592b123e18336c750579de121ed3a2ca3db67",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/public/index.html.md",
+      "manualSha256": "8575e4216c667bef38dbc8ebda00c924c47167c911046b02a7cdea79d5c514f6",
+      "sourceBlob": "9dffbc09d3a95b21cbfb5e9fce4e90f4f6585cea",
+      "sourceSha256": "22a3f96fbafbb5c59a2265384e8b57d30eee04bed5b4240017b33b50f2b80150",
+      "verdict": "revision_required"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/dataset-loader.ts.md",
+      "manualSha256": "edb61767f9dc32e727fc17686b27446cc8121b750b2867749f1000a885b21797",
+      "sourceBlob": "93e6469bf9ebc8ebff135768d331887d086885a1",
+      "sourceSha256": "5ee629afc8564fefa39b6df78a14b2d3507b97a099b13f255e0a24aae40a3dba",
+      "verdict": "revision_required"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/dataset.test.ts.md",
+      "manualSha256": "80df00653affb9c278daffdae888f3a16342045371a76954320545af02787957",
+      "sourceBlob": "9dd2a0b9eaa8e56fc47c4d444c58e75d910446fa",
+      "sourceSha256": "b1bee4fdfd1f0f2ba5c72fcc6ff1151b0c786f2ec6a9d036122663929b86ac90",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/dataset.ts.md",
+      "manualSha256": "b952d07ecb9e134a2a777c1fb60b0b777c12cd427cd97927dc3067037c54b388",
+      "sourceBlob": "160b66a6f09f35ae47f94600ee283fe04d4bd6cc",
+      "sourceSha256": "2a2303510250bdb28957f9032b4cac5e9f2ea2e5d28d27b6d3d54afabd954a3b",
+      "verdict": "revision_required"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/evaluator.ts.md",
+      "manualSha256": "c62fd58666b0b63c1324ca045231cc8da7aff440b7bd8d939ea72e437469ec07",
+      "sourceBlob": "86f62cb5c586c2f9b711ccf9313545877cd2136a",
+      "sourceSha256": "856cdbc01011378affe18cf9968f959c218520cade69d0bb81fcae5108808f96",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/metrics.test.ts.md",
+      "manualSha256": "e43ba68fcf3ea95d5c76f1638e096312158839d2e7b0c351a8e16595992adba2",
+      "sourceBlob": "e7dc2fa4760546c2b3b27982b859d4b56dd1f9f7",
+      "sourceSha256": "3a9598eec16b161463499c45f2f1115bfe5d215ceed338b37b44dcc9490b6ff0",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/metrics.ts.md",
+      "manualSha256": "f6ad748ec03909580265b368f5d31e5348ae0dbd0a2c366d7d9cf81ea5bb0362",
+      "sourceBlob": "a769416abf96931320d4b0c1f5f19bb747cd9b9e",
+      "sourceSha256": "4e7a64575abdbc1ce2427bc6277162c4649022e684ad59aa1f46a172b3e6aed9",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/report.ts.md",
+      "manualSha256": "bd77d34373553558ff1b0de96baf99eea3a9e651a13ead8ac83c77640bc907c8",
+      "sourceBlob": "3bb501bea4a33c5231742ad8aa3f902d06129013",
+      "sourceSha256": "8abc0878fd0be3c5215d486bf39e57d019f25511f1a0616b4b876282eb7522cf",
+      "verdict": "revision_required"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/runner.ts.md",
+      "manualSha256": "7f41d39bed277b88e1e4ed8ad2d8a5a1704895b19fff1bdaf366e20ac7fbb997",
+      "sourceBlob": "f1115957b3ac82a001e715dec5c382b80bfd5712",
+      "sourceSha256": "ae945cc007ad8f5590c0e50e4d4d1e7ea6c54acb37b6884bffcd608e9d66d3a7",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/server.ts.md",
+      "manualSha256": "ca73900a8d35844ed5251b37d4238668844518d82d5c7dedddbd23af487f41e2",
+      "sourceBlob": "7830e578dfb373061c7bdf8f53385cf1a276fa94",
+      "sourceSha256": "a6b2f7a21dfe111e3586fe720b33ad61fc1590bf9f2be1658d252743f8b88c14",
+      "verdict": "revision_required"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/types.ts.md",
+      "manualSha256": "12f42aafcb2d7147f59c12cf49fd6ad5d608b9be2edaf9fa4aff02156e23c754",
+      "sourceBlob": "e1404386e2189c10df0f4a8d4e66f0acdf29969a",
+      "sourceSha256": "d4d2c672f4b907da0dd80d029d9b8a54aeb2e7a8c060536f7a407d45d8e85edf",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/tsconfig.json.md",
+      "manualSha256": "4aee1bbb7664fc728ceb37949257c3375dde0a706d609e96c1fe3165f11dfa9d",
+      "sourceBlob": "73a65ef2ef6e5658643310ffc67e5391df2cbbc1",
+      "sourceSha256": "1de5fbec4888f903fd7d0695642e6c2cb46ae9f5e944df0d93a4fd1aaa2325d6",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/package.json.md",
+      "manualSha256": "5e661051339e0ccfd0157836fe2bb8779699aeda5e5afff931d168090d29598d",
+      "sourceBlob": "77d954b076e9bcc7d56e61314d6558dff873f0b8",
+      "sourceSha256": "bf64a8d12a0ee955d960923680a3cd5a14ffe27e65145c4cd5a8741a4c27a311",
+      "verdict": "revision_required"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/graph-parser.ts.md",
+      "manualSha256": "304f8ae05067b073bfaf5c565189654baa9b3746cf9ee77875b64299d8e9b120",
+      "sourceBlob": "c73e9376931020eaf93818f6f024ff13e6f91305",
+      "sourceSha256": "99b81b9b69f0c48d73442b403d36884a1da48a58db32970beeb55b770e036872",
+      "verdict": "revision_required"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/graph-query.ts.md",
+      "manualSha256": "c03fa3e270aa4d7e913832a2c68e33dc99e3379981c8266b05a605044b212d81",
+      "sourceBlob": "c951c82b94d9868be6e39daa8801d804ee8a6055",
+      "sourceSha256": "c51aadf6fdec1f6f75b27babfa7a629ed3e6790efbd59ecbb2b14034ea8f7561",
+      "verdict": "revision_required"
+    }
+  ]
+}

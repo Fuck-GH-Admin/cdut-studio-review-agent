@@ -1,0 +1,143 @@
+{
+ "schema": "dsh-r07-qa-reviewed-hashes/1",
+ "batch": "nb-42-r2",
+ "revisionOf": "nb-42-r1",
+ "rootRevisionOf": "nb-42",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "reviewedAtUtc": "2026-10-23T21:28:22Z",
+ "bindingNote": "manualSha256=r2 stage 实算=MANIFEST；2 篇变更新 hash 重接受（同源证据=types ^export(type|interface)=33、源 test 计数 17/12 已于 nb-42-r1 复验回源）；16 篇=r1 全等沿用同源证据",
+ "sourceBinding": {
+  "packages/project-core/src/graph-state.ts": {
+   "blob": "e63d5da48f3612eafee199ba1a4c0b93bafbf8ad",
+   "sha256": "edd63b6ae034a11bbad013121bc223bee6878e0449cefc0baae1aeb7ccfc7492",
+   "lines": 480
+  },
+  "packages/project-core/src/harness-query.test.ts": {
+   "blob": "b26dbe080d87ef1b256656bb5b2633a2528b4736",
+   "sha256": "37e29f6e945b93fa153f7b4724919909cc6e30481f3aba97479deca91e4bfca2",
+   "lines": 59
+  },
+  "packages/project-core/src/harness-query.ts": {
+   "blob": "066a1c3b4c8f6c1146f3b6487f585198c4d4e77d",
+   "sha256": "513dbced6bea69dbaba821453d71af4a0b8cd32a4cca9eeac58821657887b034",
+   "lines": 98
+  },
+  "packages/project-core/src/index.ts": {
+   "blob": "13f0cd0cae07d3969e19245a26d5866859694865",
+   "sha256": "0d39218ef24c5e3b6dd72f18c8d3753828cefbc0b60a370639e39b61ce4268cb",
+   "lines": 118
+  },
+  "packages/project-core/src/project-core.test.ts": {
+   "blob": "0b3f5792a120aee4f9b6698f6dc43d89a85191ba",
+   "sha256": "4ae6c6707910a814d0e2334c0473f00e99ad1881443a495387a7151a823687ef",
+   "lines": 864
+  },
+  "packages/project-core/src/project-meta.ts": {
+   "blob": "6e5a4e90ef751b7fa28470f6ff220a7372ef7214",
+   "sha256": "6f18d77d1454d5a4182ba53cd74062d49d22dea08135e0e02a5ed3032ba0c105",
+   "lines": 150
+  },
+  "packages/project-core/src/task-tool-names.test.ts": {
+   "blob": "7ffb3929d71262123639a23c66b0e5ae0c3f8718",
+   "sha256": "7438071164ceb9f5150d9d101f405bc68c5918bb891268acb2283466fc9cbadc",
+   "lines": 23
+  },
+  "packages/project-core/src/task-tool-names.ts": {
+   "blob": "982e6b1887c3b66e0df66b24d05f5316d70f207e",
+   "sha256": "a2da9f3b99b7c694b6b4d418a7dcd776cdf6d031d726b2e90060d6509ca0d613",
+   "lines": 32
+  },
+  "packages/project-core/src/types.ts": {
+   "blob": "c0e4c1fa39ccf04e3d69e66c1e35e4df91813254",
+   "sha256": "79a509b17343de740e03753d3a9f96e9a69844d73c1671d3500a157c9781ea70",
+   "lines": 384
+  },
+  "packages/project-core/tsconfig.json": {
+   "blob": "73a65ef2ef6e5658643310ffc67e5391df2cbbc1",
+   "sha256": "1de5fbec4888f903fd7d0695642e6c2cb46ae9f5e944df0d93a4fd1aaa2325d6",
+   "lines": 5
+  },
+  "packages/session-core/package.json": {
+   "blob": "155b81fc3ac11b69262efa6a18bbfb0f56d67f8c",
+   "sha256": "3aa11612edf06da7097bb97494abda9a8126f3c06e7fda76dad2292f1f73ad4f",
+   "lines": 23
+  },
+  "packages/session-core/src/group.ts": {
+   "blob": "a90ec9d588823da196af073f988eb4e297ba965a",
+   "sha256": "7c12b4275ae97abdf4e0aec43279a88e99a38f505ce0ae58bd01de805f1317f1",
+   "lines": 294
+  },
+  "packages/session-core/src/index.ts": {
+   "blob": "9d300039f2ee422267dfb68a0eefe877d328e60d",
+   "sha256": "f2cd2c60e6e5a501fcdd850b1154f7c467a02baba31711c0072dfe86d5c6a966",
+   "lines": 53
+  },
+  "packages/session-core/src/node.ts": {
+   "blob": "7fa8e9937e8039b89083c628202cb7467a792431",
+   "sha256": "f47cad2966e1a6d707a27d9e9615f5a9ba3130ddfdcbdba1fd5dad66bee01616",
+   "lines": 8
+  },
+  "packages/session-core/src/outline.ts": {
+   "blob": "ae42cdccf9cda5709a1006d8898eb24e07e7bd57",
+   "sha256": "b548b93dbb7297ceda8e147041278332168212db7e6924567e89925360f50009",
+   "lines": 43
+  },
+  "packages/session-core/src/read-fs.ts": {
+   "blob": "c9cbe17e940f2bf7b1d52e89f3d3cb8631e82580",
+   "sha256": "f74acdf7cd5d6a048364724683336ede2ed6bf84745ed5e26b59fde36ee7d089",
+   "lines": 17
+  },
+  "packages/session-core/src/read.ts": {
+   "blob": "a57730489e081ec96c3168e144ad5e312d45ea37",
+   "sha256": "eb4e5b4d4d0e4e8297761b7c06474640d8cfb35d0b034326364423eadb068040",
+   "lines": 99
+  },
+  "packages/session-core/src/render-markdown.ts": {
+   "blob": "8a5498d682b018c808e0e5e3dea2ec3fe5dc6e65",
+   "sha256": "6100120439ca44275b814b43d0b2abaacab3aa9aab759ee6faba7d4341890535",
+   "lines": 44
+  }
+ },
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/graph-state.ts.md": "6100d8a40427b56b15d32fd388b28820b0a745a9c942a9b90ec62a950ecd99f1",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/harness-query.test.ts.md": "1dffe6bb845b5da1f1c68599679c3bcf9d35376cda563d74f46616d5c9854854",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/harness-query.ts.md": "6db86a1ff25797772315bc764b00407fda39f73b7b7c6783d9b73dccaf1488e7",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/index.ts.md": "a6d3521d569dadd730d6ed74fe25e429799de47d8694540bdaf7a48bde426532",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/project-core.test.ts.md": "adcb97f55914fdc70c8d535aff896c8bf8f52186db9ecca71115562d852c8325",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/project-meta.ts.md": "1d07b2b077d3db83639f34ed85c03ac9c3aac850b2afff6f3c41ffa19e8403a4",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/task-tool-names.test.ts.md": "98c235a0a62f5b49010a7a850430c4d96cdd1572d3588b0c9b2b3e4367917172",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/task-tool-names.ts.md": "dac0c0b4d1ec1b228cb930c24b1d8f056d7fe5a880c09f164235b094c0dd2596",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/types.ts.md": "28d82254b54e9c53c5ef22fab968b61e470f6b9375d4363f7776de19dc29292e",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/tsconfig.json.md": "d16ec99ead0a4053502b71d49894a09fb753eab49428bbd938d7dd80db8bdb65",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/package.json.md": "471836f373ef52611be2a1ce3882971bf21f6d3aed639fbbf630dabae6bb8383",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/group.ts.md": "40688e2bb524b41d5216f355217f21973b8c85d59595a4c54d53fd86bfa853ec",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/index.ts.md": "16f8949304d6f03b9c8fff523cd1f7ed1e38d8aa63420679c7c6689bee383b24",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/node.ts.md": "b0bd9dffbd88894f64d50b49d6ea6667ab72f346568118bde86d5aa05c0fa22a",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/outline.ts.md": "c9269989badbf27e027c6f389aa7d8a40de386cf15c86edecf56600057250b1c",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/read-fs.ts.md": "8470068722b0a134fd3de59f438fface05c0973607d020eb6b27f1fea780693f",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/read.ts.md": "44d1624505e75d12dfab2d6fd79c845c8835b26d7a9d118d9c3e36e14ce19f4c",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/render-markdown.ts.md": "305653cfd5a89cea7fc9a179fa68c18ffaf32c0b2f9ca373a4e2ac097d4b5669"
+ },
+ "rejectedHashes": {},
+ "supersededManualHashes": {
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/project-core.test.ts.md": {
+   "oldManualSha256": "70374820c145c1422c8525981f5e386e27df0c86ff352052810142dc6836649f",
+   "newManualSha256": "adcb97f55914fdc70c8d535aff896c8bf8f52186db9ecca71115562d852c8325"
+  },
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/types.ts.md": {
+   "oldManualSha256": "7d8cd170e31a9ecd741210270e3afe0bdcfa97b76165f9f986c0e2ad71c52338",
+   "newManualSha256": "28d82254b54e9c53c5ef22fab968b61e470f6b9375d4363f7776de19dc29292e"
+  }
+ },
+ "deliveryHashes": {
+  "manifestSha256": "6e510a8d788b9064f8912c60b56e5074e75c94d1df91455a566cfdbdd1cd2a76",
+  "readySha256": "b2bfebf5468329ac9daf0257bdc3c546d77229e422ac13e37a607ab43169bf4a",
+  "doneSha256": "b63c0d3245376b22e4904c9db9a91390f570f5c3b5721e5427e51d15cc47b41c"
+ },
+ "zip": {
+  "path": "deliveries/nb-42-r2/R07-nb-42-r2-05fb2565.zip",
+  "sha256": "99eac0a682e175fd60e8b110b47885368f83e787d97de842d3a995d4f8eb4d3c",
+  "note": "v2 无穿越/0 mismatch"
+ }
+}

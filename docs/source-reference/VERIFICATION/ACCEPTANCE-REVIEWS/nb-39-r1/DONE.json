@@ -1,0 +1,31 @@
+{
+  "schema": "r07-qa-done/1",
+  "batch": "nb-39-r1",
+  "revisionOf": "nb-39",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewedAtUtc": "2026-10-23T17:31:00Z",
+  "sealId": "seal-5be9bf8200d1faa7",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 8,
+    "accepted": 8,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "result": "reviews/nb-39-r1/RESULT.json",
+  "resultSha256": "e9fd15a90cdb126a033c62722d959bc00e660cd7e0a7c38b376e32618c939d08",
+  "reviewedHashes": "reviews/nb-39-r1/REVIEWED-HASHES.json",
+  "reviewedHashesSha256": "a4560732ecca5cf67c189504a04761fcda66c5790d90143877a4842dcbe8f8b5",
+  "testsRun": [],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "knownUnknowns": [
+    "皮肤 CSS 渲染表现（NOT_RUN）"
+  ]
+}

@@ -1,0 +1,332 @@
+{
+  "schema": "dsh-r07-qa-result/2",
+  "batch": "nb-142-r1",
+  "revisionOf": "nb-142",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-extra-03-20261024",
+  "reviewerSession": "docs-r07-qa-extra-03-20261024",
+  "batchVerdict": "accepted",
+  "verdictCounts": {
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "reviewedAtUtc": "2026-10-23T20:35:00Z",
+  "reviewRoot": "reviews/nb-142-r1",
+  "deliveryRoot": "deliveries/nb-142-r1",
+  "priorReview": "reviews/nb-142 (batchVerdict=revision_required, 17 accepted/1 revision_required)",
+  "seal": {
+    "tool": "seal_delivery.py/1",
+    "sealId": "seal-8cd5d68f0d5ebf83",
+    "sealedAtUtc": "2026-10-23T20:15:13Z",
+    "manifestSha256": "9f6bafcb77058890bacbb13f7ebe6cba97fbb88486f10f8fb3e48c601c9b8701",
+    "readySha256": "78a95046b63c8ef5ce55923d0e40e86970004ac66f06bb2cef1cfbd5bb557c23",
+    "zip": {
+      "path": "deliveries/nb-142-r1/R07-nb-142-r1-05fb2565.zip",
+      "sha256": "9d92b7aabe6a301ebf387ad15a054b3929219878f5260f009c2e7032ca009e38",
+      "bytes": 82841,
+      "entries": 21
+    }
+  },
+  "gates": {
+    "G0": "G0_PASS",
+    "G1": "G1_PASS",
+    "G2": "G2_PASS"
+  },
+  "g0Detail": {
+    "revisionChain": "revisionOf=nb-142 绑定正确；r0 seal-32d3b13346a46d7a 字节保留未动",
+    "hashChain": "MANIFEST 9f6bafcb…/READY 78a95046…/ZIP 9d92b7aa… 三方重算全对；manualSha256 18/18 MANIFEST==READY==stage==ZIP；机械 TSV zip==disk",
+    "binding": "18/18 source blob+sha256+lines == manager scope（独立重算）",
+    "format": "18/18 front matter 齐全"
+  },
+  "g1Detail": {
+    "findingsResponse": "FINDINGS-RESPONSE.md 5/5 逐条认领并回源确认（before/after hash 齐全）",
+    "coverage": "COVERAGE.tsv 重发完整备注列（18/18 行 11-106 字符，manualSha256 对账一致）；SOURCE-EVIDENCE 同步；UNVERIFIED 无残留旧计数"
+  },
+  "g2Detail": {
+    "revisedManuals": "2 篇（electron-builder.yml.md 4 hunk/5 处、cdut-jw-parsers.test.ts.md 3 处）diff 逐行核对恰好为声称修改，零多余改动",
+    "unchangedManuals": "16/16 与 r0 逐字节一致（diff -q 全对 + acceptedHashes hash 对账）",
+    "countsReVerified": "19 顶层键/3+12 files/13 extraResources/:446 行号 对源复算一致"
+  },
+  "files": [
+    {
+      "path": ".gitattributes",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/.gitattributes.md",
+      "sourceBlob": "fe129dd6b9e806c199087dd650e94f2074d5720c",
+      "sourceSha256": "f3d67ecd897b1a9e71efc99c941f479950fda759b28d55e6373d5c8c1192fbf0",
+      "manualSha256": "352960e6d101e3bc50a811d4e8ff60f43a71da06bee89cfdee7526cb32dbac50",
+      "lines": 2,
+      "manualLines": 59,
+      "kind": "config",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": ".gitignore",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/.gitignore.md",
+      "sourceBlob": "a67c2b9dbf349578495351015cb75d835e26f9ac",
+      "sourceSha256": "edc3f40cbe29a68c8102b330a7615b37a534b3476d11e13701c96a68f50a4037",
+      "manualSha256": "e50fc1961019cdf4f22e63317b7be668cd4765936408bb0a57710add0cc90f7d",
+      "lines": 132,
+      "manualLines": 62,
+      "kind": "config",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/bunfig.toml",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/bunfig.toml.md",
+      "sourceBlob": "c1a3761b15c4ddb33ce3363955201197aa61bb15",
+      "sourceSha256": "1c7bb800e2420bef1f64e462ba2e20a593a611e1d3315d822fea0c3960e5807b",
+      "manualSha256": "fed4d62723175dbd3a23ff0f0b214a457186c6db2f35774f6137fc255bfc9a4f",
+      "lines": 12,
+      "manualLines": 60,
+      "kind": "config",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/components.json",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/components.json.md",
+      "sourceBlob": "0aa7288c61b6649c26f1955e6c9cdbd18a99ca18",
+      "sourceSha256": "e9617ad79472387edd6dcecde5f92a2f96e3bf9f9efe8910ad21a9b92b4195ec",
+      "manualSha256": "ccea01b140f6fbe587824553f49976c11924e0e66b26a9a0436105f7d2cde890",
+      "lines": 20,
+      "manualLines": 59,
+      "kind": "config",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/electron-builder.yml",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/electron-builder.yml.md",
+      "sourceBlob": "d7ab69972da9afb7f1d2fe6c9031ecaab53796db",
+      "sourceSha256": "4922c4267d787ecd148948c3f326e90894375015f0fa8c1da4ec8e014e8d52c9",
+      "manualSha256": "d579753dc5f263eef8f79f8a74d9ca09f647243d14f9fabb7f850ede0f0b8e4f",
+      "lines": 221,
+      "manualLines": 146,
+      "kind": "config",
+      "verdict": "accepted",
+      "findings": [
+        {
+          "id": "NB142-F-01",
+          "severity": "major",
+          "claim": "顶层键计数 17->19",
+          "sourceEvidence": "electron-builder.yml:4-221 regex 实测 19",
+          "action": "resolved@r1（:25/:117 19 项，UNVERIFIED/SOURCE-EVIDENCE 同步）"
+        },
+        {
+          "id": "NB142-F-02",
+          "severity": "major",
+          "claim": "files 5+11->3+12",
+          "sourceEvidence": ":44-67 include 3/exclude 12",
+          "action": "resolved@r1（:40）"
+        },
+        {
+          "id": "NB142-F-03",
+          "severity": "major",
+          "claim": "extraResources 15->13",
+          "sourceEvidence": ":70-122 from: 计数 13",
+          "action": "resolved@r1（:41/:137）"
+        }
+      ]
+    },
+    {
+      "path": "apps/electron/package.json",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/package.json.md",
+      "sourceBlob": "b51d8d2d79e103af8158574fb16d750c46f76671",
+      "sourceSha256": "0860d3b31f59348a6d728d6d94858a4e4e31fbe4749215e6a6380f0f2117828d",
+      "manualSha256": "c70479053f0a0ce2b912dd108bfd9166fa110e4e97ec501f048113d6dff1bcb4",
+      "lines": 203,
+      "manualLines": 182,
+      "kind": "config",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/postcss.config.js",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/postcss.config.js.md",
+      "sourceBlob": "2e7af2b7f1a6f391da1631d93968a9d487ba977d",
+      "sourceSha256": "190c877db466995bf1482f4a16abd06e04a89ede3119341e2a86ff96e1737b27",
+      "manualSha256": "7b2a30b832d765fe83a910ed14f40272d10e0f693c817e193ea4831b5e601884",
+      "lines": 6,
+      "manualLines": 59,
+      "kind": "config",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/tailwind.config.js",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/tailwind.config.js.md",
+      "sourceBlob": "92ad49e801293c5cd610c2d9a5f536eb1bde6c98",
+      "sourceSha256": "523a4e1b2d45c9c82058d915dc24e98980ff38bbdeac4af1c86d3bc6d55b9be0",
+      "manualSha256": "0c68bc4b66dba5582f89b593cf381d9bc3e58b5be5f217b5ccf2b89fa17d9f71",
+      "lines": 220,
+      "manualLines": 73,
+      "kind": "config",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/test/beijing-greeting.test.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/test/beijing-greeting.test.ts.md",
+      "sourceBlob": "3a915e8ab4563c274a3e00506725f99558b8cef2",
+      "sourceSha256": "fe83f2acc51136c7757ef74c0533832c6bf63ef19f5ddaaa652aaa517ff99af5",
+      "manualSha256": "3c2f3ed7146564ed39fb68211315ca4d4f4ec49ce1697fa7654f4e0fdd2a22ee",
+      "lines": 218,
+      "manualLines": 76,
+      "kind": "test",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/test/cdut-jw-parsers.test.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/test/cdut-jw-parsers.test.ts.md",
+      "sourceBlob": "34dc751f99b4290ea209622800653967e23d9629",
+      "sourceSha256": "3d83fa5015257d0564695ebbd3f077fe3973da3e20693a60c7623f0dbd78ff61",
+      "manualSha256": "cbe400ce050b13e619853cdedcba2428e72cf83de16f774636bd0ff2525b5ff4",
+      "lines": 568,
+      "manualLines": 97,
+      "kind": "test",
+      "verdict": "accepted",
+      "findings": [
+        {
+          "id": "NB142-N-01",
+          "severity": "minor",
+          "claim": "汇总行红线断言行号 :451->:446",
+          "sourceEvidence": "cdut-jw-parsers.test.ts:446",
+          "action": "resolved@r1（3 处行号更正）"
+        }
+      ]
+    },
+    {
+      "path": "apps/electron/test/quiz-options.test.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/test/quiz-options.test.ts.md",
+      "sourceBlob": "813ce00a004532ff8acb27b13e306906c2508c92",
+      "sourceSha256": "a7a0d9c86226483e601c9cd6fd7dbdc652caf50289d6b313742f0aacf5e9866f",
+      "manualSha256": "fae2513da0292fe5c5cfaeb57055a218737659273eafe06765df05079d377b59",
+      "lines": 150,
+      "manualLines": 69,
+      "kind": "test",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/test/yanhu-pet-prompt.test.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/test/yanhu-pet-prompt.test.ts.md",
+      "sourceBlob": "3445025e1323431c8b0200341226d28c0b716aa9",
+      "sourceSha256": "6a211af2525ba28b971465ce8b3c6e82f88887c896218179d1415619c73ff9d0",
+      "manualSha256": "7e3f441e3bf951bc24f808783063ff4bb5b966376af22a6507aab43c1863c175",
+      "lines": 203,
+      "manualLines": 137,
+      "kind": "test",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/test/yanhu-thinking-log.test.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/test/yanhu-thinking-log.test.ts.md",
+      "sourceBlob": "04b27f1b8932ef893811fbe0076dabab8d7fc494",
+      "sourceSha256": "32953b7ddb3f8989d586521b0e874c26699e2ee4d8b06832ee514bfe9585864b",
+      "manualSha256": "755453dd9c1c30ae31905591eaac2612446c4c2d4e0624f112b0089da9e32d6a",
+      "lines": 112,
+      "manualLines": 110,
+      "kind": "test",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/tsconfig.json",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/tsconfig.json.md",
+      "sourceBlob": "442a782e55bb5492afefe90f70b9aaf54e7c0253",
+      "sourceSha256": "5f5f8111bf4b6562b9a18ac2e28f8806c8c0e46ef88add5ae4274cd0eccd13cb",
+      "manualSha256": "72eec59474b7e174f3f6221091b0bb9e8c9b5af3c37b9e6b159242b8f28a42f1",
+      "lines": 14,
+      "manualLines": 61,
+      "kind": "config",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/vite.config.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/vite.config.ts.md",
+      "sourceBlob": "ddb982336d52539076d49e2b280012bafca2f27f",
+      "sourceSha256": "14337004fd3256a4f48f30112cd844d413c9722f8a95802f98b9e23fb7bfa1dd",
+      "manualSha256": "7e3934a5fbdde30da9d757a7bcfec283419f27bfd93b93a45679123da50b882b",
+      "lines": 85,
+      "manualLines": 72,
+      "kind": "config",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "bun.lock",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/bun.lock.md",
+      "sourceBlob": "8f2ca834ce27669140c6b443476ea9702e159561",
+      "sourceSha256": "ab44e38b5b381250f468f2a11e404946aecef01b03098d0a8ff5462fe3b335b8",
+      "manualSha256": "104d942ced1e5d8af7052bc75af6004fab70ad32ac44c23df51d71af1a5516ec",
+      "lines": 3260,
+      "manualLines": 128,
+      "kind": "config",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "bunfig.toml",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/bunfig.toml.md",
+      "sourceBlob": "ce7bca93905580463146709f6c0e222c02b32b1d",
+      "sourceSha256": "c070c858773f193323b791eee88ec48a6801b978f24d128ab5685cf93ad35269",
+      "manualSha256": "f5ccd58427519f1cf2e19b86a721c1c194baa6128ead6ee48b326a357bbc3ec7",
+      "lines": 19,
+      "manualLines": 62,
+      "kind": "config",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "index.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/index.ts.md",
+      "sourceBlob": "f67b2c6454eecf8e73780dcfe936a27f160fd1a6",
+      "sourceSha256": "39e1ff1373d5a21bb3cbb5b9b4be13afbaafc73a33293f293d40656449b70de7",
+      "manualSha256": "601ede2643b72b438c6ae0c6cc91227890dbc4b4569282bc25768d4363396062",
+      "lines": 1,
+      "manualLines": 58,
+      "kind": "source",
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/.gitattributes.md": "352960e6d101e3bc50a811d4e8ff60f43a71da06bee89cfdee7526cb32dbac50",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/.gitignore.md": "e50fc1961019cdf4f22e63317b7be668cd4765936408bb0a57710add0cc90f7d",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/bunfig.toml.md": "fed4d62723175dbd3a23ff0f0b214a457186c6db2f35774f6137fc255bfc9a4f",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/components.json.md": "ccea01b140f6fbe587824553f49976c11924e0e66b26a9a0436105f7d2cde890",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/electron-builder.yml.md": "d579753dc5f263eef8f79f8a74d9ca09f647243d14f9fabb7f850ede0f0b8e4f",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/package.json.md": "c70479053f0a0ce2b912dd108bfd9166fa110e4e97ec501f048113d6dff1bcb4",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/postcss.config.js.md": "7b2a30b832d765fe83a910ed14f40272d10e0f693c817e193ea4831b5e601884",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/tailwind.config.js.md": "0c68bc4b66dba5582f89b593cf381d9bc3e58b5be5f217b5ccf2b89fa17d9f71",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/test/beijing-greeting.test.ts.md": "3c2f3ed7146564ed39fb68211315ca4d4f4ec49ce1697fa7654f4e0fdd2a22ee",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/test/cdut-jw-parsers.test.ts.md": "cbe400ce050b13e619853cdedcba2428e72cf83de16f774636bd0ff2525b5ff4",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/test/quiz-options.test.ts.md": "fae2513da0292fe5c5cfaeb57055a218737659273eafe06765df05079d377b59",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/test/yanhu-pet-prompt.test.ts.md": "7e3f441e3bf951bc24f808783063ff4bb5b966376af22a6507aab43c1863c175",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/test/yanhu-thinking-log.test.ts.md": "755453dd9c1c30ae31905591eaac2612446c4c2d4e0624f112b0089da9e32d6a",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/tsconfig.json.md": "72eec59474b7e174f3f6221091b0bb9e8c9b5af3c37b9e6b159242b8f28a42f1",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/vite.config.ts.md": "7e3934a5fbdde30da9d757a7bcfec283419f27bfd93b93a45679123da50b882b",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/bun.lock.md": "104d942ced1e5d8af7052bc75af6004fab70ad32ac44c23df51d71af1a5516ec",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/bunfig.toml.md": "f5ccd58427519f1cf2e19b86a721c1c194baa6128ead6ee48b326a357bbc3ec7",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/index.ts.md": "601ede2643b72b438c6ae0c6cc91227890dbc4b4569282bc25768d4363396062"
+  },
+  "rejectedHashes": {},
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "notClaimed": [
+    "不声称测试通过（NOT_RUN）",
+    "不继承旧 922 verified"
+  ],
+  "mergeGuidance": "nb-142 批全闭合：lead 按本表 acceptedHashes（18 篇，r1 字节）合入；r0 表中 electron-builder/cdut-jw 两篇被 r1 新 hash 取代，勿混用"
+}

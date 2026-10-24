@@ -1,0 +1,297 @@
+{
+  "schema": "dsh-r07-review-result/1",
+  "batch": "nb-139",
+  "revisionOf": null,
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T22:55:00Z",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass"
+  },
+  "g0Evidence": {
+    "chain": "READY/DONE/MANIFEST/ZIP 交叉一致（sealId seal-aba7249849fe2e24）；18 manualHashes=磁盘 0 mismatch；ZIP 21 条目 0 穿越/符号链接/字节 mismatch；18/18 源绑定==SCOPE==MANIFEST（独立实算）；非返修批"
+  },
+  "g1Evidence": {
+    "sections": "18/18 齐备；行号引用抽查进 G2（吻合）；frontmatter 记 N-01"
+  },
+  "g2Evidence": {
+    "coverage": "QA 全量逐行读毕 18 源（1744 行：plot-digitizer 335/formula-verifier 308/generate-icons 137/tool-scanner 97/instrument-extractor 93/offline-editor.html 165/pack.json×2 183/g-probe 89/lease-copy 66/n-service-probe 55/tool-runner 59/entitlements 41/ui.mjs 35/mock-model 33/import.py 21/rating-probe 21/electron-flags 6/sleep 0…）+18 手册（1180 行）逐篇",
+    "verifiedTrue": "18 篇主体全对：formula-verifier sympify 红线+白名单五步+三级解析回落+verify 输出契约、instrument-extractor **yadg 占位恒 ok:false 被照实记录**、lease-copy UNC 红线+租约语义、plot-digitizer 不伪造/rotationDeg 0 红线+骨架/拟合算法、tool-runner 不设沙箱照实、tool-scanner unsupportedReason、entitlements 9 键、generate-icons 五段+产物自检门禁、pack.json×2 9 段结构与数值（motifs 3/5、maxSeries 4/3、编辑策略差异）、offline-editor 三层摘要校验+回链字段+本地身份声明、7 探针手册（四类安全语义/时序探针/CDP 审计/**绝对路径耦合照实**/**sleep 魔法值照实**）",
+    "problems": "3 条 minor（frontmatter 模板残留×18、SAFE_FUNCTIONS 20→18、降级六种→七种）"
+  },
+  "files": [
+    {
+      "path": "apps/electron/resources/cslab/cslab-formula-verifier.py",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/cslab/cslab-formula-verifier.py.md",
+      "sourceBlob": "bf39051da987f779a71dc4628e2003e8c4aa5de3",
+      "sourceSha256": "d476386cfe819a1dda3dac52b36a3a2404fafc1d1fe90c56269a98aeb799612c",
+      "manualSha256": "614895d9c9e39b39e49c170e8e801bf179e73603b1f6a2f77703047dc881fb15",
+      "verdict": "accepted",
+      "findings": [
+        "N-01",
+        "N-02"
+      ]
+    },
+    {
+      "path": "apps/electron/resources/cslab/cslab-instrument-extractor.py",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/cslab/cslab-instrument-extractor.py.md",
+      "sourceBlob": "dfa1ce3939abb0aff37b5c879257b401118ab809",
+      "sourceSha256": "631aefdf1856ddd1368ec4ca83b8ad69ceeeb20cf611f64ed8c45d7de7da1887",
+      "manualSha256": "2daa01a7d2f2b4c9958aac5b2e23fc65ff1e8c12ec7698dda0e00a4425c0cf29",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/resources/cslab/cslab-lease-copy.ps1",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/cslab/cslab-lease-copy.ps1.md",
+      "sourceBlob": "4b8808cd6a870c884892f3608cfd9b113ae4725a",
+      "sourceSha256": "0a35045de76dc988571269c4694bd8d088139667fe2604d1cbd841506c85d74a",
+      "manualSha256": "2f2897ec0f9b9e232aad13da8b30377f717c55e91d75e02bcd82098a796e205c",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/resources/cslab/cslab-plot-digitizer.py",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/cslab/cslab-plot-digitizer.py.md",
+      "sourceBlob": "334c46b2a930819e0d986f2a84c3ab1b5e3f8ee5",
+      "sourceSha256": "c34e57e7849deb83dc476db75a63d04637236bd6e3a8053f35c541cbda01fa6d",
+      "manualSha256": "efe5ef415362275b6286bdda5400c6d8c18e717aa770fceb30bed16cc102a0ed",
+      "verdict": "accepted",
+      "findings": [
+        "N-01",
+        "N-03"
+      ]
+    },
+    {
+      "path": "apps/electron/resources/cslab/cslab-tool-runner.py",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/cslab/cslab-tool-runner.py.md",
+      "sourceBlob": "b72ede3a283619344e6980e968a3272f6fc8d801",
+      "sourceSha256": "7708e8ed82b7ded430879e7697c9c55bfdc305d75e58021e5623e7bd5d584177",
+      "manualSha256": "300729121732575f33473868b41fd7c4389f2f8796f9fad06d2a56900d613e59",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/resources/cslab/cslab-tool-scanner.py",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/cslab/cslab-tool-scanner.py.md",
+      "sourceBlob": "9a27a938489e13406b385767ef51891c39385667",
+      "sourceSha256": "1cdaece16e5ed8570e6145c8f763cfe36d24812f9006d1d4790e20c476148aac",
+      "manualSha256": "d69988aebfa2c8ae0b6a25aeac98e4ead55ab5b66a58cade6296903e00256b6b",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/resources/entitlements.mac.plist",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/entitlements.mac.plist.md",
+      "sourceBlob": "0ab10f8f72fe06f797b35dc57d35a551f0214e2b",
+      "sourceSha256": "0978f2454d31eb4b3c6104deff61fcc43fca30eaa7c70c432c1895b3e9dc0fc1",
+      "manualSha256": "69f5a98777a2253eaff985189bcd83a0a885f9b352ba43a4233c827764997e34",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/resources/generate-icons.sh",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/generate-icons.sh.md",
+      "sourceBlob": "5976d949f55cf0ce599f20fe0c0dad3787fc2824",
+      "sourceSha256": "7dc32a4c2536515401c10290c3b6186517c27ff2c2b378e7d05d5a816c74534c",
+      "manualSha256": "60a56c0a3817fae6aee4b22eb76065fa71809611ef944e884e473d8fa0679f60",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/resources/ppt-style-packs/academic-editorial/pack.json",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/ppt-style-packs/academic-editorial/pack.json.md",
+      "sourceBlob": "3bcf975724ff6758ebef5e29367793147957c798",
+      "sourceSha256": "3da41f46252ba20240f727b74c6a20718249f97caf28a549d43914b26fb0fbd5",
+      "manualSha256": "c9dbcbe659c0b2a2cce55f6017e96f7ff25c65aa68a300bec5f7e35a51bc78ad",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/resources/ppt-style-packs/profer-cloud-dancer/pack.json",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/ppt-style-packs/profer-cloud-dancer/pack.json.md",
+      "sourceBlob": "e8a44fe29871d82806e03204138677cd6308396e",
+      "sourceSha256": "dd88d8ccba27032ff09299096744f4c9424492eb863c2c9407239ea85a4289d4",
+      "manualSha256": "9ce68df1e44dbb245964980a88927d1586665b2c6b95ba6ac939a50495a2ce71",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/resources/review-v3-t09-offline-editor.html",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/review-v3-t09-offline-editor.html.md",
+      "sourceBlob": "efe882bef1052712db5e65124bbbc198df81a329",
+      "sourceSha256": "ff5c60ca58d6106029aa559d5df79a03921b1e5f1232ff23a2347b458015f88a",
+      "manualSha256": "a7e756a17ad1f8876074f5a5af7bcaf354a4dd1baa50bf81cad6965372155a61",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "work/reports/assets/2026-10-04-g-stage-recheck/service-probe.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-g-stage-recheck/service-probe.ts.md",
+      "sourceBlob": "5d538b6bdcd2886d832e88fc8d97670e3f3a2f2e",
+      "sourceSha256": "a935d4fff74a8aac98860a5113683450bb185b6f8da42e32a460406fba3c951b",
+      "manualSha256": "2f3ff76dfa6cbadd8c377d8d7c0aaeec4944083389535edfaa86e4bacb8d1689",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "work/reports/assets/2026-10-04-n-stage-recheck/rating-outbox-probe.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-n-stage-recheck/rating-outbox-probe.ts.md",
+      "sourceBlob": "e90de4ce95238e225a2e419a05b3bea05e48545b",
+      "sourceSha256": "b36d88089c174c9c72f3ad36ee3f8653160738a956701e8d551ac4b26cfe1684",
+      "manualSha256": "f73ca250057b778c9659754791895d4b881aa98b27b6be58c8b95c70653a2c20",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "work/reports/assets/2026-10-04-n-stage-recheck/service-probe.ts",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-n-stage-recheck/service-probe.ts.md",
+      "sourceBlob": "a666a1a84fe55e98a9a58532401fdf701404f9b5",
+      "sourceSha256": "5b47ed3c9ceea22c8944b018500cc12e621fd48df551003f23c366ee50569f74",
+      "manualSha256": "32088da043ced1202a0eb52b0cb1a715968d8d3757c68e5aac2ecf01fc8a4dbd",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "work/reports/assets/2026-10-04-ui-acceptance/scripts/electron-flags.cjs",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-ui-acceptance/scripts/electron-flags.cjs.md",
+      "sourceBlob": "f6f923f2d92c64015002ce15d9fd278699812ca8",
+      "sourceSha256": "fc3f344627059ce3efa420acfe8f12387a5ef06bf44c9e63e04bf3f348cbe798",
+      "manualSha256": "da201a8de62ebc8fb4027731c19ea326ee8b79f8217906a7f01dd4ef709575fd",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "work/reports/assets/2026-10-04-ui-acceptance/scripts/import.py",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-ui-acceptance/scripts/import.py.md",
+      "sourceBlob": "4c98dd64943e7bb15a3bd7108b315eb3bd62bcc6",
+      "sourceSha256": "56d3399bc6b51af36f7110a9329a67e1b9bd833c532918cfb7518c9eb0cb6e28",
+      "manualSha256": "4d0b900eff64fcaa48095db6da831a83ccf4b882632d8beedbef64ea93263704",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "work/reports/assets/2026-10-04-ui-acceptance/scripts/mock-model.mjs",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-ui-acceptance/scripts/mock-model.mjs.md",
+      "sourceBlob": "726f823d199d4e3de135e7e652bb762154659b56",
+      "sourceSha256": "8eefe2835298a890e87cfb02c86adab37f939689865c562afcf0440261041210",
+      "manualSha256": "afc220ded43eb3993f64eaf927e5051b15a9b4fdfb631ec819992117328360dd",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "work/reports/assets/2026-10-04-ui-acceptance/scripts/ui.mjs",
+      "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-ui-acceptance/scripts/ui.mjs.md",
+      "sourceBlob": "10dd78c8244381ccbe561fc5491579b0d2e7a635",
+      "sourceSha256": "dfbffc17a53c7dc6ba1d62f491581a30b46758be078cfcdf9413a9cbe22b085e",
+      "manualSha256": "21f71d1e57fb056856078ef457b92701c2a2632658acb8a5800fe380cbdd091a",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/cslab/cslab-formula-verifier.py.md": "614895d9c9e39b39e49c170e8e801bf179e73603b1f6a2f77703047dc881fb15",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/cslab/cslab-instrument-extractor.py.md": "2daa01a7d2f2b4c9958aac5b2e23fc65ff1e8c12ec7698dda0e00a4425c0cf29",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/cslab/cslab-lease-copy.ps1.md": "2f2897ec0f9b9e232aad13da8b30377f717c55e91d75e02bcd82098a796e205c",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/cslab/cslab-plot-digitizer.py.md": "efe5ef415362275b6286bdda5400c6d8c18e717aa770fceb30bed16cc102a0ed",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/cslab/cslab-tool-runner.py.md": "300729121732575f33473868b41fd7c4389f2f8796f9fad06d2a56900d613e59",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/cslab/cslab-tool-scanner.py.md": "d69988aebfa2c8ae0b6a25aeac98e4ead55ab5b66a58cade6296903e00256b6b",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/entitlements.mac.plist.md": "69f5a98777a2253eaff985189bcd83a0a885f9b352ba43a4233c827764997e34",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/generate-icons.sh.md": "60a56c0a3817fae6aee4b22eb76065fa71809611ef944e884e473d8fa0679f60",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/ppt-style-packs/academic-editorial/pack.json.md": "c9dbcbe659c0b2a2cce55f6017e96f7ff25c65aa68a300bec5f7e35a51bc78ad",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/ppt-style-packs/profer-cloud-dancer/pack.json.md": "9ce68df1e44dbb245964980a88927d1586665b2c6b95ba6ac939a50495a2ce71",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/review-v3-t09-offline-editor.html.md": "a7e756a17ad1f8876074f5a5af7bcaf354a4dd1baa50bf81cad6965372155a61",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-g-stage-recheck/service-probe.ts.md": "2f3ff76dfa6cbadd8c377d8d7c0aaeec4944083389535edfaa86e4bacb8d1689",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-n-stage-recheck/rating-outbox-probe.ts.md": "f73ca250057b778c9659754791895d4b881aa98b27b6be58c8b95c70653a2c20",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-n-stage-recheck/service-probe.ts.md": "32088da043ced1202a0eb52b0cb1a715968d8d3757c68e5aac2ecf01fc8a4dbd",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-ui-acceptance/scripts/electron-flags.cjs.md": "da201a8de62ebc8fb4027731c19ea326ee8b79f8217906a7f01dd4ef709575fd",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-ui-acceptance/scripts/import.py.md": "4d0b900eff64fcaa48095db6da831a83ccf4b882632d8beedbef64ea93263704",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-ui-acceptance/scripts/mock-model.mjs.md": "afc220ded43eb3993f64eaf927e5051b15a9b4fdfb631ec819992117328360dd",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/work/reports/assets/2026-10-04-ui-acceptance/scripts/ui.mjs.md": "21f71d1e57fb056856078ef457b92701c2a2632658acb8a5800fe380cbdd091a"
+  },
+  "findings": [
+    {
+      "id": "N-01",
+      "severity": "minor",
+      "file": "（全 18 篇 frontmatter）",
+      "claim": "frontmatter `reviewer: p02-agent-runtime` 18/18——模板残留（与 nb-138 同值；nb-113/125 为 p03-integrations，值随包漂移）；author 字段正确。",
+      "sourceEvidence": "grep '^reviewer:' stage/**/ = 18×p02-agent-runtime",
+      "action": "任一 rN 批量更正或去除。"
+    },
+    {
+      "id": "N-02",
+      "severity": "minor",
+      "file": "apps/electron/resources/cslab/cslab-formula-verifier.py.md",
+      "claim": "§2 'SAFE_FUNCTIONS 20 个'→实 **18**（sin/cos/tan/cot/sec/csc/asin/acos/atan/sinh/cosh/tanh/exp/log/sqrt/Abs/pi/E）。",
+      "sourceEvidence": "cslab-formula-verifier.py :41-44 集合字面量",
+      "action": "改计数 18。"
+    },
+    {
+      "id": "N-03",
+      "severity": "minor",
+      "file": "apps/electron/resources/cslab/cslab-plot-digitizer.py.md",
+      "claim": "§6 '六种 ok:false 降级'→main 内实 **7** 种（缺依赖/读图失败/标定无效/无颜色/刻度不足/未提取到曲线或散点/提取结果为空——⑥⑦为两个独立 emit）。",
+      "sourceEvidence": "cslab-plot-digitizer.py main 7 处 ok:false emit + 顶层兜底",
+      "action": "改计数 7（或注明 ⑥⑦ 合并口径）。"
+    }
+  ],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network",
+    "bun 测试运行",
+    "cslab 脚本实跑（依赖/平台门禁）",
+    "探针实跑（历史复测资产）"
+  ],
+  "knownUnknowns": [
+    "h5py/yadg/sympy/cv2/skimage/scipy 三方行为",
+    "PPT 生成链消费行为",
+    "复检报告结论值",
+    "运行验证 NOT_RUN"
+  ],
+  "notes": "N-01~N-03 不阻断；18 篇全部可合。本批为 team author-nb-05 第 12/12 批——全组收口。"
+}

@@ -1,0 +1,265 @@
+{
+ "schema": "dsh-r07-review-result/1",
+ "batch": "nb-73-r2",
+ "revisionOf": "nb-73",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-01-20261024",
+ "reviewerSession": "docs-r07-qa-extra-01-20261024",
+ "reviewedAtUtc": "2026-10-23T22:43:54Z",
+ "batchVerdict": "accepted",
+ "g0": {
+  "verdict": "PASS",
+  "details": "MANIFEST→READY→DONE→ZIP 复算全对；sealId 按 batch=nb-73-r2 复算一致（seal-22b44b0e335e3796）；18/18 源绑定=scope；ZIP 21 条目 0 漂移；before/=r1 stage 字节 0 差异；变更面=恰 4 篇（F01-F05 对应），14 篇未变 hash 与 r1 accepted 逐位一致"
+ },
+ "g1": {
+  "verdict": "PASS",
+  "details": "FINDINGS-RESPONSE 逐条承认回源（5 findings + 4 篇 before/after 全 sha256 入册）；changes.diff=4 文件仅锚/计数改动"
+ },
+ "g2": {
+  "verdict": "PASS",
+  "details": "4 篇变更 diff 精确=11 处修复（10 锚+1 计数）零多余；全部新锚独立 grep 回源命中：:587-592=resolveDerivedTableUri 文档注释、:386-390=同名表沿用注释+findEntityByTitle、:52-70=12 expect（含 :70 toBe(1.35)）、:82-83/:94-99/:69-70、:50-65=10 expect（含 :65 双路）、:73-74/:82-83/:54/:65、9 断言=实测 9；「12/10 断言」计数声明与实测一致不改"
+ },
+ "files": [
+  {
+   "path": "apps/electron/src/main/lib/cslab/cslab-figure-export.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-figure-export.ts.md",
+   "sourceBlob": "4b1e13725d70a2f34fc37f91bb7d96502febc5bd",
+   "sourceSha256": "a54e7f04d4f32b5f570e371ff276fc49438f7729a6039246e7438da5cc3dba4d",
+   "manualSha256": "fe69a4bde67b34d25105adcebb8aeb281cd38968bd83e30ed276c82dcb8554f7",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "未变 hash 等价绑定 r1 accepted 证据（本复验读取时刻 0 漂移）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/cslab/cslab-formats.test.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-formats.test.ts.md",
+   "sourceBlob": "7029157e47713167362e58afda0903b2ca64fa9a",
+   "sourceSha256": "65afa2bcf4c4cc6005eea4dac15afb5ae9a9eb473f94c40e1ade352ca4848bbd",
+   "manualSha256": "c7ce6240dd2d413328883fca5dcd12162f012beed5bdef7c173d8f9037261806",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "r2 修复篇：F01-F05 对应锚/计数逐锚回源复验通过（grep 实测命中）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/cslab/cslab-formats/header-data-separator.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-formats/header-data-separator.ts.md",
+   "sourceBlob": "b17ce9f6f2f7c2085d43e70f12fb6f24caf7f59c",
+   "sourceSha256": "2a1bc7e886656226afa31ec687b2baa17b384e6709626e08c896f238283376b5",
+   "manualSha256": "05917fa9024e135dc2474acd7290ab1029c09b236217ba5f5ef044878be4c6a4",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "未变 hash 等价绑定 r1 accepted 证据（本复验读取时刻 0 漂移）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/cslab/cslab-formats/index.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-formats/index.ts.md",
+   "sourceBlob": "2a3de8b205a57a497ff23d38d8aff414aba79941",
+   "sourceSha256": "e97e0089a8f87794ac528d71080ba711d42dbf7cb2cdcfb1fa1ac9d5bde4d8fd",
+   "manualSha256": "20ae74b0b04132def320cf9a2e94b49b0b30fa9ba4df420083d94fd19a753021",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "未变 hash 等价绑定 r1 accepted 证据（本复验读取时刻 0 漂移）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/cslab/cslab-formats/jcamp.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-formats/jcamp.ts.md",
+   "sourceBlob": "0772d3a51a0fbdd532a0faa5b18c28e8edd30143",
+   "sourceSha256": "61b9d1206cc594b245f95db120168a4038900a0378f167c8931cc7990cf6a0f5",
+   "manualSha256": "4cd5c849bf55c4127b180751af52e9212641a9fecbb5ca92989f4f14a5f150cd",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "未变 hash 等价绑定 r1 accepted 证据（本复验读取时刻 0 漂移）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/cslab/cslab-formats/mat-level5.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-formats/mat-level5.ts.md",
+   "sourceBlob": "e4a7960e3c4808dbf123b09e3a99ea7d48797b10",
+   "sourceSha256": "1dd6c8addd27e3b507fe1d7a286920a816919b1fdfdcb5f000c0dca79c21fdd1",
+   "manualSha256": "04d178fce6650b8497fe0c8c7830c52ddc86f8350c261d1efbceb0b077bc47fc",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "未变 hash 等价绑定 r1 accepted 证据（本复验读取时刻 0 漂移）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/cslab/cslab-formats/sniff.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-formats/sniff.ts.md",
+   "sourceBlob": "61545a450253dcf64f7819ff1cfa10dffef1e9a8",
+   "sourceSha256": "ebdf5d271d066a68fec6676e50d01f39a9d49d2f2ba4b2f9360653637f024412",
+   "manualSha256": "c17fe376e352369defe9a88cf3217c57adbbdd3ca63eb9d9e018b608f24e7dcd",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "未变 hash 等价绑定 r1 accepted 证据（本复验读取时刻 0 漂移）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/cslab/cslab-formats/spc.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-formats/spc.ts.md",
+   "sourceBlob": "02dcafa551e43436552209d2a4ff69106b01ab34",
+   "sourceSha256": "8b674e79b9ca02818929ed396940520f908e62feb89518a3a8386ae9d7a5ce15",
+   "manualSha256": "219fbdb182f3bdac55097f09d09b0e3c9521df7f4b9a0386291dd356f785be26",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "未变 hash 等价绑定 r1 accepted 证据（本复验读取时刻 0 漂移）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/cslab/cslab-formats/types.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-formats/types.ts.md",
+   "sourceBlob": "d58c91f4ac7ff26edc66b923d50bf46c08b55916",
+   "sourceSha256": "e3c27ffacfc3340b0c10bc46bc34abd34fc59e7b45bb125893cbbb72f361a594",
+   "manualSha256": "a73a4869ab81ed081533c50d726de5d27e72d476cba9d648e13d68a6eb08b55d",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "未变 hash 等价绑定 r1 accepted 证据（本复验读取时刻 0 漂移）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/cslab/cslab-formats/xrd.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-formats/xrd.ts.md",
+   "sourceBlob": "30dcd03a0a65726562214d8a3b6218abeeb4835f",
+   "sourceSha256": "4ae706eb62bffac4230f61fd63f357100b52ed8c911aca338e1f482236092af0",
+   "manualSha256": "9c4162d179a472c15e81d3d19a090dac26a74af77ee12c51c57f81619d1fff04",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "未变 hash 等价绑定 r1 accepted 证据（本复验读取时刻 0 漂移）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/cslab/cslab-formula-verifier.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-formula-verifier.ts.md",
+   "sourceBlob": "6b25060312f206bc7bef1d1413b19b63e0929767",
+   "sourceSha256": "73eded5039631257d3063874b5b7e29ac821a540e8401cf2d68d028f49cb7d03",
+   "manualSha256": "e56d93ef81327bc8406edde6cd4e9908977d3308ee55cafda0d4fd0cec678a78",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "未变 hash 等价绑定 r1 accepted 证据（本复验读取时刻 0 漂移）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/cslab/cslab-hash.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-hash.ts.md",
+   "sourceBlob": "aa55dc8812bf9cf16d0169dbba3d68b46ee491eb",
+   "sourceSha256": "acc2716881a187fe581133db5db56ff126ba00949f665a74e8ed6ed11884bf17",
+   "manualSha256": "2d08cf1137daa6c09dce93ad0c09ffe3c44ad9d2674827dd42e303c81d5c59e9",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "未变 hash 等价绑定 r1 accepted 证据（本复验读取时刻 0 漂移）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/cslab/cslab-hpc-db.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-hpc-db.ts.md",
+   "sourceBlob": "5bc48493ceb0ff92408d724696018b531b665c1a",
+   "sourceSha256": "51edd9bec55aff44f7bdc2ee37fb3e2989393b88d56e2d4933d7a9d30b88f5bf",
+   "manualSha256": "91f6d456c8f18619bbe35b863bfed1d90c16968d5609d40f6ad0f3978a97868e",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "未变 hash 等价绑定 r1 accepted 证据（本复验读取时刻 0 漂移）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/cslab/cslab-hpc.test.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-hpc.test.ts.md",
+   "sourceBlob": "6c8d05ea308d7741e383e821570b9772047b1d97",
+   "sourceSha256": "d01bec5d3e74fd01d018c9ab6847511f4b65c3aeb26aeb9e90f56a91267cd66a",
+   "manualSha256": "2e01a9dd8814fec03e43c4d70af8fe5f8aba70d2058a20990468a78d85f6e207",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "未变 hash 等价绑定 r1 accepted 证据（本复验读取时刻 0 漂移）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/cslab/cslab-hpc.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-hpc.ts.md",
+   "sourceBlob": "4ef171ec80f6006555d0875adfe1b6aeeefa86b5",
+   "sourceSha256": "ec634c5b3b4627af960bd8df8ac88c96e7cf16ff648b7186934baa565220d0ac",
+   "manualSha256": "ddd8ace29661b7dea7ebb6f1c691e05665d36015e1bed596c85d87240ba6fc55",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "未变更三版，hash 等价绑定父版独立 accepted（ddd8ace2…，MERGE 已合入），不重做"
+  },
+  {
+   "path": "apps/electron/src/main/lib/cslab/cslab-iron-cage.test.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-iron-cage.test.ts.md",
+   "sourceBlob": "1be3c033385b56c71c4c6535160c5857fc7242cd",
+   "sourceSha256": "d0280fe70f44dba9cbdd9553e83ca5af5be43956e725903cafcf1c477d098d0d",
+   "manualSha256": "22c1eb78424926edbbbbd5f39ede48f195f7d92a6c900a11eb8971a77999cf89",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "r2 修复篇：F01-F05 对应锚/计数逐锚回源复验通过（grep 实测命中）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/cslab/cslab-iron-cage.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-iron-cage.ts.md",
+   "sourceBlob": "386c5189f981fdf28218d6422e3aab5b1d38f887",
+   "sourceSha256": "54ccd867e8da0729236ed3aab2985c27876d0ebd7df456558b3459be2e8a99bc",
+   "manualSha256": "a0fdd6358f2cd35b6ad1508a74cfe919d1eb5e4c32fc6f41d481e178fb67c671",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "r2 修复篇：F01-F05 对应锚/计数逐锚回源复验通过（grep 实测命中）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/cslab/cslab-literature.test.ts",
+   "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-literature.test.ts.md",
+   "sourceBlob": "cf84ff0771688c5dae739fdc491a0635d53e73b1",
+   "sourceSha256": "bb9866499794e345e9fb19ed83cf546cf446ba034b51d7826e7dd44125ee3908",
+   "manualSha256": "6c5bc357d9557da63918e682783dc00f46192cefaae01d98b7d7c214fcf7ec55",
+   "verdict": "accepted",
+   "findings": [],
+   "reverified": "r2 修复篇：F01-F05 对应锚/计数逐锚回源复验通过（grep 实测命中）"
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-figure-export.ts.md": "fe69a4bde67b34d25105adcebb8aeb281cd38968bd83e30ed276c82dcb8554f7",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-formats.test.ts.md": "c7ce6240dd2d413328883fca5dcd12162f012beed5bdef7c173d8f9037261806",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-formats/header-data-separator.ts.md": "05917fa9024e135dc2474acd7290ab1029c09b236217ba5f5ef044878be4c6a4",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-formats/index.ts.md": "20ae74b0b04132def320cf9a2e94b49b0b30fa9ba4df420083d94fd19a753021",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-formats/jcamp.ts.md": "4cd5c849bf55c4127b180751af52e9212641a9fecbb5ca92989f4f14a5f150cd",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-formats/mat-level5.ts.md": "04d178fce6650b8497fe0c8c7830c52ddc86f8350c261d1efbceb0b077bc47fc",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-formats/sniff.ts.md": "c17fe376e352369defe9a88cf3217c57adbbdd3ca63eb9d9e018b608f24e7dcd",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-formats/spc.ts.md": "219fbdb182f3bdac55097f09d09b0e3c9521df7f4b9a0386291dd356f785be26",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-formats/types.ts.md": "a73a4869ab81ed081533c50d726de5d27e72d476cba9d648e13d68a6eb08b55d",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-formats/xrd.ts.md": "9c4162d179a472c15e81d3d19a090dac26a74af77ee12c51c57f81619d1fff04",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-formula-verifier.ts.md": "e56d93ef81327bc8406edde6cd4e9908977d3308ee55cafda0d4fd0cec678a78",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-hash.ts.md": "2d08cf1137daa6c09dce93ad0c09ffe3c44ad9d2674827dd42e303c81d5c59e9",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-hpc-db.ts.md": "91f6d456c8f18619bbe35b863bfed1d90c16968d5609d40f6ad0f3978a97868e",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-hpc.test.ts.md": "2e01a9dd8814fec03e43c4d70af8fe5f8aba70d2058a20990468a78d85f6e207",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-hpc.ts.md": "ddd8ace29661b7dea7ebb6f1c691e05665d36015e1bed596c85d87240ba6fc55",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-iron-cage.test.ts.md": "22c1eb78424926edbbbbd5f39ede48f195f7d92a6c900a11eb8971a77999cf89",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-iron-cage.ts.md": "a0fdd6358f2cd35b6ad1508a74cfe919d1eb5e4c32fc6f41d481e178fb67c671",
+  "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-literature.test.ts.md": "6c5bc357d9557da63918e682783dc00f46192cefaae01d98b7d7c214fcf7ec55"
+ },
+ "findingsClosed": [
+  {
+   "id": "NB73R1-F01",
+   "status": "closed",
+   "evidence": "`:511`→`:587-592`（grep 实测=函数文档注释）"
+  },
+  {
+   "id": "NB73R1-F02",
+   "status": "closed",
+   "evidence": "`:375-378`→`:386-390`×2（grep 实测=注释+findEntityByTitle）"
+  },
+  {
+   "id": "NB73R1-F03",
+   "status": "closed",
+   "evidence": "4 断言簇锚（expect 行 grep 实测逐一命中）"
+  },
+  {
+   "id": "NB73R1-F04",
+   "status": "closed",
+   "evidence": "5 断言/证据锚（expect 行 grep 实测逐一命中）"
+  },
+  {
+   "id": "NB73R1-F05",
+   "status": "closed",
+   "evidence": "「9 断言」（:85-93 实测 9 个 expect）"
+  }
+ ],
+ "findingsOpen": [],
+ "notRun": [
+  "产品测试",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "真实 TLS/网络/SQLite/文件操作",
+  "bun test（28 用例断言级阅读）"
+ ],
+ "notes": [
+  "**nb-73 批链闭环**：r0 1 accepted + r1 14 accepted + r2 4 修复篇 → 18/18 当前字节全部 accepted（acceptedHashes=最终合入口径）",
+  "旧接受未套新字节：4 变更篇全新回源；14 篇 hash 等价绑定 r1；cslab-hpc.ts.md 绑定父版 accepted",
+  "旧 QA 报告 reviews/nb-73 与 r0/r1/r2 三版封版全部保留"
+ ]
+}

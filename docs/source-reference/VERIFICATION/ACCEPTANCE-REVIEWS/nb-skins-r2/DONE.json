@@ -1,0 +1,67 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-skins-r2",
+ "revisionOf": "nb-skins-r1",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-models-20261023",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T16:50:51.723680+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "files": 18,
+ "accepted": 18,
+ "revisionRequired": 0,
+ "unknown": 0,
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/skin-template/manifest.json.md": "5b5df1cd98863d3eb3e52af79b68e7ddbdd9c453927983cfd02033f971e8023a",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/skin-template/skin.css.md": "536e5116a954851ed6ecedc92951a3806a1d4e57a569c97954ab77a183cce08b",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/skins/forest-dark/manifest.json.md": "eca8271bdcb2b33a81073dcdbe264b297e4ddaab7c6908988a4d7e9fb8aef511",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/skins/forest-dark/skin.css.md": "8718ad861db1c65d8037c03be05969401b552cfd9128bec114df4436776f8615",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/skins/forest-light/manifest.json.md": "28b81515848f7a780b1d74a9dd8dc85c0e4f3eecc126d93e8defb7a368a2453f",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/skins/forest-light/skin.css.md": "204e28fc05162d46880667e0d711558897ce4f50aa6ed8c9761717002e192147",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/skins/mist-paper-dark/manifest.json.md": "537618197d4737b8a60262a32d5df421c10fc573c0698d1614e300033d457012",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/skins/mist-paper-dark/skin.css.md": "3e73ba8abd93e1be7ead67f67805bebfd22a8c77e363a86e896607cd437598c2",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/skins/ocean-dark/manifest.json.md": "03fc9a519dfd435d8704f4e5bff9b984b109aded142fd1fa87345cd0ede6dab8",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/skins/ocean-dark/skin.css.md": "737699b2672fe268d4d5d448e0300e858bc1c12f62235aac29e2c09a089e862c",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/skins/ocean-light/manifest.json.md": "25443971a1228a3546603453c308701cf61761a7926165413677970a09ae3ab4",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/skins/ocean-light/skin.css.md": "fb761f36b0e5a82f13a62caff0f7e1c01049a195e1fdbbc26e1c06a384ee579a",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/skins/slate-dark/manifest.json.md": "08cbc3754a04ddd2a65c6cedc37e77c2d121ba7352cd7e884f1e2ff8f3052d83",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/skins/slate-dark/skin.css.md": "ec544c28856e87cded8d0c983885d239d8237808eeddd9325e95b5f100e47a50",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/skins/slate-light/manifest.json.md": "a1ba15daf1d3bf0f9bb6c322b7ac48a9dadbaa3fa799ff5067f1bdd769cbb1a7",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/skins/slate-light/skin.css.md": "81d3d09e2c96336e38bccfb771472d541d39c23bab8d654082df908504f2e81d",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/skins/terminal-dark/manifest.json.md": "9795d95a212b0c50d3943438b1aab3a0acd72d9e5cee40b8bec1878d8a494717",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/resources/skins/terminal-dark/skin.css.md": "e834432c028fbec6620ffe3a95b8d9fdf7adbc72884998316b4900fe05c254db"
+ },
+ "revisionHashes": {},
+ "findings": {
+  "revision": [],
+  "notes": []
+ },
+ "deliverySeal": {
+  "sealId": "seal-b20974d4a015f324",
+  "sealedAtUtc": "2026-10-23T16:38:19Z",
+  "readySha256": "507263c3f78eebdb6d3e3ce1db65ddfd66b011ede9ffab979cf6527b30f45e28",
+  "doneSha256": "07d2d08ca94d8308ed0ca3e5aad12e576b7b9e9ad2e2780f1f4f0e919d8b8fa1",
+  "manifestSha256": "c6d74322f293024901e07a65069410daefe5448c633133d8b7ac7fd9010a0fcd",
+  "zipSha256": "0c10060cfd6918c29116578fc6314c21eab86718c7825aa10a9c2e799cfb3946"
+ },
+ "notRun": [
+  "bun test",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network",
+  "check-skin-surface-contract.mjs"
+ ],
+ "artifacts": {
+  "RESULT.json": "1908bfd457977d14aab2810d1a13ba660a423c9a865ac011858356a16d8e71be",
+  "RESULT.md": "2cf2a77373d13176d96ccc26612d4d78882108ea7437daf2b4b29342e557a5c6",
+  "REVIEWED-HASHES.json": "ef8c383b74c86cd426d5a05d5de01fd9d99f45e0983734134a82d604947a73c1"
+ },
+ "next": "lead 合入 18 篇"
+}

@@ -1,0 +1,55 @@
+{
+  "schema": "dsh-r07-review-done/1",
+  "batch": "nb-23-r1",
+  "revisionOf": "nb-23",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "sealId": "seal-3f1f77a0be79558f",
+  "reviewedAtUtc": "2026-10-23T18:45:00Z",
+  "batchVerdict": "accepted",
+  "fileVerdicts": {
+    "apps/electron/src/main/lib/review/review-tools.ts": "accepted",
+    "apps/electron/src/main/lib/review/review-zip-intake-v3-b2.test.ts": "accepted",
+    "apps/electron/src/main/lib/review/review-zip-intake-v3-b2.ts": "accepted",
+    "apps/electron/src/main/lib/review/review-zip-staging-v3-b2.test.ts": "accepted",
+    "apps/electron/src/main/lib/review/review-zip-staging-v3-b2.ts": "accepted",
+    "apps/electron/src/main/lib/review/review-v3-run-writer.test.ts": "accepted",
+    "apps/electron/src/main/lib/review/review-v3-run-writer.ts": "accepted",
+    "apps/electron/src/main/lib/review/review-v3-sdk-dispatch-fence.ts": "accepted",
+    "apps/electron/src/main/lib/review/review-v3-sdk-physical-turn-port.ts": "accepted",
+    "apps/electron/src/main/lib/review/review-v3-six-examples-run.test.ts": "accepted",
+    "apps/electron/src/main/lib/review/review-v3-t01-model-draft-service.ts": "accepted",
+    "apps/electron/src/main/lib/review/review-v3-technical-ledger.test.ts": "accepted",
+    "apps/electron/src/main/lib/review/review-v3-technical-ledger.ts": "accepted",
+    "apps/electron/src/main/lib/review/review-v3-technical-sequence-driver.ts": "accepted"
+  },
+  "counts": {
+    "files": 14,
+    "accepted": 14,
+    "revision_required": 0,
+    "unknown": 0,
+    "findings": 0
+  },
+  "resolvedFindings": [
+    "NB23-TALLY-01",
+    "NB23-TALLY-02",
+    "NB23-TALLY-03",
+    "NB23-REF-01"
+  ],
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass"
+  },
+  "runStatus": "NOT_RUN",
+  "artifacts": [
+    "reviews/nb-23-r1/RESULT.json",
+    "reviews/nb-23-r1/RESULT.md",
+    "reviews/nb-23-r1/REVIEWED-HASHES.json",
+    "handoffs/nb-23-r1-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-23-r1-REVIEW-TO-LEAD.md"
+  ],
+  "mergeRule": "全 14 篇 acceptedHashes 可合；父批 nb-23 封版保留。",
+  "note": "已 seal D0 不回写。"
+}

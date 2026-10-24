@@ -1,0 +1,94 @@
+{
+  "schema": "r07-reviewed-hashes/1",
+  "batch": "nb-69",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "sealId": "seal-2ae04e8153f86c0e",
+  "reviewedAtUtc": "2026-10-23T20:12:57Z",
+  "manuals": [
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-auth-manager.test.ts.md",
+      "manualSha256": "88352592f5eb350f43135711b1be62465a5d7b55b836393fb587e3991e722d05",
+      "sourceSha256": "75099059bea992ea19b7434521262e43861b148079f9d191afc50a6b96950386",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-auth-manager.ts.md",
+      "manualSha256": "4cea81d943b2b87207e4c896dc1aa7e3506db66cfcd6f205d6863a5aa0a5c14b",
+      "sourceSha256": "b7e9f9ba1093ade701ab41043867cfc2691a470028e1aeb3c02312077c9a2d31",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-demo/demo-account.ts.md",
+      "manualSha256": "a8b8eecbd2a41c730a6e9afa7b8aa7bad32abe1ff429470d04a988e57c46b70e",
+      "sourceSha256": "a1a4ebd52b891afaaf58a092a1833f925306caa97fb342fdae13ce6206cece0b",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-demo/demo-avatar.ts.md",
+      "manualSha256": "b3ec3116ca98ea51d67e3639b18c884c6e5ad2c89b10e02f1ece0118ecc66284",
+      "sourceSha256": "c14246416bc2e8778c02f81f9e515179c9c90a45d56e4b25d3854e59ee5c1269",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-demo/demo-fixtures.ts.md",
+      "manualSha256": "84335a39b96c5044f0831e7fd703a412340ac766c2861f88d1db255a71cef5de",
+      "sourceSha256": "1c2ce218cb8e006d47935ff351254ef84444f8b4760a39c3037acef2a36937a1",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-demo/demo-service.test.ts.md",
+      "manualSha256": "de82e3efe542a515eefe532c2d4614d83e650e588dcd5657e2913403b395c7a8",
+      "sourceSha256": "5d76a5bedd19bbd8b000356ba99c99d16f685b2ca9ed854ffa51c93d4d7a89ca",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-demo/demo-service.ts.md",
+      "manualSha256": "38f0532bf139ea731cb715e2d75e1feea7d32e017904a6836c30ab3edc3ebbdb",
+      "sourceSha256": "477b4c007b2064d919b49ade2d13c28347aeaee0d3ddb72e944a0a027c38bff1",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-domain-tools.test.ts.md",
+      "manualSha256": "f084b172ddac392e71b9c79957fea6eb15754491820f75c45f1fc60e6825f000",
+      "sourceSha256": "6b16a057fe3050fa14d65acc41234e35de04f0c296c2554f9f26d1ed08ec4bd6",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-gatekeeper.ts.md",
+      "manualSha256": "dc0dfbd27073e355ac61b1dec92e2576c8846d7aca7cc13ee07c466cf8198605",
+      "sourceSha256": "33489d4f3da97121dd797db84bb74b63b0478a37b0eb368a10107f01a9236788",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-jw-client.ts.md",
+      "manualSha256": "33773ebbe274da69d2d576551c0f2cf7e405149c940f4fe4284ccd36990bb81a",
+      "sourceSha256": "bb3369ccb49510cbef3d33a98de7b77d0ad181446b055f3285a3ee1acc7e0bb5",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-mutation-guard.ts.md",
+      "manualSha256": "2a800a6d9a8d6cfac83f72126aa8abeb3e2a1d3afa7853a59620d543dd4bf980",
+      "sourceSha256": "0396c9f25836307b798a4046fcec5f80335016223d16163294f9d2fb9734a9f4",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-reverse-proxy-client.ts.md",
+      "manualSha256": "6b99ed8de0cdf5ef4dbcbfd2a578744cb74e4c9cadb8e985e995c2983ca00864",
+      "sourceSha256": "4bbffbfbdb38a11d0867443629b5f379ae5361680a98d6c48b75d36fffb4fdd6",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-waf-instrumentor.ts.md",
+      "manualSha256": "ab11acd17090b8b87671a779d2e47d28f5172405c7e65c7711ef58fa7eda6b3c",
+      "sourceSha256": "d13cec9502cadf9281c71b73a7e292f38935f50bb1b896291615260d241c7cd1",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-browser-tools.test.ts.md",
+      "manualSha256": "122cc84d17000d2c121822f19bbe10b5f9cd5eb4f0e374c4bbc4f5dcb7d05eb2",
+      "sourceSha256": "f1d213e2e96df530cef5551b273bb3a26cbffe33c56a197003af371bb5528f8e",
+      "verdict": "accepted"
+    }
+  ]
+}

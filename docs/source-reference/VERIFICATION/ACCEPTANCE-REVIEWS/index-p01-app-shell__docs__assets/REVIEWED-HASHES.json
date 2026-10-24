@@ -1,0 +1,52 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "index-p01-app-shell__docs__assets",
+  "groupId": "p01-app-shell__docs__assets",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T20:35:00Z",
+  "sealedAtUtc": "2026-10-23T18:04:43Z",
+  "artifactSha256": "03fdaa25b2fd791971b2d7d59319f1f8fee45066352af61bb0fd6e3a94a1ea2a",
+  "note": "QA 实算封版链全对。6/6 accepted。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__docs__assets.md@docs/assets/screenshots/profer-main-demo.png": "03fdaa25b2fd791971b2d7d59319f1f8fee45066352af61bb0fd6e3a94a1ea2a",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__docs__assets.md@docs/assets/screenshots/proma-agent-demo.png": "03fdaa25b2fd791971b2d7d59319f1f8fee45066352af61bb0fd6e3a94a1ea2a",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__docs__assets.md@docs/assets/screenshots/proma-chat-demo.png": "03fdaa25b2fd791971b2d7d59319f1f8fee45066352af61bb0fd6e3a94a1ea2a",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__docs__assets.md@docs/assets/screenshots/proma-mcp-demo.png": "03fdaa25b2fd791971b2d7d59319f1f8fee45066352af61bb0fd6e3a94a1ea2a",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__docs__assets.md@docs/assets/screenshots/proma-skills-demo.png": "03fdaa25b2fd791971b2d7d59319f1f8fee45066352af61bb0fd6e3a94a1ea2a",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__docs__assets.md@docs/assets/screenshots/proma-typeless-input.png": "03fdaa25b2fd791971b2d7d59319f1f8fee45066352af61bb0fd6e3a94a1ea2a"
+  },
+  "revisionRequiredManuals": {},
+  "sourceHashes": {
+    "docs/assets/screenshots/profer-main-demo.png": {
+      "sourceBlob": "9033aacad65f8ffa6dfa04a59d2b6c2c5d300e2d",
+      "sourceSha256": "b2fc6a7a62aaa5684ada8637631756e85598280a85502e02ccff58cc400fac5a",
+      "verifiedAgainstFrozenTree": true
+    },
+    "docs/assets/screenshots/proma-agent-demo.png": {
+      "sourceBlob": "4243e5b7b48817a56736295074ab3de38270c543",
+      "sourceSha256": "0b4d93d2ffdf2ee4679a56ea07d688e4643b0eeb9025a87f1ce1ad586e8147cf",
+      "verifiedAgainstFrozenTree": true
+    },
+    "docs/assets/screenshots/proma-chat-demo.png": {
+      "sourceBlob": "01320d2e86c7bac0c05958ef93fec1a4be9a7bfb",
+      "sourceSha256": "d1ee59db8adc73225e1535ed8a600bf0854762cfab0c06cbce4fae9f0545c332",
+      "verifiedAgainstFrozenTree": true
+    },
+    "docs/assets/screenshots/proma-mcp-demo.png": {
+      "sourceBlob": "59f283691082a7cdd07d1e92a810455b3b3028c4",
+      "sourceSha256": "761599cb075591d3978427fc8b5ce6deb900f5471209b73cb638f3a81e6f4b4a",
+      "verifiedAgainstFrozenTree": true
+    },
+    "docs/assets/screenshots/proma-skills-demo.png": {
+      "sourceBlob": "6446017e440181a4e0c93bbcda00afce78232668",
+      "sourceSha256": "10b5f1328f151e3eb4f54651e8ca203d6e62935a63af3041debe108a6c335189",
+      "verifiedAgainstFrozenTree": true
+    },
+    "docs/assets/screenshots/proma-typeless-input.png": {
+      "sourceBlob": "aec7cf252063289d8a267afaaaf18dd8053ddec5",
+      "sourceSha256": "8195a7c90a596d4d6a9df5a563b632f421af6c55fd2d1a3f633e94341d8ac12b",
+      "verifiedAgainstFrozenTree": true
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-06-r1",
+  "revisionOf": "nb-06",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "sealId": "seal-5bc74f4b630910a5",
+  "reviewedAtUtc": "2026-10-23T16:55:00Z",
+  "reviewedManualHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/agent-atoms.ts.md": {
+      "manualSha256": "088d9154a37e472e5a02af74e50726d8188a4d49445e591375c8f4a2e4ee34bc",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/longterm-memory-atoms.ts.md": {
+      "manualSha256": "c5da2ec80f9447812d745ae841541b467d5d6c6c26eabf3e05d872d777154f81",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AgentView.tsx.md": {
+      "manualSha256": "a386787ad238a28ebe55944e6efcf1ec29606ad5acebbddb2ad870a8b0d2df30",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ContextModeToggleButton.tsx.md": {
+      "manualSha256": "e1408ae85aa98acd089589f5148578341a681b8d1f18dba393e91e3c6db216a9",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/AgentSettings.tsx.md": {
+      "manualSha256": "171ecd1e299f80563c7dded2b8714eaa65fe4032c6fff8a635e5a7a8e326479a",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/LongTermMemoryView.tsx.md": {
+      "manualSha256": "8f6d69f26909c00fafc56896689a69937f4008b2e8ea43832513b93b00b1a4c7",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/SettingsDialog.tsx.md": {
+      "manualSha256": "4dc1c7aa7af3d6f26c1b38fe1d7e79c4668bae4c57918a14869390dadb52a711",
+      "verdict": "accepted"
+    }
+  },
+  "sourceBindings": {
+    "apps/electron/src/renderer/atoms/agent-atoms.ts": {
+      "sourceBlob": "9616d92a45a4dd44e91f34248072a7c81e0c1b49",
+      "sourceSha256": "2d2d5132b832e7b1b3a3c106f634c74caa8a484987fabcfb949e97d225c89885"
+    },
+    "apps/electron/src/renderer/atoms/longterm-memory-atoms.ts": {
+      "sourceBlob": "47483693fc54f774b2b77fb3e31ec54b36b1520f",
+      "sourceSha256": "4f9aa27791cc27ec789b32cfaa3af0bdbe60bc0b3bea9104c625cba9a0d5c664"
+    },
+    "apps/electron/src/renderer/components/agent/AgentView.tsx": {
+      "sourceBlob": "975ccdde55f1d9616eb762b6be5ca9077d9b3d83",
+      "sourceSha256": "958b8d4ec90357fd1de88aac6d9b8246786be43cf353ede3bf751b09306b606e"
+    },
+    "apps/electron/src/renderer/components/agent/ContextModeToggleButton.tsx": {
+      "sourceBlob": "8c98182e67c0c3459dd1d5833b026923c6ae2ad9",
+      "sourceSha256": "6316869788e49b16928e68c2d8c9458f76aaacdc1fefdbde1e53235f3824487d"
+    },
+    "apps/electron/src/renderer/components/settings/AgentSettings.tsx": {
+      "sourceBlob": "4deedd413afc4c0c545374d321197c5a1aceefd9",
+      "sourceSha256": "dc800f85735321d4f18c47464893c9acd14c26d2034f6489ad31317cc99e01d3"
+    },
+    "apps/electron/src/renderer/components/settings/LongTermMemoryView.tsx": {
+      "sourceBlob": "b3c365b61e44be9d7b36bda96c8ca74b55deeb3c",
+      "sourceSha256": "3fa4410029763504c05ad7b2f4b2ff093734974669448948146b4cd30294eecb"
+    },
+    "apps/electron/src/renderer/components/settings/SettingsDialog.tsx": {
+      "sourceBlob": "8eb34ae77b59dc9ee22740ac384aa0bbf1be6f6f",
+      "sourceSha256": "d9350c796a7466dc9674c5405fb9fdcd259e703299063769753e3599a085b53d"
+    }
+  },
+  "qaNotes": "4 篇未动文件（ContextModeToggleButton/AgentSettings/LongTermMemoryView/SettingsDialog）hash=父批 accepted，按合入规则由本子批记录同一 hash。NB06R1-L1（agent-live-messages.test 30行→28、:21-23→:24-26）待 ERRATA 关闭。NOT_RUN。"
+}

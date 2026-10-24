@@ -1,0 +1,251 @@
+{
+  "schema": "dsh-r07-review-result/2",
+  "batch": "nb-97",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "reviewedAtUtc": "2026-10-24T21:30:00Z",
+  "sealedAtUtc": "2026-10-23T19:28:42Z",
+  "sealId": "seal-8e1d1524f3ea34e5",
+  "runStatus": "NOT_RUN",
+  "batchVerdict": "accepted",
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass_with_findings"
+  },
+  "g0Evidence": {
+    "sealChain": "manifestSha/readySha/zipSha 三层独立重算全相等；zip 21 条目合规",
+    "manualHashes": "18/18 磁盘=MANIFEST=READY 全等",
+    "scopeBinding": "18/18 源 blob+sha256+lines 与 nb-97-SCOPE 全等"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/renderer/components/settings/ShortcutSettings.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/ShortcutSettings.tsx.md",
+      "sourceBlob": "11a15d5dc84bb802ebc789d55e0eb4c385a18b2c",
+      "sourceSha256": "d2662355a8feea85a5a1ee8c9c1a6ffca77f9cceed415c7b7189ff112faf3f7f",
+      "manualSha256": "5ad3381db51adc1a4ef9df773dc982f7b0fa8dad64f2c15321e340d461e7b094",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/SkillFilesPanel.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/SkillFilesPanel.tsx.md",
+      "sourceBlob": "161b7b6d427462fa471d5ead6098d113105ecfca",
+      "sourceSha256": "713cdf2cf6638a6992a3e5ab5a688f20f595edd94328903e1006f6da0b3c1f18",
+      "manualSha256": "c4d04f0eab3c62ffff3d2481b5933a8d11c8bbdcf6f0c819ef0ba4bb524fc4b9",
+      "verdict": "accepted",
+      "findings": [
+        "NB97-N1"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/SkinManager.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/SkinManager.tsx.md",
+      "sourceBlob": "f69a227d0d88fb4a75ae53978b2453f039387e94",
+      "sourceSha256": "640a0a071fba1d931302a13c42c0e67259918ad8fa9366e15a4f752843f016e9",
+      "manualSha256": "2799162002693ba4e2038ac6d15b157977e6270044ef74f9b67b1001c98cbb4f",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/StorageSettings.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/StorageSettings.tsx.md",
+      "sourceBlob": "0d5da2f55ecd28a8e5a557ba2e7591dfc48e1672",
+      "sourceSha256": "77d4eca5007a22844656fa6164801780c2063a26e1e827ac95cd29f142687f3e",
+      "manualSha256": "d2a79f3a6b91cacfa3b44d5d6afdbd08106cd6aeb5ec0797514739edb98ff4f1",
+      "verdict": "accepted",
+      "findings": [
+        "NB97-N2"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/UsageSettings.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/UsageSettings.tsx.md",
+      "sourceBlob": "a10f5c33139feac8cca4035e572e964d098867b7",
+      "sourceSha256": "3d212df2971635ad3ef3a24d81a9de1b8f9b97913f02887cbbb71552d6e7d725",
+      "manualSha256": "78802b30ef6b05b27fed14521ce4c2883e1c51924abedb8f78773cc4d04d7e2f",
+      "verdict": "accepted",
+      "findings": [
+        "NB97-N3"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/WeChatSettings.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/WeChatSettings.tsx.md",
+      "sourceBlob": "aa4348352415bbb873d7b01e77257b5b68d5e18f",
+      "sourceSha256": "31e765010c4ccae914bdc67602ac5f8776a6c4ebc672505fb180554bccaace54",
+      "manualSha256": "39e9c0c3f38b010a1cc881cbe480af91bfcda4be9e08a88335023f4a831f5354",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/YanhuPetModelSettings.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/YanhuPetModelSettings.tsx.md",
+      "sourceBlob": "cf0545ef929280ed5722b4a32de849d0cddfd4f2",
+      "sourceSha256": "c6290bc59587fb35692cba040297ae999f7479b730ce517093160a2ead499dba",
+      "manualSha256": "a8d0e530a1c96d7c051a141340e33f09c50b08559e2f0d07c73c70ba91e38735",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/index.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/index.ts.md",
+      "sourceBlob": "654ee30107c28ae37a01b402a41b57339c83354a",
+      "sourceSha256": "617f05a667d7f51f4ce9428260538d3eef1bc8db3bfbfacbcd816fa47e14dbc0",
+      "manualSha256": "e93c8f4420f4a24e6390fa85b33247fbfbcc90c73848f3fd8ef2c9385a2f7f30",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/primitives/SettingsCard.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/SettingsCard.tsx.md",
+      "sourceBlob": "d440c775fe0dd41592f9bf525d926f3bb0507397",
+      "sourceSha256": "24bca3a3dbadb883c1a71081ea22b00d976f1e484fb0ada484db2ca3a2b1e883",
+      "manualSha256": "6bd5d346006e5ecb6ec61f9f766028d47edce02006392e1611a3d56e17218351",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/primitives/SettingsInput.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/SettingsInput.tsx.md",
+      "sourceBlob": "faf4c44088a97ed37336a0f37eb6e69fb4e9780c",
+      "sourceSha256": "d29b4eb116610b0f985598f995307422575ef899aeb19ee284915230a213ef24",
+      "manualSha256": "b89083927cfccfde4ba3ef04b0bd19a1528ee994ced84404fdea547ab3b09016",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/primitives/SettingsRow.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/SettingsRow.tsx.md",
+      "sourceBlob": "018cc292dd0aa5b79360e6e5986a5b1a315d0c21",
+      "sourceSha256": "bb058e71ecf70870507121cd870adb8fdb976298a3a117cc106a954262abb842",
+      "manualSha256": "05fa8611ce6cf764e055a07657f01eeecc5c0fbad91003eebe3d486e84dbc9bb",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/primitives/SettingsSecretInput.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/SettingsSecretInput.tsx.md",
+      "sourceBlob": "da538049ce6f9896f76583530fa5df71e432b654",
+      "sourceSha256": "ed223a027a80e1b31ecfac86a82692ad6dc21b9ec053f396bc5c8a188e97c148",
+      "manualSha256": "163753dbc306a08f0e2b61fe4de6c5c128346755679ba335e8469c36a52b54e2",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/primitives/SettingsSection.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/SettingsSection.tsx.md",
+      "sourceBlob": "0b414324c6161784a987e49373cbc507ca9eed4d",
+      "sourceSha256": "5f98839514fb7ee1db4b394794932042d87e8d559eda3d6e8b8500d0d56022ed",
+      "manualSha256": "fb6e9b60d797c544bd54d84cf5c2a819fc57c748b262e32dc3e515d42547156d",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/primitives/SettingsSegmentedControl.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/SettingsSegmentedControl.tsx.md",
+      "sourceBlob": "7309c740e6099a20628bfcaf5d7738132422b2ca",
+      "sourceSha256": "baba8efef96216107095dd271c9ec58dcd1c19b27531af984710de894a6f3033",
+      "manualSha256": "7f3cff96e66ef477c659c42a95c8cdf5a602d05ba0eeb0e6bea582a21d611abc",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/primitives/SettingsSelect.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/SettingsSelect.tsx.md",
+      "sourceBlob": "31e751ad541e21b1b19f76a2ac96ac2f640883a8",
+      "sourceSha256": "54091d80c1f3758edd55f15ba5286bfb935d1cc85b7ff0092209fedb18ed967f",
+      "manualSha256": "09fdc8f8d34ebbe6bfcdc1876d5659f647a718d9f2d8320c94d4e85dbfbca81d",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/primitives/SettingsTextarea.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/SettingsTextarea.tsx.md",
+      "sourceBlob": "f79feac698292768619a6c4075147789b92c399b",
+      "sourceSha256": "9246562a879dfa54657ad7aec715ecc73924114ba495d0c8e44c19fef8e2c030",
+      "manualSha256": "ab0b82fe84be624d93ad079e4fefd0d847e089bc7e13811e151897eb668b7774",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/primitives/SettingsToggle.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/SettingsToggle.tsx.md",
+      "sourceBlob": "c86415911a2bac47731702633c9e3aa44f630786",
+      "sourceSha256": "6a9ccd56db6e7876a2e80fc4a01957771109713045e7296186fadf30c0a53ef8",
+      "manualSha256": "f4f6bf46505a4233a0281caec83d3cb9de2c5eefc557f2f5a3844ea8ab48b178",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/settings/primitives/SettingsUIConstants.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/SettingsUIConstants.ts.md",
+      "sourceBlob": "06bbd80c9d451cb41ab5c99787e84705855f9351",
+      "sourceSha256": "1eeafb3333ed35e250e0dec50369619b72d95cb8cb7d07ea0b81dadd6b44b980",
+      "manualSha256": "d55c240b0c89a4bbefb26db8ae5e485237f6b7cc72747f2ffc91c8382096333e",
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "NB97-N1",
+      "file": "apps/electron/src/renderer/components/settings/SkillFilesPanel.tsx",
+      "severity": "minor",
+      "claim": "§10 称『1 导出+4 内部』，但 §2 内部自列 5 项（countTree/FileTree/TreeNode/CreatePlaceholder/formatSize）。",
+      "sourceEvidence": "SkillFilesPanel.tsx :36/:409/:435/:552/:594。",
+      "action": "4 内部→5。"
+    },
+    {
+      "id": "NB97-N2",
+      "file": "apps/electron/src/renderer/components/settings/StorageSettings.tsx",
+      "severity": "minor",
+      "claim": "§10 称『1 导出+3 内部』，但 §2 内部自列 4 项（类型组/formatBytes/BAR_COLORS/StorageBar）。",
+      "sourceEvidence": "StorageSettings.tsx :28-48/:50/:58/:67。",
+      "action": "3 内部→4。"
+    },
+    {
+      "id": "NB97-N3",
+      "file": "apps/electron/src/renderer/components/settings/UsageSettings.tsx",
+      "severity": "minor",
+      "claim": "§10 称『1 导出+3 内部』，但 §2 内部自列 4 项（SoundPicker/AddSoundDialog/handleSoundFilePick/三 blur 归一化）。",
+      "sourceEvidence": "UsageSettings.tsx :486/:591/:118/:227-251。",
+      "action": "3 内部→4（或注明口径）。"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/ShortcutSettings.tsx.md": "5ad3381db51adc1a4ef9df773dc982f7b0fa8dad64f2c15321e340d461e7b094",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/SkillFilesPanel.tsx.md": "c4d04f0eab3c62ffff3d2481b5933a8d11c8bbdcf6f0c819ef0ba4bb524fc4b9",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/SkinManager.tsx.md": "2799162002693ba4e2038ac6d15b157977e6270044ef74f9b67b1001c98cbb4f",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/StorageSettings.tsx.md": "d2a79f3a6b91cacfa3b44d5d6afdbd08106cd6aeb5ec0797514739edb98ff4f1",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/UsageSettings.tsx.md": "78802b30ef6b05b27fed14521ce4c2883e1c51924abedb8f78773cc4d04d7e2f",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/WeChatSettings.tsx.md": "39e9c0c3f38b010a1cc881cbe480af91bfcda4be9e08a88335023f4a831f5354",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/YanhuPetModelSettings.tsx.md": "a8d0e530a1c96d7c051a141340e33f09c50b08559e2f0d07c73c70ba91e38735",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/index.ts.md": "e93c8f4420f4a24e6390fa85b33247fbfbcc90c73848f3fd8ef2c9385a2f7f30",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/SettingsCard.tsx.md": "6bd5d346006e5ecb6ec61f9f766028d47edce02006392e1611a3d56e17218351",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/SettingsInput.tsx.md": "b89083927cfccfde4ba3ef04b0bd19a1528ee994ced84404fdea547ab3b09016",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/SettingsRow.tsx.md": "05fa8611ce6cf764e055a07657f01eeecc5c0fbad91003eebe3d486e84dbc9bb",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/SettingsSecretInput.tsx.md": "163753dbc306a08f0e2b61fe4de6c5c128346755679ba335e8469c36a52b54e2",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/SettingsSection.tsx.md": "fb6e9b60d797c544bd54d84cf5c2a819fc57c748b262e32dc3e515d42547156d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/SettingsSegmentedControl.tsx.md": "7f3cff96e66ef477c659c42a95c8cdf5a602d05ba0eeb0e6bea582a21d611abc",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/SettingsSelect.tsx.md": "09fdc8f8d34ebbe6bfcdc1876d5659f647a718d9f2d8320c94d4e85dbfbca81d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/SettingsTextarea.tsx.md": "ab0b82fe84be624d93ad079e4fefd0d847e089bc7e13811e151897eb668b7774",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/SettingsToggle.tsx.md": "f4f6bf46505a4233a0281caec83d3cb9de2c5eefc557f2f5a3844ea8ab48b178",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/primitives/SettingsUIConstants.ts.md": "d55c240b0c89a4bbefb26db8ae5e485237f6b7cc72747f2ffc91c8382096333e"
+  },
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "notes": [
+    "G2：18 文件 3384 行全文逐行读（UsageSettings 690/ShortcutSettings 657/SkillFilesPanel 598 均两段完整）+ 18 篇手册全文比对；批内无测试文件（负向检索口径一致）。",
+    "红线逐条对源命中：SkinManager 制作指南安全规则（禁外链/file:/data:/@import/@font-face/../、包 5MB/skin.css 512KB/单图 4MB/预览 2MB、官方磁盘模板唯一真源、cdut-skin:// 受限协议改写）与 nb-75 skin-manager-service 手册口径一致；ShortcutSettings 录制器（仅 F1-F24 可单键/冲突检测阻断保存/Esc 取消/全局键注册失败如实 warning 不假装成功/禁用语义返回 false 不误报）；SkillFilesPanel 名称拒 / 与 \\（防路径注入）+删除确认+SKILL.md 不入树；UsageSettings 音效校验（扩展名白名单+Audio 解码时长 ≤10s）+紧凑档失焦归一化（0 合法=关闭）；YanhuPet 渠道/模型停用自动回落继承全局默认（防空白下拉）；WeChat 凭证加密存储声明+iLink 官方接口标注；StorageSettings @deprecated 如实标注未接线。",
+    "3 条 findings 全为「N 内部」总结行 vs 自家 §2 清单计数（每文件恰 1 条）；无行为/红线/测试存在性错误。",
+    "manualSha256 脚本生成=READY 三方核验。"
+  ]
+}

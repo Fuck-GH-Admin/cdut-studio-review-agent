@@ -1,0 +1,25 @@
+{
+  "schema": "r07-independent-source-check/1",
+  "atUtc": "2026-10-23T21:41:55.005252+00:00",
+  "sourceSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "registryRows": 3083,
+  "trackedFiles": 3083,
+  "sourceBytesHashChecked": 3083,
+  "deepCounts": {
+    "no": 705,
+    "yes": 2378
+  },
+  "ownerCounts": {
+    "p01-app-shell": 736,
+    "p02-agent-runtime": 528,
+    "p03-integrations": 279,
+    "p05-review-engine": 194,
+    "p06-review-batch": 80,
+    "p04-review-case-core": 108,
+    "p08-renderer-ui": 864,
+    "p07-shared-libs": 294
+  },
+  "issues": [],
+  "filesTsvSha256": "1cf428832cf12efe9c8d3226af5f2e48598c0135419c2933cc0d04964556e099",
+  "runtime": "NOT_RUN"
+}

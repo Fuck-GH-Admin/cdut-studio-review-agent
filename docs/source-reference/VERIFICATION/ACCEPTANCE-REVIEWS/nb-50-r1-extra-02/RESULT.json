@@ -1,0 +1,460 @@
+{
+ "schema": "dsh-r07-review-result/2",
+ "batch": "nb-50-r1",
+ "revisionOf": "nb-50",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-nb-47-20261023",
+ "reviewerSession": "docs-r07-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T21:46:09Z",
+ "sealId": "seal-e922db8b265df4c2",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 18,
+  "accepted": 18,
+  "changedReVerified": 4,
+  "boundParentAccepted": 14,
+  "blocking": 0
+ },
+ "gates": {
+  "G0": "PASS",
+  "G1": "PASS",
+  "G2": "PASS",
+  "note": "Independent re-verification by qa-extra-02 (prior nb-50-r1 review was an empty shell: files:0/reviewer null/no seal binding - left untouched as history). G0: seal chain hashes/ZIP/bindings all match (seal seal-e922db8b265df4c2). G2: 4 changed manuals re-verified claim-by-claim against baseline/source@05fb - all fixes correct, no regressions; 14 unchanged manuals parent-accepted with identical sha256 -> hash-bound reuse of parent same-source evidence."
+ },
+ "files": [
+  {
+   "path": "apps/electron/src/main/lib/agent-preview-renderer.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-preview-renderer.test.ts.md",
+   "sourceBlob": "9d4f92be43b8832980a3420a6163cc20e127e8e3",
+   "sourceSha256": "52219e694ac7aac20d41d2f3346bcea307c1fcec39fa2fc80e4ee3bcd8e83695",
+   "manualSha256": "82cdc081bdcb10c164fca3129f357aa339f4b31286c37e4b3798664faa32a2cd",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-50R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-50/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-preview-renderer.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-preview-renderer.ts.md",
+   "sourceBlob": "076d4cb9c0e9cc5f214a20c301616c53010c3b04",
+   "sourceSha256": "2ce2080e8b883f96a3db9938668a790152d36c0c29ad41e84a83a3d77ef1d15a",
+   "manualSha256": "e5a16ce4316261fd0f4828ed52e8a4befda1e7464d5f5c4dad749cf5facfb7a9",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-50R1-V-agent-preview-renderer",
+     "severity": "verified",
+     "claim": "F-03 exports 5->6 verified (grep ^export = 6: :9/16/24/47/211/217)",
+     "sourceEvidence": "baseline/source@05fb mechanical re-check (grep/awk/sed anchors) per claim",
+     "action": "closed"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-preview-tools.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-preview-tools.ts.md",
+   "sourceBlob": "6bdca9d3b6e2d64fab20fbd2877b87373a201efe",
+   "sourceSha256": "5a06ae3398c6f9fdcae4978a3b5bafc3d2145460d6ae21cf2c7f0984cea68e56",
+   "manualSha256": "0298353a45f35961bbe4b5461f58434ab3082bb0c0289b9b78697ebc8e81f76b",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-50R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-50/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-prompt-builder.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-prompt-builder.test.ts.md",
+   "sourceBlob": "85f5367cb7d341624fa9f56b4ee888546d1ba1f9",
+   "sourceSha256": "d3b2a374fa6ee41eac30b54aaeb0fc867dab16ea93698b68756f8c5c842a4a44",
+   "manualSha256": "7f4f1686bb90362709231f2fe48aeb5f0051695e61791c3b8496e925df1e38e7",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-50R1-V-agent-prompt-builder",
+     "severity": "verified",
+     "claim": "F-02 group counts corrected 34/2/5->32/3/6 verified (describe :43 32, :893 3, :937 6; total 41)",
+     "sourceEvidence": "baseline/source@05fb mechanical re-check (grep/awk/sed anchors) per claim",
+     "action": "closed"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-prompt-builder.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-prompt-builder.ts.md",
+   "sourceBlob": "e404384c93795d79093e10d60c3dbd70f5f6952d",
+   "sourceSha256": "88c65de3c118e4ddd230a658ce5c08b31034c46a193df8a4c43aebf51f1927aa",
+   "manualSha256": "634bf9b8d6a9dcd64ebd769278e4f839a1fcc94c156fb6273e5de7e55e895195",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-50R1-V-agent-prompt-builder",
+     "severity": "verified",
+     "claim": "F-01 same group counts 32/3/6 verified, both manuals consistent",
+     "sourceEvidence": "baseline/source@05fb mechanical re-check (grep/awk/sed anchors) per claim",
+     "action": "closed"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-prompt-utils.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-prompt-utils.ts.md",
+   "sourceBlob": "61f8f6fbd925abda34107f6021084489865adc9c",
+   "sourceSha256": "66d550f8001f31fcba50ea7fecc8b48bc4478749d80e6210befed3fb32382f78",
+   "manualSha256": "5c0261b4cbc5c0bac54a03a1ae8723b24c57abd5c9afa8edd9683f5f55f9e3ad",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-50R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-50/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-retry-utils.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-retry-utils.test.ts.md",
+   "sourceBlob": "84ed761e45320aacb1f190af0c92d6768573025d",
+   "sourceSha256": "2d02241cf30a5dada14e88e38014c9bb891a4126994aa25562a70a27e3841f4e",
+   "manualSha256": "2fc3fb26eecaca39350908c9af382d82a9c92fb6e86acb0573309738f06a3b81",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-50R1-V-agent-retry-utils",
+     "severity": "verified",
+     "claim": "F-04 24->39 instances verified (34 test() + test.each 5 rows :228-234 = 35 calls/39 instances; group-9 = 6 instances)",
+     "sourceEvidence": "baseline/source@05fb mechanical re-check (grep/awk/sed anchors) per claim",
+     "action": "closed"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-retry-utils.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-retry-utils.ts.md",
+   "sourceBlob": "9496e451b3a4bf56f1e823c46d6112f7e535a7fb",
+   "sourceSha256": "f5ba2210c04e6c57831f889d1fab71859b6852e4025c7cb6cfb797d8cfbc4d0d",
+   "manualSha256": "45627fe006a99faf5c13c0899080afc6fb6f253fc34fa68c7672357965058ecb",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-50R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-50/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-run-outcome.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-run-outcome.test.ts.md",
+   "sourceBlob": "42d69644c98323cfd201bd109f8bd15447d3200a",
+   "sourceSha256": "fc897507da860359e116be6984a9b84f637a3619fbc9b4f54eebedc6bf715dd9",
+   "manualSha256": "1e4f3618c7296a09cc05d262862c4c1cf9a76f572f7d00c1a928f341650fa32d",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-50R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-50/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-run-outcome.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-run-outcome.ts.md",
+   "sourceBlob": "3afcdcfc2127ec6a500f10d07eed797355a56faf",
+   "sourceSha256": "db0a85e04d1b0c7b2ce00e4139f4096eb5d930f28e4eb7735538379379293aff",
+   "manualSha256": "b56e1b2f8435c53d50a79661cc9d4afc33d5e08b0834a7f229321a05eaf54c37",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-50R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-50/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-runtime-context.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-runtime-context.test.ts.md",
+   "sourceBlob": "3ba95cd3a3d51e1aba0ac0bc6512bc13f39c023e",
+   "sourceSha256": "1f1e69a30a586cb9e58892cf56aeb979ba289f8c934f7e72b80ca1d0f32ade99",
+   "manualSha256": "fb251114dbf6de9580e263f488ba1a8843897575e7a83587140a6b291011a928",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-50R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-50/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-runtime-context.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-runtime-context.ts.md",
+   "sourceBlob": "68e0ce8047743977a322c3cadb9aa51993651d35",
+   "sourceSha256": "e19d85a9f552957fba0e3a283ca899ad786c6e569b0b71ac2c2506ed0e355747",
+   "manualSha256": "45fbcf6c8b6c1ab1ac38e95d41a5e04c7e13ac4569a9442e6369a24f49151a9a",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-50R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-50/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-runtime-credentials.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-runtime-credentials.ts.md",
+   "sourceBlob": "5925d05438478a314804aab53490e0b54bc8e864",
+   "sourceSha256": "dd112991c01bca911d503cbdcde809a07f5683f1553231b02f6651bc0624ec80",
+   "manualSha256": "60bc4ce90f577fb1dbc4648aa05b252d264fded8df34b3e964b34f82e9e06269",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-50R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-50/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-runtime-env.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-runtime-env.test.ts.md",
+   "sourceBlob": "1cc448c3fcd8070b10af36a8d67576b93458212d",
+   "sourceSha256": "62444d5449f6c827a947f6fb305c8f32e7a0df5b12a663b8da106a0433e70ff2",
+   "manualSha256": "c2e1f71c89a2dd382dd40223ff231988bf17e6c20578dd916d6fb872a2a726f7",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-50R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-50/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-runtime-env.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-runtime-env.ts.md",
+   "sourceBlob": "9b1de4308bef1dfbd9916294628ed59a354177b7",
+   "sourceSha256": "ae7d704417d37592850a979ed8e9fe32951fb8e20ef8de8d060d7b36ef806e6d",
+   "manualSha256": "a5dc645c163d4dbd2c32a754581a96bf79805fb9ad4e9b0bbbb54dc93ad30aed",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-50R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-50/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-runtime-guards.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-runtime-guards.ts.md",
+   "sourceBlob": "3152bf2768c704520d771fdf46f542c5c73adebb",
+   "sourceSha256": "f49a4a2caf4961166658ead8cce8856e1e9f647478e7fe841a5ba0301aa098c0",
+   "manualSha256": "9a6a6d76b4495f8f6281daa3b10ee9f5357bd6ff3a4aaefe6d7e91e75082e8a8",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-50R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-50/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-sdk-auth-env.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-sdk-auth-env.test.ts.md",
+   "sourceBlob": "efc073dd78f1fc2553874ab24e9be447c2dcf46a",
+   "sourceSha256": "f635b0f194570dd1aaba07dc6f07ce1c87d92a6f7411e8308eb8ef42a0101d31",
+   "manualSha256": "44a11060410a0f6724ee90264cc5fb234f91b57b24a4ac1ce4c2a22d7d605d67",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-50R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-50/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-sdk-auth-env.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-sdk-auth-env.ts.md",
+   "sourceBlob": "c493aaeed9474852a9a2c6c79cbeb5a9ad67e52d",
+   "sourceSha256": "627d1c260c7dd4f6b6edfddf3dda27f9df78c0e9db9eabac292334a72e1c4300",
+   "manualSha256": "05d69d938ba4cae97609f5e6d9f085d2698f9268b69014b9cbc13dc837614238",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-50R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-50/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-preview-renderer.test.ts.md": "82cdc081bdcb10c164fca3129f357aa339f4b31286c37e4b3798664faa32a2cd",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-preview-renderer.ts.md": "e5a16ce4316261fd0f4828ed52e8a4befda1e7464d5f5c4dad749cf5facfb7a9",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-preview-tools.ts.md": "0298353a45f35961bbe4b5461f58434ab3082bb0c0289b9b78697ebc8e81f76b",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-prompt-builder.test.ts.md": "7f4f1686bb90362709231f2fe48aeb5f0051695e61791c3b8496e925df1e38e7",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-prompt-builder.ts.md": "634bf9b8d6a9dcd64ebd769278e4f839a1fcc94c156fb6273e5de7e55e895195",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-prompt-utils.ts.md": "5c0261b4cbc5c0bac54a03a1ae8723b24c57abd5c9afa8edd9683f5f55f9e3ad",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-retry-utils.test.ts.md": "2fc3fb26eecaca39350908c9af382d82a9c92fb6e86acb0573309738f06a3b81",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-retry-utils.ts.md": "45627fe006a99faf5c13c0899080afc6fb6f253fc34fa68c7672357965058ecb",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-run-outcome.test.ts.md": "1e4f3618c7296a09cc05d262862c4c1cf9a76f572f7d00c1a928f341650fa32d",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-run-outcome.ts.md": "b56e1b2f8435c53d50a79661cc9d4afc33d5e08b0834a7f229321a05eaf54c37",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-runtime-context.test.ts.md": "fb251114dbf6de9580e263f488ba1a8843897575e7a83587140a6b291011a928",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-runtime-context.ts.md": "45fbcf6c8b6c1ab1ac38e95d41a5e04c7e13ac4569a9442e6369a24f49151a9a",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-runtime-credentials.ts.md": "60bc4ce90f577fb1dbc4648aa05b252d264fded8df34b3e964b34f82e9e06269",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-runtime-env.test.ts.md": "c2e1f71c89a2dd382dd40223ff231988bf17e6c20578dd916d6fb872a2a726f7",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-runtime-env.ts.md": "a5dc645c163d4dbd2c32a754581a96bf79805fb9ad4e9b0bbbb54dc93ad30aed",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-runtime-guards.ts.md": "9a6a6d76b4495f8f6281daa3b10ee9f5357bd6ff3a4aaefe6d7e91e75082e8a8",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-sdk-auth-env.test.ts.md": "44a11060410a0f6724ee90264cc5fb234f91b57b24a4ac1ce4c2a22d7d605d67",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-sdk-auth-env.ts.md": "05d69d938ba4cae97609f5e6d9f085d2698f9268b69014b9cbc13dc837614238"
+ },
+ "allManualHashes": {
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-preview-renderer.test.ts.md": "82cdc081bdcb10c164fca3129f357aa339f4b31286c37e4b3798664faa32a2cd",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-preview-renderer.ts.md": "e5a16ce4316261fd0f4828ed52e8a4befda1e7464d5f5c4dad749cf5facfb7a9",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-preview-tools.ts.md": "0298353a45f35961bbe4b5461f58434ab3082bb0c0289b9b78697ebc8e81f76b",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-prompt-builder.test.ts.md": "7f4f1686bb90362709231f2fe48aeb5f0051695e61791c3b8496e925df1e38e7",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-prompt-builder.ts.md": "634bf9b8d6a9dcd64ebd769278e4f839a1fcc94c156fb6273e5de7e55e895195",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-prompt-utils.ts.md": "5c0261b4cbc5c0bac54a03a1ae8723b24c57abd5c9afa8edd9683f5f55f9e3ad",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-retry-utils.test.ts.md": "2fc3fb26eecaca39350908c9af382d82a9c92fb6e86acb0573309738f06a3b81",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-retry-utils.ts.md": "45627fe006a99faf5c13c0899080afc6fb6f253fc34fa68c7672357965058ecb",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-run-outcome.test.ts.md": "1e4f3618c7296a09cc05d262862c4c1cf9a76f572f7d00c1a928f341650fa32d",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-run-outcome.ts.md": "b56e1b2f8435c53d50a79661cc9d4afc33d5e08b0834a7f229321a05eaf54c37",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-runtime-context.test.ts.md": "fb251114dbf6de9580e263f488ba1a8843897575e7a83587140a6b291011a928",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-runtime-context.ts.md": "45fbcf6c8b6c1ab1ac38e95d41a5e04c7e13ac4569a9442e6369a24f49151a9a",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-runtime-credentials.ts.md": "60bc4ce90f577fb1dbc4648aa05b252d264fded8df34b3e964b34f82e9e06269",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-runtime-env.test.ts.md": "c2e1f71c89a2dd382dd40223ff231988bf17e6c20578dd916d6fb872a2a726f7",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-runtime-env.ts.md": "a5dc645c163d4dbd2c32a754581a96bf79805fb9ad4e9b0bbbb54dc93ad30aed",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-runtime-guards.ts.md": "9a6a6d76b4495f8f6281daa3b10ee9f5357bd6ff3a4aaefe6d7e91e75082e8a8",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-sdk-auth-env.test.ts.md": "44a11060410a0f6724ee90264cc5fb234f91b57b24a4ac1ce4c2a22d7d605d67",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-sdk-auth-env.ts.md": "05d69d938ba4cae97609f5e6d9f085d2698f9268b69014b9cbc13dc837614238"
+ },
+ "parentHashBinding": {
+  "apps/electron/src/main/lib/agent-preview-renderer.test.ts": {
+   "manualSha256": "82cdc081bdcb10c164fca3129f357aa339f4b31286c37e4b3798664faa32a2cd",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-50/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/agent-preview-tools.ts": {
+   "manualSha256": "0298353a45f35961bbe4b5461f58434ab3082bb0c0289b9b78697ebc8e81f76b",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-50/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/agent-prompt-utils.ts": {
+   "manualSha256": "5c0261b4cbc5c0bac54a03a1ae8723b24c57abd5c9afa8edd9683f5f55f9e3ad",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-50/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/agent-retry-utils.ts": {
+   "manualSha256": "45627fe006a99faf5c13c0899080afc6fb6f253fc34fa68c7672357965058ecb",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-50/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/agent-run-outcome.test.ts": {
+   "manualSha256": "1e4f3618c7296a09cc05d262862c4c1cf9a76f572f7d00c1a928f341650fa32d",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-50/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/agent-run-outcome.ts": {
+   "manualSha256": "b56e1b2f8435c53d50a79661cc9d4afc33d5e08b0834a7f229321a05eaf54c37",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-50/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/agent-runtime-context.test.ts": {
+   "manualSha256": "fb251114dbf6de9580e263f488ba1a8843897575e7a83587140a6b291011a928",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-50/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/agent-runtime-context.ts": {
+   "manualSha256": "45fbcf6c8b6c1ab1ac38e95d41a5e04c7e13ac4569a9442e6369a24f49151a9a",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-50/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/agent-runtime-credentials.ts": {
+   "manualSha256": "60bc4ce90f577fb1dbc4648aa05b252d264fded8df34b3e964b34f82e9e06269",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-50/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/agent-runtime-env.test.ts": {
+   "manualSha256": "c2e1f71c89a2dd382dd40223ff231988bf17e6c20578dd916d6fb872a2a726f7",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-50/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/agent-runtime-env.ts": {
+   "manualSha256": "a5dc645c163d4dbd2c32a754581a96bf79805fb9ad4e9b0bbbb54dc93ad30aed",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-50/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/agent-runtime-guards.ts": {
+   "manualSha256": "9a6a6d76b4495f8f6281daa3b10ee9f5357bd6ff3a4aaefe6d7e91e75082e8a8",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-50/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/agent-sdk-auth-env.test.ts": {
+   "manualSha256": "44a11060410a0f6724ee90264cc5fb234f91b57b24a4ac1ce4c2a22d7d605d67",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-50/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/agent-sdk-auth-env.ts": {
+   "manualSha256": "05d69d938ba4cae97609f5e6d9f085d2698f9268b69014b9cbc13dc837614238",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-50/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  }
+ },
+ "openNonBlocking": "none",
+ "findings": []
+}

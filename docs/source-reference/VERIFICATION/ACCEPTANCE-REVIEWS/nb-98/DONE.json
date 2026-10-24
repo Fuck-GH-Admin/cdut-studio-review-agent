@@ -1,0 +1,53 @@
+{
+ "schema": "dsh-r07-review-done/2",
+ "batch": "nb-98",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-ui-20261023",
+ "reviewerSession": "docs-r07-qa-ui-20261023",
+ "reviewedAtUtc": "2026-10-24T04:40:00Z",
+ "state": "QA_COMPLETE",
+ "batchVerdict": "accepted",
+ "counts": {
+  "filesReviewed": 18,
+  "accepted": 18,
+  "revisionRequired": 0,
+  "openNonBlocking": 1
+ },
+ "reviewedSeal": {
+  "root": "deliveries/nb-98",
+  "readySha256": "7bbbe56dc87dc5fc34fdca3aa102fea31a0e9b04170325a166d3852feb48dd25",
+  "doneSha256": "cfa9b6ff77b1cc5e8a8733ce5a683a7f9ac3132f1c84fc16927459142cddb67f",
+  "manifestSha256": "29d41d1307008d651acd1622c8aa56a9f9da7d619f56e3dc052f4174e2af09e3",
+  "zipSha256": "dd432cce28d982deb635e67686240c4e933791c81f386a97eb2e57836af2f6f7",
+  "zipBytes": 33975,
+  "zipEntries": 21
+ },
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CdutScienceView.tsx.md": "ccb54edb1c2fa7709ec36e1d8f385e6f38e009ddb2d77fc06a9fd276ca85305f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabAgentGuards.tsx.md": "bd582b3eb32104c3373dbcb61400f754a0e5015320638270796b285a3d6a4f92",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabAssetRail.tsx.md": "f87ce011dcad8508b2a86c5473026c6b656c534ca71943e02c75aa3fa1d73802",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabAuthGate.tsx.md": "f152506ae810fb74c7f65bd25453fbd14d9f25f3b001dd138f4e1a97db072984",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabCreateLabDialog.tsx.md": "04490ac8e1c371c7a082767220f448b2e05de251c85ea1c64a80e0b8a9ed6b2b",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabDagCanvas.tsx.md": "769c1357cb6347f8eafb3f2234053111869916f0175d5385ccc226976f8f9ddb",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabDatasetView.tsx.md": "cce51c022f9d26c24cba6c0934cca25e008b4ce7afcaa125b40fe8a291b194ac",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabDeleteLabDialog.tsx.md": "8e121ae9bcb190f4350a8db998a17d9b70c3a45c54b782fda401931726bd1a6c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabFigureView.tsx.md": "f7bb7ae48f9c32c221f2ded282dfb7f797d2b5aaa8145733b3555c85280e1f48",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabFormulaPanel.tsx.md": "1a646e5582825bb350a206f4e7c1f0174745a5fb1bb4f02bb403b2f77296c9a7",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabHpcPanel.tsx.md": "89e8dc34ae5e55f2f9a40fc9af01596804bf2e25c716f92be5da347a94157691",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabIronCageTable.tsx.md": "b35ce45b6e0647a92516bbe1f5c2c845d4857aea4f7001601f6b7bb65ac373d6",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabLiteratureBrainPanel.tsx.md": "111fb7c11cf88b3dbd98a023e93019b8fc6378ab09734e76cdb36b5782188cf0",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabManuscriptEditor.tsx.md": "3acb16b59a1131bc67f430e2e27d435856a4298816ffa7050ae57c3a6c66e26f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabMolstarViewer.tsx.md": "2319160b438e491333247130e960378c24db45160f72c468ee4777a2e68c3766",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabNetworkSharePanel.tsx.md": "4e9cc49b015ca7dc9c79b4620a956237f8fee26f95ab7ded6dab9491edcdced9",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabNotesPanel.tsx.md": "d3583bdab065c2aca927d3a82f5adf3f41439749da6aab999e04f9f9486f1545",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabOriginPlotPane.tsx.md": "98dfcf3e595167c3bd24258c1388e3fe8496611446a66e3da4d1cc4ffb467e48"
+ },
+ "outputs": {
+  "RESULT.json": "b76fed2abcf59ecd3a94248b67d7070047ecebe9eb2c9521cf4525097dc9932e",
+  "RESULT.md": "8ec5501732184fceb6b76f3f9bcd6fe17ec28b56055d8dba3c4abd95b4d7b5b5",
+  "REVIEWED-HASHES.json": "0300f40dba659343207181c7b8dc1145c7746d0fc1929f9ad0b09fcc67c4f22f"
+ },
+ "notes": [
+  "预读对照吻合；N98-1 IronCage :12-… 低级"
+ ]
+}

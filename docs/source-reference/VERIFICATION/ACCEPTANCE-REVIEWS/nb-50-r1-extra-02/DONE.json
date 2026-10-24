@@ -1,0 +1,37 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-50-r1",
+ "revisionOf": "nb-50",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-nb-47-20261023",
+ "reviewerSession": "docs-r07-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T21:46:09Z",
+ "sealId": "seal-e922db8b265df4c2",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 18,
+  "accepted": 18,
+  "changedReVerified": 4,
+  "boundParentAccepted": 14
+ },
+ "artifacts": [
+  "reviews/nb-50-r1-extra-02/RESULT.json",
+  "reviews/nb-50-r1-extra-02/RESULT.md",
+  "reviews/nb-50-r1-extra-02/REVIEWED-HASHES.json",
+  "reviews/nb-50-r1-extra-02/DONE.json",
+  "handoffs/nb-50-r1-EXTRA02-TO-AUTHOR.md",
+  "handoffs/nb-50-r1-EXTRA02-TO-LEAD.md"
+ ],
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "Worker runtime",
+  "real render interaction",
+  "real model/network"
+ ],
+ "boundaries": "QA read-only; old seals/base bytes/old DONE reviews untouched (prior empty-shell review preserved as history); candidate not modified; product tests and real models NOT_RUN.",
+ "next": "lead merges nb-50-r1 per REVIEWED-HASHES; open non-blocking: none"
+}

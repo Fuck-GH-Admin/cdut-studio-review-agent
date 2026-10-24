@@ -1,0 +1,28 @@
+{
+  "schema": "dsh-r07-stage2-done/1",
+  "track": "runtime-permission",
+  "root": "docs-r07-index-qa-extra-01-20261024",
+  "atUtc": "2026-10-23T22:03:30Z",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "status": "TRACK_VERIFICATION_INCOMPLETE_WITH_GAPS",
+  "doneMeaning": "本轨产出物齐套并发布（CHAINS/REGISTER/CONFLICTS/RESULT/DONE），但核对未全绿：C1/C6/C7 与 gateway 双链关键边已证实，C4/C5 及部分 C2/C3 内部边为缺口（见 RESULT.gaps）。DONE=发布收口，不等于全轨核对完成；不虚报完整。",
+  "window": {
+    "startedAtUtc": "2026-10-23T21:29:21Z",
+    "firstArtifactAtUtc": "2026-10-23T21:42:00Z",
+    "thirtyMinWindowEndUtc": "2026-10-23T21:59:21Z",
+    "firstArtifactWithin15Min": true,
+    "trackVerificationWithin30Min": false,
+    "note": "30 分钟窗口内未完成全轨核对（内部调查组一条中断）；缺口已逐项列明，收口产物在窗口后补齐并如实标注时间。"
+  },
+  "artifacts": [
+    "manager/STAGE2/runtime-permission/CHAINS.md",
+    "manager/STAGE2/runtime-permission/CHAIN-REGISTER.tsv",
+    "manager/STAGE2/runtime-permission/CONFLICTS.json",
+    "manager/STAGE2/runtime-permission/RESULT.json",
+    "manager/STAGE2/runtime-permission/DONE.json"
+  ],
+  "conflictsCount": {"doc_error": 1, "implementation_gap": 2, "unknown": 2},
+  "notRun": ["产品测试", "typecheck", "构建", "Electron/GUI", "真实模型调用", "网络/代理实测（全部 NOT_RUN；静态断言不冒充实测）"],
+  "boundaries": "只读冻结源 05fb2565；未改产品/测试/依赖/作者 seal/已有 review/candidate；未写 CODEBASE-MAP/ARCHITECTURE 等阶段三文档；文档错误只登记不覆盖主责文档；已证实实现缺陷（C-02/C-03）保留待阶段三设计差异报告；未开 ACP 根；历史未来时间只记 UNVERIFIED 未改 seal。",
+  "next": "lead 按 handoffs/STAGE2-runtime-permission-TO-LEAD.md 分派：C-01 文档校正（主责 docs-r07-author-models-20261023）、C-02/C-03 阶段三裁定、C4/C5 缺口续核（可回本轨或改派）。"
+}

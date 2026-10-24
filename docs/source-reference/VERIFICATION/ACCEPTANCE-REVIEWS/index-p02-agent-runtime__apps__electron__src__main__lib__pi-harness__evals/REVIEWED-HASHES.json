@@ -1,0 +1,45 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals",
+ "groupId": "p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T19:35:00Z",
+ "sealedAtUtc": "2026-10-23T19:14:06+00:00",
+ "artifactSha256": "0349d9e468d1ae1a31ec0b98082b7e299de84af9d5a21a7dde4fa066fe846f5f",
+ "note": "QA 实算封版链全对。6/6 accepted（1 条非阻断 minor EVALS-N-01 已登记，非阻断≠已修）。",
+ "acceptedManuals": {
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals.md@apps/electron/src/main/lib/pi-harness/evals/fixtures/failed-verification-no-change-loop.json": "0349d9e468d1ae1a31ec0b98082b7e299de84af9d5a21a7dde4fa066fe846f5f",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals.md@apps/electron/src/main/lib/pi-harness/evals/fixtures/manual-compact-boundary.json": "0349d9e468d1ae1a31ec0b98082b7e299de84af9d5a21a7dde4fa066fe846f5f",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals.md@apps/electron/src/main/lib/pi-harness/evals/fixtures/new-goal-conflict-boundary.json": "0349d9e468d1ae1a31ec0b98082b7e299de84af9d5a21a7dde4fa066fe846f5f",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals.md@apps/electron/src/main/lib/pi-harness/evals/fixtures/retry-compaction-single-turn.json": "0349d9e468d1ae1a31ec0b98082b7e299de84af9d5a21a7dde4fa066fe846f5f",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals.md@apps/electron/src/main/lib/pi-harness/evals/fixtures/stop-boundary.json": "0349d9e468d1ae1a31ec0b98082b7e299de84af9d5a21a7dde4fa066fe846f5f",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals.md@apps/electron/src/main/lib/pi-harness/evals/fixtures/verified-readback-and-shadow-ready.json": "0349d9e468d1ae1a31ec0b98082b7e299de84af9d5a21a7dde4fa066fe846f5f"
+ },
+ "sourceBindings": {
+  "apps/electron/src/main/lib/pi-harness/evals/fixtures/failed-verification-no-change-loop.json": {
+   "sourceBlob": "a196b3e232829bfd53ce6c593cd092e453eb605d",
+   "sourceSha256": "54b36bb6d7bb2e1bdfc1321ba613560eea5dcd8bd51ba796b444682cafad22ad"
+  },
+  "apps/electron/src/main/lib/pi-harness/evals/fixtures/manual-compact-boundary.json": {
+   "sourceBlob": "44b49be042adea0acdaa4cd255c9318dfeb59b77",
+   "sourceSha256": "a0fed4d8a434e25230fe42227298bcfbf528c3d9109e467c707d0944e9a17b9e"
+  },
+  "apps/electron/src/main/lib/pi-harness/evals/fixtures/new-goal-conflict-boundary.json": {
+   "sourceBlob": "1e4000e0b831d526fe9db8dfdb44e6f3922bacc1",
+   "sourceSha256": "d9b58898ed17a22b86b1685805a22ba7503d0f3232aaf63055f9d75e83d98e73"
+  },
+  "apps/electron/src/main/lib/pi-harness/evals/fixtures/retry-compaction-single-turn.json": {
+   "sourceBlob": "6c4376cd5f8ddc92d24521a09fd187c502f5d99c",
+   "sourceSha256": "f34019391d77e54c0f00a0e758d8f8b5883de869f6f792b0c200b95153497393"
+  },
+  "apps/electron/src/main/lib/pi-harness/evals/fixtures/stop-boundary.json": {
+   "sourceBlob": "e07da0c8128cdd8b7016649e38d2cc5de0fc4e01",
+   "sourceSha256": "94309cc6da884d1720e91a947c04ffa8178111c1aee0344e8bb56f6acda10634"
+  },
+  "apps/electron/src/main/lib/pi-harness/evals/fixtures/verified-readback-and-shadow-ready.json": {
+   "sourceBlob": "2a78ff0846f8be5925f61e3034d00e5f4c8b9aed",
+   "sourceSha256": "ccf6888050c9a0c0ce43615f332295b0f266de1fdde58aa5bc824dc84d692285"
+  }
+ }
+}

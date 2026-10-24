@@ -1,0 +1,260 @@
+{
+  "schema": "dsh-r07-review-result/2",
+  "batch": "nb-16-r1",
+  "revisionOf": "nb-16",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-09-20261023",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-23T18:20:00Z",
+  "sealId": "seal-f6f07d0025a2affe",
+  "sealedAtUtc": "2026-10-23T17:34:40Z",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 17,
+    "accepted": 17,
+    "revision_required": 0,
+    "unknown": 0,
+    "blocking": 0,
+    "nonBlocking": 0
+  },
+  "gates": {
+    "G0": "PASS",
+    "G1": "PASS",
+    "G2": "PASS",
+    "note": "3 篇 errata 逐 hunk 复验（NB16-N-01/N-02 全关闭）+ 14 篇逐字节未变（hash 重登记）"
+  },
+  "revisionVerification": {
+    "changedManuals": 3,
+    "unchangedManuals": 14,
+    "findingsClosure": [
+      {
+        "id": "NB16-N-01",
+        "status": "resolved",
+        "evidence": "coverage-ledger.ts.md §9 与 coverage-ledger.test.ts.md §2/§3 标签 13→11（3 处），与 test :75-158 实测 11 个声明一致"
+      },
+      {
+        "id": "NB16-N-02",
+        "status": "resolved",
+        "evidence": "semantic-module-demo.ts.md §2/§3.1/§11 `validateDemoState` 行号改 :213-283，辅助函数分列（idError :118-120/checkSource :122-129/checkTasks :131-141/checkUses :143-168/visitTemplateUses :170-211）——与 grep 实测一致"
+      }
+    ]
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/main/lib/review/coverage-ledger.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/coverage-ledger.test.ts.md",
+      "sourceBlob": "b5b9fcc60c805b27c256ce3d05e145bf965a5608",
+      "sourceSha256": "496c32e5614ba71b89b8815219264a0f8f17aedad7dbceef86695f135a816a0f",
+      "manualSha256": "7404d1c87d8795e5b7304e4d31541c9f0fb83db4b697cf35934eeec152168db3",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "revised in r1"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/coverage-ledger.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/coverage-ledger.ts.md",
+      "sourceBlob": "ef923fe92608869169e1fa8623e581ae9f20aa74",
+      "sourceSha256": "64914e5bcfe152e08a30742012d471171013ff6771c36f5895b81957d57d093f",
+      "manualSha256": "3b08f985f468111833339cae7d95745c333f399936607fa1329159a006e6976d",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "revised in r1"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/deterministic-engine.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/deterministic-engine.test.ts.md",
+      "sourceBlob": "2824a2adf561054cbb90e33eec6421f18be0abc7",
+      "sourceSha256": "da22c55ff952d26e9215a10bafa9a968a8ef2986f29767e7e4142e015eaf09e3",
+      "manualSha256": "d53622a00199d7e688f817befe96ebf264e31471612b2e84212cbf7c931c8f00",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/deterministic-engine.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/deterministic-engine.ts.md",
+      "sourceBlob": "9108fb29ccb5a19ecd6e14a9a1e2319b8f77d565",
+      "sourceSha256": "5975de4cebc8961e95e2dde9ed72beb2a81247948e3b463d028dc279a2233315",
+      "manualSha256": "4b92692d2b8c7c5ec39cd2070ac209428f07dfc0f4686d95ba4b154ce536772f",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/evidence-service.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/evidence-service.test.ts.md",
+      "sourceBlob": "5ff023ce8c5b96c1270906aa3042781fb6c3d20e",
+      "sourceSha256": "f148d40774c38fe7c81a18cf97d5a5601e23a0eb32e9a35301779a5661f8956e",
+      "manualSha256": "5abad0a19d337ae58605ebea9ad9a1a9af0a432a94eff6b9608b7a13b360eaef",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/evidence-service.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/evidence-service.ts.md",
+      "sourceBlob": "0710f799b7e5366a80bf21dce09bc1672312b3a9",
+      "sourceSha256": "25cd8d93b18d45997083f5da6710644a9265a7d3934774afa175756c07c995fd",
+      "manualSha256": "a8e848c6c5d24291c66b54c0cc8812426a05e952af5aa156cdd9a945143a84d2",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/plan-binding-v3.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/plan-binding-v3.test.ts.md",
+      "sourceBlob": "bdd3f90ebcab8a53cf5766e565dbba56c8d8a55c",
+      "sourceSha256": "b31e987d02ae22cc221b7929e706363d05b4992f290be211aa6622c91ce93717",
+      "manualSha256": "cd6dffd9bdccb110516af46e68e2326d9355a32a143b998da4cf248c813bbfb5",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/plan-binding-v3.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/plan-binding-v3.ts.md",
+      "sourceBlob": "5870588b953def085504874cad61c47438510421",
+      "sourceSha256": "d207d26b6dd4c89bc8ea45ff0ead38813aa64b7641117bed141c8487431f8548",
+      "manualSha256": "5bb6904fda3ee8a84b501e936b359c4f44bf149a1db3ccdfdd3b8ac1d30a9a72",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/report-data.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/report-data.ts.md",
+      "sourceBlob": "1beb72709f7d21965c02fdb291e5279150693ec3",
+      "sourceSha256": "8c79392f99b316a6e421b447cea8fd6781cc43edbbf29156ec1c83734e74831d",
+      "manualSha256": "3a173c071ebac13cefb7ba5d4aff019f13451093e32d33f5871fd70b0151547c",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/report-export-v2-service.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/report-export-v2-service.ts.md",
+      "sourceBlob": "1deb81d7a8b8d388e097a9b11b9786696f866717",
+      "sourceSha256": "6997e22505d27c4fb70347468ffa9006bb235e135cd13941525a8c44ef092dde",
+      "manualSha256": "5c64236c8f5a7355ae968509c1054817cac11489532b69f793ce1a9c3743e0e2",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/report-service-v2.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/report-service-v2.test.ts.md",
+      "sourceBlob": "050ee15580b2c9cd94ae50d3157c0adb1de00cce",
+      "sourceSha256": "b12d1e4ae4d4cdc8e8d161047229e8d05f90cc0519898ad9d9c5ed4b2d62f0f2",
+      "manualSha256": "5fff9e1eaa7720170b75e956e32b8966f7719fffeb1f991ca3f5195f42e472cc",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/report-service-v2.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/report-service-v2.ts.md",
+      "sourceBlob": "8d3b177e19e5432ebf6311a1c2fe0e0dcef74df2",
+      "sourceSha256": "96a235dccad888c66991e67dc4e0a5bca2b4c6f9e0df942ad2a0ee45ffccd497",
+      "manualSha256": "3f5bfe7fbe0d541816cb46cbf5113d9501182bf210116533eb25fa837455ab68",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/report-service.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/report-service.ts.md",
+      "sourceBlob": "dcae49957ca640fa8c46931d8ae2a6116af18442",
+      "sourceSha256": "b929b57705095d86e9bbb2ea31cca4d7842a4f17392c260a9b40f401ee7e8937",
+      "manualSha256": "acb4e55060af61b8d872a492d4f02d99e646896fa9b18dd6561ef929892871ef",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/semantic-module-demo.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/semantic-module-demo.test.ts.md",
+      "sourceBlob": "2cdb1c44c57721f69f93f0fb1fd1e9dc2d92dc2b",
+      "sourceSha256": "547cc0dc5c7d8f8041ca7e931adef4b856f71a9386a640ef5ee44b1f85d62230",
+      "manualSha256": "61d654469466f7747cdde369a32677b25eb90be77506bceb6141c6a84517e4e7",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/semantic-module-demo.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/semantic-module-demo.ts.md",
+      "sourceBlob": "5d54fea718c0fd710351bdcca13e7a678fb2116a",
+      "sourceSha256": "9c4c492f974be6534bc12493b9da5ee52b9a68e9f575742125bb833fc82e357f",
+      "manualSha256": "6e509f7b487a8f559ce32478a32ee6a95b597cd57e5af432e3abb5e42de12dae",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "revised in r1"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/template-asset-contract.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/template-asset-contract.test.ts.md",
+      "sourceBlob": "00064f1719312c295150d1f1c4a8007bf7fcca52",
+      "sourceSha256": "05cad30d2341c01d49e912130b3238eed01bc450939a29d3ce05aca665e21b39",
+      "manualSha256": "ea86a98806483aae7fb71fb4e79106e1183a64338e9f42c11747d16fdc2085bf",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/template-catalog.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/template-catalog.ts.md",
+      "sourceBlob": "4d0fa9a6a8d1d3601775583a7f6f3fbf63debebb",
+      "sourceSha256": "687e2d09d24e8ae322f1ebda92afd60dad53dcd7e3819d93e8ade54dab1dd01c",
+      "manualSha256": "35b741b154f17904564f24fad08bebe3d7c1a23e5bd47b70a6a2e4fa14271020",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "unchanged since r0"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/coverage-ledger.test.ts.md": "7404d1c87d8795e5b7304e4d31541c9f0fb83db4b697cf35934eeec152168db3",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/coverage-ledger.ts.md": "3b08f985f468111833339cae7d95745c333f399936607fa1329159a006e6976d",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/deterministic-engine.test.ts.md": "d53622a00199d7e688f817befe96ebf264e31471612b2e84212cbf7c931c8f00",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/deterministic-engine.ts.md": "4b92692d2b8c7c5ec39cd2070ac209428f07dfc0f4686d95ba4b154ce536772f",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/evidence-service.test.ts.md": "5abad0a19d337ae58605ebea9ad9a1a9af0a432a94eff6b9608b7a13b360eaef",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/evidence-service.ts.md": "a8e848c6c5d24291c66b54c0cc8812426a05e952af5aa156cdd9a945143a84d2",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/plan-binding-v3.test.ts.md": "cd6dffd9bdccb110516af46e68e2326d9355a32a143b998da4cf248c813bbfb5",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/plan-binding-v3.ts.md": "5bb6904fda3ee8a84b501e936b359c4f44bf149a1db3ccdfdd3b8ac1d30a9a72",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/report-data.ts.md": "3a173c071ebac13cefb7ba5d4aff019f13451093e32d33f5871fd70b0151547c",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/report-export-v2-service.ts.md": "5c64236c8f5a7355ae968509c1054817cac11489532b69f793ce1a9c3743e0e2",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/report-service-v2.test.ts.md": "5fff9e1eaa7720170b75e956e32b8966f7719fffeb1f991ca3f5195f42e472cc",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/report-service-v2.ts.md": "3f5bfe7fbe0d541816cb46cbf5113d9501182bf210116533eb25fa837455ab68",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/report-service.ts.md": "acb4e55060af61b8d872a492d4f02d99e646896fa9b18dd6561ef929892871ef",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/semantic-module-demo.test.ts.md": "61d654469466f7747cdde369a32677b25eb90be77506bceb6141c6a84517e4e7",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/semantic-module-demo.ts.md": "6e509f7b487a8f559ce32478a32ee6a95b597cd57e5af432e3abb5e42de12dae",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/template-asset-contract.test.ts.md": "ea86a98806483aae7fb71fb4e79106e1183a64338e9f42c11747d16fdc2085bf",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/template-catalog.ts.md": "35b741b154f17904564f24fad08bebe3d7c1a23e5bd47b70a6a2e4fa14271020"
+  },
+  "changedFromParent": {
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/coverage-ledger.test.ts.md": {
+      "before": "56b988934d62d95643e2cb7f20515531359c73733ce8e6ac1f4b8cc04ea7609e",
+      "after": "7404d1c87d8795e5b7304e4d31541c9f0fb83db4b697cf35934eeec152168db3"
+    },
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/coverage-ledger.ts.md": {
+      "before": "acd3ea9ae596a67faaf95c29e201bb7a471acb28d5da410a544f6270fa458860",
+      "after": "3b08f985f468111833339cae7d95745c333f399936607fa1329159a006e6976d"
+    },
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/semantic-module-demo.ts.md": {
+      "before": "44a5cf0f380a05e828ad2cc81e46e2e3bacdd6387e99885e958881ddf23cf771",
+      "after": "6e509f7b487a8f559ce32478a32ee6a95b597cd57e5af432e3abb5e42de12dae"
+    }
+  },
+  "findings": [],
+  "notRun": [
+    "product tests (bun test)",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "verificationNotes": [
+    "G0：17 源绑定脚本实算==MANIFEST==SCOPE；17 手册 hash 磁盘=MANIFEST=READY；MANIFEST a9b039f3…→READY ed5ca6fd…→DONE 链一致；ZIP 5d2bec84…（57668 B/20 条目）安全逐字节一致；before/ 3 篇==nb-16 stage 原字节；changes.diff 重放 3/3；FINDINGS-RESPONSE after-hash 3/3 与实算一致。",
+    "G2：修订逐 hunk 对冻结源复验成立；14 篇未变与 r0 QA verified 逐字节相同。",
+    "NOT_RUN 不变；哈希全部脚本生成。"
+  ]
+}

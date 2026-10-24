@@ -1,0 +1,139 @@
+{
+  "schema": "dsh-r07-independent-review/1",
+  "batch": "nb-124",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-03-20261023",
+  "reviewerSession": "docs-r07-qa-nb-03-20261023",
+  "batchVerdict": "accepted",
+  "generatedAtUtc": "2026-10-23T20:40:42Z",
+  "delivery": {
+    "sealId": "seal-b290758531a33481",
+    "zipSha256": "ab7677d5f1b49ffae9f75e02ab3f8bd47253a1f2950274a147d5d3a444e4bddd",
+    "manifestSha256": "6d3e685da9acc8f5726395b25293df75145b1caaf9929f40d87beac19519ed50",
+    "readySha256": "cef25ad9e2ac88effc39700eccf72f3981b2a456295cdf6cb633a62d7e0ce0d3",
+    "doneSha256": "ede0fb6700488dde9ff72f0cbadb0ea9c9873ab9bd49f55288054f5512797647",
+    "sealedAtUtc": "2026-10-23T20:38:40Z"
+  },
+  "gates": {
+    "G0": "pass — 10/10 blob+sha256+lines 对冻结树；manual sha256 三方一致；ZIP 13 entries 无穿越；sealId 重算 seal-b290758531a33481 一致。",
+    "G1": "pass — changes.diff 空树重放 10/10 字节一致；front-matter 11 字段 10/10；≥5 章节 10/10。",
+    "G2": "pass — 无 finding。test 计数 3 本全对（2/8/2；host-coverage 双口径如实：2 调用点/5 用例含表驱动循环展开说明）；符号表 5 本源全覆盖（0 missing）；关键语义抽验全真：window-controls（126px 单一真源/04090bbc 高 DPI 根因/app-region 不能 z-index 压/同 priority 先注册/整组消失=回归信号/历史债务字面量清单）、webgpu-isosurface（失败 null 回退 CPU/局部 any 自曝/256 降采样/全销毁/顶点溢出守卫）、wgsl（Marching Tetrahedra/绕序校正/atomic 溢出守卫/无直接测试如实）、use-cslab-isosurface（300ms 防抖/回退/竞态守卫）、todo-agent-prompt（runtime 工具名分流/快照仅降级/非真完成不勾 Todo）、use-session-setting-mutation（stale 不可成为权威/rollback）。"
+  },
+  "notRun": [
+    "bun test NOT_RUN（12 test 只读断言）",
+    "tsc/build NOT_RUN",
+    "GUI NOT_RUN",
+    "模型/产品调用 NOT_RUN"
+  ],
+  "counts": {
+    "files": 10,
+    "accepted": 10,
+    "revision_required": 0,
+    "findings": 0,
+    "optionalNotes": 0
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/renderer/lib/todo-agent-prompt.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/todo-agent-prompt.ts.md",
+      "sourceBlob": "8918d81ef019c77fb184823f48eec7302c4be850",
+      "sourceSha256": "fad67507dc457bb87d3a1b0c216bb3a6252bd99abc589118c470836c8b15fc4c",
+      "manualSha256": "74688041362c1af5fccb05119e9c2d2b4bb5e1656ab7c7e2826f79f2cbabd4bb",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/use-session-setting-mutation.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/use-session-setting-mutation.test.ts.md",
+      "sourceBlob": "b27f164c39af7bfb286abde936ad8d8452e0005d",
+      "sourceSha256": "20c09917506564439137e16d7e3913a30127bbe189f59bc830cf6f6f1fa692f0",
+      "manualSha256": "568ee83c9270c300f642c7e582fde08b44895ed374f5fb2091e14a9f0cd5da8c",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/use-session-setting-mutation.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/use-session-setting-mutation.ts.md",
+      "sourceBlob": "ab5a727c42ebd74e3fa1a4879a5da4d27fe2753e",
+      "sourceSha256": "1bd90c3797ce9330fbfd3e23e20fe438f9fc033e0e27d457c1d2b63548e2986a",
+      "manualSha256": "fa8b31f3e37fcfc171579e2e823a0f8a523be293826b75eeefe72c34920b458b",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/utils.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/utils.ts.md",
+      "sourceBlob": "8dff152c0aa673b605e8ac0d2d72208866b52413",
+      "sourceSha256": "fbb81bc6c329349f06f975433215ef934111f77372e8902e2d1d347fc29cfde1",
+      "manualSha256": "29cc86813451fffac553f88baef0413808fb3f9f398061b1f05227138d2bf9fa",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/webgpu/isosurface.wgsl",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/webgpu/isosurface.wgsl.md",
+      "sourceBlob": "e6617b22aae370728c286b10ab14b1f22323cc7a",
+      "sourceSha256": "18befc26bc584380d8be16698e47eecf171986ee3b0a8179d51825d2c3f68c73",
+      "manualSha256": "5b142a336caa42d016d6af4babaa9eb14d770a019cfb42c1bf1292cd07d90e4b",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/webgpu/use-cslab-isosurface.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/webgpu/use-cslab-isosurface.ts.md",
+      "sourceBlob": "886c8ea6ff600901ed15d8883a910fbed85562a5",
+      "sourceSha256": "77f37ca9bff53aee6aeab7fdacb7c46aa691698bb2bca30a12ccfd80cbf4d80c",
+      "manualSha256": "31890999297a35e079862a8f79ab1e8669f5a8b9b82c0b5d1f480da34e1da33f",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/webgpu/webgpu-isosurface.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/webgpu/webgpu-isosurface.ts.md",
+      "sourceBlob": "8543fe6d6d96f0c77c18e0792aa66d590d27faa7",
+      "sourceSha256": "d2c1e769ec0ff7ecc8727b733987f5dfc920bbaa8918fa5774c72de2cdf5cfc8",
+      "manualSha256": "0d59619b7c2b30d6233db213928c918bf3fd82c618f762838ca597490d307852",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/window-controls-host-coverage.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/window-controls-host-coverage.test.ts.md",
+      "sourceBlob": "420c65783ec177979e15146d92bb418c42c94b36",
+      "sourceSha256": "5b6969e3739dedf97018791c029107e1b1d10b2da15546f926b12dc478eeb0f5",
+      "manualSha256": "8b0e909887ca81ce1f3f936af537ff8b9e3b2ea876e349165968a8e925221058",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/window-controls-layout.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/window-controls-layout.test.ts.md",
+      "sourceBlob": "88b6b1cb4b70f06a46adb39d47d3c6bbc12f02d1",
+      "sourceSha256": "4f5a6502468dc3055629466428783d57d917c7f21749d0481afa82dc894a5d63",
+      "manualSha256": "2de5ebfc803f50799284d943934a07412ed83ba92acd6f034f93f6a2a9dd7dc7",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/lib/window-controls-layout.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/window-controls-layout.ts.md",
+      "sourceBlob": "991d3d090d52cce09b53b1399b9c9d78546a0779",
+      "sourceSha256": "b7596f6d7e4c302b24b24fd24df0ba49132c3347a078928df4eac21f3c4572c6",
+      "manualSha256": "5f69a788b165e21ec7097fc0340de5decc00e6cc9d05f24f2cabcead84bc007b",
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/todo-agent-prompt.ts.md": "74688041362c1af5fccb05119e9c2d2b4bb5e1656ab7c7e2826f79f2cbabd4bb",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/use-session-setting-mutation.test.ts.md": "568ee83c9270c300f642c7e582fde08b44895ed374f5fb2091e14a9f0cd5da8c",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/use-session-setting-mutation.ts.md": "fa8b31f3e37fcfc171579e2e823a0f8a523be293826b75eeefe72c34920b458b",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/utils.ts.md": "29cc86813451fffac553f88baef0413808fb3f9f398061b1f05227138d2bf9fa",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/webgpu/isosurface.wgsl.md": "5b142a336caa42d016d6af4babaa9eb14d770a019cfb42c1bf1292cd07d90e4b",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/webgpu/use-cslab-isosurface.ts.md": "31890999297a35e079862a8f79ab1e8669f5a8b9b82c0b5d1f480da34e1da33f",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/webgpu/webgpu-isosurface.ts.md": "0d59619b7c2b30d6233db213928c918bf3fd82c618f762838ca597490d307852",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/window-controls-host-coverage.test.ts.md": "8b0e909887ca81ce1f3f936af537ff8b9e3b2ea876e349165968a8e925221058",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/window-controls-layout.test.ts.md": "2de5ebfc803f50799284d943934a07412ed83ba92acd6f034f93f6a2a9dd7dc7",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/window-controls-layout.ts.md": "5f69a788b165e21ec7097fc0340de5decc00e6cc9d05f24f2cabcead84bc007b"
+  }
+}

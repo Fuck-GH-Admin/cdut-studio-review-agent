@@ -1,0 +1,244 @@
+{
+  "schema": "dsh-r07-independent-review/1",
+  "batch": "nb-91-r1",
+  "revisionOf": "nb-91",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-03-20261023",
+  "reviewerSession": "docs-r07-qa-nb-03-20261023",
+  "batchVerdict": "accepted",
+  "generatedAtUtc": "2026-10-23T20:48:07Z",
+  "delivery": {
+    "sealId": "seal-229c1f182c83b019",
+    "zipSha256": "f656c11ff170ce5cfec6a030b6c87c10b59817dce9a36608b289ff44c18b9358",
+    "manifestSha256": "f488efb5683862877888782d494aedb794bf634f5a8ee522fd36e9c3f496ce1e",
+    "readySha256": "8a75affcc141176dd4be9ffa78525339896ef94fb2ff65136fcce624b1ca381e",
+    "doneSha256": "8b79848814783750b16b48f3d213a7521b757044793005e18c1b725ff455f32b",
+    "sealedAtUtc": "2026-10-23T20:45:14Z"
+  },
+  "gates": {
+    "G0": "pass — 18/18 blob+sha256+lines 对冻结树；manual sha256 三方一致；sealId 重算 seal-229c1f182c83b019 一致。",
+    "G1": "pass — FINDINGS-RESPONSE 触发为 reviews/nb-91/RESULT.md（NB91-SEM-01/02+NOTE-01 低危合并一次修）并逐条回源核验；changes.diff 17 变更行逐行一致；15/18 与 nb-91 逐字节一致。",
+    "G2": "pass — SEM-01 合并不变式三则/SEM-02 goal_result 剥离+图片标记/NOTE-01 Conditional Hook 全闭合；变更恰为 3 本对应对象。"
+  },
+  "notRun": [
+    "bun test NOT_RUN",
+    "tsc/build NOT_RUN",
+    "GUI NOT_RUN",
+    "模型/产品调用 NOT_RUN"
+  ],
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "findings": 3,
+    "optionalNotes": 0
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/renderer/components/agent/ActiveTasksBar.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ActiveTasksBar.tsx.md",
+      "sourceBlob": "0df74474f5f97b83fb2b1de28be7f81f11772faa",
+      "sourceSha256": "9de8d483356b2fef06fdcd5b549ddec9d9e861c54a48d23fb07b9f438bb08e7d",
+      "manualSha256": "51d83b7f8333efdb1230c469cbc125ac8442bbcf68f5d867429070f6d009f948",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/AgentHeader.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AgentHeader.tsx.md",
+      "sourceBlob": "f0e2e8624bba02dea173bb0b58363afde5b1ffa6",
+      "sourceSha256": "6c9ec694e29ea291a2faf8e57602a9d10394c7a2049b222051e949f3a13501ec",
+      "manualSha256": "cdd550c420e090ad743708954a45e66f01b0834766e7c1e28913d2dcb283ee8a",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/AgentHistorySelectionLayer.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AgentHistorySelectionLayer.test.ts.md",
+      "sourceBlob": "1c07d5fa687b90d21ed3ef86a5083fd8f83e3453",
+      "sourceSha256": "413b89745754e47fcfcec2b6eecc9c0402edb834aa6edfbee2bfb6f04427b566",
+      "manualSha256": "4d54dedb3524ef326a76ebfb42a3d129dbd2e6fa4d3e3ebfb52000bfb38bd768",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/AgentHistorySelectionLayer.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AgentHistorySelectionLayer.tsx.md",
+      "sourceBlob": "3a3cf8a3959c4de13895f94b4a7210c864c3931e",
+      "sourceSha256": "e36233384823788e30f02ed81b5ea8407f36eba88ec622c4f09a17132d91d379",
+      "manualSha256": "5506a4a85325dd2c0cdea93373955bf5354629714e281aed178a6cf2683f6afb",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/AgentImageGenerationCard.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AgentImageGenerationCard.tsx.md",
+      "sourceBlob": "b9f792c2dd48020e6bbd6812e7712e22fb6f138f",
+      "sourceSha256": "8780407981506865c03816a5cb3fc48698812efe6af6c6b61768b66d2eca6c85",
+      "manualSha256": "778b08b0d29f5e0ad19507848e61aac6810345b6fd6854b911395963db6ec538",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/AgentMessageQueue.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AgentMessageQueue.tsx.md",
+      "sourceBlob": "f5d22748515d3d824e56082653f757b38032b02d",
+      "sourceSha256": "059fb724d9a4ba13863bb63abf9a690e725df97d7f18a0e636ce66123619e502",
+      "manualSha256": "137361d0fa4083ef789312e49ecaa7c30523d5569b3babb02fb57bf4e11fb1f7",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/AgentMessages.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AgentMessages.tsx.md",
+      "sourceBlob": "1cbc3293b3f177ba73991ed803feed0c8a4ea693",
+      "sourceSha256": "a46945f31c6df207ef6feafdf3c2fd72a23a097ea322c1ccde7d6cb9d71ca70a",
+      "manualSha256": "16b98b8b57f871cf1cb968cb780b8e800b74f1a030c552bbc17604c4a6cae632",
+      "verdict": "accepted",
+      "findings": [
+        {
+          "id": "NB91-SEM-01",
+          "severity": "low",
+          "claim": "§3.2b 新增合并不变式三则（mergeMessagesByUuid UUID 唯一身份/有序尾部重叠/禁内容全局去重）+ resolvedBlob 覆盖层/suppressAgentRunning/historicalTaskSubjects 防雪崩——与 action 全一致，闭合。",
+          "sourceEvidence": "r1 stage↔before 逐字节比对（changes.diff 17 变更行逐行一致）+ grep 复核（合并不变式三则/resolvedBlob/suppressAgentRunning/historicalTaskSubjects/雪崩/goal_result 剥离/图片标记/Conditional Hook 全命中）+ FINDINGS-RESPONSE 回源行号核（:43/:654/:676/:682-691/:699/:737/:878/:770/:769）",
+          "action": "已闭合，无需再改。"
+        }
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/AgentPlaceholder.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AgentPlaceholder.tsx.md",
+      "sourceBlob": "6cd7b582b3aae6ff6d7fd4bd759c39725c2d733e",
+      "sourceSha256": "58d2e2809e829d226ec60bf0ab429a65cbc198367a4fa984c35affc2900d4ee9",
+      "manualSha256": "c473f70ba79fd341758687e5f58997eb75cdc34db9f3b9bee22d7838daeb7f78",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/AskUserBanner.test.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AskUserBanner.test.tsx.md",
+      "sourceBlob": "dbbc2ce0fdce482772281431cda7cad23a399f4a",
+      "sourceSha256": "902b3c79a07236feb64f184de0b0d6c9d9ba708dabd1ec5be2403d10cb6ef459",
+      "manualSha256": "1677ccfcc5ee1b1207076ddf091e5fd613c00f3ac02a25f253698ab7dc3615ec",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/AskUserBanner.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AskUserBanner.tsx.md",
+      "sourceBlob": "cf4433d55d7adb246c417c9b8a05dc30b5f71184",
+      "sourceSha256": "584cbb30cf68c1d8ff8835ff06ca866a40c379bfdb9334a2a1a532b2e2ff6116",
+      "manualSha256": "33a0e180fac4babfe0e98487dc2c80392c85c7d03ac91e77d7d757a04c795359",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/BackgroundTaskControls.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/BackgroundTaskControls.tsx.md",
+      "sourceBlob": "da0005fca69edcaf2cf35b1b8dd863328ed7fa50",
+      "sourceSha256": "151d2ec3f5a4bd519f7346453cf58b3050c29288bb6227eb82c04a65dafd1c72",
+      "manualSha256": "a767f4582a52886b721e1e263c3d36feab53c6fae612f1c271fad3351fc4093a",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/BackgroundTasksPanel.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/BackgroundTasksPanel.tsx.md",
+      "sourceBlob": "8da35e4646e0d5494f61adac8f85ecb2609c6557",
+      "sourceSha256": "e0876e7998d1dad5a5e767041db7b0a74acc98fc73423f1cb61d37014c0056d8",
+      "manualSha256": "b064f59c4186dedbed80a07cd86432d9db8194bfe6fcf9d899d00864eace60b8",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/CollapsedWorkspacePopover.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/CollapsedWorkspacePopover.tsx.md",
+      "sourceBlob": "926ccdd8d49c4ac16069f4b081173b89ee93ed64",
+      "sourceSha256": "de6e764b45fb4ec82b9a8457c0670642c689ea62da44afe119ffc3f845f48e78",
+      "manualSha256": "05db93e003c46e8bcf842610e1247da6202b7a0a65f9511a5b27bdaba1dd1dd0",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/ContentBlock.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ContentBlock.tsx.md",
+      "sourceBlob": "458b4768ee0299d06424d28fa2e76fda1818cfea",
+      "sourceSha256": "8cfb3b4eb1c2583cd566113a8b1522eb43c9b3f80f528fa202f2e66d51109440",
+      "manualSha256": "b18b068f7103401ae92831efec223979bbcb57200bdb4fd5b075d508edd4c3d8",
+      "verdict": "accepted",
+      "findings": [
+        {
+          "id": "NB91-SEM-02",
+          "severity": "low",
+          "claim": "补 `<goal_result>` 机器协议块剥离（只用于主进程解析不做展示，:770 口径）+ 本地图片标记兼容——闭合。",
+          "sourceEvidence": "r1 stage↔before 逐字节比对（changes.diff 17 变更行逐行一致）+ grep 复核（合并不变式三则/resolvedBlob/suppressAgentRunning/historicalTaskSubjects/雪崩/goal_result 剥离/图片标记/Conditional Hook 全命中）+ FINDINGS-RESPONSE 回源行号核（:43/:654/:676/:682-691/:699/:737/:878/:770/:769）",
+          "action": "已闭合，无需再改。"
+        }
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/ContextMemoryToggleButton.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ContextMemoryToggleButton.tsx.md",
+      "sourceBlob": "9b7d9af56cc1154ca2e773540f97389bcbffdb3a",
+      "sourceSha256": "13c51c075ef0cf9371f2e6e469bfee69a77152bd16528d650adf04ff98e9cb7d",
+      "manualSha256": "b4a58bcc284e1d495246fd548e004bb2c637e198f236f20dfff982fc8a762c79",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/ContextUsageBadge.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ContextUsageBadge.tsx.md",
+      "sourceBlob": "05e084568c5f8ebc4b758077bbccff997b67e74e",
+      "sourceSha256": "6267a12369630ef2ba32cdef1d2363908e195b9de85254b32aa2da755b50ebba",
+      "manualSha256": "b3daae3c0b67076f4dbb82f2393555b662d5737ed1df25bc45fe121198d1c131",
+      "verdict": "accepted",
+      "findings": [
+        {
+          "id": "NB91-NOTE-01",
+          "severity": "low",
+          "claim": "顺带闭合：ageText 普通变量防 Conditional Hook 注记（RESPONSE 声明低危合并一次修）——闭合。",
+          "sourceEvidence": "r1 stage↔before 逐字节比对（changes.diff 17 变更行逐行一致）+ grep 复核（合并不变式三则/resolvedBlob/suppressAgentRunning/historicalTaskSubjects/雪崩/goal_result 剥离/图片标记/Conditional Hook 全命中）+ FINDINGS-RESPONSE 回源行号核（:43/:654/:676/:682-691/:699/:737/:878/:770/:769）",
+          "action": "已闭合，无需再改。"
+        }
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/CsLabToolTrustBadge.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/CsLabToolTrustBadge.tsx.md",
+      "sourceBlob": "ab656c4b6e25dfbb47a9c43e6e7f04509a38fd46",
+      "sourceSha256": "eeade4b1e7a066c498f2cdf9421520a1cb225573625432b2f6d0a14937d7058d",
+      "manualSha256": "f67f18aff57e6e01fe0a7647f6ab3f6e908a776b50af83d5fdca18336965b29e",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/agent/ExitPlanModeBanner.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ExitPlanModeBanner.tsx.md",
+      "sourceBlob": "e04f2960245ecfc03369c2ad171f6487c153ae8a",
+      "sourceSha256": "0e3e51256350757db47e244b0c1a302278c2a0f4524c4d02670086ebb11cf67c",
+      "manualSha256": "89e38f44742fddb319c91b73a4b8ad6f27f469cdd88c7026854565859ccfccb2",
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ActiveTasksBar.tsx.md": "51d83b7f8333efdb1230c469cbc125ac8442bbcf68f5d867429070f6d009f948",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AgentHeader.tsx.md": "cdd550c420e090ad743708954a45e66f01b0834766e7c1e28913d2dcb283ee8a",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AgentHistorySelectionLayer.test.ts.md": "4d54dedb3524ef326a76ebfb42a3d129dbd2e6fa4d3e3ebfb52000bfb38bd768",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AgentHistorySelectionLayer.tsx.md": "5506a4a85325dd2c0cdea93373955bf5354629714e281aed178a6cf2683f6afb",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AgentImageGenerationCard.tsx.md": "778b08b0d29f5e0ad19507848e61aac6810345b6fd6854b911395963db6ec538",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AgentMessageQueue.tsx.md": "137361d0fa4083ef789312e49ecaa7c30523d5569b3babb02fb57bf4e11fb1f7",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AgentMessages.tsx.md": "16b98b8b57f871cf1cb968cb780b8e800b74f1a030c552bbc17604c4a6cae632",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AgentPlaceholder.tsx.md": "c473f70ba79fd341758687e5f58997eb75cdc34db9f3b9bee22d7838daeb7f78",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AskUserBanner.test.tsx.md": "1677ccfcc5ee1b1207076ddf091e5fd613c00f3ac02a25f253698ab7dc3615ec",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/AskUserBanner.tsx.md": "33a0e180fac4babfe0e98487dc2c80392c85c7d03ac91e77d7d757a04c795359",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/BackgroundTaskControls.tsx.md": "a767f4582a52886b721e1e263c3d36feab53c6fae612f1c271fad3351fc4093a",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/BackgroundTasksPanel.tsx.md": "b064f59c4186dedbed80a07cd86432d9db8194bfe6fcf9d899d00864eace60b8",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/CollapsedWorkspacePopover.tsx.md": "05db93e003c46e8bcf842610e1247da6202b7a0a65f9511a5b27bdaba1dd1dd0",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ContentBlock.tsx.md": "b18b068f7103401ae92831efec223979bbcb57200bdb4fd5b075d508edd4c3d8",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ContextMemoryToggleButton.tsx.md": "b4a58bcc284e1d495246fd548e004bb2c637e198f236f20dfff982fc8a762c79",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ContextUsageBadge.tsx.md": "b3daae3c0b67076f4dbb82f2393555b662d5737ed1df25bc45fe121198d1c131",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/CsLabToolTrustBadge.tsx.md": "f67f18aff57e6e01fe0a7647f6ab3f6e908a776b50af83d5fdca18336965b29e",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ExitPlanModeBanner.tsx.md": "89e38f44742fddb319c91b73a4b8ad6f27f469cdd88c7026854565859ccfccb2"
+  }
+}

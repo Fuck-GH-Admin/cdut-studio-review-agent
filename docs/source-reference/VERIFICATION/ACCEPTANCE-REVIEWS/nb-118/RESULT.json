@@ -1,0 +1,250 @@
+{
+ "schema": "dsh-r07-review-result/2",
+ "batch": "nb-118",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-02-20261024",
+ "reviewerSession": "docs-r07-qa-extra-02-20261024",
+ "authorSessionInSealChain": "docs-r07-author-nb-09-20261023",
+ "reviewerSessionInSealChain": "docs-r07-qa-nb-09-20261023",
+ "reviewedAtUtc": "2026-10-23T21:40:00Z",
+ "sealId": "seal-75060440ee5e7fe9",
+ "sealedAtUtc": "2026-10-23T19:42:35Z",
+ "batchVerdict": "revision_required",
+ "counts": {
+  "files": 18,
+  "accepted": 18,
+  "revision_required": 0,
+  "unknown": 0,
+  "blocking": 1,
+  "nonBlocking": 1,
+  "info": 0
+ },
+ "gates": {
+  "G0": "FAIL",
+  "G1": "PASS_WITH_NOTES",
+  "G2": "PASS_WITH_NOTES",
+  "note": "G0 mechanical all green except D0 chain author/reviewer mislabel (B-01); G1 self-check diffs fixed pre-seal, only aggregate test count wrong (N-01 errata); G2 vs independent pre-read + re-source: 18/18 manuals factually correct (quirks recorded, cross-batch boundaries honest, per-file counts/arithmetic consistent)"
+ },
+ "files": [
+  {
+   "path": "apps/electron/src/renderer/lib/agent-running-indicator.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-running-indicator.ts.md",
+   "sourceBlob": "3fa8466b55f75f64f7ceaa15f2a1025797ffde91",
+   "sourceSha256": "b2f811b3087c2353147ff3d7d32af5ea1c8b1a46f4995ab1744a3d5a7e37b30c",
+   "manualSha256": "87f2bee36f99fbfb306eb4010fc831be5d640e7dd242285feb9a2d3c3e0edaa7",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-session-list.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-session-list.test.ts.md",
+   "sourceBlob": "65b796d5adc49277133124472de81aebd94faa93",
+   "sourceSha256": "3b42442eb31903d0f5f045e24a3b64d9e0da03e2f7d0e0a52301323be73a20b1",
+   "manualSha256": "ed04d81ea795d85988e6a3720b2349c7e9d7116eaf4203da4ca51f83827ec78b",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-session-list.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-session-list.ts.md",
+   "sourceBlob": "8817619d7756dfee98397a2500e388152bcf9f9c",
+   "sourceSha256": "1f0146e8f602fbd74b1d3a1c2ad448fe78a0d9e7a787b32a02ff5092c7b2e889",
+   "manualSha256": "461585de3fbaea8a9cb21476c824618adff43539bf4b9c77bd0136244fbe5fe2",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-stream-restore-gate.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-stream-restore-gate.test.ts.md",
+   "sourceBlob": "b5c41a797addccdb1b2694e0e995bf681b16e341",
+   "sourceSha256": "4ab70c417fe19777ca5167f2459a4c31465fd55a273f8a4c9602015f1a0e2b40",
+   "manualSha256": "c2b35c8da78e460c05cce93b88eac09da284b564f8896bf91d812e4c56c52a77",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-stream-restore-gate.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-stream-restore-gate.ts.md",
+   "sourceBlob": "231130376037fce70c1f81272b293c4a0546c244",
+   "sourceSha256": "e0aba01f02afb86adba5471bce6cec25d382118147ca4b3025d2236bd30faf65",
+   "manualSha256": "b46706ce79d4bfec888935882b3c1754703a39d5d20d8012c752da030d528f21",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-stream-state-cleanup.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-stream-state-cleanup.test.ts.md",
+   "sourceBlob": "0a9ee01a64197f85c19c2ec73cbf5152d31ecf43",
+   "sourceSha256": "e28e3063f0a4c3fc700061f956d8d58744f438f5dbfc04a6dd7319461bc7dc22",
+   "manualSha256": "9d8abbe03bad5dcbb4510a1b3cd5dc6388d4989ab737ab191c04773977602d17",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-stream-state-cleanup.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-stream-state-cleanup.ts.md",
+   "sourceBlob": "0e6818cdff247d837060a367379a31400acfd1d6",
+   "sourceSha256": "5771193c0de10927f37a0539dada0a4ff2083ec9add1b8f7cde194287e58fefe",
+   "manualSha256": "43e5c6774fa9e4fc5a9cfd38d7aecfbdbb4e39265de3ec3c90e4e6e59078580f",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-tab-access.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-tab-access.test.ts.md",
+   "sourceBlob": "d86f08a27e6f94729fb6693a115589d28c473ba7",
+   "sourceSha256": "d9bbe646efe911019e8e80969986b52ad9af31eec68154d0ea9cbc48a48f98c8",
+   "manualSha256": "3371cf3886bd49661ff7d113e3845b16aa415f96c9e52d12fdb17191bb38941d",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/agent-tab-access.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-tab-access.ts.md",
+   "sourceBlob": "d1156071042430ae728015f8665747c4672f2127",
+   "sourceSha256": "fe64afd0d3710b74474c582dd78881f996a88aa0d6b25d2851da847fd36dbdd2",
+   "manualSha256": "be73a35be5ca59e09b364c7f8be2ecc3389fc1314defe9083da9e5b253e02504",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/banner-key-scope.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/banner-key-scope.ts.md",
+   "sourceBlob": "2c15a07bbdcab80da56f7a34118a6a0acc290787",
+   "sourceSha256": "9d20fa90ddc75acd5d44d71ac49e22f094ab57cbbc11241e393f43f1faa453e8",
+   "manualSha256": "23cfecb4c151994992d55b672493422afcfb5d3d62ca1e45ae2cf3f2cf663588",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/beijing-greeting.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/beijing-greeting.ts.md",
+   "sourceBlob": "e3a331d61a4047711df56672948eb148dee2dc5e",
+   "sourceSha256": "523466dd1f2bd77f4e59910742ca9f3a2100bd4be7cc763af74a853a9616cdb7",
+   "manualSha256": "fc4b8ba4ab09ccd3519ba9980e89bb77df61e96f3305aaa8e9cf33d3c4899ac2",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/browser-auto-open.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/browser-auto-open.test.ts.md",
+   "sourceBlob": "a8e5d5ddebe5b7648f2e2df53b6d85307ad7e318",
+   "sourceSha256": "d65bba67075203c43323e2877074286886a9e972d91a46195915a474fad490e7",
+   "manualSha256": "5059faa03a574d92ee8a90ea3b9479715190bc6ac854203d0e0c3a0b8d58a5be",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/browser-auto-open.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/browser-auto-open.ts.md",
+   "sourceBlob": "3df0c6ffc8578a7ba892ff23059b15bdbee00467",
+   "sourceSha256": "724f76dcfc1d95b83c0dde46ec5819be0343aff76d991bcdf74fd6ff933b8c70",
+   "manualSha256": "110063456f156d62010af9b395c5448a223385feee72ce26e6955d4b74c229bf",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/browser-tab.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/browser-tab.test.ts.md",
+   "sourceBlob": "071c7d5f1276a085fcbb602a9e1ccde925eb2408",
+   "sourceSha256": "105c9e29cff241150ac6539017dc6515acd1aac7147a43c6e7a756dc35eb5165",
+   "manualSha256": "be552c6417e611f142b5f201b7fe3339f26ff0bf7e9364d6d4ebba6c28e1cac9",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/browser-tab.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/browser-tab.ts.md",
+   "sourceBlob": "8a3b33c05b16324768c4c667bd5028b1d947833b",
+   "sourceSha256": "bba52b6f2b61b97fbbb855b6b689e4a2da1d25740c322370e89d01423df0b9e5",
+   "manualSha256": "4b4e4a4f07884e91dbe90c01c2d743551c1c42dc2dd468a88a85da21256fd78a",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/capabilities-toast.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/capabilities-toast.ts.md",
+   "sourceBlob": "eb9114e901a305435dece6cd077d2dc61f47f582",
+   "sourceSha256": "508f75f3f5441ccae17dfa5e406ca383ec661de9bec0968a57cedee81ff4f574",
+   "manualSha256": "2881ae0a54a01f9034d77eb7cc886858d4a809976888f21504041df9155f140e",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/cdut-ai-class.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/cdut-ai-class.ts.md",
+   "sourceBlob": "fe47ce174405fdc5357cdb9c71f0b152c9778a60",
+   "sourceSha256": "fb546043d7f07ff70e7cb4a566d3af4376cc3c0e472ad9cc75db9962a572db30",
+   "manualSha256": "84e5da564af174c2721146c0c2dd510704a71c32e6c19fbfef8c0abe7def400a",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/lib/channel-health-aggregation.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/channel-health-aggregation.test.ts.md",
+   "sourceBlob": "3ab16c0bd7d2c6d5e8827e3cc570fca03862bfcd",
+   "sourceSha256": "f4ff5843dd38b3f6bb0cc83ba3ed2998cfec9a386091d2e779950f5d6b5fca60",
+   "manualSha256": "641f8fd33a67ccbd41fd255749764a32e9ebf812a2847e5373a42f330d259642",
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-running-indicator.ts.md": "87f2bee36f99fbfb306eb4010fc831be5d640e7dd242285feb9a2d3c3e0edaa7",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-session-list.test.ts.md": "ed04d81ea795d85988e6a3720b2349c7e9d7116eaf4203da4ca51f83827ec78b",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-session-list.ts.md": "461585de3fbaea8a9cb21476c824618adff43539bf4b9c77bd0136244fbe5fe2",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-stream-restore-gate.test.ts.md": "c2b35c8da78e460c05cce93b88eac09da284b564f8896bf91d812e4c56c52a77",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-stream-restore-gate.ts.md": "b46706ce79d4bfec888935882b3c1754703a39d5d20d8012c752da030d528f21",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-stream-state-cleanup.test.ts.md": "9d8abbe03bad5dcbb4510a1b3cd5dc6388d4989ab737ab191c04773977602d17",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-stream-state-cleanup.ts.md": "43e5c6774fa9e4fc5a9cfd38d7aecfbdbb4e39265de3ec3c90e4e6e59078580f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-tab-access.test.ts.md": "3371cf3886bd49661ff7d113e3845b16aa415f96c9e52d12fdb17191bb38941d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-tab-access.ts.md": "be73a35be5ca59e09b364c7f8be2ecc3389fc1314defe9083da9e5b253e02504",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/banner-key-scope.ts.md": "23cfecb4c151994992d55b672493422afcfb5d3d62ca1e45ae2cf3f2cf663588",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/beijing-greeting.ts.md": "fc4b8ba4ab09ccd3519ba9980e89bb77df61e96f3305aaa8e9cf33d3c4899ac2",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/browser-auto-open.test.ts.md": "5059faa03a574d92ee8a90ea3b9479715190bc6ac854203d0e0c3a0b8d58a5be",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/browser-auto-open.ts.md": "110063456f156d62010af9b395c5448a223385feee72ce26e6955d4b74c229bf",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/browser-tab.test.ts.md": "be552c6417e611f142b5f201b7fe3339f26ff0bf7e9364d6d4ebba6c28e1cac9",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/browser-tab.ts.md": "4b4e4a4f07884e91dbe90c01c2d743551c1c42dc2dd468a88a85da21256fd78a",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/capabilities-toast.ts.md": "2881ae0a54a01f9034d77eb7cc886858d4a809976888f21504041df9155f140e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/cdut-ai-class.ts.md": "84e5da564af174c2721146c0c2dd510704a71c32e6c19fbfef8c0abe7def400a",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/channel-health-aggregation.test.ts.md": "641f8fd33a67ccbd41fd255749764a32e9ebf812a2847e5373a42f330d259642"
+ },
+ "allManualHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-running-indicator.ts.md": "87f2bee36f99fbfb306eb4010fc831be5d640e7dd242285feb9a2d3c3e0edaa7",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-session-list.test.ts.md": "ed04d81ea795d85988e6a3720b2349c7e9d7116eaf4203da4ca51f83827ec78b",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-session-list.ts.md": "461585de3fbaea8a9cb21476c824618adff43539bf4b9c77bd0136244fbe5fe2",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-stream-restore-gate.test.ts.md": "c2b35c8da78e460c05cce93b88eac09da284b564f8896bf91d812e4c56c52a77",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-stream-restore-gate.ts.md": "b46706ce79d4bfec888935882b3c1754703a39d5d20d8012c752da030d528f21",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-stream-state-cleanup.test.ts.md": "9d8abbe03bad5dcbb4510a1b3cd5dc6388d4989ab737ab191c04773977602d17",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-stream-state-cleanup.ts.md": "43e5c6774fa9e4fc5a9cfd38d7aecfbdbb4e39265de3ec3c90e4e6e59078580f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-tab-access.test.ts.md": "3371cf3886bd49661ff7d113e3845b16aa415f96c9e52d12fdb17191bb38941d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/agent-tab-access.ts.md": "be73a35be5ca59e09b364c7f8be2ecc3389fc1314defe9083da9e5b253e02504",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/banner-key-scope.ts.md": "23cfecb4c151994992d55b672493422afcfb5d3d62ca1e45ae2cf3f2cf663588",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/beijing-greeting.ts.md": "fc4b8ba4ab09ccd3519ba9980e89bb77df61e96f3305aaa8e9cf33d3c4899ac2",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/browser-auto-open.test.ts.md": "5059faa03a574d92ee8a90ea3b9479715190bc6ac854203d0e0c3a0b8d58a5be",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/browser-auto-open.ts.md": "110063456f156d62010af9b395c5448a223385feee72ce26e6955d4b74c229bf",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/browser-tab.test.ts.md": "be552c6417e611f142b5f201b7fe3339f26ff0bf7e9364d6d4ebba6c28e1cac9",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/browser-tab.ts.md": "4b4e4a4f07884e91dbe90c01c2d743551c1c42dc2dd468a88a85da21256fd78a",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/capabilities-toast.ts.md": "2881ae0a54a01f9034d77eb7cc886858d4a809976888f21504041df9155f140e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/cdut-ai-class.ts.md": "84e5da564af174c2721146c0c2dd510704a71c32e6c19fbfef8c0abe7def400a",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/lib/channel-health-aggregation.test.ts.md": "641f8fd33a67ccbd41fd255749764a32e9ebf812a2847e5373a42f330d259642"
+ },
+ "findings": [
+  {
+   "id": "NB-118-B-01",
+   "severity": "blocking",
+   "scope": "batch(D0 chain)",
+   "claim": "READY/MANIFEST/DONE author/reviewer mislabeled as pre-reassignment sessions (docs-r07-author-nb-09-20261023 / docs-r07-qa-nb-09-20261023), contradicting team JSON, START/STATUS and 18 frontmatters (extra-02); root cause stale SCOPE session fields copied by seal tool (all 6 sealed batches of this group hit)",
+   "sourceEvidence": "manager/teams/author-extra-02.json; deliveries/nb-118/{START,STATUS}.json; MANIFEST/READY/DONE fields; compare deliveries/nb-132",
+   "action": "open deliveries/nb-118-r1 reseal (manual bytes unchanged), chain fields -> actual sessions; SUPERSEDED-BY keeps old seal; QA hash re-verify"
+  },
+  {
+   "id": "NB-118-N-01",
+   "severity": "minor",
+   "scope": "UNVERIFIED.md section 1 (G1 evidence)",
+   "claim": "UNVERIFIED aggregate test count '77' wrong: per-file counts (24/5/6/11/4/6/3) all correct, in-batch total 59 declarations (+3 out-of-batch indirect agent-running-indicator = 62 as parenthetical implies); 77 unexplained",
+   "sourceEvidence": "QA mechanical per-file grep counts; per-manual count lines all correct",
+   "action": "errata/rN fix aggregate count -> 59 in-batch declarations / 62 incl. out-of-batch indirect; known count error must eventually close"
+  }
+ ]
+}

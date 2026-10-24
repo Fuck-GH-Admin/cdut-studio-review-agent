@@ -1,0 +1,45 @@
+{
+  "schema": "dsh-r07-review-done/1",
+  "batch": "nb-06-r1",
+  "revisionOf": "nb-06",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "sealId": "seal-5bc74f4b630910a5",
+  "reviewedAtUtc": "2026-10-23T16:55:00Z",
+  "batchVerdict": "accepted",
+  "fileVerdicts": {
+    "apps/electron/src/renderer/atoms/agent-atoms.ts": "accepted",
+    "apps/electron/src/renderer/atoms/longterm-memory-atoms.ts": "accepted",
+    "apps/electron/src/renderer/components/agent/AgentView.tsx": "accepted",
+    "apps/electron/src/renderer/components/agent/ContextModeToggleButton.tsx": "accepted",
+    "apps/electron/src/renderer/components/settings/AgentSettings.tsx": "accepted",
+    "apps/electron/src/renderer/components/settings/LongTermMemoryView.tsx": "accepted",
+    "apps/electron/src/renderer/components/settings/SettingsDialog.tsx": "accepted"
+  },
+  "counts": {
+    "files": 7,
+    "accepted": 7,
+    "revision_required": 0,
+    "unknown": 0,
+    "findings": 1
+  },
+  "findingsIndex": [
+    "NB06R1-L1"
+  ],
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass_with_findings"
+  },
+  "runStatus": "NOT_RUN",
+  "artifacts": [
+    "reviews/nb-06-r1/RESULT.json",
+    "reviews/nb-06-r1/RESULT.md",
+    "reviews/nb-06-r1/REVIEWED-HASHES.json",
+    "handoffs/nb-06-r1-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-06-r1-REVIEW-TO-LEAD.md"
+  ],
+  "mergeRule": "全 7 篇 acceptedHashes 可合；NB06R1-L1 入 ACCEPTED-ERRATA G4 前关闭；父批 nb-06 D0 与字节保留不动。",
+  "note": "已 seal D0 不回写；补充另开文件。"
+}

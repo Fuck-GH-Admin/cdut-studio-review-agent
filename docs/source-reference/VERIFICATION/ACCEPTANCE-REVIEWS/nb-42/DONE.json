@@ -1,0 +1,92 @@
+{
+ "schema": "dsh-r07-qa-done/1",
+ "batch": "nb-42",
+ "id": "NB-42",
+ "revisionOf": null,
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewRoot": "reviews/nb-42",
+ "reviewedAtUtc": "2026-10-23T21:35:00Z",
+ "status": "REVIEW_COMPLETE_REVISION_REQUIRED",
+ "batchVerdict": "revision_required",
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PARTIAL",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 13,
+  "revision_required": 5,
+  "unknown": 0
+ },
+ "acceptedManuals": 13,
+ "acceptedHashesCount": 13,
+ "revisionRequiredManuals": {
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/types.ts.md": [
+   "F-01"
+  ],
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/graph-state.ts.md": [
+   "F-02"
+  ],
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/project-meta.ts.md": [
+   "F-03"
+  ],
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/index.ts.md": [
+   "F-04"
+  ],
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/project-core.test.ts.md": [
+   "F-05"
+  ]
+ },
+ "findingsSummary": {
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/types.ts.md": [
+   "F-01"
+  ],
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/graph-state.ts.md": [
+   "F-02"
+  ],
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/project-meta.ts.md": [
+   "F-03"
+  ],
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/index.ts.md": [
+   "F-04"
+  ],
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/project-core.test.ts.md": [
+   "F-05"
+  ]
+ },
+ "batchFindings": [
+  "M-01",
+  "M-02"
+ ],
+ "resultSha256": "e53f08cfcf84cf7966a268acf3f5888301748b288a47297e45791ef81d7a9001",
+ "reviewedHashesSha256": "fc85cd3834153ce86c73729c686c7b02de126cd02795cc2d52a9b5429a0e73c5",
+ "zip": {
+  "path": "deliveries/nb-42/R07-nb-42-05fb2565.zip",
+  "sha256": "590f7af11ca9c6c829de5cd1adc607f17cd15ab9caa42a68971b00bf79fcdf6d",
+  "entries": 21,
+  "note": "18 手册+MANIFEST+2 mechanical TSV；不含 READY/DONE（v2）；无穿越/0 mismatch"
+ },
+ "sealId": "seal-c54eec989385645b",
+ "artifacts": [
+  "reviews/nb-42/RESULT.json",
+  "reviews/nb-42/RESULT.md",
+  "reviews/nb-42/REVIEWED-HASHES.json",
+  "reviews/nb-42/DONE.json",
+  "handoffs/nb-42-REVIEW-TO-AUTHOR.md",
+  "handoffs/nb-42-REVIEW-TO-LEAD.md"
+ ],
+ "priorReviewsUntouched": true,
+ "parentPreserved": null,
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "real model/network"
+ ],
+ "writtenOnlyIn": "reviews/nb-42 + handoffs；未写 deliveries/inventory/manager/candidate/全局 FILES/MANIFEST",
+ "next": "作者开 nb-42-r1 修 F-01..F-05（5 篇计数/归属）；lead 按 13 个 acceptedHashes 合入"
+}

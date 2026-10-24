@@ -1,0 +1,17 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-126-r1",
+ "revisionOf": "nb-126",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-qa-extra-05-20261024",
+ "reviewedAtUtc": "2026-10-23T20:21:57Z",
+ "status": "REVIEW_COMPLETE",
+ "batchVerdict": "accepted",
+ "fileVerdictsCount": {"accepted": 9, "revision_required": 0},
+ "findingsClosed": ["F-1", "F-2", "F-3", "F-4", "F-5"],
+ "deliverySeal": {"sealId": "seal-19f87a8a96bf168f", "manifestSha256": "c96c62a29ccbe10be0421eef8c44a91c4648a586aa462d060641ff406bb6367c", "readySha256": "3d1dba0221ec7b041cc1e92b3b94ad3e588d018cd22ef282395e3cda0e3ef01e", "zipSha256": "2fde77f4e6be6e13f8d28cf8e1f9f2f4d3e31b988620ba134bf34a07b389978f"},
+ "artifacts": ["reviews/nb-126-r1/RESULT.json", "reviews/nb-126-r1/RESULT.md", "reviews/nb-126-r1/REVIEWED-HASHES.json", "reviews/nb-126-r1/TO-AUTHOR.md", "reviews/nb-126-r1/TO-LEAD.md"],
+ "notRun": ["product tests", "typecheck", "build", "Electron/GUI", "real worker/model/network"],
+ "next": "nb-126 全批闭环；lead 按 r1 acceptedHashes 合入 9 篇；QA 继续 nb-141-r1 复验（同轮进行中）",
+ "note": "D0 自洽；4 篇 accepted 与父版逐字节相同（旧接受不套新字节合规）。"
+}

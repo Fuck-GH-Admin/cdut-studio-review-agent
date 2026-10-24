@@ -1,0 +1,231 @@
+{
+  "schema": "dsh-r07-qa-result/1",
+  "batch": "nb-78-r2",
+  "revisionOf": "nb-78",
+  "chain": "nb-78→nb-78-r1→nb-78-r2",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-30-20261023",
+  "reviewerSession": "docs-r07-qa-nb-30-20261023",
+  "batchVerdict": "accepted",
+  "reviewedDelivery": "deliveries/nb-78-r2 (sealId seal-26e8e696efe7ea61)",
+  "parentReviews": [
+    "reviews/nb-78 (seal-9a07b90e37406736, DONE 保留)",
+    "reviews/nb-78-r1 (seal-5f50b9204af138a2, DONE 保留)"
+  ],
+  "gates": {
+    "G0": "PASS（18/18 真实冻结字节重算；DONE→READY/MANIFEST/ZIP 链自洽；无穿越）",
+    "G1": "PASS",
+    "G2": "PASS（变化 6 篇测试手册逐行回源全准；不变 12 篇绑定 r1 证据；NB78R-F01~F06 全闭环）"
+  },
+  "testsRun": [],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "files": [
+    {
+      "path": "apps/electron/src/main/lib/feishu/group-message-policy.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/group-message-policy.ts.md",
+      "sourceBlob": "5fdc7920816b2504f7c4c57c232bef311b819467",
+      "sourceSha256": "30580dcdf1b4c64a34ccf343857923892e3ca31b4aa4e82894c0caf0d541906e",
+      "manualSha256": "7a473357871919fb2866aecdacc3ea2a5a9608048e812fdfc8c1828cbc99693b",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "r1 独立 accepted 证据绑定：manualSha256 与 nb-78-r1 逐字节一致（reviews/nb-78-r1/RESULT.json acceptedHashes 7a4733578719…）；本版零变化沿用同源证据"
+    },
+    {
+      "path": "apps/electron/src/main/lib/feishu/group-utils.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/group-utils.ts.md",
+      "sourceBlob": "3609491908593a9e54d666f9fb2a79647d083e20",
+      "sourceSha256": "dfd43266452d56ae07352b573e9258675d24f200bd18f729e1f3d7d7ac002276",
+      "manualSha256": "2de664609cac30f64c8f403ed3a560487ed72c5aa0b0901f90c5ea803edb3678",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "r1 独立 accepted 证据绑定：manualSha256 与 nb-78-r1 逐字节一致（reviews/nb-78-r1/RESULT.json acceptedHashes 2de664609cac…）；本版零变化沿用同源证据"
+    },
+    {
+      "path": "apps/electron/src/main/lib/feishu/prompt-builder.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/prompt-builder.ts.md",
+      "sourceBlob": "79b6de5f741dd071d7a7a3571344090a0f550d43",
+      "sourceSha256": "1621df20e9d862000404b0dcf96aa1e7af1b3a7f8da0b91b94d623647b3608a1",
+      "manualSha256": "8e377be01ac5e7e5e19815798bf4213544a1dd0e30f3c8f6561aa9efd9880925",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "r1 独立 accepted 证据绑定：manualSha256 与 nb-78-r1 逐字节一致（reviews/nb-78-r1/RESULT.json acceptedHashes 8e377be01ac5…）；本版零变化沿用同源证据"
+    },
+    {
+      "path": "apps/electron/src/main/lib/feishu/run-coordinator.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/run-coordinator.ts.md",
+      "sourceBlob": "c2a50eed02c74d0099ddf4038b5a1b6a01b52aaa",
+      "sourceSha256": "ffee9096d3f9cc0e671b1528d31d0c2ddc48a270243a5c2eb17d77d2aeafa5b9",
+      "manualSha256": "7bc57e6a7e96ec5d7a1fc29c1d1f8386caf89a3b56829b1ffb0e801db5c42bb1",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "r1 独立 accepted 证据绑定：manualSha256 与 nb-78-r1 逐字节一致（reviews/nb-78-r1/RESULT.json acceptedHashes 7bc57e6a7e96…）；本版零变化沿用同源证据"
+    },
+    {
+      "path": "apps/electron/src/main/lib/feishu/scoped-queue.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/scoped-queue.ts.md",
+      "sourceBlob": "2b6627b16dc93d22fde0c4e94845806f3a03b61a",
+      "sourceSha256": "e21ec7a24e2c903b504733aae1afd182e310097928bb0449f08e3fb04bba2027",
+      "manualSha256": "a0b2b0978baeec2fc5f266c22b913adc5e1171fa4e83089e51663bedf982aca3",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "r1 独立 accepted 证据绑定：manualSha256 与 nb-78-r1 逐字节一致（reviews/nb-78-r1/RESULT.json acceptedHashes a0b2b0978bae…）；本版零变化沿用同源证据"
+    },
+    {
+      "path": "apps/electron/src/main/lib/feishu/session-mirror.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/session-mirror.test.ts.md",
+      "sourceBlob": "da801a6171d8a4d42ad2681ebc567202b0695211",
+      "sourceSha256": "e5cd24d8cd38d6c6f5ee6536b80fdb1025a8fd4ffe186d842f92d96dc6e94e36",
+      "manualSha256": "ac061a486a1725f886cfc4d1ac1f9fe8bad55f0b3a3ca3f7f4c265e204d1bc4b",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "r2 变化项全量回源：§2 用例表全部行锚 grep -n 对齐 test 声明行（25/5/5/5/3 行逐行核），# 列序号归一；断言/计数未动"
+    },
+    {
+      "path": "apps/electron/src/main/lib/feishu/session-mirror.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/session-mirror.ts.md",
+      "sourceBlob": "d52a632a0ba84b8018eeb6794cc96b1a40f1cd5d",
+      "sourceSha256": "048c637c90b7569db854f36c0144d189a3e7a9589a80e6009a200ed8ef44c0b7",
+      "manualSha256": "20715c3bc773bf3ccc2b688c2c1781ba639295aa2ce7ac7775874a325a34a8da",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "r1 独立 accepted 证据绑定：manualSha256 与 nb-78-r1 逐字节一致（reviews/nb-78-r1/RESULT.json acceptedHashes 20715c3bc773…）；本版零变化沿用同源证据"
+    },
+    {
+      "path": "apps/electron/src/main/lib/feishu/sleep-blocker.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/sleep-blocker.test.ts.md",
+      "sourceBlob": "d241d43555ccc0cd0e388b4541126a46abddfa1f",
+      "sourceSha256": "3654eec5b80a1a9d51acb397f36f17df54d364c421972199f1a2b6ea999fe879",
+      "manualSha256": "b76aad4ada6a0af29dcfb06612d790280537029520514349bc6a70fa400786c1",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "r2 变化项全量回源：§2 用例表全部行锚 grep -n 对齐 test 声明行（25/5/5/5/3 行逐行核），# 列序号归一；断言/计数未动"
+    },
+    {
+      "path": "apps/electron/src/main/lib/feishu/sleep-blocker.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/sleep-blocker.ts.md",
+      "sourceBlob": "099a68a8bc8b9b247667e7624c4b221b39e24cd4",
+      "sourceSha256": "7b4bfd1674df8a0b02162d899574c30b92937842670e714036d5b866ffb9b129",
+      "manualSha256": "2fcb337cba3de0c267973650362de253601c1f553059e4ced78237a8de079290",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "r1 独立 accepted 证据绑定：manualSha256 与 nb-78-r1 逐字节一致（reviews/nb-78-r1/RESULT.json acceptedHashes 2fcb337cba3d…）；本版零变化沿用同源证据"
+    },
+    {
+      "path": "apps/electron/src/main/lib/rag/entity-graph.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/rag/entity-graph.test.ts.md",
+      "sourceBlob": "9cf57b1a9f9601a77631e83efe8d9647c3e5fc84",
+      "sourceSha256": "f2391bd6f1e8ca3b3d431cce60b7276c1af6d7abbbc7e42edc32a2b4706166a2",
+      "manualSha256": "daf5c0caed58951317ceaa7349b40a0a45ba01e62e59805cfbab492ea74b44bd",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "r2 变化项全量回源：§2 用例表全部行锚 grep -n 对齐 test 声明行（25/5/5/5/3 行逐行核），# 列序号归一；断言/计数未动"
+    },
+    {
+      "path": "apps/electron/src/main/lib/rag/entity-graph.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/rag/entity-graph.ts.md",
+      "sourceBlob": "73ab3b08ba2e4cc9245ea7451c29212463f7004c",
+      "sourceSha256": "df23c54302b41ec9c12c83cb243db23e4253a77ccd5b7a29c1eed85c9f40184f",
+      "manualSha256": "d9dfabac673a12c1c48057737060c9756bb87a1a48e520da0a91570dad765455",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "r1 独立 accepted 证据绑定：manualSha256 与 nb-78-r1 逐字节一致（reviews/nb-78-r1/RESULT.json acceptedHashes d9dfabac673a…）；本版零变化沿用同源证据"
+    },
+    {
+      "path": "apps/electron/src/main/lib/rag/workspace-rag-service.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/rag/workspace-rag-service.test.ts.md",
+      "sourceBlob": "9942fd3ebaf95d1091dcfcfaf5fd6d2363c1301e",
+      "sourceSha256": "4e2bba520eb53ebe23f3d52721959b95a1450eaa6f7d1a3e5eea4e241b0c21f0",
+      "manualSha256": "4fe1d5ebc2ba9b27776a364eb7625bd51dd16c9c7a543dcaa0d1779565a008ec",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "r2 变化项全量回源：§2 用例表全部行锚 grep -n 对齐 test 声明行（25/5/5/5/3 行逐行核），# 列序号归一；断言/计数未动"
+    },
+    {
+      "path": "apps/electron/src/main/lib/rag/workspace-rag-service.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/rag/workspace-rag-service.ts.md",
+      "sourceBlob": "419dda56af5b945c37ade257c31560ebf83acf56",
+      "sourceSha256": "692e13537c246b7095e5ab4dcb04786937f104923d16ff4ebe3e2a9205571aa5",
+      "manualSha256": "9bb7b38482729fcd5404a5f01bfdb69af72c9f47688c958c7984c56b3ad1c7c8",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "r1 独立 accepted 证据绑定：manualSha256 与 nb-78-r1 逐字节一致（reviews/nb-78-r1/RESULT.json acceptedHashes 9bb7b3848272…）；本版零变化沿用同源证据"
+    },
+    {
+      "path": "apps/electron/src/main/lib/study/cognition-engine.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/cognition-engine.test.ts.md",
+      "sourceBlob": "daa4f1a3b3d38ce61ceb20eaa38f9721e42a04a8",
+      "sourceSha256": "3c8118ac45df57ecc81f239b8b0cc2e9c25fe50fab172d99856fd1b5512f71af",
+      "manualSha256": "5df8620f53feede5e4b45bb8a1f77b444dccb96807bec7461fe2f56340f7ae8e",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "r2 变化项全量回源：§2 用例表全部行锚 grep -n 对齐 test 声明行（25/5/5/5/3 行逐行核），# 列序号归一；断言/计数未动"
+    },
+    {
+      "path": "apps/electron/src/main/lib/study/fim-estimator.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/fim-estimator.ts.md",
+      "sourceBlob": "1870f77e7129c44a7ee322dbdae6e346a91c7ec9",
+      "sourceSha256": "179db9f70477531b58075cf73ed56a64b5c4ef03ef57ac49ced2129ba3394ba2",
+      "manualSha256": "b300a437169d360dc1e9b82791265c438f1e4943512deb6d0ada91c6e7588be7",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "r1 独立 accepted 证据绑定：manualSha256 与 nb-78-r1 逐字节一致（reviews/nb-78-r1/RESULT.json acceptedHashes b300a437169d…）；本版零变化沿用同源证据"
+    },
+    {
+      "path": "apps/electron/src/main/lib/study/fsrs-scheduler.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/fsrs-scheduler.ts.md",
+      "sourceBlob": "d02ffdbc3b137e96fc56c98de608e1e5c1ed78b8",
+      "sourceSha256": "d620e4d4a28783dd0f9817ed4b088af0701e19372a85b35ee7871c51b3173b50",
+      "manualSha256": "e31ae8c33f4b776b416884130ae47c52e9cbd8cd9160dab60fdc0aad07032ce7",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "r1 独立 accepted 证据绑定：manualSha256 与 nb-78-r1 逐字节一致（reviews/nb-78-r1/RESULT.json acceptedHashes e31ae8c33f4b…）；本版零变化沿用同源证据"
+    },
+    {
+      "path": "apps/electron/src/main/lib/study/hierarchical-graphrag-retriever.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/hierarchical-graphrag-retriever.ts.md",
+      "sourceBlob": "c99425446cd361e593d34a7711b54055c9db0890",
+      "sourceSha256": "f99a2d5d1c4b4ae813b8a023bd20a9bef203e0634f5db7fb2fb9d4033bf35f19",
+      "manualSha256": "4929745e333771ead7251e05d93d798926c16eda27782e67975dbc8e8132c7a1",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "r1 独立 accepted 证据绑定：manualSha256 与 nb-78-r1 逐字节一致（reviews/nb-78-r1/RESULT.json acceptedHashes 4929745e3337…）；本版零变化沿用同源证据"
+    },
+    {
+      "path": "apps/electron/src/main/lib/study/hierarchical-graphrag.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/hierarchical-graphrag.test.ts.md",
+      "sourceBlob": "807379217f4bba99c6e367cf0174ea7bba0035db",
+      "sourceSha256": "99c9964ad5702d2a61652fe74528e186115ccfaf61d255cc8ae8d0b9516b2411",
+      "manualSha256": "b230578ab9189cdeb1a9898e6ea713e9329f211b0ce0aac60025cc20ae622d64",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "r2 变化项全量回源：§2 用例表全部行锚 grep -n 对齐 test 声明行（25/5/5/5/3 行逐行核），# 列序号归一；断言/计数未动"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/group-message-policy.ts.md": "7a473357871919fb2866aecdacc3ea2a5a9608048e812fdfc8c1828cbc99693b",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/group-utils.ts.md": "2de664609cac30f64c8f403ed3a560487ed72c5aa0b0901f90c5ea803edb3678",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/prompt-builder.ts.md": "8e377be01ac5e7e5e19815798bf4213544a1dd0e30f3c8f6561aa9efd9880925",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/run-coordinator.ts.md": "7bc57e6a7e96ec5d7a1fc29c1d1f8386caf89a3b56829b1ffb0e801db5c42bb1",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/scoped-queue.ts.md": "a0b2b0978baeec2fc5f266c22b913adc5e1171fa4e83089e51663bedf982aca3",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/session-mirror.test.ts.md": "ac061a486a1725f886cfc4d1ac1f9fe8bad55f0b3a3ca3f7f4c265e204d1bc4b",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/session-mirror.ts.md": "20715c3bc773bf3ccc2b688c2c1781ba639295aa2ce7ac7775874a325a34a8da",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/sleep-blocker.test.ts.md": "b76aad4ada6a0af29dcfb06612d790280537029520514349bc6a70fa400786c1",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/sleep-blocker.ts.md": "2fcb337cba3de0c267973650362de253601c1f553059e4ced78237a8de079290",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/rag/entity-graph.test.ts.md": "daf5c0caed58951317ceaa7349b40a0a45ba01e62e59805cfbab492ea74b44bd",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/rag/entity-graph.ts.md": "d9dfabac673a12c1c48057737060c9756bb87a1a48e520da0a91570dad765455",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/rag/workspace-rag-service.test.ts.md": "4fe1d5ebc2ba9b27776a364eb7625bd51dd16c9c7a543dcaa0d1779565a008ec",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/rag/workspace-rag-service.ts.md": "9bb7b38482729fcd5404a5f01bfdb69af72c9f47688c958c7984c56b3ad1c7c8",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/cognition-engine.test.ts.md": "5df8620f53feede5e4b45bb8a1f77b444dccb96807bec7461fe2f56340f7ae8e",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/fim-estimator.ts.md": "b300a437169d360dc1e9b82791265c438f1e4943512deb6d0ada91c6e7588be7",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/fsrs-scheduler.ts.md": "e31ae8c33f4b776b416884130ae47c52e9cbd8cd9160dab60fdc0aad07032ce7",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/hierarchical-graphrag-retriever.ts.md": "4929745e333771ead7251e05d93d798926c16eda27782e67975dbc8e8132c7a1",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/hierarchical-graphrag.test.ts.md": "b230578ab9189cdeb1a9898e6ea713e9329f211b0ce0aac60025cc20ae622d64"
+  },
+  "notes": "FINDINGS-RESPONSE 逐项闭环。变化面=恰 6 篇测试手册：session-mirror.test 5 行（37/46/55 校正）、sleep-blocker.test 5 行（48/59/70/82）、entity-graph.test 3 行（18/35+# 列归一）、workspace-rag.test 5 行（124/129/147/152/165）、hier.test 5 行（用例 5 :94-113）、cognition.test 25 行全对齐——全部与 grep -n test( 声明行一致。断言/用例计数（5-5-3-5-25）未动。12 篇不变件 byte-identical 绑定 r1 accepted 证据，未重做。"
+}

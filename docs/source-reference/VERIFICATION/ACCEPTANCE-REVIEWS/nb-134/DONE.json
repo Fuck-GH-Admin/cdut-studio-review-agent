@@ -1,0 +1,33 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-134",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-06-20261024",
+ "reviewerSession": "docs-r07-qa-extra-06-20261024",
+ "reviewedSealId": "seal-0e1ad0720de1fda7",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 16,
+  "accepted": 16,
+  "revision_required": 0,
+  "unknown": 0
+ },
+ "sealedAtUtc": "2026-10-23T20:52:41Z",
+ "resultSha256": "cf35545aa82dc98d7808bf08ca9d3824fee95ac89d08dd5b2ebf943c58c01830",
+ "resultMdSha256": "141db4232a3820ba86ecbd9fdeeaeb8c1967fe9afeb1f33d6e402726084d2172",
+ "reviewedHashesSha256": "dc44bd9d40f2c74cd4c74159505eb952396d399a118741ffdf7b1a4ca669fec6",
+ "artifacts": [
+  "reviews/nb-134/RESULT.json",
+  "reviews/nb-134/RESULT.md",
+  "reviews/nb-134/REVIEWED-HASHES.json"
+ ],
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real network/scan/keys/registry"
+ ],
+ "note": "16/16 accepted 零 findings；全组 nb-131/121/115/134 真值审查全部完成"
+}

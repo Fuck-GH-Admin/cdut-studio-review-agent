@@ -1,0 +1,86 @@
+{
+  "schema": "dsh-r07-review-result/2",
+  "batch": "nb-14",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-09-20261023",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-23T16:58:32Z",
+  "sealId": "seal-910d78c7a7cee3ea",
+  "sealedAtUtc": "2026-10-23T15:56:07Z",
+  "batchVerdict": "accepted",
+  "counts": {"files": 14, "accepted": 14, "revision_required": 0, "unknown": 0, "blocking": 0, "nonBlocking": 4},
+  "gates": {"G0": "PASS", "G1": "PASS", "G2": "PASS_WITH_NOTES", "note": "完整性/格式通过；G2 逐篇对照预读清单+回源 4 条非阻断 minor（计数/字面值/怪癖漏记），无行为/权限/调用链结论错误"},
+  "files": [
+    {"path": "apps/electron/src/main/lib/review/pi-case-review-service.ts", "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-case-review-service.ts.md", "sourceBlob": "b885d6300f23ec12158aec69ef3b301a807b34e5", "sourceSha256": "6a46e1460c6649b34da0086a391ac433879aae27f663988d5aad5b7214033098", "manualSha256": "a510f50d68a5691a822bfe4e1d307f07bd04aef5e6e3849df67455729453f1a5", "verdict": "accepted", "findings": ["NB14-N-04"]},
+    {"path": "apps/electron/src/main/lib/review/pi-case-review-service.test.ts", "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-case-review-service.test.ts.md", "sourceBlob": "6f718651b3acdbf806432773dfdfac95bb3ea366", "sourceSha256": "2f794aaa68fdd2f236aeb1aea62001362225290c7f8679b9ef8f86611c5a0281", "manualSha256": "d2dcd023e3a4269bc5cd408f17a271d6d11b74a78a4a6116e0d517761b38747a", "verdict": "accepted", "findings": []},
+    {"path": "apps/electron/src/main/lib/review/pi-document-coverage.ts", "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-document-coverage.ts.md", "sourceBlob": "73e7b56f33c47feab13e6c7af48dd5199497da53", "sourceSha256": "d5bc41e49f75e29af3b5c7527703f5930b5b2e4182a84a696aa51e4bc0fb075f", "manualSha256": "ede752e86c15f9df2106d4e94a03476fbea148a818cdf601bf63fc86f1b1a84e", "verdict": "accepted", "findings": []},
+    {"path": "apps/electron/src/main/lib/review/pi-document-coverage.test.ts", "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-document-coverage.test.ts.md", "sourceBlob": "6233167d5c1fee485de8d780201df25edae154fc", "sourceSha256": "a30be7ea78560a8cc980b1cd85406491605cb2b78d3f7e9ee8540bfbd58784e6", "manualSha256": "ca729a029dd3caa6a6a6cae571a7c13e9f3bfd3c38665c62cab3665f7f32ac43", "verdict": "accepted", "findings": []},
+    {"path": "apps/electron/src/main/lib/review/pi-review-agent-client.ts", "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-review-agent-client.ts.md", "sourceBlob": "b34e732be4a8ad843139257f7edfd61d5f71c2e6", "sourceSha256": "cb4b4bd596817927a8c9838664a5a15c3641ba80ab012a1b655629953d19d758", "manualSha256": "2d6b8265f83fe0a1f1f381905d406cca2b31041a36b27041c3888cb01c66a8d5", "verdict": "accepted", "findings": ["NB14-N-02"]},
+    {"path": "apps/electron/src/main/lib/review/pi-review-agent-client.test.ts", "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-review-agent-client.test.ts.md", "sourceBlob": "0833a91c2143e3ddaa9c895178f0a1f3152f9573", "sourceSha256": "8cfff00e5188ce446836e7232c7e6d1c569044c5bc96b252f272ad1d88ec3d12", "manualSha256": "10945581f195eaf20a4b2ecaf2b09f642da49080d40a2e42bdd0e0c2f4454199", "verdict": "accepted", "findings": []},
+    {"path": "apps/electron/src/main/lib/review/pi-review-executor.ts", "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-review-executor.ts.md", "sourceBlob": "dcfe4c87f59c33ca20c1cab7e7ba9c9e0d701f73", "sourceSha256": "b0e1c2ac1e490dcdbf9a3a9b17cd915f394d1eb9ede12c933f06a0b14c545758", "manualSha256": "e90224ee2bfa597d1979139ad21790aa5735f371015dbf0e82089f11846cbf22", "verdict": "accepted", "findings": ["NB14-N-01"]},
+    {"path": "apps/electron/src/main/lib/review/pi-review-executor.test.ts", "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-review-executor.test.ts.md", "sourceBlob": "dc96251de883b4cacbfbc6db14cf06bbaf6fb422", "sourceSha256": "f48609b11119fb4b7525c9fb53f3c32b7db23b60622cc1cf2aa943e851bea557", "manualSha256": "4f3f1deead02110f50dbeb82ccdf48afcbfacaec5b9c048dec62fa23361da6d4", "verdict": "accepted", "findings": []},
+    {"path": "apps/electron/src/main/lib/review/pi-review-prompt-contract.ts", "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-review-prompt-contract.ts.md", "sourceBlob": "b185056a6985d8a787eb351ca1d4239ae0354829", "sourceSha256": "d7516b89de398aab59175fa117f40ba66aabcb689725a0104b87c8d2b18476b2", "manualSha256": "9ca6b160ed3abb0f2b0db5352ead8923bbbff401b0d5ea96e37dd364494a0519", "verdict": "accepted", "findings": []},
+    {"path": "apps/electron/src/main/lib/review/pi-review-prompt-contract.test.ts", "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-review-prompt-contract.test.ts.md", "sourceBlob": "bed1ab7c07d69c2e241badd0ad18f11c182b3e1a", "sourceSha256": "da96224b027876e04f008c44c7b2303f5c8fe0596b1d20f7ac0394325f3e27fb", "manualSha256": "1927c5f4a1ae5a50dac06d405f6efea75d492363a2712d34c633cfb6e473d529", "verdict": "accepted", "findings": []},
+    {"path": "apps/electron/src/main/lib/review/review-v3-t04-published-plan.ts", "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t04-published-plan.ts.md", "sourceBlob": "39146ca3baba2eba25188b32e62ec16106c76642", "sourceSha256": "2f5019d19bf1bb55b48e8a7340aa92430b84bf9bd11243b778783b366aa8ff5b", "manualSha256": "05f8480ac3681fb2cb841a3bcc1656182a5921fbf4a9b61db5ad48bde6713a52", "verdict": "accepted", "findings": []},
+    {"path": "apps/electron/src/main/lib/review/review-v3-t04-published-plan.test.ts", "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t04-published-plan.test.ts.md", "sourceBlob": "c7d85447467b469036053bb726d7ed4c20ab1a4b", "sourceSha256": "a3ff75fac29017eba2f475a0f287f5da96ecc3948751aa3c3f7eb67df144a098", "manualSha256": "216057ce60e77cabc9860e072c0fa69c6e777709a0d5d68b1f00ef8a70513afc", "verdict": "accepted", "findings": []},
+    {"path": "apps/electron/src/main/lib/review/review-v3-t04-rules-scoring.ts", "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t04-rules-scoring.ts.md", "sourceBlob": "f69814b034c1131e7baaccfcd1b9165e3d9e8c9b", "sourceSha256": "12d10027de0439c1ba74d2164e56bafdcc7c88d93cf668298d3c4ee572f3118f", "manualSha256": "317f5c9e01c5dd22b104af5a50b63983d61f852d776ee85b76cba7129ab937a5", "verdict": "accepted", "findings": ["NB14-N-03"]},
+    {"path": "apps/electron/src/main/lib/review/review-v3-t04-rules-scoring.test.ts", "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t04-rules-scoring.test.ts.md", "sourceBlob": "e268d02021b12b40e80a5d2a8bb31255769f220b", "sourceSha256": "235e63d330e2d2d46d055c352ed6a803e46394d883abab46a21a66d500f8ce5c", "manualSha256": "798a69a562cd9923e3650876c150fd79d032601402019b6e7474bf1326f6e8c8", "verdict": "accepted", "findings": []}
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-case-review-service.test.ts.md": "d2dcd023e3a4269bc5cd408f17a271d6d11b74a78a4a6116e0d517761b38747a",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-case-review-service.ts.md": "a510f50d68a5691a822bfe4e1d307f07bd04aef5e6e3849df67455729453f1a5",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-document-coverage.test.ts.md": "ca729a029dd3caa6a6a6cae571a7c13e9f3bfd3c38665c62cab3665f7f32ac43",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-document-coverage.ts.md": "ede752e86c15f9df2106d4e94a03476fbea148a818cdf601bf63fc86f1b1a84e",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-review-agent-client.test.ts.md": "10945581f195eaf20a4b2ecaf2b09f642da49080d40a2e42bdd0e0c2f4454199",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-review-agent-client.ts.md": "2d6b8265f83fe0a1f1f381905d406cca2b31041a36b27041c3888cb01c66a8d5",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-review-executor.test.ts.md": "4f3f1deead02110f50dbeb82ccdf48afcbfacaec5b9c048dec62fa23361da6d4",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-review-executor.ts.md": "e90224ee2bfa597d1979139ad21790aa5735f371015dbf0e82089f11846cbf22",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-review-prompt-contract.test.ts.md": "1927c5f4a1ae5a50dac06d405f6efea75d492363a2712d34c633cfb6e473d529",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/pi-review-prompt-contract.ts.md": "9ca6b160ed3abb0f2b0db5352ead8923bbbff401b0d5ea96e37dd364494a0519",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t04-published-plan.test.ts.md": "216057ce60e77cabc9860e072c0fa69c6e777709a0d5d68b1f00ef8a70513afc",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t04-published-plan.ts.md": "05f8480ac3681fb2cb841a3bcc1656182a5921fbf4a9b61db5ad48bde6713a52",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t04-rules-scoring.test.ts.md": "798a69a562cd9923e3650876c150fd79d032601402019b6e7474bf1326f6e8c8",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t04-rules-scoring.ts.md": "317f5c9e01c5dd22b104af5a50b63983d61f852d776ee85b76cba7129ab937a5"
+  },
+  "findings": [
+    {
+      "id": "NB14-N-01",
+      "severity": "minor",
+      "files": ["apps/electron/src/main/lib/review/pi-review-executor.ts"],
+      "claim": "§2「REVIEW_TOOL_ALLOWLIST … 15 个工具名」与 §3.3「15 个工具的参数 schema」均应为 **13**：REVIEW_TOOL_ALLOWLIST（:23-27）恰 13 个（read_subject_field…read_rule），schema 表（:57-71）亦 13 个；测试 1 断言选中集 == allowlist 同为 13。",
+      "sourceEvidence": "review-review-executor.ts:23-27 逐项计数 13；:57-71 schema 13；pi-review-executor.test.ts:20 全等断言。",
+      "action": "改两处为 13（或列全 13 名并给计数口径）；随任一 rN 或 errata 关闭。"
+    },
+    {
+      "id": "NB14-N-02",
+      "severity": "minor",
+      "files": ["apps/electron/src/main/lib/review/pi-review-agent-client.ts"],
+      "claim": "§3.2 query 参数写 `toolProfile:'customTools'`——实为 `toolProfile:'review'`（pi-review-agent-client.ts:148）；且与本篇 §9 用例 7（`observed.toolProfile==='review'`）及测试 :189 自相矛盾。`customTools` 是另一个参数名（tools 数组），此处串名。",
+      "sourceEvidence": "pi-review-agent-client.ts:148 `toolProfile: 'review'`；pi-review-agent-client.test.ts:189-198。",
+      "action": "§3.2 改 `toolProfile:'review'`（customTools 为并列参数）；随任一 rN 或 errata 关闭（已知错误事实必须关闭）。"
+    },
+    {
+      "id": "NB14-N-03",
+      "severity": "minor",
+      "files": ["apps/electron/src/main/lib/review/review-v3-t04-rules-scoring.ts"],
+      "claim": "§2/§10「18 导出」应为 **19**（10 type + 9 fn）：T04Value/T04Item/T04Status/T04Operation/T04PolicyClaim/T04PolicyDecision/T04ResolvedClaims/T04Outcome/T04PlanCheck/T04PlanProposal + decimalT04/formatT04/conditionT04/compileT04Operation/resolveT04PolicyClaims/partitionT04Items/evaluateT04Rule/evaluateT04Plan/toT04CheckResult。",
+      "sourceEvidence": "review-v3-t04-rules-scoring.ts `grep -c '^export '` = 19（行 9/15/16/17/29/30/38/43/57/66/79/88/123/156/180/220/504/546/595）。",
+      "action": "改计数为 19（或按 type/fn 分列）；随任一 rN 或 errata 关闭。"
+    },
+    {
+      "id": "NB14-N-04",
+      "severity": "minor",
+      "files": ["apps/electron/src/main/lib/review/pi-case-review-service.ts"],
+      "claim": "§3.2（:946-949 段）未照实记录实现怪癖：:949 第一子句 `caseField !== ((field.scope ?? 'subject') === 'case')` 为恒 false 死比较（caseField 即该表达式），生效的是其后的 sectionId 匹配子句。现文行为描述正确且未误导（未写成双重校验），但按预读硬约束 #2 应显式记录该死比较。",
+      "sourceEvidence": "pi-case-review-service.ts:946-949 逐字；reviews/nb-14/SOURCE-CHECKLIST.md §5 硬约束 2。",
+      "action": "补一句「:949 首子句为恒 false 死比较，实际仅 sectionId 子句生效」；随任一 rN 或 errata 关闭。"
+    }
+  ],
+  "notRun": ["product tests (bun test, 52 declarations)", "typecheck", "build", "Electron/GUI", "real model/network", "review-d2-plan.ts CLI", "subprocess disk-tx cases"],
+  "verificationNotes": [
+    "G0 机械复算 0 错误：14 源 blob/sha256/bytes/lines = SCOPE = MANIFEST；14 手册 hash 磁盘=MANIFEST=READY；MANIFEST d4de72ab…→READY 0eb0c1f6…→DONE 链一致；ZIP 542de6e8…（58712 B/17 条目）无穿越/符号链接/外批，逐条目字节一致；changes.diff 空树重放 14/14。",
+    "G1：导出计数复核（pi-case-review-service 22=8+14 ✓、agent-client 2 ✓、executor 11 ✓、coverage/prompt-contract 1 ✓、published-plan 6 ✓、rules-scoring 19（手册误 18））；行号引用抽核 30+ 处含跨文件（review-ipc/ipc.ts/adapters/pi-review-ops-tools/pi-builtin-tools/review-pi-run-bridge/review-pi-admission/review-strict-pi-tools/run-async-service/review-storage-id.test 等）0 未解析。",
+    "G2：14 篇逐篇对照 reviews/nb-14/SOURCE-CHECKLIST.md（同源 blob 预读）+ 新声明回源抽核：caller 声明（ipc.ts:3849/:3852、pi-review-ops-tools:17-21/:82/:109/:128/:181、review-storage-id.test:92-95）逐条命中；RUN-42/44/46、D2 门禁分工（verifyD2InstalledPlan/validateD2OperationEvidence ≠ validateD2GuardSubmission）、t04 asOfDate/多政策具名裁决/decision 槽语义与预读一致；13 测试声明计数（4/11/8声明10运行/5/3/10/13）逐文件复核一致。",
+    "作者预读硬约束落实良好：:949 怪癖仅缺显式记录（N-04）；「submit 路径不用 validateD2GuardSubmission」等关键口径无误。所有运行事实保持 NOT_RUN。"
+  ]
+}

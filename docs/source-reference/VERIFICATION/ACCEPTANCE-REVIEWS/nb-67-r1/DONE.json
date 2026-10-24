@@ -1,0 +1,63 @@
+{
+  "schema": "dsh-r07-qa-done/1",
+  "batch": "nb-67-r1",
+  "revisionOf": "nb-67",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-01-20261023",
+  "reviewerSession": "docs-r07-qa-nb-01-20261023",
+  "reviewRoot": "reviews/nb-67-r1",
+  "reviewedAtUtc": "2026-10-24T04:10:00Z",
+  "status": "REVIEW_COMPLETE_ACCEPTED",
+  "batchVerdict": "accepted",
+  "gates": {
+    "G0": "G0_PASS",
+    "G1": "G1_PASS",
+    "G2": "G2_PASS",
+    "G3": "NOT_RUN",
+    "G4": "NOT_RUN"
+  },
+  "verdictCounts": {
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "allBlockingResolved": true,
+  "seal": {
+    "sealId": "seal-4377a0aa45b9e604",
+    "tool": "seal_delivery.py/1",
+    "spec": "SEAL-DELIVERY v2",
+    "zip": {
+      "path": "deliveries/nb-67-r1/R07-nb-67-r1-05fb2565.zip",
+      "sha256": "c5e95a7dd7371c5b08509d905e9f5d9721ec923c042247e997785e3f0cb0d1ae",
+      "bytes": 51247,
+      "entries": 21,
+      "verified": "QA 独立复算：21 条目逐字节一致、0 mismatch、无穿越/符号链接、mtime 全 1980-01-01"
+    }
+  },
+  "artifacts": [
+    "reviews/nb-67-r1/RESULT.json",
+    "reviews/nb-67-r1/RESULT.md",
+    "reviews/nb-67-r1/REVIEWED-HASHES.json",
+    "reviews/nb-67-r1/DONE.json",
+    "handoffs/nb-67-r1-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-67-r1-REVIEW-TO-LEAD.md",
+    "handoffs/teams/qa-nb-01-STATUS.json"
+  ],
+  "notRun": [
+    "bun test",
+    "tsc --noEmit",
+    "build/package",
+    "Electron/GUI",
+    "real model/network",
+    "concurrency/crash injection"
+  ],
+  "writtenOnlyIn": [
+    "reviews/nb-67-r1/",
+    "handoffs/nb-67-r1-REVIEW-TO-*.md",
+    "handoffs/teams/qa-nb-01-STATUS.json",
+    "DSH-SESSION-REGISTRY.md (append)",
+    "DSH-BUSINESS-LEDGER.md (append)"
+  ],
+  "next": "lead 合入 18 accepted；QA 续 nb-102 预读",
+  "old922Counts": false
+}

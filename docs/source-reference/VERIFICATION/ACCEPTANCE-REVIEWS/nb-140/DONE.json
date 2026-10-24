@@ -1,0 +1,43 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-140",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-02-20261024",
+ "reviewerSession": "docs-r07-qa-extra-02-20261024",
+ "authorSessionInSealChain": "docs-r07-author-nb-03-20261023",
+ "reviewedAtUtc": "2026-10-23T19:25:00Z",
+ "sealId": "seal-8d935dad88327e41",
+ "status": "REVIEW_COMPLETE_REVISION_REQUIRED",
+ "batchVerdict": "revision_required",
+ "counts": {
+  "files": 10,
+  "accepted": 10,
+  "revision_required": 0,
+  "unknown": 0,
+  "blocking": 1,
+  "minorFindings": 3,
+  "info": 2
+ },
+ "artifacts": [
+  "reviews/nb-140/SOURCE-CHECKLIST.md",
+  "reviews/nb-140/PRE_READ_DONE.json",
+  "reviews/nb-140/RESULT.json",
+  "reviews/nb-140/RESULT.md",
+  "reviews/nb-140/REVIEWED-HASHES.json",
+  "reviews/nb-140/DONE.json",
+  "handoffs/nb-140-REVIEW-TO-AUTHOR.md",
+  "handoffs/nb-140-REVIEW-TO-LEAD.md"
+ ],
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "electron-builder/packaging",
+  "signing",
+  "Electron/GUI",
+  "8 workflows + 2 cmd real execution",
+  "real model/network"
+ ],
+ "boundaries": "QA 只读复核：未改作者正文/源码/测试/依赖/candidate/全局总账/旧 seal；sealed 字节未改写；产品测试与真实模型 NOT_RUN。",
+ "next": "作者开 deliveries/nb-140-r1 重封（手册字节不动、链字段改实际会话、SUPERSEDED-BY 指针）；QA 按新 hash 链复验（字节不变 hash 级、变则 G2 重做变更文件）；可选项 N-01..N-03 勘误或 r1 顺带；QA 续 nb-123 预读与其余批次审查"
+}

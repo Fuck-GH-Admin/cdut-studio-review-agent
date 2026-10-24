@@ -1,0 +1,20 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "index-p08-renderer-ui__apps__electron__src__renderer__components__onboarding",
+ "groupId": "p08-renderer-ui__apps__electron__src__renderer__components__onboarding",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T20:15:00Z",
+ "sealedAtUtc": "2026-10-23T19:24:02+00:00",
+ "artifactSha256": "d507ee7978e408289224735cb9c2031f25221e14dce517431ee2b16b4214f256",
+ "note": "QA 实算封版链全对。1/1 accepted（2 条非阻断 minor ONB-N-01/02 已登记，非阻断≠已修）。",
+ "acceptedManuals": {
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__apps__electron__src__renderer__components__onboarding.md@apps/electron/src/renderer/components/onboarding/third-party/PavelDoGreat-WebGL-Fluid-Simulation-LICENSE.md": "d507ee7978e408289224735cb9c2031f25221e14dce517431ee2b16b4214f256"
+ },
+ "sourceBindings": {
+  "apps/electron/src/renderer/components/onboarding/third-party/PavelDoGreat-WebGL-Fluid-Simulation-LICENSE.md": {
+   "sourceBlob": "1e6917692070a7e31f8e79c06ae1d8fa44cb7b5d",
+   "sourceSha256": "b120f6511b574836f07ababda59acc40a137d2a12a1893e12735b5574dc568da"
+  }
+ }
+}

@@ -1,0 +1,236 @@
+{
+  "schema": "dsh-r07-independent-review/1",
+  "batch": "nb-103-r2",
+  "revisionOf": "nb-103-r1",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-03-20261023",
+  "reviewerSession": "docs-r07-qa-nb-03-20261023",
+  "batchVerdict": "accepted",
+  "generatedAtUtc": "2026-10-23T20:45:55Z",
+  "delivery": {
+    "sealId": "seal-0c32ec0da9bb5c3d",
+    "zipSha256": "2371190b83419fe535c933b16f8e6ca727aba6e8aa07a837e0f11ec9cf4aa0bc",
+    "manifestSha256": "dfa638d805ea80118d6769fb25fd1e36572ef777d892eef0f041da07c92ea50c",
+    "readySha256": "672fec1ccda84643e8cbedbfec0e3f434d65122d9155c38fdc4f25f197c19fcd",
+    "doneSha256": "d5c7d5d50c1244ca9a92450e0e77c8e9ee5f303d61a18bd3921147d78009a8f1",
+    "sealedAtUtc": "2026-10-23T20:44:13Z"
+  },
+  "gates": {
+    "G0": "pass — 18/18 blob+sha256+lines 对冻结树；manual sha256 三方一致；sealId 重算 seal-0c32ec0da9bb5c3d 一致。",
+    "G1": "pass — FINDINGS-RESPONSE 触发为 REVIEW-TO-AUTHOR、如实披露 r1 竞态件性质（封版早 6 秒）并逐条回源核验；changes.diff 11 变更行逐行一致；16/18 与 r1 逐字节一致。",
+    "G2": "pass — NB103-SEM-01 六项/SEM-02 红点全闭合；变更恰为 2 本 findings 对象。"
+  },
+  "notRun": [
+    "bun test NOT_RUN",
+    "tsc/build NOT_RUN",
+    "GUI NOT_RUN",
+    "模型/产品调用 NOT_RUN"
+  ],
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "findings": 2,
+    "optionalNotes": 0
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/renderer/components/app-shell/AppShell.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/AppShell.tsx.md",
+      "sourceBlob": "8574e661dd44f76bbc1dea4e8ba24f20f44aef07",
+      "sourceSha256": "bf7bf361152429a0f7b665fb8153a0981c5adf7ee5fd9cae8ebd36500564b5e8",
+      "manualSha256": "37c92b4a041ced57c2b898d6e70fdaabb9f0f4ed7e48c8d397f760548f974a5d",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/app-shell/LeftSidebar.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/LeftSidebar.tsx.md",
+      "sourceBlob": "0f918639daf7ea5f13853f50ca59c424f36306ae",
+      "sourceSha256": "6c1abc1bd6ace160b50fbe7e75268d4d88bbd291e819751df5acb66179ebbf76",
+      "manualSha256": "5e634d22f19940d68577c77b36f3785987a06fce6e8b2e05e91c5ead985c09f3",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/app-shell/MacTrafficLights.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/MacTrafficLights.tsx.md",
+      "sourceBlob": "0fb68376d2b783faa246fc2678f0dd3db9e1dce0",
+      "sourceSha256": "a850036437c466b45042b5ee6e78c7a3580bdb3d92edf7242e5e10694daa1ac4",
+      "manualSha256": "fe85cf4ff0d26ac3c8d9f98cf89840c35134f909b1524a3549c3bc981cd17f02",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/app-shell/ModeSwitcher.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/ModeSwitcher.tsx.md",
+      "sourceBlob": "b9e25b6281db6a8a8c815436b8d231c273cf7008",
+      "sourceSha256": "d76edc05ed095d17e5c5c3bf44daba50184fcdf76bfde578e0b33fa107576526",
+      "manualSha256": "16741c532e95f6e85de76ae513c160396b374d68b0054513383102ddfe3cdd59",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/app-shell/NavigatorPanel.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/NavigatorPanel.tsx.md",
+      "sourceBlob": "5b5e2a50eb9e7e4a53e00a3d6875ba9d73ad0c6e",
+      "sourceSha256": "572482c1ad023eba38d89d2d1412a01bc25c29fd321015d1d3a9d34dc27be052",
+      "manualSha256": "804579376489454243e15d76024d6cfd32fdadf8923e78517a2d4425c9fc7db9",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/app-shell/Panel.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/Panel.tsx.md",
+      "sourceBlob": "624c1404afc4c67d6aea4127803155c4ab11e19e",
+      "sourceSha256": "d0b4735b0670dfc9ddf231b03794e13e903ebcbd6fe16afefe93ad2bc5c00974",
+      "manualSha256": "e187ef65dd11c3e71b7ac57329a73fbd51b4778dfceb1eedb23c545c86594330",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/app-shell/PanelHeader.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/PanelHeader.tsx.md",
+      "sourceBlob": "dbf4631725faedf33df33837f94716583cc6b4d4",
+      "sourceSha256": "8b7afa348217b8aee451ef430478aa159c4e84a86177b0424ca5276bc76df5e8",
+      "manualSha256": "8b53a70b2a3f1a4d852d7324674dae3fe50b1e52b16fc4d6b07a21c3e1ea8ce0",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/app-shell/RightSidePanel.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/RightSidePanel.tsx.md",
+      "sourceBlob": "42932c7008a836b6c4a6bcfc912cba0b6e8a090b",
+      "sourceSha256": "cb5f0ab537e54b1f2ed71a421a7a900a64ef3464a3b984fd50780b7de816b7c4",
+      "manualSha256": "5bf7258e889cdff1aa493657f3439b0198c11863255720d1ccd7e51dab696b43",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/app-shell/SearchDialog.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/SearchDialog.tsx.md",
+      "sourceBlob": "35317dbff4bb8da72c1f3d0071dcaa77c8807010",
+      "sourceSha256": "6dad0205b86789a93c34da00be895ea40661fcfa90694dd909bcb1d83bf3a9e4",
+      "manualSha256": "a0a84a65da516d116b6cd1bca5e51ba585182eb3b62cf91500104dab337411d8",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/app-shell/left-sidebar/expanded-sidebar.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/left-sidebar/expanded-sidebar.tsx.md",
+      "sourceBlob": "2900f74d751462eb6320dce130e3bb7fda3ab770",
+      "sourceSha256": "3ce07c5ed91f1ebdc61d3d6c1864fb09f41be9c42defdb0b5740106355943896",
+      "manualSha256": "e5d509dfef4864b66826df44a1deb2fd72349e3fcb8f94e193f25daf1df5bd90",
+      "verdict": "accepted",
+      "findings": [
+        {
+          "id": "NB103-SEM-02",
+          "severity": "low",
+          "claim": "区块 7 补 archivedUnread 红点点亮/熄灭语义——闭合。",
+          "sourceEvidence": "r2 stage↔before 逐字节比对（changes.diff 11 变更行逐行一致）+ grep 复核（locked×5/特区/GitFork/getSessionLeftAccent/二次确认/MiniMap×4/活跃会话×2、红点族×5）+ FINDINGS-RESPONSE 回源行号核（:631/:760-788/:14/:573-595/:196/:378/:672/:251）",
+          "action": "已闭合，无需再改。"
+        }
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/app-shell/left-sidebar/navigation-items.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/left-sidebar/navigation-items.tsx.md",
+      "sourceBlob": "1eb50dd5013eee80aff81968888a6283d82fc967",
+      "sourceSha256": "5cd7065a9499444aceb81bf81dcd74ce322c32fc01a7a805199cbe6cbfdee34c",
+      "manualSha256": "4c7d858b802b704b2da541564dbfb0fcd6dfd3b53530571700e4470a5fe98295",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/app-shell/left-sidebar/rail.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/left-sidebar/rail.tsx.md",
+      "sourceBlob": "0a9798d5c64a6a375d8e774fb90845771e957bc6",
+      "sourceSha256": "e6b2da674766311a5d6bcb55f8bea703159bc2de8325a7cfb1c2052a69b937e1",
+      "manualSha256": "0ad1cf8bb2bf6daace7d9f677688714c98774ceb4c005b14acd19d88b29daca2",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/app-shell/left-sidebar/session-items.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/left-sidebar/session-items.tsx.md",
+      "sourceBlob": "211a810aa6418613724700830fba3d21a8ebc2c3",
+      "sourceSha256": "b6cf3f1bc5d192a23ac6c066a78a5fe21f55776851196da7411d22d5e312fa1a",
+      "manualSha256": "985409789a07f4ba1d6392490da5482ddc9e5f3fca3048d0803c6a88f0eb8827",
+      "verdict": "accepted",
+      "findings": [
+        {
+          "id": "NB103-SEM-01",
+          "severity": "low",
+          "claim": "§3.4 新增六项：locked 安全态（特区账户阻断内容泄露）/图标语义族（GitFork 等）/getSessionLeftAccent 三色条/归档 3s 二次确认/MiniMap hover 预览/折叠策略（活跃会话全展示+排序+临时插入+显示更多）——与 action 全一致，闭合。",
+          "sourceEvidence": "r2 stage↔before 逐字节比对（changes.diff 11 变更行逐行一致）+ grep 复核（locked×5/特区/GitFork/getSessionLeftAccent/二次确认/MiniMap×4/活跃会话×2、红点族×5）+ FINDINGS-RESPONSE 回源行号核（:631/:760-788/:14/:573-595/:196/:378/:672/:251）",
+          "action": "已闭合，无需再改。"
+        }
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/app-shell/left-sidebar/session-tree.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/left-sidebar/session-tree.test.ts.md",
+      "sourceBlob": "3b5ff9f279e4c3dc7cb7fab3974bc9699d287eaf",
+      "sourceSha256": "499444663054133d31380fdbc32d7772f37dd8b7d978024940287f56ec389e8f",
+      "manualSha256": "9bf95610fb2bbfd38093b417d9c1e7a548ec231dfaa72c49185f801d9c57b35b",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/app-shell/left-sidebar/session-tree.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/left-sidebar/session-tree.ts.md",
+      "sourceBlob": "e840db548340237e2dc7eaeccf7d89f19dedd630",
+      "sourceSha256": "df5bf5ab0064e86238a848bb3dfe8e6e207e7781adc3474ad338c932eb0b7b24",
+      "manualSha256": "8375ff3a28dc847c0d765bf719e0832632f725a52c0b9cd5938b1039ca671e32",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/app-shell/left-sidebar/sidebar-dialogs.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/left-sidebar/sidebar-dialogs.tsx.md",
+      "sourceBlob": "f3152fe00c2f56a3f19a4f5cfc5b150886d8d72c",
+      "sourceSha256": "f3883c72d2f7ae4eb1f0761d3a778905eb24f6994d90434502b66f6dc31e5968",
+      "manualSha256": "67c2e61c544722e8f0fcb02fdd3567e4a313fd84fab3a865db7f306ea21dd2bc",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/app-shell/left-sidebar/sidebar-utils.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/left-sidebar/sidebar-utils.ts.md",
+      "sourceBlob": "29214c8f51306f37b991d089803feae5b94857ce",
+      "sourceSha256": "f9b9317ba9e13c41034eb473ae261fad4941c7124f8b8fc41b8ceac0df75f5cd",
+      "manualSha256": "75e9bffb3b097c44562a850c6c101b1bda6bc24c0dc0c1a9b0ab6284bfdf2a4b",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/app-shell/left-sidebar/types.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/left-sidebar/types.ts.md",
+      "sourceBlob": "67d3a94af320d2b0591cfcdcf8a12d8038074a35",
+      "sourceSha256": "632640503af55c0929486f117a1999a6bad47efa9113fc47ceca2a7983edaf7e",
+      "manualSha256": "5e1be5f6ecde5805619683ea0f1375e8c313cdc01e76db0403c7bf666e4353f0",
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/AppShell.tsx.md": "37c92b4a041ced57c2b898d6e70fdaabb9f0f4ed7e48c8d397f760548f974a5d",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/LeftSidebar.tsx.md": "5e634d22f19940d68577c77b36f3785987a06fce6e8b2e05e91c5ead985c09f3",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/MacTrafficLights.tsx.md": "fe85cf4ff0d26ac3c8d9f98cf89840c35134f909b1524a3549c3bc981cd17f02",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/ModeSwitcher.tsx.md": "16741c532e95f6e85de76ae513c160396b374d68b0054513383102ddfe3cdd59",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/NavigatorPanel.tsx.md": "804579376489454243e15d76024d6cfd32fdadf8923e78517a2d4425c9fc7db9",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/Panel.tsx.md": "e187ef65dd11c3e71b7ac57329a73fbd51b4778dfceb1eedb23c545c86594330",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/PanelHeader.tsx.md": "8b53a70b2a3f1a4d852d7324674dae3fe50b1e52b16fc4d6b07a21c3e1ea8ce0",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/RightSidePanel.tsx.md": "5bf7258e889cdff1aa493657f3439b0198c11863255720d1ccd7e51dab696b43",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/SearchDialog.tsx.md": "a0a84a65da516d116b6cd1bca5e51ba585182eb3b62cf91500104dab337411d8",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/left-sidebar/expanded-sidebar.tsx.md": "e5d509dfef4864b66826df44a1deb2fd72349e3fcb8f94e193f25daf1df5bd90",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/left-sidebar/navigation-items.tsx.md": "4c7d858b802b704b2da541564dbfb0fcd6dfd3b53530571700e4470a5fe98295",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/left-sidebar/rail.tsx.md": "0ad1cf8bb2bf6daace7d9f677688714c98774ceb4c005b14acd19d88b29daca2",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/left-sidebar/session-items.tsx.md": "985409789a07f4ba1d6392490da5482ddc9e5f3fca3048d0803c6a88f0eb8827",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/left-sidebar/session-tree.test.ts.md": "9bf95610fb2bbfd38093b417d9c1e7a548ec231dfaa72c49185f801d9c57b35b",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/left-sidebar/session-tree.ts.md": "8375ff3a28dc847c0d765bf719e0832632f725a52c0b9cd5938b1039ca671e32",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/left-sidebar/sidebar-dialogs.tsx.md": "67c2e61c544722e8f0fcb02fdd3567e4a313fd84fab3a865db7f306ea21dd2bc",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/left-sidebar/sidebar-utils.ts.md": "75e9bffb3b097c44562a850c6c101b1bda6bc24c0dc0c1a9b0ab6284bfdf2a4b",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/app-shell/left-sidebar/types.ts.md": "5e1be5f6ecde5805619683ea0f1375e8c313cdc01e76db0403c7bf666e4353f0"
+  }
+}

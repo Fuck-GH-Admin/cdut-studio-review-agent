@@ -1,0 +1,1842 @@
+/**
+ * useGlobalAgentListeners — 全局 Agent IPC 监听器
+ *
+ * 在应用顶层挂载，永不销毁。将所有 Agent 流式事件、
+ * 权限请求、AskUser 请求写入对应 Jotai atoms。
+ *
+ * 使用 useStore() 直接操作 atoms，避免 React 订阅。
+ */
+
+import { useEffect, useRef } from 'react'
+import { agentGoalsAtom, hydrateAgentGoalsAtom, mergeAgentGoalAtom } from '@/atoms/goal-atoms'
+import { unstable_batchedUpdates } from 'react-dom'
+import { useStore } from 'jotai'
+import { draftSessionIdsAtom } from '@/atoms/draft-session-atoms'
+import { sidebarViewModeAtom } from '@/atoms/sidebar-atoms'
+import {
+  agentStreamingStatesAtom,
+  agentStreamErrorsAtom,
+  agentSessionsAtom,
+  agentMessageRefreshAtom,
+  agentPendingPromptAtom,
+  allPendingPermissionRequestsAtom,
+  allPendingAskUserRequestsAtom,
+  askUserAnswersAtom,
+  askUserCollapsedAtom,
+  allPendingExitPlanRequestsAtom,
+  agentPromptSuggestionsAtom,
+  backgroundTasksAtomFamily,
+  sdkBackgroundTasksAtomFamily,
+  fileBrowserAutoRevealAtom,
+  recentlyModifiedPathsAtom,
+  RECENTLY_MODIFIED_TTL_MS,
+  applyAgentEvent,
+  liveMessagesMapAtom,
+  agentSessionModelMapAtom,
+  agentModelIdAtom,
+  agentPermissionModeMapAtom,
+  stoppedByUserSessionsAtom,
+  agentPlanModeSessionsAtom,
+  currentAgentSessionIdAtom,
+  currentAgentWorkspaceIdAtom,
+  agentWorkspacesAtom,
+  agentAttachedDirectoriesMapAtom,
+  agentAttachedFilesMapAtom,
+  workspaceAttachedDirectoriesMapAtom,
+  workspaceAttachedFilesMapAtom,
+  unviewedCompletedSessionIdsAtom,
+  agentSessionPathMapAtom,
+  agentSessionIndicatorMapAtom,
+  agentDiffRefreshVersionAtom,
+  agentNonGitFileChangesAtom,
+  agentFileChangesCurrentRunAtom,
+  agentImageGenerationsAtom,
+  upsertAgentImageGeneration,
+} from '@/atoms/agent-atoms'
+import {
+  notificationsEnabledAtom,
+  notificationSoundEnabledAtom,
+  notificationSoundsAtom,
+  customNotificationSoundsAtom,
+  sendDesktopNotification,
+} from '@/atoms/notifications'
+import { appModeAtom } from '@/atoms/app-mode'
+import { tabsAtom, activeTabIdAtom, activeSessionIdAtom, openTab, updateTabTitle, closeTab, tabMruAtom } from '@/atoms/tab-atoms'
+import { syncActiveTabSideEffectsForStore } from '@/lib/active-tab-side-effects'
+import { openFilePreviewTabAuthorized } from '@/components/diff/preview-opener'
+import { canOpenOrdinaryWorkTab, ensureOrdinaryWorkTabOwner, markAgentSessionRevoked, revokedAgentSessionIdsAtom } from '@/lib/agent-tab-access'
+import type { AgentStreamState } from '@/atoms/agent-atoms'
+import { agentDiffUnseenChangesAtom, agentDiffUnseenFilesAtom, agentDiffPanelTabAtom, agentSidePanelOpenAtom } from '@/atoms/agent-atoms'
+import { autoPreviewEnabledAtom, previewFileMapAtom, agentInterruptionMapAtom } from '@/atoms/preview-atoms'
+import type { NotificationSoundType } from '@/types/settings'
+import { toast } from 'sonner'
+import type { AgentStreamEvent, AgentStreamCompletePayload, AgentEvent, AgentStreamPayload, SDKMessage, SDKAssistantMessage, SDKUserMessage, SDKSystemMessage, SDKContentBlock, SDKUserContentBlock, SDKResultMessage, SDKBackgroundTaskSummary, ProferEvent, AgentSessionMeta, TodoAgentSessionActivation } from '@profer/shared'
+import { inferContextWindow, resolveContextWindowFromModelUsage } from '@profer/shared'
+import { buildExternalAgentRunActivation } from '@/lib/external-agent-run'
+import { buildTodoAgentPrompt } from '@/lib/todo-agent-prompt'
+import { upsertAgentSession, upsertAgentSessionProjection, mergeFetchedAgentSessions, syncDraftSessionId } from '@/lib/agent-session-list'
+import { upsertLiveMessageByUuid } from '@/lib/agent-live-message-upsert'
+import { createSessionUpdateBatcher } from '@/lib/session-update-batcher'
+
+import { getAgentCompletionMarkers } from '@/lib/agent-completion-presence'
+import { getPlanModeChangeFromToolName, updatePlanModeSessionSet } from '@/lib/agent-plan-mode'
+import { getSessionFileChangeKind, upsertSessionFileChange } from '@/lib/session-file-changes'
+import { compactCompletedBackgroundStreamState, isCurrentAgentStreamCompletion, settleCompletedAgentStreamState } from '@/lib/agent-stream-state-cleanup'
+import { AgentStreamRestoreGate } from '@/lib/agent-stream-restore-gate'
+import { isAbsoluteFilePath } from '@/lib/file-utils'
+import { inspectOfficialPptxPreview } from '@/components/file-browser/office-preview/official-preview-session'
+import { isAgentWorkspaceIdVisible } from '@/lib/product-feature-flags'
+
+/** 触发右侧文件浏览器自动定位的写入类工具集合 */
+const WRITE_TOOLS = new Set(['Write', 'Edit', 'MultiEdit', 'NotebookEdit', 'Update'])
+
+/** 会改变 git 工作树状态的子命令（用于识别 Bash 中触发 diff 刷新的 git 操作） */
+const GIT_MUTATING_SUBCOMMANDS = /\bgit\s+(commit|checkout|reset|restore|stash|clean|add|rm|mv|pull|merge|rebase|cherry-pick|revert|switch|am|apply)\b/
+
+function getParentDir(path: string): string {
+  const normalized = path.replace(/\\/g, '/')
+  const idx = normalized.lastIndexOf('/')
+  if (idx <= 0) return ''
+  return normalized.slice(0, idx)
+}
+
+/** cyrb53: 快速字符串 hash，遍历完整内容避免边缘碰撞 */
+function cyrb53(str: string): string {
+  let h1 = 0xdeadbeef
+  let h2 = 0x41c6ce57
+  for (let i = 0; i < str.length; i++) {
+    const ch = str.charCodeAt(i)
+    h1 = Math.imul(h1 ^ ch, 2654435761)
+    h2 = Math.imul(h2 ^ ch, 1597334677)
+  }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909)
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909)
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(16)
+}
+
+function uniqueTruthyPaths(paths: Array<string | null | undefined>): string[] {
+  return Array.from(new Set(paths.filter((p): p is string => typeof p === 'string' && p.length > 0)))
+}
+
+// ============================================================================
+// Phase 1 临时兼容层：将 AgentStreamPayload 转换为旧 AgentEvent
+// Phase 2 将移除此转换，直接使用 SDKMessage 渲染
+// ============================================================================
+
+function payloadToLegacyEvents(payload: AgentStreamPayload): AgentEvent[] {
+  if (payload.kind === 'profer_event') {
+    const evt = payload.event
+    switch (evt.type) {
+      case 'permission_request':
+        return [{ type: 'permission_request', request: evt.request }]
+      case 'permission_resolved':
+        return [{ type: 'permission_resolved', requestId: evt.requestId, behavior: evt.behavior }]
+      case 'ask_user_request':
+        return [{ type: 'ask_user_request', request: evt.request }]
+      case 'ask_user_resolved':
+        return [{ type: 'ask_user_resolved', requestId: evt.requestId }]
+      case 'exit_plan_mode_request':
+        return [{ type: 'exit_plan_mode_request', request: evt.request }]
+      case 'exit_plan_mode_resolved':
+        return [{ type: 'exit_plan_mode_resolved', requestId: evt.requestId }]
+      case 'enter_plan_mode':
+        return [{ type: 'enter_plan_mode', sessionId: evt.sessionId }]
+      case 'plan_mode_changed':
+        return [{ type: 'plan_mode_changed', active: evt.active, source: evt.source }]
+      case 'model_resolved':
+        return [{ type: 'model_resolved', model: evt.model }]
+      case 'context_window':
+        // 主端/SDK 确认的会话窗口，不可降级为 usage_update：后者只会填补空值，
+        // 无法覆盖此前由模型名得到的 200K 临时 fallback。
+        return [{ type: 'context_window', contextWindow: evt.contextWindow }]
+      case 'permission_mode_changed':
+        return [{ type: 'permission_mode_changed', mode: evt.mode }]
+      case 'run_resumed':
+        return [{ type: 'run_resumed' }]
+      case 'retry': {
+        const events: AgentEvent[] = []
+        if (evt.status === 'starting' && evt.attempt != null && evt.maxAttempts != null) {
+          events.push({ type: 'retrying', attempt: evt.attempt, maxAttempts: evt.maxAttempts, delaySeconds: evt.delaySeconds ?? 0, reason: evt.reason ?? '' })
+        }
+        if (evt.status === 'attempt' && evt.attemptData) {
+          events.push({ type: 'retry_attempt', attemptData: evt.attemptData })
+        }
+        if (evt.status === 'cleared') {
+          events.push({ type: 'retry_cleared' })
+        }
+        if (evt.status === 'failed' && evt.attemptData) {
+          events.push({ type: 'retry_failed', finalAttempt: evt.attemptData })
+        }
+        return events
+      }
+      default:
+        return []
+    }
+  }
+
+  // UI Projection / Catalog 都不属于 Runtime Event Plane，不能转换为旧运行事件。
+  if (payload.kind !== 'sdk_message') return []
+
+  // sdk_message → 转换为对应的 AgentEvent
+  const msg = payload.message
+
+  switch (msg.type) {
+    case 'assistant': {
+      const aMsg = msg as SDKAssistantMessage
+      if (aMsg.isReplay) return []
+      if (aMsg.error) {
+        // 错误已在主进程处理，这里仅作为 typed_error 透传
+        return [{ type: 'error', message: aMsg.error.message }]
+      }
+      const events: AgentEvent[] = []
+      for (const block of aMsg.message.content) {
+        if (block.type === 'text' && 'text' in block) {
+          events.push({ type: 'text_complete', text: (block as { text: string }).text, isIntermediate: false, parentToolUseId: aMsg.parent_tool_use_id ?? undefined })
+        } else if (block.type === 'tool_use') {
+          const tb = block as SDKContentBlock & { id: string; name: string; input: Record<string, unknown> }
+          const intent = (tb.input._intent as string | undefined)
+            ?? (tb.name === 'Bash' ? (tb.input.description as string | undefined) : undefined)
+          const planModeChange = getPlanModeChangeFromToolName(tb.name)
+          if (planModeChange) {
+            events.push({
+              type: 'plan_mode_changed',
+              active: planModeChange.active,
+              source: planModeChange.source,
+            })
+          }
+          events.push({
+            type: 'tool_start',
+            toolName: tb.name,
+            toolUseId: tb.id,
+            input: tb.input,
+            intent,
+            displayName: tb.input._displayName as string | undefined,
+            parentToolUseId: aMsg.parent_tool_use_id ?? undefined,
+          })
+        }
+      }
+      // Usage（保留完整字段用于详细展示）
+      if (!aMsg.parent_tool_use_id && aMsg.message.usage) {
+        const u = aMsg.message.usage
+        const inputTokens = u.input_tokens + (u.cache_read_input_tokens ?? 0) + (u.cache_creation_input_tokens ?? 0)
+        // 流式过程中 SDK 不返回 contextWindow，按模型名推断一个默认值作为 fallback。
+        // 注意：必须优先用 _channelModelId（用户在 UI 上选择的原始模型 ID），
+        // 因为部分端点（如智谱）会在 message.model 里剥掉 [1m] 等规格后缀，
+        // 导致 glm-x-preview[1m] 被识别成 glm-x-preview（200K）。
+        const modelName = aMsg._channelModelId ?? aMsg.message.model
+        const fallbackWindow = inferContextWindow(modelName)
+        events.push({
+          type: 'usage_update',
+          usage: {
+            inputTokens,
+            outputTokens: u.output_tokens,
+            cacheReadTokens: u.cache_read_input_tokens,
+            cacheCreationTokens: u.cache_creation_input_tokens,
+            ...(fallbackWindow ? { contextWindow: fallbackWindow } : {}),
+          },
+        })
+      }
+      return events
+    }
+
+    case 'user': {
+      const uMsg = msg as SDKUserMessage
+      if (uMsg.isReplay) return []
+      const events: AgentEvent[] = []
+      const contentBlocks = uMsg.message?.content ?? []
+      for (const block of contentBlocks) {
+        if (block.type === 'tool_result') {
+          const tb = block as SDKUserContentBlock & { tool_use_id: string; content?: unknown; is_error?: boolean }
+          const resultStr = typeof tb.content === 'string' ? tb.content : (tb.content != null ? JSON.stringify(tb.content) : '')
+          events.push({
+            type: 'tool_result',
+            toolUseId: tb.tool_use_id,
+            result: resultStr,
+            isError: tb.is_error ?? false,
+            parentToolUseId: uMsg.parent_tool_use_id ?? undefined,
+          })
+        }
+      }
+      return events
+    }
+
+    case 'result': {
+      const rMsg = msg as SDKResultMessage
+      const contextWindow = resolveContextWindowFromModelUsage(rMsg.modelUsage, rMsg._channelModelId)
+      // result.usage 是整个 query 内所有模型调用的累计求和，不能当成当前上下文占用，
+      // 否则进度环会虚高、冲破 100%（PR #821 修的正是这个问题）。
+      //
+      // 但 GLM-5.2 等走 Anthropic 兼容端点的渠道，流式 assistant 消息不携带 usage 字段，
+      // 真实值只在 result 中返回。若完全不透传，这些渠道的 ContextUsageBadge 永远不显示。
+      //
+      // 折中：完整透传 result.usage 字段，由 agent-atoms 的 complete 分支按
+      // 「流式 usage_update 从未写入过」条件兜底（needFallback），避免覆盖流式真实值。
+      const u = rMsg.usage
+      const inputTokens = u ? u.input_tokens + (u.cache_read_input_tokens ?? 0) + (u.cache_creation_input_tokens ?? 0) : undefined
+      return [{
+        type: 'complete',
+        stopReason: rMsg.subtype === 'success' ? 'end_turn' : 'error',
+        usage: (rMsg.total_cost_usd != null || contextWindow != null || u != null) ? {
+          costUsd: rMsg.total_cost_usd,
+          contextWindow,
+          ...(inputTokens != null && { inputTokens }),
+          ...(u && { outputTokens: u.output_tokens }),
+          ...(u && { cacheReadTokens: u.cache_read_input_tokens }),
+          ...(u && { cacheCreationTokens: u.cache_creation_input_tokens }),
+        } : undefined,
+      }]
+    }
+
+    case 'system': {
+      const sMsg = msg as SDKSystemMessage
+      if (sMsg.subtype === 'compact_boundary') return [{ type: 'compact_complete' }]
+      if (sMsg.subtype === 'compacting') return [{ type: 'compacting' }]
+      if (sMsg.subtype === 'task_started' && sMsg.task_id) {
+        return [{ type: 'task_started', taskId: sMsg.task_id, description: sMsg.description ?? '', taskType: sMsg.task_type, toolUseId: sMsg.tool_use_id }]
+      }
+      if (sMsg.subtype === 'task_notification' && sMsg.task_id) {
+        return [{
+          type: 'task_notification',
+          taskId: sMsg.task_id,
+          status: (sMsg.status as 'completed' | 'failed' | 'stopped') ?? 'completed',
+          summary: sMsg.summary ?? '',
+          outputFile: sMsg.output_file,
+          toolUseId: sMsg.tool_use_id,
+          usage: sMsg.usage ? {
+            totalTokens: sMsg.usage.total_tokens ?? 0,
+            toolUses: sMsg.usage.tool_uses ?? 0,
+            durationMs: sMsg.usage.duration_ms ?? 0,
+          } : undefined,
+        }]
+      }
+      if (sMsg.subtype === 'task_progress' && sMsg.task_id) {
+        return [{
+          type: 'task_progress',
+          taskId: sMsg.task_id,
+          toolUseId: sMsg.tool_use_id ?? sMsg.task_id,
+          description: sMsg.description,
+          lastToolName: sMsg.last_tool_name,
+          usage: sMsg.usage ? {
+            totalTokens: sMsg.usage.total_tokens ?? 0,
+            toolUses: sMsg.usage.tool_uses ?? 0,
+            durationMs: sMsg.usage.duration_ms ?? 0,
+          } : undefined,
+        }]
+      }
+      if (sMsg.subtype === 'thinking_tokens' && typeof sMsg.estimated_tokens === 'number') {
+        return [{
+          type: 'thinking_tokens',
+          estimatedTokens: sMsg.estimated_tokens,
+          estimatedTokensDelta: typeof sMsg.estimated_tokens_delta === 'number' ? sMsg.estimated_tokens_delta : 0,
+        }]
+      }
+      return []
+    }
+
+    case 'tool_progress': {
+      const tpMsg = msg as { tool_use_id: string; elapsed_time_seconds?: number; task_id?: string }
+      return [{
+        type: 'task_progress',
+        toolUseId: tpMsg.tool_use_id,
+        elapsedSeconds: tpMsg.elapsed_time_seconds,
+        taskId: tpMsg.task_id,
+      }]
+    }
+
+    case 'prompt_suggestion': {
+      const psMsg = msg as { suggestion?: string }
+      if (psMsg.suggestion) return [{ type: 'prompt_suggestion', suggestion: psMsg.suggestion }]
+      return []
+    }
+
+    case 'tool_use_summary': {
+      const tusMsg = msg as { summary?: string; preceding_tool_use_ids?: string[] }
+      if (tusMsg.summary) return [{ type: 'tool_use_summary', summary: tusMsg.summary, precedingToolUseIds: tusMsg.preceding_tool_use_ids ?? [] }]
+      return []
+    }
+
+    default:
+      return []
+  }
+}
+
+export interface UseGlobalAgentListenersOptions {
+  /**
+   * 是否在挂载时重绑所有活跃 Agent 流。主窗口保持 true；
+   * 科学助理等次级窗口必须传 false，否则会抢走主窗口正在运行的其它会话流事件。
+   */
+  restoreActiveStreams?: boolean
+}
+
+export function useGlobalAgentListeners(options: UseGlobalAgentListenersOptions = {}): void {
+  const store = useStore()
+  const restoreActiveStreamsRef = useRef(options.restoreActiveStreams !== false)
+
+  useEffect(() => {
+    let effectActive = true
+    // 启动时水合 Goal 状态（含重启后待恢复的 paused Goal）
+    void window.electronAPI.listGoals().then((goals) => {
+      if (!effectActive) return
+      store.set(hydrateAgentGoalsAtom, goals)
+    }).catch(() => {})
+    const cleanupGoal = window.electronAPI.onGoalEvent((event) => {
+      if (!effectActive) return
+      const previous = store.get(agentGoalsAtom).get(event.sessionId)
+      if (!store.set(mergeAgentGoalAtom, event)) return
+      // 用户启动/修改记录和终态摘要由主进程持久化；只触发重读，不更改真实流状态。
+      if (event.state && (event.state.iteration === 0 || !['active', 'stopping'].includes(event.state.status))) {
+        store.set(agentMessageRefreshAtom, (prev) => {
+          const next = new Map(prev)
+          next.set(event.sessionId, (prev.get(event.sessionId) ?? 0) + 1)
+          return next
+        })
+      }
+      // Goal 描述目标生命周期，不证明实际 run 已启动/停止。流状态和工作消息只由
+      // run 事件更新；禁止 Goal 状态清空普通流内容或抢先将其标成空闲。
+      if (event.state && event.state.stopReason !== 'cleared' && previous?.id === event.state.id && previous.status !== event.state.status) {
+        if (event.state.status === 'completed') {
+          toast.success('Goal 已完成', { description: event.state.lastSummary || event.state.goal })
+        } else if (event.state.status === 'blocked') {
+          toast.warning('Goal 受阻，补充信息后可恢复', { description: event.state.stopReason || event.state.lastSummary || event.state.goal })
+        } else if (event.state.status === 'failed') {
+          toast.error('Goal 执行失败', { description: event.state.stopReason || event.state.goal })
+        } else if (event.state.status === 'budget_limited') {
+          toast.warning('Goal 预算已耗尽', { description: '请在 Goal 卡片中增加预算后恢复；预算耗尽不代表目标已完成。' })
+        }
+      }
+    })
+
+    /** 正在执行的写工具：toolUseId → { path, sessionId, toolName, runId } */
+    const pendingWriteTools = new Map<string, { path: string; sessionId: string; toolName: string; runId: string }>()
+    /** 正在执行的 git 突变 Bash 命令：toolUseId → sessionId（完成后触发 diff 刷新） */
+    const pendingGitMutateTools = new Map<string, string>()
+    /** 每轮只自动打开一次文件改动面板，避免连续写入打断用户 */
+    const autoActivatedChangeTurns = new Map<string, string>()
+    /**
+     * SDK 消息可能在一个渲染帧内连续到达；按 session 合并写入，避免每条消息
+     * 都唤醒完整 AgentMessages。终态入口会主动 flush，保证最后一帧不丢。
+     */
+    const liveMessageBatcher = createSessionUpdateBatcher<SDKMessage>((sessionId, messages) => {
+      store.set(liveMessagesMapAtom, (previous) => {
+        let current = previous.get(sessionId) ?? []
+        for (const message of messages) {
+          const next = upsertLiveMessageByUuid(current, message)
+          if (next !== current) current = next
+        }
+        if (current === (previous.get(sessionId) ?? [])) return previous
+        const next = new Map(previous)
+        next.set(sessionId, current)
+        return next
+      })
+    })
+    const streamStateBatcher = createSessionUpdateBatcher<AgentEvent>((sessionId, events) => {
+      store.set(agentStreamingStatesAtom, (previous) => {
+        const current = previous.get(sessionId) ?? {
+          running: true,
+          content: '',
+          toolActivities: [],
+          model: undefined,
+          startedAt: undefined,
+        }
+        const nextState = events.reduce((state, event) => applyAgentEvent(state, event), current)
+        if (nextState === current) return previous
+        const next = new Map(previous)
+        next.set(sessionId, nextState)
+        return next
+      })
+    })
+
+    /** 构建导航到指定会话的回调 */
+    const makeNavigateToSession = (sessionId: string, sessionTitle: string) => () => {
+      const sessions = store.get(agentSessionsAtom)
+      const session = sessions.find((s) => s.id === sessionId)
+      if (!isAgentWorkspaceIdVisible(session?.workspaceId, store.get(agentWorkspacesAtom))) return
+
+      const tabs = store.get(tabsAtom)
+      const result = openTab(tabs, { type: 'agent', sessionId, title: sessionTitle })
+      store.set(tabsAtom, result.tabs)
+      store.set(activeTabIdAtom, result.activeTabId)
+      store.set(appModeAtom, 'agent')
+      store.set(currentAgentSessionIdAtom, sessionId)
+      if (session?.workspaceId) {
+        store.set(currentAgentWorkspaceIdAtom, session.workspaceId)
+      }
+    }
+
+    /** 获取会话标题 */
+    const getSessionTitle = (sessionId: string): string => {
+      const sessions = store.get(agentSessionsAtom)
+      return sessions.find((s) => s.id === sessionId)?.title ?? '未命名会话'
+    }
+
+    const activateExternalAgentRun = (event: Extract<ProferEvent, { type: 'external_run_started' }>): void => {
+      const applyActivation = (sessions: AgentSessionMeta[]): void => {
+        const activation = buildExternalAgentRunActivation({
+          tabs: store.get(tabsAtom),
+          sessions,
+          sessionId: event.sessionId,
+          title: event.title,
+          workspaceId: event.workspaceId,
+          modelId: event.modelId,
+          startedAt: event.startedAt,
+          currentStreamState: store.get(agentStreamingStatesAtom).get(event.sessionId),
+        })
+
+        // 外部来源（飞书/钉钉/微信/bridge）唤起的 run 不抢占前台：
+        // 不打开新 Tab、不切换激活 Tab、不切换 appMode/当前会话/当前工作区。
+        // 只更新驱动左侧边栏列表与状态指示条所需的状态，让用户自行决定是否切过去。
+        // 若该会话恰好是用户当前正在查看的会话，这里不动 Tab/激活，流式内容会通过
+        // agentStreamingStatesAtom 自然刷新，用户视角无任何跳动。
+        //
+        // 只 upsert 本次 event 对应的会话，绝不用这份快照整体覆盖列表（#985）。
+        // 一次派发多个子会话时，多个 external_run_started 回调各带「事件那一刻」的
+        // 快照进来；若整体覆盖 agentSessionsAtom，后 resolve 的回调会用自己那份可能
+        // 缺失了刚结束 turn 的父会话的快照把父会话冲掉——父会话从列表消失后其子会话
+        // 因找不到父而浮到根层。改为单条 upsert 后每个回调只负责自己那一个会话。
+        const sessionMeta = sessions.find((item) => item.id === event.sessionId)
+        const upserted: AgentSessionMeta = event.session ?? sessionMeta ?? {
+          id: event.sessionId,
+          title: event.title ?? '未命名会话',
+          workspaceId: event.workspaceId,
+          modelId: event.modelId,
+          createdAt: event.startedAt,
+          updatedAt: event.startedAt,
+          ...('parentSessionId' in event && event.parentSessionId ? { parentSessionId: event.parentSessionId as string } : {}),
+        }
+        const promotedParent = upserted.parentSessionId
+          ? sessions.find((item) => item.id === upserted.parentSessionId)
+          : undefined
+        store.set(agentSessionsAtom, (prev) => {
+          let next = upsertAgentSession(prev, upserted)
+          // 草稿父会话需要在子 Agent 出现时晋升为可见会话
+          if (promotedParent && promotedParent.draft) {
+            next = upsertAgentSession(next, { ...promotedParent, draft: false })
+          } else if (promotedParent) {
+            next = upsertAgentSession(next, promotedParent)
+          }
+          return next
+        })
+        if (promotedParent) {
+          store.set(draftSessionIdsAtom, (previous) => {
+            if (!previous.has(promotedParent.id)) return previous
+            const next = new Set(previous)
+            next.delete(promotedParent.id)
+            return next
+          })
+        }
+        const activationModelId = activation.modelId
+        if (activationModelId) {
+          store.set(agentSessionModelMapAtom, (prev) => {
+            const map = new Map(prev)
+            map.set(event.sessionId, activationModelId)
+            return map
+          })
+        }
+        store.set(unviewedCompletedSessionIdsAtom, (prev) => {
+          if (!prev.has(event.sessionId)) return prev
+          const next = new Set(prev)
+          next.delete(event.sessionId)
+          return next
+        })
+        store.set(agentStreamingStatesAtom, (prev) => {
+          const map = new Map(prev)
+          map.set(event.sessionId, activation.streamState)
+          return map
+        })
+      }
+
+      // External notification may precede list hydration, but an old review-owner
+      // event can also outlive deletion. Only Main-authorized unknown IDs may upsert.
+      if (!canOpenOrdinaryWorkTab(store.get(agentSessionsAtom), event.sessionId)) {
+        void ensureOrdinaryWorkTabOwner(store, event.sessionId, window.electronAPI.getAgentSessionMeta,
+          () => effectActive && !store.get(revokedAgentSessionIdsAtom).has(event.sessionId),
+        ).then((authorized) => { if (authorized) applyActivation(store.get(agentSessionsAtom)) })
+        return
+      }
+      applyActivation(store.get(agentSessionsAtom))
+    }
+
+    /** 发送阻塞通知（带提示音 + 会话导航） */
+    const sendBlockingNotification = (sessionId: string, title: string, body: string, soundType: NotificationSoundType) => {
+      const enabled = store.get(notificationsEnabledAtom)
+      const soundEnabled = store.get(notificationSoundEnabledAtom)
+      const sounds = store.get(notificationSoundsAtom)
+      const customSounds = store.get(customNotificationSoundsAtom)
+      const sessionTitle = getSessionTitle(sessionId)
+      sendDesktopNotification(
+        title,
+        `[${sessionTitle}] ${body}`,
+        enabled,
+        {
+          force: true,
+          playSound: enabled && soundEnabled,
+          soundType,
+          sounds,
+          customSounds,
+          onNavigate: makeNavigateToSession(sessionId, sessionTitle),
+        }
+      )
+    }
+
+    const workspaceFilesPathCache = new Map<string, string>()
+    const WORKSPACE_FILES_CACHE_MAX = 50
+    const setWorkspaceFilesPath = (slug: string, path: string) => {
+      workspaceFilesPathCache.delete(slug)
+      workspaceFilesPathCache.set(slug, path)
+      if (workspaceFilesPathCache.size > WORKSPACE_FILES_CACHE_MAX) {
+        const oldest = workspaceFilesPathCache.keys().next().value
+        if (oldest !== undefined) workspaceFilesPathCache.delete(oldest)
+      }
+    }
+    const autoPreviewSeq = new Map<string, number>()
+
+    const getWorkspaceIdForSession = (sid: string): string | null => {
+      const session = store.get(agentSessionsAtom).find((s) => s.id === sid)
+      return session?.workspaceId ?? store.get(currentAgentWorkspaceIdAtom)
+    }
+
+    const getWorkspaceSlugForSession = (sid: string): string | null => {
+      const workspaceId = getWorkspaceIdForSession(sid)
+      if (!workspaceId) return null
+      return store.get(agentWorkspacesAtom).find((w) => w.id === workspaceId)?.slug ?? null
+    }
+
+    const getWorkspaceFilesPathForSession = async (sid: string): Promise<string | null> => {
+      const slug = getWorkspaceSlugForSession(sid)
+      if (!slug) return null
+      const cached = workspaceFilesPathCache.get(slug)
+      if (cached) return cached
+      try {
+        const path = await window.electronAPI.getWorkspaceFilesPath(slug)
+        setWorkspaceFilesPath(slug, path)
+        return path
+      } catch {
+        return null
+      }
+    }
+
+    const buildAutoPreviewFile = async (sid: string, targetPath: string) => {
+      const sessionPath = store.get(agentSessionPathMapAtom).get(sid) ?? ''
+      const parentDir = getParentDir(targetPath)
+      const dirPath = isAbsoluteFilePath(targetPath) ? parentDir : (sessionPath || parentDir)
+      const workspaceId = getWorkspaceIdForSession(sid)
+      const workspaceFilesPath = await getWorkspaceFilesPathForSession(sid)
+      const sessionAttachedDirs = store.get(agentAttachedDirectoriesMapAtom).get(sid) ?? []
+      const sessionAttachedFiles = store.get(agentAttachedFilesMapAtom).get(sid) ?? []
+      const workspaceAttachedDirs = workspaceId
+        ? (store.get(workspaceAttachedDirectoriesMapAtom).get(workspaceId) ?? [])
+        : []
+      const workspaceAttachedFiles = workspaceId
+        ? (store.get(workspaceAttachedFilesMapAtom).get(workspaceId) ?? [])
+        : []
+      const basePaths = uniqueTruthyPaths([
+        sessionPath,
+        workspaceFilesPath,
+        dirPath,
+        ...sessionAttachedDirs,
+        ...sessionAttachedFiles,
+        ...workspaceAttachedDirs,
+        ...workspaceAttachedFiles,
+      ])
+
+      let previewOnly = true
+      if (dirPath) {
+        try {
+          const status = await window.electronAPI.getGitRepoStatus(dirPath)
+          previewOnly = status?.isRepo !== true
+        } catch {
+          previewOnly = true
+        }
+      }
+
+      // Agent 实际写入的外部文件也必须进入改动记录；会话附件范围只用于
+      // 路径解析上下文，不应在这里再次把已完成的文件操作过滤掉。
+      return {
+        filePath: targetPath,
+        dirPath: dirPath || undefined,
+        previewOnly,
+        basePaths: basePaths.length > 0 ? basePaths : undefined,
+      }
+    }
+
+    const setAutoPreviewFile = (sid: string, targetPath: string, openSurface: boolean) => {
+      const seq = (autoPreviewSeq.get(sid) ?? 0) + 1
+      autoPreviewSeq.set(sid, seq)
+      return buildAutoPreviewFile(sid, targetPath)
+        .then(async (previewFile) => {
+          const stillCurrent = () => effectActive && autoPreviewSeq.get(sid) === seq
+          if (!stillCurrent() || !await ensureOrdinaryWorkTabOwner(store, sid,
+            window.electronAPI.getAgentSessionMeta, stillCurrent)) return null
+          store.set(previewFileMapAtom, (prev) => {
+            const m = new Map(prev)
+            m.set(sid, previewFile)
+            return m
+          })
+          if (openSurface) {
+            // 保留上游侧栏预览，并在异步返回时重新核对会话归属和本轮资格。
+            if (!await openFilePreviewTabAuthorized(store, sid, previewFile, { activate: false }, stillCurrent)) return null
+          }
+          return previewFile
+        })
+        .catch(() => null)
+    }
+
+    // ===== 0. 初始化：从持久化 meta 恢复 stoppedByUser 状态 =====
+    window.electronAPI.listAgentSessions(store.get(sidebarViewModeAtom) === 'archived').then((sessions) => {
+      const stoppedIds = new Set<string>(
+        sessions.filter((s) => s.stoppedByUser).map((s) => s.id)
+      )
+      if (stoppedIds.size > 0) {
+        store.set(stoppedByUserSessionsAtom, stoppedIds)
+      }
+    }).catch(console.error)
+
+    // ===== 0.5 委派子会话自动后台 Tab =====
+    // 子会话真正开跑（流指示 running/blocked）且 meta 带委派血缘时，静默确保其顶栏 Tab
+    // 存在——不打断焦点、不自动关闭。两个订阅缺一漏一：
+    // - 只订阅会话列表：meta 先到、指示后到，会错过创建时刻；
+    // - 按持久化 delegationStatus='running' 兜底：重启后磁盘 meta 残留 running（死委派，
+    //   主进程只在内存收敛为 interrupted 不回写磁盘），会在启动时冒出假活跃 Tab。
+    // 用「血缘 + 实时指示」作为唯一判据：创建、阻塞、重跑都能覆盖；死委派不冒 Tab。
+    const ensureDelegationChildTabs = (): void => {
+      if (!effectActive) return
+      const sessions = store.get(agentSessionsAtom)
+      const indicatorMap = store.get(agentSessionIndicatorMapAtom)
+      store.set(tabsAtom, (tabs) => {
+        let next = tabs
+        for (const child of sessions) {
+          if (!child.parentSessionId || !child.sourceDelegationId) continue
+          const status = indicatorMap.get(child.id)
+          if (status !== 'running' && status !== 'blocked') continue
+          if (next.some((tab) => tab.type === 'agent' && tab.sessionId === child.id)) continue
+          next = openTab(next, {
+            type: 'agent',
+            sessionId: child.id,
+            title: child.title,
+            parentSessionId: child.parentSessionId,
+          }).tabs
+        }
+        return next
+      })
+    }
+    const unsubscribeDelegationSessionTabs = store.sub(agentSessionsAtom, ensureDelegationChildTabs)
+    const unsubscribeDelegationIndicatorTabs = store.sub(agentSessionIndicatorMapAtom, ensureDelegationChildTabs)
+
+    // ===== 1. 流式事件 =====
+    // Unknown-ID stream events are queued in-order until Main confirms ordinary
+    // ownership. This avoids both leaked review-owner SDK messages and dropped
+    // legitimate early ordinary streams while renderer session lists hydrate.
+    const unknownStreamQueues = new Map<string, AgentStreamEvent[]>()
+    const dispatchOrdinaryStreamEvent = (streamEvent: AgentStreamEvent): void => {
+        unstable_batchedUpdates(() => {
+        const { sessionId, payload } = streamEvent
+        // A deletion already observed in this renderer cannot be undone by an older queued event.
+        if (store.get(revokedAgentSessionIdsAtom).has(sessionId)) return
+
+        // 终态（run_complete / run_error）的语义由专用 IPC（STREAM_COMPLETE / STREAM_ERROR）
+        // 统一承担：agent-service 在刷新恢复时会为终态 payload 补发同名 IPC，因此这里直接跳过。
+        // 若在这里抢先落后状态，专用 handler 的竞态保护（isCurrentAgentStreamCompletion 要求
+        // running/backgroundWaiting）会判定「已结束」并跳过收尾，导致桌面通知、未查看标记、
+        // 中断 chip、后台任务清理、finalize 等副作用全部丢失。
+        if (payload.kind === 'run_complete' || payload.kind === 'run_error') return
+
+        if (payload.kind === 'session_projection') {
+          if (payload.operation === 'upsert') {
+            const applyProjection = (): void => {
+              if (!effectActive || store.get(revokedAgentSessionIdsAtom).has(payload.session.id)) return
+              store.set(agentSessionsAtom, (previous) => upsertAgentSessionProjection(previous, payload.session))
+              store.set(draftSessionIdsAtom, (previous) => syncDraftSessionId(previous, payload.session))
+              if (payload.session.permissionMode) {
+                store.set(agentPermissionModeMapAtom, (previous) => {
+                  const next = new Map(previous)
+                  next.set(payload.session.id, payload.session.permissionMode)
+                  return next
+                })
+                store.set(agentPlanModeSessionsAtom, (previous) =>
+                  updatePlanModeSessionSet(previous, payload.session.id, payload.session.permissionMode === 'plan')
+                )
+              }
+              store.set(tabsAtom, (tabs) => updateTabTitle(tabs, payload.session.id, payload.session.title))
+            }
+            // Legacy queued projection may arrive after owner deletion, stripped of owner.
+            // Unknown IDs MUST be resolved with Main before entering ordinary session atoms.
+            if (canOpenOrdinaryWorkTab(store.get(agentSessionsAtom), payload.session.id)) {
+              applyProjection()
+            } else {
+              void ensureOrdinaryWorkTabOwner(store, payload.session.id,
+                window.electronAPI.getAgentSessionMeta,
+                () => effectActive && !store.get(revokedAgentSessionIdsAtom).has(payload.session.id),
+              ).then((authorized) => { if (authorized) applyProjection() })
+            }
+          } else {
+            markAgentSessionRevoked(store, payload.sessionId)
+            store.set(agentSessionsAtom, (previous) => previous.filter((session) => session.id !== payload.sessionId))
+          }
+          return
+        }
+
+        if (payload.kind === 'profer_event') {
+          const proferEvent = payload.event
+          if (proferEvent.type === 'preview_requested' && proferEvent.sessionId === sessionId) {
+            // Agent 请求预览时只复用当前 renderer 的正式 PreviewPanel/PreviewTabContent。
+            // requestId/revision 进入 PreviewFile，OfficePreview ready/error 后才向工具回执。
+            const previewPath = proferEvent.filePath
+            const sequence = (autoPreviewSeq.get(sessionId) ?? 0) + 1
+            autoPreviewSeq.set(sessionId, sequence)
+            buildAutoPreviewFile(sessionId, previewPath).then(async (previewFile) => {
+              if (!effectActive) return
+              if (!previewFile || autoPreviewSeq.get(sessionId) !== sequence) {
+                void window.electronAPI.reportAgentFilePreview({
+                  requestId: proferEvent.requestId,
+                  sessionId,
+                  filePath: previewPath,
+                  revision: proferEvent.revision,
+                  status: 'error',
+                  error: '无法建立正式 PPTX 预览文件状态',
+                })
+                return
+              }
+              const nextFile = {
+                ...previewFile,
+                previewOnly: true,
+                readOnly: proferEvent.readOnly !== false,
+                basePaths: proferEvent.basePaths?.length ? proferEvent.basePaths : previewFile.basePaths,
+                previewRequestId: proferEvent.requestId,
+                previewRevision: proferEvent.revision,
+              }
+              // Office preview must not silently time out when a work tab was refused:
+              // a normal early event gets one Main-authenticated metadata lookup.
+              const opened = await openFilePreviewTabAuthorized(store, sessionId, nextFile, {},
+                () => effectActive && autoPreviewSeq.get(sessionId) === sequence
+                  && !store.get(revokedAgentSessionIdsAtom).has(sessionId))
+              if (!opened) throw new Error('会话已删除、无权限或无法创建正式预览 Tab')
+              store.set(agentDiffRefreshVersionAtom, (prev) => {
+                const next = new Map(prev)
+                next.set(sessionId, (prev.get(sessionId) ?? 0) + 1)
+                return next
+              })
+            }).catch((error: unknown) => {
+              if (!effectActive) return
+              void window.electronAPI.reportAgentFilePreview({
+                requestId: proferEvent.requestId,
+                sessionId,
+                filePath: previewPath,
+                revision: proferEvent.revision,
+                status: 'error',
+                error: error instanceof Error ? error.message : '正式 PPTX 预览打开失败',
+              })
+            })
+          } else if (proferEvent.type === 'preview_inspection_requested' && proferEvent.request.sessionId === sessionId) {
+            void inspectOfficialPptxPreview(proferEvent.request)
+              .then((result) => {
+                if (effectActive) void window.electronAPI.reportAgentFilePreviewInspection(result)
+              })
+              .catch((error: unknown) => {
+                if (!effectActive) return
+                return window.electronAPI.reportAgentFilePreviewInspection({
+                ...proferEvent.request,
+                slideCount: 0,
+                currentSlide: 1,
+                images: [],
+                error: error instanceof Error ? error.message : '正式 PPTX 预览观察失败',
+                })
+              })
+          } else if (proferEvent.type === 'image_generation_updated' && proferEvent.sessionId === sessionId && proferEvent.record.sessionId === sessionId) {
+            // Card events are independent timeline updates; never let them fabricate an Agent
+            // running state through legacy event conversion or cross-session cache pollution.
+            store.set(agentImageGenerationsAtom, (previous) => {
+              const next = new Map(previous)
+              next.set(sessionId, upsertAgentImageGeneration(previous.get(sessionId) ?? [], proferEvent.record))
+              return next
+            })
+          } else if (proferEvent.type === 'external_run_started') {
+            activateExternalAgentRun(proferEvent)
+          } else if (proferEvent.type === 'delegation_session_updated' || proferEvent.type === 'session_updated') {
+            const incomingSession = proferEvent.session
+            const applyUpdate = (): void => {
+              if (!effectActive || store.get(revokedAgentSessionIdsAtom).has(incomingSession.id)) return
+              store.set(agentSessionsAtom, (previous) => {
+                const current = previous.find((session) => session.id === incomingSession.id)
+                if (current && (incomingSession.revision ?? 0) < (current.revision ?? 0)) return previous
+                return upsertAgentSession(previous, incomingSession)
+              })
+              if (incomingSession.permissionMode) {
+                store.set(agentPermissionModeMapAtom, (previous) => {
+                  const current = store.get(agentSessionsAtom).find((session) => session.id === incomingSession.id)
+                  if (current && (incomingSession.revision ?? 0) < (current.revision ?? 0)) return previous
+                  const next = new Map(previous)
+                  next.set(incomingSession.id, incomingSession.permissionMode!)
+                  return next
+                })
+                store.set(agentPlanModeSessionsAtom, (previous) =>
+                  updatePlanModeSessionSet(previous, incomingSession.id, incomingSession.permissionMode === 'plan'))
+              }
+              store.set(tabsAtom, (tabs) => updateTabTitle(tabs, incomingSession.id, incomingSession.title))
+            }
+            if (canOpenOrdinaryWorkTab(store.get(agentSessionsAtom), incomingSession.id)) {
+              applyUpdate()
+            } else {
+              void ensureOrdinaryWorkTabOwner(store, incomingSession.id,
+                window.electronAPI.getAgentSessionMeta,
+                () => effectActive && !store.get(revokedAgentSessionIdsAtom).has(incomingSession.id),
+              ).then((authorized) => { if (authorized) applyUpdate() })
+            }
+            // 委派子会话的后台 Tab 由会话列表与流指示统一补齐；本事件只负责收敛会话和权限状态。
+          } else if (proferEvent.type === 'session_deleted') {
+            markAgentSessionRevoked(store, proferEvent.sessionId)
+            store.set(agentSessionsAtom, (previous) => previous.filter((session) => session.id !== proferEvent.sessionId))
+            // 同步关闭该会话的顶栏 Tab（closeTab 会级联清除其浏览器工作标签），避免僵尸 Tab。
+            const currentTabs = store.get(tabsAtom)
+            const currentActiveTabId = store.get(activeTabIdAtom)
+            const result = closeTab(currentTabs, currentActiveTabId, proferEvent.sessionId, store.get(tabMruAtom))
+            if (result.tabs !== currentTabs) {
+              store.set(tabsAtom, result.tabs)
+              store.set(activeTabIdAtom, result.activeTabId)
+              store.set(tabMruAtom, result.mru)
+              if (result.activeTabId !== currentActiveTabId) {
+                const newActiveTab = result.activeTabId
+                  ? result.tabs.find((t) => t.id === result.activeTabId) ?? null
+                  : null
+                syncActiveTabSideEffectsForStore(store, newActiveTab)
+              }
+            }
+          }
+        }
+
+        // 如果收到未知会话的事件（跨工作区场景），立即刷新会话列表
+        const knownSessions = store.get(agentSessionsAtom)
+        if (!knownSessions.some((s) => s.id === sessionId)) {
+          window.electronAPI.listAgentSessions(store.get(sidebarViewModeAtom) === 'archived')
+            .then((sessions) => store.set(agentSessionsAtom, (prev) => mergeFetchedAgentSessions(prev, sessions, store.get(revokedAgentSessionIdsAtom))))
+            .catch(console.error)
+        }
+
+        // Phase 2: 直接累积 SDKMessage 到 liveMessagesMapAtom（跳过 replay 消息，避免与持久化消息重复）
+        if (payload.kind === 'sdk_message') {
+          const msgRecord = payload.message as Record<string, unknown>
+          // prompt_suggestion 不是对话转录消息，不能进入 liveMessages（会被错误渲染到最后一条助手消息中）
+          // 它通过下方 legacyEvents 分支写入 agentPromptSuggestionsAtom，显示在输入框上方
+          if (msgRecord.type === 'prompt_suggestion') {
+            // 跳过写入 liveMessages
+          } else if (msgRecord.type === 'system' && msgRecord.subtype === 'thinking_tokens') {
+            // thinking_tokens 是高频进度估算，只更新流式状态，不进入消息转录。
+          } else if (!msgRecord.isReplay) {
+            // 为实时消息补充 _createdAt 时间戳（与持久化时的逻辑一致），
+            // 避免 AssistantTurnRenderer 因缺少时间戳导致 header 时间消失
+            if (typeof msgRecord._createdAt !== 'number') {
+              msgRecord._createdAt = Date.now()
+            }
+
+            // 为 assistant 消息注入渠道 modelId，确保流式期间就绑定正确模型
+            if (msgRecord.type === 'assistant' && !msgRecord._channelModelId) {
+              const sessionModelMap = store.get(agentSessionModelMapAtom)
+              const defaultModelId = store.get(agentModelIdAtom)
+              msgRecord._channelModelId = sessionModelMap.get(sessionId) ?? defaultModelId ?? undefined
+            }
+
+            liveMessageBatcher.enqueue(sessionId, payload.message)
+
+            // result 消息携带 SDK 后台任务摘要（含 command/status/type）→存入 atom 供面板显示
+            if (msgRecord.type === 'result') {
+              const tasks = (msgRecord as { background_tasks?: SDKBackgroundTaskSummary[] }).background_tasks
+              if (Array.isArray(tasks)) {
+                store.set(sdkBackgroundTasksAtomFamily(sessionId), tasks)
+              }
+            }
+          }
+        }
+
+        // Phase 1 兼容：将新 AgentStreamPayload 转换为旧 AgentEvent[]
+        const legacyEvents = payloadToLegacyEvents(payload)
+
+        for (const event of legacyEvents) {
+          // 会话首次进入 running 时，清除旧的完成提醒状态
+          if (event.type !== 'prompt_suggestion') {
+            const prevState = store.get(agentStreamingStatesAtom).get(sessionId)
+            if (!prevState || !prevState.running) {
+              store.set(unviewedCompletedSessionIdsAtom, (prev: Set<string>) => {
+                if (!prev.has(sessionId)) return prev
+                const next = new Set(prev)
+                next.delete(sessionId)
+                return next
+              })
+            }
+          }
+
+          // 文本/thinking 增量在一帧内合并；工具、权限和其他控制事件先刷新待处理文本，
+          // 保持原有事件顺序和交互语义。prompt_suggestion 不影响流式状态。
+          if (event.type !== 'prompt_suggestion') {
+            const highFrequency = event.type === 'text_delta'
+              || event.type === 'text_complete'
+              || event.type === 'thinking_tokens'
+            if (highFrequency) {
+              streamStateBatcher.enqueue(sessionId, event)
+            } else {
+              streamStateBatcher.flush(sessionId)
+              store.set(agentStreamingStatesAtom, (prev) => {
+                const current: AgentStreamState = prev.get(sessionId) ?? {
+                  running: true,
+                  content: '',
+                  toolActivities: [],
+                  model: undefined,
+                  // startedAt 留空：让 STREAM_COMPLETE 竞态保护跳过时间戳比较，
+                  // 正常流程中 handleSend 已设置了正确的 startedAt，此 fallback 仅在极端情况下触发
+                  startedAt: undefined,
+                }
+                const next = applyAgentEvent(current, event)
+                const map = new Map(prev)
+                map.set(sessionId, next)
+                return map
+              })
+            }
+          }
+
+          // RightSidePanel 由用户完全控制，Agent 行为不影响其开关状态
+
+          // 跟踪当前 run 的 startedAt，用于非 Git 文件变更的 run 分组
+          if (event.type !== 'prompt_suggestion') {
+            const activeState = store.get(agentStreamingStatesAtom).get(sessionId)
+            if (activeState?.startedAt != null) {
+              const activeRunId = String(activeState.startedAt)
+              store.set(agentFileChangesCurrentRunAtom, (prev) => {
+                if (prev.get(sessionId) === activeRunId) return prev
+                const map = new Map(prev)
+                map.set(sessionId, activeRunId)
+                return map
+              })
+            }
+          }
+
+          // Agent 修改文件时，触发右侧文件浏览器自动定位（展开父目录 + 滚动 + 高亮）
+          if (event.type === 'tool_start' && WRITE_TOOLS.has(event.toolName)) {
+            const input = event.input as Record<string, unknown> | undefined
+            const targetPath =
+              (input?.file_path as string | undefined)
+              ?? (input?.path as string | undefined)
+              ?? (input?.notebook_path as string | undefined)
+            const runId = store.get(agentFileChangesCurrentRunAtom).get(sessionId) ?? String(Date.now())
+            pendingWriteTools.set(event.toolUseId, { path: targetPath || '', sessionId, toolName: event.toolName, runId })
+            if (typeof targetPath === 'string' && targetPath.length > 0) {
+              const now = Date.now()
+              store.set(fileBrowserAutoRevealAtom, { sessionId, path: targetPath, ts: now })
+              // 同时记入「最近修改」状态，用于 60s 内左侧竖条标记
+              store.set(recentlyModifiedPathsAtom, (prev) => {
+                const map = new Map(prev)
+                const inner = new Map(map.get(sessionId) ?? new Map())
+                inner.set(targetPath, now)
+                map.set(sessionId, inner)
+                return map
+              })
+              // Agent 开始改文件时，自动切换预览面板到该文件
+              if (store.get(autoPreviewEnabledAtom)) {
+                setAutoPreviewFile(sessionId, targetPath, false)
+              }
+            }
+          }
+
+          // Bash 工具执行 git 突变命令时，标记为待刷新（完成后刷新 diff 列表）
+          if (event.type === 'tool_start' && (event.toolName === 'Bash' || event.toolName === 'PowerShell')) {
+            const input = event.input as Record<string, unknown> | undefined
+            const command = typeof input?.command === 'string' ? input.command : ''
+            if (command && GIT_MUTATING_SUBCOMMANDS.test(command)) {
+              pendingGitMutateTools.set(event.toolUseId, sessionId)
+            }
+          }
+
+          // 处理后台任务事件
+          if (event.type === 'task_started') {
+            store.set(backgroundTasksAtomFamily(sessionId), (prev) => {
+              const toolUseId = event.toolUseId ?? event.taskId
+              if (prev.some((task) => task.id === event.taskId || task.toolUseId === toolUseId)) return prev
+              return [...prev, {
+                id: event.taskId,
+                type: event.taskType === 'shell' || event.taskType === 'bash' || event.taskType === 'local_bash' ? 'shell' : 'agent',
+                toolUseId,
+                startTime: Date.now(),
+                elapsedSeconds: 0,
+                intent: event.description,
+              }]
+            })
+          } else if (event.type === 'task_notification') {
+            store.set(backgroundTasksAtomFamily(sessionId), (prev) => prev.filter((task) => task.id !== event.taskId))
+          } else if (event.type === 'task_backgrounded') {
+            store.set(backgroundTasksAtomFamily(sessionId), (prev) => {
+              if (prev.some((t) => t.toolUseId === event.toolUseId)) return prev
+              return [...prev, {
+                id: event.taskId,
+                type: 'agent' as const,
+                toolUseId: event.toolUseId,
+                startTime: Date.now(),
+                elapsedSeconds: 0,
+                intent: event.intent,
+              }]
+            })
+          } else if (event.type === 'task_progress') {
+            store.set(backgroundTasksAtomFamily(sessionId), (prev) =>
+              prev.map((t) =>
+                t.toolUseId === event.toolUseId
+                  ? { ...t, elapsedSeconds: event.elapsedSeconds ?? t.elapsedSeconds }
+                  : t
+              )
+            )
+          } else if (event.type === 'shell_backgrounded') {
+            store.set(backgroundTasksAtomFamily(sessionId), (prev) => {
+              if (prev.some((t) => t.toolUseId === event.toolUseId)) return prev
+              return [...prev, {
+                id: event.shellId,
+                type: 'shell' as const,
+                toolUseId: event.toolUseId,
+                startTime: Date.now(),
+                elapsedSeconds: 0,
+                intent: event.command || event.intent,
+              }]
+            })
+          } else if (event.type === 'tool_result') {
+            // 工具完成时，移除对应的后台任务
+            store.set(backgroundTasksAtomFamily(sessionId), (prev) =>
+              prev.filter((t) => t.toolUseId !== event.toolUseId)
+            )
+            // Agent 写类工具完成时，递增 diff 刷新版本号并切换预览文件
+            if (pendingWriteTools.has(event.toolUseId)) {
+              const entry = pendingWriteTools.get(event.toolUseId)!
+              const writtenPath = entry.path
+              pendingWriteTools.delete(event.toolUseId)
+
+              // 记录非 Git 文件变更（无论是否 Git 项目都记，DiffChangesList 按场景决定展示）
+              if (writtenPath) {
+                const kind = getSessionFileChangeKind(entry.toolName)
+                const fileChange = {
+                  path: writtenPath,
+                  kind,
+                  runId: entry.runId,
+                  updatedAt: Date.now(),
+                }
+                store.set(agentNonGitFileChangesAtom, (prev) => {
+                  const existing = prev.get(sessionId) ?? []
+                  const next = upsertSessionFileChange(existing, fileChange)
+                  const map = new Map(prev)
+                  map.set(sessionId, next)
+                  return map
+                })
+
+                // 非 Git 项目每轮首次写入自动切到「文件改动」面板
+                const prevActivatedRunId = autoActivatedChangeTurns.get(sessionId)
+                if (prevActivatedRunId !== entry.runId && store.get(agentSidePanelOpenAtom)) {
+                  autoActivatedChangeTurns.set(sessionId, entry.runId)
+                  store.set(agentDiffPanelTabAtom, (prev) => {
+                    const m = new Map(prev)
+                    m.set(sessionId, 'changes')
+                    return m
+                  })
+                }
+              }
+              store.set(agentDiffRefreshVersionAtom, (prev) => {
+                const m = new Map(prev); m.set(sessionId, (prev.get(sessionId) ?? 0) + 1); return m
+              })
+              // 定向失效 git diff 缓存：仅重扫受影响的仓库
+              if (writtenPath) {
+                window.electronAPI.invalidateGitDiffCache(writtenPath).catch(() => {})
+              }
+              if (writtenPath) {
+                const autoPreviewEnabled = store.get(autoPreviewEnabledAtom)
+                const previewPromise = autoPreviewEnabled
+                  ? setAutoPreviewFile(sessionId, writtenPath, true)
+                  : buildAutoPreviewFile(sessionId, writtenPath)
+
+                previewPromise.then((previewFile) => {
+                  if (!previewFile || previewFile.previewOnly) return
+
+                  store.set(agentDiffUnseenChangesAtom, (prev) => {
+                    const m = new Map(prev); m.set(sessionId, true); return m
+                  })
+                  store.set(agentDiffUnseenFilesAtom, (prev) => {
+                    const m = new Map(prev)
+                    const s = new Set(m.get(sessionId) ?? [])
+                    s.add(writtenPath)
+                    m.set(sessionId, s)
+                    return m
+                  })
+
+                  // 只有当前文件确实能显示 git diff 时，才切到「文件改动」。
+                  if (autoPreviewEnabled && store.get(agentSidePanelOpenAtom)) {
+                    store.set(agentDiffPanelTabAtom, (prev) => {
+                      if (prev.get(sessionId) === 'changes') return prev
+                      const m = new Map(prev); m.set(sessionId, 'changes'); return m
+                    })
+                  }
+
+                  // auto-preview 已展示该文件，标记为已查看
+                  if (autoPreviewEnabled) {
+                    store.set(agentDiffUnseenFilesAtom, (prev) => {
+                      const s = prev.get(sessionId)
+                      if (!s?.has(writtenPath)) return prev
+                      const m = new Map(prev)
+                      const next = new Set(s)
+                      next.delete(writtenPath)
+                      m.set(sessionId, next)
+                      return m
+                    })
+                  }
+                }).catch(() => { /* auto preview should never break streaming */ })
+              }
+            }
+            // Bash git 突变命令完成时，全量失效 git diff 缓存 + 刷新 diff 列表（不标记 unseen）
+            if (pendingGitMutateTools.has(event.toolUseId)) {
+              pendingGitMutateTools.delete(event.toolUseId)
+              window.electronAPI.invalidateGitDiffCache().catch(() => {})
+              store.set(agentDiffRefreshVersionAtom, (prev) => {
+                const m = new Map(prev); m.set(sessionId, (prev.get(sessionId) ?? 0) + 1); return m
+              })
+            }
+          } else if (event.type === 'shell_killed') {
+            store.set(backgroundTasksAtomFamily(sessionId), (prev) => {
+              const task = prev.find((t) => t.id === event.shellId)
+              if (!task) return prev
+              return prev.filter((t) => t.toolUseId !== task.toolUseId)
+            })
+          } else if (event.type === 'prompt_suggestion') {
+            // 存储提示建议到 atom
+            store.set(agentPromptSuggestionsAtom, (prev) => {
+              const map = new Map(prev)
+              map.set(sessionId, event.suggestion)
+              return map
+            })
+          } else if (event.type === 'permission_request') {
+            // 权限请求入队（统一通道，不区分当前/后台会话）
+            store.set(allPendingPermissionRequestsAtom, (prev) => {
+              const map = new Map(prev)
+              const current = map.get(sessionId) ?? []
+              map.set(sessionId, [...current, event.request])
+              return map
+            })
+            // 桌面通知（带提示音 + 会话导航）
+            sendBlockingNotification(
+              sessionId,
+              '需要权限确认',
+              event.request.toolName
+                ? `Agent 请求使用工具: ${event.request.toolName}`
+                : 'Agent 需要你的权限确认',
+              'permissionRequest'
+            )
+          } else if (event.type === 'ask_user_request') {
+            // AskUser 请求入队（统一通道，不区分当前/后台会话）
+            store.set(allPendingAskUserRequestsAtom, (prev) => {
+              const map = new Map(prev)
+              const current = map.get(sessionId) ?? []
+              map.set(sessionId, [...current, event.request])
+              return map
+            })
+            // 桌面通知（带提示音 + 会话导航）
+            sendBlockingNotification(
+              sessionId,
+              'Agent 需要你的输入',
+              event.request.questions[0]?.question ?? 'Agent 有问题需要你回答',
+              'permissionRequest'
+            )
+          } else if (event.type === 'ask_user_resolved') {
+            // AskUser 已解决：从队列移除对应请求（双端在线时，另一端回答后也必须清理本地队列，
+            // 否则 AskUserBanner 永远显示残留的最旧请求 → 回答发旧 requestId → “提问请求不存在”）。
+            store.set(allPendingAskUserRequestsAtom, (prev) => {
+              const map = new Map(prev)
+              const current = map.get(sessionId) ?? []
+              const next = current.filter((r) => r.requestId !== event.requestId)
+              if (next.length > 0) map.set(sessionId, next)
+              else map.delete(sessionId)
+              return map
+            })
+            // 同步清理该请求的答案草稿（随请求解决失效，避免残留）
+            store.set(askUserAnswersAtom, (prev) => {
+              if (!prev.has(event.requestId)) return prev
+              const map = new Map(prev)
+              map.delete(event.requestId)
+              return map
+            })
+            // 同步清理折叠状态，避免下一题被误折叠
+            store.set(askUserCollapsedAtom, (prev) => {
+              if (!prev.has(event.requestId)) return prev
+              const next = new Set(prev)
+              next.delete(event.requestId)
+              return next
+            })
+          } else if (event.type === 'permission_resolved') {
+            // 权限已解决：清理队列（与 ask_user_resolved 同理，防止跨端残留）
+            store.set(allPendingPermissionRequestsAtom, (prev) => {
+              const map = new Map(prev)
+              const current = map.get(sessionId) ?? []
+              const next = current.filter((r) => r.requestId !== event.requestId)
+              if (next.length > 0) map.set(sessionId, next)
+              else map.delete(sessionId)
+              return map
+            })
+          } else if (event.type === 'exit_plan_mode_resolved') {
+            // ExitPlanMode 已解决：清理队列（与 ask_user_resolved 同理）
+            store.set(allPendingExitPlanRequestsAtom, (prev) => {
+              const map = new Map(prev)
+              const current = map.get(sessionId) ?? []
+              const next = current.filter((r) => r.requestId !== event.requestId)
+              if (next.length > 0) map.set(sessionId, next)
+              else map.delete(sessionId)
+              return map
+            })
+          } else if (event.type === 'exit_plan_mode_request') {
+            // ExitPlanMode 请求入队
+            store.set(allPendingExitPlanRequestsAtom, (prev) => {
+              const map = new Map(prev)
+              const current = map.get(sessionId) ?? []
+              map.set(sessionId, [...current, event.request])
+              return map
+            })
+            // 退出 Plan 模式指示状态
+            store.set(agentPlanModeSessionsAtom, (prev: Set<string>) => {
+              if (!prev.has(sessionId)) return prev
+              const next = new Set(prev)
+              next.delete(sessionId)
+              return next
+            })
+            // 桌面通知（带提示音 + 会话导航）
+            sendBlockingNotification(
+              sessionId,
+              'Agent 计划待审批',
+              'Agent 已完成计划，等待你的审批',
+              'exitPlanMode'
+            )
+          } else if (event.type === 'enter_plan_mode') {
+            // 进入 Plan 模式
+            store.set(agentPlanModeSessionsAtom, (prev: Set<string>) =>
+              updatePlanModeSessionSet(prev, sessionId, true)
+            )
+          } else if (event.type === 'plan_mode_changed') {
+            // 计划阶段变化只影响输入框/横幅状态，不改用户选择的权限模式
+            store.set(agentPlanModeSessionsAtom, (prev: Set<string>) =>
+              updatePlanModeSessionSet(prev, sessionId, event.active)
+            )
+          } else if (event.type === 'permission_mode_changed') {
+            // 权限模式变更（如 Plan 模式退出后切换到自动审批或完全自动）
+            store.set(agentPermissionModeMapAtom, (prev: Map<string, import('@profer/shared').ProferPermissionMode>) => {
+              const next = new Map(prev)
+              next.set(sessionId, event.mode)
+              return next
+            })
+            store.set(agentPlanModeSessionsAtom, (prev: Set<string>) =>
+              updatePlanModeSessionSet(prev, sessionId, event.mode === 'plan')
+            )
+          } else if (event.type === 'run_resumed') {
+            // 后台任务完成自动唤醒：从"空闲可输入"恢复到"运行中"。
+            store.set(agentStreamingStatesAtom, (prev) => {
+              const current = prev.get(sessionId)
+              if (!current || current.running) return prev
+              const map = new Map(prev)
+              map.set(sessionId, { ...current, running: true })
+              return map
+            })
+          }
+        }
+        }) // unstable_batchedUpdates
+    }
+    const cleanupEvent = window.electronAPI.onAgentStreamEvent((streamEvent: AgentStreamEvent) => {
+      const { sessionId, payload } = streamEvent
+      if (!effectActive || store.get(revokedAgentSessionIdsAtom).has(sessionId)) return
+      // A delete notification must revoke queued events immediately. A projection
+      // carries no secret SDK content and has its own async Main auth when unknown.
+      const isDeletion = payload.kind === 'session_projection' && payload.operation === 'delete'
+        || payload.kind === 'profer_event' && payload.event.type === 'session_deleted'
+      if (isDeletion || payload.kind === 'session_projection' || payload.kind === 'catalog_invalidation') {
+        dispatchOrdinaryStreamEvent(streamEvent)
+        return
+      }
+      if (canOpenOrdinaryWorkTab(store.get(agentSessionsAtom), sessionId)) {
+        dispatchOrdinaryStreamEvent(streamEvent)
+        return
+      }
+      const waiting = unknownStreamQueues.get(sessionId)
+      if (waiting) {
+        // One Main query per unknown ID; bounded buffering prevents unlimited memory
+        // retention if an old window or malicious legacy emitter never resolves.
+        if (waiting.length < 4096) waiting.push(streamEvent)
+        return
+      }
+      const queued = [streamEvent]
+      unknownStreamQueues.set(sessionId, queued)
+      void ensureOrdinaryWorkTabOwner(store, sessionId, window.electronAPI.getAgentSessionMeta,
+        () => effectActive && !store.get(revokedAgentSessionIdsAtom).has(sessionId),
+      ).then((authorized) => {
+        unknownStreamQueues.delete(sessionId)
+        if (!authorized) return
+        for (const event of queued) {
+          if (!effectActive || store.get(revokedAgentSessionIdsAtom).has(sessionId)) break
+          dispatchOrdinaryStreamEvent(event)
+        }
+      }).catch(() => { unknownStreamQueues.delete(sessionId) })
+    })
+
+    // 大刷新会清空 renderer Jotai，但 main 中的 Agent run 仍可能继续执行。
+    // listener 已安装后再请求重连：main 会先绑定新 webContents 并按顺序回放本轮事件。
+    // 若 run 尚未产出任何事件，也先写入 running 占位，保留停止和追加消息能力。
+    //
+    // 恢复窗口内的终态必须先暂存：main 的 backlog 回放是同步的，而 running 占位要等 IPC 返回
+    // 才写入，run 若恰在这个窗口内结束，专用 handler 的竞态保护会因「本会话还没有流式状态」
+    // 判定为迟到终态并丢弃，表现为刷新后残留 spinner。闸门负责延后到占位写入后再派发。
+    const restoreTerminalGate = new AgentStreamRestoreGate(
+      (sessionId) => store.get(agentStreamingStatesAtom).get(sessionId) !== undefined,
+    )
+
+    if (restoreActiveStreamsRef.current) {
+      window.electronAPI.restoreActiveAgentStreams()
+        .then((sessionIds) => {
+          store.set(agentStreamingStatesAtom, (prev) => {
+            let next: Map<string, AgentStreamState> | null = null
+            for (const sessionId of sessionIds) {
+              const current = (next ?? prev).get(sessionId)
+              if (current?.running || current?.backgroundWaiting) continue
+              if (!next) next = new Map(prev)
+              next.set(sessionId, {
+                running: true,
+                content: '',
+                toolActivities: [],
+                startedAt: undefined,
+              })
+            }
+            return next ?? prev
+          })
+          // 占位已写好，此时派发暂存的终态才能通过竞态保护并完成收尾副作用。
+          restoreTerminalGate.settle()
+        })
+        .catch((error) => {
+          console.error('[Agent] 刷新后恢复活跃流失败:', error)
+          restoreTerminalGate.settle()
+        })
+    } else {
+      // 次级窗口不参与活跃流重绑，直接放行暂存终态，避免闸门永久阻塞。
+      restoreTerminalGate.settle()
+    }
+
+    // ===== 2. 流式完成 =====
+    const handleStreamComplete = (data: AgentStreamCompletePayload): void => {
+        // STREAM_COMPLETE 是该 session 的提交屏障：先收敛尚未执行的 rAF 批次，
+        // 再刷新持久化消息和清理状态，避免终态抢在最后一条流式消息之前。
+        liveMessageBatcher.flush(data.sessionId)
+        streamStateBatcher.flush(data.sessionId)
+        unstable_batchedUpdates(() => {
+        // 后台任务等待态：turn 主体结束但仍有后台任务在飞行，UI 进入"空闲可输入"。
+        // 不发"任务已完成"通知（任务并未真正完成）、不清后台任务列表、不重载消息——
+        // 等后台任务完成时 Agent 会自动唤醒续轮。
+        const backgroundTasksPending = data.backgroundTasksPending === true
+        // 在任何可见副作用前验证本次 completion 是否仍属于当前 run，
+        // 防止迟到的旧终态通知、标记或关闭新 run。
+        const activeStreamState = store.get(agentStreamingStatesAtom).get(data.sessionId)
+        if (!isCurrentAgentStreamCompletion(activeStreamState, data)) return
+
+        // 发送桌面通知（任务完成，始终播放提示音）
+        const enabled = store.get(notificationsEnabledAtom)
+        const soundEnabled = store.get(notificationSoundEnabledAtom)
+        const sounds = store.get(notificationSoundsAtom)
+        const customSounds = store.get(customNotificationSoundsAtom)
+        const sessionTitle = getSessionTitle(data.sessionId)
+        if (!backgroundTasksPending) {
+          // 只有真正正常完成才报「任务完成」并播放完成音；失败/中断/用户停止的情况下
+          // 仍报「任务已完成」+ 提示音会误导用户（历史现象：Agent Running 一闪而过、
+          // 界面什么都没有，却响了一声「任务完成」）。非正常结束改为静音通知。
+          const runEndedNormally =
+            (data.endReason === undefined || data.endReason === 'completed') &&
+            (data.resultSubtype === undefined || data.resultSubtype === 'success') &&
+            data.stoppedByUser !== true
+          sendDesktopNotification(
+            runEndedNormally ? 'Agent 任务完成' : 'Agent 本轮结束',
+            runEndedNormally
+              ? `[${sessionTitle}] 任务已完成`
+              : `[${sessionTitle}] ${data.endReasonLabel ?? '任务未完成'}`,
+            enabled,
+            {
+              playSound: enabled && soundEnabled && runEndedNormally,
+              soundType: 'taskComplete',
+              sounds,
+              customSounds,
+              onNavigate: makeNavigateToSession(data.sessionId, sessionTitle),
+            }
+          )
+        }
+
+        // STREAM_COMPLETE 表示后端已完全结束 — 立即标记 running: false
+        // 同时将所有未完成的工具活动标记为已完成，防止 subagent spinner 继续转动
+        // （complete 事件只清除 retrying，保持 running: true 以防竞态）
+        // 竞态保护：通过 startedAt 区分新旧流，防止旧流的 complete 事件重置新流的 running 状态
+        store.set(agentStreamingStatesAtom, (prev) => {
+          const current = prev.get(data.sessionId)
+          if (!isCurrentAgentStreamCompletion(current, data)) return prev
+          const map = new Map(prev)
+          map.set(data.sessionId, settleCompletedAgentStreamState(current, backgroundTasksPending))
+          return map
+        })
+
+        // 只有未激活会话才进入"未查看完成"，避免当前页面完成时出现额外未读提醒。
+        const currentSessionId = store.get(currentAgentSessionIdAtom)
+        const completionMarkers = getAgentCompletionMarkers({
+          tabs: store.get(tabsAtom),
+          activeTabId: store.get(activeTabIdAtom),
+          currentAgentSessionId: currentSessionId,
+          sessionId: data.sessionId,
+          documentHasFocus: document.hasFocus(),
+        })
+        if (completionMarkers.markUnviewedCompleted && !backgroundTasksPending) {
+          store.set(unviewedCompletedSessionIdsAtom, (prev: Set<string>) => {
+            const next = new Set(prev)
+            next.add(data.sessionId)
+            return next
+          })
+        }
+
+        // 只有明确 user stop 保留停止标记；正常和父级联取消都必须清掉旧标记。
+        store.set(stoppedByUserSessionsAtom, (prev: Set<string>) => {
+          const next = new Set(prev)
+          if (data.stoppedByUser === true) next.add(data.sessionId)
+          else next.delete(data.sessionId)
+          return next
+        })
+
+        // 中断说明 chip：非正常结束置位、正常完成清除；后台任务续轮（backgroundTasksPending）不置位。
+        // 主进程 owner finally 统一归一化后透传 endReason，此处仅同步到会话级 atom。
+        const endReason = data.endReason
+        const endReasonLabel = data.endReasonLabel
+        if (endReason && !backgroundTasksPending) {
+          store.set(agentInterruptionMapAtom, (prev) => {
+            const map = new Map(prev)
+            if (endReason === 'completed') {
+              map.delete(data.sessionId)
+            } else {
+              map.set(data.sessionId, {
+                reason: endReason,
+                label: endReasonLabel ?? '任务中断',
+                at: Date.now(),
+              })
+            }
+            return map
+          })
+        }
+
+        // 非正常结束时显示截断提示
+        // 主路径（orchestrator）已透传 endReason/endReasonLabel，优先用 label 拼 toast（与 chip 文案一致）；
+        // 其他 STREAM_COMPLETE 发起点不传 endReason 时回退原 resultSubtype 逻辑，向后兼容。
+        if (data.endReason && data.endReason !== 'completed' && !data.stoppedByUser) {
+          const detail = data.resultErrors?.find((e) => typeof e === 'string' && e.trim().length > 0)?.trim()
+          toast.warning(detail ? `任务执行出错：${detail}` : (data.endReasonLabel ?? '任务中断'), { duration: 8000 })
+        } else if (data.resultSubtype && data.resultSubtype !== 'success' && !data.stoppedByUser) {
+          const messages: Record<string, string> = {
+            error_max_turns: '任务被中断：已达到轮次上限。继续对话可让 Agent 接着完成。',
+            error_max_budget_usd: '任务被中断：已达到预算上限。',
+            error_during_execution: '任务执行过程中发生错误。',
+            max_tokens: '任务被中断：已达到长度上限，可继续对话让 Agent 接着完成。',
+          }
+          const msg = messages[data.resultSubtype] ?? `任务异常结束（${data.resultSubtype}）`
+          // error_during_execution 等执行期错误：优先展示 SDK result.errors[] 携带的真实原因，
+          // 让用户能据此判断重试 / 改提问 / 报 bug，而非只看到泛泛的兜底文案。
+          const detail = data.resultErrors?.find((e) => typeof e === 'string' && e.trim().length > 0)?.trim()
+          toast.warning(detail ? `任务执行出错：${detail}` : msg, { duration: 8000 })
+        }
+
+
+        // 清除 Plan 模式状态（防止异常退出时残留）
+        store.set(agentPlanModeSessionsAtom, (prev: Set<string>) => {
+          if (!prev.has(data.sessionId)) return prev
+          const next = new Set(prev)
+          next.delete(data.sessionId)
+          return next
+        })
+
+        /** 竞态保护：检查该会话是否已有新的流式请求正在运行 */
+        const isNewStreamRunning = (): boolean => {
+          const state = store.get(agentStreamingStatesAtom).get(data.sessionId)
+          return state?.running === true
+        }
+
+        /** 递增消息刷新版本号，通知 AgentView 重新加载消息 */
+        const bumpRefresh = (): void => {
+          store.set(agentMessageRefreshAtom, (prev) => {
+            const map = new Map(prev)
+            map.set(data.sessionId, (prev.get(data.sessionId) ?? 0) + 1)
+            return map
+          })
+        }
+
+        const finalize = (): void => {
+          // 竞态保护：新流已启动时不要清理状态
+          if (isNewStreamRunning()) return
+
+          // 后台任务等待态：保留后台任务列表（面板继续显示在跑任务），不做收尾清理，
+          // 等任务完成 Agent 自动唤醒续轮后再走真正的完成路径。
+          if (backgroundTasksPending) return
+
+          // 清理后台任务
+          store.set(backgroundTasksAtomFamily(data.sessionId), [])
+
+          // 后台会话没有挂载的 AgentView 来执行收尾清理（MainArea 只渲染活跃 Tab）。
+          // 仅回收未激活会话；当前会话继续在消息加载完成后同步移除实时气泡，避免闪烁。
+          if (store.get(activeSessionIdAtom) !== data.sessionId) {
+            store.set(liveMessagesMapAtom, (prev) => {
+              if (!prev.has(data.sessionId)) return prev
+              const map = new Map(prev)
+              map.delete(data.sessionId)
+              return map
+            })
+            store.set(agentStreamingStatesAtom, (prev) => {
+              const state = prev.get(data.sessionId)
+              const compacted = compactCompletedBackgroundStreamState(state)
+              if (compacted === state) return prev
+
+              const map = new Map(prev)
+              if (compacted) map.set(data.sessionId, compacted)
+              else map.delete(data.sessionId)
+              return map
+            })
+          }
+
+          // 清理该 session 关联的未完成写工具记录，防止内存泄漏
+          for (const [toolId, entry] of pendingWriteTools) {
+            if (entry.sessionId === data.sessionId) {
+              pendingWriteTools.delete(toolId)
+            }
+          }
+          for (const [toolId, sid] of pendingGitMutateTools) {
+            if (sid === data.sessionId) {
+              pendingGitMutateTools.delete(toolId)
+            }
+          }
+
+          // 注意：liveMessages 的清理已移至 AgentView 消息加载完成后执行，
+          // 与 streamingState 清理同步，避免「实时消息已清 → 持久化消息未到」的空档闪烁
+
+          // 刷新会话列表并同步 stoppedByUser 状态（按当前视图拉取，避免归档视图被活跃列表覆盖）
+          window.electronAPI
+            .listAgentSessions(store.get(sidebarViewModeAtom) === 'archived')
+            .then((sessions) => {
+              store.set(agentSessionsAtom, (prev) => mergeFetchedAgentSessions(prev, sessions, store.get(revokedAgentSessionIdsAtom)))
+              // 从持久化 meta 对齐 stoppedByUser 状态
+              store.set(stoppedByUserSessionsAtom, new Set<string>(
+                sessions.filter((s) => s.stoppedByUser).map((s) => s.id)
+              ))
+            })
+            .catch(console.error)
+
+          // 注意：流式状态的完全清除由 AgentView 在消息加载完成后执行，
+          // 确保不会出现「气泡消失 → 持久化消息尚未加载」的空档闪烁
+        }
+
+        // 通知 AgentView 重新加载消息（无论是否为当前会话）
+        if (!isNewStreamRunning()) {
+          bumpRefresh()
+        }
+        finalize()
+        }) // unstable_batchedUpdates
+    }
+
+    const cleanupComplete = window.electronAPI.onAgentStreamComplete(
+      (data: AgentStreamCompletePayload) => {
+        if (store.get(revokedAgentSessionIdsAtom).has(data.sessionId)) return
+        if (restoreTerminalGate.defer(data.sessionId, () => handleStreamComplete(data))) return
+        handleStreamComplete(data)
+      }
+    )
+
+    // ===== 3. 流式错误 =====
+    const handleStreamError = (data: { sessionId: string; error: string }): void => {
+        liveMessageBatcher.flush(data.sessionId)
+        streamStateBatcher.flush(data.sessionId)
+        unstable_batchedUpdates(() => {
+        console.error('[GlobalAgentListeners] 流式错误:', data.error)
+
+        // 存储错误消息
+        store.set(agentStreamErrorsAtom, (prev) => {
+          const map = new Map(prev)
+          map.set(data.sessionId, data.error)
+          return map
+        })
+
+        // 递增消息刷新版本号，通知 AgentView 重新加载消息
+        const state = store.get(agentStreamingStatesAtom).get(data.sessionId)
+        if (!state?.running) {
+          store.set(agentMessageRefreshAtom, (prev) => {
+            const map = new Map(prev)
+            map.set(data.sessionId, (prev.get(data.sessionId) ?? 0) + 1)
+            return map
+          })
+        }
+        }) // unstable_batchedUpdates
+    }
+
+    const cleanupError = window.electronAPI.onAgentStreamError(
+      (data: { sessionId: string; error: string }) => {
+        if (store.get(revokedAgentSessionIdsAtom).has(data.sessionId)) return
+        if (restoreTerminalGate.defer(data.sessionId, () => handleStreamError(data))) return
+        handleStreamError(data)
+      }
+    )
+
+    // ===== 4. 标题更新 =====
+    const cleanupTitleUpdated = window.electronAPI.onAgentTitleUpdated(({ sessionId, title }) => {
+      if (store.get(revokedAgentSessionIdsAtom).has(sessionId)) return
+      // 先使用事件 payload 立即同步标签页，避免依赖会话列表旧快照比较。
+      store.set(tabsAtom, (tabs) => updateTabTitle(tabs, sessionId, title))
+      store.set(agentSessionsAtom, (prev) =>
+        prev.map((s) => (s.id === sessionId ? { ...s, title } : s))
+      )
+      // 保留全量刷新语义：外部桥接会复用该事件通知新会话/绑定变化。
+      // 按当前视图拉取，避免归档视图被活跃列表覆盖。
+      window.electronAPI
+        .listAgentSessions(store.get(sidebarViewModeAtom) === 'archived')
+        .then((sessions) => {
+          store.set(agentSessionsAtom, (prev) => mergeFetchedAgentSessions(prev, sessions, store.get(revokedAgentSessionIdsAtom)))
+        })
+        .catch(console.error)
+    })
+
+    const cleanupSessionUpdated = window.electronAPI.onAgentSessionUpdated(({ session }) => {
+      const applyUpdate = (): void => {
+        if (!effectActive || store.get(revokedAgentSessionIdsAtom).has(session.id)) return
+        store.set(agentSessionsAtom, (previous) => upsertAgentSession(previous, session))
+        store.set(tabsAtom, (tabs) => updateTabTitle(tabs, session.id, session.title))
+        store.set(draftSessionIdsAtom, (previous) => syncDraftSessionId(previous, session))
+      }
+      if (canOpenOrdinaryWorkTab(store.get(agentSessionsAtom), session.id)) {
+        applyUpdate()
+      } else {
+        void ensureOrdinaryWorkTabOwner(store, session.id, window.electronAPI.getAgentSessionMeta,
+          () => effectActive && !store.get(revokedAgentSessionIdsAtom).has(session.id),
+        ).then((authorized) => { if (authorized) applyUpdate() })
+      }
+    })
+
+    // 独立规划窗口启动 Todo Agent 后，主进程通过 TODO_AGENT_SESSION_READY 把会话交接给主窗口。
+    // 这里接管：写入会话列表、定位到 agent Tab、切到执行工作区、再注入待发送的任务提示。
+    // 与 PlanningView.startTodoInWorkspace（主窗口中启动）保持同等效果，补齐跨窗口断链。
+    const cleanupTodoSessionReady = window.electronAPI.onTodoAgentSessionReady(
+      ({ todo, session }) => {
+        const activateTodo = (): void => {
+          if (!effectActive || store.get(revokedAgentSessionIdsAtom).has(session.id)
+            || !isAgentWorkspaceIdVisible(session.workspaceId, store.get(agentWorkspacesAtom))) return
+          store.set(agentSessionsAtom, (previous) => upsertAgentSession(previous, session))
+          if (session.workspaceId) {
+            store.set(currentAgentWorkspaceIdAtom, session.workspaceId)
+            window.electronAPI.updateSettings({ agentWorkspaceId: session.workspaceId })
+              .catch(console.error)
+          }
+          makeNavigateToSession(session.id, session.title)()
+          store.set(agentPendingPromptAtom, {
+            sessionId: session.id,
+            message: buildTodoAgentPrompt(todo.id, session.agentRuntime ?? 'pi', todo),
+          })
+        }
+        if (canOpenOrdinaryWorkTab(store.get(agentSessionsAtom), session.id)) {
+          activateTodo()
+        } else {
+          void ensureOrdinaryWorkTabOwner(store, session.id, window.electronAPI.getAgentSessionMeta,
+            () => effectActive && !store.get(revokedAgentSessionIdsAtom).has(session.id),
+          ).then((authorized) => { if (authorized) activateTodo() })
+        }
+      },
+    )
+
+    // 定期清理 60s 前的「最近修改」标记，避免 atom 无限增长
+    const pruneTimer = setInterval(() => {
+      const cutoff = Date.now() - RECENTLY_MODIFIED_TTL_MS
+      store.set(recentlyModifiedPathsAtom, (prev) => {
+        let changed = false
+        const next = new Map<string, Map<string, number>>()
+        for (const [sid, inner] of prev) {
+          const filtered = new Map<string, number>()
+          for (const [p, t] of inner) {
+            if (t > cutoff) filtered.set(p, t)
+            else changed = true
+          }
+          if (filtered.size > 0) next.set(sid, filtered)
+          else changed = true
+        }
+        return changed ? next : prev
+      })
+    }, 15_000)
+
+    // 窗口重新聚焦时检测当前预览文件是否有外部修改，有变化才刷新
+    /** sessionId:filePath → 内容 hash（用于检测外部编辑器修改） */
+    const fileContentHashMap = new Map<string, string>()
+    const HASH_MAX = 100
+    let focusCheckSeq = 0
+    const bumpDiffRefresh = (sessionId: string) => {
+      store.set(agentDiffRefreshVersionAtom, (prev) => {
+        const m = new Map(prev)
+        m.set(sessionId, (prev.get(sessionId) ?? 0) + 1)
+        return m
+      })
+    }
+
+    const onWindowFocus = async () => {
+      const activeSessionId = store.get(currentAgentSessionIdAtom)
+      if (!activeSessionId) return
+
+      // 窗口聚焦时失效缓存，确保 diff 数据反映最新磁盘状态
+      window.electronAPI.invalidateGitDiffCache().catch(() => {})
+
+      const previewFile = store.get(previewFileMapAtom).get(activeSessionId)
+      if (!previewFile || previewFile.previewOnly !== true) {
+        bumpDiffRefresh(activeSessionId)
+        return
+      }
+
+      const candidateBasePaths = uniqueTruthyPaths([
+        ...(previewFile.basePaths ?? []),
+        previewFile.dirPath,
+        previewFile.gitRoot,
+        getParentDir(previewFile.filePath),
+        store.get(agentSessionPathMapAtom).get(activeSessionId),
+      ])
+      const hashKey = `${activeSessionId}:${previewFile.filePath}:${candidateBasePaths.join('\u001f')}`
+      const seq = ++focusCheckSeq
+
+      try {
+        const result = await window.electronAPI.resolveAndReadFile(previewFile.filePath, {
+          sessionId: activeSessionId,
+          candidateBasePaths: candidateBasePaths.length > 0 ? candidateBasePaths : undefined,
+        })
+
+        // 丢弃过期结果（快速切换窗口时）
+        if (seq !== focusCheckSeq) return
+
+        const content = result?.content ?? ''
+        // cyrb53 hash：遍历完整内容，避免边缘碰撞
+        const hash = cyrb53(content)
+        const prevHash = fileContentHashMap.get(hashKey)
+
+        if (prevHash === undefined || prevHash !== hash) {
+          // 首次建立 hash 基准时也刷新一次，避免用户离开窗口后首次外部修改被吞掉。
+          bumpDiffRefresh(activeSessionId)
+        }
+        fileContentHashMap.set(hashKey, hash)
+
+        // LRU 淘汰：限制 Map 大小
+        if (fileContentHashMap.size > HASH_MAX) {
+          const oldestKey = fileContentHashMap.keys().next().value
+          if (oldestKey !== undefined) fileContentHashMap.delete(oldestKey)
+        }
+      } catch {
+        // 读取失败时删除旧 hash，并触发一次刷新让预览进入真实失败/空状态。
+        fileContentHashMap.delete(hashKey)
+        bumpDiffRefresh(activeSessionId)
+      }
+    }
+    window.addEventListener('focus', onWindowFocus)
+
+    return () => {
+      effectActive = false
+      liveMessageBatcher.flushAll()
+      streamStateBatcher.flushAll()
+      cleanupGoal()
+      cleanupEvent()
+      cleanupComplete()
+      cleanupError()
+      cleanupTitleUpdated()
+      cleanupSessionUpdated()
+      cleanupTodoSessionReady()
+      clearInterval(pruneTimer)
+      unsubscribeDelegationSessionTabs()
+      unsubscribeDelegationIndicatorTabs()
+      window.removeEventListener('focus', onWindowFocus)
+    }
+  }, [store]) // store 引用稳定，effect 只执行一次
+}

@@ -1,0 +1,37 @@
+{
+ "schema": "dsh-r07-index-review-done/1",
+ "batch": "index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness",
+ "groupId": "p02-agent-runtime__apps__electron__src__main__lib__pi-harness",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-03-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T19:25:00Z",
+ "sealedAtUtc": "2026-10-23T19:14:06Z",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 1,
+  "accepted": 1,
+  "revision_required": 0,
+  "unknown": 0,
+  "findingsBlocking": 0,
+  "findingsNonBlocking": 0
+ },
+ "artifactSha256": "547759b81a7d7004abf543c14320bb0d31bbf5d984aded2bab3d49c51db7069e",
+ "artifacts": [
+  "reviews/index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness/RESULT.json",
+  "reviews/index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness/REVIEWED-HASHES.json",
+  "reviews/index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness/SOURCE-CHECKLIST.md",
+  "reviews/index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness/DONE.json"
+ ],
+ "notRun": [
+  "产品测试",
+  "评测 bun test",
+  "typecheck",
+  "构建",
+  "Electron/GUI（本轮统一 NOT_RUN）"
+ ],
+ "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/inventory/全局账/candidate；未 commit/push；结论只覆盖本批 1 文件。",
+ "findingsSummary": "无 findings。勘误 ERRATA-E1/E2/E3 沿登记。",
+ "next": "lead 按 REVIEWED-HASHES.json 合入（artifactSha256=547759b81a7d7004abf543c14320bb0d31bbf5d984aded2bab3d49c51db7069e）；QA 续审 pi-harness__evals（已封版即审）及后续批次，返修优先。"
+}

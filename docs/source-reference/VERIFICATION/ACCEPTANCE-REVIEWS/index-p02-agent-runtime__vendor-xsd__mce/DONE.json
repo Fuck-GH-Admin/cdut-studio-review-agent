@@ -1,0 +1,38 @@
+{
+ "schema": "dsh-r07-index-review-done/1",
+ "batch": "index-p02-agent-runtime__vendor-xsd__mce",
+ "groupId": "p02-agent-runtime__vendor-xsd__mce",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-03-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T20:52:00Z",
+ "sealedAtUtc": "2026-10-23T19:29:27+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 3,
+  "accepted": 3,
+  "revision_required": 0,
+  "unknown": 0,
+  "findingsBlocking": 0,
+  "findingsNonBlocking": 0
+ },
+ "artifactSha256": "5fb854dc17e363e369466f7e05cb9215cbfa731c6af88ed59743a7738417892b",
+ "artifacts": [
+  "reviews/index-p02-agent-runtime__vendor-xsd__mce/RESULT.json",
+  "reviews/index-p02-agent-runtime__vendor-xsd__mce/REVIEWED-HASHES.json",
+  "reviews/index-p02-agent-runtime__vendor-xsd__mce/SOURCE-CHECKLIST.md",
+  "reviews/index-p02-agent-runtime__vendor-xsd__mce/DONE.json"
+ ],
+ "notRun": [
+  "产品测试",
+  "typecheck",
+  "构建",
+  "Electron/GUI",
+  "validate.py/pack.py 实跑",
+  "lxml 编译实跑（本轮统一 NOT_RUN）"
+ ],
+ "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/inventory/全局账/candidate；未 commit/push；结论只覆盖本批 3 文件。",
+ "findingsSummary": "无 findings。vendor XSD 四要素实测全真；作者两处勘正（pml/sml 不 import mc、:95 非失败路径）独立复核属实。勘误 ERRATA-E1/E2/E3 沿登记。G0/G1/G2 全 PASS。",
+ "next": "lead 按 REVIEWED-HASHES.json 合入（artifactSha256=5fb854dc17e363e369466f7e05cb9215cbfa731c6af88ed59743a7738417892b）；QA 续审末批 renderer-assets（82 文件，已封版）；ecma 组 r1 交付时优先复验。"
+}

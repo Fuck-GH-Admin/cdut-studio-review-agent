@@ -1,0 +1,119 @@
+{
+ "schema": "dsh-r07-index-review-result/1",
+ "batch": "index-p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case",
+ "groupId": "p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-03-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T20:02:00Z",
+ "sealedAtUtc": "2026-10-23T19:24:02+00:00",
+ "targetMd": "MODULE-REFERENCE/p05-review-engine/INDEX/p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case.md",
+ "artifactSha256": "b84b7019ce3b1f24d5a52715751b4af0fa6b29051001bebc605cb16263ccb046",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 3,
+  "accepted": 3,
+  "revision_required": 0,
+  "unknown": 0,
+  "blocking": 0,
+  "nonBlocking": 5
+ },
+ "gates": {
+  "G0_INDEX": "PASS",
+  "G1_INDEPENDENT_SOURCE_REVIEW": "PASS_WITH_NOTES",
+  "G2_SEAL_CONSISTENCY": "PASS",
+  "note": "G0 等价检查全对（哈希链自洽、3/3 锚点@声明行、源绑定与冻结源/lock 全等、targetMd 一致）。G1：唯一消费链属实——全树 grep mvp-single-case|student-application|competition-certificate|comprehensive-rules 仅命中 single-case-mvp.e2e.test.ts（负向检索证实）；fixtureRoot :27、fixture() :28、addMaterial :80-83、:98/:99/:135 三处调用、:52 正则、:62-64 回链断言、:85-86 用例名、:88-94 建案 3 事项全部精确命中；模板槽位 requiredElements、level-mapping 8/4/2、requiredEvidenceTypes:['certificates'] 与三 fixture 文本数值互证一致；打包不进产物属实（无 import/不入 bundle/不在 files/extraResources）。瑕疵：规则链/断言/补件链引证区间整体前移 1-4 行（13 处，语义全对、无越界）见 MVP-N-01..05；**本批为本轮第 2 组出现行号漂移簇（demo-data 9 处 + 本组 13 处）——建议作者封版前对全部 file:line 做 grep -n 机械重导（沿既有机械自查建议）**。"
+ },
+ "g0Evidence": {
+  "stockScript": "ERRATA-E1 沿登记；等价检查 PASS"
+ },
+ "errataCarry": [
+  "ERRATA-E1",
+  "ERRATA-E2",
+  "ERRATA-E3"
+ ],
+ "files": [
+  {
+   "path": "apps/electron/src/main/lib/review/fixtures/mvp-single-case/application/student-application.txt",
+   "manual": "MODULE-REFERENCE/p05-review-engine/INDEX/p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case.md",
+   "targetMd": "MODULE-REFERENCE/p05-review-engine/INDEX/p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case.md",
+   "anchor": "MODULE-REFERENCE/p05-review-engine/INDEX.md#apps--electron--src--main--lib--review--fixtures--mvp-single-case--application--student-application.txt",
+   "line": 14,
+   "sourceBlob": "f4c18a4752042493eed9378d75e601c4e4f6924e",
+   "sourceSha256": "d00b61bb9a0d4d4c3f8abff252604944078a1e1e09e903a581e9435918f0b0f2",
+   "manualSha256": "b84b7019ce3b1f24d5a52715751b4af0fa6b29051001bebc605cb16263ccb046",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "MVP-N-02",
+     "severity": "low",
+     "type": "citation_precision",
+     "manualLines": "见 detail",
+     "detail": "初审断言引证前移 3-4 行：「6 项检查、3 项 awaiting-supplement（:114-117）」实 plannedChecks :118/awaiting :120；「（:116-117）」实 :120；「抽取断言 :118-121」实 :121-122。",
+     "action": "重导；不阻断"
+    }
+   ],
+   "note": "内容 :1-5 实测（模拟数据自述/林小满 2025-2026/事项 A 8 分 A-001 2025-10-01、B 8 分 B-002、C 2 分 C-003）与职责行逐项相符；:27/:28/:52/:62-64/:88-94/:98-99 引证精确命中（:52 正则捕获 doc 版本号、:62-64 sourceBlock.text.includes 回链断言实测）；负向检索仅本测试命中属实。行号漂移见 MVP-N-02（:118-121→:121-122）。"
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/fixtures/mvp-single-case/evidence/competition-certificate.txt",
+   "manual": "MODULE-REFERENCE/p05-review-engine/INDEX/p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case.md",
+   "targetMd": "MODULE-REFERENCE/p05-review-engine/INDEX/p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case.md",
+   "anchor": "MODULE-REFERENCE/p05-review-engine/INDEX.md#apps--electron--src--main--lib--review--fixtures--mvp-single-case--evidence--competition-certificate.txt",
+   "line": 24,
+   "sourceBlob": "88df337b525fab8a6d34df0f05d00a70a10c38df",
+   "sourceSha256": "0125f5f26c49e10f34f6c74ef1fd8e782e3d8f6a592c83b03947c11ac9aaa2e9",
+   "manualSha256": "b84b7019ce3b1f24d5a52715751b4af0fa6b29051001bebc605cb16263ccb046",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "MVP-N-03",
+     "severity": "low",
+     "type": "citation_precision",
+     "manualLines": "见 detail",
+     "detail": "补件链引证前移 1-2 行：「开缺件补件（:126-131）」实 openWorkspaceSupplementV2 :128-131；「respondSupplementV2（:137-138）」实 :138；「resolveSupplementV2（:139-140）」实 :141。",
+     "action": "重导；不阻断"
+    },
+    {
+     "id": "MVP-N-04",
+     "severity": "low",
+     "type": "citation_precision",
+     "manualLines": "见 detail",
+     "detail": "certificates 槽 requiredElements:['等级','日期'] 引「:41」，实际模板槽位定义在 :40（:39 是 application-form 槽）。",
+     "action": "改 :40；不阻断"
+    },
+    {
+     "id": "MVP-N-05",
+     "severity": "low",
+     "type": "citation_precision",
+     "manualLines": "见 detail",
+     "detail": "「:142 起循环」逐事项裁定，实际 for(subject-a/b/c) 循环从 :144 起（:142 是 expect(resolved.ok)）。",
+     "action": "改 :144；不阻断"
+    }
+   ],
+   "note": "内容 :1-2 实测（模拟证明/星火竞赛国家级一等奖/2025-10-01/模拟竞赛组委会）；:135 addMaterial('evidence/…','evidence','certificates') 精确命中；补件闭环 respondSupplementV2/resolveSupplementV2 实测存在（:138/:141）；模板 certificates 槽 requiredElements:['等级','日期'] 属实（实测 :40）。行号漂移见 MVP-N-03/04/05。"
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/fixtures/mvp-single-case/rules/comprehensive-rules.txt",
+   "manual": "MODULE-REFERENCE/p05-review-engine/INDEX/p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case.md",
+   "targetMd": "MODULE-REFERENCE/p05-review-engine/INDEX/p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case.md",
+   "anchor": "MODULE-REFERENCE/p05-review-engine/INDEX.md#apps--electron--src--main--lib--review--fixtures--mvp-single-case--rules--comprehensive-rules.txt",
+   "line": 34,
+   "sourceBlob": "2160ed6441350e39c27de0fca60b3c9b79c63717",
+   "sourceSha256": "7bce30331312c7e281a5b32beaeaba5b6030fc00eb24e5879d8521b85464114d",
+   "manualSha256": "b84b7019ce3b1f24d5a52715751b4af0fa6b29051001bebc605cb16263ccb046",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "MVP-N-01",
+     "severity": "low",
+     "type": "citation_precision",
+     "manualLines": "见 detail",
+     "detail": "规则链引证整体前移 1-3 行：「:100 取 ruleDocument」实 :101；「RulePack（:101）」实 :102；「compileWorkspaceRule（:102-103）」实 :105（两条 outline 构造在 :103-104）；「generatedBy:'fixture'（:102-103）」实 :103-104；「ConfirmWorkspaceRules 落案（:104-107）」实 :106-108；「effectiveRuleIds（:115）」实 :119。语义全对。",
+     "action": "按 grep -n 实测重导；不阻断"
+    }
+   ],
+   "note": "内容 :1-4 实测（三规则：8/4/2 分值映射、须绑证书缺件进补件、逐事项裁定留理由）与职责行相符；:98 addMaterial('rules/…','rule') 精确命中；level-mapping 8/4/2 与文本 :2 一致、requiredEvidenceTypes:['certificates'] 与文本 :3 一致（outline 实测 :103-:104；注意规则 id 实为 'required-certificate'、constraint kind 为 'required-evidence'，手册以 constraint kind 称之，语义无误）；:105 compileWorkspaceRule、:106-108 落案、:119 effectiveRuleIds 实测。行号漂移见 MVP-N-01。"
+  }
+ ]
+}

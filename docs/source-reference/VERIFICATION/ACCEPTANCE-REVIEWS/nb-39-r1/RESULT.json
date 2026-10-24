@@ -1,0 +1,153 @@
+{
+  "schema": "r07-review-result/1",
+  "batch": "nb-39-r1",
+  "revisionOf": "nb-39",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-07-20261023",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "reviewedAtUtc": "2026-10-23T17:31:00Z",
+  "sealId": "seal-5be9bf8200d1faa7",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 8,
+    "accepted": 8,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "g0": {
+    "result": "PASS",
+    "hashChain": "MANIFEST/READY/DONE/ZIP 一致",
+    "delta": "3 篇修订（2 F + 1 N）+5 篇逐字节同 r0",
+    "revisionOf": "nb-39 ✓"
+  },
+  "g1": {
+    "result": "PASS"
+  },
+  "g2": {
+    "result": "PASS",
+    "method": "sonner 消费链（index.ts:5→main.tsx:105→ProferToaster 五窗口）与 spinner 4 消费者（含 loading-indicator:3/:94）、PlanningView:25 均回源实测成立",
+    "closedFindingsTotal": 3
+  },
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/slider.tsx.md": "2d10acd74f731b1821e6634678d595638cdb949c57ff4075e17113e1ceecf430",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/sonner.tsx.md": "79b7ec50c02d806234963ba7d6bc8556ae2689d1fa663a7049b6440fcccf3df2",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/spinner.tsx.md": "009991823c02232de483f124067222431db78563d2a6d8196d4f29b1f955782d",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/switch.tsx.md": "1b8c8e7150296baae51063fc8a12daf44e66ecfb360172e672a24b83e066ce9a",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/tabs.tsx.md": "aa350d3b954e97af6e8d5b41e3438a6e7673d1a431cecbfde1590a12c8c4e7a6",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/textarea.tsx.md": "52ebb28ff3f58d3e903963fa56d3d123aa69720957f2ec3ecd0bcd8a9d5cce65",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/todo-date-picker.tsx.md": "a23583f6c81243674a41352f039129b1bc1214ed9aaa6f680a8a63232613706b",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/tooltip.tsx.md": "6119bf597f5dec123da31d8dec3a56984152a12660b5cafb1e35386b94080ba0"
+  },
+  "files": [
+    {
+      "path": "packages/ui/src/primitives/slider.tsx",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/slider.tsx.md",
+      "sourceBlob": "4714bee23074fbff29a89dd5338dd04b33042ae7",
+      "sourceSha256": "a0aae74eb47981a7274748bd9529d546d46a554bed1f3186dc9364de897f004b",
+      "sourceLines": 26,
+      "manualSha256": "2d10acd74f731b1821e6634678d595638cdb949c57ff4075e17113e1ceecf430",
+      "verdict": "accepted",
+      "relationToR0": "byte-identical to r0 accepted",
+      "closedFindings": [],
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "packages/ui/src/primitives/sonner.tsx",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/sonner.tsx.md",
+      "sourceBlob": "cb9d9afa583e563d8c0c0e5effb32c06fa7e442d",
+      "sourceSha256": "c7b851d695bd3497af8664d065cc604681b43caca472723028b195e1f305ca0c",
+      "sourceLines": 32,
+      "manualSha256": "79b7ec50c02d806234963ba7d6bc8556ae2689d1fa663a7049b6440fcccf3df2",
+      "verdict": "accepted",
+      "relationToR0": "revised in r1",
+      "closedFindings": [
+        "F-NB39-01"
+      ],
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "packages/ui/src/primitives/spinner.tsx",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/spinner.tsx.md",
+      "sourceBlob": "dbd7addb538b279b87ed525d930999db24107a46",
+      "sourceSha256": "0974bbafc7ec1d88781c43a51b9ec46cd545133fb6f7e511d7a5e33f804112ce",
+      "sourceLines": 49,
+      "manualSha256": "009991823c02232de483f124067222431db78563d2a6d8196d4f29b1f955782d",
+      "verdict": "accepted",
+      "relationToR0": "revised in r1",
+      "closedFindings": [
+        "F-NB39-02"
+      ],
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "packages/ui/src/primitives/switch.tsx",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/switch.tsx.md",
+      "sourceBlob": "0a2cdfdc839cea2fcb1dc49e6a9f9d40b3b972c2",
+      "sourceSha256": "c38f88259336291dfd6edb74b29647394d4cfd1f44035325a20c59da3f44a135",
+      "sourceLines": 29,
+      "manualSha256": "1b8c8e7150296baae51063fc8a12daf44e66ecfb360172e672a24b83e066ce9a",
+      "verdict": "accepted",
+      "relationToR0": "byte-identical to r0 accepted",
+      "closedFindings": [],
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "packages/ui/src/primitives/tabs.tsx",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/tabs.tsx.md",
+      "sourceBlob": "a9cebd1ce7f51c181f794b8b386a219aead58d2c",
+      "sourceSha256": "14d96c6fe1da09f95b99b5fcb212af36bef6fb55a323bf81594077f16a7d926b",
+      "sourceLines": 53,
+      "manualSha256": "aa350d3b954e97af6e8d5b41e3438a6e7673d1a431cecbfde1590a12c8c4e7a6",
+      "verdict": "accepted",
+      "relationToR0": "byte-identical to r0 accepted",
+      "closedFindings": [],
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "packages/ui/src/primitives/textarea.tsx",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/textarea.tsx.md",
+      "sourceBlob": "edbc9448b904c7ff6e43be510b04110f199b3dc8",
+      "sourceSha256": "edc5f6c0ccd57f84a2f1a049222462691afd8f4f501c5f2ebdd4ade97388ac37",
+      "sourceLines": 28,
+      "manualSha256": "52ebb28ff3f58d3e903963fa56d3d123aa69720957f2ec3ecd0bcd8a9d5cce65",
+      "verdict": "accepted",
+      "relationToR0": "byte-identical to r0 accepted",
+      "closedFindings": [],
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "packages/ui/src/primitives/todo-date-picker.tsx",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/todo-date-picker.tsx.md",
+      "sourceBlob": "401c25b13bdb835374071e83f9184c9c7d34cd63",
+      "sourceSha256": "2d0dfdf7493268fe6d57be95c55b1ccc5297bdc1b56c3e7ddb27e638bb3c49ef",
+      "sourceLines": 155,
+      "manualSha256": "a23583f6c81243674a41352f039129b1bc1214ed9aaa6f680a8a63232613706b",
+      "verdict": "accepted",
+      "relationToR0": "revised in r1",
+      "closedFindings": [
+        "N-NB39-01"
+      ],
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "packages/ui/src/primitives/tooltip.tsx",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/ui/src/primitives/tooltip.tsx.md",
+      "sourceBlob": "1f0149814d8e7c3ca28ffef3db8ca0818e5c4539",
+      "sourceSha256": "24eacfdfbfd957c32f005e9d739dc8643107ed6b948a76ee0d4d08ce26248fad",
+      "sourceLines": 47,
+      "manualSha256": "6119bf597f5dec123da31d8dec3a56984152a12660b5cafb1e35386b94080ba0",
+      "verdict": "accepted",
+      "relationToR0": "byte-identical to r0 accepted",
+      "closedFindings": [],
+      "findings": [],
+      "notes": []
+    }
+  ]
+}

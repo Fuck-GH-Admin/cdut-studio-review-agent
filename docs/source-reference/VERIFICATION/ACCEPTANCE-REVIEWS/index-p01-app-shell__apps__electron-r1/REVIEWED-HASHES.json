@@ -1,0 +1,65 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "index-p01-app-shell__apps__electron-r1",
+  "groupId": "p01-app-shell__apps__electron",
+  "revisionOf": "index-p01-app-shell__apps__electron",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T22:35:00Z",
+  "sealedAtUtc": "2026-10-23T19:09:24+00:00",
+  "artifactSha256": "7374ec6ade25e245c93f70858875d071c11fabc4c6939927c244a32edf17cdf2",
+  "note": "r1 合入以本表为准。8/8 accepted。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron.md@apps/electron/resources/CDUT_Studio.svg": "7374ec6ade25e245c93f70858875d071c11fabc4c6939927c244a32edf17cdf2",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron.md@apps/electron/resources/CHANGELOG.json": "7374ec6ade25e245c93f70858875d071c11fabc4c6939927c244a32edf17cdf2",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron.md@apps/electron/resources/background.png": "7374ec6ade25e245c93f70858875d071c11fabc4c6939927c244a32edf17cdf2",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron.md@apps/electron/resources/bulletin.json": "7374ec6ade25e245c93f70858875d071c11fabc4c6939927c244a32edf17cdf2",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron.md@apps/electron/resources/icon.icns": "7374ec6ade25e245c93f70858875d071c11fabc4c6939927c244a32edf17cdf2",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron.md@apps/electron/resources/icon.ico": "7374ec6ade25e245c93f70858875d071c11fabc4c6939927c244a32edf17cdf2",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron.md@apps/electron/resources/icon.png": "7374ec6ade25e245c93f70858875d071c11fabc4c6939927c244a32edf17cdf2",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron.md@apps/electron/resources/tutorial.md": "7374ec6ade25e245c93f70858875d071c11fabc4c6939927c244a32edf17cdf2"
+  },
+  "revisionRequiredManuals": {},
+  "sourceHashes": {
+    "apps/electron/resources/CDUT_Studio.svg": {
+      "sourceBlob": "ca3fe8f1091a9006f15c234a03a2a33c3fcb160f",
+      "sourceSha256": "ffb559cc4fee56ac312ed664b4f2b520b907b372c9636739aa9c32cc755f37c4",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/CHANGELOG.json": {
+      "sourceBlob": "914b14fba9b4bb747ac732a7e7c127a0cead7102",
+      "sourceSha256": "2fbf6454959f0abda9c2757a88f3a21c75370bc4d1f9bfd12178bc9118cbb047",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/background.png": {
+      "sourceBlob": "9bd9babc3e5ce4c81440eace3c831dbd35722cf7",
+      "sourceSha256": "5ac4966faa4b44f93316eb66d5accc8fd83a56db0514964f45f1ef9058145858",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/bulletin.json": {
+      "sourceBlob": "a047bf3bc230da8e9fa5c1ee6717197da553465d",
+      "sourceSha256": "226d400d612e3e8e4e2c814e37d9029cc94d6c8b09acfbff514843e9aaf08548",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/icon.icns": {
+      "sourceBlob": "bd2324bd0936dbf8dee565fc6e15db2e1a323188",
+      "sourceSha256": "ecbab8d6d15b18346c79274d50301e74b65bb877d1ee21bf11d6a010039055ba",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/icon.ico": {
+      "sourceBlob": "3e273c448e2bf26cfc16bb7b521cf297e5101bde",
+      "sourceSha256": "89b1b6225c91967838f7c19d3ca7bd800325b2e76bb8fce80b68f23ab2bcbfe6",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/icon.png": {
+      "sourceBlob": "f423fe3eafbf5d612a24777da53ab9d02c03bbe7",
+      "sourceSha256": "02907b294ffbbe9c8a8e9f8571a3eb030e1eefa02f6684888a05486ce52407d7",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/tutorial.md": {
+      "sourceBlob": "208a2ddf06cb034de5f68850ea3e96617d567bcc",
+      "sourceSha256": "cbac2d9ec4607843b865916e37f5134a9807fd6141af13ad6ebba7c6e141df6a",
+      "verifiedAgainstFrozenTree": true
+    }
+  }
+}

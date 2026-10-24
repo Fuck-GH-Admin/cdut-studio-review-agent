@@ -1,0 +1,172 @@
+{
+  "schema": "dsh-r07-review-result/2",
+  "batch": "nb-55",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "reviewedAtUtc": "2026-10-23T23:10:00Z",
+  "sealedAtUtc": "2026-10-23T17:21:53Z",
+  "sealId": "seal-a15b4c81cc7797fa",
+  "runStatus": "NOT_RUN",
+  "batchVerdict": "accepted",
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass_with_findings"
+  },
+  "g0Evidence": {
+    "sealChain": "manifestSha/readySha/zipSha 三层独立重算全相等；zip 13 条目合规（10 manuals+MANIFEST+2 TSV）",
+    "manualHashes": "10/10 磁盘=MANIFEST=READY 全等",
+    "scopeBinding": "10/10 源 blob+sha256+lines 与 nb-55-SCOPE 全等"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-review-ops-tools.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-review-ops-tools.ts.md",
+      "sourceBlob": "83b09525b2165e3636d925e60576a68fdba808c9",
+      "sourceSha256": "e898d2eeb41b6f5611c00ce5a655b19f23569ddf9294246d2e161d0cb9e39082",
+      "manualSha256": "0ef1a534f6ba82662f8eb4b2972c17d05a4f55a552bc2ce604a36a94cfa12562",
+      "verdict": "accepted",
+      "findings": [
+        "NB55-N1"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-review-watchdog.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-review-watchdog.test.ts.md",
+      "sourceBlob": "b892b29405e14759a0804068bf946a1b1fc4b130",
+      "sourceSha256": "831ac800c5d1fdb86b6e2d93454d33c7a28a994c26f6a2a08eb9fd775e5dc5ca",
+      "manualSha256": "377d4b5e052b2fd69ae278e4583bebb460724fd887cbd4a917ed6015bbbcbaff",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-review-watchdog.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-review-watchdog.ts.md",
+      "sourceBlob": "d25adcbfb6d1496f57a63381e0de1a86ee4164d7",
+      "sourceSha256": "6400afa1dd8b4d4383a9800ae1c84bf95da955e01ace95f8bbb61ed39936aecd",
+      "manualSha256": "1b6e65accda8e25fb57d4657837fb67292450c5dc9ddbb2a8e462842d0b41a63",
+      "verdict": "accepted",
+      "findings": [
+        "NB55-N2"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-runtime-smoke.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-runtime-smoke.test.ts.md",
+      "sourceBlob": "23df893eb351c9b0f256830271596639f668179d",
+      "sourceSha256": "cb26b1200c7e14e42d1bf7da4193a5b5c5a726773eab822868ad92e2de3eee8e",
+      "manualSha256": "0682effba9cf95bcd976b973a041c4aa29c64f3db58a768c28672c53122ed432",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-skill-resources.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-skill-resources.test.ts.md",
+      "sourceBlob": "31a5818d9ba537abcd0c9fe923202fe6302f16dc",
+      "sourceSha256": "a34a7ff26818bad7a6ac126e0aa14b4d7e63bef9ecfafa52cb95a06b02c4bc44",
+      "manualSha256": "5d2248ff4058d55a1be995700e34911e438e738a3633bc36419d5232bb4424e4",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-skill-resources.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-skill-resources.ts.md",
+      "sourceBlob": "55f397f0e07efdbba87e979402f706f70178bf46",
+      "sourceSha256": "caa7f067c6517d585aa484a154a19e7e8046d8f14beedac7323ca954b99f41b2",
+      "manualSha256": "43cf887e9e02767a2d001584d5e9771c4c0bfac9bc93c1fd5d02f4dece33bb9e",
+      "verdict": "accepted",
+      "findings": [
+        "NB55-N3"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-skills-override.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-skills-override.test.ts.md",
+      "sourceBlob": "56b0c23d02b382395424df65d896d5926a697458",
+      "sourceSha256": "6ef2b3340cec701f238b1e7b52bced74acce8a53f09ab185adb5afa0a6d436b3",
+      "manualSha256": "a171d90b3fd25704d61dba337b0440ca6ac33925c082fa2599107a721de3d167",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-streaming-control.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-streaming-control.test.ts.md",
+      "sourceBlob": "3bb727fdc5bd852a7d94e6262408daa9ddc6db12",
+      "sourceSha256": "7046c6d0ac45629b2ff931e80b6e29ac39493b85e9fea7c424c43d52b139945f",
+      "manualSha256": "8d362292a93c61f6ff6fac2884705d4ee950fcf42b431fddc1ffe7f254d8aff8",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/pi-streaming-control.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-streaming-control.ts.md",
+      "sourceBlob": "22326172d4ae233daa53e5daed383f0753b89894",
+      "sourceSha256": "171ebe847dce4dce814b9acf0aed9cfb154e46fb66989d83101ec1c750390822",
+      "manualSha256": "0785ef02681b6be04358ae1cdcb51da044eb91463b5d9421d96b93af1e3b968d",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/adapters/windows-shell-installer.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/windows-shell-installer.ts.md",
+      "sourceBlob": "eca4b4c966e74e6b55968ec23033b61280ec1749",
+      "sourceSha256": "3a7bedc4cbfad59b1e5162d2d5cb02ac73eb0a977cb14d48ef936ffa017b0bb1",
+      "manualSha256": "54173539041810295e1da4744a3086337dea64af6daf2ed0dfa9615b88f9376c",
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "NB55-N1",
+      "file": "apps/electron/src/main/lib/adapters/pi-review-ops-tools.ts",
+      "severity": "minor",
+      "claim": "§10 称『3 导出+3 内部』，但本手册 §2 实列 4 个内部符号（result/AssignmentParam/caseSummary/requireAssignment）；内部计数与自家清单不符。",
+      "sourceEvidence": "pi-review-ops-tools.ts :24/:61/:63/:201 四个内部定义（逐行读 :1-669）。",
+      "action": "3 内部→4（或注明口径）。"
+    },
+    {
+      "id": "NB55-N2",
+      "file": "apps/electron/src/main/lib/adapters/pi-review-watchdog.ts",
+      "severity": "minor",
+      "claim": "§10 称『12 导出』，实际 13 个（本手册 §2 表恰 13 行 13 名，无合并行）。",
+      "sourceEvidence": "grep -c \"^export \" pi-review-watchdog.ts = 13（2 常量+3 接口+1 type+7 函数）。",
+      "action": "12→13。"
+    },
+    {
+      "id": "NB55-N3",
+      "file": "apps/electron/src/main/lib/adapters/pi-skill-resources.ts",
+      "severity": "minor",
+      "claim": "§10 称『3 导出+7 内部』，§2 内部清单实列 8 名（ManagedSkill/labelAlias/SKILL_COMMAND_PATTERN/guardedRealPath/isWithin/canonicalSlug/diagnostic/resolveReference/escapeXml——若 ManagedSkill+labelAlias 合并为 1 则 8 行 9 名，另有 SkillLoadResult/SkillDirectoryLoader 两个类型别名未计）；口径未注明。",
+      "sourceEvidence": "pi-skill-resources.ts :7-8/:10-11/:13/:15/:30/:35/:39/:133/:146 逐行读。",
+      "action": "按实际计数修正或注明口径。"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-review-ops-tools.ts.md": "0ef1a534f6ba82662f8eb4b2972c17d05a4f55a552bc2ce604a36a94cfa12562",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-review-watchdog.test.ts.md": "377d4b5e052b2fd69ae278e4583bebb460724fd887cbd4a917ed6015bbbcbaff",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-review-watchdog.ts.md": "1b6e65accda8e25fb57d4657837fb67292450c5dc9ddbb2a8e462842d0b41a63",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-runtime-smoke.test.ts.md": "0682effba9cf95bcd976b973a041c4aa29c64f3db58a768c28672c53122ed432",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-skill-resources.test.ts.md": "5d2248ff4058d55a1be995700e34911e438e738a3633bc36419d5232bb4424e4",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-skill-resources.ts.md": "43cf887e9e02767a2d001584d5e9771c4c0bfac9bc93c1fd5d02f4dece33bb9e",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-skills-override.test.ts.md": "a171d90b3fd25704d61dba337b0440ca6ac33925c082fa2599107a721de3d167",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-streaming-control.test.ts.md": "8d362292a93c61f6ff6fac2884705d4ee950fcf42b431fddc1ffe7f254d8aff8",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/pi-streaming-control.ts.md": "0785ef02681b6be04358ae1cdcb51da044eb91463b5d9421d96b93af1e3b968d",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/adapters/windows-shell-installer.ts.md": "54173539041810295e1da4744a3086337dea64af6daf2ed0dfa9615b88f9376c"
+  },
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "notes": [
+    "G2：10 文件 1870 行全文逐行读 + 10 篇手册全文比对；5 测试文件 50 用例（19/11/14/1/5）与断言行号全对（skill-resources 的 skipIf 用例计入 11）。",
+    "质量亮点：pi-review-ops-tools 手册如实记录源码头注释与代码矛盾（:5 称决定类『本模块不注册』但 :544+ 以双门注册 #12-14）；runtime-smoke 手册照实指出『名为可实例化实为 dts 文本断言』；watchdog 手册完整覆盖防自动重试闭环（formatDuration 分钟表述防 5xx 误判等细节均与源码吻合）。",
+    "独立复核：SOURCE-EVIDENCE.tsv 引用可解析（交付内真实存在）；C1 11 项+C2 3 项=14 主分支+3 direct=17 工具逐一对名；isPathUnderRoots realpath 双侧+sep 语义、watchdog 阈值推导链（env>transport-15s 保底 30s>240s 默认）全对。",
+    "3 条 findings 均为『N 内部/N 导出』计数口径（每文件恰 1 条），无行为错误；随 ERRATA 或下次触碰关闭。",
+    "manualSha256 脚本生成=READY 三方核验。"
+  ]
+}

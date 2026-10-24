@@ -1,0 +1,226 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "index-p01-app-shell___context",
+  "groupId": "p01-app-shell___context",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T18:05:00Z",
+  "sealedAtUtc": "2026-10-23T17:37:53Z",
+  "artifactSha256": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+  "note": "QA 实算封版字节：stage MD=0b52ec37…（=READY/DONE/MANIFEST.artifactSha256）；MANIFEST.json=6b89550b…（=DONE.manifestSha256）；READY.json=938bc20b…（=DONE.readySha256）。35/35 accepted；per-file manualSha256 = 本 group 单篇 artifact sha256。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/code-review-2026-07-19.md": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/handoff.md": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/pi-runtime-migration-scope.md": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/README.md": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-cadence-cut.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-cadence-soft.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-cadence.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-crescent.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-motion.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-open-fold.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-open-orbit.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-petal-signal.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-ribbon-spark.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-ribbon.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-rising-chord.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-rising-loop.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-soft-aperture.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-soft-arc.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-soft-blades.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-soft-current.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-soft-fins.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-soft-prism.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-space.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-steady.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/concept-wave-crest.svg": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/index.html": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/round-2.html": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/round-3.html": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/round-4.html": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/round-5.html": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/round-6.html": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/profer-icon-concepts-2026-08-20/round-7.html": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/proma-to-profer-rename-plan.md": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/security-review.md": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___context.md@.context/todo.md": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368"
+  },
+  "revisionRequiredManuals": {},
+  "sourceHashes": {
+    ".context/code-review-2026-07-19.md": {
+      "sourceBlob": "096b637bd16b9a6817bd8c5b20e56e449ea50770",
+      "sourceSha256": "0589cb8023caf930dcbd57f7208a542c61fbecc430d0229baf85c639580f94c4",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/handoff.md": {
+      "sourceBlob": "6df14df4516a0237dbf67d39d0ea74bf38d6eed8",
+      "sourceSha256": "b20cb16d29d9c9d11960e8cdd6cedba889e05652104c33036c1e87c47e48a6aa",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/pi-runtime-migration-scope.md": {
+      "sourceBlob": "2b28564575eede81cb58bea06aca0215bbf213cc",
+      "sourceSha256": "e46d922509a172478c3fa8f0f3a6f98287ebd6f506b728b88f40d83418895e49",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/README.md": {
+      "sourceBlob": "373b3ac83ec843658ed5d81f6bb2805b71de5035",
+      "sourceSha256": "6cff9d266c3f2d1f762532b04f5a56cedc843b86e9e8c554268e6328fc18b4a5",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-cadence-cut.svg": {
+      "sourceBlob": "b9f904173b0238c6d0154c4971557ed722971709",
+      "sourceSha256": "a2409d8d671374e491bb625e886c9c1af75cb06de63c1244d6ce76c0b3ed56c6",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-cadence-soft.svg": {
+      "sourceBlob": "4fd7e9ba1c492c819affee2a30be502ddbdd6fad",
+      "sourceSha256": "203050d9a726699f1677f0162fba6e59e5c23b46a8661308b5323f410cb3948c",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-cadence.svg": {
+      "sourceBlob": "ef4dc7148e99e17aef64601b7abfb99d84058631",
+      "sourceSha256": "9a8f987720b267da1e1bde7bec270b65f5f9ac4c73cab5502772de9fd1d11b98",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-crescent.svg": {
+      "sourceBlob": "5d925f931a66e9886d22a9310734e0fb440e49bf",
+      "sourceSha256": "f3bad1d0e05136b508453394366317126fd96a2c3b0f8b0ca9819c96d7132dfb",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-motion.svg": {
+      "sourceBlob": "b0a1f7c780c4d75e741b296184da2e2128596907",
+      "sourceSha256": "4b65f7bb400af0986eb98a40b8acd4214c72efe42acef456fdcbb4e4643469b1",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-open-fold.svg": {
+      "sourceBlob": "43bf616704422b5f3a3cbb73c426948e9123b214",
+      "sourceSha256": "9cc7c69f801433ed028a98bc0bf1dd916fbacfc58b952ee6c827eaeb5ea6e00e",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-open-orbit.svg": {
+      "sourceBlob": "4fbae9743415cf27a93e51d8a79a25ca801b3bbe",
+      "sourceSha256": "abdf717930ca2dc247d53303fde5b222e8afaa91acef4d56ac8908001212d63e",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-petal-signal.svg": {
+      "sourceBlob": "66f863d8146b522ec20e29ccd16143354450bcfa",
+      "sourceSha256": "68fe3dfeaf669cd8ec5a50d2a4d2fea9f1fa9fe22b05f48111ea57c4acea2f26",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-ribbon-spark.svg": {
+      "sourceBlob": "cfb99efd3a46f0e3dc3916cc4f886a7b1585c562",
+      "sourceSha256": "aef6805ac5d2ebe025610257dabf7c82f766fdb585fb9db1a9572c295ad83d20",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-ribbon.svg": {
+      "sourceBlob": "dfd9e9b3bea605d469519fd0c5c5115bb2b1e5bb",
+      "sourceSha256": "df33ac8cb5df2ae9df034b57c84fa308c6102c2d9211ca5f285201c9a4fb5182",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-rising-chord.svg": {
+      "sourceBlob": "104bc20f47b88a805711f1d34d9c8f2069f5da1f",
+      "sourceSha256": "55e98535af44bc450add98e25fe7d799a74a16ecd8ba2bbcf296e2dd3a068395",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-rising-loop.svg": {
+      "sourceBlob": "5ec110559eca5b68666c50f82eea927eac81f0c9",
+      "sourceSha256": "eb59fdb403f0a04424d487c4cb5a547b06b08bf5aad46811f60076a85909f69c",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-soft-aperture.svg": {
+      "sourceBlob": "b956ae4086391d7a023be84a8e97d15450b67b10",
+      "sourceSha256": "a39ce9caf5e7bb386505277ee2a8c74e9a1bb857f64bfc30b4e15bc06493bbfb",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-soft-arc.svg": {
+      "sourceBlob": "7d9fb1ac8cae19b2600e0cf43dd8cdde5db65d1a",
+      "sourceSha256": "054bde63feb519552c94dca6fb8eee8c3faa09024ef6094ea6bf2f26e6145468",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-soft-blades.svg": {
+      "sourceBlob": "53ef2a47d1ebc086ffd570b577350748aeaa7709",
+      "sourceSha256": "9a4b7ff4b49688de7c2c812b35df8135f80cd69b388e50ad6a14d6ed2e73c25b",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-soft-current.svg": {
+      "sourceBlob": "a725188d0edf9af1c57cd7731bb7aac07fbc5965",
+      "sourceSha256": "e2113dc5da83c2b5af47a03db48cbf43f72bc44bffe626bbc02333ea1614d611",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-soft-fins.svg": {
+      "sourceBlob": "f54cf400996d972d62250700e85ca0e63e7376e9",
+      "sourceSha256": "8a49985468c8a790e08a6f83823ec9819158bfdb22e795123b725b2dc7e9ee97",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-soft-prism.svg": {
+      "sourceBlob": "6928de27064c7e2fcbefdb426b2eb48f19176a95",
+      "sourceSha256": "18067fecc8a910bd156dca12ac372ffe194e5eee39d844bd102d4300a020ffae",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-space.svg": {
+      "sourceBlob": "3f7290640bfdab7ba87f92a8a28754306c442275",
+      "sourceSha256": "095acc77804a243cc97729fdaa184852e8c5366b9dc65c0d92ac467c03de9ee2",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-steady.svg": {
+      "sourceBlob": "d04c37a4dc96b82d6df46954393679ea7d8c2606",
+      "sourceSha256": "b83d60b4d1d74b8af2b5b2b000e16efe6b1edf29991d4fe8140d5d243c7f2531",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/concept-wave-crest.svg": {
+      "sourceBlob": "07160341c387f10a7b75180760aac2b31407b500",
+      "sourceSha256": "2c61ebaf6528d98871c7b8de3a85bbd9797eb7381bbd200ccf873809c4f2fcd6",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/index.html": {
+      "sourceBlob": "29591f72fd88c667d9ee40b025a2d472929a6968",
+      "sourceSha256": "802cc6a1663077425019b2c21b3c9e6c9639018b0306fbe4828788c4321b859e",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/round-2.html": {
+      "sourceBlob": "95fa422335c74a0bb01e57921f49cd858f84cca3",
+      "sourceSha256": "876293b7422391ecdc1a69ec25039017b2e1b15a010f725ca75eff78c91aeb11",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/round-3.html": {
+      "sourceBlob": "a7764fdba1de8c7b4a4eec7eab207aa24d007ef2",
+      "sourceSha256": "b0976be9bb2976fe79cc8151aa232087944f1c60b070d1870c2b4311f92b244e",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/round-4.html": {
+      "sourceBlob": "4fbac2785fcdb2a10e1c34b1992ec4ec625425a5",
+      "sourceSha256": "f74350f38df552afa61679ca4a5cf50e9618064ee40f9a6aa660ed6debf0919c",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/round-5.html": {
+      "sourceBlob": "60c190fb70f32b0603833cd831f5ba2ec3fc90dd",
+      "sourceSha256": "0e73b669b8173723a012e7cf595c3978a685ed9178fc75d3da95732572e5981c",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/round-6.html": {
+      "sourceBlob": "d98dd7af56243a8eca2c3dcb0dcf89635813b96e",
+      "sourceSha256": "f1ac869ad5b5cbf88be1ab47f976949e24774863c1c058332ad3551abe3df09e",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/profer-icon-concepts-2026-08-20/round-7.html": {
+      "sourceBlob": "c3aa8be44eaec274a6825e6ca2863550e56d9327",
+      "sourceSha256": "901ca5d6fd9bf319bddffe7d9deebc54325c9d4f2fac6c4225bd100a9f099802",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/proma-to-profer-rename-plan.md": {
+      "sourceBlob": "ea72fbb00b6faadfae389936078eefda52709474",
+      "sourceSha256": "bd16a9d7a8cfccf3f57ccffe9a22b6a92c8c4015f4598b29420649459a8ee383",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/security-review.md": {
+      "sourceBlob": "8b71af92b8fe53d47c4f8fd774b6634602d35db6",
+      "sourceSha256": "0bf13cf41e496f605ffac4b273f8673b7be65788fb67d05d2007157d515fa95e",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".context/todo.md": {
+      "sourceBlob": "448b5084ae1c3978684709ee3a1c1b52121d65dc",
+      "sourceSha256": "2b640e3fc639fc822ae1d724b156290f7df14b0d3235cba360ba5696a716cf82",
+      "verifiedAgainstFrozenTree": true
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "schema": "dsh-r07-qa-done/1",
+  "batch": "nb-10",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-01-20261023",
+  "reviewerSession": "docs-r07-qa-nb-01-20261023",
+  "reviewRoot": "reviews/nb-10",
+  "reviewedAtUtc": "2026-10-23T16:05:00Z",
+  "status": "REVIEW_COMPLETE_ACCEPTED",
+  "batchVerdict": "accepted",
+  "gates": {
+    "G0": "G0_PASS",
+    "G1": "G1_PASS",
+    "G2": "G2_PASS",
+    "G3": "NOT_RUN",
+    "G4": "NOT_RUN"
+  },
+  "verdictCounts": {
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "acceptedHashesCount": 18,
+  "residualNonBlockingNotes": {
+    "count": 2,
+    "blockingImpact": "none (each file <=2 non-blocking)"
+  },
+  "seal": {
+    "sealId": "seal-00afeee06089b3c8",
+    "tool": "seal_delivery.py/1",
+    "spec": "SEAL-DELIVERY v2",
+    "zip": {
+      "path": "deliveries/nb-10/R07-nb-10-05fb2565.zip",
+      "sha256": "76046604960b1e0f0bfd1c3d87d06b5f019d781189207d91d4f4e96b46c6d981",
+      "bytes": 98055,
+      "entries": 21
+    }
+  },
+  "artifacts": [
+    "reviews/nb-10/RESULT.json",
+    "reviews/nb-10/RESULT.md",
+    "reviews/nb-10/SOURCE-CHECKLIST.md",
+    "reviews/nb-10/REVIEWED-HASHES.json",
+    "reviews/nb-10/DONE.json",
+    "handoffs/nb-10-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-10-REVIEW-TO-LEAD.md",
+    "handoffs/teams/qa-nb-01-STATUS.json"
+  ],
+  "notRun": [
+    "bun test",
+    "tsc --noEmit",
+    "build/package",
+    "Electron/GUI",
+    "real model/network",
+    "concurrency/crash injection"
+  ],
+  "writtenOnlyIn": [
+    "reviews/nb-10/",
+    "handoffs/nb-10-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-10-REVIEW-TO-LEAD.md",
+    "handoffs/teams/qa-nb-01-STATUS.json",
+    "DSH-SESSION-REGISTRY.md (append)",
+    "DSH-BUSINESS-LEDGER.md (append)"
+  ],
+  "notWritten": [
+    "baseline/source",
+    "deliveries/",
+    "candidate/",
+    "inventory/",
+    "manager/",
+    "author manuals",
+    "global FILES.tsv/COVERAGE/MANIFEST/INDEX"
+  ],
+  "next": "lead merges 18 exact manualSha256 into candidate; N-01/N-02 optional rN polish; continue team list (nb-11)",
+  "old922Counts": false
+}

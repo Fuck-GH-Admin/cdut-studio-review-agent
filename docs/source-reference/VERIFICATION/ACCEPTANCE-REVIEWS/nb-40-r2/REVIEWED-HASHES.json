@@ -1,0 +1,38 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-40-r2",
+  "revisionOf": "nb-40-r1",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T17:20:00Z",
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/package.json.md": "f34e52699b8852a0f2ab8be36c07b1e44f9bcfae4036e4c370b64b772943a733",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/approval.ts.md": "35a952978ff6226dfdca86cd13aa5e0135a9901853efb72e69d5d638a60e48e7",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/artifacts.ts.md": "e583188668add8d24583e7182dbbe88fd3e5626513faedb5dce13e0d18334531",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/capabilities.ts.md": "403551f0b7192a961478d308dc04085ca88d316b4433942cab018032a81fae31",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-events.test.ts.md": "356aa9d08ed7fe04fa0b6b27ee649ca555991b302d9a68bc7a601b95c5567abe",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-gateway.test.ts.md": "db3ae68985dd11990e6a3d5c2b0d3ed644142419d9684a863aebc334dbbb83d4",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-protocol.test.ts.md": "2871383322590986b57cc31d17b382c9282c315e35be70ac33793173445a1649",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-security.test.ts.md": "e96c6b0a1cc74176f8f416bffe2ea5396ac55eb6634975548efe817f019fb605",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-state-machine.test.ts.md": "9bcc84355393d1ae78655099f8d88bcfe61550222fb1e297ec4119ce538a2420",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-task-graph.test.ts.md": "46aa57f5d5e4819031c90ad97ef6f08dfa80d9140f02384a6c45d378788c30d4",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-task.test.ts.md": "ecf3581c510884ccddd0a90dfffbc4edbb7178dee577c71e3ab9ee394b933711",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/events.ts.md": "58c569ba4a04152383f1ba28aa854305a47e96894b3b875b2588962c40705058",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/gateway.ts.md": "1d7359f2386f115fe94f676a602872d9e8b0168ff850bb73e96659ce77bd9e2a",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/index.ts.md": "c396071b14e04950ab3da0387872bb2e7f26df15998d5df7742ecf1fff29c47e",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/node.ts.md": "6926cf8be236176cf666be0b2f0fd2e0ef31d6a7985ff5f0c2ba4d07a00e5df3",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/protocol.ts.md": "7ca5524800c60c817e9c49a3fc379fb0a2edc44a985c56f39e7a5a86858fc77e",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/state-machine.ts.md": "77c60bdbd17fd8b3f92383f6e6da2ffd19e54bf5d295c827a4995a5c94abc629",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/task-graph.ts.md": "655d18195dec7fa286f7f1979e22c9267bae074edae23d85e8d3fb8eb735d13a"
+  },
+  "revisionRequiredHashes": {},
+  "rejectedHashes": {},
+  "chain": {
+    "sealId": "seal-4f9c1643c23a7308",
+    "manifestSha256": "f71bcbd8e80132246cb517afe1fd9751a24416dc86bdf6b99416302f59e1c3fe",
+    "readySha256": "29e2eef1407c182c8a94f03aa29e1c4728b0cc01abb77dcf6cff2c173a8268ba",
+    "doneSha256": "68bd279cb55f1b9cab93ebbf5931ef964ad22572dee2d86add0de8a3fe9a8e24",
+    "zipSha256": "5fbe40882b385eb891fb376329ce13220842dc65b33385f5db4ffe6207770b94"
+  }
+}

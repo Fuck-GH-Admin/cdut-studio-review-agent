@@ -1,0 +1,140 @@
+{
+  "schema": "r07-review-result/2",
+  "batch": "nb-02-r1",
+  "revisionOf": "nb-02",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-ui-20261023",
+  "reviewerSession": "docs-r07-qa-ui-20261023",
+  "reviewedAtUtc": "2026-10-23T15:52:00Z",
+  "batchVerdict": "accepted",
+  "verdictNote": "G0/G1 PASS；G2 回源复核 7 条返修（NB02-CCD-1 blocking + 6 low）全部 closed；ProductWorkspace 逐字节未变。1 条新低级备注 N-R1-1（FINDINGS-RESPONSE §8 引用旧草稿 hash）需 G4 前关闭。accepted 仅限静态文档 scope，运行 NOT_RUN。",
+  "scope": "manager/assignments/nb-02-SCOPE.json",
+  "sealed": {
+    "root": "deliveries/nb-02-r1",
+    "sealId": "seal-86590df727d4996a",
+    "sealedAtUtc": "2026-10-23T14:06:02Z",
+    "readySha256": "dbef0656a84931e1f48a792e71f2db8b5cb8dcefe13eead103788f1ebe332302",
+    "doneSha256": "890e35fa2de6c14cea67ac52066d725457263151f182381fb4d0ac4a68a2df56",
+    "manifestSha256": "40a7f71b11e0bf563589a11a2199439e65531028f116476c01718c13062d10a1",
+    "zipSha256": "e3be4a2395b40affdb40c29c043d654685d0f47ead856149ee11ed70510c695a",
+    "zipBytes": 50251,
+    "zipEntries": 9,
+    "note": "seal v2：ZIP 仅含 6 stage 手册 + MANIFEST + 2 mechanical tsv，按实际链绑定；before/ 5 篇在工作目录留存并与 nb-02 封版逐字节一致；父批 nb-02（READY 400244e7…/ZIP ffde9be6…）字节未改"
+  },
+  "gates": {"G0": "PASS", "G1": "PASS", "G2": "ACCEPTED"},
+  "g0Evidence": [
+    "6 篇 manual sha256 与 READY.manualHashes/MANIFEST 一致；ProductWorkspace = nb-02 封版 hash（a7214a03…）",
+    "before/ 5 篇 = nb-02 stage 字节；changes.diff 从 nb-02 stage 重放 6/6 逐字节一致（patch exit 0）",
+    "ZIP 9 entries 无穿越/符号链接，unzip -t 无错误；元数据 ZIP==工作目录；stage 无漂移",
+    "6/6 source blob+sha256 与冻结树一致；READY.manifestSha256 链自洽"
+  ],
+  "files": [
+    {
+      "path": "apps/electron/src/renderer/components/content-review/CreateCaseDialog.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/CreateCaseDialog.tsx.md",
+      "sourceBlob": "7a7d49d9c582335af6d655defda12b9f81968541",
+      "sourceSha256": "bb91ede4c7d60321933025a35105c7a0ac620a9362339cc0e522e8e57a90e995",
+      "manualSha256": "1ba2acfaa420e5a37cf67026b258330030bb0672ad28a2fd30bc5a149061cf69",
+      "changedFromParent": true,
+      "verdict": "accepted",
+      "findings": ["NB02-CCD-1 closed"]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/content-review/D4CaseSetup.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/D4CaseSetup.tsx.md",
+      "sourceBlob": "01e85163d1bddcca5e5d7862ecf4b796a898db5d",
+      "sourceSha256": "8cf93680c00949b35fd95f9b4a4743bb3b481f5bcd43ce4c536fd884e93a8ff1",
+      "manualSha256": "d9328e671d62871aaf3c0ee1ec4017aad4341c0bb12976530f4e6dfa58f5b597",
+      "changedFromParent": true,
+      "verdict": "accepted",
+      "findings": ["NB02-D4-N1 closed"]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/content-review/ReviewV3T05RunDecision.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewV3T05RunDecision.tsx.md",
+      "sourceBlob": "680f7f36034a44c2d31fdf5cfdf7e38f32fc44e8",
+      "sourceSha256": "ba4d874574c4b237c772b9f7f469c97387f22b641c0f1281a733575665f09611",
+      "manualSha256": "93bcf3fc4efd8d0ed1ca094a69bf2f85e9c8c5f899fbe59895fe17877a5b792c",
+      "changedFromParent": true,
+      "verdict": "accepted",
+      "findings": ["NB02-T5-N1 closed", "NB02-T5-N2 closed"]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/content-review/ReviewV3TemplateRoutingAssistant.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewV3TemplateRoutingAssistant.tsx.md",
+      "sourceBlob": "566ffe94f67e62b729e7bfe5b593ec6b4cc6506b",
+      "sourceSha256": "f66a30ae6365c9ae872539b084518835f56ec6b274b29cbd23eed4ac7aa94781",
+      "manualSha256": "cf398df9ef81bb5d52563e8b71aff941d3aa501d13c01a1d5c6bcb73742cb9a7",
+      "changedFromParent": true,
+      "verdict": "accepted",
+      "findings": ["NB02-RT-N1 closed", "NB02-RT-N2 closed"]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/review-v3-dev-b/ReviewV3CandidateIntakeSurface.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/review-v3-dev-b/ReviewV3CandidateIntakeSurface.tsx.md",
+      "sourceBlob": "a9b7382971f4b9117d1ad670bbdfc71e4f702aae",
+      "sourceSha256": "7eb9d41c00a3b661a276655fd3f0d00b0e30c1ba99af900486cf27ca588b8549",
+      "manualSha256": "e07001fda08fb2fa51617596d94bbc913f280ed81d7f19eccfd01c1fb02496d7",
+      "changedFromParent": true,
+      "verdict": "accepted",
+      "findings": ["NB02-IS-N1 closed"]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/review-v3-dev-b/ReviewV3ProductWorkspace.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/review-v3-dev-b/ReviewV3ProductWorkspace.tsx.md",
+      "sourceBlob": "9042652a383aaa55acb1655fec96dd02b6a7a2a2",
+      "sourceSha256": "b9d75ee8e41bc8432ab5149292fff00f6c1ae01b9bcdb83921c7d2b44ff8a74c",
+      "manualSha256": "a7214a03ca78c3d922f1cdd0d4019450b76402292252e31ee3c8b53dc09e3c6e",
+      "changedFromParent": false,
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/CreateCaseDialog.tsx.md": "1ba2acfaa420e5a37cf67026b258330030bb0672ad28a2fd30bc5a149061cf69",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/D4CaseSetup.tsx.md": "d9328e671d62871aaf3c0ee1ec4017aad4341c0bb12976530f4e6dfa58f5b597",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewV3T05RunDecision.tsx.md": "93bcf3fc4efd8d0ed1ca094a69bf2f85e9c8c5f899fbe59895fe17877a5b792c",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewV3TemplateRoutingAssistant.tsx.md": "cf398df9ef81bb5d52563e8b71aff941d3aa501d13c01a1d5c6bcb73742cb9a7",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/review-v3-dev-b/ReviewV3CandidateIntakeSurface.tsx.md": "e07001fda08fb2fa51617596d94bbc913f280ed81d7f19eccfd01c1fb02496d7",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/review-v3-dev-b/ReviewV3ProductWorkspace.tsx.md": "a7214a03ca78c3d922f1cdd0d4019450b76402292252e31ee3c8b53dc09e3c6e"
+  },
+  "findings": [
+    {
+      "id": "NB02-CCD-1",
+      "severity": "none",
+      "status": "closed",
+      "claim": "学年强制口径错误（原 blocking）",
+      "sourceEvidence": [
+        "r1 §3.3 空学年链路逐跳与源一致：CreateCaseDialog.tsx:96 → review-actions-controller.ts:536 → preload/index.ts:4752 → review-ipc.ts:182-184/76-81 → :547-549 → :100/:107-109",
+        "§8 两层口径（IPC 全局 requireString + native 仅 comprehensive-assessment 且从本 UI 不可达）正确",
+        "§10 已撤回 r0「注释过时/矛盾」判定，改「与本通道可观察行为一致」；review-ipc.ts:181 注释位置已纠",
+        "§6 空学年失败行 + §11 覆盖表链路/不可达两行齐；实际报错文案用户可见表现标 unknown（未运行）"
+      ],
+      "action": "已关闭"
+    },
+    {"id": "NB02-D4-N1", "severity": "none", "status": "closed", "claim": "挂载只读一次未提父级 key 重挂载", "sourceEvidence": ["§10 拆两行：单次挂载内只读一次 + 父级 key={preferred||'manual'}（RoutingAssistant :231）重挂载重新 listD4Templates"], "action": "已关闭"},
+    {"id": "NB02-T5-N1", "severity": "none", "status": "closed", "claim": "测试引用 :7-13", "sourceEvidence": ["§9 改 :5-20 并按用例 :6-9/:12-14/:16-20 分述，与 review-ipc-actor-guard.test.ts 实测一致"], "action": "已关闭"},
+    {"id": "NB02-T5-N2", "severity": "none", "status": "closed", "claim": "未区分读写通道守卫", "sourceEvidence": ["§7 新增读通道守卫弱于写通道：LIST_RUNS_V2（review-ipc.ts:599-604）仅 assertSafeReviewStorageId、GET_WORKSPACE_RUN_VALIDITY_V2（:709-715）仅入参非空，无 sender 校验"], "action": "已关闭"},
+    {"id": "NB02-RT-N1", "severity": "none", "status": "closed", "claim": "currentLocal 引用 :27-32", "sourceEvidence": ["§10 改 :21-26 并注明 :27-32 是 localDocument，与源实测一致"], "action": "已关闭"},
+    {"id": "NB02-RT-N2", "severity": "none", "status": "closed", "claim": "两处分支行为未写 + 「只闪一帧」不得作实测", "sourceEvidence": ["§6/§10 补提示清空路径（:242/:245/:74/:68，最终不保留）并明确可见帧数/时长未运行验证、标未知——满足「静态推断标推断、不写实测帧数」要求", "attachFallback 四处静默中止（:131/:134/:141/:143）逐点列出，产物留 Main 无回滚"], "action": "已关闭"},
+    {"id": "NB02-IS-N1", "severity": "none", "status": "closed", "claim": "B3RoutePanelProps 7 字段", "sourceEvidence": ["§2/§5 改 8 字段（4 数据 + 4 回调）逐名列出，与 :37-48 实测一致"], "action": "已关闭"},
+    {
+      "id": "N-R1-1",
+      "severity": "low",
+      "type": "citation_precision",
+      "status": "open",
+      "file": "deliveries/nb-02-r1/FINDINGS-RESPONSE.md",
+      "manualLines": "§8 表",
+      "claim": "ProductWorkspace 手册 sha256 引用 64b9826e…（旧 FIRST-FILE 草稿值）",
+      "sourceEvidence": ["实际封版 hash 为 a7214a03ca78c3d922f1cdd0d4019450b76402292252e31ee3c8b53dc09e3c6e（nb-02 与 nb-02-r1 逐字节一致，字节未变的结论属实）"],
+      "action": "下次触碰改为 a7214a03…；非阻断，G4 前关闭"
+    }
+  ],
+  "notRun": ["bun test", "typecheck", "build", "Electron/GUI", "real model/network"],
+  "boundaries": [
+    "未改源码/测试/依赖/作者正文/candidate/全局 FILES/COVERAGE/MANIFEST/INDEX",
+    "未回写任何旧 seal（nb-02 r0 交付与 QA 报告字节保留）",
+    "NOT_RUN 不等于测试通过；accepted 仅限静态文档 scope",
+    "运行期行为保持未知（可见帧数/时长、报错文案用户可见表现、重试环次数、双 AuthorWizard 交互）"
+  ]
+}

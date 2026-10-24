@@ -1,0 +1,242 @@
+{
+ "schema": "dsh-r07-review-result/1",
+ "batch": "nb-101",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-models-20261023",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T18:15:00.776094+00:00",
+ "preRead": "reviews/nb-101/PRE_READ_DONE.json",
+ "deliverySeal": {
+  "sealId": "seal-19a97232f1c889c4",
+  "sealedAtUtc": "2026-10-23T18:11:19Z",
+  "readySha256": "a11d6f17daee7854b36a3c513cfd11d53045730732e85206311ae6cad8ce7aaa",
+  "doneSha256": "c840baa28674583cf74e057c65b4ab19ed4cb9cea1cf1c64ec0db75cc243540c",
+  "manifestSha256": "0ec531f08df12ff734d43a2a2ef82eae0f5f0659a63fe81e0c9c39aee31907a4",
+  "zipSha256": "96f2e3f76a7e1c03bed0334d0783373a86d7a18e4dee651d98208c8e48e43012"
+ },
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "gatesNote": "G0：18 文件 blob/sha/lines 一致、hash 链自洽、ZIP 21 合规；G2 对照预读基线——18 条「无直接测试」全冻结树核实为真（20 组件符号零测试引用；AiClassView 所述「目录仅 CdutZoneErrorBoundary.test.ts」精确属实）、KnowledgeTree 常量/区间、Guards 防泄露语义、IPC 面（listSessions/createSession/deleteSession/generateGraphRelations/onGraphProgress/ingestDocuments/updateSessionStudyTeachingMode）、CognitionModal updateStudyEngine/updateMemoryEngine 乐观写+回滚链（:163-175/:177-）均吻合",
+ "batchVerdict": "accepted",
+ "files": [
+  {
+   "path": "apps/electron/src/renderer/components/cdut-zone/AiClassChatPanel.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/AiClassChatPanel.tsx.md",
+   "sourceBlob": "30910540c2a82c7bb12fbb7f1e1664275868fced",
+   "sourceSha256": "6b5b5c566141e6c81880d9cd45d04df513dc8479a4e8174474e8b19f52e08ba2",
+   "lines": 40,
+   "manualSha256": "6eac323c209a77babd7cc4eed0f174fb8fc25337ccbbda181e5abbbba5852d22",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-zone/AiClassCognitionButton.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/AiClassCognitionButton.tsx.md",
+   "sourceBlob": "ded9d0d51bf0d519872ebc45d5ddf821e557e67a",
+   "sourceSha256": "84ab04b30115784039a86e325346fe162f469a38a7d60d8e155736170bd62b50",
+   "lines": 78,
+   "manualSha256": "20f1c6dc7beb5e114e0a64a973999ae1c7dfb6c9b796c790922f26d7f9ea136c",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-zone/AiClassCognitionModal.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/AiClassCognitionModal.tsx.md",
+   "sourceBlob": "9bde757c52941d10f97c8eeb03258405863442bd",
+   "sourceSha256": "2acbed7a6672f08333227e106ce8a8f329ef360ea2f2d298437b7059cc6c344b",
+   "lines": 266,
+   "manualSha256": "651fc0fdec3f39ee31341a74f6bd00158402d9a400d6b020e85899cfb2e541ab",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-zone/AiClassGraphGenerateModal.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/AiClassGraphGenerateModal.tsx.md",
+   "sourceBlob": "5a2930455c2c16582127c768582126de49771ad9",
+   "sourceSha256": "edf6c1d26b9595dac3a0f03f802fbe2c7796f48c9b72ecfb6a3099a3a65d719b",
+   "lines": 289,
+   "manualSha256": "37d44def91406fcb04c876f830780a88c6335583f40e53a7951c251ff2ad66d1",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-zone/AiClassKnowledgeTree.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/AiClassKnowledgeTree.tsx.md",
+   "sourceBlob": "37bf78c628ac1ab94b6c95aaa98400e3a3e7bf86",
+   "sourceSha256": "274ace0d8bf742c7021a4ccca8efb8aae418fcc076339f50afeb2837917b7cb2",
+   "lines": 974,
+   "manualSha256": "0dc900f772c9073bcd016487e0770a3f66ee2b8885fb746dc68da8d3419d14a4",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-zone/AiClassSessionPickerModal.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/AiClassSessionPickerModal.tsx.md",
+   "sourceBlob": "9a6eef0e0b7d2ecd8af92101314cc170acd6d502",
+   "sourceSha256": "b712a98c6fe4604a74b58c687c84bbcbea63ad3e21fb948ee4a2ec7e379c5f61",
+   "lines": 234,
+   "manualSha256": "13d861bbddabdc6f4de297a011739c852c5cf8e4843092518073c8c5a3c02631",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-zone/AiClassStudyOverview.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/AiClassStudyOverview.tsx.md",
+   "sourceBlob": "3130dcf811fa7bbb76beb15cba9fcd2cb90e4192",
+   "sourceSha256": "1595eec63a6b977c4bb2d08285075d4647cd89015067f9f131f7a31fdcbe938d",
+   "lines": 147,
+   "manualSha256": "0dd55530ecb7cf339ff426669860dee40ab2e175d46615db3c2188864da86733",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-zone/AiClassTeachingModeBar.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/AiClassTeachingModeBar.tsx.md",
+   "sourceBlob": "e7eaf4a38ffb8ff791d6ced6510bc02d2bfae43f",
+   "sourceSha256": "7cbf3baacb4fe44c4d326d2c5338498917f6ab783807ff7fa199a78d08a072d9",
+   "lines": 89,
+   "manualSha256": "5ffb6cc34fc2f04d2555526733ba64b2522f497492472b5cf1f0567895018d9c",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-zone/AiClassView.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/AiClassView.tsx.md",
+   "sourceBlob": "0120b262a561960cf656e3f123c5fa02324aa20f",
+   "sourceSha256": "6f40b970dbf727eca70c827082c7de8fb05017c30f2adaf309dcd62e91a98af7",
+   "lines": 467,
+   "manualSha256": "82d8bbac92d6fe31cea279667a1e0d2401df158f8011a0ebd01f33da8d7a97cd",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-zone/CdutAiClassAccessDialog.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/CdutAiClassAccessDialog.tsx.md",
+   "sourceBlob": "a129cbf85bd7c2195cd2ebcb807e3b652dfaaf16",
+   "sourceSha256": "69543c792c0d39e791f3399595c84acfd83abb29bbc8d5c1cbfbdcb6c7d83258",
+   "lines": 87,
+   "manualSha256": "a092812c5650bf1866aa52e349aea622a089c71b1d0f269594cc1e6adafbb2b7",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-zone/CdutAiClassGuards.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/CdutAiClassGuards.tsx.md",
+   "sourceBlob": "56d7b30e8d7c988f3a339ba74c06d56ca34d63aa",
+   "sourceSha256": "580dd88e47176bf43f37f1b0a06edaded785276736eeb56a11f6fd7eb1087818",
+   "lines": 69,
+   "manualSha256": "ffb9762d699d7cf6a7200689418a2a2302935d82a573a8dc0af6c764319fa2c5",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-zone/CdutAnniversaryBanner.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/CdutAnniversaryBanner.tsx.md",
+   "sourceBlob": "4cbf889ce581b66cd95eeb92bb37b6c679810ff0",
+   "sourceSha256": "ede3113f1a7c7dbe9e60d4b397d6a5d7d0485212e7093c772c423cdc3df1394d",
+   "lines": 29,
+   "manualSha256": "45e988d48ce3c968940ea3fff73aa3712ff8dbd8d6c3211376983d1fcde33243",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-zone/CdutFeatureSheet.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/CdutFeatureSheet.tsx.md",
+   "sourceBlob": "4b066d6bbd1d55a66aab2fb5e66854bb99e98365",
+   "sourceSha256": "721adb276d554a0f2f5918e5f696525c5f5265617c761d6439cdbf7a0cc1c0e2",
+   "lines": 86,
+   "manualSha256": "ded4add06f6fc04e0b8eaf1d05efd81af892808d1c345c4540493f6050ef7835",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-zone/CdutHeroSection.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/CdutHeroSection.tsx.md",
+   "sourceBlob": "1f11ca7e9b478d84e662969a90cae28003be5bd9",
+   "sourceSha256": "1f5164ad02e57f49fa3197552453151a15e68b4107d2a0dc7152913e937202d4",
+   "lines": 119,
+   "manualSha256": "7698d63f872755f067886057c8f5789c008fed2a4d5a059c1dadcf1b68430cd6",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-zone/CdutPrivatePhoto.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/CdutPrivatePhoto.tsx.md",
+   "sourceBlob": "44eceb4acdc0ae1dafa86b3bf3f6cec5d7d84e1e",
+   "sourceSha256": "ad4238ffaa964046fcd848186fd4ddbf6db1bca5d353093bd498731354e3e80e",
+   "lines": 47,
+   "manualSha256": "c458853d5f5b34a0f6aef47a94b60fd12be498b09c457b2e1356b7c2890702bf",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-zone/CdutProfileFields.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/CdutProfileFields.tsx.md",
+   "sourceBlob": "263e175dd90621df7fea459594053c0063dcc418",
+   "sourceSha256": "08f44af9fe4b2740412bce87b2de53c7526faf76ee8b55d71f4a4a2b93a15fd7",
+   "lines": 158,
+   "manualSha256": "68f5e6c98e0c4232ff41c161b4349cf975e9465ddf119a7a03b6c208389c2b53",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-zone/CdutQuickBar.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/CdutQuickBar.tsx.md",
+   "sourceBlob": "3109a418872921618ce081d05214f39f3bbd694f",
+   "sourceSha256": "aa76787b597fec525b12269b3f698728cd5d039c986a7913f58f60f859c35a18",
+   "lines": 73,
+   "manualSha256": "7e29f7b438bf32cc8788f7207563a2f6209a6789fade5b9d2072e9c69b368be0",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-zone/CdutSubViewContainer.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/CdutSubViewContainer.tsx.md",
+   "sourceBlob": "a080960298e876372185ef28e2d60de6f9318bb2",
+   "sourceSha256": "6924606b6d3d2e4a6cd368803a15b12fd2a6388d65ba2bf50183583739f6e4af",
+   "lines": 65,
+   "manualSha256": "325ec28eb2d0f8c1e86a2c45245aaec5b47284be4d2dadfc0da0c87745a42548",
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "findings": [],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/AiClassChatPanel.tsx.md": "6eac323c209a77babd7cc4eed0f174fb8fc25337ccbbda181e5abbbba5852d22",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/AiClassCognitionButton.tsx.md": "20f1c6dc7beb5e114e0a64a973999ae1c7dfb6c9b796c790922f26d7f9ea136c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/AiClassCognitionModal.tsx.md": "651fc0fdec3f39ee31341a74f6bd00158402d9a400d6b020e85899cfb2e541ab",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/AiClassGraphGenerateModal.tsx.md": "37d44def91406fcb04c876f830780a88c6335583f40e53a7951c251ff2ad66d1",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/AiClassKnowledgeTree.tsx.md": "0dc900f772c9073bcd016487e0770a3f66ee2b8885fb746dc68da8d3419d14a4",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/AiClassSessionPickerModal.tsx.md": "13d861bbddabdc6f4de297a011739c852c5cf8e4843092518073c8c5a3c02631",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/AiClassStudyOverview.tsx.md": "0dd55530ecb7cf339ff426669860dee40ab2e175d46615db3c2188864da86733",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/AiClassTeachingModeBar.tsx.md": "5ffb6cc34fc2f04d2555526733ba64b2522f497492472b5cf1f0567895018d9c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/AiClassView.tsx.md": "82d8bbac92d6fe31cea279667a1e0d2401df158f8011a0ebd01f33da8d7a97cd",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/CdutAiClassAccessDialog.tsx.md": "a092812c5650bf1866aa52e349aea622a089c71b1d0f269594cc1e6adafbb2b7",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/CdutAiClassGuards.tsx.md": "ffb9762d699d7cf6a7200689418a2a2302935d82a573a8dc0af6c764319fa2c5",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/CdutAnniversaryBanner.tsx.md": "45e988d48ce3c968940ea3fff73aa3712ff8dbd8d6c3211376983d1fcde33243",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/CdutFeatureSheet.tsx.md": "ded4add06f6fc04e0b8eaf1d05efd81af892808d1c345c4540493f6050ef7835",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/CdutHeroSection.tsx.md": "7698d63f872755f067886057c8f5789c008fed2a4d5a059c1dadcf1b68430cd6",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/CdutPrivatePhoto.tsx.md": "c458853d5f5b34a0f6aef47a94b60fd12be498b09c457b2e1356b7c2890702bf",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/CdutProfileFields.tsx.md": "68f5e6c98e0c4232ff41c161b4349cf975e9465ddf119a7a03b6c208389c2b53",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/CdutQuickBar.tsx.md": "7e29f7b438bf32cc8788f7207563a2f6209a6789fade5b9d2072e9c69b368be0",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-zone/CdutSubViewContainer.tsx.md": "325ec28eb2d0f8c1e86a2c45245aaec5b47284be4d2dadfc0da0c87745a42548"
+ },
+ "revisionHashes": {},
+ "verifiedHighlights": [
+  "18 条否定断言全树为真（前几批教训后作者口径已稳）",
+  "KnowledgeTree 布局常量（SINGLE_MATRIX_THRESHOLD=6:64/SINGLE_COL_ROWS=14:66/MIN·MAX_SCALE:69-70）与预读基线一致",
+  "Guards 双组件防泄露语义（替换整个 composer/替换对话内容）如实；variant=\"ai-class\" 禁唤起如实"
+ ],
+ "notRun": [
+  "bun test",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "limits": "静态复验（预读+G2）",
+ "next": "18 篇可合入；nb-101 闭环"
+}

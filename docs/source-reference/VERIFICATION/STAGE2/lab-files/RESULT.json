@@ -1,0 +1,98 @@
+{
+ "schema": "dsh-r07-stage2-labfiles-result/1",
+ "atUtc": "2026-10-23T21:38:18Z",
+ "track": "lab-files",
+ "executor": "docs-r07-index-qa-extra-02-20261024 (DSH 执行；Codex 只统筹)",
+ "sourceFrozen": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "evidenceBases": [
+  "inventory/FILES.tsv",
+  "inventory/ACCEPTED.json(manual hash 绑定)",
+  "manager/TEAM-FILE-OWNERSHIP.json@2026-10-23T21:25Z",
+  "candidate/source-reference(已验收手册)",
+  "冻结源码"
+ ],
+ "legacy922Inherited": false,
+ "coverage": {
+  "chainsTotal": 11,
+  "chainsVerified": 8,
+  "chainsPartial": 2,
+  "chainsGap": 1,
+  "verified": [
+   "CH-MANUSCRIPT-SAVE",
+   "CH-MANUSCRIPT-READ",
+   "CH-MANUSCRIPT-SAVEAS",
+   "CH-DOCX-LINK",
+   "CH-DOCX-READ",
+   "CH-RUN-CREATE",
+   "CH-CAPSULE-BIND",
+   "CH-OOXML-WORKER",
+   "CH-PATH-BOUNDARY",
+   "CH-PYTHON-RUNTIME",
+   "CH-LEASE-COPY",
+   "CH-HPC(入口/守卫/持久化)",
+   "CH-EXPORT-FIGURE"
+  ],
+  "partial": [
+   "CH-HPC(submitHpcJob 会话生命周期/轮询/取消恢复=未知，CF-13)",
+   "CH-SHARE-DUALWRITE(share_watch.sqlite schema:85/:103、库路径:125-127、watcher 头注降级策略:13、poll:255-256 亲核；captureCandidate→staging→SHA 去重 publish→退避重试:687-700 经 DSH 子agent(dd15957d) 取证+本轨对 lease-copy 调用点:494-502 亲核一致)"
+  ],
+  "gap": [
+   "resources/cslab/*.py 脚本内部(py 写副作用面 G7/CF-12 关联)"
+  ]
+ },
+ "keyFindings": [
+  "双写序(文件先→DB 事务后)在 manuscript/dataset-store 两处同构，跨存储失败分叉无补偿(CF-01)",
+  "「原件不改写」边界三段实证：导入原件只读(attachDocx 复制进沙箱)、linked 副本覆盖写、导出 .export.docx 绝不覆盖(manuscript:417-452)；share 侧 lease-copy.ps1 只读租约复制(share-watcher:494-502)",
+  "OOXML Worker 30s 看门狗+产物缺失进程内降级(cslab-ooxml:1120-1137)；Python 工具无取消 API(仅超时)",
+  "信任门不对称：agent 路径有 decideCsLabToolGate(orchestrator:1932-1955)、CUSTOM_TOOL_RUN IPC 无门(CF-07)",
+  "路径边界纯词法(cslab-paths:320-333)、无 symlink 解析(CF-06 推断)",
+  "HPC 注入双守卫(assertSafeRemoteJobId:123-126/synthesizeBatchScript:156)；导出经保存对话框授权写沙箱外(设计语义)"
+ ],
+ "conflicts": {
+  "file": "manager/STAGE2/lab-files/CONFLICTS.json",
+  "doc_error": 0,
+  "implementation_gap": 11,
+  "unknown": 2,
+  "note": "已验收手册在 writeExportDocx/Worker 30s/词法越界等关键点与源一致，本轨未发现 doc_error；实现缺口一律留阶段三设计差异报告，当前不修产品。"
+ },
+ "docCrossCheck": {
+  "manualsChecked": [
+   "cslab-manuscript.ts.md",
+   "cslab-paths.ts.md",
+   "cslab-ooxml.ts.md"
+  ],
+  "result": "与源一致（无 doc_error）；覆盖性建议见 CONFLICTS manualFix 字段；重复名/别名登记见 CHAINS.md §8"
+ },
+ "notRun": [
+  "Electron/IPC 实跑",
+  "Worker 实跑",
+  "Python 工具实跑",
+  "HPC/SSH 实连",
+  "ps1 实跑",
+  "产品测试/typecheck/构建/GUI"
+ ],
+ "assertionPolicy": "全部为静态实读断言；Node/execFile 超时杀进程等运行语义标注推断；未实测不冒充实测",
+ "boundaries": "未改产品/测试/依赖/作者 seal/已有 review/candidate；只写 manager/STAGE2/lab-files/ 与 handoffs/STAGE2-lab-files-TO-LEAD.md + 两台账；未开新 ACP 根（仅 DSH 内部子agent 2 个）",
+ "outputs": [
+  "manager/STAGE2/lab-files/CHAINS.md",
+  "manager/STAGE2/lab-files/CHAIN-REGISTER.tsv",
+  "manager/STAGE2/lab-files/CONFLICTS.json",
+  "manager/STAGE2/lab-files/RESULT.json",
+  "manager/STAGE2/lab-files/DONE.json(最后)",
+  "handoffs/STAGE2-lab-files-TO-LEAD.md"
+ ],
+ "subagents": [
+  {
+   "id": "dd15957d",
+   "scope": "CHAIN P python/lease-copy",
+   "status": "completed",
+   "integration": "已整合并 4 点抽查命中"
+  },
+  {
+   "id": "a0e2ee95",
+   "scope": "HPC/export/share",
+   "status": "failed_midway_no_report",
+   "integration": "其范围已由本轨亲核（HPC/导出/share schema）+dd15957d 覆盖 share 发布/退避边，无证据依赖残留"
+  }
+ ]
+}

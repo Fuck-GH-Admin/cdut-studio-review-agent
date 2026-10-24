@@ -1,0 +1,158 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-65",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "sealId": "seal-334eed303c3c09c0",
+  "reviewedAtUtc": "2026-10-24T03:50:00Z",
+  "reviewedManualHashes": {
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/bridge-attachment-utils.ts.md": {
+      "manualSha256": "2261014b36e5e052a6a8d3c6d8b1b736804636aee08c2285462af330934ceba5",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/bridge-command-handler.ts.md": {
+      "manualSha256": "01392055c3fafe6912fd1580fb9db3bc69603d200044a2839707baadf1dc2b31",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/bridge-model-utils.ts.md": {
+      "manualSha256": "93e8645e0d2bf62da2abcb362d1635e00c8dfbee87c65000edc66d76519dc297",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/bridge-registry.ts.md": {
+      "manualSha256": "0cf233dc1b495aad304ecb28cf324e36ac3f914d215fc5056792c2ec2712da73",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/chat-stream-bus.ts.md": {
+      "manualSha256": "c1762d11f653ea58b0643b9203e146fa5998a2f6f8ed12d9739856a61a89ac49",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/chat-tool-config.test.ts.md": {
+      "manualSha256": "55f92eddf01d8c5f5266284062f3fd4f1856519a40dbd46a0ba6c8fe554d7cc3",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/chat-tool-config.ts.md": {
+      "manualSha256": "ca7511154d014688e3029adb329e935db04c07e357b471daadb31b00fa867b07",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/codex-oauth-service.ts.md": {
+      "manualSha256": "6df0f67aa84cabb95adc47f4a91e948d3d04a167c607a50654f0a6460a9bc4c9",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/codex-plan-quota.test.ts.md": {
+      "manualSha256": "edc779d8b03eca42b6b88f776b6ab94d7ff55c568ab6c98515ec8134dcf821e3",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/codex-plan-quota.ts.md": {
+      "manualSha256": "3a4743738b960cc03357184a83937f528b1752b92105cfaf5a4ce184062b3c2e",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/conversation-manager.test.ts.md": {
+      "manualSha256": "337bb3c631ca81f8f0d9aad77bb0b4d694621e43e587c75c2cf63f38ec8ff172",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/conversation-manager.ts.md": {
+      "manualSha256": "7b67b2ec5f8c2cbd160bd35f6b8332c5b7b9f2cbbb3b81a2419738ed2131b830",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/conversation-title-service.ts.md": {
+      "manualSha256": "1193f6d32d4aa00c018a3c55eb32d7e8f3abd40e2639c76e6ebe22a1eb4a75bf",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/dev-diagnostics-log.test.ts.md": {
+      "manualSha256": "cce39f159a4e6633f0ba829e421948061893176dd281f7989d0c2c3d9bfd5806",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/dev-diagnostics-log.ts.md": {
+      "manualSha256": "8486067a5adba0e56921c47e712c1322738d004ef09087d561b4deca922dc84e",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/dev-instance.test.ts.md": {
+      "manualSha256": "af6b54ced445303c04f8c29e9467f8ddfa1f4c2c7ceb7ef93185c8ca870197d8",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/dev-instance.ts.md": {
+      "manualSha256": "c0c413039e9d531d3b882bddd8387ccc41d722f37676d6f87abf9155124b34a0",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/dev-shell-shortcut.test.ts.md": {
+      "manualSha256": "be3b180476d19003b9f0fe6b6b6b1db38538dff765c917f96dcd76e24be764bc",
+      "verdict": "accepted"
+    }
+  },
+  "sourceBindings": {
+    "apps/electron/src/main/lib/bridge-attachment-utils.ts": {
+      "sourceBlob": "570ae26e6acc38c8450e7393dab13fa983951806",
+      "sourceSha256": "98b897377bbb771602e9d0bc361b31ca985b6709c8790f88626612ade3622f31"
+    },
+    "apps/electron/src/main/lib/bridge-command-handler.ts": {
+      "sourceBlob": "3e4efa00a9423f3559ff2af75412c9cced4d801d",
+      "sourceSha256": "97f250129eb622d6c2f85201c8ea14c3a777799c230d9154fe9e5c5b8a127fa6"
+    },
+    "apps/electron/src/main/lib/bridge-model-utils.ts": {
+      "sourceBlob": "4f73eee30349bc50f93092e2b54c51a6533069d6",
+      "sourceSha256": "a12b967eba03578d0f5bf835ee70967de3173b8ba594e865534037b9dd3a7174"
+    },
+    "apps/electron/src/main/lib/bridge-registry.ts": {
+      "sourceBlob": "3c4e4d8e4d9a016f3363ac759e4efd8ca0cfe7b7",
+      "sourceSha256": "0e152b34e1d6d1e31a628dad229d2d1c7fd1446c4d296c53a346ca7a054919b0"
+    },
+    "apps/electron/src/main/lib/chat-stream-bus.ts": {
+      "sourceBlob": "fbe73b756d2fe39545f524929ae4051f37fe6d7b",
+      "sourceSha256": "aef1bbda991851a870e1e8a9421382320a834df830ebb28122122e4cba8ec8a7"
+    },
+    "apps/electron/src/main/lib/chat-tool-config.test.ts": {
+      "sourceBlob": "f7d29012edf7aa1178ad5a6590203490784119c2",
+      "sourceSha256": "cfc9c39d15bdbece34b16d98fa0bed37515b768402b5ed08c6fd8180823e153b"
+    },
+    "apps/electron/src/main/lib/chat-tool-config.ts": {
+      "sourceBlob": "3f679dbe15291c8df9dc3c7fbb24834fd44d23cb",
+      "sourceSha256": "3398da3167e55625b102210d5e5ac04a8a84d497ad9b4a6568e511645e410b51"
+    },
+    "apps/electron/src/main/lib/codex-oauth-service.ts": {
+      "sourceBlob": "114520ce79648db70f6b8c1cb9774b169c9ef04d",
+      "sourceSha256": "469236bee5627d1f703555134171c51052510d77917a4408ae8d2619877e1b06"
+    },
+    "apps/electron/src/main/lib/codex-plan-quota.test.ts": {
+      "sourceBlob": "96da69425d2745f173344b945ba1f8a66c9fe6d4",
+      "sourceSha256": "ad132d3c649d685ada4ec23ea75f6e31e705b6287e11fd4d3030c470e02de092"
+    },
+    "apps/electron/src/main/lib/codex-plan-quota.ts": {
+      "sourceBlob": "e839e9702f909a38e0ca026804a0c47533c0a1dc",
+      "sourceSha256": "e7c6f49c7f4843d01042f3d9a0e89339ee2af57100f361aa795a0bfbd9770abe"
+    },
+    "apps/electron/src/main/lib/conversation-manager.test.ts": {
+      "sourceBlob": "b325394ab862086956c656bed72ed05281ed2674",
+      "sourceSha256": "6b50299a9534f639a1f43ffbf665f724e85d89bb28fe9b3a49bbc30e235874e8"
+    },
+    "apps/electron/src/main/lib/conversation-manager.ts": {
+      "sourceBlob": "96a5a670be1cfbed7f1c14ba46413e533ec873d3",
+      "sourceSha256": "001f41223dc12dc0991a48e16cdd67896cfb5b22f5ba980f3c684b5b06770bcf"
+    },
+    "apps/electron/src/main/lib/conversation-title-service.ts": {
+      "sourceBlob": "d1cf516f9984847dd85af6e790da484e9a151096",
+      "sourceSha256": "820937981a4f2564e4dab9c9ba2fe819975e32b1cb17a529e5c116c9f967cb73"
+    },
+    "apps/electron/src/main/lib/dev-diagnostics-log.test.ts": {
+      "sourceBlob": "2e27cf4d748730753a2417ee87421da5c02759f1",
+      "sourceSha256": "b625bacbd91454881a9d51eb5c819c3d4efe16d0658df3954b8d77a820be06f6"
+    },
+    "apps/electron/src/main/lib/dev-diagnostics-log.ts": {
+      "sourceBlob": "37bf5920528ec54f59e0832f896e74c58148af03",
+      "sourceSha256": "1305c0b679a60390cc1917fba6dd3e6e3c4c898f7b8e14baa858f2c067170e95"
+    },
+    "apps/electron/src/main/lib/dev-instance.test.ts": {
+      "sourceBlob": "09de514a3d4dd151135ba5ee8fff28fddcc38801",
+      "sourceSha256": "65b32c9132f4446b5aeb0a89f2b696b235f2ac82c83e0d721ddd3e6e64099a0c"
+    },
+    "apps/electron/src/main/lib/dev-instance.ts": {
+      "sourceBlob": "f12cabbf20db4a9441279e8ac5e1cde93277150e",
+      "sourceSha256": "36dab366173f2d04397b5b58308964f5e8461d0633ac88f0f09320e0536e927a"
+    },
+    "apps/electron/src/main/lib/dev-shell-shortcut.test.ts": {
+      "sourceBlob": "fb9ad0fb71f40e871640d93a39ba1aab1d97384f",
+      "sourceSha256": "7d70fa25ca10e0e84348df3ed5e1db36ca7e5e7f0a12dd4d6b42cfba6e16bce1"
+    }
+  },
+  "qaNotes": "18/18 accepted（7 minor NB65-N1..N7 计数口径转 ACCEPTED-ERRATA）。NOT_RUN。"
+}

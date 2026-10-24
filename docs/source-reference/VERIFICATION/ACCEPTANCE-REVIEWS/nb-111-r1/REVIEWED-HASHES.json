@@ -1,0 +1,136 @@
+{
+ "schema": "dsh-r07-qa-reviewed-hashes/1",
+ "batch": "nb-111-r1",
+ "revisionOf": "nb-111",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "reviewedAtUtc": "2026-10-24T20:25:00Z",
+ "bindingNote": "manualSha256=r1 stage 实算=MANIFEST；2 篇变更新 hash 重接受，15 篇=r0 全等",
+ "sourceBinding": {
+  "apps/electron/src/renderer/components/shared/UserAvatar.tsx": {
+   "blob": "3462e5c4ce56dc3dc109223bfa240d986a5bdfa8",
+   "sha256": "29493f4c043d30adfa12beed94129c0e665dcad124dd2488731e9680bc3ebc39",
+   "lines": 71
+  },
+  "apps/electron/src/renderer/components/tabs/EmptyPanePlaceholder.tsx": {
+   "blob": "a21867e4366692317e75f9f796333ed82dc702cc",
+   "sha256": "dd1bef51c3c5ea5cb5dff91210796f4f005831ce8bbe0f8476b8b07fd1cc4ee2",
+   "lines": 102
+  },
+  "apps/electron/src/renderer/components/tabs/MainArea.tsx": {
+   "blob": "3cf0a43a501eaa94cae8337518af021b9db9115a",
+   "sha256": "23038c0af38434064ea4a106d6652eb061f45ebff9af488d6e84d16d63862e19",
+   "lines": 455
+  },
+  "apps/electron/src/renderer/components/tabs/TabBar.tsx": {
+   "blob": "128c93097b34a78d6d10538989cce1011394bb66",
+   "sha256": "ed50e2fb5d1d5ce52ec1bf8bf0dadfcd977714be5b0fb1a6544947b6206afcde",
+   "lines": 1427
+  },
+  "apps/electron/src/renderer/components/tabs/TabBarItem.tsx": {
+   "blob": "b44038c24a96ee00a43d14e39b76be7858674970",
+   "sha256": "f3acfdf3ae295c842a0bb423cb5b416dc7a064d049750db72b0b74c1d180b194",
+   "lines": 492
+  },
+  "apps/electron/src/renderer/components/tabs/TabContent.tsx": {
+   "blob": "7c4625bb8ef8f051e0efffe7b2dbb03bc9e91ead",
+   "sha256": "8582f75189905392ba9459c0cfeb0b37929dbb8bc1eb30c8f10527d9d62220b8",
+   "lines": 109
+  },
+  "apps/electron/src/renderer/components/tabs/TabErrorBoundary.tsx": {
+   "blob": "1672e9b6ce4f622dcf36f145e70f5a3830a7bfd7",
+   "sha256": "d8b65eb9994e0be5f57ae3ba276e747bf1ee4705d42e709624cf86b0d4139962",
+   "lines": 60
+  },
+  "apps/electron/src/renderer/components/tabs/TabGroupItem.tsx": {
+   "blob": "f0e3ff738152d8d641cab9ca8ced92d2ff0fe192",
+   "sha256": "a132c14cca4c9a5c63d02640345efb91a98416fc86b407ae84197435ab4a7b24",
+   "lines": 276
+  },
+  "apps/electron/src/renderer/components/tabs/TabPreviewPanel.tsx": {
+   "blob": "1a7938e9ec4544563cc629ab07778601cca9ba00",
+   "sha256": "b694adc1445aac222e8fd60c0e336f19515f347c4b2cea599ad0834d43fc3910",
+   "lines": 110
+  },
+  "apps/electron/src/renderer/components/tabs/TabSwitcher.tsx": {
+   "blob": "d68827973301e73c1462217ac5aac92c6ad6640e",
+   "sha256": "ea6c713d17163dc409140721a3bf4480f79f98953b0edfd1796652da2eda71c4",
+   "lines": 447
+  },
+  "apps/electron/src/renderer/components/tabs/index.ts": {
+   "blob": "de2b3bb8fbb76cc2060254829c506be208ba3f91",
+   "sha256": "36fa9202063af3012c5e5736add4daa91e46c299ffb9ef2c68595a7578a6751b",
+   "lines": 5
+  },
+  "apps/electron/src/renderer/components/tabs/topbar-layout.test.ts": {
+   "blob": "1ea31360e0780c32e70cb39525a1a9336f969990",
+   "sha256": "8685201a22f06dbf67b0ad783916d9232bab85aec992989908bb8110ebbb9258",
+   "lines": 86
+  },
+  "apps/electron/src/renderer/components/tabs/topbar-layout.ts": {
+   "blob": "34c2e3582d32bf00634d0a1b97e34449b6aabfe6",
+   "sha256": "52d9251a80463df930f054a15385910171e7b74e1af4301c14258c9a67f34f4f",
+   "lines": 78
+  },
+  "apps/electron/src/renderer/atoms/user-profile.ts": {
+   "blob": "b577a61554111138b6d1c102c0e4d13961acf851",
+   "sha256": "0c1ac6ce4f1d587a71802ccd5a99fa90a3897c034775fc9a9e377b5d7e2c3896",
+   "lines": 15
+  },
+  "apps/electron/src/renderer/atoms/wechat-atoms.ts": {
+   "blob": "28b3809922a94acde93f547000db962ad435564a",
+   "sha256": "306a87f593cdafed8226bfb50fe8268e1f9bd8bdc2260168ab0446951fe99450",
+   "lines": 16
+  },
+  "apps/electron/src/renderer/atoms/yanhu-express-atoms.ts": {
+   "blob": "33449452b7d88c8211ba5e46b81efd5305828fa6",
+   "sha256": "cd2a02f202a3842ecb7d96723fa92812e9384fd183a4c6b777f899e236a77b17",
+   "lines": 24
+  },
+  "apps/electron/src/renderer/atoms/yanhu-pet-atoms.ts": {
+   "blob": "cd2274aa87dbc32419a7b8db8cac65512816d122",
+   "sha256": "6666142bf086c3f4e01c81dfbffcf27bdb2918a63aaf078b07cca5f071abb57b",
+   "lines": 57
+  }
+ },
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/shared/UserAvatar.tsx.md": "ea101eabcf5634bbab9c64663771c8a6f3646dc52f976284b3503b96681d3ed1",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/EmptyPanePlaceholder.tsx.md": "31ffacc55785196f8fc6dec5c6699446d684db9c689e345d76a3190f69d5cb6d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/MainArea.tsx.md": "3dbdf9a2676b0993b8850c79a62d2d1c9002ef7febb7976db55fce47daa0288a",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/TabBar.tsx.md": "e39593f3f37cb5dced168ee3fae0767583a6a9868317400bbfaf5336eb57b618",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/TabBarItem.tsx.md": "393bce5c2290c7c0030bce5c451f59afec5880e26c2c97eff7c212317d3df8f3",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/TabContent.tsx.md": "1978740cbdfa6101c83a5f928a2dce853c4b136e4348221861560eff43124715",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/TabErrorBoundary.tsx.md": "89a912beaf09d4df4d95f855d2ff776f42358ce8a59b866d80f0e0d5968e60ab",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/TabGroupItem.tsx.md": "4bdefbc9629a01fd550261c167b0e7f573c388620b8ef83a9200caaded69ffb7",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/TabPreviewPanel.tsx.md": "2dc0b0ac5d246dcebfc790a5004b19a4cb46b1b2123784edbbf804f083bbdf4d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/TabSwitcher.tsx.md": "20acd93ce6faccd2883cb8d87153028593142e7280a29dc84cda0348ab7134b3",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/index.ts.md": "fb46dc26ce0f176abefdfe29d39a20cccbb91dc2abb3220496184979668fca49",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/topbar-layout.test.ts.md": "e104a1c49ff894fdbb2a81d5cdb70c3aca253cc83b865abc5d09cddc0a44c57d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/topbar-layout.ts.md": "aa13859a695138bfe34125f10f8cddb2dbf390fc1fa58a5cab6d831a6b35dc5e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/user-profile.ts.md": "d2803ddfb86eaa551482f4946884bbc279768c12e2251b18b864bf7e978df806",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/wechat-atoms.ts.md": "a608d7f0fc9f7f22b1614692be02ad4b2b23f23bb09949962cc9410a72677a18",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/yanhu-express-atoms.ts.md": "c77fbcb739de85579411a7617430da65ce08b12bf0faa6ae66ad1293b7236e71",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/yanhu-pet-atoms.ts.md": "da9cabe9cea7a3ed9c20b9c4743409e237fb39cfec8c9740bb4f12e786c66cd0"
+ },
+ "rejectedHashes": {},
+ "supersededManualHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/topbar-layout.ts.md": {
+   "oldManualSha256": "c84bc3b9f99575495f897494d94b8bf3f10995a3617199a19e6e969d9cc42859",
+   "newManualSha256": "aa13859a695138bfe34125f10f8cddb2dbf390fc1fa58a5cab6d831a6b35dc5e"
+  },
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/yanhu-pet-atoms.ts.md": {
+   "oldManualSha256": "2fb9907e602692a43fbfffb3eef1df6e1acfe902f350ad54ad1686790dfdfcd4",
+   "newManualSha256": "da9cabe9cea7a3ed9c20b9c4743409e237fb39cfec8c9740bb4f12e786c66cd0"
+  }
+ },
+ "deliveryHashes": {
+  "manifestSha256": "7ad1b5dcbe7f9adb0a0f4f3448341b6cf2cac13fd6a74172415992e589535c63",
+  "readySha256": "114d6671ccca6bfcd543d89d066a5adcba9645e6487a070bc6bc489d89c6f946",
+  "doneSha256": "71a0b652e85a40586d2856c7dbdbe6b1f467ef0a664dcebf9e0132ebff34c7c0"
+ },
+ "zip": {
+  "path": "deliveries/nb-111-r1/R07-nb-111-r1-05fb2565.zip",
+  "sha256": "00c3d3fb6a83c4164de3b39e12ec7955877498baab8106ae39cdd8b0c38c4574",
+  "note": "v2 无穿越/0 mismatch"
+ }
+}

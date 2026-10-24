@@ -1,0 +1,123 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "nb-135-r1",
+ "revisionOf": "nb-135",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-qa-extra-04-20261024",
+ "reviewedAtUtc": "2026-10-23T20:40:00Z",
+ "deliverySeal": {
+  "sealId": "seal-671737026912a957",
+  "sealedAtUtc": "2026-10-23T20:19:46Z",
+  "readySha256": "85d088a2d34dcd3d900da91fdeb68e6d12482a4bb3b3b99fd377f95275bcbfb1",
+  "doneSha256": "d4577c0daf6fc3c7a48ee2fa40abbc2d4b7b26f734281bd7d2ed0f847b6e2f91",
+  "manifestSha256": "767188452899cc5924a81505a81bc70b85b83b88cd05671a752f3592a64d33c0",
+  "zipSha256": "97e899d8810184dcd610bdd75dd5a367c7e88efe11f714cffa8bbe2592732a9e"
+ },
+ "files": [
+  {
+   "path": "apps/electron/src/shared/intro-fluid-shader.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/shared/intro-fluid-shader.ts.md",
+   "sourceBlob": "f1365c0004428ebfd673938f414d049dbb0ac45a",
+   "sourceSha256": "874ab7d9ddc97c3c089f4373c61fdae9d40a86d7ee68ced05273624d06686a1d",
+   "manualSha256": "83c38ac5dfa4056fb1ee5b6a146b0de2d111344e2a3399bd49a4a55e9c0c7e56",
+   "prevManualSha256": "83c38ac5dfa4056fb1ee5b6a146b0de2d111344e2a3399bd49a4a55e9c0c7e56"
+  },
+  {
+   "path": "apps/electron/src/types/identity.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/types/identity.ts.md",
+   "sourceBlob": "99dd52b8dcd629af32ad73419c4a88001ae84a70",
+   "sourceSha256": "b52dec0c8d9b61a24dd5ca9b37416ada3a921b012bf6dc8bd303a25e6f20ea56",
+   "manualSha256": "e8c7e1e17f32a59f12324e56ef09c22ff8d1dff947c340cd2476a3eeea01c46f",
+   "prevManualSha256": "e8c7e1e17f32a59f12324e56ef09c22ff8d1dff947c340cd2476a3eeea01c46f"
+  },
+  {
+   "path": "apps/electron/src/types/index.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/types/index.ts.md",
+   "sourceBlob": "3b7a755646001b769f565439c0d3958a65f913c9",
+   "sourceSha256": "9103305b96bb50dd162fc09bcdc3eb4c342bc618da8232da58c802a32e10bb0a",
+   "manualSha256": "a4afd85d8b69700990610e07680dabe18f0a1e767e6f18e40d032bea302666f1",
+   "prevManualSha256": "a4afd85d8b69700990610e07680dabe18f0a1e767e6f18e40d032bea302666f1"
+  },
+  {
+   "path": "apps/electron/src/types/node-sqlite.d.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/types/node-sqlite.d.ts.md",
+   "sourceBlob": "d035432cc549f6ad56d8042cdc357d3e2a0ca376",
+   "sourceSha256": "f9cbd48cbd5943796b3c822580b42ca969c560cf000e5c9caaaef9c90e84b9e4",
+   "manualSha256": "9516993d48da298c77b2879bad84e895e1d873e6612d352f1d2b4d91714f6439",
+   "prevManualSha256": "31ad4123bd435a02fd55e475ca9188c7f1b39fcc7aa5ec39f563012d02ff4951"
+  },
+  {
+   "path": "apps/electron/src/types/officeparser.d.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/types/officeparser.d.ts.md",
+   "sourceBlob": "10148cb3445e25f84b5033bcc0c34149ed90ee44",
+   "sourceSha256": "c5296e451a1ccbf3a89f986901b7ee0d845dbf1f8f1b107c72d01703b34b823d",
+   "manualSha256": "ae7b111673252bc97e989d2010ba8e5401ac6da106bce4fadbdef8ebfb5e6da2",
+   "prevManualSha256": "ae7b111673252bc97e989d2010ba8e5401ac6da106bce4fadbdef8ebfb5e6da2"
+  },
+  {
+   "path": "apps/electron/src/types/settings.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/types/settings.ts.md",
+   "sourceBlob": "f35038c231e9927f5ab9e6e7eb95d6d86c08701f",
+   "sourceSha256": "2d1c3d0d6af056d264a63170200b662d094cab1f7d19cdb63dfaee6498429e28",
+   "manualSha256": "77ae3e530a266b24c2e85c64a76a0ea3c03c41fff3432c388ec91a309513c3dc",
+   "prevManualSha256": "2ea63b11c6e3fbc48b6e4912355373fd7eca4606756369515a1e27d7ecae038d"
+  },
+  {
+   "path": "apps/electron/src/types/user-profile.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/types/user-profile.ts.md",
+   "sourceBlob": "c312647166d6e232b722ff4129786f5dd0b8bc1a",
+   "sourceSha256": "ffae5cdc18fbdf17c3da453eca9236dd2ea238ed565c39011ab83ea058cdd49e",
+   "manualSha256": "3bedbf5ca73e9109a19a1f0f4d5af0cdce463310e71e35e2e610a43c3ce61e71",
+   "prevManualSha256": "3bedbf5ca73e9109a19a1f0f4d5af0cdce463310e71e35e2e610a43c3ce61e71"
+  },
+  {
+   "path": "apps/electron/src/types/ws.d.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/types/ws.d.ts.md",
+   "sourceBlob": "3ef610f688624454386b4fd627ff728ecd1b954b",
+   "sourceSha256": "f3860c7795ba235d3f480192fbdc98601b8db368d93a81a0bf6ee6d715e28c59",
+   "manualSha256": "01b7e0e98ab8f3378978ed3de40b043ba7928205f43d9106a21e63df1cecc6b9",
+   "prevManualSha256": "01b7e0e98ab8f3378978ed3de40b043ba7928205f43d9106a21e63df1cecc6b9"
+  },
+  {
+   "path": "apps/electron/src/main/lib/ipc-sender-guard.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/ipc-sender-guard.test.ts.md",
+   "sourceBlob": "1162ac0ae63943fa78dd4f48d2f44461c664899d",
+   "sourceSha256": "b6dcc29a4d05180a83ac5927899cc33e2324ef95619c0957e55ca9fd9a9008fc",
+   "manualSha256": "679fe6baf6665fb060ba8b3a457de5dd374dd5fd72fc6d629b7fafb4626eb5b7",
+   "prevManualSha256": "679fe6baf6665fb060ba8b3a457de5dd374dd5fd72fc6d629b7fafb4626eb5b7"
+  },
+  {
+   "path": "apps/electron/src/main/lib/ipc-sender-guard.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/ipc-sender-guard.ts.md",
+   "sourceBlob": "695de65086e33271f7afeca9a850aa57cb8d2194",
+   "sourceSha256": "79a1e71ee3b16f4c20a0ab6c90f030489f6afde193932803e2fab6c79c1b353e",
+   "manualSha256": "eb8ca27cc06dee5667fe446d079eca968d3f4dd012c523c9956d32def9e2a866",
+   "prevManualSha256": "eb8ca27cc06dee5667fe446d079eca968d3f4dd012c523c9956d32def9e2a866"
+  },
+  {
+   "path": "apps/electron/src/main/menu.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/menu.test.ts.md",
+   "sourceBlob": "b6f59359e7c44401869c1b90188bdae691603fbb",
+   "sourceSha256": "c820bb6e520c11e30bc8b76b79e3ee194889078ca458f7cdf5c1a9e82c95345f",
+   "manualSha256": "6cb78a734e709078d8eddb1d344c9123fc1d8f36ae05318e16b3f6c3544e20bd",
+   "prevManualSha256": "6cb78a734e709078d8eddb1d344c9123fc1d8f36ae05318e16b3f6c3544e20bd"
+  },
+  {
+   "path": "apps/electron/src/main/menu.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/menu.ts.md",
+   "sourceBlob": "816bbb9288e561b90a2872119fc5ef7a4ab85347",
+   "sourceSha256": "cba6e5338a6950cb6de503862dd6b6d246ae8e3efa324b7cffdebb12b552350e",
+   "manualSha256": "5371e451fc9f338373e2d37c0302ec04f7b858e4b2692cb06136522ec30e82a9",
+   "prevManualSha256": "5371e451fc9f338373e2d37c0302ec04f7b858e4b2692cb06136522ec30e82a9"
+  },
+  {
+   "path": "apps/electron/src/main/tray.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/tray.ts.md",
+   "sourceBlob": "fcad66442dc57b42666ea5540e8baa36f77bfe4f",
+   "sourceSha256": "e6d8bea3df36d36a71980dd29a18fc228df7ab919f715d5495c0cd8eabe17685",
+   "manualSha256": "c0fd268b509e1699ad93a9fffdcb7499736da9f7c9481e8bd7c02c32fa3f6c14",
+   "prevManualSha256": "c0fd268b509e1699ad93a9fffdcb7499736da9f7c9481e8bd7c02c32fa3f6c14"
+  }
+ ],
+ "note": "accepted=13/13（2 篇修订复验 + 11 篇同字节）；manualSha256 与 READY/stage 三方一致"
+}

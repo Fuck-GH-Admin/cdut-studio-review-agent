@@ -1,0 +1,79 @@
+{
+ "schema": "dsh-r07-index-review-result/1",
+ "batch": "index-p02-agent-runtime__apps__electron__default-skills__session-cleaner",
+ "groupId": "p02-agent-runtime__apps__electron__default-skills__session-cleaner",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-02-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T19:15:00Z",
+ "sealedAtUtc": "2026-10-23T19:03:37+00:00",
+ "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__session-cleaner.md",
+ "artifactSha256": "7cdb81fe35eb1fcedf3021d7e86b06eaaed6da281a8149631b8a843a0fcd668c",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 1,
+  "accepted": 1,
+  "revision_required": 0,
+  "unknown": 0,
+  "blocking": 0,
+  "nonBlocking": 3
+ },
+ "gates": {
+  "G0_INDEX": "PASS",
+  "G1_INDEPENDENT_SOURCE_REVIEW": "PASS",
+  "G2_SEAL_CONSISTENCY": "PASS_WITH_NOTES",
+  "note": "G0 等价 1/1、封版链四方哈希全对、锚点/行号命中、锁一致。G1 独立实读 cli-usage.md（64 行）/SKILL.md/export.ts/session-core index.ts+node.ts：分节描述、SKILL.md:104 引用链、护栏 51200/guarded 逻辑、core 符号归属（index.ts:8/:14/:15/:20/:41 逐行命中）全部属实。发现共享链漂移（N-01）、封版元数据倒挂（N-02）、出处措辞（N-03），均非阻断。"
+ },
+ "g0Evidence": {
+  "stockScript": "ERRATA-E1 沿登记（g0_index_check.py:99-100 现按 deliveries/index-<gid> 寻址看似已修，QA 以自写等价检查为准）；等价检查 1/1 PASS"
+ },
+ "files": [
+  {
+   "path": "apps/electron/default-skills/session-cleaner/references/cli-usage.md",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__session-cleaner.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__session-cleaner.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--session-cleaner--references--cli-usage.md",
+   "line": 6,
+   "sourceBlob": "b27a4856732c6dadac3f8bcc310e07a10aaf8e08",
+   "sourceSha256": "a1ff67f8978a7f49aceca5e85ff47b58e69ca07b13ab184e6ec89f1a8d258b66",
+   "manualSha256": "7cdb81fe35eb1fcedf3021d7e86b06eaaed6da281a8149631b8a843a0fcd668c",
+   "verdict": "accepted",
+   "findings": [
+    "N-01",
+    "N-02",
+    "N-03"
+   ],
+   "note": "七节内容描述逐节属实（Session Storage/双格式/清洗表/损坏行跳过 :32/Turn 索引 :34-36/护栏 :38-47/退出码 :49-53/core 唯一真源 :55）；export.ts:20/:72-79/:9 与 index.ts:8/:14/:15/:20/:41 引证全部精确命中。"
+  }
+ ],
+ "findings": [
+  {
+   "id": "N-01",
+   "severity": "low",
+   "type": "citation_precision",
+   "file": "(共通链)",
+   "manualLines": "消费/打包列",
+   "detail": "electron-builder.yml extraResources 实为 :70-75（写 :71-73）；index.ts 赋值起 :939（写 :940-941）。",
+   "action": "合并 errata；非阻断。"
+  },
+  {
+   "id": "N-02",
+   "severity": "low",
+   "type": "delivery_metadata",
+   "file": "deliveries/index-…-session-cleaner/DONE.json",
+   "manualLines": "startedAtUtc/sealedAtUtc",
+   "detail": "startedAtUtc 19:12:00Z 晚于 sealedAtUtc 19:03:37Z，元数据倒挂（哈希链全对）。",
+   "action": "下次重封更正；非阻断。"
+  },
+  {
+   "id": "N-03",
+   "severity": "low",
+   "type": "attribution_wording",
+   "file": "apps/electron/default-skills/session-cleaner/references/cli-usage.md",
+   "manualLines": "影响列/证实列",
+   "detail": "「实测 50MB 级」自述出处是 SKILL.md（50MB 观测句），cli-usage.md 全文无 50MB 字样；归属措辞宜指明 SKILL.md。结论（超大 JSONL 需渐进读取）不受影响。",
+   "action": "措辞改指 SKILL.md；非阻断。"
+  }
+ ],
+ "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局账；产品测试/typecheck/构建/GUI/实际 validate·COM 运行 NOT_RUN；结论只覆盖本批。非阻断≠已修。"
+}

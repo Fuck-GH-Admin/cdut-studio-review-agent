@@ -1,0 +1,23 @@
+{
+  "atUtc": "2026-10-23T21:48:50.139639+00:00",
+  "checks": {
+    "EXPORTED-DECLARATIONS.tsv": {
+      "rows": 8823,
+      "sources": 1496
+    },
+    "IPC-SITES.tsv": {
+      "rows": 1759,
+      "sources": 11
+    },
+    "PRELOAD-CONTRACTS.tsv": {
+      "rows": 612,
+      "sources": 1
+    },
+    "AGENT-TOOL-SCHEMAS.tsv": {
+      "rows": 121,
+      "sources": 10
+    }
+  },
+  "issues": [],
+  "runtime": "NOT_RUN: static source/TSV check"
+}

@@ -1,0 +1,118 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-08",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-03-20261023",
+  "reviewedAtUtc": "2026-10-23T16:58:28Z",
+  "batchVerdict": "revision_required",
+  "manuals": {
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/native-case-academic-year.test.ts.md": {
+      "manualSha256": "3589a48103fad1c2e7664db2e824c6dedd59bf46edfac6b1f5579bc6b9e50798",
+      "sourceSha256": "e09acff0bc4410db019371d3488d6488637d4d2af33a3724118e1419cb603a5b",
+      "sourceBlob": "a1670adb6448fb4e42bf86c9357d4a20a070c2d5",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/native-case-material-slot.test.ts.md": {
+      "manualSha256": "f46dcf3f1f3a17c7361efd8b6e99efb89d8eedb123fdfa88163886852a954116",
+      "sourceSha256": "bad60bd1d2d0f872bd8b23b28ea8d4ac1fe7a563296ac8df36ca5bcf8ee7548d",
+      "sourceBlob": "61c225d3adb8ac927553a3d48bac74fa70cbaf25",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/native-workspace-case-v3.test.ts.md": {
+      "manualSha256": "222339affbcd64a9efac8aa30870ea776ca8b62ae356b1a81092a4415fbad73f",
+      "sourceSha256": "f763d5ffd40e8e4db791e3f5a94c0a26138b077712549e9601be5350025f51da",
+      "sourceBlob": "f6b45748708fb8fc62eac36681a29baf47e44185",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/native-workspace-case-v3.ts.md": {
+      "manualSha256": "4cc251ab2d687e4e46b7d8397263a5397dfed45f947a83d5bf115125d96d0576",
+      "sourceSha256": "4a9f2d2fb1bd283d20bdc66ce3c08fbc02bc3d9f1db6fec02ce3ab441d0a99c2",
+      "sourceBlob": "b670ce4ad0f078af9a5dd9eceed65512e1567052",
+      "verdict": "revision_required"
+    },
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/workspace-business-service-v2.test.ts.md": {
+      "manualSha256": "cdfd14175c4e846812a2b21023860589e81c047dd4f8929faee290857b1a6736",
+      "sourceSha256": "c011bb957f5e35188e6c63684f37f5bea2fbdb0fd98ca2a888110296975acd94",
+      "sourceBlob": "1be52a832c6d6126a9f75f299a1b4557ac41a2cb",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/workspace-business-service-v2.ts.md": {
+      "manualSha256": "add848494b911aaed168b694f1dae78fa3afe7ff57eddb424421f95fcd4c1979",
+      "sourceSha256": "64e31914bf91b2f8c39f1b1c26f65648cf991f86b5b7cb77b9ce646fdb9a1d99",
+      "sourceBlob": "ee86d1e97ef6d4d9dac24e0743a75e6fc646a6d3",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/workspace-rule-compiler.test.ts.md": {
+      "manualSha256": "79ef8ab5e2c18169db8bddd4a3808fc9e520fb836f7425e95d65961283f79dfe",
+      "sourceSha256": "1adcd2a73177d427f2f6775c446d60c404d45e187217f03be934958cfa1855ca",
+      "sourceBlob": "1ad32ad961011d1ef833db01a7f9f852cdac5d40",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/workspace-rule-compiler.ts.md": {
+      "manualSha256": "39cce1c02b41ec580c51d3b3379517715579565f5f1312136da6ebef1fc4045f",
+      "sourceSha256": "1f3e8d4b5d31435a6ba294142e87606a8671faff3393c94e98ea20e58b874fc8",
+      "sourceBlob": "7c602f3a9eed94ca1239384937ea5b1ffde4da2a",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/workspace-service-v2.test.ts.md": {
+      "manualSha256": "54327b490d5e0973db0949a16dd89986090a7ca909ccb54755c7386fca20002b",
+      "sourceSha256": "a5d3d71f90a3bb36a96a0535879b669de069927dfad1cc05f055723863a81013",
+      "sourceBlob": "1b5943998faaa9d640a3ada805ba573ccdd7040e",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/workspace-service-v2.ts.md": {
+      "manualSha256": "60cbf005d2454225a7555e003673fd01c707fce108a2c1f678e84f32ef91e862",
+      "sourceSha256": "1048857dbf8d37eb7a9cf50916e6b5f3004e03828fb37e7cc8760ba1353ff934",
+      "sourceBlob": "fd42cd48ad2a7531457d191fcfe6432d730a3f62",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/decision-readiness-v2.test.ts.md": {
+      "manualSha256": "0bd2e3536d217b6d32624dade57fec3e7c1631914a2d1fd551c8dc0ba5df4af0",
+      "sourceSha256": "7e20e510f4de931818a0854d04afdabb268ebd62f0c4d24f3ac8f4e3a6de98d2",
+      "sourceBlob": "0a4fa075ed234b4f6f72488190f9cd1765a0fd6b",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/stage-workflow.test.ts.md": {
+      "manualSha256": "29c7b70aaf6868ee2ee95f2382c778f6f1c295e30628f1520e96ae6ce6824357",
+      "sourceSha256": "0260b1c42c9f39474b6ce02188ceae09f94f29f58406f4f5cc70612a57407d13",
+      "sourceBlob": "0f3c992fba9fb15ac9097506c57b164f329a97f3",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/stage-workflow.ts.md": {
+      "manualSha256": "8bc291cbe035b90b5a5d3cff8a25cbe00e0a3b8cef8fe36511c491cb226995c6",
+      "sourceSha256": "d66c646636e573c5a318224e9387afd663572540c0f55add485bd6d9cefafb03",
+      "sourceBlob": "a46022bbc5d3889d5e69e4040c781db06db4f6b3",
+      "verdict": "revision_required"
+    },
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t05-business-mode.test.ts.md": {
+      "manualSha256": "d321fedc70b1c4c1a693871e65d9fa8912e02ad2510902bfe3a8d87c154b26fa",
+      "sourceSha256": "94de6d9b0d6205121c4664b8b22fae0c3ceeba97698e09b2eb1b5bedfd307454",
+      "sourceBlob": "f286d1753bbb30f35efe66c261d5124c2a30d65f",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t05-local-stage-plan.test.ts.md": {
+      "manualSha256": "11e246bc358b882c52f592ef3ad406db0ec00965ed021eedb19cf2b39e6f81f5",
+      "sourceSha256": "429add2d912b8d3eecb3fe8c1b82a190f944f96ec07fa82ebf50797d1458a0a3",
+      "sourceBlob": "67976ac3c8e3acdff4284fe64795494ab71c9864",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t05-local-stage-plan.ts.md": {
+      "manualSha256": "cf5a48eac777e8d0233bcbf7cb71ca281cc306d78beba6172249d2f5e51ede9a",
+      "sourceSha256": "a7244d9551a6f81e2b86f1af73b71409bbf66ce524198d76ce1bd0f514da6864",
+      "sourceBlob": "29af8a0f9a91f14a89f701ae97c45ce0fab27a68",
+      "verdict": "revision_required"
+    },
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t05-main-service.test.ts.md": {
+      "manualSha256": "456dae6dca9e6f7e3eba4c2bcd71ebceeb86fb83aecb54891b9fc2f0a12fd7dc",
+      "sourceSha256": "feba623e8127f650172fff68ae0b32dee98aa14b1aa1df75db862e99f7f37301",
+      "sourceBlob": "a62d6e3c4cb18c0d5edc2eec4e31b573f0b5c16c",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t05-main-service.ts.md": {
+      "manualSha256": "f1e9c9889686f4ec6f4b13f216ae79407d021b08293f89728c2f1a50169e02bb",
+      "sourceSha256": "7244be5c366a78d0b913f6736fd9a2375a5adb70438fbc0f1c17b8ae258ffb5f",
+      "sourceBlob": "98e3332f52785dd8ed7b4ba855ff8b175e4814f6",
+      "verdict": "revision_required"
+    }
+  }
+}

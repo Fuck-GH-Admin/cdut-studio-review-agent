@@ -1,0 +1,95 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "nb-52-r1",
+ "revisionOf": "nb-52",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T21:46:09Z",
+ "sealId": "seal-bb12cbae36d81ee7",
+ "note": "ALL 16 accepted (4 re-verified changed, 12 hash-bound to parent acceptance). Merge per this table.",
+ "acceptedManuals": {
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-usage.test.ts.md": "45a4bc51a2b6b2201a6139eaf6d353dc73712aecdb2911848e4a02a5cda49564",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-usage.ts.md": "7e7da9e5a3f3e589a381f2dc204cc690b1409586edf55aac8c9a81d619a75849",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-skin-tools.ts.md": "70a9f2342ed31d37790d3caf3ef9a11fb4ea819266d4cdd35fd9e3ba42940b23",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-system-prompt-policy.test.ts.md": "8a0cb4f0099b29909236ff84a3c69ef2b552ed1e6a609e3d206019cf63980a74",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-system-prompt-policy.ts.md": "8023441edcb92ea8248b60132a864034829e8494aeaace87f69037be830f192d",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-thinking-level.test.ts.md": "4ed6e9714fce0d7caf7be8f5c624098cd64ac24fb8376ec423c9cc3ff35a302b",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-thinking-level.ts.md": "9856490d8d73ac8dcab8c320445eed64b83f04a3d71be70a316c5a9c5c386bd6",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-tool-input-validator.test.ts.md": "1234d9b0f43fa38204ee233a7f653bb9086bf372ab63f669f5f51c2e09510cf8",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-tool-input-validator.ts.md": "5f9a615f593d657418dc9708ad38a488a03deb2a159a4ca0ef0a883b2e410988",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-tool-token-estimator.ts.md": "8ed3bc3a1e782eef3ed65d705bc84f5c29e7d34cf1fef62c407b12c0b73e4693",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-workspace-archive.test.ts.md": "f82c60f2a06fefd967337c8ea05ed60defc06ebd3630387442ad84135acc1985",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-workspace-events.test.ts.md": "0218e0824c9ea5d68e1a08e14d5dd9220c56b8113528013c976a6858d6bf72f1",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-workspace-events.ts.md": "494e4d5c8b50a10bd5002aaf09f249467422a6f9d19c24ba6e5e528aacf38c24",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-workspace-manager.ts.md": "03efbbed2161d3756e439c8f31ffe7f3137d365d4a8115b9227b99272412cabd",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-workspace-profile.test.ts.md": "163fb11f20a068f8fdf394730077e492fa4121dfbd2dcd888dea727af60f7ded",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-orchestrator.ts.md": "2ddbfc4b8bb8283cf67a0c86a26aace6e181c3233f77174eb3d5183a47707210"
+ },
+ "revisionRequiredManuals": {},
+ "reviewedSourceBindings": {
+  "apps/electron/src/main/lib/agent-session-usage.test.ts": {
+   "blob": "fd59394ecbf9948da703d0a0250fd5f02e34ce0f",
+   "sha256": "8303d4d7b1fed45c7adbfda52587c0b63846461d2bfc7e2421fc2fa8ead86542"
+  },
+  "apps/electron/src/main/lib/agent-session-usage.ts": {
+   "blob": "aaef66305d9bddaff4abfb4f418f9ffe15d6b462",
+   "sha256": "325a5eee1ad0ea6b7c8b681e1cfa9864ad90044b99753070470982304abccca3"
+  },
+  "apps/electron/src/main/lib/agent-skin-tools.ts": {
+   "blob": "40996ee466051233658203e9582aecdb51087df0",
+   "sha256": "ed28ba12915e284c6f7d0ae8e2dad83f54687b4703374349ebdaba7669438fe0"
+  },
+  "apps/electron/src/main/lib/agent-system-prompt-policy.test.ts": {
+   "blob": "11302833cd58fd450b831221ef939b971020ed3c",
+   "sha256": "f3906b073128dc0ecb3d5da416afd5cae96ce0d5a9619f1ee7be57f2714e6aec"
+  },
+  "apps/electron/src/main/lib/agent-system-prompt-policy.ts": {
+   "blob": "ec27a57b9d89a4c974a8a2f98f2c7c07fab318ca",
+   "sha256": "874f6ff2fa99c5e4a7390f5d8def5e79f4f4a0e686a6ab2cc767980a62b9aca5"
+  },
+  "apps/electron/src/main/lib/agent-thinking-level.test.ts": {
+   "blob": "67f1c33fa9f40632510d213d1886d50c644b2ff4",
+   "sha256": "6dd815d3dc4ba81b6c8f267959c5413c2839ded74a9a71cf6d970a257e7d86e3"
+  },
+  "apps/electron/src/main/lib/agent-thinking-level.ts": {
+   "blob": "566a663b99e0b31e942d49c8985b94ac349f8929",
+   "sha256": "fba8f311bdda183f6c2de3cb3f549363ede0a68fe8cbe412d3599990edc4b153"
+  },
+  "apps/electron/src/main/lib/agent-tool-input-validator.test.ts": {
+   "blob": "32b2cca3564f12a12cfd37349b99cb5f0f01426a",
+   "sha256": "7a0b927171dbd96c5e4fe4bcef7c387fe7dd54c6a6f44d6f9b6b1cfe60b8da81"
+  },
+  "apps/electron/src/main/lib/agent-tool-input-validator.ts": {
+   "blob": "312e936fb8ebc3aaaf75ec0c5e8f07eed90b3075",
+   "sha256": "7b0ded9dc6a4d013c4efb75f9ef204e04d5c2fb72c0cffca38dd72d854288bec"
+  },
+  "apps/electron/src/main/lib/agent-tool-token-estimator.ts": {
+   "blob": "57cc99f49b70d732e20aa8d24e7e313418391a19",
+   "sha256": "8e331bd147136f7e9a28f4d15be850c7118290458a934ada95d4cb434b744a2d"
+  },
+  "apps/electron/src/main/lib/agent-workspace-archive.test.ts": {
+   "blob": "5f1433cf0c9202c8974310eeb6662dd618cdb697",
+   "sha256": "edc4c8be5586e25072ec8e45e4c22b8c90c91ecc4dd2a8f980ba8a40e4036d7e"
+  },
+  "apps/electron/src/main/lib/agent-workspace-events.test.ts": {
+   "blob": "3576a611353f90c6d6bd6308cb0f5973ee8c05c5",
+   "sha256": "bff5674369cc2b9d2616a8b25f5aed8d4cd5761f6ae7fbc231ed15611c4ba1c6"
+  },
+  "apps/electron/src/main/lib/agent-workspace-events.ts": {
+   "blob": "6ad4b62e2f3ae67603acdf00ca107e7e6ce73993",
+   "sha256": "cd5b7746e921215d6ec9c1d7ddb1e92a680659d4101b65313ea32505b24f8d65"
+  },
+  "apps/electron/src/main/lib/agent-workspace-manager.ts": {
+   "blob": "37310d5cb5cfb15ea1f901b0b0d5282b0ba16ce8",
+   "sha256": "0512b37fe958e7b3e81dbd9aaf7383e8b381cb46186ae986fa7fa970234fee25"
+  },
+  "apps/electron/src/main/lib/agent-workspace-profile.test.ts": {
+   "blob": "81a11038ffc922a00ffb848ea1318d96d3ab137d",
+   "sha256": "31837dc037fb9e0ee2167f8ec8fafd265f90b5a368bfa4333c315cbc5c7eba24"
+  },
+  "apps/electron/src/main/lib/agent-orchestrator.ts": {
+   "blob": "c5fa9b22991d8162bc1f3c8f45d16e2f850e7879",
+   "sha256": "292fb67098040c978e77b535f310254f68e74d8a84d19725c71cd3829c64f935"
+  }
+ }
+}

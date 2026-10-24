@@ -1,0 +1,58 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-57-r1",
+ "revisionOf": "nb-57",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-models-20261023",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T17:29:39.155036+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "files": 10,
+ "accepted": 10,
+ "revisionRequired": 0,
+ "unknown": 0,
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/session-telemetry.ts.md": "5e2687027c54494e05465ce2483fd963aec791806c0b064f9370c52ae39377d8",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/snapshot-view.test.ts.md": "51f40b43d995f94af592eb5dec9c7553486efa41f9ff7c0833ddf3702b64d9df",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/snapshot-view.ts.md": "a4ed3c3e897578f07153379d0e015ba301dd1df5a071648ea69d657886e87156",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/telemetry.test.ts.md": "89f0805de9f4b9f9f42e72680b5249033d82e20e8d2bf652a53d579ee42ff2e5",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/telemetry.ts.md": "5b435d179a600d263c92cb06606d103bee0e7518cb7cc6a04e7c31766e964efc",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/tool-facts.test.ts.md": "cc503dad6cd47aa6d817821268615cfb5b783dd35ea75fc42b10b2da906c51d8",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/tool-facts.ts.md": "0f5ebd18a8d967af9f1aa57b14755ff6c7ea9db634e2f4a439592b90dad103e7",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/types.ts.md": "ac7fd4f1c44eedbed9f2f41fb4b0cbc0361135eecf5ff434dc561fc6e3165b06",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/verification-evaluator.test.ts.md": "36561850846fb5d5794221bc9bc5e84894471565c43d40d50bdd746fa6d1d386",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/verification-evaluator.ts.md": "51b23c279f62e3dba11a300fe406e2ff73c3386b5f3ed19177958f00aeea834d"
+ },
+ "revisionHashes": {},
+ "findings": {
+  "revision": [],
+  "notes": []
+ },
+ "deliverySeal": {
+  "sealId": "seal-de69c7827fe1a79a",
+  "sealedAtUtc": "2026-10-23T17:24:15Z",
+  "readySha256": "715413a76c416fd8e7641c86aa378d27da026612d85c3c6a69751f4b55f33449",
+  "doneSha256": "af1d8f242958be760336eda6dcfed60e169c35654f81c62fb0c2e566ef22fe6e",
+  "manifestSha256": "c71f90e872bb38ef88b59ab1d0539a1faf46561f91136378f9a8f9927f575a98",
+  "zipSha256": "27182c5b86f911348cc89ed07ac8af98c744cdc50833ab65125ce3df5040e6d9"
+ },
+ "notRun": [
+  "bun test",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "artifacts": {
+  "RESULT.json": "99209490ea0c1d4bb5f6f553f14abc14ac2469b7012a7302a0451429b94f9733",
+  "RESULT.md": "30b37e376b8b34f96a09e8859853178d4dd4f4d865a91716f431907fc5930771",
+  "REVIEWED-HASHES.json": "2334d2ef26e367c28208fce18e43897f931ad037b3489532aea7c12e62a08636"
+ },
+ "next": "lead 合入"
+}

@@ -1,0 +1,32 @@
+{
+ "schema": "dsh-r07-stage2-labfiles-done/1",
+ "atUtc": "2026-10-23T21:38:33Z",
+ "track": "lab-files",
+ "status": "STAGE2_LABFILES_COMPLETE_WITH_DECLARED_GAPS",
+ "coverageSummary": "11 链登记：10 链关键边亲核到位（证实）、2 项部分（CH-HPC submitHpcJob 内部、CH-SHARE publish/backoff 细节）、1 类缺口（resources/cslab/*.py 脚本内部写副作用面）。不虚报全量完整。",
+ "declaredGaps": [
+  "CF-13 submitHpcJob 生命周期/取消恢复 未知",
+  "G7 resources/cslab/*.py 脚本内部未读（--input 旁写未核）",
+  "Node execFile 超时杀进程=推断未实测"
+ ],
+ "counts": {
+  "chainsRegistered": 11,
+  "conflictsDocError": 0,
+  "conflictsImplementationGap": 11,
+  "conflictsUnknown": 2
+ },
+ "verdict": "本轨关键链核对完成（入口→文件/数据库双写、失败/超时/降级、原件不改写边界均有真实 file:line 证据）；缺口如实登记，未完项不冒充已验。",
+ "products": [
+  "manager/STAGE2/lab-files/CHAINS.md",
+  "manager/STAGE2/lab-files/CHAIN-REGISTER.tsv",
+  "manager/STAGE2/lab-files/CONFLICTS.json",
+  "manager/STAGE2/lab-files/RESULT.json",
+  "handoffs/STAGE2-lab-files-TO-LEAD.md"
+ ],
+ "notRun": [
+  "Electron/IPC/Worker/Python/HPC/ps1 实跑",
+  "产品测试/typecheck/构建/GUI"
+ ],
+ "boundaries": "未写阶段三文档；未改产品/测试/依赖/作者 seal/已有 review/candidate；旧 922 未继承接受；未开新 ACP 根；真实运行 NOT_RUN，静态断言已标注推断。",
+ "next": "lead 收口：本轨 CHAINS/CONFLICTS 并入阶段三设计差异报告素材（CF-01..CF-13）；缺口项（CF-13/G7）列入阶段二遗留清单。"
+}

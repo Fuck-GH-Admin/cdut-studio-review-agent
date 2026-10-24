@@ -1,0 +1,163 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "nb-58-r1",
+ "revisionOf": "nb-58",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T17:29:39.155036+00:00",
+ "deliverySeal": {
+  "sealId": "seal-a82417b6e355f8db",
+  "sealedAtUtc": "2026-10-23T17:24:15Z",
+  "readySha256": "174593c89eaab4336238b4a9f928e80945967a9786252e83ec27a0bd72e72943",
+  "doneSha256": "e90a3ba9801b9aafb354c6a798938aba7539a445307f32a6b99003fb07fe3891",
+  "manifestSha256": "1bafc828088677e8435c109d8294c1db42747220cdd21bd7b6c293c064a073cc",
+  "zipSha256": "889c4db8c1daacedee2c63b65e7744cd7c5b6f2b8d702208d89db7f4e8f0ed4e"
+ },
+ "files": [
+  {
+   "path": "apps/electron/src/main/lib/channel-list-no-placeholder.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/channel-list-no-placeholder.test.ts.md",
+   "sourceBlob": "fecbef34909f3582fbdc21acd159d1535352dc05",
+   "sourceSha256": "918df0dab3bc19961bf63b51cb19560783cc37eaac540402b45377ad6847f824",
+   "manualSha256": "519ca8ef0b49ad8e54f0ec7820ec039d2b0ca0ac39dabcd3c0ccac57074190d0",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/channel-manager.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/channel-manager.ts.md",
+   "sourceBlob": "ddceb4222d8be6e871980014b8136d906664a7b6",
+   "sourceSha256": "691657d96553782dcb20e4d40b6d62ce46d5be6b947c29eb8a036c66b1bd70d3",
+   "manualSha256": "c53c043cdb66756ce9a52f09474902dfdb3d8ed5e3ab4c2618db95cac17340de",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/channel-plan-quota-parsers.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/channel-plan-quota-parsers.test.ts.md",
+   "sourceBlob": "f58494bc28728ca6c55e92e9d01b9b545ae1f2c5",
+   "sourceSha256": "fa19ba6e33f5cf7da7bd440a3ca823dab63ad523f7932312cc6f08a706735cc3",
+   "manualSha256": "70b84edc1c70096d88e20b09e84d75a2731e4510230b3dbc5398875da6bc902d",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/channel-plan-quota-parsers.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/channel-plan-quota-parsers.ts.md",
+   "sourceBlob": "a322eeb42aae5b94c4d41bcc2105f9141260a2b8",
+   "sourceSha256": "b05a2edc10bd22326890b4737d9ed8550cfc3350f26b8b22a92f602232367761",
+   "manualSha256": "5fb73b1c428e72f6b9b6851233f31cb6dcfca71cb10ce607077051d656019277",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/channel-preset-model-updates.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/channel-preset-model-updates.test.ts.md",
+   "sourceBlob": "662a4acd0ff9d7b31a2a45d86b9421260a012f1b",
+   "sourceSha256": "304991e63afedfacd4038d95a462cc5220687890504dd176be3eb9d2e67cbe54",
+   "manualSha256": "e2a819da97d700b6d6e346641fd2d379afa323fc1a182684bd8fb515e7e79614",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/channel-url-routing.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/channel-url-routing.test.ts.md",
+   "sourceBlob": "7180b016ddd580e79143dbf4f7ff6a81abf3c522",
+   "sourceSha256": "792a454d45e0fffc61ec36e6ddb0cb1760f67aa7b88248645c3a596a7619553a",
+   "manualSha256": "7ae368ec6ae2cac72fd2355269bba01f5cc5af53ade2623c3be356c6904b4dbc",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/channel-url-routing.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/channel-url-routing.ts.md",
+   "sourceBlob": "e3ef895845421198e64c091f9edcc055ddadb62e",
+   "sourceSha256": "cbbbd34ea32a024d17ff8b96dba8a8aab1a6a5a26927132eb2531d5c555a78d0",
+   "manualSha256": "cc00b93e1fce2538534531d6d495199032133dbd9f1ee99a19048c767047698e",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/goal-controller.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-controller.test.ts.md",
+   "sourceBlob": "c0f9262f70d01852fe1cf66629b0c247f83386f6",
+   "sourceSha256": "390d95586522679f2e825079fe02f0dd7b698b8a6d1a07be7737df71ef7f28c9",
+   "manualSha256": "7124321dfd9584b392215c823c75ee2c8144eb4995f4f184785c9879657449a3",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/goal-controller.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-controller.ts.md",
+   "sourceBlob": "1388454bed1555c8685e94e55d57a83f5f9f81ab",
+   "sourceSha256": "8db75b2f186229091981dca070526415b9d00c84b29f23e92bbd2e34536bd3b1",
+   "manualSha256": "3da98bded5f6d001db2689b38275d71958e14b4e36af807bc057f4a003523d60",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/goal-ipc-routing.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-ipc-routing.test.ts.md",
+   "sourceBlob": "801c1399cbb85585c5b1e438245db8b64b42fcb3",
+   "sourceSha256": "6fdbcc2810a2013cadf89332009d3672e32cf4031edcb4a5ed736658ec4281f3",
+   "manualSha256": "b9c3a3ba9a7d619521a34828036ee40a2827f42f45b88cd28b686fe09e801429",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/goal-loop.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-loop.test.ts.md",
+   "sourceBlob": "d7d12152a0919e99f818c2f9d0bd68dbba55c4bb",
+   "sourceSha256": "6a159fe7cccc2254cd1bc242e72a876ef5baabfc0f4daa9710d5866d6608cd19",
+   "manualSha256": "890b1fd8d91f3885b7c14b6cb792435dd0feaf85b08e0b55fcff62703d886c2f",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/goal-loop.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-loop.ts.md",
+   "sourceBlob": "2cec122d035891dd71d82999667f5ebe817f735d",
+   "sourceSha256": "1eae31af028ac84e5596758046b793dfaada8bb21c90f4391f5cc0bcab78361f",
+   "manualSha256": "4cb1fdc0c3d30db3eb1aa82568015f3d764918cc85574028069321c5f8594837",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/goal-session-service.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-session-service.test.ts.md",
+   "sourceBlob": "1979a7af7a740e3c924fa2f2522389e0519f6d22",
+   "sourceSha256": "83e90342aa1e3a17201fa70922854a4b46d788576a4118fbed5125386f559099",
+   "manualSha256": "60ddadca999be02722d3abfec6341b07e0750ded55149d7c4f6d994084d09c67",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/goal-session-service.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-session-service.ts.md",
+   "sourceBlob": "40a21afd171b8fe3b1f0cb5a5b6f9021b6ffe8f1",
+   "sourceSha256": "0870ecb12e8d39279bcede786ba5b807a3a0ce39e59d761302660b1d9da7679a",
+   "manualSha256": "cd215d49117f47c243ffab10bd6eb4fe23299fa632539f5b900cbdcfa1406eb0",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/goal-store.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-store.test.ts.md",
+   "sourceBlob": "62d3daa650df89f711b1a1bd7da0639a5b11e311",
+   "sourceSha256": "0a495ef061ae32fcb031eedbcf1b3eecffa029bb4974a3549b66df7bb0994439",
+   "manualSha256": "2409cebea12de34470e147ebf7579fc48e6f6a54a1289ffa35d4347a24b8acd4",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/goal-store.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-store.ts.md",
+   "sourceBlob": "1e9bec557a378ab4f97f820d87a91d85c93d9989",
+   "sourceSha256": "e567b2f412ae8fba986194234abbd6ab57894dfbf85773f892c75ae8e4767ad5",
+   "manualSha256": "8363c031bd1a4597f052882e4c10c1f05125ac4b1d6b6c347da3790cd08ef2d7",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/goal-tools.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-tools.test.ts.md",
+   "sourceBlob": "bb2915c40e8dbed9210c71b0953aba417f506836",
+   "sourceSha256": "588ab16061e6a58b6916c42fc836f2133787ad0eecfd0d433e678d08f6a72d97",
+   "manualSha256": "9bab7fe84dfdc82d752e37bca4caef98cf23b5720cc5910b66338ce2f627d3cc",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/goal-tools.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-tools.ts.md",
+   "sourceBlob": "4b933425e91b46fb5e51ba36878dabece326d398",
+   "sourceSha256": "d0a8bba163760ae917321d6509e55a77d4832e135f4cf49bc9cd8cdfee28c216",
+   "manualSha256": "60095931e63a414372a08ac26393ecfaa5ba2ee0f3075020c9b0a1ccc8a73356",
+   "verdict": "accepted"
+  }
+ ],
+ "note": "18 篇 r1 新 hash 全量合入"
+}

@@ -1,0 +1,75 @@
+{
+ "schema": "dsh-r07-qa-result/1",
+ "batch": "nb-68-r1",
+ "id": "NB-68",
+ "revisionOf": "nb-68",
+ "reviewRoot": "reviews/nb-68-r1",
+ "priorReviewRoots": [
+  "reviews/nb-68"
+ ],
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "sourceHeadVerified": true,
+ "sourceWorktreeClean": true,
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewedAtUtc": "2026-10-24T20:25:00Z",
+ "scopeSource": "manager/assignments/nb-68-SCOPE.json",
+ "scopeFileCount": 10,
+ "scopeLines": 1768,
+ "deliveryRoot": "deliveries/nb-68-r1",
+ "sealSpec": "seal_delivery.py/1（v2）",
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "real model/network"
+ ],
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PASS",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 10,
+  "revision_required": 0,
+  "unknown": 0
+ },
+ "batchVerdict": "accepted",
+ "files": [],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/workspace-heatmap-service.test.ts.md": "1b2aa269f7a15250c1095f2401cd2600201c4d0ad5e49e580009bc12bd9d65b1",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/workspace-heatmap-service.ts.md": "5bce0e12d90e57b8188ce98fff0a9008b201b6e12aaa549c8a71e1d866268c9e",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/workspace-mcp-config.ts.md": "834ceaab695567de24a1814793835f9097eee30cc79a6464dd6966402771302d",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/workspace-watcher.ts.md": "29f8f4e413ff4dbce03fcfa0c8800cdc330c0e57f520921f8c2b67f8a6dee7f3",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/improve_description.py.md": "ab2514d7427a576b07d981a8c692cb4d5f0f0e2c6987b023e81d5aefafcb5b37",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/package_skill.py.md": "cc36b72e941bb4c5ab39c926a1685318309c8f0d6eef52b23eee66ff2796e8a3",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/quick_validate.py.md": "476cab2bdfa180b5de0a939feac21bbaaf9570a0cb6638ad2c63658876695716",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/run_eval.py.md": "396135e8982addec4804f65d36d9a430cda09ee8c905f6a20be8026dcb4191a7",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/run_loop.py.md": "db24a4bb4ee009489e57127af5ba6a2aa11142e8951bddc4d00f656ad854d1c6",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/utils.py.md": "10fc80791b1f8ca87ed1350290190999f9606451f2e339e06f420c4e04e3da09"
+ },
+ "rejectedHashes": {},
+ "supersededManualHashes": {
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/workspace-heatmap-service.ts.md": {
+   "oldManualSha256": "2e278e3a963525c16c82eb23799c14684fa7fae5cf5eb892d99dc17e93575395",
+   "newManualSha256": "5bce0e12d90e57b8188ce98fff0a9008b201b6e12aaa549c8a71e1d866268c9e"
+  }
+ },
+ "findingsClosure": {
+  "F-01": "CLOSED（heatmap 导出 7→8 ×2 处 ✓ 无残留）"
+ },
+ "batchFindings": [],
+ "zip": {
+  "path": "deliveries/nb-68-r1/R07-nb-68-r1-05fb2565.zip",
+  "sha256": "329feb107e2a1bf62ec63f1b8279e798c8a1b7dc4ea0a4a10a6b09e32e93715d",
+  "note": "v2 无穿越/0 mismatch"
+ },
+ "parentPreserved": "r0 交付未动；1 篇 before/=父批原字节",
+ "notClaimed": [
+  "测试运行结果",
+  "typecheck/build 结果",
+  "G3 跨模块"
+ ]
+}

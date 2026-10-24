@@ -1,0 +1,54 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-66-r1",
+  "revisionOf": "nb-66",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-23T22:50:00Z",
+  "sealId": "seal-6e4ba1efcd0d61bf",
+  "note": "18/18 accepted（NB66-F-01/F-02 全关闭；NB66-N-01 留 errata）。合入以本表为准（2 新+16 同 r0）。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/dev-shell-shortcut.ts.md": "959d482a651c8314c376d4ea28a23eb610007d2a815d6eb18646648c8bf0430a",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/document-parse-tools.test.ts.md": "1d9f457957ee807ec8db54b4743b59a04917186d2f282786137434f1b588cab0",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/document-parse-tools.ts.md": "87768f32cbed9f58a7c29913a7d47ea68d95fbfda81b3c2302ae5f3575217232",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/document-parser.test.ts.md": "c303e0e52727f76b2a18b36d726c512c50e941b0487f8ea102308855ac4cc3e5",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/document-parser.ts.md": "dc836036d564ab46940b6d8853a474fa3ddc6801b4908a951451872e273e7ca9",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/file-preview-service.test.ts.md": "03b39088ec2f54127f8361711372f72f6ec7e4529a8ca8b3cc239bc5835889b8",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/file-preview-service.ts.md": "a44b11a88f771c8e25e2ac2c7fc3a079b96bdd9c62fa2ece1030d0877d905456",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/file-search-service.test.ts.md": "f3dc03614a6b8814f931336373da542ecb0bb3ca43944fe19437de776434f9dc",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/file-search-service.ts.md": "62c8d6f93c9440fbd8d651ea04f46787e932f4bff858f6bda01a6c623039324f",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/file-sync-service.ts.md": "964381705b96dd8fa8dc343d7d2e8c6eda5d89e419e81b1ea18ba34d1ccfec5c",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/global-shortcut-service.test.ts.md": "65db15cd8cc6372d7844cf3e23841163c88a52edd6fd0f9d47bb3edd67d56e5e",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/global-shortcut-service.ts.md": "6ffe6fb53a8019dcc820994632ee82a9a44e5db8389653f74cb67e1cedfa8dc3",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/global-skill-manager.test.ts.md": "185c210950f0e1dfb330c201d7c462ad73763302a49209ff26f4652a98e9e196",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/global-skill-manager.ts.md": "bff349e70cd30294489c4ca865adbed646cb2bd22424f740ee13476d77db8e15",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/gpt-image-connection.test.ts.md": "4435effa1c8454fad6a4ed3b8b475f67a571c8bf802ae3fd69d16a0daa557a94",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/gpt-image-connection.ts.md": "19ebf098a11e02bd4266676569bd9e166bd565e16bbd5a9cf11185a2f0ec1a04",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/gpt-image-service.test.ts.md": "18c9d9808f79b55ab93efc0a63dd21f868e923193c15cf34ca187272d7aebc14",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/gpt-image-service.ts.md": "a14b06535f079d51f38e1ac11e27543ecc21333f50aef631cdd9304487b36e5e"
+  },
+  "revisionRequiredManuals": {},
+  "changedFromParent": {
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/file-search-service.ts.md": {
+      "before": "3eb49771cef9ab0dba5cb14585f90f1afb3668387d7577659a9adf7d05af599c",
+      "after": "62c8d6f93c9440fbd8d651ea04f46787e932f4bff858f6bda01a6c623039324f"
+    },
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/gpt-image-connection.ts.md": {
+      "before": "e35e59c989280157a9b79b376dd31e5e08a041487b32919c6cc2fe3aefc16644",
+      "after": "19ebf098a11e02bd4266676569bd9e166bd565e16bbd5a9cf11185a2f0ec1a04"
+    }
+  },
+  "sourceBinding": {
+    "verifiedCount": 18,
+    "note": "blob+sha256 脚本实算==MANIFEST==SCOPE"
+  },
+  "sealBinding": {
+    "manifestSha256": "330c887da4c508857ace3ad293537cfd5f021b666741378680412777e17174d1",
+    "readySha256": "3fb224b555966a234dba3771fa1d7f4c1ead1d080b089ab4254b52107f1dffce",
+    "zipSha256": "2afb32894773f94a3a57f15c27ed6204f31cf9e71fe9a7929c55b1b38f4e548b",
+    "zipBytes": 55643,
+    "zipEntries": 21,
+    "beforeEqualsParentStage": "2/2",
+    "changesDiffReplay": "2/2 byte-identical"
+  }
+}

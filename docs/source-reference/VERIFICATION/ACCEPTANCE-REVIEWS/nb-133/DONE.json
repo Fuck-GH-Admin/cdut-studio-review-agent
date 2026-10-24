@@ -1,0 +1,35 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-133",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-01-20261024",
+ "reviewerSession": "docs-r07-qa-extra-01-20261024",
+ "reviewedAtUtc": "2026-10-23T20:37:28Z",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "files": 18,
+ "accepted": 18,
+ "revision_required": 0,
+ "unknown": 0,
+ "sealId": "seal-f8b485af769bc961",
+ "resultSha256": "d0476baebc424379f9a5e7ccfbe6bc89af08a6b519cb8babbce437f0495419e9",
+ "resultMdSha256": "53531ed386b297a2ddbb91412b301485c5fe0a872643be4d90d0c897564d34ba",
+ "reviewedHashesSha256": "5450925f72a2c14aaa8a848c459c61d02342d4627c945090745c1692419edf78",
+ "toAuthorSha256": "fd1f274c63b6f8333c30096fbc87460d13e34965eae904703726cdd6940c0c86",
+ "toLeadSha256": "50b585b068c4a138dd6375d1ccc427e3ec96989d448bd64cfd608f42d5930178",
+ "findingsOpen": [],
+ "registrationNotes": [
+  "NB133-N-01 归属字段交 lead 登记（三批同类一并）",
+  "NB133-N-02 拆分求和勘误 3142/729 以本复核为口径"
+ ],
+ "notRun": [
+  "产品测试",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "真实 TLS/SSE/同步网络/截图/进程巡检/磁盘清理",
+  "bun test（45 用例断言级阅读）"
+ ],
+ "declaredScope": "仅 nb-133 批 18 文件的独立真值审查；不含运行验证",
+ "note": "extra-01 组 3/3 批全部完成真值审查；旧接受不套新字节"
+}

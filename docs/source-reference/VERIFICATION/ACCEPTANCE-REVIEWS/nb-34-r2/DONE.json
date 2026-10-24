@@ -1,0 +1,56 @@
+{
+  "schema": "dsh-r07-review-done/1",
+  "batch": "nb-34-r2",
+  "revisionOf": "nb-34",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-30-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "sealId": "seal-e48c87c2da829c9e",
+  "reviewedAtUtc": "2026-10-23T22:13:15Z",
+  "batchVerdict": "accepted",
+  "fileVerdicts": {
+    "packages/core/src/highlight/index.ts": "accepted",
+    "packages/core/src/highlight/language-detector.ts": "accepted",
+    "packages/core/src/highlight/shiki-service.ts": "accepted",
+    "packages/core/src/index.ts": "accepted",
+    "packages/core/src/office-engine/docx-reflow-solver.ts": "accepted",
+    "packages/core/src/office-engine/index.ts": "accepted",
+    "packages/core/src/office-engine/office-engine.test.ts": "accepted",
+    "packages/core/src/office-engine/office-serializer.ts": "accepted",
+    "packages/core/src/office-engine/ooxml-zip-reader.ts": "accepted",
+    "packages/core/src/office-engine/pptx-topology-solver.ts": "accepted",
+    "packages/core/src/office-engine/types.ts": "accepted",
+    "packages/core/src/office-engine/xlsx-grid-solver.ts": "accepted",
+    "packages/core/src/pdf-engine/__tests__/max-regret-router.test.ts": "accepted",
+    "packages/core/src/pdf-engine/__tests__/pdf-engine.test.ts": "accepted",
+    "packages/core/src/pdf-engine/__tests__/source-preserving-aligner.test.ts": "accepted",
+    "packages/core/src/pdf-engine/__tests__/table-decomposer.test.ts": "accepted",
+    "packages/core/src/pdf-engine/__tests__/trapdoc-guard.test.ts": "accepted",
+    "packages/core/src/pdf-engine/academic-enricher.ts": "accepted"
+  },
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0,
+    "findings": 0
+  },
+  "resolvedFindings": [
+    "NB34R1-N1"
+  ],
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass"
+  },
+  "runStatus": "NOT_RUN",
+  "artifacts": [
+    "reviews/nb-34-r2/RESULT.json",
+    "reviews/nb-34-r2/RESULT.md",
+    "reviews/nb-34-r2/REVIEWED-HASHES.json",
+    "handoffs/nb-34-r2-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-34-r2-REVIEW-TO-LEAD.md"
+  ],
+  "mergeRule": "全 18 篇 acceptedHashes 可合（以此 r2 为 nb-34 终版）；nb-34/nb-34-r1 封版保留。",
+  "note": "已 seal 不回写。"
+}

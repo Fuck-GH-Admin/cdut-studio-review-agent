@@ -1,0 +1,95 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "nb-24-r1",
+ "revisionOf": "nb-24",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T21:46:09Z",
+ "sealId": "seal-d0d7756c0eaa944a",
+ "note": "ALL 16 accepted (5 re-verified changed, 11 hash-bound to parent acceptance). Merge per this table.",
+ "acceptedManuals": {
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/demo-fixtures/demo-case-fixture.ts.md": "8361079131f2a96c47c3714d648176c483e13380ac7bf8e7d7aab19e92b8a86c",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/fixtures/all-templates-fixture.test.ts.md": "76f3a94e6c5a053d5b4e8b380a17f5a7b13d6f8f9a620f188b36150a21ac4611",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/fixtures/all-templates-fixture.ts.md": "627a9481294119d9b722937e13ca05a4716b44f9c58c20c119d4fa23c16c3494",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/fixtures/comprehensive-fixture.test.ts.md": "b3bfda90e95c3c11fc2504696af4dfc4e0865246f65d120c1090095dc445a0f3",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/fixtures/comprehensive-fixture.ts.md": "0492a905a870cb591d48b7a1e1a7f4912704844e77e2a4c04fba922b10a326aa",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/input-invalidation.test.ts.md": "17efb8e540cbd974533c2cdcf258591f470c1ffeef532498c4536f2fa68b3eac",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/input-invalidation.ts.md": "8a644d8d6116b655d2b3ff482a3cd9a55e723cad209223f73e09937d96237146",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/ocr-port.ts.md": "84c1e6987e34ad72b0d12f9616ef5a23b703a76fb040485e373a59695bdf42e9",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/real-chain-journey.test.ts.md": "b888fc37aa92e39ed1b74b6017d7e8ec81c0b383287aec04cca64626d79a3617",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/rule-section-scope.test.ts.md": "c950d0ecbe9920c3f695812e4fbda03624152676c700be3e34aa3109ff2b9a83",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/rule-section-scope.ts.md": "d0de6437a83ed1fc0156cc815bef1f67a5b7c6f5127229458d6a7b6332b8cb66",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/submit-case-v2.test.ts.md": "b2870c7e8100583c320b90a9bfa1cea53a4d48fc25206f089c7d1117afbb567b",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/tesseract-ocr-adapter.test.ts.md": "4f53f3b22a3f77c010c5c959583c1959f932747db8e5abdcff6ec1c9854d1fea",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/tesseract-ocr-adapter.ts.md": "6eaca2e37706fe73ca7d435621072da7d98e1a9bda729139d363f81b1458b51e",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/v2-executor-factory.test.ts.md": "77bc03f0e5ce4a4d5d38ab20884f2edd034fcf6043d10921eb9e707eaf463c0c",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/v2-executor-factory.ts.md": "d1406caf9ca44ed21716c42f303e4e41ede43f246a2ab7f312479607249c7ce2"
+ },
+ "revisionRequiredManuals": {},
+ "reviewedSourceBindings": {
+  "apps/electron/src/main/lib/review/demo-fixtures/demo-case-fixture.ts": {
+   "blob": "839ef73e91c23b8af53f1f661ba49a6e4279a8c4",
+   "sha256": "c83a1bbb2551449ae10e25a9e93be4f59c1d8caef090d1a052fa890c0d5be28d"
+  },
+  "apps/electron/src/main/lib/review/fixtures/all-templates-fixture.test.ts": {
+   "blob": "a0169feff2e3155a8e3edb359b1a2500a5d6f0d1",
+   "sha256": "c148709196c9d8964abead01d63d4fd3540fb34471eca547f8ff7527d0337e12"
+  },
+  "apps/electron/src/main/lib/review/fixtures/all-templates-fixture.ts": {
+   "blob": "6922a6b18df4720058b4534f32b261287ddcd712",
+   "sha256": "b616cf2a564a892072442b5c289e79852bdd36791df70d588b93fa5152d76a39"
+  },
+  "apps/electron/src/main/lib/review/fixtures/comprehensive-fixture.test.ts": {
+   "blob": "d78a6ec0b6671acaff8b29dc610866e9e58e6b2f",
+   "sha256": "b542ccb80b439e9051a9890427d541ad93484d2202dbf73ec2cabe5a581b4e87"
+  },
+  "apps/electron/src/main/lib/review/fixtures/comprehensive-fixture.ts": {
+   "blob": "25d3fe758ef3f20b659064e32471d019f72184ca",
+   "sha256": "e5f73353e26a9685e798d8ac313b46899d5761aaf9020146e30d5111089e531f"
+  },
+  "apps/electron/src/main/lib/review/input-invalidation.test.ts": {
+   "blob": "d130e7add6e6a04c5398e812dcf13cb92150b4a0",
+   "sha256": "44fb0937979b5c6689ac82da15c7f37186fa536f375e6f20032b354518f47e20"
+  },
+  "apps/electron/src/main/lib/review/input-invalidation.ts": {
+   "blob": "dce8ba1f9cc88a18d67cde4082cf22e8861c5755",
+   "sha256": "3989d36813869f7e663b723e6b7844d0432ec5821126793a884cc29b8558fa6b"
+  },
+  "apps/electron/src/main/lib/review/ocr-port.ts": {
+   "blob": "15e1205ff110727fd17d355a82c114a85e7ee8e7",
+   "sha256": "ddbe49c327b5ce70dd3cbc2eb01072048203d30a3d4aad93aba5d5fe1e135cac"
+  },
+  "apps/electron/src/main/lib/review/real-chain-journey.test.ts": {
+   "blob": "b2fff28b5ec2c1a94c057cef8b8d5f2c2fdd5e7c",
+   "sha256": "4a4a75414d4a58088a187a3cd6d65463fe38f8f0dbc5c3a21da45f732ddae87d"
+  },
+  "apps/electron/src/main/lib/review/rule-section-scope.test.ts": {
+   "blob": "670050f8ce99865c3462012e9b86dc68c6f9b73e",
+   "sha256": "c3dc76d130e67a846e3c8a43a761a111721a07b5cb13de56e99dc1763853537a"
+  },
+  "apps/electron/src/main/lib/review/rule-section-scope.ts": {
+   "blob": "61675b871c0c236d76e6244719622b1ae9345b43",
+   "sha256": "2e3d01814ff9ea2205f8dd632eed8d3298e8a4b457923319bf5b0631ec71f173"
+  },
+  "apps/electron/src/main/lib/review/submit-case-v2.test.ts": {
+   "blob": "f5d08c666040734a54a6f0eb9e9c4938805392b9",
+   "sha256": "570f05e292213bc1451486c9a2abf4bfcbd06e9c9b43eed0e350624883f285a8"
+  },
+  "apps/electron/src/main/lib/review/tesseract-ocr-adapter.test.ts": {
+   "blob": "35c4c31e34014cdbfb1be2d7f5b1db416f8807ef",
+   "sha256": "109c63c4db2ffb22ef53f49eb56688d65cc9a49f8dbd39a4274d6087199e1460"
+  },
+  "apps/electron/src/main/lib/review/tesseract-ocr-adapter.ts": {
+   "blob": "d25d5ed931bb7503423465f5696a697ae685dd35",
+   "sha256": "e00bbeb902f9e70247d75243b8a1b4e0e3dee56a579df7a88adeaa4eda2cffb6"
+  },
+  "apps/electron/src/main/lib/review/v2-executor-factory.test.ts": {
+   "blob": "dd08583ad2a3b2950c67392f10d35ecde35be041",
+   "sha256": "cbec86f6b9b9b9e5d029b374fb7505a760b2dd49d232b3d6b78a472485376906"
+  },
+  "apps/electron/src/main/lib/review/v2-executor-factory.ts": {
+   "blob": "df8be22990a4862ca4f489a3ac5388730a7c79dd",
+   "sha256": "2a14b59a17a05f75e13484c6008f502c27d61e847804d3e28bc97be6f8246d8e"
+  }
+ }
+}

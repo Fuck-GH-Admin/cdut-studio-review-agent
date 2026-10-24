@@ -1,0 +1,36 @@
+{
+  "schema": "r07-qa-done/1",
+  "batch": "nb-109",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewedAtUtc": "2026-10-23T20:57:10Z",
+  "sealId": "seal-c9a05632bfce1644",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "result": "reviews/nb-109/RESULT.json",
+  "resultSha256": "0015b0d3af9e9f25c5a91e43cfe6d3cc1967747e6fc869fe0c18ecbc709551e8",
+  "reviewedHashes": "reviews/nb-109/REVIEWED-HASHES.json",
+  "reviewedHashesSha256": "6e0a2c72d540c2de56157b820d1b274dd5f808a06c72b20cb6576bbb5a0da032",
+  "testsRun": [],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "浏览器原生视图实跑",
+    "团队网盘 IPC",
+    "Silurus viewer 实跑"
+  ],
+  "knownUnknowns": [
+    "主进程 browser-policy 协议一致性（跨进程契约，非本批）",
+    "teamFile.* 网盘后端行为（非本批）",
+    "Silurus/official-preview-session 桥（非本批）",
+    "reveal flash 与 globals.css 关键帧实际视觉（GUI NOT_RUN）",
+    "正则边界（非法端口/混合输入）"
+  ]
+}

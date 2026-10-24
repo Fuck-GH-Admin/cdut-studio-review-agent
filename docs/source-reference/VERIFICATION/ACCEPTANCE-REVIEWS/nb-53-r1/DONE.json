@@ -1,0 +1,65 @@
+{
+  "schema": "dsh-r07-qa-done/1",
+  "batch": "nb-53-r1",
+  "revisionOf": "nb-53",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-01-20261023",
+  "reviewerSession": "docs-r07-qa-nb-01-20261023",
+  "reviewRoot": "reviews/nb-53-r1",
+  "reviewedAtUtc": "2026-10-24T01:10:00Z",
+  "status": "REVIEW_COMPLETE_ACCEPTED",
+  "batchVerdict": "accepted",
+  "gates": {
+    "G0": "G0_PASS",
+    "G1": "G1_PASS",
+    "G2": "G2_PASS",
+    "G3": "NOT_RUN",
+    "G4": "NOT_RUN"
+  },
+  "verdictCounts": {
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "f01tof06Resolved": true,
+  "residualNonBlockingNotes": {
+    "count": 2,
+    "blockingImpact": "none"
+  },
+  "seal": {
+    "sealId": "seal-3f748e7210bdfec7",
+    "tool": "seal_delivery.py/1",
+    "spec": "SEAL-DELIVERY v2",
+    "zip": {
+      "sha256": "c4c82747643879722ecaedf1485bf14ef061b9ae03d862b31766fc3addca2cc6",
+      "bytes": 64111,
+      "entries": 21
+    }
+  },
+  "artifacts": [
+    "reviews/nb-53-r1/RESULT.json",
+    "reviews/nb-53-r1/RESULT.md",
+    "reviews/nb-53-r1/REVIEWED-HASHES.json",
+    "reviews/nb-53-r1/DONE.json",
+    "handoffs/nb-53-r1-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-53-r1-REVIEW-TO-LEAD.md",
+    "handoffs/teams/qa-nb-01-STATUS.json"
+  ],
+  "notRun": [
+    "bun test",
+    "tsc --noEmit",
+    "build/package",
+    "Electron/GUI",
+    "real model/network",
+    "concurrency/crash injection"
+  ],
+  "writtenOnlyIn": [
+    "reviews/nb-53-r1/",
+    "handoffs/nb-53-r1-REVIEW-TO-*.md",
+    "handoffs/teams/qa-nb-01-STATUS.json",
+    "DSH-SESSION-REGISTRY.md (append)",
+    "DSH-BUSINESS-LEDGER.md (append)"
+  ],
+  "next": "lead 合入 18 accepted；QA 转 nb-67 正式复核（已封版）→ nb-93 预读",
+  "old922Counts": false
+}

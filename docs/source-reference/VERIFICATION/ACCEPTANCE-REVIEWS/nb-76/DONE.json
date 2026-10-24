@@ -1,0 +1,35 @@
+{
+  "schema": "r07-qa-done/1",
+  "batch": "nb-76",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewedAtUtc": "2026-10-23T20:19:15Z",
+  "sealId": "seal-0eadc153bec5d3ca",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 11,
+    "accepted": 11,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "result": "reviews/nb-76/RESULT.json",
+  "resultSha256": "0ca7781307357c3f2ee8867fb05b7873fcc049499b7963cc716b3ff657d81b04",
+  "reviewedHashes": "reviews/nb-76/REVIEWED-HASHES.json",
+  "reviewedHashesSha256": "a4f7ebb6a4450e050b27d1cb2e3eefd04d555411891923df28cca59adf55ac6a",
+  "testsRun": [],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "uv 下载/校验链",
+    "zotero 插件探活",
+    "SQLite 实跑"
+  ],
+  "knownUnknowns": [
+    "内嵌哈希与上游一致性（注释 2026-10-20 核对，未实网复核）",
+    "cslab-service/python-runtime 等 34 个兄弟模块（非本批）",
+    "vault-cache 消费方坏行回退实现（非本批）",
+    "Zotero 插件 /ping 契约实网（NOT_RUN）"
+  ]
+}

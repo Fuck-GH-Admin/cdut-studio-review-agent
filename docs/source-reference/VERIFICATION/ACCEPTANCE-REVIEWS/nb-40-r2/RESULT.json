@@ -1,0 +1,237 @@
+{
+  "schema": "dsh-r07-review-result/1",
+  "batch": "nb-40-r2",
+  "revisionOf": "nb-40-r1",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T17:20:00Z",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass"
+  },
+  "g0Evidence": {
+    "chain": "READY/DONE/MANIFEST/ZIP 交叉一致（sealId seal-4f9c1643c23a7308，revisionOf nb-40-r1）；18 manualHashes=磁盘 0 mismatch",
+    "revisionChain": "before/ 18/18==nb-40-r1 stage（11 篇 hash 逐字节不变、7 篇为声明修订）；changes.diff（13 hunks/7 文件）git apply 重放==stage 逐字节",
+    "zip": "R07-nb-40-r2-05fb2565.zip 21 条目，0 穿越/符号链接/字节 mismatch，无 READY/DONE（seal v2）",
+    "sourceBinding": "18/18 源绑定==SCOPE==冻结树 05fb（源文件未动）"
+  },
+  "g1Evidence": {
+    "sections": "7 篇修订区结构保持；11 篇未改字节；行号引用复扫 0 倒置/越界"
+  },
+  "g2Evidence": {
+    "fixVerification": "F-01~F-03 与 N-01~N-03 逐 hunk 回源核验全部关闭：①protocol.ts.md'13 条 export（12 对象+1 类型别名）'+补 `ProtocolErrorCodeValue :85` 行（==源 13 条 export）；②state-machine.ts.md'12 状态'→14（§2/§10/§11 三处）+§11'7 导出+1 内部迁移表'；③capabilities.ts.md'12 条 export（10 对象+2 类型别名）'+补 `TrustLevelValue :97`；④gateway.ts.md'7 态事件映射（ACCEPTED/RUNNING/COMPLETED/FAILED/CANCELLED/EXPIRED/PAUSED）'==源 :504-512；⑤package.json.md/index.ts.md 消费者统一'6 源+2 测试（8 文件）+main/index.ts'==grep 实测；⑥contract-gateway.test.ts.md 补离线测试标题澄清注",
+    "residual": "N-09：capabilities.ts.md 新括号分解'…+1 接口+2 函数+2 类型别名'和=11≠12，'2 函数'应为 3（isTrustAtLeast/resolveEffectiveCapabilities/assertCapability，:106,126,142）；headline'12 条 export'与 §11 正确——残留小计数不误导结论",
+    "noNewErrors": "7 篇修订区其余文本逐 hunk 与源核对未引入新错误；11 篇未改==r1 字节（hash 证）"
+  },
+  "files": [
+    {
+      "path": "packages/agent-fabric/package.json",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/package.json.md",
+      "sourceBlob": "c093ba2ea8b81d219274f6875444a4e9e555ab59",
+      "sourceSha256": "92ead1626e8e7c78157a4b765c1f6084f9060cdde64b53013ded67217db2cfac",
+      "manualSha256": "f34e52699b8852a0f2ab8be36c07b1e44f9bcfae4036e4c370b64b772943a733",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/agent-fabric/src/approval.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/approval.ts.md",
+      "sourceBlob": "aa24284d73699328b9f1512d87f9829dadb2ec7e",
+      "sourceSha256": "4ee93cdb04d77ad8f45cc92e7d5486b4b9395f3b31e273579a31024592842ffb",
+      "manualSha256": "35a952978ff6226dfdca86cd13aa5e0135a9901853efb72e69d5d638a60e48e7",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/agent-fabric/src/artifacts.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/artifacts.ts.md",
+      "sourceBlob": "dd400169b278eb0da30f450b111399e1ffbfdafc",
+      "sourceSha256": "fc8828bbac6d199040c2839601e7b4f27d78b63a43505febbb5f2e4487fcf8ea",
+      "manualSha256": "e583188668add8d24583e7182dbbe88fd3e5626513faedb5dce13e0d18334531",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/agent-fabric/src/capabilities.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/capabilities.ts.md",
+      "sourceBlob": "375f1ddc2ae9a8434d536084233ede4a4d007239",
+      "sourceSha256": "c4b06fac2f4f88bf20ee8e90c1c98bff87120d03d9c2606fbc50c3a3ee7811c3",
+      "manualSha256": "403551f0b7192a961478d308dc04085ca88d316b4433942cab018032a81fae31",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/agent-fabric/src/contract-events.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-events.test.ts.md",
+      "sourceBlob": "43dc804be4c8331712c37a1305d1da8843735275",
+      "sourceSha256": "d30477dc5b65eb99d057ac52625b68eb128b5a9696d6bd88b96b7e27d6bf49e7",
+      "manualSha256": "356aa9d08ed7fe04fa0b6b27ee649ca555991b302d9a68bc7a601b95c5567abe",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/agent-fabric/src/contract-gateway.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-gateway.test.ts.md",
+      "sourceBlob": "df0bc488c5cc1d0cdd4d0eed848325217ebefb9f",
+      "sourceSha256": "c507c15067aecf07d6cc6cc44806fdf28ca585555816853a4a7b0341a142ca07",
+      "manualSha256": "db3ae68985dd11990e6a3d5c2b0d3ed644142419d9684a863aebc334dbbb83d4",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/agent-fabric/src/contract-protocol.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-protocol.test.ts.md",
+      "sourceBlob": "98180c375cdacc090e90dde3f134c48738f54f7a",
+      "sourceSha256": "4298195e666e03087ffca2dceb47f83ed2d91acd859dd23d8f0e3c9beb479b97",
+      "manualSha256": "2871383322590986b57cc31d17b382c9282c315e35be70ac33793173445a1649",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/agent-fabric/src/contract-security.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-security.test.ts.md",
+      "sourceBlob": "78ffa581eca3287cff8014d0aff7ad6729f22fd9",
+      "sourceSha256": "89bcd497c23615eef87c6feacfb2fdf35bf4c595f555d86e217ddf3acbd01323",
+      "manualSha256": "e96c6b0a1cc74176f8f416bffe2ea5396ac55eb6634975548efe817f019fb605",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/agent-fabric/src/contract-state-machine.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-state-machine.test.ts.md",
+      "sourceBlob": "34962e9f326ef3138424d377ad73dd2185391f2c",
+      "sourceSha256": "4ba5e6a1b16267338be35f39ce4ea623e2fb769e90b66088bdecde6ed07ac65a",
+      "manualSha256": "9bcc84355393d1ae78655099f8d88bcfe61550222fb1e297ec4119ce538a2420",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/agent-fabric/src/contract-task-graph.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-task-graph.test.ts.md",
+      "sourceBlob": "dba49ae5b2b9afdc0a9328831fc754b7a576a129",
+      "sourceSha256": "755b4667998e69f782486533e8de4237b7b69c74bc260891333552b3258121db",
+      "manualSha256": "46aa57f5d5e4819031c90ad97ef6f08dfa80d9140f02384a6c45d378788c30d4",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/agent-fabric/src/contract-task.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-task.test.ts.md",
+      "sourceBlob": "a43406571fcd3d5a1b82425034e1f6a5b8d277ef",
+      "sourceSha256": "4f9fd94225b2a1d54fb29bbd23b5c70e14e3dc5f8504371f9d36d3d8d9b81803",
+      "manualSha256": "ecf3581c510884ccddd0a90dfffbc4edbb7178dee577c71e3ab9ee394b933711",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/agent-fabric/src/events.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/events.ts.md",
+      "sourceBlob": "971c945c8c5aa5aa1d51a9462878a2f875eadbc5",
+      "sourceSha256": "5aea88487324f7dcdd406bd8e6ea66a1788a99b5da8819c9e8dadd3f53d4b12f",
+      "manualSha256": "58c569ba4a04152383f1ba28aa854305a47e96894b3b875b2588962c40705058",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/agent-fabric/src/gateway.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/gateway.ts.md",
+      "sourceBlob": "10364183e4dc4cca6f09ce1eadd74093d2327ed9",
+      "sourceSha256": "15e84eab2d4e3a5dcc2c86ca27bd26e65146d54bca35dc8d84f5ca5c7141505a",
+      "manualSha256": "1d7359f2386f115fe94f676a602872d9e8b0168ff850bb73e96659ce77bd9e2a",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/agent-fabric/src/index.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/index.ts.md",
+      "sourceBlob": "1d8e5d049930acd2d2227750caf82d39d73ec361",
+      "sourceSha256": "80c6fa38e7ed6c748b6693a1df29bb6f3e6012c8a8852dac48f20f37bba18829",
+      "manualSha256": "c396071b14e04950ab3da0387872bb2e7f26df15998d5df7742ecf1fff29c47e",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/agent-fabric/src/node.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/node.ts.md",
+      "sourceBlob": "ee8ddbcdc77ecf1b36534e19920cf62ef0856c67",
+      "sourceSha256": "e6fa51db57c8183ec3bbf2149c699f0d44db0188882d6febd0ac3c6fe5383069",
+      "manualSha256": "6926cf8be236176cf666be0b2f0fd2e0ef31d6a7985ff5f0c2ba4d07a00e5df3",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/agent-fabric/src/protocol.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/protocol.ts.md",
+      "sourceBlob": "3bbfba933e9fc5200d074ea51febbd5bcae98a3e",
+      "sourceSha256": "8caf4139ee81afcb96f2838c41b30d7113d0cd8a9b434ece419d695d257df061",
+      "manualSha256": "7ca5524800c60c817e9c49a3fc379fb0a2edc44a985c56f39e7a5a86858fc77e",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/agent-fabric/src/state-machine.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/state-machine.ts.md",
+      "sourceBlob": "98f4fc30e9f32534413ba3bd8c593dfe06174d82",
+      "sourceSha256": "6a949204c1b2a5f77a116465d715695275efa2181f6740016f3eeab1e3202fc4",
+      "manualSha256": "77c60bdbd17fd8b3f92383f6e6da2ffd19e54bf5d295c827a4995a5c94abc629",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "packages/agent-fabric/src/task-graph.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/task-graph.ts.md",
+      "sourceBlob": "7f69dbba015593a314cdfc2253a8ea1a2e284e97",
+      "sourceSha256": "49beb9cd5dbc6361a827a7d03dce5b399661bc38df01f28943f022b8fecec9bf",
+      "manualSha256": "655d18195dec7fa286f7f1979e22c9267bae074edae23d85e8d3fb8eb735d13a",
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/package.json.md": "f34e52699b8852a0f2ab8be36c07b1e44f9bcfae4036e4c370b64b772943a733",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/approval.ts.md": "35a952978ff6226dfdca86cd13aa5e0135a9901853efb72e69d5d638a60e48e7",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/artifacts.ts.md": "e583188668add8d24583e7182dbbe88fd3e5626513faedb5dce13e0d18334531",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/capabilities.ts.md": "403551f0b7192a961478d308dc04085ca88d316b4433942cab018032a81fae31",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-events.test.ts.md": "356aa9d08ed7fe04fa0b6b27ee649ca555991b302d9a68bc7a601b95c5567abe",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-gateway.test.ts.md": "db3ae68985dd11990e6a3d5c2b0d3ed644142419d9684a863aebc334dbbb83d4",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-protocol.test.ts.md": "2871383322590986b57cc31d17b382c9282c315e35be70ac33793173445a1649",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-security.test.ts.md": "e96c6b0a1cc74176f8f416bffe2ea5396ac55eb6634975548efe817f019fb605",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-state-machine.test.ts.md": "9bcc84355393d1ae78655099f8d88bcfe61550222fb1e297ec4119ce538a2420",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-task-graph.test.ts.md": "46aa57f5d5e4819031c90ad97ef6f08dfa80d9140f02384a6c45d378788c30d4",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/contract-task.test.ts.md": "ecf3581c510884ccddd0a90dfffbc4edbb7178dee577c71e3ab9ee394b933711",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/events.ts.md": "58c569ba4a04152383f1ba28aa854305a47e96894b3b875b2588962c40705058",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/gateway.ts.md": "1d7359f2386f115fe94f676a602872d9e8b0168ff850bb73e96659ce77bd9e2a",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/index.ts.md": "c396071b14e04950ab3da0387872bb2e7f26df15998d5df7742ecf1fff29c47e",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/node.ts.md": "6926cf8be236176cf666be0b2f0fd2e0ef31d6a7985ff5f0c2ba4d07a00e5df3",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/protocol.ts.md": "7ca5524800c60c817e9c49a3fc379fb0a2edc44a985c56f39e7a5a86858fc77e",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/state-machine.ts.md": "77c60bdbd17fd8b3f92383f6e6da2ffd19e54bf5d295c827a4995a5c94abc629",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/task-graph.ts.md": "655d18195dec7fa286f7f1979e22c9267bae074edae23d85e8d3fb8eb735d13a"
+  },
+  "findings": [
+    {
+      "id": "N-09",
+      "severity": "minor",
+      "file": "packages/agent-fabric/src/capabilities.ts.md",
+      "claim": "§2 括号分解'…+1 接口 + 2 函数 + 2 类型别名'和=11 与同句 headline'12 条 export'不一致；函数实为 3（isTrustAtLeast/resolveEffectiveCapabilities/assertCapability）",
+      "sourceEvidence": "capabilities.ts:106,126,142 三条 export function；表内 3 行标'函数'",
+      "action": "任一未来 rN 顺带把'2 函数'改 3（不需为此重封）"
+    }
+  ],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "notes": "F-01~F-03（nb-40-r1 阻断项）全部在 r2 字节级关闭；N-01~N-03 一并修复。判定口径不变。18 篇 acceptedHashes 以 r2 为准（7 篇 hash 变化替代 r1 对应值；r1 记录保留不回写）。"
+}

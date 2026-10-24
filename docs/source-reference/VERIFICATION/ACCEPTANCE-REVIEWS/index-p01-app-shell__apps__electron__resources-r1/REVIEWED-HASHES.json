@@ -1,0 +1,59 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "index-p01-app-shell__apps__electron__resources-r1",
+  "groupId": "p01-app-shell__apps__electron__resources",
+  "revisionOf": "index-p01-app-shell__apps__electron__resources",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T22:35:00Z",
+  "sealedAtUtc": "2026-10-23T19:09:24+00:00",
+  "artifactSha256": "d09a1e91bb3a5666ab751bba1709eec2842d502b16a6ab616439df995ba93db4",
+  "note": "r1 合入以本表为准。7/7 accepted。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources.md@apps/electron/resources/demo/hongloumeng-quan-shu.txt": "d09a1e91bb3a5666ab751bba1709eec2842d502b16a6ab616439df995ba93db4",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources.md@apps/electron/resources/tray-icons/iconTemplate.png": "d09a1e91bb3a5666ab751bba1709eec2842d502b16a6ab616439df995ba93db4",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources.md@apps/electron/resources/tray-icons/iconTemplate@2x.png": "d09a1e91bb3a5666ab751bba1709eec2842d502b16a6ab616439df995ba93db4",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources.md@apps/electron/resources/tray-icons/iconTemplate@3x.png": "d09a1e91bb3a5666ab751bba1709eec2842d502b16a6ab616439df995ba93db4",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources.md@apps/electron/resources/tray-icons/iconTray.png": "d09a1e91bb3a5666ab751bba1709eec2842d502b16a6ab616439df995ba93db4",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources.md@apps/electron/resources/tray-icons/iconTray@2x.png": "d09a1e91bb3a5666ab751bba1709eec2842d502b16a6ab616439df995ba93db4",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources.md@apps/electron/resources/tray-icons/iconTray@3x.png": "d09a1e91bb3a5666ab751bba1709eec2842d502b16a6ab616439df995ba93db4"
+  },
+  "revisionRequiredManuals": {},
+  "sourceHashes": {
+    "apps/electron/resources/demo/hongloumeng-quan-shu.txt": {
+      "sourceBlob": "29bf5be82355db939710eb5e1baa9e238329ca17",
+      "sourceSha256": "50b22882745a2d17d227e4359e97fe74d7b854705d031f3e08707f836e8c2ba2",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/tray-icons/iconTemplate.png": {
+      "sourceBlob": "2b2f816b0f3434faf8c8f4e90a5d77cb882d2613",
+      "sourceSha256": "df716936acecfdfd5921c60b435f92eba054172a1d802658bab5f5220129cb39",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/tray-icons/iconTemplate@2x.png": {
+      "sourceBlob": "2cbbcf92cb975ae82a26289241ee3aa02a47c57a",
+      "sourceSha256": "429156b980c72ef607d747aa1b4b911f29e467b5a620c64e50cb5ce67663aa5c",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/tray-icons/iconTemplate@3x.png": {
+      "sourceBlob": "072abf7235dc7fa4f5f9d96502ea3e5b044b82f4",
+      "sourceSha256": "81b6832db11988ffb92f7f21e2cc84010a142a142b79eed25be7c3c210873852",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/tray-icons/iconTray.png": {
+      "sourceBlob": "5d7c38f0404ca4e4dfd2965edf3c2325f7b1148c",
+      "sourceSha256": "caa4950291beee0f184c4886f88ec4ed8821b5f63fcec3bbe5f6772970ff0264",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/tray-icons/iconTray@2x.png": {
+      "sourceBlob": "0807b07ee720546a3e55f4b041a62fc9bef8d6c3",
+      "sourceSha256": "d8e7d3f71d248d765c5e5f8500fc3c83746dd6367b8cde735abc0c14219a8d76",
+      "verifiedAgainstFrozenTree": true
+    },
+    "apps/electron/resources/tray-icons/iconTray@3x.png": {
+      "sourceBlob": "c63cf38cdea40a5613038a86a584856d9743be77",
+      "sourceSha256": "14f0cc544ffd70f8c687f39177b1274bb9c315a9e159c726372ab829a3e2b04f",
+      "verifiedAgainstFrozenTree": true
+    }
+  }
+}

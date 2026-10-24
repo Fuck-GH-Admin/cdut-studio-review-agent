@@ -1,0 +1,28 @@
+{
+ "schema": "dsh-r07-stage2-issues-done/1",
+ "track": "issues-p01-p03",
+ "atUtc": "2026-10-23T21:58:30Z",
+ "status": "TRACK_COMPLETE_WITH_DECLARED_GAPS",
+ "totalRecords": 557,
+ "counts": {
+  "VERIFIED_THIS_PASS_ERROR_PERSISTS": 9,
+  "OPEN_DOC_ERROR_UNFIXED": 23,
+  "OPEN_NEEDS_SOURCE_VERIFICATION": 140,
+  "PENDING_REVERIFICATION_MANUAL_CHANGED": 139,
+  "PENDING_VERIFICATION_AUTHOR_CLAIMED": 27,
+  "CLOSED_SUPERSEDED_PREVERIFIED": 153,
+  "CLOSED_THREE_PROOFS": 2,
+  "INFO_HASH_EQUAL_RECORD": 20,
+  "DOCUMENTED_IMPLEMENTATION_GAP": 1,
+  "CLOSED_MERGED_PREVERIFIED": 29,
+  "UNVERIFIED_TIMESTAMP_METADATA": 1,
+  "DEDUP_HISTORY_OF_CURRENT": 7,
+  "PENDING_VERIFICATION_TEST_CLAIM": 6
+ },
+ "actionableAuthorFixes": 32,
+ "pendingVerification": 172,
+ "sourceVerificationGap": 140,
+ "resultSha256": "2e812e119131d87f19d96603e4d7197ec5a7eedccc5c10d3a8573428f2ab3d0b",
+ "reconciliationSha256": "f13cef5e70ed2ceed6addaefca743643dd4ec578947c7baf7ac913c71470d297",
+ "note": "30min window: schema+partition+557 full placement+dedupe+3 spot verifications+author handoffs complete; 140 source-level verifications and 172 re-verifications declared as gaps (not claimed done); zero silent drop"
+}

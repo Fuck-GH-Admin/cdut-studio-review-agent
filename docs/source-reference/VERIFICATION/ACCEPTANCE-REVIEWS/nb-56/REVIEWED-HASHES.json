@@ -1,0 +1,37 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-56",
+  "revisionOf": null,
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T19:15:00Z",
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/evals/replay.test.ts.md": "4557b5585c05ef18466808e94df55cd7ed9cdc073db7ddba5f5b924649f68b87",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/evals/replay.ts.md": "24888c0509521b6b7cc055aacfcb8381ad8a290a54365718bc0437b9c1557eae",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/evals/types.ts.md": "e350dc5cfde67cef5ec7d19848e44ecb689d49c59c8e91f300b631443c306235",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/feature-gate.test.ts.md": "3eb5a230f9583636f234235f38c49fe3522e26c4bc0b40321f0a26517ca8cfc0",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/feature-gate.ts.md": "d8939c111b6234acbafac5744c7743c479db93d54fc7bfafc1460885b9e2d1ab",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/goal-controller.test.ts.md": "9fd6b71552c5b979fa09fdd01614c2737a35a01671544c91bc74c64f0d47cc27",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/goal-controller.ts.md": "c300cbf56847bb0df8d71d919c7f9895e3d41ee5ed5f6fcf83fd56abd794659f",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/governor.test.ts.md": "25213a85c47e173da989c33dc7fdf08c377c2ae4b53e070c78384aaad2b5db37",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/governor.ts.md": "673f8490dfac45c0897b9f2665457017453eed725a64899acc56eef59271036f",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/graph-focus-packet.test.ts.md": "fe10a4316fa3e793da967c790fc935a75d6e5ee6b5d9f358ef3f6f55c504879c",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/graph-focus-packet.ts.md": "a36b758b28c39a203f02ef0397201d3fde94b108891efc893bda01b22f6f9823",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/orchestrator-bridge.test.ts.md": "ee85b739f9ae8127b358ad977350962fbecc845ace669b4c8c5fecca081a641c",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/orchestrator-bridge.ts.md": "ae621245de5dfc2cd0c7d47b6ab4ce108ef84c6e5dbe20308087b9b0b9ab7ba0",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/pi-harness-reducer.ts.md": "f963113ba7777c3cbdbd09e38b8eaf65a11d43d39cdc7282bd689fb7dd6e149c",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/pi-harness-store.test.ts.md": "4590a87c4da5a90cd916df902a2e5fe5110c39faaf4525263bb7238dc2f0a5d9",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/pi-harness-store.ts.md": "a83c042076cbf0e4ca547d0eaa0cccce336817aa4dff6a77c3feb57e6a136bf4",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/reconciler.ts.md": "4208562a38cc21a205ba15e331f341aeee98db24ff3211a6d4e7bd349f62cde6",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/session-telemetry.test.ts.md": "0239a4e92760aae6d8bd6336de290a01a30eeef72059b988db4048834be3816e"
+  },
+  "revisionRequiredHashes": {},
+  "rejectedHashes": {},
+  "chain": {
+    "sealId": "seal-92a1a77c3461bef5",
+    "manifestSha256": "896730668d4207b9d98f4bbee0f0edca14d8aebf78af337e0806e8108b569916",
+    "readySha256": "edbddfa76fe6c87ba972b680b2462f50232bae43cc9f23a1ae408729d66850a5",
+    "zipSha256": "087b64dcbfa886a624a94ca6857212aa3a2a3b85e2ecf47ce47cc5cf598c279b"
+  }
+}

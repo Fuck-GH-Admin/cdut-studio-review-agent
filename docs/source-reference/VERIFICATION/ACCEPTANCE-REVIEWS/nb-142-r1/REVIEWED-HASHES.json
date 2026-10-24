@@ -1,0 +1,43 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-142-r1",
+  "revisionOf": "nb-142",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-extra-03-20261024",
+  "authorSession": "docs-r07-author-extra-03-20261024",
+  "reviewedAtUtc": "2026-10-23T20:35:00Z",
+  "batchVerdict": "accepted",
+  "bindingNote": "16 篇与 r0 逐字节一致；2 篇修订 diff 逐行核对恰为 F-01/02/03+N-01 修复；manualSha256 四方一致",
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/.gitattributes.md": "352960e6d101e3bc50a811d4e8ff60f43a71da06bee89cfdee7526cb32dbac50",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/.gitignore.md": "e50fc1961019cdf4f22e63317b7be668cd4765936408bb0a57710add0cc90f7d",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/bunfig.toml.md": "fed4d62723175dbd3a23ff0f0b214a457186c6db2f35774f6137fc255bfc9a4f",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/components.json.md": "ccea01b140f6fbe587824553f49976c11924e0e66b26a9a0436105f7d2cde890",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/electron-builder.yml.md": "d579753dc5f263eef8f79f8a74d9ca09f647243d14f9fabb7f850ede0f0b8e4f",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/package.json.md": "c70479053f0a0ce2b912dd108bfd9166fa110e4e97ec501f048113d6dff1bcb4",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/postcss.config.js.md": "7b2a30b832d765fe83a910ed14f40272d10e0f693c817e193ea4831b5e601884",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/tailwind.config.js.md": "0c68bc4b66dba5582f89b593cf381d9bc3e58b5be5f217b5ccf2b89fa17d9f71",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/test/beijing-greeting.test.ts.md": "3c2f3ed7146564ed39fb68211315ca4d4f4ec49ce1697fa7654f4e0fdd2a22ee",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/test/cdut-jw-parsers.test.ts.md": "cbe400ce050b13e619853cdedcba2428e72cf83de16f774636bd0ff2525b5ff4",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/test/quiz-options.test.ts.md": "fae2513da0292fe5c5cfaeb57055a218737659273eafe06765df05079d377b59",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/test/yanhu-pet-prompt.test.ts.md": "7e3f441e3bf951bc24f808783063ff4bb5b966376af22a6507aab43c1863c175",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/test/yanhu-thinking-log.test.ts.md": "755453dd9c1c30ae31905591eaac2612446c4c2d4e0624f112b0089da9e32d6a",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/tsconfig.json.md": "72eec59474b7e174f3f6221091b0bb9e8c9b5af3c37b9e6b159242b8f28a42f1",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/vite.config.ts.md": "7e3934a5fbdde30da9d757a7bcfec283419f27bfd93b93a45679123da50b882b",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/bun.lock.md": "104d942ced1e5d8af7052bc75af6004fab70ad32ac44c23df51d71af1a5516ec",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/bunfig.toml.md": "f5ccd58427519f1cf2e19b86a721c1c194baa6128ead6ee48b326a357bbc3ec7",
+    "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/index.ts.md": "601ede2643b72b438c6ae0c6cc91227890dbc4b4569282bc25768d4363396062"
+  },
+  "rejectedHashes": {},
+  "deliveryHashes": {
+    "MANIFEST.json": "9f6bafcb77058890bacbb13f7ebe6cba97fbb88486f10f8fb3e48c601c9b8701",
+    "READY.json": "78a95046b63c8ef5ce55923d0e40e86970004ac66f06bb2cef1cfbd5bb557c23",
+    "DONE.json": "bc12c85908d2c9072ee9ee644e534a5f43edcb5c779460d18fce5c262c8b5be5"
+  },
+  "zip": {
+    "path": "deliveries/nb-142-r1/R07-nb-142-r1-05fb2565.zip",
+    "sha256": "9d92b7aabe6a301ebf387ad15a054b3929219878f5260f009c2e7032ca009e38",
+    "bytes": 82841,
+    "entries": 21
+  }
+}

@@ -1,0 +1,187 @@
+{
+ "schema": "dsh-r07-review-result/1",
+ "batch": "pilot-models-r2",
+ "revisionOf": "pilot-models-r1",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-models-20261023",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T13:30:13.075156+00:00",
+ "reviewedSeal": {
+  "readySha256": "444312d81a5cccb15ac18368da9402a358a601a841f0a16ffa4429065a1b4c99",
+  "doneSha256": "ceac9af05d2eb15a83c03f16bd63d1c57340af4861bb07eac89ca897e05ef2b6",
+  "manifestSha256": "ec85933ffcd286971b2b79b4053cf0ec58d6d84e3f54736df6d06cf58cc40880",
+  "zipSha256": "8900673e9af5f6d4a296c35ef341ceda46eb353678dd0e7fc73ed51da74de1f6"
+ },
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "batchVerdict": "accepted",
+ "batchScope": "6 文件；r2 变化 2 篇（bridge、main.test），4 篇未变并 hash 绑定 r1 accepted",
+ "files": [
+  {
+   "path": "apps/electron/src/main/lib/review/module-settings-store.ts",
+   "blob": "40f7e86e7dc88b35171b0b778a9dc4ae8f807efd",
+   "sha256": "46194f15b6623a0d2123e4d1810f427f7ab142c5cbad7b4549d2afad642f6816",
+   "lines": 58,
+   "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/module-settings-store.ts.md",
+   "manualSha256": "5c5732455f6b754d0e92a1e7ef78873f6117c4e55a12248efcb8ab21d8dcd777",
+   "changedInR2": false,
+   "r1ManualSha256": "5c5732455f6b754d0e92a1e7ef78873f6117c4e55a12248efcb8ab21d8dcd777",
+   "verdict": "accepted",
+   "note": "r1 accepted 字节未变（5c573245…）；本轮重读源 58 行复抽一致"
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/module-settings-store.test.ts",
+   "blob": "3e23492076dcb57e04aa1f58ddae7ea4bbe9e1b8",
+   "sha256": "531ed84eaaf278bf1f1c4f098af8b347cdc252ac06ab1ff8b51e50d1dc899dc1",
+   "lines": 24,
+   "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/module-settings-store.test.ts.md",
+   "manualSha256": "d5c5c571ee431b52df4507f0c313ec3de2cc9bd04a095c03981ffd96353290ed",
+   "changedInR2": false,
+   "r1ManualSha256": "d5c5c571ee431b52df4507f0c313ec3de2cc9bd04a095c03981ffd96353290ed",
+   "verdict": "accepted",
+   "note": "r1 accepted 字节未变（d5c5c571…）；24 行重读，MS-T01 修正仍成立"
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-model-gateway.ts",
+   "blob": "6d2715a038dbcaa7f85a774fe4a62a1703eec91f",
+   "sha256": "39c55821a848c74f97fb8d5609921bd43f394db51ca8078a2de02f59b09ba8a0",
+   "lines": 481,
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-model-gateway.ts.md",
+   "manualSha256": "19b7a4f994ca22e3925f76122311984bbe1df4adb0fb2af7161cedc0c5318cbe",
+   "changedInR2": false,
+   "r1ManualSha256": "19b7a4f994ca22e3925f76122311984bbe1df4adb0fb2af7161cedc0c5318cbe",
+   "verdict": "accepted",
+   "note": "r1 accepted 字节未变（19b7a4f9…）；GW-03/04 关键行复抽一致"
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/run-async-service.ts",
+   "blob": "e36eedbcddcff59b5494edccb9860364176d173c",
+   "sha256": "34c1af2d18b44e428689e508440737095a718d9a4d937eb2323ac2c54d98a633",
+   "lines": 230,
+   "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/run-async-service.ts.md",
+   "manualSha256": "86a9ecbdd9b95edb92adba51b90bb2252243b36691f4dc9f9b0251ad51b2e1d0",
+   "changedInR2": false,
+   "r1ManualSha256": "86a9ecbdd9b95edb92adba51b90bb2252243b36691f4dc9f9b0251ad51b2e1d0",
+   "verdict": "accepted",
+   "note": "r1 accepted 字节未变（86a9ecbd…）；RA-01/02/03 关键行复抽一致"
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-pi-run-bridge.ts",
+   "blob": "03407ce4cf194933a827fca959c955f29cd65c6a",
+   "sha256": "5400a59e753a09be08dfc371589af4a619850be5ba12de1e4ad334b6ec545d93",
+   "lines": 129,
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-pi-run-bridge.ts.md",
+   "manualSha256": "95d398ae0f93265846ff4cf5e45d3576e78926300aeca96ee6ccd36c7b4931e4",
+   "changedInR2": true,
+   "r1ManualSha256": "7d14e29df3d41642cc02107c06f8990ff73cd636d2e019c2085dce22f801408d",
+   "verdict": "accepted",
+   "note": "BR2-01/BR2-02 已按真实 callee 核实修复；三路径分述准确，成功边界措辞准确"
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/review-pi-run-bridge.main.test.ts",
+   "blob": "ac3802f97bd0999857d225de29e3c63dafe5d1b9",
+   "sha256": "e9d0197d71bf54ebe03b73a920f4162f1cdad8c396b71150605258a2f075b70e",
+   "lines": 309,
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-pi-run-bridge.main.test.ts.md",
+   "manualSha256": "a8b8340c8113186f2034b03c38029dab5873fccbaa0009b2de31d5376416e116",
+   "changedInR2": true,
+   "r1ManualSha256": "255041a4dc380f0fe8323a296a679621cce5b6ee1828c5429a5f0cc341de8b1c",
+   "verdict": "accepted",
+   "note": "BT2-01 已修：10 用例 pendingExecution 命名与用例 5/9 边界核实；12 行用例表断言逐条对源无错位"
+  }
+ ],
+ "findingResolution": [
+  {
+   "id": "BR2-01",
+   "severity": "blocking",
+   "resolved": true,
+   "fact": "r1：因果句\"只要渠道被保存为审核选择，非白名单 provider 也会被 Pi 调用\"与 review-ipc.ts:1515 保存拒绝矛盾；真实未校验路径未给",
+   "r2Fix": "三分路径：①显式选择保存被拒（review-ipc.ts:1515 + 渲染层 review-first-use-readiness.ts:2,9 UI 过滤）②全局回退 explicit:false 产品可达（module-settings-store.ts:44-49 + settings-service.ts:93-118 无 provider 校验 + bridge :37-43 只查 enabled）③文件旁路（getReviewModuleSettings :20-35 仅形状校验）；并加\"无闸≠必成功\"边界",
+   "verification": "逐条回源实测：1515/2,9/44-49/93-118/37-43/20-35 全部吻合；orchestrator 透传 agent-orchestrator.ts:1101,:2162 实测吻合；QA 独立补证全局回退 UI 入口 ChannelSettings.tsx:127-142（isAgentEnabledForChannel 不含白名单）可达"
+  },
+  {
+   "id": "BR2-02",
+   "severity": "precision",
+   "resolved": true,
+   "fact": "r1：\"全仓仅用于/仅此三处\"不实（渲染层也消费白名单）",
+   "r2Fix": "改为\"19 处 .ts/.tsx 引用；生产强制点仅 2 处；渲染层为 UI 过滤；另 6 处非代码历史提及\"",
+   "verification": "grep 实测 19 行（review-ipc 2/gateway.test 11/gateway 3/readiness 2/shared 1）+ 非代码 6 行（docs 1/work 5）；强制点全树核为 review-ipc.ts:1515 与 gateway :157（:309-312 调用）"
+  },
+  {
+   "id": "BT2-01",
+   "severity": "precision",
+   "resolved": true,
+   "fact": "r1：\"全部用例在 draft 上启动并成功\"过度概括",
+   "r2Fix": "分述 10 个 pendingExecution 用例成功启动 / 用例 5 被拒 / 用例 9 不建案不启动；并保留\"无用例断言 draft 被拒绝\"",
+   "verification": "调用点 :76,:100,:112,:138,:163,:185,:199,:227,:254,:295 = 10；用例 5 :151-160 三处拒绝断言实测；用例 9 :210-224 无 fixture 无启动实测"
+  },
+  {
+   "id": "M-01",
+   "severity": "metadata",
+   "resolved": true,
+   "fact": "r1 START/DONE startedAtUtc 不一致",
+   "r2Fix": "两处同值 11:26:37.849800Z",
+   "verification": "实测 START/DONE/READY 三处同值"
+  },
+  {
+   "id": "M-02",
+   "severity": "metadata",
+   "resolved": "partial",
+   "fact": "r1 sealedAtUtc 与 mtime 不一致（P-04 复发）",
+   "r2Fix": "sealedAtUtc 11:30:33.922Z 与 DONE 写入同秒；UNVERIFIED 说明 mtime 不替代字节一致性",
+   "verification": "实测同秒；但 READY 写于 11:30:51Z 晚于 DONE，写入序问题保留为 P-R2-01"
+  },
+  {
+   "id": "M-03",
+   "severity": "metadata",
+   "resolved": true,
+   "fact": "r1 process 计数 3≠4",
+   "r2Fix": "process_r0=4（P-01..04）/ process_r1=4（M-01..04）分列",
+   "verification": "与 r0/r1 报告逐条相符"
+  },
+  {
+   "id": "M-04",
+   "severity": "metadata",
+   "resolved": true,
+   "fact": "r1 READY.reviewer 文本过期",
+   "r2Fix": "不回写 r1 快照（经理裁定 pending 快照免回写）；r2 READY 写当前状态",
+   "verification": "符合 MANAGER-QA-METADATA-BOUNDARIES"
+  }
+ ],
+ "crossFileFindings": [
+  {
+   "id": "XF-R2-01",
+   "severity": "info",
+   "fact": "draft 门禁不一致（run-async :93 拒 draft；bridge 无 stage 门禁）与白名单覆盖缺口（Pi 路径无 provider 闸）仍待产品/安全裁决；UNVERIFIED 已如实登记，不阻断本批"
+  }
+ ],
+ "processFindings": [
+  {
+   "id": "P-R2-01",
+   "severity": "process",
+   "fact": "实际写入序 MANIFEST/COVERAGE/STATUS/START(11:30:24Z)→DONE(11:30:33Z)→ZIP(11:30:42Z)→READY(11:30:51Z)，与 DELIVERY-CONTRACT「DONE 最后发布」及 seal 工具文档层序（MANIFEST→ZIP→READY→DONE）不一致；READY 含 doneSha256 使 READY 必然晚于 DONE，r0/r1/r2 三批同构。哈希链无自引用且全部与实际字节一致，不影响按 acceptedHashes 合入。",
+   "action": "lead 统一 seal 工具层序或修订合同表述；非内容阻断"
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/module-settings-store.ts.md": "5c5732455f6b754d0e92a1e7ef78873f6117c4e55a12248efcb8ab21d8dcd777",
+  "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/module-settings-store.test.ts.md": "d5c5c571ee431b52df4507f0c313ec3de2cc9bd04a095c03981ffd96353290ed",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-model-gateway.ts.md": "19b7a4f994ca22e3925f76122311984bbe1df4adb0fb2af7161cedc0c5318cbe",
+  "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/run-async-service.ts.md": "86a9ecbdd9b95edb92adba51b90bb2252243b36691f4dc9f9b0251ad51b2e1d0",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-pi-run-bridge.ts.md": "95d398ae0f93265846ff4cf5e45d3576e78926300aeca96ee6ccd36c7b4931e4",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-pi-run-bridge.main.test.ts.md": "a8b8340c8113186f2034b03c38029dab5873fccbaa0009b2de31d5376416e116"
+ },
+ "revisionHashes": {},
+ "notRun": [
+  "bun test",
+  "typecheck",
+  "Electron/GUI",
+  "real model/network",
+  "build/package"
+ ],
+ "limits": "静态复验；产品测试断言≠已运行；未读渲染层 UI 消费全量与 Pi 运行时协议适配内部（UNVERIFIED §2 如实登记）",
+ "next": "lead 可按 acceptedHashes 合入 6 篇；后续任何修订另开 r3；XF-R2-01 待产品/安全裁决"
+}

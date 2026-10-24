@@ -1,0 +1,58 @@
+{
+ "schema": "dsh-r07-index-review-done/1",
+ "batch": "index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill-r1",
+ "groupId": "p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-03-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T21:31:00Z",
+ "sealedAtUtc": "2026-10-23T19:33:22+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "revisionOf": "index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill",
+ "counts": {
+  "files": 9,
+  "accepted": 9,
+  "revision_required": 0,
+  "unknown": 0,
+  "findingsBlocking": 0,
+  "findingsNonBlocking": 0
+ },
+ "artifactSha256": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+ "artifacts": [
+  "reviews/index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill-r1/RESULT.json",
+  "reviews/index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill-r1/REVIEWED-HASHES.json",
+  "reviews/index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill-r1/SOURCE-CHECKLIST.md",
+  "reviews/index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill-r1/DONE.json"
+ ],
+ "notRun": [
+  "产品测试",
+  "typecheck",
+  "构建",
+  "Electron/GUI（本轮统一 NOT_RUN）"
+ ],
+ "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal（父批 r0 字节不动）/inventory/全局账/candidate；未 commit/push；结论只覆盖本 r1。",
+ "findingsSummary": [
+  {
+   "id": "GUZ-N-01",
+   "closure": "resolved",
+   "verify": "image-prompts 杂志信息图 :72→:74，与实测一致。"
+  },
+  {
+   "id": "GUZ-N-02",
+   "closure": "resolved",
+   "verify": "validate-swiss-deck.mjs 白名单引证改 :17-21（Set :17-21 精确，优于 QA 建议的 :17-20）。"
+  },
+  {
+   "id": "GUZ-N-03",
+   "closure": "resolved",
+   "verify": ":227→:224（「## The 22 registered layouts」节起点，版式标题 :226 起，口径成立）。"
+  },
+  {
+   "id": "GUZ-SELF",
+   "closure": "verified",
+   "verify": "随 r1 顺带自纠 3 处并经 QA 实测属实：config-paths 注释块 :946-955（:946 '/**' 实测）、DEFAULT_SKILL_COPY_BLOCKLIST :681-690（:690 ']' 实测）、LEGACY 常量 :848 起（注释 :840-847，:848 const 实测）。"
+  }
+ ],
+ "next": "lead 按 reviews/index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill-r1/REVIEWED-HASHES.json 合入 r1 artifact（295ae77c8ce5955c…）；旧 seal r0 不改、不套新字节。"
+}

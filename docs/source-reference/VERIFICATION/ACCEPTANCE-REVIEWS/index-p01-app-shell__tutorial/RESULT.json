@@ -1,0 +1,47 @@
+{
+  "schema": "dsh-r07-index-review-result/1",
+  "batch": "index-p01-app-shell__tutorial",
+  "groupId": "p01-app-shell__tutorial",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-index-author-20261023",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T21:40:00Z",
+  "sealedAtUtc": "2026-10-23T18:43:31Z",
+  "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__tutorial.md",
+  "artifactSha256": "f9dc461cd9f3dc9e5ae68b590a727f57db44b7888504ecbfcf88c39b017c6b3a",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 1,
+    "accepted": 1,
+    "revision_required": 0,
+    "unknown": 0,
+    "blocking": 0,
+    "nonBlocking": 0
+  },
+  "gates": {
+    "G0_INDEX": "PASS",
+    "G1_INDEPENDENT_SOURCE_REVIEW": "PASS",
+    "G2_SEAL_CONSISTENCY": "PASS",
+    "note": "G0 等价全过、封版三方哈希全对、change 与锁一致；消费链 QA 行级实证。"
+  },
+  "g0Evidence": {
+    "stockScript": "ERRATA-E1 沿登记；等价检查 PASS"
+  },
+  "files": [
+    {
+      "path": "tutorial/tutorial-v2.md",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__tutorial.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__tutorial.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#tutorial--tutorial-v2.md",
+      "line": 6,
+      "sourceBlob": "dfc5b059b39b3c6c2c360d958ee909bc4661beeb",
+      "sourceSha256": "76b14920902bd8e093c7497f260200159a6c0a30b1f8586a50483a578ebe5115",
+      "manualSha256": "f9dc461cd9f3dc9e5ae68b590a727f57db44b7888504ecbfcf88c39b017c6b3a",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "打包映射 electron-builder.yml:77-78（from ../../tutorial/tutorial-v2.md to tutorial.md）+ tutorial-service.ts:23/:25-26 双路径 QA 已实证（前批交叉验证一致）"
+    }
+  ],
+  "findings": [],
+  "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局账；未跑产品测试/typecheck/构建/GUI；未 commit/push；结论只覆盖本批。"
+}

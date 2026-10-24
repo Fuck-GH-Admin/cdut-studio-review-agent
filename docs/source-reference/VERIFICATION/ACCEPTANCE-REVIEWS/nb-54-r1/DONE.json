@@ -1,0 +1,35 @@
+{
+  "schema": "r07-qa-done/1",
+  "batch": "nb-54-r1",
+  "revisionOf": "nb-54",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewedAtUtc": "2026-10-23T19:28:00Z",
+  "sealId": "seal-d3130401f8f6ec3f",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "result": "reviews/nb-54-r1/RESULT.json",
+  "resultSha256": "695d1ff921498f300bc06f8e16add8cc3684c8fe289ac21b613f648bc9c36382",
+  "reviewedHashes": "reviews/nb-54-r1/REVIEWED-HASHES.json",
+  "reviewedHashesSha256": "41b0d8860dfb1dfff37f52fe1d2cfb140eeaa0af1c741738d5a9236e5a6f9f08",
+  "testsRun": [],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network",
+    "win32 real-execution cases"
+  ],
+  "knownUnknowns": [
+    "@earendil-works/pi-* SDK 内部（含 patch）",
+    "批外依赖行为",
+    "运行期 PowerShell/模型/代理行为（NOT_RUN）",
+    "pi-agent-adapter.ts 全貌（非本批）"
+  ]
+}

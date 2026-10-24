@@ -1,0 +1,170 @@
+{
+ "schema": "dsh-r07-review-result/1",
+ "batch": "nb-127-r2",
+ "revisionOf": "nb-127-r1",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-04-20261024",
+ "reviewerSession": "docs-r07-qa-extra-04-20261024",
+ "reviewedAtUtc": "2026-10-23T21:22:00Z",
+ "preRead": "reviews/nb-127/PRE_READ_DONE.json",
+ "deliverySeal": {
+  "sealId": "seal-e6fbb27d09a01ef5",
+  "sealedAtUtc": "2026-10-23T20:44:35Z",
+  "readySha256": "aa09a4752e5b8d7bdd4c54ce97f6e65803ebe665d81b34c447092539bb8d0263",
+  "doneSha256": "3d1719165be82610f07a1953e9471ada90f9dc47e08b1c9e8493c24ec403d208",
+  "manifestSha256": "3cd74ddb9e95681915348c04a9499d5215b058eb110bb7b3717db328a7c9203b",
+  "zipSha256": "b8226f159d45baa7454a8229acb1c3cae490a2a47bd86e14be304abd8225196e"
+ },
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "gatesNote": "G0：链复算全对；sealId 复算一致 seal-e6fbb27d09a01ef5；ZIP 14 条目合规、zip=stage；revisionOf=nb-127-r1。G1：FINDINGS-RESPONSE 逐条响应（明确对应 reviews/nb-127/TO-AUTHOR 四条，澄清 r1 时间差），before/after hash 与实测三方一致。G2（返修复验）：修订面恰 3 篇——session-context「5→4」三处+软消费 2 处补注（QA 备选项）、globals「13→18」18 行号全列与 QA 清单逐行一致+364 计数口径可复现（QA 实测=364、^@keyframes=18）、main.tsx「6 路窗口」措辞四处统一；8 篇与 r1 逐字节一致。QA-127-F02/F03/N01/N02 全部 resolved，0 新 findings。",
+ "batchVerdict": "accepted",
+ "batchFindings": [],
+ "files": [
+  {
+   "path": "apps/electron/src/renderer/App.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/App.tsx.md",
+   "sourceBlob": "40c108e8bfbaa12f3b44872a32172523e12a2a53",
+   "sourceSha256": "e7a71f9dce5f5a3fb35fc0418771b11f2f8c54e9b1ad72c206a161493cd33e6e",
+   "manualSha256": "1def0e5f159d4e09aed06309cd357efc01dae9118193a780942f3c79145a0365",
+   "prevManualSha256": "1def0e5f159d4e09aed06309cd357efc01dae9118193a780942f3c79145a0365",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "与 r0/r1 逐字节一致，沿用 accepted 并重录 hash"
+  },
+  {
+   "path": "apps/electron/src/renderer/contexts/AppShellContext.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/contexts/AppShellContext.tsx.md",
+   "sourceBlob": "2c5f27b2be73bb7d1cfecc7e76d2d4726c10eac8",
+   "sourceSha256": "c5d3fadf11119d84f9eaa5fd3431efbe4cbbd634d2b79eae1817a92f0142a802",
+   "manualSha256": "ba4d7ef404dbae6b6e3cc0f79e0ee74041714829e4c53c97fa86d1067811fcc9",
+   "prevManualSha256": "ba4d7ef404dbae6b6e3cc0f79e0ee74041714829e4c53c97fa86d1067811fcc9",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "与 r0/r1 逐字节一致，沿用 accepted 并重录 hash"
+  },
+  {
+   "path": "apps/electron/src/renderer/contexts/session-context.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/contexts/session-context.tsx.md",
+   "sourceBlob": "754156594a07249e6ddc004a904e6515ac6549b9",
+   "sourceSha256": "d9009d9a4f37a56fcaee14b3ff6404a80fb1ab24faf1d12acc7539062e891a3b",
+   "manualSha256": "b66316d8238e987d4a18c2d5121f1f11c6b1eabd974573c5d30ae86b6f678ad3",
+   "prevManualSha256": "e7047c9fdc5d986fc5592c9ae23cf866b3494c6b4e63901d99e7ff353cd59c6c",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "与 r0/r1 逐字节一致，沿用 accepted 并重录 hash"
+  },
+  {
+   "path": "apps/electron/src/renderer/index.html",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/index.html.md",
+   "sourceBlob": "4efe0e03ef546fec3376fceb2a063dbf3ea26eac",
+   "sourceSha256": "2ebd99115d9d8a5691c3dac54d9a26096f4bde75c561d67e6bf0bd906e283299",
+   "manualSha256": "e72c573b307d722f853781d5aea6573dd27f38281d75432b4489c3ef335ddb2e",
+   "prevManualSha256": "e72c573b307d722f853781d5aea6573dd27f38281d75432b4489c3ef335ddb2e",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "与 r0/r1 逐字节一致，沿用 accepted 并重录 hash"
+  },
+  {
+   "path": "apps/electron/src/renderer/main.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/main.tsx.md",
+   "sourceBlob": "3c14557f6c018fad886a4c833454fecdf6484eb8",
+   "sourceSha256": "6ae6ad4c1fce85748dee9d1c4714b5250069ab805156c50996375c2e515049d6",
+   "manualSha256": "ddd668418090e235f499f8588fbe5a501e2aabe77bdec66fb59be823bc2f3e63",
+   "prevManualSha256": "34d7039c4e7f44b98b267872bf3df6585bd709eec3623fcf2a9e92ed083d08b3",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "与 r0/r1 逐字节一致，沿用 accepted 并重录 hash"
+  },
+  {
+   "path": "apps/electron/src/renderer/styles/globals.css",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/styles/globals.css.md",
+   "sourceBlob": "856d76373253eb1eb928b16620a66c9bdb178492",
+   "sourceSha256": "d4fcc9d5fa10ef4032f0d432d1c1ed8487c8be0418a958fcf8daa39bf9581526",
+   "manualSha256": "98531a8892682dc906e8212f681c18469ea79514e31738ee1ff6c14d5840d419",
+   "prevManualSha256": "f16db001faa75c7c555bde4c85d346fd7c1ec2ad53612db95d7db2b13c7aa8f9",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "与 r0/r1 逐字节一致，沿用 accepted 并重录 hash"
+  },
+  {
+   "path": "apps/electron/src/renderer/styles/ofv-profer-theme.css",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/styles/ofv-profer-theme.css.md",
+   "sourceBlob": "b913bd9717f70a0a3176fcdda028751a9109f9a8",
+   "sourceSha256": "8d5edde3e1a87f90efb71f2295912a49877fc520c88bab6885bb3c53af76a5ac",
+   "manualSha256": "ea9971df8234921954523bcb82eeea237ab1ee31ba6ac2c2e15002002e994e3c",
+   "prevManualSha256": "10916edf5ae1172b2aacc9a3773cc2d4cfbe800b9ccc11fc893cf167597eeb45",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "与 r0/r1 逐字节一致，沿用 accepted 并重录 hash"
+  },
+  {
+   "path": "apps/electron/src/renderer/styles/skin-base.css",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/styles/skin-base.css.md",
+   "sourceBlob": "45831ec244275d7deb152f9c0befc5929796565e",
+   "sourceSha256": "330f3e6216ac65bf2494e5c5a47f50d3363f1e58593c4a251cbc9d6b0aad658a",
+   "manualSha256": "1066ee31e5b2b178c447e7e3dc58d0bee10e8ddb5cc05cc696e227404d54b3ad",
+   "prevManualSha256": "9f04636ab7d16cb59ae8a722a6171a7229a1074c2cfbb9a24d19409f1d206719",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "与 r0/r1 逐字节一致，沿用 accepted 并重录 hash"
+  },
+  {
+   "path": "apps/electron/src/renderer/viewer.html",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/viewer.html.md",
+   "sourceBlob": "9e4e2617f1b52d5d0f4c72b1685e1d6939f596f4",
+   "sourceSha256": "ceb2a56c08e90a7ee04390c2f3eef581264de8f4beff01d07966c2e1dd0f04d4",
+   "manualSha256": "ed733a2ec5b98d68ba9d8b02ccefd31781826172d6c5162ea37db8e256c1acae",
+   "prevManualSha256": "ed733a2ec5b98d68ba9d8b02ccefd31781826172d6c5162ea37db8e256c1acae",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "与 r0/r1 逐字节一致，沿用 accepted 并重录 hash"
+  },
+  {
+   "path": "apps/electron/src/renderer/viewer/main.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/viewer/main.ts.md",
+   "sourceBlob": "07feaa925d9256083383c849aa10265ccc6c02a2",
+   "sourceSha256": "7e7f29ee97c5a6c12e2954761c41bef7376191746cf5281ccbf4551d50d1ca59",
+   "manualSha256": "1b14299fee7f116108511497b0238be484fb4d04101285e172d3925c7360dd6b",
+   "prevManualSha256": "1b14299fee7f116108511497b0238be484fb4d04101285e172d3925c7360dd6b",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "与 r0/r1 逐字节一致，沿用 accepted 并重录 hash"
+  },
+  {
+   "path": "apps/electron/src/renderer/vite-env.d.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/vite-env.d.ts.md",
+   "sourceBlob": "b07b2f9abb6e4f65eeab4ecefc2d3d36ade9f348",
+   "sourceSha256": "71d137ddedb0945efdcfa2798ff22dc77038953a905be08779690147c3b238ef",
+   "manualSha256": "3420c9f82b3179f3fa85a0834cc69ccaf5513c9c17fe9ef0522d14acddf96e8d",
+   "prevManualSha256": "3420c9f82b3179f3fa85a0834cc69ccaf5513c9c17fe9ef0522d14acddf96e8d",
+   "verdict": "accepted",
+   "findings": [],
+   "note": "与 r0/r1 逐字节一致，沿用 accepted 并重录 hash"
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/App.tsx.md": "1def0e5f159d4e09aed06309cd357efc01dae9118193a780942f3c79145a0365",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/contexts/AppShellContext.tsx.md": "ba4d7ef404dbae6b6e3cc0f79e0ee74041714829e4c53c97fa86d1067811fcc9",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/contexts/session-context.tsx.md": "b66316d8238e987d4a18c2d5121f1f11c6b1eabd974573c5d30ae86b6f678ad3",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/index.html.md": "e72c573b307d722f853781d5aea6573dd27f38281d75432b4489c3ef335ddb2e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/main.tsx.md": "ddd668418090e235f499f8588fbe5a501e2aabe77bdec66fb59be823bc2f3e63",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/styles/globals.css.md": "98531a8892682dc906e8212f681c18469ea79514e31738ee1ff6c14d5840d419",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/styles/ofv-profer-theme.css.md": "ea9971df8234921954523bcb82eeea237ab1ee31ba6ac2c2e15002002e994e3c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/styles/skin-base.css.md": "1066ee31e5b2b178c447e7e3dc58d0bee10e8ddb5cc05cc696e227404d54b3ad",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/viewer.html.md": "ed733a2ec5b98d68ba9d8b02ccefd31781826172d6c5162ea37db8e256c1acae",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/viewer/main.ts.md": "1b14299fee7f116108511497b0238be484fb4d04101285e172d3925c7360dd6b",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/vite-env.d.ts.md": "3420c9f82b3179f3fa85a0834cc69ccaf5513c9c17fe9ef0522d14acddf96e8d"
+ },
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network/IPC"
+ ],
+ "scopeBound": "仅 nb-127-r2 复验（3 篇修订 + 8 篇同字节）；nb-127/r1 reviews 历史保留"
+}

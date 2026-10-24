@@ -1,0 +1,34 @@
+{
+  "schema": "dsh-r07-independent-review-done/1",
+  "batch": "nb-70-r1",
+  "revisionOf": "nb-70",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-03-20261023",
+  "reviewerSession": "docs-r07-qa-nb-03-20261023",
+  "batchVerdict": "accepted",
+  "completedAtUtc": "2026-10-23T20:49:34Z",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "findings": 2,
+    "optionalNotes": 0
+  },
+  "sealBinding": {
+    "sealId": "seal-b590a06bc175f4bf",
+    "zipSha256": "8a8f7128f88c3eb09a300f5b537ee586fb4ee89124c8afbc355ec3e43ca0c86f",
+    "manifestSha256": "83984de89503856c9a4a427a24e7fcb73b3501507cd77b68ac078aad33699561",
+    "readySha256": "b2b44950713ed00677cbca721c9a3bdb684e9ea34f8c9b1d542cd871d55e1de7",
+    "doneSha256": "4cc90d282924b0510888f51039ba6b8f61474bd08ba9184ac1960d2c59249ece",
+    "sealedAtUtc": "2026-10-23T20:46:37Z"
+  },
+  "notRun": [
+    "bun test NOT_RUN",
+    "tsc/build NOT_RUN",
+    "GUI NOT_RUN",
+    "模型/产品调用 NOT_RUN"
+  ],
+  "note": "SEM-01 六项+COUNT-01 全闭合；变更恰为 2 findings 对象。nb-70 线终版 r1。",
+  "resultSha256": "fcd4407384aca002b36eeadb47d8a0c13ac81a4435a1df873a08e5bb37a6dd36",
+  "reviewedHashesSha256": "13294db6561febb6a1b74cc777f7acdfb65db8e808041fd342fed8ef289c394a"
+}

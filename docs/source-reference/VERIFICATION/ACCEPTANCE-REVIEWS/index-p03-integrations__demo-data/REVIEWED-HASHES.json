@@ -1,0 +1,50 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "index-p03-integrations__demo-data",
+ "groupId": "p03-integrations__demo-data",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T19:48:00Z",
+ "sealedAtUtc": "2026-10-23T19:24:02+00:00",
+ "artifactSha256": "63f9fef6a940cb3137654472c42c523da8d27859a1e680d0d1f0e78763bf90d6",
+ "note": "QA 实算封版链全对。7/7 accepted（9 条非阻断行号 minor DEMO-N-01..09 已登记，非阻断≠已修）。",
+ "acceptedManuals": {
+  "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md@demo-data/cdut-science-rutile/gold-fcc-nanoparticle.pdb": "63f9fef6a940cb3137654472c42c523da8d27859a1e680d0d1f0e78763bf90d6",
+  "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md@demo-data/cdut-science-rutile/rutile-raman-532nm.csv": "63f9fef6a940cb3137654472c42c523da8d27859a1e680d0d1f0e78763bf90d6",
+  "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md@demo-data/cdut-science-rutile/rutile-tio2.cif": "63f9fef6a940cb3137654472c42c523da8d27859a1e680d0d1f0e78763bf90d6",
+  "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md@demo-data/cdut-science-rutile/rutile-xrd-co-ka.csv": "63f9fef6a940cb3137654472c42c523da8d27859a1e680d0d1f0e78763bf90d6",
+  "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md@demo-data/cdut-science-rutile/rutile-xrd-cu-ka.csv": "63f9fef6a940cb3137654472c42c523da8d27859a1e680d0d1f0e78763bf90d6",
+  "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md@demo-data/matlab-benchmarks/matlab_level5_max_compressed_complex.mat": "63f9fef6a940cb3137654472c42c523da8d27859a1e680d0d1f0e78763bf90d6",
+  "MODULE-REFERENCE/p03-integrations/INDEX/p03-integrations__demo-data.md@demo-data/matlab-benchmarks/matlab_v73_max_hdf5_chunked.mat": "63f9fef6a940cb3137654472c42c523da8d27859a1e680d0d1f0e78763bf90d6"
+ },
+ "sourceBindings": {
+  "demo-data/cdut-science-rutile/gold-fcc-nanoparticle.pdb": {
+   "sourceBlob": "2172705db0ceeecd6f4d3d49c569ecbb129d398b",
+   "sourceSha256": "57ca3587d13dc976de119bd227a3faaa6a8546266d5c714829e8d45ceaf59094"
+  },
+  "demo-data/cdut-science-rutile/rutile-raman-532nm.csv": {
+   "sourceBlob": "9899b0687b32f2db3b4f74d953cbc911626b1126",
+   "sourceSha256": "084d3063b81229846cd1f28d126388fc6be8a10e12121b57e1a243b265d6b419"
+  },
+  "demo-data/cdut-science-rutile/rutile-tio2.cif": {
+   "sourceBlob": "b62271a399c3faf3ac2c909604069e10e8f201c8",
+   "sourceSha256": "848e6b8784d118f854c1a800407b1a78974f19cc360aabd450929bfddfda6ba1"
+  },
+  "demo-data/cdut-science-rutile/rutile-xrd-co-ka.csv": {
+   "sourceBlob": "b1b78ee3bd5d272c7134d3267f516233447028cc",
+   "sourceSha256": "02225cda1fc00f3780437cc0e2f94cb643d8892633fee71380aaf2b97fe67742"
+  },
+  "demo-data/cdut-science-rutile/rutile-xrd-cu-ka.csv": {
+   "sourceBlob": "69637ece8d698e5eb241e3ff1260364cd09299a9",
+   "sourceSha256": "62c8b29eb498c9528356a72988be6662c98a77e5fe7982ffa1d85f481ae3d953"
+  },
+  "demo-data/matlab-benchmarks/matlab_level5_max_compressed_complex.mat": {
+   "sourceBlob": "ee415a4a4be6440574261897e6a223aabd480b87",
+   "sourceSha256": "a447b7fbd76143484c9cafab28c3bf6e4d9b444f27455584da9241f1669d7db9"
+  },
+  "demo-data/matlab-benchmarks/matlab_v73_max_hdf5_chunked.mat": {
+   "sourceBlob": "4d16d37ec4f30887c455d910a85784bae4a3aa6b",
+   "sourceSha256": "93111ecda56fe3f72b6f7400d1b6492f5115a49de642032d68237e3163da4480"
+  }
+ }
+}

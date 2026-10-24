@@ -1,0 +1,35 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-131-r1",
+ "revisionOf": "nb-131",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-06-20261024",
+ "reviewerSession": "docs-r07-qa-extra-06-20261024",
+ "reviewedSealId": "seal-406f5f412ccc3281",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 18,
+  "accepted": 18,
+  "revision_required": 0,
+  "unknown": 0
+ },
+ "sealedAtUtc": "2026-10-23T20:17:29Z",
+ "resultSha256": "3251033ff70c955762f26c5012803ab04c62ef4a7ef7eecd42bf8ada8dbe527e",
+ "resultMdSha256": "5fb38a84441f5499e9f2ccb25a0c01746428c4d118637e8f10d366eb0edd56df",
+ "reviewedHashesSha256": "cf1cd6c5a4656884275316842b39682da0fa84b753d2e1acc81e4a79e9f0b63e",
+ "artifacts": [
+  "reviews/nb-131-r1/RESULT.json",
+  "reviews/nb-131-r1/RESULT.md",
+  "reviews/nb-131-r1/REVIEWED-HASHES.json",
+  "handoffs/nb-131-r1-REVIEW-TO-AUTHOR-LEAD.md"
+ ],
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real process/network"
+ ],
+ "note": "F-01+7 errata 全部关闭；12 篇 r0 字节沿用；6 篇修复回源验证 6/6；nb-131 批链闭合"
+}

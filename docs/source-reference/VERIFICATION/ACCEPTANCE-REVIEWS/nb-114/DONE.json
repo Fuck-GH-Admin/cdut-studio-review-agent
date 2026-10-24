@@ -1,0 +1,134 @@
+{
+ "schema": "dsh-r07-qa-done/1",
+ "batch": "nb-114",
+ "id": "NB-114",
+ "revisionOf": null,
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewRoot": "reviews/nb-114",
+ "reviewedAtUtc": "2026-10-24T13:05:00Z",
+ "status": "REVIEW_COMPLETE_REVISION_REQUIRED",
+ "batchVerdict": "revision_required",
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PARTIAL",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 14,
+  "revision_required": 4,
+  "unknown": 0
+ },
+ "acceptedManuals": 14,
+ "acceptedHashesCount": 14,
+ "revisionRequiredManuals": {
+  "cslab-atoms.ts.md": [
+   {
+    "id": "F-01",
+    "severity": "minor_factual",
+    "claim": "§2 称 CsLabDrawerMode「17 态」——实际 **18 态**（其自身列名 18 个：asset/capsule/ingest/lineage/selection/plot/formula/brain/zotero/runs/notes/tools/share/hpc/fit/symmetry/pxrd/isosurface）。另「30+ 导出」宜精确为 59（grep^export=59，非阻断备注）。",
+    "sourceEvidence": "sed :236-255 联合 18 叶；grep -c ^export=59",
+    "action": "rN 修正为 18 态（导出数可精化 59）"
+   }
+  ],
+  "conversation-atoms.ts.md": [
+   {
+    "id": "F-02",
+    "severity": "minor_factual",
+    "claim": "§2 称「导出 15 条」——实际 **21 条**（grep^export=21；其自身分组列名 7+6+3+5=21）。",
+    "sourceEvidence": "grep -c ^export=21",
+    "action": "rN 修正为 21"
+   }
+  ],
+  "automation-atoms.ts.md": [
+   {
+    "id": "F-03",
+    "severity": "minor_factual",
+    "claim": "§2 称「导出 6 条」——实际 **8 条**（其自身 export 位置 :20/:27/:52/:57/:63/:84/:108/:119 列了 8 个）。",
+    "sourceEvidence": "grep -c ^export=8",
+    "action": "rN 修正为 8"
+   }
+  ],
+  "cslab-vesta-atoms.ts.md": [
+   {
+    "id": "F-04",
+    "severity": "minor_factual",
+    "claim": "§2 称「导出 9 条」——实际 **10 条**（其自身 export 位置 :13/:20/:23/:26/:29/:32/:35/:38/:41/:44 列了 10 个）。",
+    "sourceEvidence": "grep -c ^export=10",
+    "action": "rN 修正为 10"
+   }
+  ]
+ },
+ "findingsSummary": {
+  "cslab-atoms.ts.md": [
+   {
+    "id": "F-01",
+    "severity": "minor_factual",
+    "claim": "§2 称 CsLabDrawerMode「17 态」——实际 **18 态**（其自身列名 18 个：asset/capsule/ingest/lineage/selection/plot/formula/brain/zotero/runs/notes/tools/share/hpc/fit/symmetry/pxrd/isosurface）。另「30+ 导出」宜精确为 59（grep^export=59，非阻断备注）。",
+    "sourceEvidence": "sed :236-255 联合 18 叶；grep -c ^export=59",
+    "action": "rN 修正为 18 态（导出数可精化 59）"
+   }
+  ],
+  "conversation-atoms.ts.md": [
+   {
+    "id": "F-02",
+    "severity": "minor_factual",
+    "claim": "§2 称「导出 15 条」——实际 **21 条**（grep^export=21；其自身分组列名 7+6+3+5=21）。",
+    "sourceEvidence": "grep -c ^export=21",
+    "action": "rN 修正为 21"
+   }
+  ],
+  "automation-atoms.ts.md": [
+   {
+    "id": "F-03",
+    "severity": "minor_factual",
+    "claim": "§2 称「导出 6 条」——实际 **8 条**（其自身 export 位置 :20/:27/:52/:57/:63/:84/:108/:119 列了 8 个）。",
+    "sourceEvidence": "grep -c ^export=8",
+    "action": "rN 修正为 8"
+   }
+  ],
+  "cslab-vesta-atoms.ts.md": [
+   {
+    "id": "F-04",
+    "severity": "minor_factual",
+    "claim": "§2 称「导出 9 条」——实际 **10 条**（其自身 export 位置 :13/:20/:23/:26/:29/:32/:35/:38/:41/:44 列了 10 个）。",
+    "sourceEvidence": "grep -c ^export=10",
+    "action": "rN 修正为 10"
+   }
+  ]
+ },
+ "batchFindings": [
+  "M-01",
+  "M-02"
+ ],
+ "resultSha256": "afe67891d207bdaf878705aef36067f4c84624275243153a9a1ce443ac131a0e",
+ "reviewedHashesSha256": "fff6b7eec403781d0a68d2ed58ecb5fbd5d3522e99142513a20cdc538ea3aa65",
+ "zip": {
+  "path": "deliveries/nb-114/R07-nb-114-05fb2565.zip",
+  "sha256": "122c5c1f59986f9d19cfd2cf79a9f3f1f8ecfcc7f45ab7944c0bdf2acbf8cb24",
+  "entries": 21,
+  "note": "18 手册+MANIFEST+2 mechanical TSV；不含 READY/DONE（v2）；无穿越/0 mismatch"
+ },
+ "sealId": "seal-e77ac71f3ec5197f",
+ "artifacts": [
+  "reviews/nb-114/RESULT.json",
+  "reviews/nb-114/RESULT.md",
+  "reviews/nb-114/REVIEWED-HASHES.json",
+  "reviews/nb-114/DONE.json",
+  "handoffs/nb-114-REVIEW-TO-AUTHOR.md",
+  "handoffs/nb-114-REVIEW-TO-LEAD.md"
+ ],
+ "priorReviewsUntouched": true,
+ "parentPreserved": null,
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "GUI"
+ ],
+ "writtenOnlyIn": "reviews/nb-114 + handoffs；未写 deliveries/inventory/manager/candidate/全局 FILES/MANIFEST",
+ "next": "作者开 nb-114-r1 修 F-01..F-04；lead 按 14 个 acceptedHashes 合入"
+}

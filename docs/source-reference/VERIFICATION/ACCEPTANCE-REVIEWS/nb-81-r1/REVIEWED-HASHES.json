@@ -1,0 +1,209 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-81-r1",
+  "revisionOf": "nb-81",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-01-20261023",
+  "authorSession": "docs-r07-author-nb-01-20261023",
+  "reviewedAtUtc": "2026-10-25T00:50:00Z",
+  "batchVerdict": "accepted",
+  "bindingNote": "18 篇当前字节 manual hash 全记录；未修篇同父 accepted，修复篇 r1 新 hash。",
+  "sourceBinding": [
+    {
+      "path": "apps/electron/src/main/lib/browser-translate.ts",
+      "sourceBlob": "2c0fb1d89a2b4538de17f4ad42c76e7777776746",
+      "sourceSha256": "e3ec65d626f1efa666efaa76bd4087672de947333f7b7e5d71745d209207cb7f",
+      "lines": 165,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-translate.ts.md",
+      "manualSha256": "404642cfb1d0bc2a212476f174d282d9b457a73bdecd625056912fdb5c0e10a8",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/browser-view-layout.test.ts",
+      "sourceBlob": "f94e2f48ab03d1c4c3e368b7902e4b578b2bce16",
+      "sourceSha256": "fdc96cd163399f82afb7ec5aaef9d7a7a6654195e2c5a54b435c63e40bfbe810",
+      "lines": 31,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-view-layout.test.ts.md",
+      "manualSha256": "bbe0e02bf5c3de893fc4cfc81152a1ee140402018cd49e89f26deb80992762dd",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/browser-view-layout.ts",
+      "sourceBlob": "02027a0941055c5fbd26c237d3feee98fd5695bf",
+      "sourceSha256": "3deb8bd3829e63e6c11b6ec7686e84e80095eb975b21aa28bb9b30174b1c3b57",
+      "lines": 57,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-view-layout.ts.md",
+      "manualSha256": "1d8834f27d44d4502054a056b0a191e1533f0228f9a5438258ca509088ec0223",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/dingtalk-bridge-manager.ts",
+      "sourceBlob": "b9ef751f16b652f6559e54aaef942ebaadd488cd",
+      "sourceSha256": "026fec9c6593a280d5a39502014555a05ff2f50614df3a0604f13de85392a9be",
+      "lines": 141,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/dingtalk-bridge-manager.ts.md",
+      "manualSha256": "7394983e1a14c1e6db9e940d050f8b550f6a2548355509aaccf2521bf8e18f5e",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/dingtalk-bridge.ts",
+      "sourceBlob": "ed9d3b6b8db26668cbbcfb6741fd1b06fc720e2a",
+      "sourceSha256": "dac1340e525b3e4033a7568309a7f0ffa4c883ee91276e987d4fb8230a7dc675",
+      "lines": 531,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/dingtalk-bridge.ts.md",
+      "manualSha256": "2cb8b092cbbfcbe2df56c7c3421fbd178e2436939df9ccbbf749c501aa0d1c12",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/dingtalk-config.ts",
+      "sourceBlob": "ac22e842d5cac2f688e035c2294b03d2ed03ecbc",
+      "sourceSha256": "f98bb54bdb9789d8b575856ef6ddc56ab36d8d6c75848524d156c2a5ca0809ed",
+      "lines": 206,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/dingtalk-config.ts.md",
+      "manualSha256": "90414d6736ed9482e21e5f82f6d32d8aa093ac2a489d0985c3022d24cb049299",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/lark-cli-service.test.ts",
+      "sourceBlob": "d2feb8408d933ef11b038e9d2fff8f393e0dc1fa",
+      "sourceSha256": "ea2407da33f944e43dbd3c533f4220180abd70ccd10ada16bfcc9069e0beb339",
+      "lines": 89,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/lark-cli-service.test.ts.md",
+      "manualSha256": "851fc1ef819829cac9d58d9dc72bb8e994b3016c9799c16ac31d0ce003f1064a",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/lark-cli-service.ts",
+      "sourceBlob": "ff2cb9c92572bb2f9958756c081d1ef7943db314",
+      "sourceSha256": "97ad05aa3501fc574d0beadf66b14343f97896c8420a20ba0a2df64c0a690bbd",
+      "lines": 193,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/lark-cli-service.ts.md",
+      "manualSha256": "99da5cf23fbf823e49d2004a46249ffe9584fd41a5f64579981be0fae8d56307",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/lark-mcp-service.test.ts",
+      "sourceBlob": "41529a77cb5648d84c30c68f108d0b86904938d2",
+      "sourceSha256": "d91e2a3e409102a3f59310901b9725314251227c663e7342adb7b7e072dfffa0",
+      "lines": 133,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/lark-mcp-service.test.ts.md",
+      "manualSha256": "001c90f687a1b1c54fc2aa693c511cf9042dcf534bfdec68ade0addf8e9cd6d5",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/lark-mcp-service.ts",
+      "sourceBlob": "10e4d95a74bae744b247eeeca7277341bb3a7e97",
+      "sourceSha256": "9661776ce0fd6f37e772fc837960874d2f248cc848ec357694d47f11e528dd4a",
+      "lines": 343,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/lark-mcp-service.ts.md",
+      "manualSha256": "a03d94450afa1e0bb6fb6dee88a183716f5b952cf16b035bcd7d8000703a5648",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/ppt-capability-gate.test.ts",
+      "sourceBlob": "d035b516d0c5df3d8bde46ed1ded17a056f85df6",
+      "sourceSha256": "7293db9da2a7769e3821927c67b566d4928f1610587032406a3b769f3528b059",
+      "lines": 44,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/ppt-capability-gate.test.ts.md",
+      "manualSha256": "4c133d906719c53b4789d1bb47360a18cdaa87a45d4758e98465a95af94eed40",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/ppt-capability-gate.ts",
+      "sourceBlob": "528b9b575b137aa34c34f4dae2faa81e880e1c79",
+      "sourceSha256": "86311dfef70721f373da1369e655bf3ccfd59383d9c776f688157822cb783de5",
+      "lines": 45,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/ppt-capability-gate.ts.md",
+      "manualSha256": "a40c9d7934287586cb212059101fdfbe00bb8e3d129e6f65de64d957d7d40d8a",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/ppt-delivery-audit-service.ts",
+      "sourceBlob": "e9677fb9778574f1e68caaf424410da8943c04e2",
+      "sourceSha256": "64be1db2f53e577e12505d991738866c03561e84037cf0f446a2abf68ae1d388",
+      "lines": 117,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/ppt-delivery-audit-service.ts.md",
+      "manualSha256": "4c90303610da04b130f6be381c4715d5343a3728a575c6a0d03e17c4892689bc",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/ppt-layout-engine.ts",
+      "sourceBlob": "ebb070337a100b0d34d4867e3195508324038b2e",
+      "sourceSha256": "08b125cddbad270296586cf11c566e643e2cd9280b3f12d821037abd70857fea",
+      "lines": 120,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/ppt-layout-engine.ts.md",
+      "manualSha256": "dab2cbfd13df2e68d75ec96f0a2f4f1e93c38c4d60dc42032056e9d7e726345a",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/ppt-slide-components.ts",
+      "sourceBlob": "4f3d81e4bca5cd5036e812e372c6a68e9042f321",
+      "sourceSha256": "efa7545c7e94c39c336130f374647d7b68563078ba627388992ef97bd67f49fb",
+      "lines": 426,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/ppt-slide-components.ts.md",
+      "manualSha256": "38b78ee726d10b2508cf7f50c282a3ec4cad9f1f960efd630d0245b9e670300a",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/ppt-style-pack-service.test.ts",
+      "sourceBlob": "5d93e175935eb589cef6f472a36c78f26d0b5b0c",
+      "sourceSha256": "5187aa9005722aaf685e3e280f8afd04b98bb9a89550d9296efb68fd6131f3e2",
+      "lines": 105,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/ppt-style-pack-service.test.ts.md",
+      "manualSha256": "141dc46cf2d1a80756dacb38956ca05279d76032cdf53077c8f9a57aa10981ab",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/ppt-style-pack-service.ts",
+      "sourceBlob": "6a4e9272bfd7789d4ad42888e1e2e44fd5af3531",
+      "sourceSha256": "18cbf6793be7fb18ab6df0e9fc418ed5231bc5c0639b31c2e332d343a441a502",
+      "lines": 248,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/ppt-style-pack-service.ts.md",
+      "manualSha256": "aa78e71bed1b54a3b154ad45cfa9541e9f0c95a300b9d1414ee0e3c2bebbe178",
+      "verdict": "accepted"
+    },
+    {
+      "path": "apps/electron/src/main/lib/process-monitor-posix.ts",
+      "sourceBlob": "c5ac4a25429189cf1d1f0a8c3faabbe35b686fe0",
+      "sourceSha256": "8e8e8c878c6a85882a4b19183ee00725cf1786a8ccc9a781f24866a0b537204e",
+      "lines": 128,
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/process-monitor-posix.ts.md",
+      "manualSha256": "7c44a149bf90f42865c850f18bd3d36fba215775c5f37c31715d32b25cc81b82",
+      "verdict": "accepted"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-translate.ts.md": "404642cfb1d0bc2a212476f174d282d9b457a73bdecd625056912fdb5c0e10a8",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-view-layout.test.ts.md": "bbe0e02bf5c3de893fc4cfc81152a1ee140402018cd49e89f26deb80992762dd",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-view-layout.ts.md": "1d8834f27d44d4502054a056b0a191e1533f0228f9a5438258ca509088ec0223",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/dingtalk-bridge-manager.ts.md": "7394983e1a14c1e6db9e940d050f8b550f6a2548355509aaccf2521bf8e18f5e",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/dingtalk-bridge.ts.md": "2cb8b092cbbfcbe2df56c7c3421fbd178e2436939df9ccbbf749c501aa0d1c12",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/dingtalk-config.ts.md": "90414d6736ed9482e21e5f82f6d32d8aa093ac2a489d0985c3022d24cb049299",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/lark-cli-service.test.ts.md": "851fc1ef819829cac9d58d9dc72bb8e994b3016c9799c16ac31d0ce003f1064a",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/lark-cli-service.ts.md": "99da5cf23fbf823e49d2004a46249ffe9584fd41a5f64579981be0fae8d56307",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/lark-mcp-service.test.ts.md": "001c90f687a1b1c54fc2aa693c511cf9042dcf534bfdec68ade0addf8e9cd6d5",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/lark-mcp-service.ts.md": "a03d94450afa1e0bb6fb6dee88a183716f5b952cf16b035bcd7d8000703a5648",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/ppt-capability-gate.test.ts.md": "4c133d906719c53b4789d1bb47360a18cdaa87a45d4758e98465a95af94eed40",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/ppt-capability-gate.ts.md": "a40c9d7934287586cb212059101fdfbe00bb8e3d129e6f65de64d957d7d40d8a",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/ppt-delivery-audit-service.ts.md": "4c90303610da04b130f6be381c4715d5343a3728a575c6a0d03e17c4892689bc",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/ppt-layout-engine.ts.md": "dab2cbfd13df2e68d75ec96f0a2f4f1e93c38c4d60dc42032056e9d7e726345a",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/ppt-slide-components.ts.md": "38b78ee726d10b2508cf7f50c282a3ec4cad9f1f960efd630d0245b9e670300a",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/ppt-style-pack-service.test.ts.md": "141dc46cf2d1a80756dacb38956ca05279d76032cdf53077c8f9a57aa10981ab",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/ppt-style-pack-service.ts.md": "aa78e71bed1b54a3b154ad45cfa9541e9f0c95a300b9d1414ee0e3c2bebbe178",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/process-monitor-posix.ts.md": "7c44a149bf90f42865c850f18bd3d36fba215775c5f37c31715d32b25cc81b82"
+  },
+  "rejectedHashes": {},
+  "deliveryHashes": {
+    "READY.json": "ea7de00e41c6b5b6dd6a2aad117b6b572a2f40e8b27de9028ec582699ea788c3",
+    "MANIFEST.json": "8a2a8c8aab73c6fd7743d64d7dd3269472364f0f8ded75aec93b7e057c93578d",
+    "DONE.json": "8cbd716fb3ef803a676805709a97d4e5538fcb5fcae58b5a233a022efe5c7021",
+    "UNVERIFIED.md": "6a9e7c5396270658991b7b3e0df0a8d2e494e2c2e3b5ebc4d325a5504f1f6944"
+  },
+  "zip": {
+    "path": "deliveries/nb-81-r1/R07-nb-81-r1-05fb2565.zip",
+    "sha256": "37f6c09d8eeca50371fc699a8f09ab2bc64fcc73f71cc0921491db22104b95bb",
+    "bytes": 51861,
+    "entries": 21,
+    "verified": "QA 独立复算：21 条目逐字节一致、0 mismatch、无穿越/符号链接、mtime 全 1980-01-01"
+  }
+}

@@ -1,0 +1,105 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "nb-48-r1",
+ "revisionOf": "nb-48",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T21:46:09Z",
+ "sealId": "seal-a44d96e19563048a",
+ "note": "ALL 18 accepted (6 re-verified changed, 12 hash-bound to parent acceptance). Merge per this table.",
+ "acceptedManuals": {
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-exit-plan-service.ts.md": "62c52e7062d7b09381476d4de509bf818ce610830155f1eed95a988f430f34b5",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-file-preview-session.test.ts.md": "29b9f70e6d7074b24cbf496d23753fcaecfd26d0f08354cc588c000c51c99a1f",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-file-preview-session.ts.md": "cd6aedaa55f0b1298c21d6c82f6eae2437f3d26ad8ea4966cbde52c49f444ea6",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-fork-workspace-copy.test.ts.md": "940b61bcbbe6ac7c6b424c85290a59bde8ca441fe1bd734341873a8028a04391",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-fork-workspace-copy.ts.md": "13e389c0028e32b8c80b651b37bfbb039deb495ce521c223a49d5025782b687b",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-goal-runtime-bridge.test.ts.md": "f73e73f8bbe86d1ee0bc6defd3cb2f11be13b8a8fb64be2071556dbb6f12e162",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-gpt-image-service.test.ts.md": "b2f6e17a15983f01d4e1d284fdca5cc144234735b7d67a00a95c274dc99a62ec",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-gpt-image-service.ts.md": "006503dd2063929d90fa03557916021bd71fee999ad535dc661d75c94bc904ab",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-gpt-image-tools.ts.md": "2db74aeb0db2f8cff2ff6af6f515fd44eecd4a2980c42031553696ffc0afb905",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-headless-runner-registry.test.ts.md": "e36957daef1add38a9561a13bb15c2053f060b8383ebf50535db91d511b038a5",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-headless-runner-registry.ts.md": "ed3384177193b1338d94d9974c870e9f804fd27b11004310bc24b4e4cedfb04c",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-image-generation-records.test.ts.md": "13390e66770d3ca67a3e8d39295002ede93e2014dedc9da8d38ead0a4919badf",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-image-generation-records.ts.md": "7c3429e17e3fc29d4c4e93c66958b1132672e99f9123a75b340f71e0254b285c",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-image-output-service.test.ts.md": "055f545a365911173edb56e971e1ab0d51d8d335857d44dc7f64655e7686d614",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-image-output-service.ts.md": "db65dd1231d15d6ac1f3cb416170be805ee24eb21fd0562d95bc34ac633a4194",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-image-output-tools.ts.md": "b23a11972764423851c7c4e45f4c21fcb3c2ea97d6ca8f35ddc03b51c66a3eca",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-message-envelope.test.ts.md": "9925ce18ef92287a186ded15c50182a259f850f961169102b97f750b03e8732a",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-message-envelope.ts.md": "e70a067d6dabd1f7fe6e2792eedc86324419e9a965105c971bc0bd125f26339c"
+ },
+ "revisionRequiredManuals": {},
+ "reviewedSourceBindings": {
+  "apps/electron/src/main/lib/agent-exit-plan-service.ts": {
+   "blob": "422db4d835f557a93c1c0129f55544064a7d616f",
+   "sha256": "8497366e039eacfe648d63c6011e9be59d0bf79e0c62565483f60d1dfb0fd845"
+  },
+  "apps/electron/src/main/lib/agent-file-preview-session.test.ts": {
+   "blob": "0200a569474334844d927012f068ae92415eed2d",
+   "sha256": "c16e3e0fb84fb2d789d624b66a9391a1cd12b354f3be370eeca8d7014686d5b4"
+  },
+  "apps/electron/src/main/lib/agent-file-preview-session.ts": {
+   "blob": "a3e1f7efe8856b6de1cd96cc2b8364789d8a1c87",
+   "sha256": "e2786aac0af7fb6498407715c8a58f66fde1ce59a2f541c487343cce97c564ce"
+  },
+  "apps/electron/src/main/lib/agent-fork-workspace-copy.test.ts": {
+   "blob": "3e07e86715f649d1a5f554e162b0c9394d9a2e8e",
+   "sha256": "51316f76ee87480780a9ca041f528a8a0850971e455c8ab375bf874924e6afac"
+  },
+  "apps/electron/src/main/lib/agent-fork-workspace-copy.ts": {
+   "blob": "9de9eb327d982c37983a9647780d87ddb966337c",
+   "sha256": "397e738806168b62ce8a40c84a2c2085c463a5d03c8594d670a0717c3533a77b"
+  },
+  "apps/electron/src/main/lib/agent-goal-runtime-bridge.test.ts": {
+   "blob": "3c3b70ca4038ccf1b0f2f81140c72c14160f2a81",
+   "sha256": "1e885c5fe6781bc96a5675bf18a8450ab7c4b6f707120a07b59a2d4df4720ab8"
+  },
+  "apps/electron/src/main/lib/agent-gpt-image-service.test.ts": {
+   "blob": "ee579d832a230d9f3366675cc25ae7cbee52c075",
+   "sha256": "5076905be054a7046ae1fe6de95f4e26f33a4114fc7a0ad313cc7894d1ff3f1c"
+  },
+  "apps/electron/src/main/lib/agent-gpt-image-service.ts": {
+   "blob": "7d71673050012fd5504eefc12d926a8cc6c5f69f",
+   "sha256": "dc89d7b4af49cdb5ca9e50b5e210dbd984c3dfe754a0cd36e7291b48b2dc1eba"
+  },
+  "apps/electron/src/main/lib/agent-gpt-image-tools.ts": {
+   "blob": "806eeac102c62c43b4c67ce505fea30495de8cb3",
+   "sha256": "1254df50f112ff47e00369d435b3fdd4a30f38f8a131d13db96a1b3269918a16"
+  },
+  "apps/electron/src/main/lib/agent-headless-runner-registry.test.ts": {
+   "blob": "367fe4d7058fa9a3b6fa3060c1d98a9b4a974f1c",
+   "sha256": "f7b24583075aebcf96921abd989ef25777a04dd9c10357c538ac96f3e899493d"
+  },
+  "apps/electron/src/main/lib/agent-headless-runner-registry.ts": {
+   "blob": "2e421d4f6e94deaffcbc172c3e4eb3af62d00150",
+   "sha256": "cdc7665f69e070595e06c2c54712006932921aee971470fe644e0cb526b44c80"
+  },
+  "apps/electron/src/main/lib/agent-image-generation-records.test.ts": {
+   "blob": "c2e71bd5f43b4db12dae8bfcc388227d44566d7d",
+   "sha256": "9a635fcbc4b34a90a636001d32e19cdb2389b27431c954895ebb2e93fea5b253"
+  },
+  "apps/electron/src/main/lib/agent-image-generation-records.ts": {
+   "blob": "95134e0b6553a5a933db5086065304bbe283b6fa",
+   "sha256": "fce65f1017b07c5aefe67190c6f2a553d57c66046703df9689f444166006f07c"
+  },
+  "apps/electron/src/main/lib/agent-image-output-service.test.ts": {
+   "blob": "d98e407b53aaa5c1eea1ad3300ecd4292a5eb30d",
+   "sha256": "ede243367494d43cbd210cff4cd4dff6c125cecc9333f852e99e13ebb3b03519"
+  },
+  "apps/electron/src/main/lib/agent-image-output-service.ts": {
+   "blob": "bfca1acd7dee886731d5b075ea93471fa864cd2a",
+   "sha256": "606d86832d6c6eca95f0094a93f98ade57a0de9fcb3155dfce79591a6444a6fc"
+  },
+  "apps/electron/src/main/lib/agent-image-output-tools.ts": {
+   "blob": "9fa7f540a3a1735f81db97c94249f4f374985649",
+   "sha256": "3f8430505c62d4dd5c1cad2b74edfb5c7b5c07d6fb81c4729717960f868a4624"
+  },
+  "apps/electron/src/main/lib/agent-message-envelope.test.ts": {
+   "blob": "0c4f0d20634e431251380f19c4db96dc98cf3b28",
+   "sha256": "1cc43b92b3bdc942ac773d91be80de52c8184a0623075610f3cbb215bcadad92"
+  },
+  "apps/electron/src/main/lib/agent-message-envelope.ts": {
+   "blob": "eb32891fc7068c71eda56541689dd4a811fc3031",
+   "sha256": "d4d5712a9b087d2cf659c80fa92145cc665738f8e01ea2084ce3ea5655cf93f5"
+  }
+ }
+}

@@ -1,0 +1,35 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-136-r1",
+ "revisionOf": "nb-136",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-02-20261024",
+ "reviewerSession": "docs-r07-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T22:05:00Z",
+ "sealId": "seal-1c5ef9c9a8e38677",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 18,
+  "accepted": 18
+ },
+ "artifacts": [
+  "reviews/nb-136-r1/RESULT.json",
+  "reviews/nb-136-r1/RESULT.md",
+  "reviews/nb-136-r1/REVIEWED-HASHES.json",
+  "reviews/nb-136-r1/DONE.json",
+  "handoffs/nb-136-r1-REVIEW-TO-AUTHOR.md",
+  "handoffs/nb-136-r1-REVIEW-TO-LEAD.md"
+ ],
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "Worker runtime",
+  "real render interaction",
+  "real model/network"
+ ],
+ "boundaries": "QA read-only re-verify; old seals/base bytes untouched; product tests and real models NOT_RUN.",
+ "next": "lead merges nb-136-r1 per REVIEWED-HASHES (supersedes partial base merge of changed files)"
+}

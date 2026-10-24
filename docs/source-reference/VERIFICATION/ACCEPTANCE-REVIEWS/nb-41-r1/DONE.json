@@ -1,0 +1,33 @@
+{
+  "schema": "r07-qa-done/1",
+  "batch": "nb-41-r1",
+  "revisionOf": "nb-41",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewedAtUtc": "2026-10-23T19:05:00Z",
+  "sealId": "seal-ddafb7f16ba43850",
+  "batchVerdict": "revision_required",
+  "counts": {
+    "files": 18,
+    "accepted": 17,
+    "revision_required": 1,
+    "unknown": 0
+  },
+  "result": "reviews/nb-41-r1/RESULT.json",
+  "resultSha256": "2a43dce4eb4b1aed1a05a3f7666d139a330e1ad99510fd29dd8bcd0a7f188a62",
+  "reviewedHashes": "reviews/nb-41-r1/REVIEWED-HASHES.json",
+  "reviewedHashesSha256": "54630bc74cd8dff1e64e8d9508bb7182967d6ad8e2aa5fee0ba2bb49c01e7734",
+  "testsRun": [],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "knownUnknowns": [
+    "主进程评测服务实现（非本批）",
+    "graph-state/applyEvent（非本批）",
+    "HF schema 兼容与运行期评测（NOT_RUN）"
+  ]
+}

@@ -1,0 +1,98 @@
+{
+ "schema": "dsh-r07-qa-result/1",
+ "batch": "nb-42-r2",
+ "id": "NB-42",
+ "revisionOf": "nb-42-r1",
+ "rootRevisionOf": "nb-42",
+ "reviewRoot": "reviews/nb-42-r2",
+ "priorReviewRoots": [
+  "reviews/nb-42",
+  "reviews/nb-42-r1"
+ ],
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "sourceHeadVerified": true,
+ "sourceWorktreeClean": true,
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewedAtUtc": "2026-10-23T21:28:22Z",
+ "scopeSource": "manager/assignments/nb-42-SCOPE.json",
+ "scopeFileCount": 18,
+ "scopeLines": 2794,
+ "deliveryRoot": "deliveries/nb-42-r2",
+ "sealSpec": "seal_delivery.py/1（v2）",
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "real model/network"
+ ],
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PASS",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 18,
+  "revision_required": 0,
+  "unknown": 0
+ },
+ "batchVerdict": "accepted",
+ "files": [],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/graph-state.ts.md": "6100d8a40427b56b15d32fd388b28820b0a745a9c942a9b90ec62a950ecd99f1",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/harness-query.test.ts.md": "1dffe6bb845b5da1f1c68599679c3bcf9d35376cda563d74f46616d5c9854854",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/harness-query.ts.md": "6db86a1ff25797772315bc764b00407fda39f73b7b7c6783d9b73dccaf1488e7",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/index.ts.md": "a6d3521d569dadd730d6ed74fe25e429799de47d8694540bdaf7a48bde426532",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/project-core.test.ts.md": "adcb97f55914fdc70c8d535aff896c8bf8f52186db9ecca71115562d852c8325",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/project-meta.ts.md": "1d07b2b077d3db83639f34ed85c03ac9c3aac850b2afff6f3c41ffa19e8403a4",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/task-tool-names.test.ts.md": "98c235a0a62f5b49010a7a850430c4d96cdd1572d3588b0c9b2b3e4367917172",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/task-tool-names.ts.md": "dac0c0b4d1ec1b228cb930c24b1d8f056d7fe5a880c09f164235b094c0dd2596",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/types.ts.md": "28d82254b54e9c53c5ef22fab968b61e470f6b9375d4363f7776de19dc29292e",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/tsconfig.json.md": "d16ec99ead0a4053502b71d49894a09fb753eab49428bbd938d7dd80db8bdb65",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/package.json.md": "471836f373ef52611be2a1ce3882971bf21f6d3aed639fbbf630dabae6bb8383",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/group.ts.md": "40688e2bb524b41d5216f355217f21973b8c85d59595a4c54d53fd86bfa853ec",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/index.ts.md": "16f8949304d6f03b9c8fff523cd1f7ed1e38d8aa63420679c7c6689bee383b24",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/node.ts.md": "b0bd9dffbd88894f64d50b49d6ea6667ab72f346568118bde86d5aa05c0fa22a",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/outline.ts.md": "c9269989badbf27e027c6f389aa7d8a40de386cf15c86edecf56600057250b1c",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/read-fs.ts.md": "8470068722b0a134fd3de59f438fface05c0973607d020eb6b27f1fea780693f",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/read.ts.md": "44d1624505e75d12dfab2d6fd79c845c8835b26d7a9d118d9c3e36e14ce19f4c",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/session-core/src/render-markdown.ts.md": "305653cfd5a89cea7fc9a179fa68c18ffaf32c0b2f9ca373a4e2ac097d4b5669"
+ },
+ "rejectedHashes": {},
+ "supersededManualHashes": {
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/project-core.test.ts.md": {
+   "oldManualSha256": "70374820c145c1422c8525981f5e386e27df0c86ff352052810142dc6836649f",
+   "newManualSha256": "adcb97f55914fdc70c8d535aff896c8bf8f52186db9ecca71115562d852c8325"
+  },
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/types.ts.md": {
+   "oldManualSha256": "7d8cd170e31a9ecd741210270e3afe0bdcfa97b76165f9f986c0e2ad71c52338",
+   "newManualSha256": "28d82254b54e9c53c5ef22fab968b61e470f6b9375d4363f7776de19dc29292e"
+  }
+ },
+ "findingsClosure": {
+  "F-01 残留": "CLOSED（types :23「33 个导出」+:62「33 导出+8 事件 union」；残留 36 仅为行号子串 :336/:368，无计数 36）",
+  "F-05 残留": "CLOSED（graph-parser 17 用例（stripMetaTags 2 含 :118）、graph-state 12 用例；分组 17+12+6+6+18+6+5=70 自洽）"
+ },
+ "batchFindings": [
+  {
+   "id": "N-01",
+   "severity": "note",
+   "claim": "r2 流程自查到位：FINDINGS-RESPONSE 附 before/↔stage diff 与残留扫描声明，QA 字节复核一致——建议后续 rN 保持该自查。",
+   "sourceEvidence": "响应+字节双向核",
+   "action": "好评留档"
+  }
+ ],
+ "zip": {
+  "path": "deliveries/nb-42-r2/R07-nb-42-r2-05fb2565.zip",
+  "sha256": "99eac0a682e175fd60e8b110b47885368f83e787d97de842d3a995d4f8eb4d3c",
+  "note": "v2 无穿越/0 mismatch"
+ },
+ "parentPreserved": "nb-42/nb-42-r1 交付未动；2 篇 before/=r1 字节",
+ "notClaimed": [
+  "测试运行结果",
+  "typecheck/build 结果",
+  "G3 跨模块"
+ ]
+}

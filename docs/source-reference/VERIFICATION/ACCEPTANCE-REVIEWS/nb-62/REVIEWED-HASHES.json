@@ -1,0 +1,222 @@
+{
+ "schema": "r07-reviewed-hashes/2",
+ "batch": "nb-62",
+ "reviewer": "docs-r07-qa-ui-20261023",
+ "reviewedAtUtc": "2026-10-23T18:35:00Z",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "sourceWorktreeClean": true,
+ "sourceFiles": [
+  {
+   "path": "apps/electron/default-skills/docx/scripts/__init__.py",
+   "blob": "8b137891791fe96927ad78e64b0aad7bded08bdc",
+   "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+   "lines": 1
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/accept_changes.py",
+   "blob": "8e363161915d3720409bb8b6ef9bc4ade33b64e4",
+   "sha256": "0c991d2bc7304a1248e9f3bf9b1498f0b6e76641fc457e7cbd73c99b4eef3a74",
+   "lines": 135
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/comment.py",
+   "blob": "36e1c935f2aac390ed468d0637e83cea18decd64",
+   "sha256": "e86e4e17ec5805780325206d20d3ed5a8f7024f1e4641ac8f46ef5df0b564f63",
+   "lines": 318
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/office/helpers/__init__.py",
+   "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "lines": 0
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/office/helpers/merge_runs.py",
+   "blob": "ad7c25eec0d064fbd9f5624b17b60e5dd49b5903",
+   "sha256": "7c40ed838b88639c51f9ffdcfd564b568f26832b78fe44008c0e01b742669ca7",
+   "lines": 199
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/office/helpers/simplify_redlines.py",
+   "blob": "db963bb998d7d5a8517d8252ce82ec9ab28665bc",
+   "sha256": "560cb55978a834c505406eb18e2c61f62f998fc7a2d8e9721b9c563b42597896",
+   "lines": 197
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/office/pack.py",
+   "blob": "db29ed8b1c3676a4980b2d67e9dfe432556d2e58",
+   "sha256": "b1800987e568261a31f462df8e1303d386e9e6ccc11a75ef46e60cc528c20683",
+   "lines": 159
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/office/soffice.py",
+   "blob": "c7f7e3289fdff196399fd6f3d6668b9aa68eec87",
+   "sha256": "a3e21840e29e32f947d5286028931b96eaf2dee63f75d883b8eb19c943c80aa0",
+   "lines": 183
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/office/unpack.py",
+   "blob": "00152533ac0fa95109f74253ac6a475401fa6afe",
+   "sha256": "83f69cecc87910183654c06345837244402e8a99edbf3bdddc1cf72f11304b62",
+   "lines": 132
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/office/validate.py",
+   "blob": "03b01f6e3ba40e1408d0bd16d587154fa9798a87",
+   "sha256": "1aef24f8e316965a0584c30859776bd2c82a9fb69f72d79cfed041119cf95514",
+   "lines": 111
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/office/validators/__init__.py",
+   "blob": "db092ece7e21de98f87bd81471578259a1bc642f",
+   "sha256": "83e0f035c5abea238d3f2c3968afbd511ed022b527b7c9cb60a9434cc34ff987",
+   "lines": 15
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/office/validators/base.py",
+   "blob": "db4a06a2291abf80bd9b000b6ff3b7f012e6dd2f",
+   "sha256": "d6358b67252df4dbfe4fa6647423a765960c949346ef6a8c4eb8722bb1108d25",
+   "lines": 847
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/office/validators/docx.py",
+   "blob": "fec405e694790259824feebb95061f56a705621c",
+   "sha256": "0ef04ce86b2e6b6a1cb088c0276fd0bd5b770d96fdfe7a6cc73d005feb3f0345",
+   "lines": 446
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/office/validators/pptx.py",
+   "blob": "09842aa99866fe270ecfeec6f7993495e1865f2b",
+   "sha256": "f937961e62a5fa0d002b8dc51a4c4e2cd8fcd59fe65853fa54edaca3fe99eccc",
+   "lines": 275
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/office/validators/redlining.py",
+   "blob": "71c81b6bf4cacda322db32c87df7b2301c469933",
+   "sha256": "f4c33fdb9da0651d1d9aa76f0d5294cc9955869339ae131b2f75f3b2e366cb40",
+   "lines": 247
+  },
+  {
+   "path": "apps/electron/default-skills/pptx/scripts/thumbnail.py",
+   "blob": "edcbdc0f81e7919fb2e6bb5b4a9f15bfa131f036",
+   "sha256": "e959ecd4f19735161218bc44d0648a46da17874323fb3e19c2e9cb50cefe6ce7",
+   "lines": 289
+  }
+ ],
+ "manuals": [
+  {
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/__init__.py.md",
+   "sha256": "f7b3ba4ae2be3e3fac98834d3e1303dc4c308fa2fdcc94850c3b2a5041eb6757",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/accept_changes.py.md",
+   "sha256": "8d1891e7354cbb8d98ff8eef81f44e6ad9724e9a01e9ada07102645fbb05010d",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/comment.py.md",
+   "sha256": "64f3f2bece0ea47fde8080939ee44bf5f9d7a2040ce117c1c18a240b248fd896",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/helpers/__init__.py.md",
+   "sha256": "a3131e160176e968a352161025f5ab1166c0ed57d1b1dc892fc832aa9c75614d",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/helpers/merge_runs.py.md",
+   "sha256": "9edd603b1104c24d889671d8fec3a92b6b22a7d0b49d3859c75ce302c90ee588",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/helpers/simplify_redlines.py.md",
+   "sha256": "27e68af5f8b102ba3ca5366ca62730b13b3f15b206731a5b75a8180b7cf84549",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/pack.py.md",
+   "sha256": "05748388a215941a9568eb809ff88b2c4eb19965b3357e832d3e216347a3cf9d",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/soffice.py.md",
+   "sha256": "8bb2160f7a2bfe0a5fabb4b6125049d7451de818bc2c3e8e71128e7ea754d95e",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/unpack.py.md",
+   "sha256": "397a7ef056a18e098f72a692bc4d35e0f03abd220580cc7b25a72fcadabe6d85",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/validate.py.md",
+   "sha256": "1952f47c4b552abffec163943bf027efe0edece13cd03d47aa334fe90859181c",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/validators/__init__.py.md",
+   "sha256": "c54752c5389d28543b1d26ad7ed0401cf483ba87cc146e1e2e377ad8eb3805b4",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/validators/base.py.md",
+   "sha256": "e61afb256dc9edf178b5b98ca12256bbe5991c1eef6f42368e04cda196c0f70b",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/validators/docx.py.md",
+   "sha256": "6178ea188d9dbffcdc1f428f2173c4850e080e1e50ab08234fbb2f7728688ce3",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/validators/pptx.py.md",
+   "sha256": "4dfb49276c93641e7d7979fae61bf4267f22e8fecdd3f39cb6a67d57cbda5820",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/validators/redlining.py.md",
+   "sha256": "3a65a54a537f9e08ec133ed9ab5ef23d23fccc298c2b35e06265991d9a10d9a0",
+   "verdict": "accepted"
+  },
+  {
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/thumbnail.py.md",
+   "sha256": "770d5ba4f0dfc97e903084210818740758f98c125dd41002a32e318f057ae7aa",
+   "verdict": "accepted"
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/__init__.py.md": "f7b3ba4ae2be3e3fac98834d3e1303dc4c308fa2fdcc94850c3b2a5041eb6757",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/accept_changes.py.md": "8d1891e7354cbb8d98ff8eef81f44e6ad9724e9a01e9ada07102645fbb05010d",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/comment.py.md": "64f3f2bece0ea47fde8080939ee44bf5f9d7a2040ce117c1c18a240b248fd896",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/helpers/__init__.py.md": "a3131e160176e968a352161025f5ab1166c0ed57d1b1dc892fc832aa9c75614d",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/helpers/merge_runs.py.md": "9edd603b1104c24d889671d8fec3a92b6b22a7d0b49d3859c75ce302c90ee588",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/helpers/simplify_redlines.py.md": "27e68af5f8b102ba3ca5366ca62730b13b3f15b206731a5b75a8180b7cf84549",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/pack.py.md": "05748388a215941a9568eb809ff88b2c4eb19965b3357e832d3e216347a3cf9d",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/soffice.py.md": "8bb2160f7a2bfe0a5fabb4b6125049d7451de818bc2c3e8e71128e7ea754d95e",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/unpack.py.md": "397a7ef056a18e098f72a692bc4d35e0f03abd220580cc7b25a72fcadabe6d85",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/validate.py.md": "1952f47c4b552abffec163943bf027efe0edece13cd03d47aa334fe90859181c",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/validators/__init__.py.md": "c54752c5389d28543b1d26ad7ed0401cf483ba87cc146e1e2e377ad8eb3805b4",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/validators/base.py.md": "e61afb256dc9edf178b5b98ca12256bbe5991c1eef6f42368e04cda196c0f70b",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/validators/docx.py.md": "6178ea188d9dbffcdc1f428f2173c4850e080e1e50ab08234fbb2f7728688ce3",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/validators/pptx.py.md": "4dfb49276c93641e7d7979fae61bf4267f22e8fecdd3f39cb6a67d57cbda5820",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/docx/scripts/office/validators/redlining.py.md": "3a65a54a537f9e08ec133ed9ab5ef23d23fccc298c2b35e06265991d9a10d9a0",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/pptx/scripts/thumbnail.py.md": "770d5ba4f0dfc97e903084210818740758f98c125dd41002a32e318f057ae7aa"
+ },
+ "sealedArtifacts": {
+  "READY.json": "82e5180a064071f1bb84a7d905beadb0118183e9cd212159012d3d4e525df791",
+  "DONE.json": "501af1eeb372c002dc993f80dcfbbaeab326599a7f96b25764fd872e11dcfe61",
+  "MANIFEST.json": "b8064f0dc7a031062b1aec2a94864fccca373cb812faf30f11f64eef58ae1b97",
+  "R07-nb-62-05fb2565.zip": "0bae990960f5aa7733438c92f8d803a35c4dd6a25537290edec3370a87638a6c"
+ },
+ "zipChecks": {
+  "entries": 19,
+  "unsafePaths": 0,
+  "symlinks": 0,
+  "integrity": "unzip -t: No errors detected",
+  "stageManuals": 16,
+  "stageDriftVsLive": "none",
+  "metadataFilesMatchLive": true
+ },
+ "openNotes": []
+}

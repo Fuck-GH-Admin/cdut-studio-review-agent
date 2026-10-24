@@ -1,0 +1,76 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-25-r1",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-03-20261023",
+  "reviewedAtUtc": "2026-10-23T17:33:37Z",
+  "batchVerdict": "accepted",
+  "manuals": {
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/batch-automation-gates.ts.md": {
+      "manualSha256": "b043057d7d1e5bcd576b66f171eee5864ba77f122521c6dc90205942621b8d3d",
+      "sourceSha256": "0bd8d278d43de1fe4eab0837192d970416e9c6698d9543bb1be372a931281d87",
+      "sourceBlob": "92dd2e5062d6d890c2bc3eff14f179463dd6951e",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/batch-automation-service.test.ts.md": {
+      "manualSha256": "f417805825507ada0cbf7c849e0cd4862a077918dddf581ef1dcbdbf328ec49d",
+      "sourceSha256": "be516a594e41c251343af4056216591512e41d2fa011221432554661144e23ec",
+      "sourceBlob": "24b3a1fbd7c1e9d121bf4f30ea81137f7684fdc7",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/batch-automation-service.ts.md": {
+      "manualSha256": "06268b5d21263f6c3eff00170bd07463bdb18046822b000bcf3331fd5a2fa759",
+      "sourceSha256": "75060521577a2d6bd95b635c8bfe12a27a70c66efa7f4b68b50e5215786bbb95",
+      "sourceBlob": "06de76ad2cb9feb8e488cb8d21549a460c96b790",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/batch-group-action-service.test.ts.md": {
+      "manualSha256": "683d34cbc433d43639c9b5c177e652b025264e6e307e5217f4a3add866dea04b",
+      "sourceSha256": "966c8da16f2dcd350789fb84e7a6ab3365d09cee1f692b881a7415bdaae90d17",
+      "sourceBlob": "58e49bac02338cd715fe83fe0781c24c1aa92d50",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/batch-group-action-service.ts.md": {
+      "manualSha256": "dd858ac43e92c8a1de622aee082cc70e6eda67585b6b008cc87fcb8d6448cd55",
+      "sourceSha256": "7dfeb43fd5777e47b0e450fe5d3f5edd6077868dce5b1ea5f95686349e49af78",
+      "sourceBlob": "6ff01b16a9df15c1e96c0e8a2ec84e494340f03c",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/batch-store.test.ts.md": {
+      "manualSha256": "41796d584f36d94d6ef8a8baf5500961c18c6ca305842b17474665ddf4739283",
+      "sourceSha256": "b8386cf3f3165561fb2e31d3393a6e7147215b155833b650807d7e237c213670",
+      "sourceBlob": "cd529ee1b8e3b9c61125c1bdd477d0140df3a071",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/batch-store.ts.md": {
+      "manualSha256": "16f7227b8c962c1ec5bd09c1a8ab661650f423120c9648c27b89ed0db11b1f57",
+      "sourceSha256": "ce46e44ec9688b80cfb338ba82003886fba8359baa8234f8a852310b33392ff7",
+      "sourceBlob": "fe16f998161f205ecbe5451f216e14c99b4f5fe6",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t06-b2-zip-adapter.ts.md": {
+      "manualSha256": "fbde09d341a0346f2446c35304ae4a9e130ecebf473f6ec446b089673f2fdb8a",
+      "sourceSha256": "60125bc4fac59f5db0ac22d6cca3d052c79298effaac0ba8696b82fd9313ba4a",
+      "sourceBlob": "c3b745b4636ee2159b8d62057769fcc420d599e5",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t06-ledger.ts.md": {
+      "manualSha256": "2b37fd19d95c9cf873650652ba93b7ea0398cf78f8270a90a365df0414ab0e8f",
+      "sourceSha256": "e4fa690e0319a5e4bf51d7161fcbe152595d1f2c8c03989629890bedb990afef",
+      "sourceBlob": "7896a90fb5ee2045b8e8fdaccd0c1bc0226436cf",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t06-main-service.test.ts.md": {
+      "manualSha256": "bc55590fa5c47589d7c1d48ad7e0c81d4cbc15e3e24fe5d80ccf5ef707daf5a4",
+      "sourceSha256": "0647d0e0dd622736e1b8326331c246c10ce6689d6e6fddef400f41badeeff2e5",
+      "sourceBlob": "652ecff14e65c9c314308150c25f2b325d6fd074",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t06-main-service.ts.md": {
+      "manualSha256": "b58d97eb4b8c9c8cb68c275ab35f04cd25286c8796487264de7523faaaf02ad1",
+      "sourceSha256": "ac2bc0c9071eada16765a5f9f0377ca9b82651d87c0e76c7c5e474051d7dc696",
+      "sourceBlob": "fc7fa9e7b4a83105e5726029a7c75f136ed737eb",
+      "verdict": "accepted"
+    }
+  }
+}

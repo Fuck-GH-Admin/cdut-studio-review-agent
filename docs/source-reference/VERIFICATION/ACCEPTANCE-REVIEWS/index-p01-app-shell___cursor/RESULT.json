@@ -1,0 +1,72 @@
+{
+  "schema": "dsh-r07-index-review-result/1",
+  "batch": "index-p01-app-shell___cursor",
+  "groupId": "p01-app-shell___cursor",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-index-author-20261023",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T18:15:00Z",
+  "sealedAtUtc": "2026-10-23T17:40:46Z",
+  "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___cursor.md",
+  "artifactSha256": "7649d9905e0efca7aaa9eaa53e918e76bf24a4a84982ebd228732c4aaf1345a7",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 2,
+    "accepted": 2,
+    "revision_required": 0,
+    "unknown": 0,
+    "blocking": 0,
+    "nonBlocking": 1
+  },
+  "gates": {
+    "G0_INDEX": "PASS",
+    "G1_INDEPENDENT_SOURCE_REVIEW": "PASS",
+    "G2_SEAL_CONSISTENCY": "PASS",
+    "note": "G0 等价检查 2/2；封版三方哈希全对（7649d990…/b67beff3…/dcbddc3b…）。G1：规则文本加载链三问（谁加载→何时生效→行为约束）两文件均按合同作答且属实；use-bun 悬空指针（../../CLAUDE.md 缺失）处理诚实。"
+  },
+  "g0Evidence": {
+    "stockScript": "ERRATA-E1 路径约定缺陷沿登记；等价检查 2/2 PASS"
+  },
+  "files": [
+    {
+      "path": ".cursor/rules/science-ui.mdc",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___cursor.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___cursor.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#.cursor--rules--science-ui.mdc",
+      "line": 8,
+      "sourceBlob": "b3ee4ba1d6ed4fa787c4eb7fe5257212159cc9c5",
+      "sourceSha256": "0c462b28c2c4ee3204d03ca96d021dcf41584723fce97c65516c8ecc682a274e",
+      "manualSha256": "7649d9905e0efca7aaa9eaa53e918e76bf24a4a84982ebd228732c4aaf1345a7",
+      "verdict": "accepted",
+      "findings": [
+        "IDX-G03-N-01"
+      ],
+      "note": "「谁加载→何时生效→行为约束」按合同写全（Cursor 加载/globs+alwaysApply/行为约束），QA 逐条属实；frontmatter 三键、§1 内容、glob 目录存在性、git 100644 均实测一致。带非阻断 finding IDX-G03-N-01。"
+    },
+    {
+      "path": ".cursor/rules/use-bun-instead-of-node-vite-npm-pnpm.mdc",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___cursor.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___cursor.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#.cursor--rules--use-bun-instead-of-node-vite-npm-pnpm.mdc",
+      "line": 18,
+      "sourceBlob": "6100270f85a724bd0f09bc6f0d990913ed34fb17",
+      "sourceSha256": "70231b956e7f9335ec83966d4bcd7196f98195c1e005069a275c3ea6d41244db",
+      "manualSha256": "7649d9905e0efca7aaa9eaa53e918e76bf24a4a84982ebd228732c4aaf1345a7",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "15 字节 `../../CLAUDE.md` 占位如实定性（xxd/git ls-tree 实测一致）；目标 CLAUDE.md 缺失=悬空已如实登记；加载链三问按实态作答（注入仅字符串、无实质约束），未虚构。"
+    }
+  ],
+  "findings": [
+    {
+      "id": "IDX-G03-N-01",
+      "severity": "nonBlocking",
+      "file": ".cursor/rules/science-ui.mdc",
+      "field": "职责/影响",
+      "claim": "§1「严格遵从 AGENTS.md」被引用但未登记目标状态",
+      "qaEvidence": "冻结树根无 AGENTS.md（ls 实测缺失）；该规则文本指向的约束文档不存在，属第二处悬空引用（与 ../../CLAUDE.md 同类）。",
+      "note": "非阻断（合同要求的加载链三问已答且属实；未虚构 AGENTS.md 内容）。已登记勘误 ERRATA-E3；非阻断≠已修。"
+    }
+  ],
+  "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局 FILES/COVERAGE/INDEX-ACCEPTED/inventory；未跑产品测试/typecheck/构建/GUI；未 commit/push；结论只覆盖本批。"
+}

@@ -1,0 +1,139 @@
+{
+  "schema": "dsh-r07-qa-reviewed-hashes/1",
+  "batch": "nb-78-r2",
+  "revisionOf": "nb-78",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-30-20261023",
+  "sealedDelivery": "deliveries/nb-78-r2",
+  "sealId": "seal-26e8e696efe7ea61",
+  "reviewed": [
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/group-message-policy.ts.md",
+      "manualSha256": "7a473357871919fb2866aecdacc3ea2a5a9608048e812fdfc8c1828cbc99693b",
+      "sourceBlob": "5fdc7920816b2504f7c4c57c232bef311b819467",
+      "verdict": "accepted",
+      "evidenceBinding": "r1-bound"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/group-utils.ts.md",
+      "manualSha256": "2de664609cac30f64c8f403ed3a560487ed72c5aa0b0901f90c5ea803edb3678",
+      "sourceBlob": "3609491908593a9e54d666f9fb2a79647d083e20",
+      "verdict": "accepted",
+      "evidenceBinding": "r1-bound"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/prompt-builder.ts.md",
+      "manualSha256": "8e377be01ac5e7e5e19815798bf4213544a1dd0e30f3c8f6561aa9efd9880925",
+      "sourceBlob": "79b6de5f741dd071d7a7a3571344090a0f550d43",
+      "verdict": "accepted",
+      "evidenceBinding": "r1-bound"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/run-coordinator.ts.md",
+      "manualSha256": "7bc57e6a7e96ec5d7a1fc29c1d1f8386caf89a3b56829b1ffb0e801db5c42bb1",
+      "sourceBlob": "c2a50eed02c74d0099ddf4038b5a1b6a01b52aaa",
+      "verdict": "accepted",
+      "evidenceBinding": "r1-bound"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/scoped-queue.ts.md",
+      "manualSha256": "a0b2b0978baeec2fc5f266c22b913adc5e1171fa4e83089e51663bedf982aca3",
+      "sourceBlob": "2b6627b16dc93d22fde0c4e94845806f3a03b61a",
+      "verdict": "accepted",
+      "evidenceBinding": "r1-bound"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/session-mirror.test.ts.md",
+      "manualSha256": "ac061a486a1725f886cfc4d1ac1f9fe8bad55f0b3a3ca3f7f4c265e204d1bc4b",
+      "sourceBlob": "da801a6171d8a4d42ad2681ebc567202b0695211",
+      "verdict": "accepted",
+      "evidenceBinding": "r2-reverified"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/session-mirror.ts.md",
+      "manualSha256": "20715c3bc773bf3ccc2b688c2c1781ba639295aa2ce7ac7775874a325a34a8da",
+      "sourceBlob": "d52a632a0ba84b8018eeb6794cc96b1a40f1cd5d",
+      "verdict": "accepted",
+      "evidenceBinding": "r1-bound"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/sleep-blocker.test.ts.md",
+      "manualSha256": "b76aad4ada6a0af29dcfb06612d790280537029520514349bc6a70fa400786c1",
+      "sourceBlob": "d241d43555ccc0cd0e388b4541126a46abddfa1f",
+      "verdict": "accepted",
+      "evidenceBinding": "r2-reverified"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/feishu/sleep-blocker.ts.md",
+      "manualSha256": "2fcb337cba3de0c267973650362de253601c1f553059e4ced78237a8de079290",
+      "sourceBlob": "099a68a8bc8b9b247667e7624c4b221b39e24cd4",
+      "verdict": "accepted",
+      "evidenceBinding": "r1-bound"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/rag/entity-graph.test.ts.md",
+      "manualSha256": "daf5c0caed58951317ceaa7349b40a0a45ba01e62e59805cfbab492ea74b44bd",
+      "sourceBlob": "9cf57b1a9f9601a77631e83efe8d9647c3e5fc84",
+      "verdict": "accepted",
+      "evidenceBinding": "r2-reverified"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/rag/entity-graph.ts.md",
+      "manualSha256": "d9dfabac673a12c1c48057737060c9756bb87a1a48e520da0a91570dad765455",
+      "sourceBlob": "73ab3b08ba2e4cc9245ea7451c29212463f7004c",
+      "verdict": "accepted",
+      "evidenceBinding": "r1-bound"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/rag/workspace-rag-service.test.ts.md",
+      "manualSha256": "4fe1d5ebc2ba9b27776a364eb7625bd51dd16c9c7a543dcaa0d1779565a008ec",
+      "sourceBlob": "9942fd3ebaf95d1091dcfcfaf5fd6d2363c1301e",
+      "verdict": "accepted",
+      "evidenceBinding": "r2-reverified"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/rag/workspace-rag-service.ts.md",
+      "manualSha256": "9bb7b38482729fcd5404a5f01bfdb69af72c9f47688c958c7984c56b3ad1c7c8",
+      "sourceBlob": "419dda56af5b945c37ade257c31560ebf83acf56",
+      "verdict": "accepted",
+      "evidenceBinding": "r1-bound"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/cognition-engine.test.ts.md",
+      "manualSha256": "5df8620f53feede5e4b45bb8a1f77b444dccb96807bec7461fe2f56340f7ae8e",
+      "sourceBlob": "daa4f1a3b3d38ce61ceb20eaa38f9721e42a04a8",
+      "verdict": "accepted",
+      "evidenceBinding": "r2-reverified"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/fim-estimator.ts.md",
+      "manualSha256": "b300a437169d360dc1e9b82791265c438f1e4943512deb6d0ada91c6e7588be7",
+      "sourceBlob": "1870f77e7129c44a7ee322dbdae6e346a91c7ec9",
+      "verdict": "accepted",
+      "evidenceBinding": "r1-bound"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/fsrs-scheduler.ts.md",
+      "manualSha256": "e31ae8c33f4b776b416884130ae47c52e9cbd8cd9160dab60fdc0aad07032ce7",
+      "sourceBlob": "d02ffdbc3b137e96fc56c98de608e1e5c1ed78b8",
+      "verdict": "accepted",
+      "evidenceBinding": "r1-bound"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/hierarchical-graphrag-retriever.ts.md",
+      "manualSha256": "4929745e333771ead7251e05d93d798926c16eda27782e67975dbc8e8132c7a1",
+      "sourceBlob": "c99425446cd361e593d34a7711b54055c9db0890",
+      "verdict": "accepted",
+      "evidenceBinding": "r1-bound"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/study/hierarchical-graphrag.test.ts.md",
+      "manualSha256": "b230578ab9189cdeb1a9898e6ea713e9329f211b0ce0aac60025cc20ae622d64",
+      "sourceBlob": "807379217f4bba99c6e367cf0174ea7bba0035db",
+      "verdict": "accepted",
+      "evidenceBinding": "r2-reverified"
+    }
+  ],
+  "acceptedManualSha256Count": 18,
+  "revisionRequiredCount": 0
+}

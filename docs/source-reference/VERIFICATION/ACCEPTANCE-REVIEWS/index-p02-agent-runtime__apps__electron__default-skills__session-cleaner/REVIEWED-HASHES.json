@@ -1,0 +1,14 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "index-p02-agent-runtime__apps__electron__default-skills__session-cleaner",
+ "groupId": "p02-agent-runtime__apps__electron__default-skills__session-cleaner",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-index-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T19:15:00Z",
+ "sealedAtUtc": "2026-10-23T19:03:37+00:00",
+ "artifactSha256": "7cdb81fe35eb1fcedf3021d7e86b06eaaed6da281a8149631b8a843a0fcd668c",
+ "note": "QA 实算封版链全对（MANIFEST/READY/DONE artifactSha256 == stage sha == manualHashes）。1/1 accepted；3 条非阻断 findings 已登记。",
+ "acceptedManuals": {
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__session-cleaner.md@apps/electron/default-skills/session-cleaner/references/cli-usage.md": "7cdb81fe35eb1fcedf3021d7e86b06eaaed6da281a8149631b8a843a0fcd668c"
+ }
+}

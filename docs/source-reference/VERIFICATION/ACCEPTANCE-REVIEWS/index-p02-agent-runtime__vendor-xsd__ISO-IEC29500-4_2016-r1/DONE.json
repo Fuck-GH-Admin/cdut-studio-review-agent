@@ -1,0 +1,38 @@
+{
+ "schema": "dsh-r07-index-review-done/1",
+ "batch": "index-p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016-r1",
+ "groupId": "p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016",
+ "revisionOf": "index-p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-02-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T20:05:00Z",
+ "sealedAtUtc": "2026-10-23T19:57:51+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 81,
+  "accepted": 81,
+  "revision_required": 0,
+  "unknown": 0,
+  "findingsBlocking": 0,
+  "findingsNonBlocking": 0
+ },
+ "artifactSha256": "1098f132f6729671c9fe7ffe35ae29fcf002b1c919808361165bc346ca204e4b",
+ "artifacts": [
+  "reviews/index-p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016-r1/RESULT.json",
+  "reviews/index-p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016-r1/REVIEWED-HASHES.json",
+  "reviews/index-p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016-r1/SOURCE-CHECKLIST.md",
+  "reviews/index-p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016-r1/DONE.json"
+ ],
+ "notRun": [
+  "产品测试",
+  "typecheck",
+  "构建",
+  "Electron/GUI",
+  "validate.py 实跑（NOT_RUN；dispatch/导入面静态实证）"
+ ],
+ "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局账；未 commit/push；结论只覆盖本批 81 文件。",
+ "findingsSummary": "81/81 accepted，0 findings。F-01（xlsx 校验链不实）逐项闭环：27/27 xlsx 行零加载口径、篇首 dispatch 重写、xlsx 维度注属实；N-01..N-03 合并修正全数复核命中；机械列与已核事实未受改动。",
+ "next": "lead 按 REVIEWED-HASHES.json 合入本 r1 artifact（artifactSha256=1098f132f6729671c9fe7ffe35ae29fcf002b1c919808361165bc346ca204e4b，copy artifact once，取代父批待合入字节）；vendor-xsd 链 r0(revision_required)→r1(accepted) 闭合。"
+}

@@ -1,0 +1,210 @@
+{
+  "schema": "r07-review-result/1",
+  "batch": "nb-76",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-07-20261023",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "reviewedAtUtc": "2026-10-23T20:19:15Z",
+  "sealId": "seal-0eadc153bec5d3ca",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 11,
+    "accepted": 11,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "g0": {
+    "result": "PASS",
+    "hashChain": "DONE/READY/ZIP 实算一致",
+    "zip": "逐条目==盘上、无 READY-DONE",
+    "sourceBinding": "11/11==SCOPE==MANIFEST",
+    "manualBinding": "11/11 无 drift",
+    "changesDiff": "重放 11/11 逐字节==stage",
+    "humanColumns": "11/11",
+    "metadata": "11/11"
+  },
+  "g1": {
+    "result": "PASS",
+    "lineRefs": "带名引用 12/12 在范围"
+  },
+  "g2": {
+    "result": "FULL",
+    "method": "11 源文件 1476 行逐行深读+11 手册逐篇对照；重点实测：uv 三级校验分级红线/官方不符不可降级、60s 熔断、审计去重、vault-cache 事务约定、window-manager 导航安全、zotero 红线、导出/测试计数 grep",
+    "positives": [
+      "cslab-types 8 项 re-export 与 index 42 模块清单精确",
+      "cslab.test 3 锚点（含「controllerMessage 不含雫窝」「quantumCoherence=0 不伪造」「latencyMs=0」）与手册逐字一致",
+      "uv 校验分级语义（官方权威不可降级/镜像须用户确认/无指纹拒绝）手册与源+测试三方一致",
+      "红线注释全数转写（绝不写 zotero.sqlite/默认拒绝弹窗/临时目录 finally 清理/坏行回退）",
+      "跨文件归属登记（cslab-service/cslab-python-runtime 非本批）"
+    ],
+    "findingsTotal": 0,
+    "notesTotal": 3
+  },
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-types.ts.md": "366810fb7ea7867dbe049ec1180195870f28558177a5789f395be5b57504c30e",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-uri.ts.md": "09b24d9b824a76a480821e4fd25d915d5b7d6d0beb26ae360c599f6baa021fd1",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-uv-consent.ts.md": "318e6381a4195ec0994aa4ad2f650770e9aae116c23e73259446f621cec39537",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-uv.test.ts.md": "0b495f7085f2fa0335384056c7d9113dd7daa24b38bd913a30283808a7b26577",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-uv.ts.md": "10878bee91e2dfac27009802ec20549b11553f831040bebddfd70717e2195ee2",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-vault-cache.ts.md": "0061b365b6fb6b89529c58d53a9cb9bacac76b04aed46954ab767a1dc53b4347",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-window-manager.ts.md": "1b9b95f92c6b8da344d2004fdf3c833b4ad7e0b99f45d0b155378f06012d7bf1",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-zotero-bridge.ts.md": "a10f2b2fd4e6251050160bd056b3fb970fa9e12aca0f58d4c5f31410323ce373",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-zotero-format.ts.md": "baf85561c27e6e6fc30bbd192436471e405a14dd522659e4648d768672241671",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab.test.ts.md": "bf73f5bd2800c9ffbbcb525b559578f1afebd2bccc61f74818ff27de52bd29b2",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/index.ts.md": "531e36bfc8b0d88a9d9a13002b999e59fb8b4de5e52f8f414180c99e1875a909"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-types.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-types.ts.md",
+      "sourceBlob": "1f578d2cd3acf8282cb5ff9a63dad723db59fe2c",
+      "sourceSha256": "ef1eb1791108f3aceb750b64e67613db05788bda2eb9053d7b333dd977d3ed6b",
+      "sourceLines": 17,
+      "manualSha256": "366810fb7ea7867dbe049ec1180195870f28558177a5789f395be5b57504c30e",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-uri.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-uri.ts.md",
+      "sourceBlob": "3a90d4aae74f3749e30f331d01b99dafe99a1f14",
+      "sourceSha256": "537ede67c441f024d075781e26b08268e212207206ba564f9b34c0585eed605e",
+      "sourceLines": 45,
+      "manualSha256": "09b24d9b824a76a480821e4fd25d915d5b7d6d0beb26ae360c599f6baa021fd1",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-uv-consent.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-uv-consent.ts.md",
+      "sourceBlob": "6eec6aad8985a4bf9a7896dfff350a280bfd3776",
+      "sourceSha256": "c91108b317082b6dd720ebbfb04373cb2acdf555e70d6038c68fa278b248d7c0",
+      "sourceLines": 86,
+      "manualSha256": "318e6381a4195ec0994aa4ad2f650770e9aae116c23e73259446f621cec39537",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-uv.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-uv.test.ts.md",
+      "sourceBlob": "fe41a96167323acf2a804beb7a90f92f54698b32",
+      "sourceSha256": "ab96faf31b749eadf9305bac749f827e1b1a88eccb130169db9e3200a9524b8e",
+      "sourceLines": 95,
+      "manualSha256": "0b495f7085f2fa0335384056c7d9113dd7daa24b38bd913a30283808a7b26577",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [
+        {
+          "id": "N-NB76-03",
+          "severity": "low",
+          "claim": "「3 describe、8 test」应为 9 test（自身枚举 2+3+4=9，grep test(=9）；cslab-uv.ts.md §9「8 用例」同步改 9。",
+          "sourceEvidence": "cslab-uv.test.ts grep test(=9。",
+          "action": "两册计数改 9。"
+        }
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-uv.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-uv.ts.md",
+      "sourceBlob": "128837fd17d2161f3ef3b09808cea61d2f4243e1",
+      "sourceSha256": "859a4aa6f6f83ecf08c356fa634363fc9394706ec14de86e42752d73fddfb4ed",
+      "sourceLines": 447,
+      "manualSha256": "10878bee91e2dfac27009802ec20549b11553f831040bebddfd70717e2195ee2",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [
+        {
+          "id": "N-NB76-01",
+          "severity": "low",
+          "claim": "「12 导出」应为 14（表内 14 符号完整，汇总数错）。",
+          "sourceEvidence": "cslab-uv.ts grep ^export =14。",
+          "action": "计数改 14。"
+        },
+        {
+          "id": "N-NB76-03",
+          "severity": "low",
+          "claim": "§9「8 用例」应为 9（与 cslab-uv.test.ts.md 同步）。",
+          "sourceEvidence": "grep test(=9。",
+          "action": "计数改 9。"
+        }
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-vault-cache.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-vault-cache.ts.md",
+      "sourceBlob": "097d5c84497f316be8988f6c59eb13d31d34d8c1",
+      "sourceSha256": "2e6735cfb3891afbcc65c2385ef3f330f08d01b6fea88148da550f9ab54bd166",
+      "sourceLines": 230,
+      "manualSha256": "0061b365b6fb6b89529c58d53a9cb9bacac76b04aed46954ab767a1dc53b4347",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [
+        {
+          "id": "N-NB76-02",
+          "severity": "low",
+          "claim": "「14 导出」应为 16（表内 16 符号完整，汇总数错）。",
+          "sourceEvidence": "cslab-vault-cache.ts grep ^export =16。",
+          "action": "计数改 16。"
+        }
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-window-manager.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-window-manager.ts.md",
+      "sourceBlob": "5e4669b662940c267e19ef97592e732963371637",
+      "sourceSha256": "d8f23077063db56c17022903dd550699a39fd9b779a761805874593c4e21c830",
+      "sourceLines": 333,
+      "manualSha256": "1b9b95f92c6b8da344d2004fdf3c833b4ad7e0b99f45d0b155378f06012d7bf1",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-zotero-bridge.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-zotero-bridge.ts.md",
+      "sourceBlob": "a4d9b0402620e16634d75dcb3a5a6ed3d0073e84",
+      "sourceSha256": "d6ccc3a9f5c44464023039a04c4e416339ba0ac029877412f7b029cf7149fa02",
+      "sourceLines": 74,
+      "manualSha256": "a10f2b2fd4e6251050160bd056b3fb970fa9e12aca0f58d4c5f31410323ce373",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-zotero-format.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-zotero-format.ts.md",
+      "sourceBlob": "e6d2e045ce3b300fd32226b0afea0cc202d21d4f",
+      "sourceSha256": "ba29a62951905cc928457f053117cd4dfc53801c50262b5fabd8466c1abd4651",
+      "sourceLines": 67,
+      "manualSha256": "baf85561c27e6e6fc30bbd192436471e405a14dd522659e4648d768672241671",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab.test.ts.md",
+      "sourceBlob": "3b9af58a5304792be7ae1593458476f5aef20c2d",
+      "sourceSha256": "7918584643be56251a69e30b6d539651a19919de28f61b145913d63adc14ae59",
+      "sourceLines": 33,
+      "manualSha256": "bf73f5bd2800c9ffbbcb525b559578f1afebd2bccc61f74818ff27de52bd29b2",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/index.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/index.ts.md",
+      "sourceBlob": "4876fa84865b08f8c78ec58e299167be99f11798",
+      "sourceSha256": "5c11906c3fcacd842749bd86644edd22afef11fcc0ad52d138e75dc403ec76bd",
+      "sourceLines": 49,
+      "manualSha256": "531e36bfc8b0d88a9d9a13002b999e59fb8b4de5e52f8f414180c99e1875a909",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": []
+    }
+  ]
+}

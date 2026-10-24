@@ -1,0 +1,118 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-110-r1",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-03-20261023",
+  "reviewedAtUtc": "2026-10-23T20:32:29Z",
+  "batchVerdict": "accepted",
+  "manuals": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/office-preview/official-preview-session.ts.md": {
+      "manualSha256": "858af3280cc0d49131827dc86ea066650de92fb3cb23a775eb13135233bc05dc",
+      "sourceSha256": "d1f02d76e747606a146ecb4a2713698cfa294b82070f562429883cfd061ccfcf",
+      "sourceBlob": "69fcad6468d532a6add3740de61218afc14b86eb",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/office-preview/silurus-bridge.test.ts.md": {
+      "manualSha256": "cde3f068bcd6788e22f84d07626a668f729654ecb61a8941dd8ad8b3415472fb",
+      "sourceSha256": "570efca9916e08d7e4cf94bc49acad6cabfea9cf8ad1505ff45c95f048c1a06f",
+      "sourceBlob": "1daf7f13b99d0d7b103bc34279a91c845aad994d",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/office-preview/silurus-bridge.ts.md": {
+      "manualSha256": "36f0c916c44fb581a3852c9b6f17eb73107d2b6837fc030f78d2c45fe68d609f",
+      "sourceSha256": "2be87b2b0bf4f7c44878f1cabefdfb51e359f5ab740925d36c5b6c829ad7e984",
+      "sourceBlob": "cc8fa72a48e223127fc22c8dbd6b83ab7888379a",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/ofv-preview/OfvPreview.tsx.md": {
+      "manualSha256": "24777d7a111a1960c20d556557ae684894a4f9c1a21c006eb79741d568e7f742",
+      "sourceSha256": "982b2183dfcf4c94ccedd9d8b88615461c2e92b97594dc830fccc64b5fba7ebe",
+      "sourceBlob": "4e1bf24184bfadc408ce3a68e80b14815813c69d",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/file-browser/tree-row-layout.tsx.md": {
+      "manualSha256": "179ccc0a051be2555e35ccb6c371f0eb74d992e874dc18ffe6ea0c40fc0f5635",
+      "sourceSha256": "5f207dd77c2eb28a3195631cbcd68a300470c17f55ff05a367a908fb2e949a67",
+      "sourceBlob": "f34161a75452a37cf103444c9f9b8fd72b0ef763",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/planning/CalendarWorkspace.smoke.test.ts.md": {
+      "manualSha256": "780f059ef8157119fafb9567782b06f6ffd0e4ea8dde13f21a761390cf42181f",
+      "sourceSha256": "c3020859dbab396adf50e1378f0ceb8c2441514a8774482148243180e1979b97",
+      "sourceBlob": "42e9db647a8d8331ecb6345efe55541f816d8154",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/planning/CalendarWorkspace.tsx.md": {
+      "manualSha256": "4f1187f6a232cb5530997bb9a4ff2eaf2f11c2c468a7b7a39b64169ae9197c7c",
+      "sourceSha256": "97ee1d00ffdd39fd3167218b6149275b8d64761272c2870b3577e5cd2d10371c",
+      "sourceBlob": "cff33213f57fca320aa3a3ecbd8f7304f8da91ec",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/planning/PlanningFloatingInspector.tsx.md": {
+      "manualSha256": "0af45a01b959382c8e21438d6fa515af355f9197b6a467ef1ed31b9ab8603b57",
+      "sourceSha256": "f3e0ccaecb12f629bfe55dfde8e4165db2cc6460db1217c89637472777ad18ff",
+      "sourceBlob": "a9ecc2f613ede77fad7d8df197a5adb8a3917bd7",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/planning/PlanningGroupManager.tsx.md": {
+      "manualSha256": "897a74065c9463bb8ea0d58f7f62d3be3a14f86752162be75710436c2b366872",
+      "sourceSha256": "ece717d35c29865f09ccb9f9e79696b66047f4dcd2846261f3e2252c5b458ed4",
+      "sourceBlob": "dc47deec555287663f0b2eb952a260172e5f0190",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/planning/PlanningReminderRail.tsx.md": {
+      "manualSha256": "c8a0e8d57243c3b66c5f14f9af1bce83001902ac773cedff339fea4065d4467a",
+      "sourceSha256": "5c75903331259652ce2bd562c6d4ac0d3e40850f27990d83748cc2d6d8c8cc82",
+      "sourceBlob": "0a71e2a92897421d146c051f4f6f18f8f52ba19a",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/planning/PlanningTagManager.tsx.md": {
+      "manualSha256": "eff925762609ae8c5db6535ae2d4494ae547cebc5a2ee996e55b8066a75dbb38",
+      "sourceSha256": "2b49e5b27ef8677807e888e00a3c04506a78a8db2d3fef311d88af9aa00d34ac",
+      "sourceBlob": "ac0877e35259e38704d4708a1ec024957bb5c0a1",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/planning/PlanningView.tsx.md": {
+      "manualSha256": "b73f7f5d2fa0e75f81aaf5b5feccbf7652b5892a8f5f997d03ba9ceabb99bc2f",
+      "sourceSha256": "380ada66e83f606a6e2e8a07d2f79d8cce440ffe7d7a20d92983a87c420fa61a",
+      "sourceBlob": "05fbbafe6e03a27e5d7e21e32ed416e8288b2b6e",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/planning/PlanningWindowApp.tsx.md": {
+      "manualSha256": "2dae593bc0c184f3fea0fb8124da6f10529b05735f8885f723e1a25f48d41236",
+      "sourceSha256": "d437f068b6f9006324c9c572a00ee02cd73355c4babc52fefaaefdbceb9aa3d2",
+      "sourceBlob": "c0b505dbec6525234e5947aac5d099a60a52bd8e",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/shared/AttachmentPreviewItem.tsx.md": {
+      "manualSha256": "3bdc6d06e4652d6813c65ffd188bf090b1bdd1599baf3bcde0c0a8f6c1d28b2e",
+      "sourceSha256": "96f63cd96371c954bc64a55b0323437de9f9bb69a385163c8bf6e09795f03ff1",
+      "sourceBlob": "031a0a88359997cc3ffcb54cd89adbe8f68d70e5",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/shared/CdutLogo.tsx.md": {
+      "manualSha256": "10189e2cd02d832403e6f6484489fefba64f14d48f4568a2ca42d613a849669c",
+      "sourceSha256": "492842ae42296923d6b95042690d3d856b9cf9675bf2977824e219b10441316a",
+      "sourceBlob": "7f07d791d449f17f99c7c4fd99ba1c3e4bb04c91",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/shared/ChannelPlanQuotaBadge.tsx.md": {
+      "manualSha256": "bf19f6d8eabf17e66ac1f8796c1b532138b2a76d7df474fbd0981b9be2d40d8f",
+      "sourceSha256": "22e80b9f0ca9aff3fd549d10962534be43aaf9ed224588cfd88172ed68e7990b",
+      "sourceBlob": "f68b01b1dd0534c2876946a2c35e9b4cd1a6cca6",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/shared/CopyButton.tsx.md": {
+      "manualSha256": "2c7c452be93919dc610d4da7aa69155275b08a2bf4baa16fda0d4930c1e7fe9e",
+      "sourceSha256": "7f9a8d701867d61789a5f20debbe70da40ae19b4b09da5beba5cea7ea6f26bec",
+      "sourceBlob": "e14eaba27e1939e2dba094076bbb4b197f3d58f3",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/shared/ModelSelector.tsx.md": {
+      "manualSha256": "11a9a91b59cd1bc1e683f8bd0a37f18a658db75f214aba35f212dfba7eb203f5",
+      "sourceSha256": "2d4bae86337692501e2a95614ebece98d7e38d90989243f2c35268699b41a95c",
+      "sourceBlob": "955be5ee2d9a0646acd9f25de222fffa20a4b565",
+      "verdict": "accepted"
+    }
+  }
+}

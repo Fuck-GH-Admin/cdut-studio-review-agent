@@ -1,0 +1,251 @@
+{
+ "schema": "dsh-r07-review-result/1",
+ "batch": "nb-95",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-models-20261023",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T18:00:54.351896+00:00",
+ "preRead": "reviews/nb-95/PRE_READ_DONE.json",
+ "deliverySeal": {
+  "sealId": "seal-196fe0f57589055b",
+  "sealedAtUtc": "2026-10-23T17:58:29Z",
+  "readySha256": "21411334846f627402a40f233891c558642aad4a439cb61315536ad25efbe464",
+  "doneSha256": "f9b1a1b4e5d826f3b77ecf2a92c828eab1749a6683f2ad5e78d3d8ecf187aa01",
+  "manifestSha256": "346906d795c6731235de1f62599faad1c88b8a7fa9442150db869c22a42bfa62",
+  "zipSha256": "806c145fc427aa247101254e96706601bfcc0b91f26ed2a0ee6da7bddad097a9"
+ },
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "gatesNote": "G0（seal-196fe0f5 稳定态）：18 文件 blob/sha/lines 一致、hash 链自洽、ZIP 21 条目与 MANIFEST 逐条同哈希；G2 对照预读基线——测试 32/4 全对、GREP_PREVIEW_MATCH_LIMIT=200、index 分发表逐 case 契约（仅 Edit 收 basePath/仅 default 收 imageAttachments/Glob·WebSearch·WebFetch·TaskGet·TaskList 不收 input）与源一致、14 条否定断言全冻结树核实为真（CollapsibleResult 仅注释提及非引用）",
+ "batchVerdict": "accepted",
+ "files": [
+  {
+   "path": "apps/electron/src/renderer/components/agent/tool-result-renderers/collapsible-preview.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/collapsible-preview.test.ts.md",
+   "sourceBlob": "d716c5483ba5c41128d938a77b51a57ec7c31a97",
+   "sourceSha256": "94df7b9c63d07ff9107a493ed356dd40887a4123dae368f8924e15080917f846",
+   "lines": 304,
+   "manualSha256": "e2a1ab7b12b6948241cf915e52ac8583ff3eaf6cf21cfcbfc999047e3c3c7c4e",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/tool-result-renderers/collapsible-preview.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/collapsible-preview.ts.md",
+   "sourceBlob": "56501ed46cb29901d053d47ee23dc4258c1be676",
+   "sourceSha256": "09e4d71f9e3714358f1c8a2b9a8fe9f029621f63a4655d4f4915dc81b8b8bfe8",
+   "lines": 194,
+   "manualSha256": "fc71a32c9a00d07584606fbb0cac7f82c22c84dbde73f69c504ed5d7ac540b43",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/tool-result-renderers/collapsible-result.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/collapsible-result.tsx.md",
+   "sourceBlob": "893326b3fea92b7e6325071bd3fc5d7ead925cfb",
+   "sourceSha256": "928c89dc0b9605f2683fa5f6a98a627f4f596147bdaa6d260c7eab8645acf852",
+   "lines": 152,
+   "manualSha256": "6b22e2dc23ee6be9491bc7562d2bc65bd28a142040a3e845fdaeb329487d2283",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/tool-result-renderers/default-result.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/default-result.tsx.md",
+   "sourceBlob": "75b5923936b78fa7ffdf49ff0ee87e79e70bfff2",
+   "sourceSha256": "13790a0c42c38791b53d5ec38885a9d5ecee0091ed26482cd7556e63c959a232",
+   "lines": 131,
+   "manualSha256": "af31515928027b4bb7158be79c2fdbc5d616856f97de3c2ac567080b4b6884c5",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/tool-result-renderers/edit-result.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/edit-result.tsx.md",
+   "sourceBlob": "5843a3f5231d4fe48efabc5885fa93063fd73f1b",
+   "sourceSha256": "5678c8cbc189b335192c896d0a788273658a0c1ddc32fc9fc9bbe8e7d82e0056",
+   "lines": 187,
+   "manualSha256": "c9bc5e572c45631ec8d7528db085caa6606bd907354616a997e2578dba2beaca",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/tool-result-renderers/glob-result.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/glob-result.tsx.md",
+   "sourceBlob": "352977d0063aa7c4776d2d1f258d4c2bf60a72f9",
+   "sourceSha256": "1889a83648edaf942f7a5e95d2adaed368e0aba25da6096ac63c33778c3ac930",
+   "lines": 53,
+   "manualSha256": "41ef2e55c056396a7f85fae074bb112fc7b845b3c13d5c2b6df5285dcac87cc3",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/tool-result-renderers/grep-preview.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/grep-preview.test.ts.md",
+   "sourceBlob": "316e5cf05412df42a8199016c630758df49697c2",
+   "sourceSha256": "d5fa724fe1e66448ae155bfebce2323f3d4be3fc841f22c8bb91084973195a2c",
+   "lines": 42,
+   "manualSha256": "e8ce5576dc112c9b7b85de35e4dac8afa522a974ac4a937443f340e1230d2210",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/tool-result-renderers/grep-preview.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/grep-preview.ts.md",
+   "sourceBlob": "b6d83bb9dc3fa193590fde50cc8acb64f430fc60",
+   "sourceSha256": "6d90843c4b6f6513dd1c60cb2b2eaed3d5afbb8918ca175ca4d9dfaad76bfed7",
+   "lines": 62,
+   "manualSha256": "7a308dab9052ef1998267c5962030c7e3ef1f9e44e5758083c7413ada1927e10",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/tool-result-renderers/grep-result.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/grep-result.tsx.md",
+   "sourceBlob": "8dc2846b7f92d485f38a8c6bede1c26759524e40",
+   "sourceSha256": "71791a8dc6cc3ce9ca577e03007ab34dd442ba04dfd2f92809866cdc10cac5d5",
+   "lines": 162,
+   "manualSha256": "14e4f5305a979ab3221296469d0b47b5496349635396b7e3857bc05d0c89a7b5",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/tool-result-renderers/index.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/index.tsx.md",
+   "sourceBlob": "56d205c8c7cc59b8c00ffe4ed58b841a8350e408",
+   "sourceSha256": "61979ae8c5f9d069331cc487d71421785b2932156be8be76a73b27563cf9cb8a",
+   "lines": 59,
+   "manualSha256": "96dedb4963a819720a735aba7f13a9865e9763f8d937f515c055ff79ea45de07",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/tool-result-renderers/pierre-styles.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/pierre-styles.ts.md",
+   "sourceBlob": "8d4928b2bc23215dd5562e41991e049613731856",
+   "sourceSha256": "e45ba162823c8754d372dc7a3f766f2af808acdaefc1b9b0ec20c57093d0ced7",
+   "lines": 138,
+   "manualSha256": "a4723cdec7ef30b815d3b56cf78943e1c8ece7287aa36bfca642d201acec9956",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/tool-result-renderers/preview-open-button.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/preview-open-button.tsx.md",
+   "sourceBlob": "8af0804048ae286e637a986168656a1ba1f0eaa1",
+   "sourceSha256": "3c582a0eac3885d5f8db007581c933f0fea4f3e17e9964e6d1e4286b23b50656",
+   "lines": 57,
+   "manualSha256": "e93e598b30c1ba76176c2b815bb5dfc7ab216d4e88e46b8870b01b878dab77b0",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/tool-result-renderers/read-result.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/read-result.tsx.md",
+   "sourceBlob": "83ac9b268db0843ce0ff844b4d718d1040071108",
+   "sourceSha256": "8c7494f0019d02138d2ee0b8a2daf95d872ed02f6953c2f00f6feeaf76de862a",
+   "lines": 156,
+   "manualSha256": "3ebf649e785abb260073ce67c68b25047d7080143d91c441e96ab8565a938188",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/tool-result-renderers/task-get-result.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/task-get-result.tsx.md",
+   "sourceBlob": "e714ec7bbed1c5f788afcd53fc7347b4980eca5d",
+   "sourceSha256": "c62fdf9634c608ca36fef48911730253d1f081476f49380b0963b7e5b1cfc7b4",
+   "lines": 250,
+   "manualSha256": "ce2fe0e52f6d9829183a9c4cca0e847275d1689f66e64a5bfdacce90be03fdb6",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/tool-result-renderers/task-list-result.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/task-list-result.tsx.md",
+   "sourceBlob": "8b4b01cbe4688a8b106a8e3d82eccc9bbc32d3bd",
+   "sourceSha256": "c5312580cec8e08fa17b6005cf410f8b556feb2fe918409279ede57411e93d65",
+   "lines": 177,
+   "manualSha256": "2c1b8508c5f66783af9d9d08b36269ffe628c884b94e3a5a91ee518aef49536e",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/tool-result-renderers/web-fetch-result.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/web-fetch-result.tsx.md",
+   "sourceBlob": "e625856b6264e10976d868fb20b0b79751f69fbc",
+   "sourceSha256": "876d36bb07b251ec10eb3a6b12d50960481b2586a7bbdbac474bdae007bd4eac",
+   "lines": 37,
+   "manualSha256": "6650473d7388e42d640dea6a87e50871fa76e4442ffdbeeaff8897d73ebe8724",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/tool-result-renderers/web-search-result.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/web-search-result.tsx.md",
+   "sourceBlob": "e718ddaa2eabb0356249d25447d8b4a60180fb0c",
+   "sourceSha256": "544e883e4b8217e75b691e44e073fd58af44b34f17022f638dbf0af772614814",
+   "lines": 114,
+   "manualSha256": "1f0c5209136e9dd1d83492cbf43f96ee87ac92cacfd02e76f2676244b6dbb315",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/tool-result-renderers/write-result.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/write-result.tsx.md",
+   "sourceBlob": "ffa6739e5dfc64e9d3e436f8c1b6691e55bc4369",
+   "sourceSha256": "5ac4b1c1ddd74982cc0ec6cca10c78030e051b4998e9ae5319b01bc4967fb089",
+   "lines": 82,
+   "manualSha256": "3e3121e0c8454e4a8adfa1f90b10394126a5db060b75a69851edbd557d8591de",
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "findings": [
+  {
+   "id": "NB95-OBS-01",
+   "severity": "note",
+   "manual": "交付元数据",
+   "claim": "—",
+   "sourceEvidence": "QA 首轮 G0 抓到封版中途瞬态（glob-result/web-fetch 两篇 stage 短暂与 MANIFEST 不符）；作者 17:58:29Z 重封 seal-196fe0f57589055b 后复核：18 篇 stage==MANIFEST==READY==ZIP 全一致",
+   "action": "建议作者封版后勿再触碰 stage；供流程改进参考，非阻断"
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/collapsible-preview.test.ts.md": "e2a1ab7b12b6948241cf915e52ac8583ff3eaf6cf21cfcbfc999047e3c3c7c4e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/collapsible-preview.ts.md": "fc71a32c9a00d07584606fbb0cac7f82c22c84dbde73f69c504ed5d7ac540b43",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/collapsible-result.tsx.md": "6b22e2dc23ee6be9491bc7562d2bc65bd28a142040a3e845fdaeb329487d2283",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/default-result.tsx.md": "af31515928027b4bb7158be79c2fdbc5d616856f97de3c2ac567080b4b6884c5",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/edit-result.tsx.md": "c9bc5e572c45631ec8d7528db085caa6606bd907354616a997e2578dba2beaca",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/glob-result.tsx.md": "41ef2e55c056396a7f85fae074bb112fc7b845b3c13d5c2b6df5285dcac87cc3",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/grep-preview.test.ts.md": "e8ce5576dc112c9b7b85de35e4dac8afa522a974ac4a937443f340e1230d2210",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/grep-preview.ts.md": "7a308dab9052ef1998267c5962030c7e3ef1f9e44e5758083c7413ada1927e10",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/grep-result.tsx.md": "14e4f5305a979ab3221296469d0b47b5496349635396b7e3857bc05d0c89a7b5",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/index.tsx.md": "96dedb4963a819720a735aba7f13a9865e9763f8d937f515c055ff79ea45de07",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/pierre-styles.ts.md": "a4723cdec7ef30b815d3b56cf78943e1c8ece7287aa36bfca642d201acec9956",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/preview-open-button.tsx.md": "e93e598b30c1ba76176c2b815bb5dfc7ab216d4e88e46b8870b01b878dab77b0",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/read-result.tsx.md": "3ebf649e785abb260073ce67c68b25047d7080143d91c441e96ab8565a938188",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/task-get-result.tsx.md": "ce2fe0e52f6d9829183a9c4cca0e847275d1689f66e64a5bfdacce90be03fdb6",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/task-list-result.tsx.md": "2c1b8508c5f66783af9d9d08b36269ffe628c884b94e3a5a91ee518aef49536e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/web-fetch-result.tsx.md": "6650473d7388e42d640dea6a87e50871fa76e4442ffdbeeaff8897d73ebe8724",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/web-search-result.tsx.md": "1f0c5209136e9dd1d83492cbf43f96ee87ac92cacfd02e76f2676244b6dbb315",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/tool-result-renderers/write-result.tsx.md": "3e3121e0c8454e4a8adfa1f90b10394126a5db060b75a69851edbd557d8591de"
+ },
+ "revisionHashes": {},
+ "verifiedHighlights": [
+  "32/4 测试计数与 describe 分布和源一致；collapsible-preview 代理对/CRLF/非正上界边界、grep 收敛 hiddenMatches 语义（预读基线）抽验吻合",
+  "14 条组件级否定断言全树核实（Default/Edit/Glob/Grep/Read/TaskGet/TaskList/WebFetch/WebSearch/Write/ToolResultRenderer/PIERRE/PreviewOpenButton 零测试引用；CollapsibleResult 仅注释）",
+  "index 分发差异照实记录（props 契约）"
+ ],
+ "notRun": [
+  "bun test",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "limits": "静态复验（预读+G2）",
+ "next": "18 篇可合入；nb-95 闭环"
+}

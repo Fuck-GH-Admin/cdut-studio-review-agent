@@ -1,0 +1,11 @@
+{
+ "schema": "dsh-r07-stage2-issues-done/1",
+ "generatedAtUtc": "2026-10-23T21:57:44Z",
+ "status": "TRACK_RECONCILED_WITH_RESIDUALS",
+ "windowNote": "30 分钟窗口内完成全部可判定对账与交付落盘；残差=41 条 claim/id 回源、10 条索引审计（lead/审计职责）——如实列缺口，不虚报零残差",
+ "partition": "p04/p05/p06",
+ "counts": {"records": 195, "authorActions": 10, "optional": 26, "closedFamily": 117, "unverifiedAudit": 41, "documentedGap": 1},
+ "zeroSilentDrop": true,
+ "integrity": "未改产品/测试/依赖/作者 seal/已有 review/candidate/全局 OPEN-ISSUES；全部新时间 date -u；静态断言未冒充实测（NOT_RUN）",
+ "next": "lead 按 handoffs/STAGE2-issues-p04-p06-TO-LEAD.md 合账并安排现有作者修 10 项；审计补 41 条回源后可二次对账闭合"
+}

@@ -1,0 +1,20 @@
+{
+ "schema": "dsh-r07-stage2-done/1",
+ "track": "app-ipc-config",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "atUtc": "2026-10-23T21:34:18Z",
+ "status": "TRACK_COMPLETE_WITH_GAPS",
+ "artifacts": [
+  "manager/STAGE2/app-ipc-config/CHAINS.md",
+  "manager/STAGE2/app-ipc-config/CHAIN-REGISTER.tsv",
+  "manager/STAGE2/app-ipc-config/CONFLICTS.json",
+  "manager/STAGE2/app-ipc-config/RESULT.json",
+  "manager/STAGE2/app-ipc-config/DONE.json"
+ ],
+ "chains": 9,
+ "conflicts": 4,
+ "gaps": "IPC 全量逐对配对、session/workspace 动态语义、settings 多窗缓存一致性、bounds 持久化写点、cert allow/reject 决策、initializeRuntime/三服务内部、renderer 状态层调用图（详见 CHAINS.md 覆盖边界）",
+ "notRun": "产品测试/typecheck/构建/GUI/IPC 实收发/seed·migration 实跑（统一 NOT_RUN）",
+ "boundaries": "未改产品/测试/依赖/seal/review/candidate；未写阶段三文档；不宣称全仓通过；实现缺陷留阶段三",
+ "next": "lead 收口；CONFLICTS-01 交 electron-builder.yml.md 主责作者 errata；CONFLICTS-02/03 留阶段三设计差异报告；缺口项待后续补核"
+}

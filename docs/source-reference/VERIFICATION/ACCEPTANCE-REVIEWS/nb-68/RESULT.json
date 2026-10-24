@@ -1,0 +1,226 @@
+{
+ "schema": "dsh-r07-qa-result/1",
+ "batch": "nb-68",
+ "id": "NB-68",
+ "revisionOf": null,
+ "reviewRoot": "reviews/nb-68",
+ "priorReviewRoots": [
+  "reviews/nb-68/SOURCE-CHECKLIST.md",
+  "reviews/nb-68/PRE_READ_DONE.json"
+ ],
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "sourceHeadVerified": true,
+ "sourceWorktreeClean": true,
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewedAtUtc": "2026-10-24T05:45:00Z",
+ "scopeSource": "manager/assignments/nb-68-SCOPE.json",
+ "scopeFileCount": 10,
+ "scopeLines": 1768,
+ "deliveryRoot": "deliveries/nb-68",
+ "sealSpec": "seal_delivery.py/1（v2）",
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "real model/network",
+  "skill-creator 脚本执行"
+ ],
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PARTIAL",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 9,
+  "revision_required": 1,
+  "unknown": 0
+ },
+ "batchVerdict": "revision_required",
+ "files": [
+  {
+   "path": "apps/electron/src/main/lib/workspace-heatmap-service.test.ts",
+   "kind": "test",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/workspace-heatmap-service.test.ts.md",
+   "sourceBlob": "c27afa04b01f2f53c10b51f0bfd39e32387284e9",
+   "sourceSha256": "f8bea02c442da2f82f02a50992e53e03e1ca6ee1e25797536f665f305247a0e8",
+   "sourceLines": 57,
+   "manualSha256": "1b2aa269f7a15250c1095f2401cd2600201c4d0ad5e49e580009bc12bd9d65b1",
+   "manualLines": 58,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/workspace-heatmap-service.ts",
+   "kind": "source",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/workspace-heatmap-service.ts.md",
+   "sourceBlob": "e2cdfe397db43a28d95d9f41781d8af9448b9369",
+   "sourceSha256": "89e738b88a363ba0675e73aa97d20e21b829b899617f58e2dc25dd18eec2809b",
+   "sourceLines": 304,
+   "manualSha256": "2e278e3a963525c16c82eb23799c14684fa7fae5cf5eb892d99dc17e93575395",
+   "manualLines": 79,
+   "verdict": "revision_required",
+   "findings": [
+    {
+     "id": "F-01",
+     "severity": "minor_factual",
+     "claim": "§2 称「导出 7 条」——实际 **8 条**（其自身 export 位置 :28/:34/:70/:83/:96/:174/:253/:293 列了 8 个，表格亦 8 符号）。",
+     "sourceEvidence": "grep \"^export\" 计 8（interface+const+6 函数）",
+     "action": "rN 修正为 8"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/workspace-mcp-config.ts",
+   "kind": "source",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/workspace-mcp-config.ts.md",
+   "sourceBlob": "8150e33b2b593017a3166d219063bb8934345c30",
+   "sourceSha256": "67027f22399065c13bab93ffd6ed91dda15931fdf7a1f4e8ac6e8ae48d9fbe3b",
+   "sourceLines": 7,
+   "manualSha256": "834ceaab695567de24a1814793835f9097eee30cc79a6464dd6966402771302d",
+   "manualLines": 54,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/workspace-watcher.ts",
+   "kind": "source",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/workspace-watcher.ts.md",
+   "sourceBlob": "4de2dc597a5cf70563420f5a360e6c34063f5e8a",
+   "sourceSha256": "4f02c90417b9e010f7da6af6f022d7ce8783abbbf1e60b095153e0366e698339",
+   "sourceLines": 229,
+   "manualSha256": "29f8f4e413ff4dbce03fcfa0c8800cdc330c0e57f520921f8c2b67f8a6dee7f3",
+   "manualLines": 78,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/default-skills/skill-creator/scripts/improve_description.py",
+   "kind": "script",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/improve_description.py.md",
+   "sourceBlob": "06bcec76122446986e3610c20a39c466de36f495",
+   "sourceSha256": "87d864570220b699fac52da309d2d6efdb060647bfebc74f768128e646accf80",
+   "sourceLines": 247,
+   "manualSha256": "ab2514d7427a576b07d981a8c692cb4d5f0f0e2c6987b023e81d5aefafcb5b37",
+   "manualLines": 67,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/default-skills/skill-creator/scripts/package_skill.py",
+   "kind": "script",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/package_skill.py.md",
+   "sourceBlob": "f48eac444656ddc41204aac1760a217951ce609e",
+   "sourceSha256": "1a33059b0db1ef73375d46d513e5ea81369d2e8838c970597b0d52ddef8d1c0f",
+   "sourceLines": 136,
+   "manualSha256": "cc36b72e941bb4c5ab39c926a1685318309c8f0d6eef52b23eee66ff2796e8a3",
+   "manualLines": 66,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/default-skills/skill-creator/scripts/quick_validate.py",
+   "kind": "script",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/quick_validate.py.md",
+   "sourceBlob": "ed8e1dddce77b16af13c6f36b3fe86c4ac7c590c",
+   "sourceSha256": "67cf5703402013936c8fb75ad6a1afecd8841d45cc5e606b634eb05825fde365",
+   "sourceLines": 103,
+   "manualSha256": "476cab2bdfa180b5de0a939feac21bbaaf9570a0cb6638ad2c63658876695716",
+   "manualLines": 58,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/default-skills/skill-creator/scripts/run_eval.py",
+   "kind": "script",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/run_eval.py.md",
+   "sourceBlob": "e58c70bea39d5b252a1e819f242bbdcdf20e8b87",
+   "sourceSha256": "43e3b8f80dbf69c343967ba77e268fae991d9fa3ed68b32a0ff02532cd48657f",
+   "sourceLines": 310,
+   "manualSha256": "396135e8982addec4804f65d36d9a430cda09ee8c905f6a20be8026dcb4191a7",
+   "manualLines": 67,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/default-skills/skill-creator/scripts/run_loop.py",
+   "kind": "script",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/run_loop.py.md",
+   "sourceBlob": "30a263d674ef19de11c756d6f7537f91a421909e",
+   "sourceSha256": "7bd6f674203168520517eec94c55f493c0d154339b061b4d7c0f0dad187d0f21",
+   "sourceLines": 328,
+   "manualSha256": "db24a4bb4ee009489e57127af5ba6a2aa11142e8951bddc4d00f656ad854d1c6",
+   "manualLines": 67,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/default-skills/skill-creator/scripts/utils.py",
+   "kind": "script",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/utils.py.md",
+   "sourceBlob": "51b6a07dd57174197a937034b7eecebd5768ff8a",
+   "sourceSha256": "3af8ae62c40c73ab712207436a0d9a981e845f25c5a7040229eb189cc8e45bb1",
+   "sourceLines": 47,
+   "manualSha256": "10fc80791b1f8ca87ed1350290190999f9606451f2e339e06f420c4e04e3da09",
+   "manualLines": 58,
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/workspace-heatmap-service.test.ts.md": "1b2aa269f7a15250c1095f2401cd2600201c4d0ad5e49e580009bc12bd9d65b1",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/workspace-mcp-config.ts.md": "834ceaab695567de24a1814793835f9097eee30cc79a6464dd6966402771302d",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/workspace-watcher.ts.md": "29f8f4e413ff4dbce03fcfa0c8800cdc330c0e57f520921f8c2b67f8a6dee7f3",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/improve_description.py.md": "ab2514d7427a576b07d981a8c692cb4d5f0f0e2c6987b023e81d5aefafcb5b37",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/package_skill.py.md": "cc36b72e941bb4c5ab39c926a1685318309c8f0d6eef52b23eee66ff2796e8a3",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/quick_validate.py.md": "476cab2bdfa180b5de0a939feac21bbaaf9570a0cb6638ad2c63658876695716",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/run_eval.py.md": "396135e8982addec4804f65d36d9a430cda09ee8c905f6a20be8026dcb4191a7",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/run_loop.py.md": "db24a4bb4ee009489e57127af5ba6a2aa11142e8951bddc4d00f656ad854d1c6",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/default-skills/skill-creator/scripts/utils.py.md": "10fc80791b1f8ca87ed1350290190999f9606451f2e339e06f420c4e04e3da09"
+ },
+ "rejectedHashes": {
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/workspace-heatmap-service.ts.md": "2e278e3a963525c16c82eb23799c14684fa7fae5cf5eb892d99dc17e93575395"
+ },
+ "batchFindings": [
+  {
+   "id": "M-01",
+   "severity": "info",
+   "claim": "正面确认（QA 独立预读回源为真）：heatmap 缓存非权威三态（全量/补算/当天实时）+四类 token 口径+mergeDaily 覆盖防 retry 双计；watcher 高噪音 11 目录过滤/仅顶层 config.json 精确忽略/error 自愈 5s（EventEmitter 无监听崩主进程注释）/附加目录 error 移除不重启；mcp-config 一行再导出诚实标「不适用」；脚本链语义全对（quick_validate 6 键白名单+kebab-case ≤64、package_skill 根级 evals 排除、utils YAML 多行、improve 1024 兜底重写+CLAUDECODE 剔除、run_eval 流事件触发探测+kill 子进程清理、run_loop 分层 seed=42）。",
+   "sourceEvidence": "逐篇对读+grep/sed 实测",
+   "action": "记录"
+  },
+  {
+   "id": "M-02",
+   "severity": "info",
+   "claim": "行数口径提示：quick_validate.py 无尾换行（splitlines=103=SCOPE）；手册未误报行数。run_eval/run_loop 手册诚实标「导出段+docstring 级」。7 用例 NOT_RUN；批外 generate_report/aggregate_benchmark 已限定。",
+   "sourceEvidence": "对照",
+   "action": "记录"
+  }
+ ],
+ "zip": {
+  "path": "deliveries/nb-68/R07-nb-68-05fb2565.zip",
+  "sha256": "2efa8dedb3d91992db1379a68a96d70ca92b3c25af41b797789c22211449a316",
+  "entries": 13,
+  "note": "10 手册+MANIFEST+2 mechanical TSV；不含 READY/DONE（v2）；无穿越/0 mismatch"
+ },
+ "diffReplay": "changes.diff new-file 补丁与 stage 字节一致",
+ "parentPreserved": null,
+ "notClaimed": [
+  "测试运行结果",
+  "typecheck/build 结果",
+  "G3 跨模块",
+  "脚本实际执行"
+ ]
+}

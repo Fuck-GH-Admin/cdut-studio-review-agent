@@ -1,0 +1,148 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "index-p01-app-shell__release-notes",
+  "groupId": "p01-app-shell__release-notes",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T21:18:00Z",
+  "sealedAtUtc": "2026-10-23T18:37:24Z",
+  "artifactSha256": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+  "note": "QA 实算封版链全对。22/22 accepted。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/releases.json": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.10.25.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.11.1.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.12.0.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.12.23.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.12.26.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.12.69.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.15.51.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.15.57.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.7.1.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.9.11.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.9.12.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.9.15.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.9.16.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.9.17.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.9.31.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.9.32.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.9.39.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.9.40.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.9.41.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.9.7.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__release-notes.md@release-notes/v0.9.8.md": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157"
+  },
+  "revisionRequiredManuals": {},
+  "sourceHashes": {
+    "release-notes/releases.json": {
+      "sourceBlob": "5f858b09b91a286deb615bd6eea0e67973ef93a0",
+      "sourceSha256": "d95ccac4289eeea3b0811c20ca37aac2ede240ccd010019acdabcf0f67fa8b72",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.10.25.md": {
+      "sourceBlob": "11c942ae4cbc1cd9e8124c11d3c2b74ad7e53c0a",
+      "sourceSha256": "962eff0cb5faa79d5f687ee63ac8761fa6523a0ed3832f0e07da52b8cf8a0cd1",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.11.1.md": {
+      "sourceBlob": "85461f27aae4dcdd99b245487e61b4ef6b762e7d",
+      "sourceSha256": "beff14b460047fd9a9e514b0ee68509df313ee42bb94644e1abae0bea8258722",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.12.0.md": {
+      "sourceBlob": "fd82d24b308d160e5caceee2d827095b4584cb4c",
+      "sourceSha256": "8d879a2df8a2ff982c5eb4472529a55901f2fa1342d4ce6d4488f69177a62aba",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.12.23.md": {
+      "sourceBlob": "ee3950f90b68c2af85743024d369e125aacc057a",
+      "sourceSha256": "66d7d8fed249e35ddc54851cd0a0648fa61db59fc52a1caf1763fce53ee173eb",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.12.26.md": {
+      "sourceBlob": "bfadfc94293b23ff19f185e2995eb4e51d1ea678",
+      "sourceSha256": "5d98da8e7535adb4fdb65034cde4ad34ccac9460f2a1bda1502d16cf082c8ed7",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.12.69.md": {
+      "sourceBlob": "7afa44e34af38b41182623013fee363ccc97cafa",
+      "sourceSha256": "bca24aace1243b1702c494c1a1a618ba0c40bf1f0e90e55b6e01a110f8e375a6",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.15.51.md": {
+      "sourceBlob": "49719e14d6987fe2ddefcbe09f635764585ad95c",
+      "sourceSha256": "27b057b9dafe2dec28439f1419ecf87a05015094cddc2361a3be2f4fab17016d",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.15.57.md": {
+      "sourceBlob": "8333e3531d190af02eccd185143a33cb44abdb08",
+      "sourceSha256": "da26cb26857c440f24a3f029658a8799b7d691b485709b3f6480b28aea7543a9",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.7.1.md": {
+      "sourceBlob": "9cfc4747ae9fcea528b729a28197678708dc4acc",
+      "sourceSha256": "e1352d00706cd5e9c230ae0af0c18c0ff56a3d08af8b059161ecc1c35a14b2ed",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.9.11.md": {
+      "sourceBlob": "aa4ac107b1e95897805f0227763f35f990d7c8ef",
+      "sourceSha256": "7a8d1f6da3c14db3f049a556ff3dae483d3683353043d8eb3e3b583a4a40973d",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.9.12.md": {
+      "sourceBlob": "7973b48aa464df4f6240a929228de6e68218c299",
+      "sourceSha256": "7c1ab32d99ff4b5295bf9a830ed785b68cdd56235a0f46012fd24c7913293228",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.9.15.md": {
+      "sourceBlob": "5570614a97d8f5762cbd1d8be7e495e31c37e966",
+      "sourceSha256": "0cce26c4b93c3bca0d1ac6cda1529dbdf0658b1437d1ab41178ab301c2b8c554",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.9.16.md": {
+      "sourceBlob": "7bdeb460e21f2cc7a0193335839409fc0b703bc9",
+      "sourceSha256": "a9819d573fa6ac2f007b4aa98324d5df4060e2cc8115604178a57ba6987ae9e4",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.9.17.md": {
+      "sourceBlob": "2709379706e6c2896187d07cd17867307bae51ce",
+      "sourceSha256": "86be5a5bc9bfeb6bc99437f95759aa88e056bc8f76c95cab436c05cf9e6c784c",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.9.31.md": {
+      "sourceBlob": "07d9318d24083740fe98b25e9744c27130f4d0dd",
+      "sourceSha256": "2815ad048d3784bce8d8867aad888827170cfba436a6091d9e370c581e0ca7d5",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.9.32.md": {
+      "sourceBlob": "05adc069cc8787189e77aee1fe71aea4f97d3618",
+      "sourceSha256": "fef27655db450a29033588fd679d4ea761f72bfc6f7acd280731da6997e9ee9b",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.9.39.md": {
+      "sourceBlob": "2667d0c7f158b51d9cf2f70417fb1810d813a6b7",
+      "sourceSha256": "0cbafbe2144c4191b8eecdf1bc2a3f5f99136c4bfd2e1c5c3ef4b6d1bc5265f2",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.9.40.md": {
+      "sourceBlob": "d2bca1bb930eea8e193733296ac08d87696a4da1",
+      "sourceSha256": "ed566e3268971e089c643132eac14a9206ae045772abbe1e78e3f16246b4ed88",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.9.41.md": {
+      "sourceBlob": "60f904b894efd2a703c20500da9bad57bb03b16b",
+      "sourceSha256": "33dde16150db35f65d6dd4cd2c21bb84f95d8b6390b77443df733d4fdfdc2e12",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.9.7.md": {
+      "sourceBlob": "208c776830afc9f274508139196df48ec2eb9e0a",
+      "sourceSha256": "6fef0a407a95cbe95c998968b7f8d137929e94a5ddd130e9c847ee54f90bdbc1",
+      "verifiedAgainstFrozenTree": true
+    },
+    "release-notes/v0.9.8.md": {
+      "sourceBlob": "e0f8e2702708521ce7bb534b26b4fb9606618009",
+      "sourceSha256": "62953496bedb741c5e8de7fb214093de45ac2f0f02527e13265faadf038148e1",
+      "verifiedAgainstFrozenTree": true
+    }
+  }
+}

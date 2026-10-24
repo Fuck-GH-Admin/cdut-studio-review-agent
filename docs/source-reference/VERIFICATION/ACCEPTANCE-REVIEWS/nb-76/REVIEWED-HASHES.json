@@ -1,0 +1,76 @@
+{
+  "schema": "r07-reviewed-hashes/1",
+  "batch": "nb-76",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "sealId": "seal-0eadc153bec5d3ca",
+  "reviewedAtUtc": "2026-10-23T20:19:15Z",
+  "manuals": [
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-types.ts.md",
+      "manualSha256": "366810fb7ea7867dbe049ec1180195870f28558177a5789f395be5b57504c30e",
+      "sourceSha256": "ef1eb1791108f3aceb750b64e67613db05788bda2eb9053d7b333dd977d3ed6b",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-uri.ts.md",
+      "manualSha256": "09b24d9b824a76a480821e4fd25d915d5b7d6d0beb26ae360c599f6baa021fd1",
+      "sourceSha256": "537ede67c441f024d075781e26b08268e212207206ba564f9b34c0585eed605e",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-uv-consent.ts.md",
+      "manualSha256": "318e6381a4195ec0994aa4ad2f650770e9aae116c23e73259446f621cec39537",
+      "sourceSha256": "c91108b317082b6dd720ebbfb04373cb2acdf555e70d6038c68fa278b248d7c0",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-uv.test.ts.md",
+      "manualSha256": "0b495f7085f2fa0335384056c7d9113dd7daa24b38bd913a30283808a7b26577",
+      "sourceSha256": "ab96faf31b749eadf9305bac749f827e1b1a88eccb130169db9e3200a9524b8e",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-uv.ts.md",
+      "manualSha256": "10878bee91e2dfac27009802ec20549b11553f831040bebddfd70717e2195ee2",
+      "sourceSha256": "859a4aa6f6f83ecf08c356fa634363fc9394706ec14de86e42752d73fddfb4ed",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-vault-cache.ts.md",
+      "manualSha256": "0061b365b6fb6b89529c58d53a9cb9bacac76b04aed46954ab767a1dc53b4347",
+      "sourceSha256": "2e6735cfb3891afbcc65c2385ef3f330f08d01b6fea88148da550f9ab54bd166",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-window-manager.ts.md",
+      "manualSha256": "1b9b95f92c6b8da344d2004fdf3c833b4ad7e0b99f45d0b155378f06012d7bf1",
+      "sourceSha256": "d8f23077063db56c17022903dd550699a39fd9b779a761805874593c4e21c830",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-zotero-bridge.ts.md",
+      "manualSha256": "a10f2b2fd4e6251050160bd056b3fb970fa9e12aca0f58d4c5f31410323ce373",
+      "sourceSha256": "d6ccc3a9f5c44464023039a04c4e416339ba0ac029877412f7b029cf7149fa02",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-zotero-format.ts.md",
+      "manualSha256": "baf85561c27e6e6fc30bbd192436471e405a14dd522659e4648d768672241671",
+      "sourceSha256": "ba29a62951905cc928457f053117cd4dfc53801c50262b5fabd8466c1abd4651",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab.test.ts.md",
+      "manualSha256": "bf73f5bd2800c9ffbbcb525b559578f1afebd2bccc61f74818ff27de52bd29b2",
+      "sourceSha256": "7918584643be56251a69e30b6d539651a19919de28f61b145913d63adc14ae59",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/index.ts.md",
+      "manualSha256": "531e36bfc8b0d88a9d9a13002b999e59fb8b4de5e52f8f414180c99e1875a909",
+      "sourceSha256": "5c11906c3fcacd842749bd86644edd22afef11fcc0ad52d138e75dc403ec76bd",
+      "verdict": "accepted"
+    }
+  ]
+}

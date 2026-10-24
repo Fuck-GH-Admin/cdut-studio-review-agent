@@ -1,0 +1,60 @@
+{
+  "schema": "dsh-r07-index-review-result/1",
+  "batch": "index-p01-app-shell__apps__electron__resources__ppt-style-packs",
+  "groupId": "p01-app-shell__apps__electron__resources__ppt-style-packs",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-index-author-20261023",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T19:32:00Z",
+  "sealedAtUtc": "2026-10-23T17:53:35Z",
+  "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__ppt-style-packs.md",
+  "artifactSha256": "6c45f5b0a01f28b38799cb914e4de3efed27a49ac7c73ceaf953d5f5615c7461",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 2,
+    "accepted": 2,
+    "revision_required": 0,
+    "unknown": 0,
+    "blocking": 0,
+    "nonBlocking": 0
+  },
+  "gates": {
+    "G0_INDEX": "PASS",
+    "G1_INDEPENDENT_SOURCE_REVIEW": "PASS",
+    "G2_SEAL_CONSISTENCY": "PASS",
+    "note": "G0 等价 2/2、封版三方哈希全对；change 标注与锁一致（本批无 F-01 类问题）；消费链含 SKILL.md 引证（pptx/SKILL.md:12 默认风格）经 QA 实读属实。"
+  },
+  "g0Evidence": {
+    "stockScript": "ERRATA-E1 沿登记；等价检查 2/2 PASS"
+  },
+  "files": [
+    {
+      "path": "apps/electron/resources/ppt-style-packs/academic-editorial/preview.webp",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__ppt-style-packs.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__ppt-style-packs.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#apps--electron--resources--ppt-style-packs--academic-editorial--preview.webp",
+      "line": 8,
+      "sourceBlob": "6d009c03ebf90d6cba688e2971aa63bb50f5742d",
+      "sourceSha256": "e4fd8cb4951af0e5bf2045e248c56ec91c4f2fe3915d537ac11f01832cdcfcbf",
+      "manualSha256": "6c45f5b0a01f28b38799cb914e4de3efed27a49ac7c73ceaf953d5f5615c7461",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "消费链（pack.json preview.asset→受控校验 :168-178→resolve/越界/存在 :197-199→registerProferFilePath :201-211 cdut-file:// opaque）、EXPECTED_PACK_IDS(:8)、测试 :42-44 均实证属实；:199 失败影响属实。"
+    },
+    {
+      "path": "apps/electron/resources/ppt-style-packs/profer-cloud-dancer/preview.webp",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__ppt-style-packs.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__apps__electron__resources__ppt-style-packs.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#apps--electron--resources--ppt-style-packs--profer-cloud-dancer--preview.webp",
+      "line": 18,
+      "sourceBlob": "be1f23dd371f3a72bef522a2a7821ffcca526ebc",
+      "sourceSha256": "267454c9b301ffd1de61a7169b553b12554da320df36d7d8801fb420b2ff1ac3",
+      "manualSha256": "6c45f5b0a01f28b38799cb914e4de3efed27a49ac7c73ceaf953d5f5615c7461",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "同链属实；pptx/SKILL.md:12「默认 Cloud Dancer Academic」实测原文相符；ppt-slide-components.ts:168/:181/:202 pack-id 特化实测命中。"
+    }
+  ],
+  "findings": [],
+  "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局账；未跑产品测试/typecheck/构建/GUI/真实界面渲染；未 commit/push；结论只覆盖本批。"
+}

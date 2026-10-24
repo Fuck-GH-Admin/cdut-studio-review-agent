@@ -1,0 +1,361 @@
+{
+ "schema": "dsh-r07-qa-result/1",
+ "batch": "nb-114",
+ "id": "NB-114",
+ "revisionOf": null,
+ "reviewRoot": "reviews/nb-114",
+ "priorReviewRoots": [
+  "reviews/nb-114/SOURCE-CHECKLIST.md",
+  "reviews/nb-114/PRE_READ_DONE.json"
+ ],
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "sourceHeadVerified": true,
+ "sourceWorktreeClean": true,
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewedAtUtc": "2026-10-24T13:05:00Z",
+ "scopeSource": "manager/assignments/nb-114-SCOPE.json",
+ "scopeFileCount": 18,
+ "scopeLines": 1057,
+ "deliveryRoot": "deliveries/nb-114",
+ "sealSpec": "seal_delivery.py/1（v2）",
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "GUI"
+ ],
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PARTIAL",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 14,
+  "revision_required": 4,
+  "unknown": 0
+ },
+ "batchVerdict": "revision_required",
+ "files": [
+  {
+   "path": "apps/electron/src/renderer/atoms/active-view.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/active-view.ts.md",
+   "sourceBlob": "c0e9b000d386463943124c864af558d9cb23dd03",
+   "sourceSha256": "765464d3c0efd94b833f478a267de3f6fac55b76bbbeafcc3c977ff33658d411",
+   "sourceLines": 17,
+   "manualSha256": "f5f9ac9ecd4697461933abfcaa987665af5af3e1e4a87831556384267bdc4d47",
+   "manualLines": 54,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/agent-atoms-lifecycle.test.ts",
+   "kind": "test",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/agent-atoms-lifecycle.test.ts.md",
+   "sourceBlob": "74b88516b45e269243a4b51787d14938d51b75c2",
+   "sourceSha256": "662a6bf019cb32f8266daa9358a450a41bb11c15f617915e24fd8ddf695474e7",
+   "sourceLines": 65,
+   "manualSha256": "5f2e698a6b8660deb7236df3890f16bd98459618fb67f8a585c2e7c13cd46de5",
+   "manualLines": 46,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/agent-atoms.test.ts",
+   "kind": "test",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/agent-atoms.test.ts.md",
+   "sourceBlob": "198d42bbab9e002fddb99f0b338fc74e3f99007c",
+   "sourceSha256": "ec04130cea23f611eed1e33e23afd4b5b81a7182b6d009c32c869c63770633d1",
+   "sourceLines": 71,
+   "manualSha256": "04d3c8380ea0cb044a27d3aba757f86a312d83c01db5f0e8704ca89198740864",
+   "manualLines": 48,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/agent-live-messages.test.ts",
+   "kind": "test",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/agent-live-messages.test.ts.md",
+   "sourceBlob": "3d27a6340b553fc2c3d42a517480d4e49db4a983",
+   "sourceSha256": "3e71b354e15ce17dbf0e45b26667493846d713cc548da522998b3f397a52837e",
+   "sourceLines": 28,
+   "manualSha256": "33ce51afe93c8e17df1235ca5f8764382b78678d2798c7d9336a4cd72334be48",
+   "manualLines": 44,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/agent-preset-atoms.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/agent-preset-atoms.ts.md",
+   "sourceBlob": "3c4c8b5af9043d4abf5e38c0058d428a202136f4",
+   "sourceSha256": "03c1a249537a27edf02fdef27a33928ff8cad2dafe1b6a5dc3cd1fc912261f3c",
+   "sourceLines": 54,
+   "manualSha256": "c33f4187bc37fa97cdd9c2c8adbc3ed0223e56591440ac04561024c90e827af8",
+   "manualLines": 66,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/agent-stream-completion.test.ts",
+   "kind": "test",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/agent-stream-completion.test.ts.md",
+   "sourceBlob": "f42dc312b9ff6774e5abe37c56851d025036a35f",
+   "sourceSha256": "824003e4e456a8b3a130a70f1e84f1a17e519e29bd97102b39ba7d724f641989",
+   "sourceLines": 35,
+   "manualSha256": "a4df09180fc6d4cf8f8a88a283177be20b8eef69a32f71fd80ec50ade161dc9d",
+   "manualLines": 47,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/app-mode.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/app-mode.ts.md",
+   "sourceBlob": "d6f5adfd34e1ac59d9534e478c287926ec19d86b",
+   "sourceSha256": "e3b0091853854a5fde789a2ad5547d26418d5f5ca19879f7629a20f5bded52e7",
+   "sourceLines": 13,
+   "manualSha256": "c03cb8ab0faa54645a909fc255deecd70554f06fc291d8b194ddd4da94faabaa",
+   "manualLines": 50,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/automation-atoms.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/automation-atoms.ts.md",
+   "sourceBlob": "5680dbecbc39e032c55b7409e51dc536e988f674",
+   "sourceSha256": "db5e1bc470fdef0189f4b08b779d1024b66be7d8a392d277220c71bd7b681b5c",
+   "sourceLines": 128,
+   "manualSha256": "d7ac47f4df386df2ad9cd84f94ab43618ce4720e9860e94dc3a5ebe01ed737f5",
+   "manualLines": 68,
+   "verdict": "revision_required",
+   "findings": [
+    {
+     "id": "F-03",
+     "severity": "minor_factual",
+     "claim": "§2 称「导出 6 条」——实际 **8 条**（其自身 export 位置 :20/:27/:52/:57/:63/:84/:108/:119 列了 8 个）。",
+     "sourceEvidence": "grep -c ^export=8",
+     "action": "rN 修正为 8"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/browser-atoms.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/browser-atoms.ts.md",
+   "sourceBlob": "5c8eb5e6b7eec807486ad00b3d1d3e10322559b9",
+   "sourceSha256": "0a5e37268658c93bad4d2da34f0d8907e4511f441a9991b68ec0909144589acc",
+   "sourceLines": 12,
+   "manualSha256": "6cedb8c9ad0ccae13a0617ded67d39e7311e0e4ef6298b64077db930826c7800",
+   "manualLines": 52,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/bulletin-atoms.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/bulletin-atoms.ts.md",
+   "sourceBlob": "272eecdca3789683254521e17bbdb6d10b01d5a3",
+   "sourceSha256": "1c8f12da5e1bcaaa3714b07597c312fdd0544db3cc5fdebfadb744043ba2add5",
+   "sourceLines": 26,
+   "manualSha256": "9888ecde717a1a48d62c127c54f73a3e873d13d586ca4f0a99e74d2556201a14",
+   "manualLines": 50,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/cdut-account-atoms.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/cdut-account-atoms.ts.md",
+   "sourceBlob": "1df9ba22c4441d90a94c0ce3bb11366d7ecdb483",
+   "sourceSha256": "a41ff243ba0da6a0fde6ae479811dfa4563a4f36dfb09fb3ee1089aba81f696d",
+   "sourceLines": 35,
+   "manualSha256": "32fdd9a748f7458b718f1eb0e7f755a4f021628702c5b51d11631529750e6612",
+   "manualLines": 50,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/coach-tour-atoms.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/coach-tour-atoms.ts.md",
+   "sourceBlob": "6edb467b8ea3a22d75e408bbbc6ef830059f5e42",
+   "sourceSha256": "39a62240ebeda7c99ba7a5af33af782be84597156cc3f7278b78b31f617d50ee",
+   "sourceLines": 13,
+   "manualSha256": "7bbc5ce2db725eee5599d73eb224ff8f9359b2f7a42576cc99aefaab21879a80",
+   "manualLines": 50,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/conversation-atoms.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/conversation-atoms.ts.md",
+   "sourceBlob": "e077000bc2567a0e8ced1642cad1369b6038fd06",
+   "sourceSha256": "9f24a6c8bd35af2c6ccbab64567833892db22789f6c74fdb22c57dc82a2d7b93",
+   "sourceLines": 121,
+   "manualSha256": "10f1406096aad9009c32d678a8c754abea5e07a25e272736398fe1b21f1864fb",
+   "manualLines": 63,
+   "verdict": "revision_required",
+   "findings": [
+    {
+     "id": "F-02",
+     "severity": "minor_factual",
+     "claim": "§2 称「导出 15 条」——实际 **21 条**（grep^export=21；其自身分组列名 7+6+3+5=21）。",
+     "sourceEvidence": "grep -c ^export=21",
+     "action": "rN 修正为 21"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/cslab-atoms.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/cslab-atoms.ts.md",
+   "sourceBlob": "23076cdb9b1a007b3966d6b198dde78c3a95d8bf",
+   "sourceSha256": "fbd0f7da7b10c6aa5944a947132b093a81981c1a8b51c6ca3d2fd570c21060ea",
+   "sourceLines": 336,
+   "manualSha256": "12fead37d1237c5504a21aba50fd31cd0df07c117fbc8261214e7b4ae29abdb1",
+   "manualLines": 64,
+   "verdict": "revision_required",
+   "findings": [
+    {
+     "id": "F-01",
+     "severity": "minor_factual",
+     "claim": "§2 称 CsLabDrawerMode「17 态」——实际 **18 态**（其自身列名 18 个：asset/capsule/ingest/lineage/selection/plot/formula/brain/zotero/runs/notes/tools/share/hpc/fit/symmetry/pxrd/isosurface）。另「30+ 导出」宜精确为 59（grep^export=59，非阻断备注）。",
+     "sourceEvidence": "sed :236-255 联合 18 叶；grep -c ^export=59",
+     "action": "rN 修正为 18 态（导出数可精化 59）"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/cslab-origin-atoms.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/cslab-origin-atoms.ts.md",
+   "sourceBlob": "e39ee9060fc89a14abd61e813af8a3e8eaec32f2",
+   "sourceSha256": "e9cd0093933225614e58f2b499268fd098102bc381b223842c00a90653ce392b",
+   "sourceLines": 28,
+   "manualSha256": "1264350cc794cc4caf65a1cb902a1c5023bd884434a7bf3427a54b53ac1ae12d",
+   "manualLines": 50,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/cslab-tour-atoms.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/cslab-tour-atoms.ts.md",
+   "sourceBlob": "677a939f41bb4a9e89a96ff639dfc49a017a1ec1",
+   "sourceSha256": "2cb2aca7c25d818dad224fe68e59ccd272ef464a220bb02f1c3cdf35b2069d57",
+   "sourceLines": 26,
+   "manualSha256": "dac7cf794e536fd1aa3fef4c5160bd9bf37eee17f65fea56eb3b5c094427abb5",
+   "manualLines": 50,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/cslab-vesta-atoms.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/cslab-vesta-atoms.ts.md",
+   "sourceBlob": "c2134c2e935585cddfc74da3a8674a6da4c06ea1",
+   "sourceSha256": "301907de9fc8cc0b42d41eb1c26e38f78765282669ca426a55cf8589f72a1b69",
+   "sourceLines": 44,
+   "manualSha256": "2ded38d7cde89b007c87fc2e07fabd99b2f3a2bec56dec5ac460f630d0e8d948",
+   "manualLines": 50,
+   "verdict": "revision_required",
+   "findings": [
+    {
+     "id": "F-04",
+     "severity": "minor_factual",
+     "claim": "§2 称「导出 9 条」——实际 **10 条**（其自身 export 位置 :13/:20/:23/:26/:29/:32/:35/:38/:41/:44 列了 10 个）。",
+     "sourceEvidence": "grep -c ^export=10",
+     "action": "rN 修正为 10"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/renderer/atoms/developer-mode.ts",
+   "kind": "source",
+   "package": "p08-renderer-ui",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/developer-mode.ts.md",
+   "sourceBlob": "1e71deefd4742c9e3d3b1fda7efc1b22473ac23e",
+   "sourceSha256": "458b17bd8d82fb5380880e8cb79ac74720ac87bc5df3f7c4b3a282b1aa6f8f40",
+   "sourceLines": 5,
+   "manualSha256": "b872b39eb5b560d34f46950338578cde571f8e95b140fa2c1f9b81469cd893dd",
+   "manualLines": 50,
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/active-view.ts.md": "f5f9ac9ecd4697461933abfcaa987665af5af3e1e4a87831556384267bdc4d47",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/agent-atoms-lifecycle.test.ts.md": "5f2e698a6b8660deb7236df3890f16bd98459618fb67f8a585c2e7c13cd46de5",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/agent-atoms.test.ts.md": "04d3c8380ea0cb044a27d3aba757f86a312d83c01db5f0e8704ca89198740864",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/agent-live-messages.test.ts.md": "33ce51afe93c8e17df1235ca5f8764382b78678d2798c7d9336a4cd72334be48",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/agent-preset-atoms.ts.md": "c33f4187bc37fa97cdd9c2c8adbc3ed0223e56591440ac04561024c90e827af8",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/agent-stream-completion.test.ts.md": "a4df09180fc6d4cf8f8a88a283177be20b8eef69a32f71fd80ec50ade161dc9d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/app-mode.ts.md": "c03cb8ab0faa54645a909fc255deecd70554f06fc291d8b194ddd4da94faabaa",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/browser-atoms.ts.md": "6cedb8c9ad0ccae13a0617ded67d39e7311e0e4ef6298b64077db930826c7800",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/bulletin-atoms.ts.md": "9888ecde717a1a48d62c127c54f73a3e873d13d586ca4f0a99e74d2556201a14",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/cdut-account-atoms.ts.md": "32fdd9a748f7458b718f1eb0e7f755a4f021628702c5b51d11631529750e6612",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/coach-tour-atoms.ts.md": "7bbc5ce2db725eee5599d73eb224ff8f9359b2f7a42576cc99aefaab21879a80",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/cslab-origin-atoms.ts.md": "1264350cc794cc4caf65a1cb902a1c5023bd884434a7bf3427a54b53ac1ae12d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/cslab-tour-atoms.ts.md": "dac7cf794e536fd1aa3fef4c5160bd9bf37eee17f65fea56eb3b5c094427abb5",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/developer-mode.ts.md": "b872b39eb5b560d34f46950338578cde571f8e95b140fa2c1f9b81469cd893dd"
+ },
+ "rejectedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/automation-atoms.ts.md": "d7ac47f4df386df2ad9cd84f94ab43618ce4720e9860e94dc3a5ebe01ed737f5",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/conversation-atoms.ts.md": "10f1406096aad9009c32d678a8c754abea5e07a25e272736398fe1b21f1864fb",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/cslab-atoms.ts.md": "12fead37d1237c5504a21aba50fd31cd0df07c117fbc8261214e7b4ae29abdb1",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/cslab-vesta-atoms.ts.md": "2ded38d7cde89b007c87fc2e07fabd99b2f3a2bec56dec5ac460f630d0e8d948"
+ },
+ "batchFindings": [
+  {
+   "id": "M-01",
+   "severity": "info",
+   "claim": "正面确认（QA 独立预读回源为真）：8 条安全/契约红线——cslab-atoms 门禁验证态绝不客户端持久化、cdut-account 绝不接触明文密码、browser-atoms 主进程权威+dismiss 防强开、app-mode chat 兼容读取、tour 指令/ack 防 DOM 模拟、automation agentRuntime 显式保存防回退 Claude、presetOf 不用 normalizePresetId 自定义直配、bulletin 每运行 dismissed 复位；12 用例口径（4/4/1/3）与 4 测试手册一致；15 篇计数正确（active-view 2/app-mode 2/browser 2/bulletin 5/cdut-account 4/coach-tour 1/developer-mode 2/cslab-origin 6/cslab-tour 4/preset 5 + 四测试手册）。",
+   "sourceEvidence": "逐篇对读+grep 实测",
+   "action": "记录"
+  },
+  {
+   "id": "M-02",
+   "severity": "info",
+   "claim": "诚实降级合规（cslab/automation/conversation「纯声明/图谱级」标注）；10 源无专属测试如实；批外被测件（agent-stream-state-cleanup）已正确限定。12 用例 NOT_RUN。",
+   "sourceEvidence": "对照",
+   "action": "记录"
+  }
+ ],
+ "zip": {
+  "path": "deliveries/nb-114/R07-nb-114-05fb2565.zip",
+  "sha256": "122c5c1f59986f9d19cfd2cf79a9f3f1f8ecfcc7f45ab7944c0bdf2acbf8cb24",
+  "entries": 21,
+  "note": "18 手册+MANIFEST+2 mechanical TSV；不含 READY/DONE（v2）；无穿越/0 mismatch"
+ },
+ "diffReplay": "changes.diff new-file 补丁与 stage 字节一致",
+ "parentPreserved": null,
+ "notClaimed": [
+  "测试运行结果",
+  "typecheck/build 结果",
+  "G3 跨模块",
+  "批外模块实现"
+ ]
+}

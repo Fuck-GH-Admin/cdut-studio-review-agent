@@ -1,0 +1,108 @@
+{
+  "schema": "r07-reviewed-hashes/1",
+  "batch": "nb-29",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "sealId": "seal-8ccdc6c2f7fc1367",
+  "reviewedAtUtc": "2026-10-23T17:17:00Z",
+  "manuals": [
+    {
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t07-rating-adapter.ts.md",
+      "manualSha256": "2621d20f12166bf5287c751d12e4dec69e48fe845579c757c91eda763d51a3f5",
+      "sourceBlob": "338dc172c3826e4a2c928b8af111770905762e88",
+      "sourceSha256": "c733da5efef8cd8cf573255686ceb6d8fe981f1e745e68acf85b733ac8fc12ee",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t07-rating-workflow.test.ts.md",
+      "manualSha256": "67735e8683f50eff41754d5b7b67f97d1f1951969c25df8e1b624bb5221174fc",
+      "sourceBlob": "ddeb7f0d532d137dad1d040265771824a23dc64d",
+      "sourceSha256": "78bc9dd71407097cf838355a7a9a34775702a6a9b8e9dd715a0b4da7b18af803",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t07-rating-workflow.ts.md",
+      "manualSha256": "8db710d60bf45e3b7a29c692091b4a06c68221cb51c34ea98445691ce5a237c9",
+      "sourceBlob": "a0f18ba5437763426f0e67503c0d4cd8f0793a89",
+      "sourceSha256": "0105db6736778235ec51ee690334b6842427a43109b23691e637607e191210fb",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t07-round-setup.test.ts.md",
+      "manualSha256": "dec6ceda7b24e1af00664dea62d4fe517e2006b2710115623f661229c935fd17",
+      "sourceBlob": "333580116635d3586de3c605dab011f476fbfe35",
+      "sourceSha256": "daff7802c8ba143e37b9c4a9e3185759f7e99c632d06d1e7d47da5d6a17c020c",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t07-round-setup.ts.md",
+      "manualSha256": "8e574c5a2769f0cf1184b1da416cfdf9e276dd9eb89cf5280fe8c4e4d553e544",
+      "sourceBlob": "767093d42e1ed29a34a01945d7dc640f2397ae24",
+      "sourceSha256": "bfdf2b1838a13be74f7ea83dd38290631a140a9246abd91e84039730053fe12e",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t07-state-store.ts.md",
+      "manualSha256": "b4204ae991160cfef61f05de8237dd491c87e262337e6395fee1678c77e3e02a",
+      "sourceBlob": "441a5b1d79349240b4bd300e836a9c77a52fe4f5",
+      "sourceSha256": "f692f8a03b4a155618f1351f0c2b4ef8e9501478d24b0c3fd2adf80667eb206c",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-import-ledger-v3-b2.test.ts.md",
+      "manualSha256": "d33ea2c128c36240a0b68be647e41fe02cdeae4a9ae6584fe041357113357361",
+      "sourceBlob": "dd9d9f693f1f79d55c994bca0dad4ca111d85cdc",
+      "sourceSha256": "3d9793112559d73dc63875d26440df084fb2de59537fc97d0fbbe793209f2851",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-import-ledger-v3-b2.ts.md",
+      "manualSha256": "0f336f7a8de2c7d5f492f2af1af19fb2f0d5e4350da5888135401c22c4be4d50",
+      "sourceBlob": "273b8ea71ed739f01238c5bcf1f57be7a39a6502",
+      "sourceSha256": "742164b4338fa7534e70ea001d9e40beaa94ae8b72f13b99f4fbde9d13898932",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.test.ts.md",
+      "manualSha256": "2114e78b7c44e2e18f5826c5646a9869ca7500dcfc1640d8b34759c027fe3f6b",
+      "sourceBlob": "f0d0b442e59ab1dc75089b592a6f449481577383",
+      "sourceSha256": "6bba64cb0ed7f7067a799fa74b905baf872c61ca4ab6b5e3c60a063d019d38a7",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/review-intake-adapter-v3-b2.ts.md",
+      "manualSha256": "48e41c3376eb30feb597433528dba71ed71ba8a0deace5d40c81d90d8e9fa0a5",
+      "sourceBlob": "e911663006cb105aad382a6a107630534e014739",
+      "sourceSha256": "dc26b9c7ee3409b52237ce07fe676b5fa5e38f7e61a5e27e266350742062c2cf",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/single-case-mvp.e2e.test.ts.md",
+      "manualSha256": "4f4835c45d74406ce44ca0d5a48fd82613252de4543e07d30b6617240e876f45",
+      "sourceBlob": "351f256e872ad247cb9fa933326c40b53f949116",
+      "sourceSha256": "82eb1a3e950c2a14a364c390f9b0d151e6cd700fe07faa1a01a8ff9d9f9e0d32",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/single-case-workspace.e2e.test.ts.md",
+      "manualSha256": "d1c475342dfc7f0dd8442f3715c2d0f7df1d5dcc8b0285dfdf5a6348abb180ad",
+      "sourceBlob": "81e398a22bf7f3f9c63b4783d376d5c3b13bb2d1",
+      "sourceSha256": "2b4b1858a7235da9efe413f5dd21e4c81e24bfc448af90bb3148b9c1e0f74bfb",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/template-store.test.ts.md",
+      "manualSha256": "bb583c8804fb4887b95d6a3443d295c34bcfc2ae3ddddafbda69dd8eb1c8065e",
+      "sourceBlob": "487d07bba14ca6d96dac754ae8971d035bb2ffcd",
+      "sourceSha256": "1797df65174f32be802b83e1eea101cb6e94402f30975d5472ab5fa6d61be52d",
+      "verdict": "accepted"
+    },
+    {
+      "manual": "MODULE-REFERENCE/p06-review-batch/FILE-REFERENCE/apps/electron/src/main/lib/review/template-store.ts.md",
+      "manualSha256": "71f56db370e0b7c4c346248870e9d3d9e6d54dc6265e78550a377aa5032914f6",
+      "sourceBlob": "d77fcd289db11c3a31aa6207e655793ce87f9d7a",
+      "sourceSha256": "4907533fdf6e101b19a3ced30f3558f580f02bf1dd752da871df55cde6872abc",
+      "verdict": "accepted"
+    }
+  ]
+}

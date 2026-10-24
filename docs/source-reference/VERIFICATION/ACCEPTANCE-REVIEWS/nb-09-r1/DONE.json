@@ -1,0 +1,24 @@
+{
+  "schema": "dsh-r07-review-done/1",
+  "batch": "nb-09-r1",
+  "revisionOf": "nb-09",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-09-20261023",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-23T16:50:31Z",
+  "sealId": "seal-f67c1fca2f34bcc2",
+  "status": "REVIEW_COMPLETE_ACCEPTED",
+  "batchVerdict": "accepted",
+  "counts": {"files": 17, "accepted": 17, "revision_required": 0, "unknown": 0, "findingsResolved": 6},
+  "artifacts": [
+    "reviews/nb-09-r1/RESULT.json",
+    "reviews/nb-09-r1/RESULT.md",
+    "reviews/nb-09-r1/REVIEWED-HASHES.json",
+    "reviews/nb-09-r1/DONE.json",
+    "handoffs/nb-09-r1-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-09-r1-REVIEW-TO-LEAD.md"
+  ],
+  "notRun": ["product tests (bun test)", "typecheck", "build", "Electron/GUI", "real model/network"],
+  "boundaries": "QA 只读复验：未改作者正文/源码/测试/依赖/candidate/全局 FILES/COVERAGE/MANIFEST/INDEX/inventory/g0；未 commit/push；父批 deliveries/nb-09 与 reviews/nb-09 字节未改写；产品测试与真实模型 NOT_RUN。",
+  "next": "lead 按 reviews/nb-09-r1/REVIEWED-HASHES.json 的 17 个 exact manualSha256 机械合入（覆盖 r0 的 3 篇 revision_required 与 3 篇带 N 文件）；nb-09 系列闭链；QA 续 nb-14 完整验收与后续预读"
+}

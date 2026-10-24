@@ -1,0 +1,32 @@
+{
+  "schema": "r07-qa-done/1",
+  "batch": "nb-07-r1",
+  "revisionOf": "nb-07",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewedAtUtc": "2026-10-23T17:28:00Z",
+  "sealId": "seal-0d36269748879a57",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 13,
+    "accepted": 13,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "result": "reviews/nb-07-r1/RESULT.json",
+  "resultSha256": "9ef9486ed0004f6ca68e3e85d708058776ebd9ed689af2d1815f096841d6049e",
+  "reviewedHashes": "reviews/nb-07-r1/REVIEWED-HASHES.json",
+  "reviewedHashesSha256": "b2d8384c955091bb5ed02009ec581b9d44443f9a2255e151ab45a0fb92a299fb",
+  "testsRun": [],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "knownUnknowns": [
+    "assertCsLabUnlocked 实现（非本批）",
+    "运行期行为 NOT_RUN"
+  ]
+}

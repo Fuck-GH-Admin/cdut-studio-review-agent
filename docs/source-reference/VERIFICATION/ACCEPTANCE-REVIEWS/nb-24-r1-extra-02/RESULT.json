@@ -1,0 +1,404 @@
+{
+ "schema": "dsh-r07-review-result/2",
+ "batch": "nb-24-r1",
+ "revisionOf": "nb-24",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-nb-47-20261023",
+ "reviewerSession": "docs-r07-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T21:46:09Z",
+ "sealId": "seal-d0d7756c0eaa944a",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 16,
+  "accepted": 16,
+  "changedReVerified": 5,
+  "boundParentAccepted": 11,
+  "blocking": 0
+ },
+ "gates": {
+  "G0": "PASS",
+  "G1": "PASS",
+  "G2": "PASS",
+  "note": "Independent re-verification by qa-extra-02 (prior nb-24-r1 review was an empty shell: files:0/reviewer null/no seal binding - left untouched as history). G0: seal chain hashes/ZIP/bindings all match (seal seal-d0d7756c0eaa944a). G2: 5 changed manuals re-verified claim-by-claim against baseline/source@05fb - all fixes correct, no regressions; 11 unchanged manuals parent-accepted with identical sha256 -> hash-bound reuse of parent same-source evidence."
+ },
+ "files": [
+  {
+   "path": "apps/electron/src/main/lib/review/demo-fixtures/demo-case-fixture.ts",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/demo-fixtures/demo-case-fixture.ts.md",
+   "sourceBlob": "839ef73e91c23b8af53f1f661ba49a6e4279a8c4",
+   "sourceSha256": "c83a1bbb2551449ae10e25a9e93be4f59c1d8caef090d1a052fa890c0d5be28d",
+   "manualSha256": "8361079131f2a96c47c3714d648176c483e13380ac7bf8e7d7aab19e92b8a86c",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-24R1-V-demo-case-fixture",
+     "severity": "verified",
+     "claim": "F-05 false negative fixed: grep buildDemoCase in *.test.ts = exactly 11 files (matches new wording 无专属测试；消费测试 11)",
+     "sourceEvidence": "baseline/source@05fb mechanical re-check (grep/awk/sed anchors) per claim",
+     "action": "closed"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/fixtures/all-templates-fixture.test.ts",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/fixtures/all-templates-fixture.test.ts.md",
+   "sourceBlob": "a0169feff2e3155a8e3edb359b1a2500a5d6f0d1",
+   "sourceSha256": "c148709196c9d8964abead01d63d4fd3540fb34471eca547f8ff7527d0337e12",
+   "manualSha256": "76f3a94e6c5a053d5b4e8b380a17f5a7b13d6f8f9a620f188b36150a21ac4611",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-24R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-24/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/fixtures/all-templates-fixture.ts",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/fixtures/all-templates-fixture.ts.md",
+   "sourceBlob": "6922a6b18df4720058b4534f32b261287ddcd712",
+   "sourceSha256": "b616cf2a564a892072442b5c289e79852bdd36791df70d588b93fa5152d76a39",
+   "manualSha256": "627a9481294119d9b722937e13ca05a4716b44f9c58c20c119d4fa23c16c3494",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-24R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-24/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/fixtures/comprehensive-fixture.test.ts",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/fixtures/comprehensive-fixture.test.ts.md",
+   "sourceBlob": "d78a6ec0b6671acaff8b29dc610866e9e58e6b2f",
+   "sourceSha256": "b542ccb80b439e9051a9890427d541ad93484d2202dbf73ec2cabe5a581b4e87",
+   "manualSha256": "b3bfda90e95c3c11fc2504696af4dfc4e0865246f65d120c1090095dc445a0f3",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-24R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-24/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/fixtures/comprehensive-fixture.ts",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/fixtures/comprehensive-fixture.ts.md",
+   "sourceBlob": "25d3fe758ef3f20b659064e32471d019f72184ca",
+   "sourceSha256": "e5f73353e26a9685e798d8ac313b46899d5761aaf9020146e30d5111089e531f",
+   "manualSha256": "0492a905a870cb591d48b7a1e1a7f4912704844e77e2a4c04fba922b10a326aa",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-24R1-V-comprehensive-fixture",
+     "severity": "verified",
+     "claim": "F-06 comment-implementation contradiction recorded: template literal :41-81 has no rules/RuleSpec, no RuleSpec import; comment :17 双表达 claim flagged, policy text :18-25 holds P1-P4",
+     "sourceEvidence": "baseline/source@05fb mechanical re-check (grep/awk/sed anchors) per claim",
+     "action": "closed"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/input-invalidation.test.ts",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/input-invalidation.test.ts.md",
+   "sourceBlob": "d130e7add6e6a04c5398e812dcf13cb92150b4a0",
+   "sourceSha256": "44fb0937979b5c6689ac82da15c7f37186fa536f375e6f20032b354518f47e20",
+   "manualSha256": "17efb8e540cbd974533c2cdcf258591f470c1ffeef532498c4536f2fa68b3eac",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-24R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-24/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/input-invalidation.ts",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/input-invalidation.ts.md",
+   "sourceBlob": "dce8ba1f9cc88a18d67cde4082cf22e8861c5755",
+   "sourceSha256": "3989d36813869f7e663b723e6b7844d0432ec5821126793a884cc29b8558fa6b",
+   "manualSha256": "8a644d8d6116b655d2b3ff482a3cd9a55e723cad209223f73e09937d96237146",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-24R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-24/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/ocr-port.ts",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/ocr-port.ts.md",
+   "sourceBlob": "15e1205ff110727fd17d355a82c114a85e7ee8e7",
+   "sourceSha256": "ddbe49c327b5ce70dd3cbc2eb01072048203d30a3d4aad93aba5d5fe1e135cac",
+   "manualSha256": "84c1e6987e34ad72b0d12f9616ef5a23b703a76fb040485e373a59695bdf42e9",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-24R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-24/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/real-chain-journey.test.ts",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/real-chain-journey.test.ts.md",
+   "sourceBlob": "b2fff28b5ec2c1a94c057cef8b8d5f2c2fdd5e7c",
+   "sourceSha256": "4a4a75414d4a58088a187a3cd6d65463fe38f8f0dbc5c3a21da45f732ddae87d",
+   "manualSha256": "b888fc37aa92e39ed1b74b6017d7e8ec81c0b383287aec04cca64626d79a3617",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-24R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-24/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/rule-section-scope.test.ts",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/rule-section-scope.test.ts.md",
+   "sourceBlob": "670050f8ce99865c3462012e9b86dc68c6f9b73e",
+   "sourceSha256": "c3dc76d130e67a846e3c8a43a761a111721a07b5cb13de56e99dc1763853537a",
+   "manualSha256": "c950d0ecbe9920c3f695812e4fbda03624152676c700be3e34aa3109ff2b9a83",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-24R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-24/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/rule-section-scope.ts",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/rule-section-scope.ts.md",
+   "sourceBlob": "61675b871c0c236d76e6244719622b1ae9345b43",
+   "sourceSha256": "2e3d01814ff9ea2205f8dd632eed8d3298e8a4b457923319bf5b0631ec71f173",
+   "manualSha256": "d0de6437a83ed1fc0156cc815bef1f67a5b7c6f5127229458d6a7b6332b8cb66",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-24R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-24/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/submit-case-v2.test.ts",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/submit-case-v2.test.ts.md",
+   "sourceBlob": "f5d08c666040734a54a6f0eb9e9c4938805392b9",
+   "sourceSha256": "570f05e292213bc1451486c9a2abf4bfcbd06e9c9b43eed0e350624883f285a8",
+   "manualSha256": "b2870c7e8100583c320b90a9bfa1cea53a4d48fc25206f089c7d1117afbb567b",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-24R1-V-submit-case-v2",
+     "severity": "verified",
+     "claim": "F-04 #3-5 verified as real cases (:48 提交原子落盘 revision+1/首任务/receiptLog, :61 旧实现 submitted 恢复补任务 revision=3, :74 提交重试幂等); false topics (重复 requestId/附件登记失败) removed",
+     "sourceEvidence": "baseline/source@05fb mechanical re-check (grep/awk/sed anchors) per claim",
+     "action": "closed"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/tesseract-ocr-adapter.test.ts",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/tesseract-ocr-adapter.test.ts.md",
+   "sourceBlob": "35c4c31e34014cdbfb1be2d7f5b1db416f8807ef",
+   "sourceSha256": "109c63c4db2ffb22ef53f49eb56688d65cc9a49f8dbd39a4274d6087199e1460",
+   "manualSha256": "4f53f3b22a3f77c010c5c959583c1959f932747db8e5abdcff6ec1c9854d1fea",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-24R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-24/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/tesseract-ocr-adapter.ts",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/tesseract-ocr-adapter.ts.md",
+   "sourceBlob": "d25d5ed931bb7503423465f5696a697ae685dd35",
+   "sourceSha256": "e00bbeb902f9e70247d75243b8a1b4e0e3dee56a579df7a88adeaa4eda2cffb6",
+   "manualSha256": "6eaca2e37706fe73ca7d435621072da7d98e1a9bda729139d363f81b1458b51e",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-24R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-24/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/v2-executor-factory.test.ts",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/v2-executor-factory.test.ts.md",
+   "sourceBlob": "dd08583ad2a3b2950c67392f10d35ecde35be041",
+   "sourceSha256": "cbec86f6b9b9b9e5d029b374fb7505a760b2dd49d232b3d6b78a472485376906",
+   "manualSha256": "77bc03f0e5ce4a4d5d38ab20884f2edd034fcf6043d10921eb9e707eaf463c0c",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-24R1-V-v2-executor-factory",
+     "severity": "verified",
+     "claim": "F-03 roster corrected: 13 test() (:51-244) topics verified (vision batch isolation/2-batch failure->manual/OCR writeback at #3-5; subject/分项/nested all-any-not at #6-8; semantic-manual/人工确认优先/预算求和 at #9-11; 重复票号 #12; 等级映射+人工更正 #13); resolveEffectiveFieldValue 0 refs in file -> coverage unknown correct",
+     "sourceEvidence": "baseline/source@05fb mechanical re-check (grep/awk/sed anchors) per claim",
+     "action": "closed"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/review/v2-executor-factory.ts",
+   "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/v2-executor-factory.ts.md",
+   "sourceBlob": "df8be22990a4862ca4f489a3ac5388730a7c79dd",
+   "sourceSha256": "2a14b59a17a05f75e13484c6008f502c27d61e847804d3e28bc97be6f8246d8e",
+   "manualSha256": "d1406caf9ca44ed21716c42f303e4e41ede43f246a2ab7f312479607249c7ce2",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-24R1-V-v2-executor-factory",
+     "severity": "verified",
+     "claim": "F-01 exports 13->12 verified (grep ^export = 12: :40/92/96/102/197/209/285/294/304/324/557/728); F-02 section-9 roster rewritten per real 13 cases + anchors verified (recognizeDocumentImages :209-249, buildAgentContext :252-283, ocr :1053-1054, map :1060-1072)",
+     "sourceEvidence": "baseline/source@05fb mechanical re-check (grep/awk/sed anchors) per claim",
+     "action": "closed"
+    }
+   ]
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/demo-fixtures/demo-case-fixture.ts.md": "8361079131f2a96c47c3714d648176c483e13380ac7bf8e7d7aab19e92b8a86c",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/fixtures/all-templates-fixture.test.ts.md": "76f3a94e6c5a053d5b4e8b380a17f5a7b13d6f8f9a620f188b36150a21ac4611",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/fixtures/all-templates-fixture.ts.md": "627a9481294119d9b722937e13ca05a4716b44f9c58c20c119d4fa23c16c3494",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/fixtures/comprehensive-fixture.test.ts.md": "b3bfda90e95c3c11fc2504696af4dfc4e0865246f65d120c1090095dc445a0f3",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/fixtures/comprehensive-fixture.ts.md": "0492a905a870cb591d48b7a1e1a7f4912704844e77e2a4c04fba922b10a326aa",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/input-invalidation.test.ts.md": "17efb8e540cbd974533c2cdcf258591f470c1ffeef532498c4536f2fa68b3eac",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/input-invalidation.ts.md": "8a644d8d6116b655d2b3ff482a3cd9a55e723cad209223f73e09937d96237146",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/ocr-port.ts.md": "84c1e6987e34ad72b0d12f9616ef5a23b703a76fb040485e373a59695bdf42e9",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/real-chain-journey.test.ts.md": "b888fc37aa92e39ed1b74b6017d7e8ec81c0b383287aec04cca64626d79a3617",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/rule-section-scope.test.ts.md": "c950d0ecbe9920c3f695812e4fbda03624152676c700be3e34aa3109ff2b9a83",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/rule-section-scope.ts.md": "d0de6437a83ed1fc0156cc815bef1f67a5b7c6f5127229458d6a7b6332b8cb66",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/submit-case-v2.test.ts.md": "b2870c7e8100583c320b90a9bfa1cea53a4d48fc25206f089c7d1117afbb567b",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/tesseract-ocr-adapter.test.ts.md": "4f53f3b22a3f77c010c5c959583c1959f932747db8e5abdcff6ec1c9854d1fea",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/tesseract-ocr-adapter.ts.md": "6eaca2e37706fe73ca7d435621072da7d98e1a9bda729139d363f81b1458b51e",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/v2-executor-factory.test.ts.md": "77bc03f0e5ce4a4d5d38ab20884f2edd034fcf6043d10921eb9e707eaf463c0c",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/v2-executor-factory.ts.md": "d1406caf9ca44ed21716c42f303e4e41ede43f246a2ab7f312479607249c7ce2"
+ },
+ "allManualHashes": {
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/demo-fixtures/demo-case-fixture.ts.md": "8361079131f2a96c47c3714d648176c483e13380ac7bf8e7d7aab19e92b8a86c",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/fixtures/all-templates-fixture.test.ts.md": "76f3a94e6c5a053d5b4e8b380a17f5a7b13d6f8f9a620f188b36150a21ac4611",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/fixtures/all-templates-fixture.ts.md": "627a9481294119d9b722937e13ca05a4716b44f9c58c20c119d4fa23c16c3494",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/fixtures/comprehensive-fixture.test.ts.md": "b3bfda90e95c3c11fc2504696af4dfc4e0865246f65d120c1090095dc445a0f3",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/fixtures/comprehensive-fixture.ts.md": "0492a905a870cb591d48b7a1e1a7f4912704844e77e2a4c04fba922b10a326aa",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/input-invalidation.test.ts.md": "17efb8e540cbd974533c2cdcf258591f470c1ffeef532498c4536f2fa68b3eac",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/input-invalidation.ts.md": "8a644d8d6116b655d2b3ff482a3cd9a55e723cad209223f73e09937d96237146",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/ocr-port.ts.md": "84c1e6987e34ad72b0d12f9616ef5a23b703a76fb040485e373a59695bdf42e9",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/real-chain-journey.test.ts.md": "b888fc37aa92e39ed1b74b6017d7e8ec81c0b383287aec04cca64626d79a3617",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/rule-section-scope.test.ts.md": "c950d0ecbe9920c3f695812e4fbda03624152676c700be3e34aa3109ff2b9a83",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/rule-section-scope.ts.md": "d0de6437a83ed1fc0156cc815bef1f67a5b7c6f5127229458d6a7b6332b8cb66",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/submit-case-v2.test.ts.md": "b2870c7e8100583c320b90a9bfa1cea53a4d48fc25206f089c7d1117afbb567b",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/tesseract-ocr-adapter.test.ts.md": "4f53f3b22a3f77c010c5c959583c1959f932747db8e5abdcff6ec1c9854d1fea",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/tesseract-ocr-adapter.ts.md": "6eaca2e37706fe73ca7d435621072da7d98e1a9bda729139d363f81b1458b51e",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/v2-executor-factory.test.ts.md": "77bc03f0e5ce4a4d5d38ab20884f2edd034fcf6043d10921eb9e707eaf463c0c",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/v2-executor-factory.ts.md": "d1406caf9ca44ed21716c42f303e4e41ede43f246a2ab7f312479607249c7ce2"
+ },
+ "parentHashBinding": {
+  "apps/electron/src/main/lib/review/fixtures/all-templates-fixture.test.ts": {
+   "manualSha256": "76f3a94e6c5a053d5b4e8b380a17f5a7b13d6f8f9a620f188b36150a21ac4611",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-24/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/review/fixtures/all-templates-fixture.ts": {
+   "manualSha256": "627a9481294119d9b722937e13ca05a4716b44f9c58c20c119d4fa23c16c3494",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-24/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/review/fixtures/comprehensive-fixture.test.ts": {
+   "manualSha256": "b3bfda90e95c3c11fc2504696af4dfc4e0865246f65d120c1090095dc445a0f3",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-24/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/review/input-invalidation.test.ts": {
+   "manualSha256": "17efb8e540cbd974533c2cdcf258591f470c1ffeef532498c4536f2fa68b3eac",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-24/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/review/input-invalidation.ts": {
+   "manualSha256": "8a644d8d6116b655d2b3ff482a3cd9a55e723cad209223f73e09937d96237146",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-24/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/review/ocr-port.ts": {
+   "manualSha256": "84c1e6987e34ad72b0d12f9616ef5a23b703a76fb040485e373a59695bdf42e9",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-24/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/review/real-chain-journey.test.ts": {
+   "manualSha256": "b888fc37aa92e39ed1b74b6017d7e8ec81c0b383287aec04cca64626d79a3617",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-24/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/review/rule-section-scope.test.ts": {
+   "manualSha256": "c950d0ecbe9920c3f695812e4fbda03624152676c700be3e34aa3109ff2b9a83",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-24/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/review/rule-section-scope.ts": {
+   "manualSha256": "d0de6437a83ed1fc0156cc815bef1f67a5b7c6f5127229458d6a7b6332b8cb66",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-24/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/review/tesseract-ocr-adapter.test.ts": {
+   "manualSha256": "4f53f3b22a3f77c010c5c959583c1959f932747db8e5abdcff6ec1c9854d1fea",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-24/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/review/tesseract-ocr-adapter.ts": {
+   "manualSha256": "6eaca2e37706fe73ca7d435621072da7d98e1a9bda729139d363f81b1458b51e",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-24/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  }
+ },
+ "openNonBlocking": "M-02 line drift 2-9 rows (author left open, non-blocking)",
+ "findings": []
+}

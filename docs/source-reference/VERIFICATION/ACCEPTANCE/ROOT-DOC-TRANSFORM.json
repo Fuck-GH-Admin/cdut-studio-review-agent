@@ -1,0 +1,37 @@
+{
+  "schema": "dsh-r07-root-doc-transform/1",
+  "atUtc": "2026-10-23T23:23:02Z",
+  "rule": "ROOT 文档 hash 只允许已有链接搬迁转换；保存 stage 原件与转换 hash",
+  "originals": [
+    {
+      "doc": "CODEBASE-MAP.md",
+      "stageSha256": "2cad6f0d171697fed62ceb252688f0a333a3c188db05aef3148ce590ac902b15",
+      "deliverySha256": "7009b9b07ee43d402f605840f6c7118bd2f206676c3925a7ef77dbbae77413bc",
+      "transform": "仅链接搬迁转换（rewrite_new），正文未改"
+    },
+    {
+      "doc": "API-REFERENCE.md",
+      "stageSha256": "a7b0674eb2df400d2aa060ac47cae4e0842632e5f84c1f9c514f2978801fb4d0",
+      "deliverySha256": "3179ab8d28954df9b98b2fa74d4fc870b6052de1998a0a0d2093a9411bb06abd",
+      "transform": "仅链接搬迁转换（rewrite_new），正文未改"
+    },
+    {
+      "doc": "CURRENT-ARCHITECTURE.md",
+      "stageSha256": "0f633ff9a470fb7adb28ae31e54d8980549b9ac3cd7a0115ed054add6f2f1872",
+      "deliverySha256": "5e1624f8087bbd1af6e9e4979b95e264244b7e27e46495032c562c4a96cf7cf8",
+      "transform": "仅链接搬迁转换（rewrite_new），正文未改"
+    },
+    {
+      "doc": "BUSINESS-FLOW.md",
+      "stageSha256": "32847ccc17b85d94574f92d358a19f8d4622321dbb2508490c272349e3027dd5",
+      "deliverySha256": "15231e9bffa838c18083a9c9aabc619b50ea06d4981f7cc8c14e1c72c9b58b62",
+      "transform": "仅链接搬迁转换（rewrite_new），正文未改"
+    },
+    {
+      "doc": "DESIGN-VS-IMPLEMENTATION.md",
+      "stageSha256": "0d1b7485f81a36d8d60cd160b4cdceab38ec54fdcad87b942bbbffa5cc97c218",
+      "deliverySha256": "da61cfabb67d2bfc7d467729302e3f340777524b8ae6b5c0e211b50c99035c35",
+      "transform": "仅链接搬迁转换（rewrite_new），正文未改"
+    }
+  ]
+}

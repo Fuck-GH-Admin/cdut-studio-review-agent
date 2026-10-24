@@ -1,0 +1,47 @@
+{
+  "schema": "dsh-r07-index-review-result/1",
+  "batch": "index-p01-app-shell__assets__CDUT",
+  "groupId": "p01-app-shell__assets__CDUT",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-index-author-20261023",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T19:58:00Z",
+  "sealedAtUtc": "2026-10-23T17:57:43Z",
+  "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets__CDUT.md",
+  "artifactSha256": "ac71296502f94a3013c6eac0b83b78d8a786eb177dd54151ca4471514b395b9f",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 1,
+    "accepted": 1,
+    "revision_required": 0,
+    "unknown": 0,
+    "blocking": 0,
+    "nonBlocking": 0
+  },
+  "gates": {
+    "G0_INDEX": "PASS",
+    "G1_INDEPENDENT_SOURCE_REVIEW": "PASS",
+    "G2_SEAL_CONSISTENCY": "PASS",
+    "note": "G0 等价全过；封版三方哈希全对；change 标注与锁一致；消费链 QA 逐点实证属实。"
+  },
+  "g0Evidence": {
+    "stockScript": "ERRATA-E1 沿登记；等价检查 PASS"
+  },
+  "files": [
+    {
+      "path": "assets/CDUT/ZhangChengYi/ZhangChengYi.jpg",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets__CDUT.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__assets__CDUT.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#assets--CDUT--ZhangChengYi--ZhangChengYi.jpg",
+      "line": 6,
+      "sourceBlob": "50b8f572e34b4b436329e131feb6b13cfce7f551",
+      "sourceSha256": "ff7e0ae20df35d43126bb772e68aabb2b7d7812c966d9e56595cb8b00ab7673f",
+      "manualSha256": "ac71296502f94a3013c6eac0b83b78d8a786eb177dd54151ca4471514b395b9f",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "demo-avatar.ts:4 注释=Base64 头像上游源图；全树仅该注释命中（QA 复核一致）；打包零条目、影响=仅再生成便利——全部实证属实。"
+    }
+  ],
+  "findings": [],
+  "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局账；未跑产品测试/typecheck/构建/GUI；未 commit/push；结论只覆盖本批。"
+}

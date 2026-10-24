@@ -1,0 +1,132 @@
+{
+ "schema": "dsh-r07-qa-reviewed-hashes/1",
+ "batch": "nb-19",
+ "revisionOf": null,
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "reviewedAtUtc": "2026-10-23T16:55:00Z",
+ "bindingNote": "sourceBlob=git ls-tree HEAD 实测=MANIFEST；sourceSha256=冻结树字节实算=MANIFEST；manualSha256=stage 现字节实算=MANIFEST=COVERAGE/SOURCE-EVIDENCE 列值",
+ "sourceBinding": {
+  "apps/electron/src/main/lib/review/review-v3-b4-r25-raw-clause-condition.ts": {
+   "blob": "43b3b1dc825f9e22596ba9ff1823e908a046a3ee",
+   "sha256": "ee2777180b0e7fe2e5279c13a7ab2c124503d33e3fac5b52936d992982cd2f17",
+   "lines": 275
+  },
+  "apps/electron/src/main/lib/review/review-v3-b4-rule-source-diff.ts": {
+   "blob": "d725f339ac37b5974dbef039252418e81ec9a381",
+   "sha256": "f7cdb5c9a2d61bbf5ab2c5d19b9106f1281ed66402ad0e22fd546732728c3370",
+   "lines": 101
+  },
+  "apps/electron/src/main/lib/review/review-v3-background-technical-coordinator.ts": {
+   "blob": "58f825a6468ee3c8d00283d579bf336cdb1034f4",
+   "sha256": "aa92a17985db691c3bc5ce633ff3e9f0c80266a442b16f34a8ae412502cf3e55",
+   "lines": 305
+  },
+  "apps/electron/src/main/lib/review/review-v3-core-t03-run-gate.test.ts": {
+   "blob": "5da151c023e564752418d02f7bb969087e1ffa51",
+   "sha256": "d6d2159d4f5ef546fa797c438a63bfc3c4e2382052a8b70f94ffc8eb36179f75",
+   "lines": 232
+  },
+  "apps/electron/src/main/lib/review/review-v3-core-t03-run-gate.ts": {
+   "blob": "cec63549653e3e22c4510365878e28e619dbcf45",
+   "sha256": "a7b3be7a5b935f236b87a4170e186c5170d4d05794ca0a21cfcf857c1687ba5d",
+   "lines": 285
+  },
+  "apps/electron/src/main/lib/review/review-v3-d4-catalog-attach.test.ts": {
+   "blob": "ddbad3e50297f6c4f6009eac4688acd2cc082371",
+   "sha256": "d5af91d9140f2496a8cbf64a1502150e35fa558776e50bee0ae3f598c8f7d566",
+   "lines": 80
+  },
+  "apps/electron/src/main/lib/review/review-v3-d4-demo-publish.ts": {
+   "blob": "c81c77af873375ac0e12580031e9cdbd7c492382",
+   "sha256": "33dae9bb9e4984e2aa0d0c117bf556b7bab8c67e757d930375ddba9e367609ab",
+   "lines": 170
+  },
+  "apps/electron/src/main/lib/review/review-v3-execution-contract.test.ts": {
+   "blob": "7a12de582b376f3ea6fa83c34e990aaaeebee1ba",
+   "sha256": "a4c37fb6b15ab5d719385dd22f0197c5892fc91ed837e543422fa40050bc9948",
+   "lines": 130
+  },
+  "apps/electron/src/main/lib/review/review-v3-execution-contract.ts": {
+   "blob": "1b05a8c29c972b8902b2ece742260a0dc019be6b",
+   "sha256": "6b6e83307518b1e5118237e4a56a51d2b0b904951610ad3d8f407166987fae67",
+   "lines": 134
+  },
+  "apps/electron/src/main/lib/review/review-v3-execution-proposal-producer.ts": {
+   "blob": "c4eb67ff185ecd889864431a898bee77c352fc84",
+   "sha256": "53c3edb1607eb10f89b93acd39cb44403906e42b8d97fec111276e398037b631",
+   "lines": 447
+  },
+  "apps/electron/src/main/lib/review/review-v3-execution-turn-budget.ts": {
+   "blob": "34d52ebb9716fd964aa3e9a82e7f3f5671d2e221",
+   "sha256": "c0944a7daecccf9e3ca7f1775793e4837e75868857aae349b550338f9c4957ce",
+   "lines": 185
+  },
+  "apps/electron/src/main/lib/review/review-v3-fallback-chain.test.ts": {
+   "blob": "c34e3f29843d337f02896df38b3a384451e2e2d0",
+   "sha256": "faefaa82dbdc2e093d03f9c750c90ec1997113c5a1963587022c3be70b436412",
+   "lines": 86
+  },
+  "apps/electron/src/main/lib/review/review-v3-pi-http-provider-engine.ts": {
+   "blob": "029419de63dd1974c262f59dc80fc8d9b559004d",
+   "sha256": "0feba9659cee7e295ee51adcf722a15886e97b255e8ea0196431332a5e8b8e2b",
+   "lines": 341
+  },
+  "apps/electron/src/main/lib/review/review-v3-r22-cold-background.worker.ts": {
+   "blob": "21a7455f3c88ed6e4413c16b03800d0ca76d9c88",
+   "sha256": "9a2c24e79fd982284df3a67f31ec3b01f1b956be0bdf913f929f5841c99396df",
+   "lines": 21
+  },
+  "apps/electron/src/main/lib/review/review-v3-r22-concentrated.test.ts": {
+   "blob": "4b4f28b1978c3ce42401af43a100e413e02760c8",
+   "sha256": "e5d122da874772e3faa01a6f2cc4d9eceaba3a05a9b03944d98c76c3368e8e59",
+   "lines": 297
+  },
+  "apps/electron/src/main/lib/review/review-v3-r23-r24-concentrated.test.ts": {
+   "blob": "02fbab9f19211731b39d72ecc811810137578c78",
+   "sha256": "09c56b0b17b1dd36d07be088a226f978fc065bf7076142bf86d2ac116015c080",
+   "lines": 265
+  },
+  "apps/electron/src/main/lib/review/review-v3-report-snapshot.test.ts": {
+   "blob": "5dd832e02c677d511ef69d637b2474dab92d58dd",
+   "sha256": "16bd042842bb182b155c87a29893b607b219f3c012eb7831e32359041733658b",
+   "lines": 139
+  },
+  "apps/electron/src/main/lib/review/review-v3-report-snapshot.ts": {
+   "blob": "c57efc8ebfdb369d0d830ecf0b92be4869e96f18",
+   "sha256": "71b44592d5012a04426aac3d67f01284b44ee8a68d53106b276c45818ea395c3",
+   "lines": 213
+  }
+ },
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-b4-r25-raw-clause-condition.ts.md": "c12895c858ac3c08df6fc7ad5914d29dbf2164949a317f72870f2541e399579d",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-b4-rule-source-diff.ts.md": "4dfd4a072606ed1c22fb34f485c5985a426cee672e83a2217683c1370a4bba92",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-background-technical-coordinator.ts.md": "c13d60f13c9b1e5052f4e30d2ca7c524d52025a175560e6f682f8ce7a4c0744e",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-core-t03-run-gate.test.ts.md": "b35b17c141e0c8989262444974fdb8bb9429d79564ba02000a2ba7c60e4549c4",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-core-t03-run-gate.ts.md": "1d30767c91517cec08cbe3f5bf1cac0002291714064d4ee3901f8e833602ff21",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-d4-catalog-attach.test.ts.md": "6cd35bdb9e679f58ec6a901606f5e1f2a48dd3b2e93ad08f23f56933472e79f8",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-d4-demo-publish.ts.md": "60d1f3dcdbba7197f6d9d9c9f01c3f364009fd5e3e18534b137b8dc4f75a593f",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-execution-contract.test.ts.md": "40ad756d9f9fd41d01af9c7cc1fe514417f0a51ce2cf6b9f036404b294e2c129",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-execution-contract.ts.md": "10455223e9e6cf92a937b86a6957ff4ff418b4a0a2669c6243828fbcab6e8192",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-execution-proposal-producer.ts.md": "2d031dc6dc82ebc6dc2daab5243deed141644de3edfddde0df4e3f2f83678c35",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-execution-turn-budget.ts.md": "b99a79cb03b7100c542fb1ecdd40f7e95a36e0f73a40211816a9f4b0fc69ec58",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-fallback-chain.test.ts.md": "f5469ef74715a06c8aa7a9fefe8854e5edad28fa1e204b56d84d653e9f5e8c8c",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-pi-http-provider-engine.ts.md": "4bd9e8966ab309fe39a01caa15644e32a863e14c3bc0736be51b9c64c3a02d38",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-r22-cold-background.worker.ts.md": "102158ebac2b7c83e37a21eda5474a989a6f9bd61dbf340104c0b89a63b4d6f3",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-r22-concentrated.test.ts.md": "07863c05464f4c5cb045449c75562ae90a255fac0c3fe97e132e4807d2581a65",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-r23-r24-concentrated.test.ts.md": "2f377cc99b6fa278517961c308f9fb1ccf082ef662962f9c83f54726c7fb38f5",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-report-snapshot.test.ts.md": "ad9b3c63c6bd334c182bf84dfb0c0debbc5a490ffc29a6bfade04e945effddb8",
+  "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-report-snapshot.ts.md": "939a6801af0d7852bbba352c4642e5d15cfca04f2448bcbe566fc4420c23c36e"
+ },
+ "rejectedHashes": {},
+ "supersededManualHashes": {},
+ "deliveryHashes": {
+  "manifestSha256": "f30817a48f4e1dc3efcbc4c493b98cb2287a297929d1fd24756bdf078757428d",
+  "readySha256": "15f7e541e024975904cd2022f0d7be9c5ac0bb3717c9b5f7d2d859690331c67a",
+  "doneSha256": "719ce29894ca8314b272fd19c16d301a1ac05e2de8a98b5bdb34a3da8be6a624"
+ },
+ "zip": {
+  "path": "deliveries/nb-19/R07-nb-19-05fb2565.zip",
+  "sha256": "a88612f8fcd740fdbf5ecce2e7f2f7fc4497fcdb2ad837a766dd86a644bde59c"
+ }
+}

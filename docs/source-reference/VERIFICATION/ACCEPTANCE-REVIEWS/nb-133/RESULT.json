@@ -1,0 +1,245 @@
+{
+ "schema": "dsh-r07-review-result/1",
+ "batch": "nb-133",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-01-20261024",
+ "reviewerSession": "docs-r07-qa-extra-01-20261024",
+ "reviewedAtUtc": "2026-10-23T20:36:29Z",
+ "batchVerdict": "accepted",
+ "g0": {
+  "verdict": "PASS",
+  "details": "冻结 HEAD=05fb2565 clean；18/18 blob+sha256+bytes+lines=scope；MANIFEST→READY→DONE→ZIP 链复算全对；sealId 复算一致（seal-f8b485af769bc961）；ZIP 21 条目干净、0 漂移；front matter 逐字段=scope；章节 12×11+6×6 全合规"
+ },
+ "g1": {
+  "verdict": "PASS_WITH_NOTE",
+  "details": "SOURCE-EVIDENCE/COVERAGE 人工列齐备；UNVERIFIED.md 六节显式（含 enqueueChange entityId 疑似笔误、注释/实现路径不一致、未用 import、非原子写等 8 条实现注意点）；唯 §1 头部拆分求和错误（N-02）"
+ },
+ "g2": {
+  "verdict": "PASS",
+  "details": "18 篇全文重读对照预读真值（3871/3871 行）：导出计数 11/2/3/17/2/3/2/2/3/8/3/7、test 21/5/7/3/3/6=45 全对；行为事实逐条吻合（cert 四分支顺序即安全+issuerName-only 论证、storage 先引用集后删+单向安全禁缓存、sync 死信 5 次阈值+游标防倒退、registry 15s 去重+30s 巡检三段+PID 转世拒绝、screenshot CSP+消毒+串行锁、safe-file 三层容错、speculative 50MB 未实现+零消费者、settings 旧键归一+AI 代批双防线）；跨文件引证（ipc.ts:2200 剥离注释/:6677-6687/:6749、index.ts:163/661/688/807/819/925-926 双会话装配、settings-service 37 消费者恰中、runtime-process-registry.test.ts 9 用例他批）实测命中；作者 8 条实现注意点与 4 条否定复核为真（speculative 零消费者、dead-letter 读取零消费者、6 源文件零测试、isSameProcess/terminateProcessTreeGracefully 未用）"
+ },
+ "files": [
+  {
+   "path": "apps/electron/src/main/lib/runtime-process-registry.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/runtime-process-registry.ts.md",
+   "sourceBlob": "e515eb2991a1838ee7e60046aae4cc3ce888021f",
+   "sourceSha256": "95b24906c1bcde415b7244d5a1cf2b8245aa47606af2d4a45c252a8936bf72db",
+   "manualSha256": "82b083fcf87eba92c58ee2f6b4a3d253942ccb8ec9d50172dfd306beb4e7a394",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/safe-file.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/safe-file.ts.md",
+   "sourceBlob": "01aee42e9206db24bf8fabcb915f2b6591730ad8",
+   "sourceSha256": "5d361bf9e743327ddf78ebb5bed93eadb25e46a14307a074fcd1abdee9ff3ef4",
+   "manualSha256": "f9ce91724ce33a7d761f760db2ed3adcad5555231434ce81f1045d8bc279f738",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/screenshot-service.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/screenshot-service.ts.md",
+   "sourceBlob": "300c29fd52ef04719041f6bc2d9c6ea96d3c38a8",
+   "sourceSha256": "8486955fd691a7d6da8b94ee7cdcb64c5b75eb10de02208cf6a3e72547196be0",
+   "manualSha256": "8b646f3bd39ea1fd82a0c6e0d423c205db487b2c756423c2a78af35335ef6f1f",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/security/cert-blacklist.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/security/cert-blacklist.test.ts.md",
+   "sourceBlob": "ef2351abca076aa45333809940a34e8b114768db",
+   "sourceSha256": "55bd86e278545d364a65e53dba6a2900cdc98747fe66650cbb1eae5b39b7da05",
+   "manualSha256": "5d541a9b5632335f8539dc4b989c636cbe35adac894a877aac73e3b1ee9f21bc",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/security/cert-blacklist.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/security/cert-blacklist.ts.md",
+   "sourceBlob": "ef791ef854421ad9e7b55dd5a2331f6e52ec2e60",
+   "sourceSha256": "81b7137cbfc8755b3f0ad34a734d12cdca43967b26052ce98b17026852c2befe",
+   "manualSha256": "72f60cd3a93c074a505ac0729a4c52da8d099fce78aaeba2b1d5a4ddb59fcc47",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/security/executable-open-guard.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/security/executable-open-guard.test.ts.md",
+   "sourceBlob": "2ecdd94bb0cc234f659c3cded07339bbc51adc17",
+   "sourceSha256": "20fc21c6671ab80523a1f11a4a0f4f94714f5a063764123cdaf6ed8bd93b62d9",
+   "manualSha256": "ae3e37f5403ea9312aa2f277fd77c5129795831f30d426f28f37829b036e0a40",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/security/executable-open-guard.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/security/executable-open-guard.ts.md",
+   "sourceBlob": "6458ac87c0f3f557b2154361a9414085bcb8f5a2",
+   "sourceSha256": "8868d09435824f37ad90fb9c7854fad7ffbed21c5db0d444facddd7592c27452",
+   "manualSha256": "e839a6cbe2188756cc1cb5534e51fab6ca8362c2d2f456546f95ab89ce466a4b",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/settings-service.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/settings-service.test.ts.md",
+   "sourceBlob": "082e49f0d5d2db9f18e21d6eceab5d0cdcdc61a3",
+   "sourceSha256": "06ea4c91fa172bb7631f4a32a3133956f6b4144f49543cd201f7e4ed3040b5de",
+   "manualSha256": "53d8a35ba644b5afd00d32cf6bcec4b5f127f9977bc5355b889aebfdc18aaa00",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/settings-service.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/settings-service.ts.md",
+   "sourceBlob": "0a42875cbb4c79dd63e36120edd9c767d5651568",
+   "sourceSha256": "0132b4b643fae57275ffde3ab428747c1a3382f0dd005ec56d3e2d6d9b09958c",
+   "manualSha256": "1113956fe1fbb6ccea06f37d1cc104ad1bec5fedc568a389d5c389259c5e6f76",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/speculative-tool-engine.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/speculative-tool-engine.test.ts.md",
+   "sourceBlob": "37c9e8eaa7fffd6b7f38dbee3a3ba64da4c3803d",
+   "sourceSha256": "7d4032cb928504d1eaf8e0f9bbc30066e28dad64ee5f244f1d338aff2b70ddea",
+   "manualSha256": "7812ad8b4c7d2e1d9de3b59c7bc234dacc509f3fb8cf197f7f4c7667b81ba843",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/speculative-tool-engine.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/speculative-tool-engine.ts.md",
+   "sourceBlob": "d015e664fb78610512427596986f5e8715abf576",
+   "sourceSha256": "fe01c53c5f558ef2454f1921dd38a6cd8b4338719975503964b8970194169c09",
+   "manualSha256": "bc0d11db340f5fafed88ea17df1aa87a489b8d2dd8464e4def0b560feaf73d90",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/sse-client.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/sse-client.ts.md",
+   "sourceBlob": "9e8869ac562adc7cfa835aa9545c1267e0f37360",
+   "sourceSha256": "999d952566726981e40e759acf0d6d6df6c7ccf9075b89e69476db21e6b7a080",
+   "manualSha256": "c2f71572e00fd3c556c8198fded5fe528a50797ebe8277502ce048bee65708f1",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/startup-splash.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/startup-splash.test.ts.md",
+   "sourceBlob": "e1591f6dce4b6f2a53fd0c9b3d166a03018c6c57",
+   "sourceSha256": "7eb4d3cc95d0c1e97a73dd5af6f2bb3477d3f6c5c408d218f489f3dc4a4e6267",
+   "manualSha256": "5e28fc6fc8b5ccaf350d71b1d61d7b35af18360430fc7a1c114749b519355f6b",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/startup-splash.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/startup-splash.ts.md",
+   "sourceBlob": "dfb80bca14cda12f47a0cf5f0e445ea483124773",
+   "sourceSha256": "915ed2ff8e3d361a493441e566ce5c89b962409b35caae343984d873a5cfa316",
+   "manualSha256": "125575ccf711fe4ba870bae07a891aaf946a9746442527d5289e23bba1fd2afc",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/storage-service.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/storage-service.test.ts.md",
+   "sourceBlob": "1040045eb6f6a1fbc9f7b68a7051b2e8815ba792",
+   "sourceSha256": "38547ea6724f366399ab6083472b1ebb4d4d68558087fbbb9543bed4c20ae2e6",
+   "manualSha256": "377f6121f78a570612427f47468ef95b96782498cc8f9bb5f4a9bdb4dce8984e",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/storage-service.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/storage-service.ts.md",
+   "sourceBlob": "42a31adb4df9f3b6e1f6954bbcff4861add7504a",
+   "sourceSha256": "e8f0562289a7385df53f7a16d4feeaa7eada20a6ef6173b4dbbd83d26518678e",
+   "manualSha256": "d4f40f5982f16f512cf46dc52925b44424dd12ed049616c9d33e3c7101aaa7d1",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/sync-dead-letter.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/sync-dead-letter.ts.md",
+   "sourceBlob": "9c5908cfc9e4e7babff1dc4647e5e1607d408390",
+   "sourceSha256": "8dd02cb5811488836f9e1e05166ddbc01dc1dd13231eb142469b755097c20e72",
+   "manualSha256": "1e4c9de9b8aabb2e24dfe52b1caa2c4d1fd53d9818794c7de155262f035fcdd1",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/sync-manager.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/sync-manager.ts.md",
+   "sourceBlob": "13a843072cb8657abb341ca11c2fca8fd2a95e1c",
+   "sourceSha256": "7a4d04006e00941138a2fe3dd93debb25a0bb767a14f94e419bd5eef1129a767",
+   "manualSha256": "cee145ab581b4c94375656771600826145b11f1d51eba061516202cf0659507c",
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/runtime-process-registry.ts.md": "82b083fcf87eba92c58ee2f6b4a3d253942ccb8ec9d50172dfd306beb4e7a394",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/safe-file.ts.md": "f9ce91724ce33a7d761f760db2ed3adcad5555231434ce81f1045d8bc279f738",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/screenshot-service.ts.md": "8b646f3bd39ea1fd82a0c6e0d423c205db487b2c756423c2a78af35335ef6f1f",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/security/cert-blacklist.test.ts.md": "5d541a9b5632335f8539dc4b989c636cbe35adac894a877aac73e3b1ee9f21bc",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/security/cert-blacklist.ts.md": "72f60cd3a93c074a505ac0729a4c52da8d099fce78aaeba2b1d5a4ddb59fcc47",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/security/executable-open-guard.test.ts.md": "ae3e37f5403ea9312aa2f277fd77c5129795831f30d426f28f37829b036e0a40",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/security/executable-open-guard.ts.md": "e839a6cbe2188756cc1cb5534e51fab6ca8362c2d2f456546f95ab89ce466a4b",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/settings-service.test.ts.md": "53d8a35ba644b5afd00d32cf6bcec4b5f127f9977bc5355b889aebfdc18aaa00",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/settings-service.ts.md": "1113956fe1fbb6ccea06f37d1cc104ad1bec5fedc568a389d5c389259c5e6f76",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/speculative-tool-engine.test.ts.md": "7812ad8b4c7d2e1d9de3b59c7bc234dacc509f3fb8cf197f7f4c7667b81ba843",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/speculative-tool-engine.ts.md": "bc0d11db340f5fafed88ea17df1aa87a489b8d2dd8464e4def0b560feaf73d90",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/sse-client.ts.md": "c2f71572e00fd3c556c8198fded5fe528a50797ebe8277502ce048bee65708f1",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/startup-splash.test.ts.md": "5e28fc6fc8b5ccaf350d71b1d61d7b35af18360430fc7a1c114749b519355f6b",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/startup-splash.ts.md": "125575ccf711fe4ba870bae07a891aaf946a9746442527d5289e23bba1fd2afc",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/storage-service.test.ts.md": "377f6121f78a570612427f47468ef95b96782498cc8f9bb5f4a9bdb4dce8984e",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/storage-service.ts.md": "d4f40f5982f16f512cf46dc52925b44424dd12ed049616c9d33e3c7101aaa7d1",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/sync-dead-letter.ts.md": "1e4c9de9b8aabb2e24dfe52b1caa2c4d1fd53d9818794c7de155262f035fcdd1",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/sync-manager.ts.md": "cee145ab581b4c94375656771600826145b11f1d51eba061516202cf0659507c"
+ },
+ "findings": [
+  {
+   "id": "NB133-N-01",
+   "severity": "minor",
+   "file": "READY.json/DONE.json",
+   "claim": "READY/DONE 的 author/reviewer 记为 docs-r07-author-nb-47-20261023 / docs-r07-qa-nb-47-20261023（scope 旧波次角色），实际会话 docs-r07-author-extra-01-20261024 / docs-r07-qa-extra-01-20261024（START.json 与 18 篇 front matter 正确）——第三例同类（NB130-N-01/NB104-N-01）",
+   "sourceEvidence": "deliveries/nb-133/READY.json、DONE.json 对照 manager/teams/author-extra-01.json 与 START.json",
+   "action": "交 lead 合入登记按团队 JSON 记真实归属；根因 seal_delivery.py 从 scope 取 author/reviewer，建议工具增 roster 覆盖"
+  },
+  {
+   "id": "NB133-N-02",
+   "severity": "minor",
+   "file": "UNVERIFIED.md",
+   "claim": "§1 头部拆分「12 source 3337 行 + 6 test 534 行」求和错误：所列六测试文件分项（263+30+145+93+39+159）实为 729 而非 534；正确拆分 = test 729 / source 3142（总数 3871 正确）",
+   "sourceEvidence": "wc -l 6 test 文件=729；source=3871-729=3142（12 文件逐行 wc 一致）",
+   "action": "勘误口径以本复核为准（3142/729）；随未来 rN 更正 UNVERIFIED 头部或记 errata；不影响任何手册技术事实（各手册逐文件行号/计数均正确）"
+  }
+ ],
+ "qaErrataClosed": [
+  {
+   "id": "QA-PRE133-N-01",
+   "severity": "low",
+   "status": "closed",
+   "claim": "QA 预读 reviews/nb-133/PRE_READ_DONE.json 的 source/test 行数拆分 3215/656 有误",
+   "sourceEvidence": "wc test=729（263+30+145+93+39+159）、source=3142（总数 3871 正确）",
+   "action": "回源确认后更正为 3142/729，PRE_READ_DONE.json 追加 errata 留痕（原文不删）"
+  }
+ ],
+ "notRun": [
+  "产品测试",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "真实 TLS/SSE/同步网络/截图/进程巡检/磁盘清理",
+  "bun test（45 用例断言级阅读）"
+ ],
+ "notes": [
+  "真实动态（OS 巡检/证书链/服务端交互/大目录清理）按合同界定 unknown，未伪造保证",
+  "拆分计数偏差三批复发（作者与 QA 各三例，均总数正确）——建议 lead/manager 增机械校验：按 kind 逐文件行数求和"
+ ]
+}

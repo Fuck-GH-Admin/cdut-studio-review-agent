@@ -1,0 +1,253 @@
+{
+ "schema": "dsh-r07-review-result/1",
+ "batch": "nb-132-r1",
+ "revisionOf": "nb-132",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-05-20261024",
+ "reviewerSession": "docs-r07-qa-extra-05-20261024",
+ "reviewedAtUtc": "2026-10-23T20:28:02Z",
+ "parentReview": "reviews/nb-132/RESULT.json",
+ "deliverySeal": {
+  "sealId": "seal-1fa23608fdc044f2",
+  "sealedAtUtc": "2026-10-23T20:22:51Z",
+  "manifestSha256": "2d220b5ceb91742a14a086ec89649cfe50a24d23fc0ca17d2e2f1f04b0e4e79b",
+  "readySha256": "b6b187944998ec9280fef723b55dc9c91ff7f5132c045273967ec7e5ae2d2e35",
+  "zipSha256": "c62152463234fe13988f650c1167caafec21650840738595464c270444c8221f",
+  "doneSha256": "98d9c339a9a95b1dbf858ce04e1c9c10de56d922a8a01a2bcb62d71b375bb63d"
+ },
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "gatesNote": "r1 返修复验：G0 哈希链/sealId/ZIP 21 条目复算全对；FINDINGS-RESPONSE 3 组 before/after hash 双向一致（before=父版锚、after=封版字节）。G2 逐条复核：F-1/F-2 五段→六段（4 处）按源码 6 次 prune 落实；F-3 过宽否定修正落实（QA 指定 2 处+同源家族 5 处+TSV 3 处残留同步，逐处记录不隐去）——filterOrdinaryDesktopFileEntries 改「生产代码 0 调用（ipc.ts 仅 import :141）；批外 p04.test.ts:84 直接调用」准确；15 篇 accepted manualSha256 与父版逐字节相同，沿用原 accepted（旧接受不套新字节合规）。",
+ "batchVerdict": "accepted",
+ "files": [
+  {
+   "path": "apps/electron/src/main/lib/pi-file-checkpoint.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-file-checkpoint.ts.md",
+   "sourceBlob": "bb6257c61704786f546b62e8a1093503bf37ec1c",
+   "sourceSha256": "9e002204b5941e04843e05e749e77b888679fa33d22acdd1bf3fd89760d14056",
+   "lines": 1284,
+   "manualSha256": "11305b52e9a5e938a148eab242410820bbac6ba256f3b8500083be3dc1539064",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-model-runtime-options.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-model-runtime-options.test.ts.md",
+   "sourceBlob": "a689e528fb826a86e2c59a63f4a651893ba1a708",
+   "sourceSha256": "9b5b09a26688c121b34c810a9f23981a9c459e844cf12cdf9ff36bf6c20287b6",
+   "lines": 35,
+   "manualSha256": "35605292a02f7697e6ed4a32315013dca25e00f9cbf3e0291a1d1680a9543cc8",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-model-runtime-options.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-model-runtime-options.ts.md",
+   "sourceBlob": "337bde342d99f05bc7742391b388510b299e8ab3",
+   "sourceSha256": "872e0cef4f645b43d538e7cddae5ee9af785a308452a488b1be9a99e58293eca",
+   "lines": 63,
+   "manualSha256": "6857fb4c247181606dbcfcb5f8d2171309c7abfede0d7e1b2c50cd9553ece78f",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-session-fork.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-session-fork.ts.md",
+   "sourceBlob": "002626390a4cc854d37de423b12d57fc42597e75",
+   "sourceSha256": "4e12e1f55dcfea3350152d890adcc6441f25c0858cfda8f3d1b46eba29cb9eb5",
+   "lines": 40,
+   "manualSha256": "28d1b0c3b5d56140fdd3b8f025a43af1a24ee5aaed826d9993c7374488e0e378",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-task-prompt.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-task-prompt.test.ts.md",
+   "sourceBlob": "111a4c8468bd9f7a9b78382172e956722f3e5a5b",
+   "sourceSha256": "5fba8fd8bbb87b9748270af40b8bb3ca39228701c693bea3c4de6584683c3763",
+   "lines": 293,
+   "manualSha256": "7c58cf6dfb0b4d44c6f4cc58191c74f1ace3943723aa9b095a1fd146d2cf84ad",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "F-2 关闭：§6 五段→六段裁剪条件"
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-task-prompt.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-task-prompt.ts.md",
+   "sourceBlob": "f89676d7cb875dc0073248c5ee83bad55a87c680",
+   "sourceSha256": "ab6eed9891db03933350ea5cfe5e7d18ba53dca70c191049d4ba2769732c93f8",
+   "lines": 157,
+   "manualSha256": "88eebbcbff1b11ebdb5a0f720e20a720d0b027ca04b793d43e875765903ddb20",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "F-1 关闭：五段→六段 3 处（§3 标题/§10/§11，源码 6 次 prune :98/:108/:111/:120/:146/:154 回源属实）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/process-handle.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/process-handle.test.ts.md",
+   "sourceBlob": "434eb41d33cf3e355ba154cd61b5a6bc2ea6f5cb",
+   "sourceSha256": "876a825d572c6b21b6748e80cb7aaee394f20f9515f8261b96b23008b9fb0b2c",
+   "lines": 57,
+   "manualSha256": "842eb268ebc75fd7e2848d36c135c507f72c7eb014cb2a056fe6306b5d78e26d",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/process-handle.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/process-handle.ts.md",
+   "sourceBlob": "f642ac349947541adba72a85f749a836e585f1ca",
+   "sourceSha256": "5c32af813aa6f7523e2a42d963c8179a0d250123465b6c8c4a7d7e871a199ad8",
+   "lines": 66,
+   "manualSha256": "439f9014d6624eab23ddfcd87174bc5d93ddbec12f2a6389f6ba9657ddec0689",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/proxy-fetch.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/proxy-fetch.ts.md",
+   "sourceBlob": "8905e35f6e612f525c2fd0195f16155e0289605a",
+   "sourceSha256": "a63d0881870781f94908d41039b4de6dd3db412b443ada6bdd72dca2a617b227",
+   "lines": 38,
+   "manualSha256": "d5f35535532f027a09d6c4a30d844748706e69a9428fbdf80e9442234f98a797",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/proxy-settings-service.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/proxy-settings-service.ts.md",
+   "sourceBlob": "5c31034a8ead272deda90ae6201d5b89ec7f94b9",
+   "sourceSha256": "59a27f00d934c3bfbfa52fcf14ede3bfc88e7e5b7dfc09eb6457a9b48129f736",
+   "lines": 95,
+   "manualSha256": "b296143e8707016081f78979a5df95ecb2ae9bd8810123b65bae1f2c1d2d3f93",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/recommendation-engine.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/recommendation-engine.test.ts.md",
+   "sourceBlob": "f68f1bb5a79adb5eb2e1af4c392df6e907ac9e01",
+   "sourceSha256": "dc0563333f41bd2a8a628a685aa6539e840217fedafe1782698f4d64aa062769",
+   "lines": 32,
+   "manualSha256": "81e0ae8bb2d17cf3185f120ce37382ae1fe4575f80ccb386a19f25c083436d89",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/recommendation-engine.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/recommendation-engine.ts.md",
+   "sourceBlob": "7cdd979d5b287ddc6fde678465429db0d42ae10c",
+   "sourceSha256": "346372a590d9e23d34f448c649515cebbd0044c605321562d8f288f08f181a75",
+   "lines": 53,
+   "manualSha256": "7d19ac0d8487cd0c25bd68ebe4a3fb20b40cdc8a78b578d9c053ebbbb13051f5",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/recommendation-manager.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/recommendation-manager.ts.md",
+   "sourceBlob": "adbe4ba196fcdaab691b5dffbd3dcc7d8244af8c",
+   "sourceSha256": "72b45c7b2ecb14c1b37a74de7bb345261ff9f2bd989c6cd14ac2ccab8531c262",
+   "lines": 50,
+   "manualSha256": "41debc8c82d1f4ea35535df6c7c69cf589240bdd1820b3323dd428dd74313727",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/retrospective-service.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/retrospective-service.ts.md",
+   "sourceBlob": "c9ca99bb2072435c9ab464bcac40c4f3f18d2a81",
+   "sourceSha256": "053094ddba7f77f8762b7b6882e01b3da6f6b5c89af09b957980d05ae8815e92",
+   "lines": 438,
+   "manualSha256": "123e428ea022496c17bd54055572a9538c62bbbec9813ddb5ad2758a106747d3",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/review-owner-index-recovery.p06-fix01.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/review-owner-index-recovery.p06-fix01.test.ts.md",
+   "sourceBlob": "97a7b31d371ebf661b3f03f2c056e586b61a31f5",
+   "sourceSha256": "4714f4fb6ac5a0ce6d51f5cdd08a59ec2267b57134c6a53cbce9c65dc01be55d",
+   "lines": 154,
+   "manualSha256": "442f5e02a640833c8539a02f9dc8a39fa3148bdb534d114c988f95aecd0bd95c",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/review-private-file-access.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/review-private-file-access.ts.md",
+   "sourceBlob": "7fe329464490e88a14e02d272f620ba011905a4e",
+   "sourceSha256": "618a2a4130143499422176dd901b3eed1e2f5f183fda8c39d83a6f2288bac0e0",
+   "lines": 65,
+   "manualSha256": "e110a944cdee1501cca517125a326318372ca7795eceea39c65d3e6326af629c",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "F-3 关闭：QA 指定 2 处（§8/§9 p04.test 改批外直接调用）+同源家族合并修正 3 处（§4/§9 括注/§10）——生产 0 调用+批外 p04.test:84 直测口径"
+  },
+  {
+   "path": "apps/electron/src/main/lib/runtime-init.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/runtime-init.ts.md",
+   "sourceBlob": "b819c85bce31da6fb6257e6671232e400092a830",
+   "sourceSha256": "534f1bcd2a7c28cb762bb1616a25b4112ba3678337c55bc59a7e875aa6fc6655",
+   "lines": 335,
+   "manualSha256": "fd281cbcbaae011571e692c9fe50adb0b143522dd26a35745e5e9fa7d4085d23",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  },
+  {
+   "path": "apps/electron/src/main/lib/runtime-process-registry.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/runtime-process-registry.test.ts.md",
+   "sourceBlob": "b262525ff2445ce9e3559032ce140e7355e7c3ac",
+   "sourceSha256": "388197852f39d0b7eab52e489d66166d5875c1e6be3c5ad1fca5d9763474c509",
+   "lines": 107,
+   "manualSha256": "b866eac076b39a7883efb298fcdcee69fd225646c1ff2b4964d8af2b8189fcab",
+   "verdict": "accepted",
+   "findings": [],
+   "r1Fix": "字节与父版逐字节相同（accepted 沿用）"
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-file-checkpoint.ts.md": "11305b52e9a5e938a148eab242410820bbac6ba256f3b8500083be3dc1539064",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-model-runtime-options.test.ts.md": "35605292a02f7697e6ed4a32315013dca25e00f9cbf3e0291a1d1680a9543cc8",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-model-runtime-options.ts.md": "6857fb4c247181606dbcfcb5f8d2171309c7abfede0d7e1b2c50cd9553ece78f",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-session-fork.ts.md": "28d1b0c3b5d56140fdd3b8f025a43af1a24ee5aaed826d9993c7374488e0e378",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-task-prompt.test.ts.md": "7c58cf6dfb0b4d44c6f4cc58191c74f1ace3943723aa9b095a1fd146d2cf84ad",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/pi-task-prompt.ts.md": "88eebbcbff1b11ebdb5a0f720e20a720d0b027ca04b793d43e875765903ddb20",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/process-handle.test.ts.md": "842eb268ebc75fd7e2848d36c135c507f72c7eb014cb2a056fe6306b5d78e26d",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/process-handle.ts.md": "439f9014d6624eab23ddfcd87174bc5d93ddbec12f2a6389f6ba9657ddec0689",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/proxy-fetch.ts.md": "d5f35535532f027a09d6c4a30d844748706e69a9428fbdf80e9442234f98a797",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/proxy-settings-service.ts.md": "b296143e8707016081f78979a5df95ecb2ae9bd8810123b65bae1f2c1d2d3f93",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/recommendation-engine.test.ts.md": "81e0ae8bb2d17cf3185f120ce37382ae1fe4575f80ccb386a19f25c083436d89",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/recommendation-engine.ts.md": "7d19ac0d8487cd0c25bd68ebe4a3fb20b40cdc8a78b578d9c053ebbbb13051f5",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/recommendation-manager.ts.md": "41debc8c82d1f4ea35535df6c7c69cf589240bdd1820b3323dd428dd74313727",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/retrospective-service.ts.md": "123e428ea022496c17bd54055572a9538c62bbbec9813ddb5ad2758a106747d3",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/review-owner-index-recovery.p06-fix01.test.ts.md": "442f5e02a640833c8539a02f9dc8a39fa3148bdb534d114c988f95aecd0bd95c",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/review-private-file-access.ts.md": "e110a944cdee1501cca517125a326318372ca7795eceea39c65d3e6326af629c",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/runtime-init.ts.md": "fd281cbcbaae011571e692c9fe50adb0b143522dd26a35745e5e9fa7d4085d23",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/runtime-process-registry.test.ts.md": "b866eac076b39a7883efb298fcdcee69fd225646c1ff2b4964d8af2b8189fcab"
+ },
+ "notRun": [
+  "product tests (40+32 cases)",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real LLM/network/IPC"
+ ],
+ "scopeBound": "nb-132-r1 返修复验（F-1..F-3 修正+15 篇不变性）"
+}

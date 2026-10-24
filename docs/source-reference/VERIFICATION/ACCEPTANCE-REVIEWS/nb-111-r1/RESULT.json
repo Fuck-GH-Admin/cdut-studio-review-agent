@@ -1,0 +1,87 @@
+{
+ "schema": "dsh-r07-qa-result/1",
+ "batch": "nb-111-r1",
+ "id": "NB-111",
+ "revisionOf": "nb-111",
+ "reviewRoot": "reviews/nb-111-r1",
+ "priorReviewRoots": [
+  "reviews/nb-111"
+ ],
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "sourceHeadVerified": true,
+ "sourceWorktreeClean": true,
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewedAtUtc": "2026-10-24T20:25:00Z",
+ "scopeSource": "manager/assignments/nb-111-SCOPE.json",
+ "scopeFileCount": 17,
+ "scopeLines": 3830,
+ "deliveryRoot": "deliveries/nb-111-r1",
+ "sealSpec": "seal_delivery.py/1（v2）",
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "real model/network"
+ ],
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PASS",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 17,
+  "revision_required": 0,
+  "unknown": 0
+ },
+ "batchVerdict": "accepted",
+ "files": [],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/shared/UserAvatar.tsx.md": "ea101eabcf5634bbab9c64663771c8a6f3646dc52f976284b3503b96681d3ed1",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/EmptyPanePlaceholder.tsx.md": "31ffacc55785196f8fc6dec5c6699446d684db9c689e345d76a3190f69d5cb6d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/MainArea.tsx.md": "3dbdf9a2676b0993b8850c79a62d2d1c9002ef7febb7976db55fce47daa0288a",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/TabBar.tsx.md": "e39593f3f37cb5dced168ee3fae0767583a6a9868317400bbfaf5336eb57b618",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/TabBarItem.tsx.md": "393bce5c2290c7c0030bce5c451f59afec5880e26c2c97eff7c212317d3df8f3",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/TabContent.tsx.md": "1978740cbdfa6101c83a5f928a2dce853c4b136e4348221861560eff43124715",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/TabErrorBoundary.tsx.md": "89a912beaf09d4df4d95f855d2ff776f42358ce8a59b866d80f0e0d5968e60ab",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/TabGroupItem.tsx.md": "4bdefbc9629a01fd550261c167b0e7f573c388620b8ef83a9200caaded69ffb7",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/TabPreviewPanel.tsx.md": "2dc0b0ac5d246dcebfc790a5004b19a4cb46b1b2123784edbbf804f083bbdf4d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/TabSwitcher.tsx.md": "20acd93ce6faccd2883cb8d87153028593142e7280a29dc84cda0348ab7134b3",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/index.ts.md": "fb46dc26ce0f176abefdfe29d39a20cccbb91dc2abb3220496184979668fca49",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/topbar-layout.test.ts.md": "e104a1c49ff894fdbb2a81d5cdb70c3aca253cc83b865abc5d09cddc0a44c57d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/topbar-layout.ts.md": "aa13859a695138bfe34125f10f8cddb2dbf390fc1fa58a5cab6d831a6b35dc5e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/user-profile.ts.md": "d2803ddfb86eaa551482f4946884bbc279768c12e2251b18b864bf7e978df806",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/wechat-atoms.ts.md": "a608d7f0fc9f7f22b1614692be02ad4b2b23f23bb09949962cc9410a72677a18",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/yanhu-express-atoms.ts.md": "c77fbcb739de85579411a7617430da65ce08b12bf0faa6ae66ad1293b7236e71",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/yanhu-pet-atoms.ts.md": "da9cabe9cea7a3ed9c20b9c4743409e237fb39cfec8c9740bb4f12e786c66cd0"
+ },
+ "rejectedHashes": {},
+ "supersededManualHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/tabs/topbar-layout.ts.md": {
+   "oldManualSha256": "c84bc3b9f99575495f897494d94b8bf3f10995a3617199a19e6e969d9cc42859",
+   "newManualSha256": "aa13859a695138bfe34125f10f8cddb2dbf390fc1fa58a5cab6d831a6b35dc5e"
+  },
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/atoms/yanhu-pet-atoms.ts.md": {
+   "oldManualSha256": "2fb9907e602692a43fbfffb3eef1df6e1acfe902f350ad54ad1686790dfdfcd4",
+   "newManualSha256": "da9cabe9cea7a3ed9c20b9c4743409e237fb39cfec8c9740bb4f12e786c66cd0"
+  }
+ },
+ "findingsClosure": {
+  "F-01": "CLOSED（topbar-layout 7→8 ✓）",
+  "F-02": "CLOSED（yanhu-pet 10→11 ✓）"
+ },
+ "batchFindings": [],
+ "zip": {
+  "path": "deliveries/nb-111-r1/R07-nb-111-r1-05fb2565.zip",
+  "sha256": "00c3d3fb6a83c4164de3b39e12ec7955877498baab8106ae39cdd8b0c38c4574",
+  "note": "v2 无穿越/0 mismatch"
+ },
+ "parentPreserved": "r0 交付未动；2 篇 before/=父批原字节",
+ "notClaimed": [
+  "测试运行结果",
+  "typecheck/build 结果",
+  "G3 跨模块"
+ ]
+}

@@ -1,0 +1,357 @@
+{
+ "schema": "dsh-r07-qa-result/1",
+ "batch": "nb-47",
+ "id": "NB-47",
+ "revisionOf": null,
+ "reviewRoot": "reviews/nb-47",
+ "priorReviewRoots": [
+  "reviews/nb-47/SOURCE-CHECKLIST.md（预读）"
+ ],
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "sourceHeadVerified": true,
+ "sourceWorktreeClean": true,
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewedAtUtc": "2026-10-23T17:35:00Z",
+ "scopeSource": "manager/assignments/nb-47-SCOPE.json",
+ "scopeFileCount": 18,
+ "scopeLines": 2809,
+ "deliveryRoot": "deliveries/nb-47",
+ "sealSpec": "seal_delivery.py/1（v2）",
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PARTIAL",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 17,
+  "revision_required": 1,
+  "unknown": 0
+ },
+ "batchVerdict": "revision_required",
+ "files": [
+  {
+   "path": "apps/electron/src/main/lib/agent-ask-user-service.test.ts",
+   "kind": "test",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-ask-user-service.test.ts.md",
+   "sourceBlob": "1bb7c695f8bc271c19031830c4d77ab2ae7dc6d1",
+   "sourceSha256": "975d2e1e885184a94297463a4b313f47c19f8de3e3f91ade7ef29961468fc2e5",
+   "sourceLines": 74,
+   "manualSha256": "cdf3aae0f8972a99108728f3ee864619b27cd37676af1c89f0434f03d6dbbd0f",
+   "manualLines": 72,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-ask-user-service.ts",
+   "kind": "source",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-ask-user-service.ts.md",
+   "sourceBlob": "1f2ed37110d542c1084f2335625be511b876f3af",
+   "sourceSha256": "b1e3a8855108f860899eeeda58a1b20fcd38af328303232a68ced718a66a1c7e",
+   "sourceLines": 201,
+   "manualSha256": "738f17bae29a71d18dbb05eb59c1e11eaa35cb1caba96ed6a56c638ef3cf6d45",
+   "manualLines": 135,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-catalog-invalidation.test.ts",
+   "kind": "test",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-catalog-invalidation.test.ts.md",
+   "sourceBlob": "d63cec8d376de0464c87433df0a836b96a61c4da",
+   "sourceSha256": "704339d380fd5cf65ebf8afd9df6e4dc920451c2ab1496297f3533b973784a52",
+   "sourceLines": 64,
+   "manualSha256": "2621360baf51b9925cd17e0b8f565aa84e340969ebe0ab32b803e76b6a4c9bb8",
+   "manualLines": 63,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-catalog-invalidation.ts",
+   "kind": "source",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-catalog-invalidation.ts.md",
+   "sourceBlob": "7043765b1fff4c8dc8ede972da7d85a61a064064",
+   "sourceSha256": "66200c6182ed2dafd22588b7bbd5fb6fc110894583aad836276682b691923a48",
+   "sourceLines": 28,
+   "manualSha256": "51d4d78c10cf0885d2f794e9ca6e6b9c961fe1158d7fc029f98fe6a4572284b0",
+   "manualLines": 100,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-collaboration-tools.ts",
+   "kind": "source",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-collaboration-tools.ts.md",
+   "sourceBlob": "6a76a9c75234c135c3703d04f873573dc35af4c3",
+   "sourceSha256": "8f1baf640fbc742aa7ea4c14eb403ea350bef5bc603c11977674f13b1c1f8aaa",
+   "sourceLines": 1321,
+   "manualSha256": "efa97eddf23c002ee9496d5542eac36f40faea5524ee38f2dbb99b06bfb67df0",
+   "manualLines": 246,
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "N-01",
+     "severity": "non_blocking",
+     "claim": "§4 门禁引用行号偏 2：collaborationAvailable 实为 pi-builtin-tools.ts:2173（手册 :2171）、isGroupActive 判定实为 :2175（手册 :2173）。其余 4 导出/10 工具/行段引用与源一致。",
+     "sourceEvidence": "sed -n 2171,2175p pi-builtin-tools.ts 实测",
+     "action": "r1 可选修正"
+    },
+    {
+     "id": "N-02",
+     "severity": "non_blocking",
+     "claim": "§6「恢复出的 running 派生记录不入 Map」表述指向一个不可达分支：buildRecoveredDelegationState（utils:53-55）恒把持久化 running 收敛为 interrupted，recoverDelegationRecordFromSession :615-618 条件实际恒真。语义结论（等待路径不悬挂）不受影响。",
+     "sourceEvidence": "agent-collaboration-utils.ts:52-55 逐行读；collaboration-tools.ts:594-620",
+     "action": "r1 可选改述为「恢复快照恒非 running，:615-618 守卫为防御性」"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-collaboration-utils.test.ts",
+   "kind": "test",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-collaboration-utils.test.ts.md",
+   "sourceBlob": "9eb1c119c1354c395069c1f6c7010d80eecdae6d",
+   "sourceSha256": "7ca999fca1f2e9878973eef9f47b6269d603c24173f3c4d2dcfb5e2bd23d9139",
+   "sourceLines": 15,
+   "manualSha256": "264e25a8051c0ca0b8c381f1f58ad766097e952a628771d00dfeb3cc920abf7a",
+   "manualLines": 61,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-collaboration-utils.ts",
+   "kind": "source",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-collaboration-utils.ts.md",
+   "sourceBlob": "b502490874e396ab89950390da37d0deb47b1fa0",
+   "sourceSha256": "64c48363045cdd92cfbdda4909597b9c887d70c213d9e135b6ab79df474f6c97",
+   "sourceLines": 120,
+   "manualSha256": "0ccb9ee90669f1ba416a8170b3517074248d72765237cbe0ce6395bc48dfc927",
+   "manualLines": 115,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-delegation-preset-schema.test.ts",
+   "kind": "test",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-delegation-preset-schema.test.ts.md",
+   "sourceBlob": "112befd649b0a9e2e850b7c7387c096ca6470771",
+   "sourceSha256": "0b7d1df9d4a3b0309843ca14870e28a9fea149186ad81d4f58a4e93eab3886bd",
+   "sourceLines": 35,
+   "manualSha256": "6ea3889ce9721fca5d81bdf3070e3b9986ae5ac5b511e6145577b65f5af1d8e1",
+   "manualLines": 62,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-delegation-preset-schema.ts",
+   "kind": "source",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-delegation-preset-schema.ts.md",
+   "sourceBlob": "f6ac8c7943d46807ae218fbabd69de51e3ff0fd7",
+   "sourceSha256": "39feeddb2ae032cbf378bf6c06e878cfe3226da49e28a735464529ecf74fcf8d",
+   "sourceLines": 26,
+   "manualSha256": "5c14d7f1a543bf616bfbc456ca944b372436b8e2722a0234b6b56bbbef4b72f5",
+   "manualLines": 92,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-delegation-preset.test.ts",
+   "kind": "test",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-delegation-preset.test.ts.md",
+   "sourceBlob": "659d85a586fe8665c0f0c5870dab8cd7f4856591",
+   "sourceSha256": "7066e1ff8a4c5fa8fc199dcd255a401e2b01e7eb35acff06a33a7b9abcf2f187",
+   "sourceLines": 144,
+   "manualSha256": "88a26e5d353a1c49150b732b08da94139bcc14fcf912495745b52712a77e429e",
+   "manualLines": 76,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-delegation-preset.ts",
+   "kind": "source",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-delegation-preset.ts.md",
+   "sourceBlob": "15b1f1e90c2f77249a875a06de1f4a340181543e",
+   "sourceSha256": "8667086345df14d4f3babd68fa05da2fb8dc299eab1d3aa85e594214756a6ca4",
+   "sourceLines": 54,
+   "manualSha256": "a07ec483126d36860e86d63a6d51b6560ce8085b4d974a76cb8fbc583ba1e934",
+   "manualLines": 113,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-directory-utils.test.ts",
+   "kind": "test",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-directory-utils.test.ts.md",
+   "sourceBlob": "12fa197484d91493f369888c598e165bb0285c43",
+   "sourceSha256": "b6a5c30fc739dcdef10dac741a11cd62d94127693142aeb12d6749822079f918",
+   "sourceLines": 120,
+   "manualSha256": "de3d734a1a93f11dba929774c25751173e2441ff738c839fb9f208fdcccd3b99",
+   "manualLines": 82,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-directory-utils.ts",
+   "kind": "source",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-directory-utils.ts.md",
+   "sourceBlob": "7449bcd239b54e0ea7879dd0452420c6edffdc67",
+   "sourceSha256": "0170c56f79d492cbcf1a86f721fbf7ce6e48a74f3975945c0358e94545d529b2",
+   "sourceLines": 68,
+   "manualSha256": "50dee6ef09bc680806e32c92bc434a7a41e50df9a250895bdff00415598694ab",
+   "manualLines": 104,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-end-reason.test.ts",
+   "kind": "test",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-end-reason.test.ts.md",
+   "sourceBlob": "f574403231bfa5c6a0c4357cfd1e43309d3942b1",
+   "sourceSha256": "079f55292cb56384baf0b176ebdb4bcd2dfd1941f0fc3c9710c1469080303fd2",
+   "sourceLines": 125,
+   "manualSha256": "676aae7772905d73d76c4886929652cab7be158e6784d44382b67405ab167050",
+   "manualLines": 91,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-end-reason.ts",
+   "kind": "source",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-end-reason.ts.md",
+   "sourceBlob": "10a801f441782690c6ad28a0652156f04693ee01",
+   "sourceSha256": "0cdcd1905a3118295049a5ad855272ef6d41d09cba40ab377b98517da6d46c97",
+   "sourceLines": 90,
+   "manualSha256": "2cef0a311fe392f275a838ac2836588ef5b4df1f109df9a0ee1b6dcb1216591c",
+   "manualLines": 115,
+   "verdict": "revision_required",
+   "findings": [
+    {
+     "id": "F-01",
+     "severity": "minor_factual",
+     "claim": "§3「优先级（…注释 :40-53 与代码一致）」与 §10「优先级链 10 出口与注释一致（:54-90 vs 注释 :43-52）」为虚假一致性声明：源文件注释（:43-52）是 9 级清单，漏列 delegation_cancelled 分支（代码 :76-78，插于 error_during_execution 与 hasError 之间）；手册自身 §3 的 10 步清单反而正确。同一手册内「10 出口」与「注释 9 级一致」自相矛盾。",
+     "sourceEvidence": "baseline 逐行读 agent-end-reason.ts:40-53（注释 9 条，无 delegation_cancelled）vs :54-90（代码 10 分支）；QA 预读 reviews/nb-47/SOURCE-CHECKLIST §7.1 同结论",
+     "action": "nb-47-r1 修改两处表述：注明注释 9 级漏列 delegation_cancelled（代码先行于 hasError），删去「注释与代码一致」断言；行为结论无需改动"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-event-bus.ts",
+   "kind": "source",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-event-bus.ts.md",
+   "sourceBlob": "fae05c4de882a02a4a492af6c87ad7304d6e14a6",
+   "sourceSha256": "177346b204f9b7182c38d445d68cbe98c4212112a6881de503de5a405dc3c7d1",
+   "sourceLines": 93,
+   "manualSha256": "e11ce0c382c4744af28eeb273128d785fc74556146b03fe49f6c720236ba930d",
+   "manualLines": 119,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-event-fanout.test.ts",
+   "kind": "test",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-event-fanout.test.ts.md",
+   "sourceBlob": "a8b299734f3faf575d0441cc47fec9c8b4c5a70d",
+   "sourceSha256": "177bcd6b8fc3a7ed57dee35d77afa288293b23ec70fce04eaa4439739fa40e6b",
+   "sourceLines": 150,
+   "manualSha256": "eafd29beb6b58f376ca37513f88f3f9971385e8f9dd7410c677edbc15bcf7a10",
+   "manualLines": 75,
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/main/lib/agent-event-fanout.ts",
+   "kind": "source",
+   "package": "p02-agent-runtime",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-event-fanout.ts.md",
+   "sourceBlob": "9742b3a5a5e6b33b3d62d74c6e0e90c600f7e8be",
+   "sourceSha256": "0f68933afb317e912ce3de47ac5acda428677512b1afb7b0802fedc3ffb52122",
+   "sourceLines": 81,
+   "manualSha256": "719dadb224e3bb20d853190ed6693f3ea7ec448b38dc67abba76d0de1a8c6426",
+   "manualLines": 112,
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-ask-user-service.test.ts.md": "cdf3aae0f8972a99108728f3ee864619b27cd37676af1c89f0434f03d6dbbd0f",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-ask-user-service.ts.md": "738f17bae29a71d18dbb05eb59c1e11eaa35cb1caba96ed6a56c638ef3cf6d45",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-catalog-invalidation.test.ts.md": "2621360baf51b9925cd17e0b8f565aa84e340969ebe0ab32b803e76b6a4c9bb8",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-catalog-invalidation.ts.md": "51d4d78c10cf0885d2f794e9ca6e6b9c961fe1158d7fc029f98fe6a4572284b0",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-collaboration-tools.ts.md": "efa97eddf23c002ee9496d5542eac36f40faea5524ee38f2dbb99b06bfb67df0",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-collaboration-utils.test.ts.md": "264e25a8051c0ca0b8c381f1f58ad766097e952a628771d00dfeb3cc920abf7a",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-collaboration-utils.ts.md": "0ccb9ee90669f1ba416a8170b3517074248d72765237cbe0ce6395bc48dfc927",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-delegation-preset-schema.test.ts.md": "6ea3889ce9721fca5d81bdf3070e3b9986ae5ac5b511e6145577b65f5af1d8e1",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-delegation-preset-schema.ts.md": "5c14d7f1a543bf616bfbc456ca944b372436b8e2722a0234b6b56bbbef4b72f5",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-delegation-preset.test.ts.md": "88a26e5d353a1c49150b732b08da94139bcc14fcf912495745b52712a77e429e",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-delegation-preset.ts.md": "a07ec483126d36860e86d63a6d51b6560ce8085b4d974a76cb8fbc583ba1e934",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-directory-utils.test.ts.md": "de3d734a1a93f11dba929774c25751173e2441ff738c839fb9f208fdcccd3b99",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-directory-utils.ts.md": "50dee6ef09bc680806e32c92bc434a7a41e50df9a250895bdff00415598694ab",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-end-reason.test.ts.md": "676aae7772905d73d76c4886929652cab7be158e6784d44382b67405ab167050",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-event-bus.ts.md": "e11ce0c382c4744af28eeb273128d785fc74556146b03fe49f6c720236ba930d",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-event-fanout.test.ts.md": "eafd29beb6b58f376ca37513f88f3f9971385e8f9dd7410c677edbc15bcf7a10",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-event-fanout.ts.md": "719dadb224e3bb20d853190ed6693f3ea7ec448b38dc67abba76d0de1a8c6426"
+ },
+ "rejectedHashes": {},
+ "batchFindings": [
+  {
+   "id": "M-01",
+   "severity": "info",
+   "claim": "STATUS.json status=\"AUTHOR_DRAFT_COMPLETE_PRE_SEAL\" 落后于封版链（seal-ab78d9648baba40c，15:59:21Z）；STATUS 不在 seal v2 哈希链内。",
+   "sourceEvidence": "deliveries/nb-47/STATUS.json vs MANIFEST/READY/DONE",
+   "action": "rN 同步 STATUS"
+  },
+  {
+   "id": "M-02",
+   "severity": "info",
+   "claim": "18 篇手册 YAML reviewer=包名 p02-agent-runtime（FILES.tsv 配对惯例）。",
+   "sourceEvidence": "frontmatter",
+   "action": "无需修改"
+  },
+  {
+   "id": "M-03",
+   "severity": "info",
+   "claim": "正面确认（QA 预读硬约束全部落实且新增 4 处矛盾照实记录均经独立回源为真）：死代码三处（jsonResult:254/getCurrentParentPermissionMode:698/buildCollaborationSchemas:928，Zod schema 生产不可达）、blockedEvents 只增不删、权限恒 bypassPermissions、代答默认 allow 且绕 assertOrdinaryPendingRequestId、:797-798 注释「回退 Claude」vs 代码 `?? 'pi'`、delegate_agents TypeBox 无 maxItems vs Zod .max(50)、:544/:742 错误文案不一致、utils fallbackPermissionMode 形参未使用。",
+   "sourceEvidence": "逐项回源（sed/grep 实测 + QA 预读清单）",
+   "action": "记录"
+  }
+ ],
+ "zip": {
+  "path": "deliveries/nb-47/R07-nb-47-05fb2565.zip",
+  "sha256": "4ca86e87cc2037bbdfd53863cb9eb65afdc4cefb8843b6399edc06ac5102eb3b",
+  "entries": 21,
+  "note": "18 手册+MANIFEST+2 mechanical TSV；无 READY/DONE（v2）；无穿越/符号链接/0 mismatch"
+ },
+ "diffReplay": "changes.diff new-file 补丁与 stage 字节一致",
+ "parentPreserved": null,
+ "notClaimed": [
+  "测试运行结果",
+  "typecheck/build 结果",
+  "G3 跨模块",
+  "922 legacy 未继承"
+ ]
+}

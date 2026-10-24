@@ -1,0 +1,66 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-45-r1",
+ "revisionOf": "nb-45",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-models-20261023",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T17:07:38.161020+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "files": 18,
+ "accepted": 18,
+ "revisionRequired": 0,
+ "unknown": 0,
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/chat.ts.md": "5f00f74b055a4b00b929127b916e5f9bf3e9919233c25db2eb5de1016273f05f",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/cslab-origin-types.ts.md": "1df05fb1e7dae203f963133577ba97b45660383ccaf048e78a2de1256eeeb3dd",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/cslab-vesta-types.ts.md": "f08f31efc9c0fbcd46dbca301bad0885da7c03e194cd0c47ae315f6f902f500b",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/cslab.ts.md": "c899e86bc92a52f6f0112c4e78957fc510c488e764e9c8f62feee04332e43403",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/deepseek-model-alias.test.ts.md": "68f68e831965cd334f2723fd777fd69c0959396cda7bee9a32cd0a998db9227a",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/deepseek-model-alias.ts.md": "c7eeef3ecf3d0a4ce26bbd5baa1c550df9434038e8e292786e9dc4d3f4a998f2",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/dingtalk.ts.md": "5fc564eba37505b33b26ac732dfe91cd0d4b929b318ed2ef19f3dff79f7c3477",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/environment.ts.md": "90b09493639088e542b91e1bdefeab8fc302107d2adfdc627cf9c9301b816fc1",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/feishu.ts.md": "da024f62966e6ecaff9f6c9744962c0ad6b2ed5c85b53d3765fb42f82d52ff91",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/github.ts.md": "f434f9b8bd9119c6a0656fe877fb48b5a09fca7a99dae1ae39bb9e0abed3fd46",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/global-skill.ts.md": "189df1377704be2405302bec183725018fadeed8c55ade9ff6116849c2a486de",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/installer.ts.md": "64bb18511453a54daccf0e2b349034c21aca7b6d6c49be49fca40a86bae515c2",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/knowledge-base.ts.md": "f26e4fd91b96e7fbcfdbcda0dbc9ec7a20e937aeb3ce4de3c1048c1709241bd9",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/lark.ts.md": "04bd41c9dffe7d119df4cb84b83219ef70512d49bf2dc340cfa6c50556e12f41",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/pdf.ts.md": "5a0b7f7cbf534ae3dc91e1c23a0f5c0880a06d1583e9dda033bb5d87ad542d96",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/pi-harness.ts.md": "c8c2481577850b3226cf9988047334744065e9b7f2a62d49c11ac079fca296a2",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/planning.ts.md": "101a3cedd05f58389e9d77de7eb865aae9cf00f09ac20ae06247e75f043d1571",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/ppt-deck.ts.md": "850141345ad03dc3766f513fabf1600cbc0f547bf9b1b8c1dec4462447e05105"
+ },
+ "revisionHashes": {},
+ "findings": {
+  "revision": [],
+  "notes": []
+ },
+ "deliverySeal": {
+  "sealId": "seal-064fa97f8326a45b",
+  "sealedAtUtc": "2026-10-23T17:05:41Z",
+  "readySha256": "b20acbafbaa7748fde8e290e454eaa476eb5e5859c433399133bc28cb3d3b99f",
+  "doneSha256": "0f4e8093158fdc2fee7a876b97d8aff9b5af3ef997e29cf0c2c30bba683c5bb3",
+  "manifestSha256": "e47b983246ed0839bd5b22f1e3531f11fd5fd52d733f2a01820bef3873c1a9d2",
+  "zipSha256": "7cde36dd3f025c30bd8e6b569d60150b310ac6acf9237bf9ab179fc8fd7070b6"
+ },
+ "notRun": [
+  "bun test",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "artifacts": {
+  "RESULT.json": "1792ba54dea6a6a807b1ab0e7ba59cbdf99a6aabb684626fc2e7ec1b4b3ca338",
+  "RESULT.md": "7deef6bdaeb8406dc44d47796f05552f7a6cf8f49be2a1d1f009d9a8359cdbca",
+  "REVIEWED-HASHES.json": "987b7fbcb12c034d8953876175fed7e32c948d139fb9d2638f38d108671bb075"
+ },
+ "next": "lead 合入 18 篇"
+}

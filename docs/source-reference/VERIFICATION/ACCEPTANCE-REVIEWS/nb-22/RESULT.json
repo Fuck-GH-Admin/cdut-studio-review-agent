@@ -1,0 +1,262 @@
+{
+  "schema": "dsh-r07-review-result/2",
+  "batch": "nb-22",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-09-20261023",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-23T19:55:00Z",
+  "sealId": "seal-f480e1cce3dcd5bd",
+  "sealedAtUtc": "2026-10-23T17:15:03Z",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0,
+    "blocking": 0,
+    "nonBlocking": 2
+  },
+  "gates": {
+    "G0": "PASS",
+    "G1": "PASS",
+    "G2": "PASS_WITH_NOTES",
+    "note": "6 源深读+12 测试核对（3483 行）对照 18 篇；2 条 minor（行号手估漂移/入向列表漏 1 文件），行为与负结论无误"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/main/lib/review/review-remote-indirect-access.p05.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-remote-indirect-access.p05.test.ts.md",
+      "sourceBlob": "2490881f1639f78668d7a3d55f6c26026108551e",
+      "sourceSha256": "7bb4b6be02840cbec47c9d28f67edc7f648f660beefa410b11a491ad804f764c",
+      "manualSha256": "36e4badb20a3e609d376799d5a5b7c2e8b86db97096b0990438486d6c1dc78e8",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-remote-path-access.p05.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-remote-path-access.p05.test.ts.md",
+      "sourceBlob": "5232b3833729b347e53f8b40ed5b4107b8e95252",
+      "sourceSha256": "f41cf54dc944b1e9d9ccc8b30d092dc90c147124b24895687aa9d84d6ca38031",
+      "manualSha256": "3ee79acd2021c03a434cda9891f3a373d827964699d308f902ec68e03de6c933",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-remote-reconnect-search.p05.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-remote-reconnect-search.p05.test.ts.md",
+      "sourceBlob": "f7283f7dd6c5116921fbe66d29c4f116e843b37e",
+      "sourceSha256": "1db597bdf98a7f7599e4ad0dd60913fffdc0e414628f6cf4fc4dc27eae5fef5d",
+      "manualSha256": "9d8fd63100432574456ebc9f248b83794c307501d88fb670fa833baf2984d822",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-remote-websocket-relay.p05.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-remote-websocket-relay.p05.test.ts.md",
+      "sourceBlob": "f0e9590eeeb64d7b1306a5e33174718d8f30b1b3",
+      "sourceSha256": "fb5e30775baeda5004554a7c366ca909c6164aa2a2213e6cf9070d5b36f768b0",
+      "manualSha256": "c3e8a2bebe20a0b2451cea686c9a1c8b95f39b9e0327d47e006134fa6c73ae35",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-run-graph.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-run-graph.test.ts.md",
+      "sourceBlob": "0ae690dec60c081f3d5c5f4ff39af324bc74c435",
+      "sourceSha256": "26b449f18a41a3f3ccc34bad71a1785029ad76c5239a61b1995961372fdb2fa1",
+      "manualSha256": "1e5a21ae4f2c3f60ca82e5546a76f94efae3c7dcda862b3a06eb470200506c68",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-run-graph.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-run-graph.ts.md",
+      "sourceBlob": "22d5e82e6813acf6efa14d81293414da3841cc56",
+      "sourceSha256": "682962f1de45fb281e296bfe2ad38db1f81e66718dade0b6f05a2bc69acc905f",
+      "manualSha256": "99bbf1b0a2e9e9e82e0339eed4114d416764079de58a2bfca86f5e922f2bf605",
+      "verdict": "accepted",
+      "findings": [
+        "NB22-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-runtime-contract.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-runtime-contract.test.ts.md",
+      "sourceBlob": "d11b98d97b7a93717ff332bf16b8fb7e0072d5c4",
+      "sourceSha256": "5f6f4996994419f6e9039f83c255a4221278b2eb00c0b0795a0669c50d1fe9d6",
+      "manualSha256": "dbdcc747c579f6177844e4da8bc2033e07f201116455e5f044720274019941a0",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-runtime-contract.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-runtime-contract.ts.md",
+      "sourceBlob": "31e198bddb432621c9d7eb77667d7badcb0159db",
+      "sourceSha256": "a1291c00629122e20819e31a72b55b214045a55e54d5a4c29e8f8aecfc07029c",
+      "manualSha256": "9e01f1cbc17e337f4a803adccef87265d751e4187969201f549af6fb31a182b6",
+      "verdict": "accepted",
+      "findings": [
+        "NB22-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.test.ts.md",
+      "sourceBlob": "0011844e2a2d6fdd7eb00abdfc1ea697d3700ea0",
+      "sourceSha256": "1f0a0288283eab4f2bcfe613e0be6e7833344e754dff2b178277b79d55d781e2",
+      "manualSha256": "352ba11079c62a8018411fcb9998f1968b0cda30d6517f7a4b4caa9b96e6b2b5",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts.md",
+      "sourceBlob": "b2101be80e3dce561f6365c3378b2930245dda73",
+      "sourceSha256": "ee1d55b0aeea8a5a532c97adcc65c462a421f4c5786a2fcadf4bc97f818a116d",
+      "manualSha256": "2f457fbad920c3261c71a09fbc4e0ffc43de6fc8bccaa6e1f80d20c33f4a64bd",
+      "verdict": "accepted",
+      "findings": [
+        "NB22-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-startup-io-recovery.p06.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-startup-io-recovery.p06.test.ts.md",
+      "sourceBlob": "7a7fe5715771f689c31968082e32d25b42fb6ad4",
+      "sourceSha256": "1ca3d0eb18bd06ceda2ba3caeaba693f6bc5e2a34d917034c9ea71e714577ed4",
+      "manualSha256": "c515395a29b306c0a99062357db78621fa24ea167368d15ea687d9a1e04353e1",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-strict-pi-tools.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-strict-pi-tools.ts.md",
+      "sourceBlob": "83d6ddf165d3547c81804708253c68e528ecdd9c",
+      "sourceSha256": "86fe8a0c9ab9a1cb172ff2ce3ac0ab3fb06c04bc1eb992736e637f51f11d0adc",
+      "manualSha256": "be9756a635d38bb898e013fdca0b2123a03bc2501970e207b8686372e92abd53",
+      "verdict": "accepted",
+      "findings": [
+        "NB22-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-strict-profile.p02.probe.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-strict-profile.p02.probe.test.ts.md",
+      "sourceBlob": "26282d6a691f2af710e76361eccae83bbb2a4692",
+      "sourceSha256": "8203367f84d1f516c5eb4b6379deab6a9c85026302243c477c3757e9a64ae9f4",
+      "manualSha256": "fc9b71de2fdc35b1d3fca40d95ffbbb4f494d0b519639c4bfe510d340a6a2e53",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-template-author-store-v3-b1.test.ts.md",
+      "sourceBlob": "b6f1c25079e6f54f7953ccb94b71679176fc912e",
+      "sourceSha256": "14c414356a6239aca72e1462c9d6a127a3b55d18ffc06898077e3308806cb606",
+      "manualSha256": "650ad4de6376424d7c8d45d6fe06bec6da2b241dc9c4e973badbc2b453626efe",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-template-author-store-v3-b1.ts.md",
+      "sourceBlob": "065251ca843c51e68e225dc688bb7a8caab2fea7",
+      "sourceSha256": "e497461cdcd1bd47c87fb1cfbe34ec224987da885ef9583f627d899ad23be280",
+      "manualSha256": "98917b6e5253318fb440491d026a355a6cd8703d7909a291f9352789ca236206",
+      "verdict": "accepted",
+      "findings": [
+        "NB22-N-02"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.ts.md",
+      "sourceBlob": "974f0b0d127301ed71ad10df5ae64623ce378882",
+      "sourceSha256": "3801ad5f90376f599d36beb669dae36c9ca80d1240a58ef0ee198f0618b66d99",
+      "manualSha256": "2eab41654e2fe0263aa824e9c5e9a1806209f5ccbd4b64743277942b7964bca0",
+      "verdict": "accepted",
+      "findings": [
+        "NB22-N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-tombstone-index-scale.p04.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-tombstone-index-scale.p04.test.ts.md",
+      "sourceBlob": "7d08b26bb0cf6500f23b134df877bfa1a1651be3",
+      "sourceSha256": "c57a488b4ad14701ce197b32c5f7af2a50ca6fe462a8d391e0312305bfe18441",
+      "manualSha256": "4c50bbbd2dedfa617fba0ff4c2e7068f31deface14db0c9020792a13e7ddf921",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-tools.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-tools.test.ts.md",
+      "sourceBlob": "042b0c9aac4442881149a17d32af2629282a0b91",
+      "sourceSha256": "d2ebceed5aabeceefa91e90abcf556cc110b4abf6650f56cc30cdcc648d97d3b",
+      "manualSha256": "7b57e3b0581c1ecb0ea39c47badd2a54fa7f89644753c7f3368a58cca5593849",
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-remote-indirect-access.p05.test.ts.md": "36e4badb20a3e609d376799d5a5b7c2e8b86db97096b0990438486d6c1dc78e8",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-remote-path-access.p05.test.ts.md": "3ee79acd2021c03a434cda9891f3a373d827964699d308f902ec68e03de6c933",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-remote-reconnect-search.p05.test.ts.md": "9d8fd63100432574456ebc9f248b83794c307501d88fb670fa833baf2984d822",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-remote-websocket-relay.p05.test.ts.md": "c3e8a2bebe20a0b2451cea686c9a1c8b95f39b9e0327d47e006134fa6c73ae35",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-run-graph.test.ts.md": "1e5a21ae4f2c3f60ca82e5546a76f94efae3c7dcda862b3a06eb470200506c68",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-run-graph.ts.md": "99bbf1b0a2e9e9e82e0339eed4114d416764079de58a2bfca86f5e922f2bf605",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-runtime-contract.test.ts.md": "dbdcc747c579f6177844e4da8bc2033e07f201116455e5f044720274019941a0",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-runtime-contract.ts.md": "9e01f1cbc17e337f4a803adccef87265d751e4187969201f549af6fb31a182b6",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.test.ts.md": "352ba11079c62a8018411fcb9998f1968b0cda30d6517f7a4b4caa9b96e6b2b5",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts.md": "2f457fbad920c3261c71a09fbc4e0ffc43de6fc8bccaa6e1f80d20c33f4a64bd",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-startup-io-recovery.p06.test.ts.md": "c515395a29b306c0a99062357db78621fa24ea167368d15ea687d9a1e04353e1",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-strict-pi-tools.ts.md": "be9756a635d38bb898e013fdca0b2123a03bc2501970e207b8686372e92abd53",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-strict-profile.p02.probe.test.ts.md": "fc9b71de2fdc35b1d3fca40d95ffbbb4f494d0b519639c4bfe510d340a6a2e53",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-template-author-store-v3-b1.test.ts.md": "650ad4de6376424d7c8d45d6fe06bec6da2b241dc9c4e973badbc2b453626efe",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-template-author-store-v3-b1.ts.md": "98917b6e5253318fb440491d026a355a6cd8703d7909a291f9352789ca236206",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.ts.md": "2eab41654e2fe0263aa824e9c5e9a1806209f5ccbd4b64743277942b7964bca0",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-tombstone-index-scale.p04.test.ts.md": "4c50bbbd2dedfa617fba0ff4c2e7068f31deface14db0c9020792a13e7ddf921",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-tools.test.ts.md": "7b57e3b0581c1ecb0ea39c47badd2a54fa7f89644753c7f3368a58cca5593849"
+  },
+  "findings": [
+    {
+      "id": "NB22-N-01",
+      "severity": "minor",
+      "files": [
+        "apps/electron/src/main/lib/review/review-strict-pi-tools.ts",
+        "apps/electron/src/main/lib/review/review-run-graph.ts",
+        "apps/electron/src/main/lib/review/review-runtime-contract.ts",
+        "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.ts",
+        "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.ts",
+        "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts"
+      ],
+      "claim": "6 篇 source 手册 §2 符号行号系手估，漂移 ±1~8（例：isAuthorizedDirectReviewTool :55-62 实 :51-59、NodeKind :11 实 :13、RunAuthorityKind :15 实 :19、B1AuthorRevision :20-29 实 :24-33、B1FieldType :19-28 实 :26-34、B2Precision :17 实 :21）；同文件内方向大体一致但跨文件混向。内容均可以符号名定位，行为结论不受影响（与 nb-17-N-01 同类）。",
+      "sourceEvidence": "grep -n \"^export \" 逐符号实测 6 文件导出表。",
+      "action": "r1/errata 按实测重导 §2 行号（或注明\"约略行号，以符号名为准\"）"
+    },
+    {
+      "id": "NB22-N-02",
+      "severity": "minor",
+      "files": [
+        "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.ts"
+      ],
+      "claim": "§4 入向列表漏 1 个生产消费文件：`readB1AuthorRevision` 实际 6 个生产消费（review-v3-main-author-revision-read.ts、review-v3-main-local-author-workbench.ts、review-v3-b1-b2-recovery-preflight-v3-b.ts、review-v3-main-b20-current-registry.ts、review-v3-b1-b2-main-read-bundle-v3-b.ts、review-v3-main-b1-local-plan.ts），手册列 5（漏 review-v3-main-author-revision-read.ts）。非假否定（列表不完整）。",
+      "sourceEvidence": "grep -rln \"\\breadB1AuthorRevision\\b\" apps --include=*.ts（含动态 require）：6 文件。",
+      "action": "r1/errata 补第 6 个入向文件"
+    }
+  ],
+  "notRun": [
+    "product tests (bun test, 93 declarations)",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network",
+    "real WS/Pocket/Relay"
+  ],
+  "verificationNotes": [
+    "G0 机械复算 0 错误：18 源绑定=SCOPE=MANIFEST；18 手册 hash 磁盘=MANIFEST=READY；链一致；ZIP 21 条目安全逐字节一致；changes.diff 空树重放 18/18。",
+    "G1：导出计数逐文件复核（strict-pi-tools 2、run-graph 11、runtime-contract 17、author-store 6、plan-adapter 17、b2-adapter 11）；测试计数 3+4+6+5+7+5+8+8+12+13+8+14=93 声明逐文件 grep 复核与手册一致。",
+    "G2：行为/安全语义逐项与源一致（工具白名单 5、await 后重查绑定、RUN-04 不回退、RUN-43 fail-closed、B1 全链校验+wx+锁、B2 只认本注册表铸造/字节换身份作废、adaptLegacyP06Plan 恒 throw、publicationAllowed:false、evidence 值恒 false）；诚实标记（win32 目录 fsync 不宣称断电等价、strict-profile 已知缺口\"不滤 external customTools\"、docx paragraph 只是传输信封）全部属实；调用链逐符号复算（agent-orchestrator:184 ✓、executeRunGraph 在 v2-executor-factory 仅注释提及 ✓、ReviewB2SourceVersionAdapter 恰 3 消费 ✓），发现 N-02 列表缺 1 文件；无假否定。",
+    "所有运行事实保持 NOT_RUN（93 测试声明仅静态读，含真 WS/子进程用例未跑）；哈希全部脚本生成。"
+  ]
+}

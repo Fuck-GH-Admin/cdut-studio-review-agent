@@ -1,0 +1,50 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "nb-05b",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T15:56:13.943612+00:00",
+ "deliverySeal": {
+  "sealId": "seal-2b5c5cf7f7cd4fb5",
+  "sealedAtUtc": "2026-10-23T14:06:14Z",
+  "readySha256": "d1b3ade772a8f2d1374aa5cb1868515de5fbfaabf7466539b759c91c1d09a13d",
+  "doneSha256": "27d2921e16349bdf2f8130a80864bfed4108f608790a170f5d716d1533d14486",
+  "manifestSha256": "8b4321eb4353cd0feca103faa728431e76b33a148a0bc380ce73da7a04e356f9",
+  "zipSha256": "027cfe06da50b5fbf0a534e8867f7414c50cfd05dc025e9d4dec5530907bee53"
+ },
+ "files": [
+  {
+   "path": "apps/electron/src/main/index.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/index.ts.md",
+   "sourceBlob": "bc7093234e6a119379cee9a3051215f71307025f",
+   "sourceSha256": "7bc8571522c42f4e67587cdd0aa05e41f1ae72965e1da2977775c0cf17a68b5b",
+   "manualSha256": "b9cc38bc6fb0cbd671874697276e4e8e875a12041b22d7acafe970c9d7e3cb13",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/preload/index.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/preload/index.ts.md",
+   "sourceBlob": "32eabfb7b941981ffc1dc1c6a447e96fa1fdc452",
+   "sourceSha256": "87e00255321d55eb5edea8dce84389e7ebca1861324e7fb97e0f9c79dd435471",
+   "manualSha256": "da67f6e83c70604c3fd159b98ea3240cbc96696f7b32e5ee251d79d2399c663c",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/config-paths.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/config-paths.ts.md",
+   "sourceBlob": "952a2ca9aef8ef930af1e6f6f954557f67d6d6ab",
+   "sourceSha256": "1d2394a1c81263d942ee2a81217e561812f4a78a0cdd8c271e9de39029f6e1a0",
+   "manualSha256": "249288f3aeb3507448ab11f14b01345d49bf8ea4e4b3ae4a9e89690b0a753796",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/lightweight-completion.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/src/main/lib/lightweight-completion.ts.md",
+   "sourceBlob": "657fa0688e23e26ef2ff24e73e260227f8b58f9f",
+   "sourceSha256": "8ce8155985953f7b36487c54ac2eace14d2daea18a3cb4625383f9baaac6b2f7",
+   "manualSha256": "b579624ce58681e3a817255e5adb913b8efac5edc7c32a8274805cc7d7aece69",
+   "verdict": "accepted"
+  }
+ ],
+ "note": "manualSha256 为 stage 现测 == READY == MANIFEST；lead 4 篇全量合入"
+}

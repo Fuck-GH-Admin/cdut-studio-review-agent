@@ -1,0 +1,28 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "index-p01-app-shell___cursor",
+  "groupId": "p01-app-shell___cursor",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T18:15:00Z",
+  "sealedAtUtc": "2026-10-23T17:40:46Z",
+  "artifactSha256": "7649d9905e0efca7aaa9eaa53e918e76bf24a4a84982ebd228732c4aaf1345a7",
+  "note": "QA 实算：stage MD=7649d990…（=READY/DONE/MANIFEST.artifactSha256）；MANIFEST=b67beff3…；READY=dcbddc3b…。2/2 accepted。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___cursor.md@.cursor/rules/science-ui.mdc": "7649d9905e0efca7aaa9eaa53e918e76bf24a4a84982ebd228732c4aaf1345a7",
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell___cursor.md@.cursor/rules/use-bun-instead-of-node-vite-npm-pnpm.mdc": "7649d9905e0efca7aaa9eaa53e918e76bf24a4a84982ebd228732c4aaf1345a7"
+  },
+  "revisionRequiredManuals": {},
+  "sourceHashes": {
+    ".cursor/rules/science-ui.mdc": {
+      "sourceBlob": "b3ee4ba1d6ed4fa787c4eb7fe5257212159cc9c5",
+      "sourceSha256": "0c462b28c2c4ee3204d03ca96d021dcf41584723fce97c65516c8ecc682a274e",
+      "verifiedAgainstFrozenTree": true
+    },
+    ".cursor/rules/use-bun-instead-of-node-vite-npm-pnpm.mdc": {
+      "sourceBlob": "6100270f85a724bd0f09bc6f0d990913ed34fb17",
+      "sourceSha256": "70231b956e7f9335ec83966d4bcd7196f98195c1e005069a275c3ea6d41244db",
+      "verifiedAgainstFrozenTree": true
+    }
+  }
+}

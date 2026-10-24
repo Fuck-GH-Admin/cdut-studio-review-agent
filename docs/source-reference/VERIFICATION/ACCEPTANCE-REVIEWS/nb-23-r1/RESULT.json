@@ -1,0 +1,238 @@
+{
+  "schema": "dsh-r07-review-result/2",
+  "batch": "nb-23-r1",
+  "revisionOf": "nb-23",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "reviewedAtUtc": "2026-10-23T18:45:00Z",
+  "sealedAtUtc": "2026-10-23T17:04:44Z",
+  "sealId": "seal-3f1f77a0be79558f",
+  "parentSealId": "seal-96b8a71c1efb9d8e",
+  "runStatus": "NOT_RUN",
+  "batchVerdict": "accepted",
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass"
+  },
+  "g0Evidence": {
+    "sealChain": "manifestSha/readySha/zipSha 三层独立重算全相等；zip 17 条目合 SEAL-DELIVERY §4",
+    "manualHashes": "14/14 磁盘=MANIFEST=READY 全等",
+    "changeScope": "对父批 diff 仅 2 篇（review-tools.ts.md 8 hunks、review-zip-staging-v3-b2.ts.md 1 hunk），全部落在 FINDINGS-RESPONSE 声明的 4 条修正；其余 12 篇字节=父批"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/main/lib/review/review-tools.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-tools.ts.md",
+      "sourceBlob": "b6f95eb7dce058f3d88dfb6aa0314cdd87ce5ab4",
+      "sourceSha256": "6cdeb3f808abfad3951d4a6d58f5f6080ca763ba634591a26cf63dcb24359269",
+      "manualSha256": "91e21c2c039f3da9b96e685d92e5c029efa3c868fa63e3c78da566069ba6e661",
+      "verdict": "accepted",
+      "findings": [
+        "NB23-TALLY-01",
+        "NB23-TALLY-02",
+        "NB23-TALLY-03"
+      ],
+      "findingStatus": "all_resolved_in_r1"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-zip-intake-v3-b2.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-zip-intake-v3-b2.test.ts.md",
+      "sourceBlob": "1aa380afcb83078025f25d2ce1ce15816db0b5e8",
+      "sourceSha256": "c50043f4dc9b09a9a4a0c16f7013eb2ccfffa4603bd478d1e77c3e130fea83b2",
+      "manualSha256": "133bbf324772e4da3f9aef9a09d09d28858421046fa1e1d8478abaf86d112703",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": null
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-zip-intake-v3-b2.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-zip-intake-v3-b2.ts.md",
+      "sourceBlob": "2289f2fb2ca395fb81d93270e3d33116359993c4",
+      "sourceSha256": "eff575b34644b76b52233ad985c08e515d7c2a1cbabe7a3c74fb9c7fd390e381",
+      "manualSha256": "b7ac6531f2232142b812dcffbb1eda3529bb80453da6dd77a084899ca1a993a1",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": null
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-zip-staging-v3-b2.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-zip-staging-v3-b2.test.ts.md",
+      "sourceBlob": "edefc665e0db38313a63bc46298c4c9b8ffe35d1",
+      "sourceSha256": "f613142a61b13e90de27502bb6e963df0d7d805fbd4471faebd12ec6fa488270",
+      "manualSha256": "5b4f8adfe35e8c608a6207293eaeed60a77d40a9709ea7451434bc422f9fba69",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": null
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-zip-staging-v3-b2.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-zip-staging-v3-b2.ts.md",
+      "sourceBlob": "38d87196e49b73c62b6019ff2b1dceac3f02b175",
+      "sourceSha256": "4e8c5655ab2093058c28399886708dff7a1446fcb3e9192887618e7159644843",
+      "manualSha256": "27dbf4ec8085c6f594b07b02ad0a8b2f3908ed166dd168011e1eaca4ee0020e6",
+      "verdict": "accepted",
+      "findings": [
+        "NB23-REF-01"
+      ],
+      "findingStatus": "all_resolved_in_r1"
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-run-writer.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-run-writer.test.ts.md",
+      "sourceBlob": "71aac61f66db4ba9e6c148c7cb6c239cc1ec4ce8",
+      "sourceSha256": "e74565f6a07e1a12744ab046176625237a651c4748d1955a9fea561177cd376b",
+      "manualSha256": "4713289d3ebf7f8049f4150c99eddabe3d426b55ffc0f81df5ba0bb8f4fdaf25",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": null
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-run-writer.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-run-writer.ts.md",
+      "sourceBlob": "b53cea6fb2a71c003d7d8baaf501508d0a239eed",
+      "sourceSha256": "5dc87edc3a3f7b7922ef6d42fc298dd97a0e74f61d9e1b7746d99dcb41807d0d",
+      "manualSha256": "79d60dcab2ba7c556c63af0a58f5cd83264c86c9d8e55873eb61b7108cac2664",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": null
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-sdk-dispatch-fence.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-sdk-dispatch-fence.ts.md",
+      "sourceBlob": "a2a53f3927d29b65c492753fc372e060546b6908",
+      "sourceSha256": "7b98a6ffad4d3ba6db7e49ff20719bd1dc70fb4ab13d211502a24caeff53cab4",
+      "manualSha256": "d9806f80f56d78db7d566918f7042ada26d84abf9f6caa0db8282fab5ce0cc74",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": null
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-sdk-physical-turn-port.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-sdk-physical-turn-port.ts.md",
+      "sourceBlob": "49b8d9270570a76f58f04d90c3bdc77ce6230a9b",
+      "sourceSha256": "552a51a4845fbc87dc87fa47b6f2f8720c6d1309edec12b3cc162cf28a9fe8ea",
+      "manualSha256": "f88470a1a4d4e80a984f9b9f0ba8157640af6fcd0dddf8b373d794f2fbe757e0",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": null
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-six-examples-run.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-six-examples-run.test.ts.md",
+      "sourceBlob": "6c32a7efa5b7932cb8efd03e89f162d78a9da57a",
+      "sourceSha256": "f7224d6ce4ee4576244ef23b3c9f4b86075522061a0ec0d9a1a8bc387d555518",
+      "manualSha256": "379bc22f109dea33a747c521f92d13909d4a9f094324616f7ff19c3c1a45c365",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": null
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-t01-model-draft-service.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t01-model-draft-service.ts.md",
+      "sourceBlob": "cd1206618f3bda4ee97d0cab818a3545ad60a8c6",
+      "sourceSha256": "b86ddbcaf7201b6db8c5cc35e7ba9c9b5b1a5f0899c0975fb7fdd827731d201f",
+      "manualSha256": "a2f3a611530afe0acc11c9623a3eaf15ccdf2a0d413c5d4967e2dc171c81b884",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": null
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-technical-ledger.test.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-technical-ledger.test.ts.md",
+      "sourceBlob": "e3bfd5f372caaf61d4692f3b2a808d780aa7e2d0",
+      "sourceSha256": "99bec364db165f8f07fb3796263354c5db341e4cedac66e16e8e5b28d5681941",
+      "manualSha256": "8e2f8ce6f3158ff27f65ad1a1097c0090299ec6739edd1ddebafba74bec07c7f",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": null
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-technical-ledger.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-technical-ledger.ts.md",
+      "sourceBlob": "a3378792a1e2f3a3b8a5d214a969746054c33d8b",
+      "sourceSha256": "db85fefbb88ec1a9232816fe4b5391802b4869507250b24dfec1eae5823dc27b",
+      "manualSha256": "2a0e6ab0cf576315b999bd53cdce356dd71670186b875ef47d2721eeffe4a240",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": null
+    },
+    {
+      "path": "apps/electron/src/main/lib/review/review-v3-technical-sequence-driver.ts",
+      "manual": "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-technical-sequence-driver.ts.md",
+      "sourceBlob": "3c4bbb8d2071eb5960e27048aa169a4fc8e11274",
+      "sourceSha256": "01fc01dff1cd71e6db3cc1b3e406682144dcc05dffdc5bd60320e18c1fd3a658",
+      "manualSha256": "39653abc5b7a69ea141d4ef993b66de4192ca7bbed7332b6671f5a6a34ad0b03",
+      "verdict": "accepted",
+      "findings": [],
+      "findingStatus": null
+    }
+  ],
+  "findings": [
+    {
+      "id": "NB23-TALLY-01",
+      "file": "apps/electron/src/main/lib/review/review-tools.ts",
+      "severity": "minor",
+      "status": "resolved",
+      "claim": "（父批）「12 个工具」vs 13 —— r1 已改 13（§2 表/清单/§11）。",
+      "sourceEvidence": "grep -c \"name: '\" review-tools.ts = 13。",
+      "action": "已核销。"
+    },
+    {
+      "id": "NB23-TALLY-02",
+      "file": "apps/electron/src/main/lib/review/review-tools.ts",
+      "severity": "minor",
+      "status": "resolved",
+      "claim": "（父批）read_rule「12 个规则字段」vs 11 —— r1 已改 11。",
+      "sourceEvidence": "review-tools.ts:252 字段 = 11。",
+      "action": "已核销。"
+    },
+    {
+      "id": "NB23-TALLY-03",
+      "file": "apps/electron/src/main/lib/review/review-tools.ts",
+      "severity": "minor",
+      "status": "resolved",
+      "claim": "（父批）review-tools.test.ts「13 个 test()/主题」vs 12 —— r1 已改 12（5 处同步）。",
+      "sourceEvidence": "grep -c test( review-tools.test.ts = 12。",
+      "action": "已核销。"
+    },
+    {
+      "id": "NB23-REF-01",
+      "file": "apps/electron/src/main/lib/review/review-zip-staging-v3-b2.ts",
+      "severity": "minor",
+      "status": "resolved",
+      "claim": "（父批）intake-adapter 导出名称↔行号错位 —— r1 已按实际 export 行重排（B2MainContext:29/B2MaterialCandidate:48/B2ImportReceipt:65/ReviewB2StagingService:79）。",
+      "sourceEvidence": "review-intake-adapter-v3-b2.ts ^export 行：:29/:36/:48/:65/:79。",
+      "action": "已核销。"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-tools.ts.md": "91e21c2c039f3da9b96e685d92e5c029efa3c868fa63e3c78da566069ba6e661",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-zip-intake-v3-b2.test.ts.md": "133bbf324772e4da3f9aef9a09d09d28858421046fa1e1d8478abaf86d112703",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-zip-intake-v3-b2.ts.md": "b7ac6531f2232142b812dcffbb1eda3529bb80453da6dd77a084899ca1a993a1",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-zip-staging-v3-b2.test.ts.md": "5b4f8adfe35e8c608a6207293eaeed60a77d40a9709ea7451434bc422f9fba69",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-zip-staging-v3-b2.ts.md": "27dbf4ec8085c6f594b07b02ad0a8b2f3908ed166dd168011e1eaca4ee0020e6",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-run-writer.test.ts.md": "4713289d3ebf7f8049f4150c99eddabe3d426b55ffc0f81df5ba0bb8f4fdaf25",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-run-writer.ts.md": "79d60dcab2ba7c556c63af0a58f5cd83264c86c9d8e55873eb61b7108cac2664",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-sdk-dispatch-fence.ts.md": "d9806f80f56d78db7d566918f7042ada26d84abf9f6caa0db8282fab5ce0cc74",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-sdk-physical-turn-port.ts.md": "f88470a1a4d4e80a984f9b9f0ba8157640af6fcd0dddf8b373d794f2fbe757e0",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-six-examples-run.test.ts.md": "379bc22f109dea33a747c521f92d13909d4a9f094324616f7ff19c3c1a45c365",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-t01-model-draft-service.ts.md": "a2f3a611530afe0acc11c9623a3eaf15ccdf2a0d413c5d4967e2dc171c81b884",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-technical-ledger.test.ts.md": "8e2f8ce6f3158ff27f65ad1a1097c0090299ec6739edd1ddebafba74bec07c7f",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-technical-ledger.ts.md": "2a0e6ab0cf576315b999bd53cdce356dd71670186b875ef47d2721eeffe4a240",
+    "MODULE-REFERENCE/p05-review-engine/FILE-REFERENCE/apps/electron/src/main/lib/review/review-v3-technical-sequence-driver.ts.md": "39653abc5b7a69ea141d4ef993b66de4192ca7bbed7332b6671f5a6a34ad0b03"
+  },
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "notes": [
+    "复验方式：父批 reviews/nb-23 D0 证据复用 + 逐 hunk 回源核销 4 条修正；12 篇未动文件 diff 为空 + hash=父批 accepted 同值（按合入规则由本子批记录）。",
+    "r1 修正全部与源码复算一致（13/11/12/名称行号配对），未引入新问题。",
+    "manualSha256 脚本生成 = READY/MANIFEST 三方核验。"
+  ]
+}

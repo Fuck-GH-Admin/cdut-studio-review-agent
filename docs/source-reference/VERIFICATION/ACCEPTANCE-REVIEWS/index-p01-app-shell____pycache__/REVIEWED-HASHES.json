@@ -1,0 +1,22 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "index-p01-app-shell____pycache__",
+  "groupId": "p01-app-shell____pycache__",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T18:22:00Z",
+  "sealedAtUtc": "2026-10-23T17:41:12Z",
+  "artifactSha256": "386e2267f3f7dc8ced32ceafcd24d8a52c87d59a0cb17ae6c42556dfa4d2050c",
+  "note": "QA 实算：stage MD=386e2267…（=READY/DONE/MANIFEST.artifactSha256）；MANIFEST=9fed63e7…；READY=a2ad94bf…。1/1 accepted。",
+  "acceptedManuals": {
+    "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell____pycache__.md@__pycache__/verify_doc.cpython-313.pyc": "386e2267f3f7dc8ced32ceafcd24d8a52c87d59a0cb17ae6c42556dfa4d2050c"
+  },
+  "revisionRequiredManuals": {},
+  "sourceHashes": {
+    "__pycache__/verify_doc.cpython-313.pyc": {
+      "sourceBlob": "bdb21ac626363030693ba20e2ee3b83cee2a51fe",
+      "sourceSha256": "303368816bb62789b6787480ec7f699bcfb2af24131e6267469e8f7af6eceeec",
+      "verifiedAgainstFrozenTree": true
+    }
+  }
+}

@@ -1,0 +1,2060 @@
+{
+  "schema": "dsh-r07-progress/1",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "asOf": "2026-10-23T23:22:25+00:00",
+  "indexLine": {
+    "indexPlanned": 705,
+    "indexGroupsPlanned": 37,
+    "indexGroupsSealed": 37,
+    "indexGroupsQaDone": 37,
+    "indexGroupsMerged": 37,
+    "indexRevisionBatches": {
+      "sealed": 11,
+      "qaDone": 11
+    },
+    "indexFilesAccepted": 705,
+    "artifactSha256ByGroup": {
+      "p01-app-shell__": "dc783a517280018f9e78c26faab1ada4b017caf2ab325d0e4213484f81f5cde5",
+      "p01-app-shell____pycache__": "386e2267f3f7dc8ced32ceafcd24d8a52c87d59a0cb17ae6c42556dfa4d2050c",
+      "p01-app-shell___context": "0b52ec37f0698b7b9e0546355bcc42e308ddb6971454bba60a9830dde3f05368",
+      "p01-app-shell___cursor": "7649d9905e0efca7aaa9eaa53e918e76bf24a4a84982ebd228732c4aaf1345a7",
+      "p01-app-shell__apps": "7ae04e2705414a7b1d01d6bbd81553aebb5c9acecdb1ac36ecaf94bf32ef5cd7",
+      "p01-app-shell__apps__electron": "7374ec6ade25e245c93f70858875d071c11fabc4c6939927c244a32edf17cdf2",
+      "p01-app-shell__apps__electron__resources": "d09a1e91bb3a5666ab751bba1709eec2842d502b16a6ab616439df995ba93db4",
+      "p01-app-shell__apps__electron__resources__cslab": "f18230b24c0a7ec78d878bd923b1bafd8ded5bdf0a1cf9b07a93aee6dacf91e8",
+      "p01-app-shell__apps__electron__resources__ppt-style-packs": "6c45f5b0a01f28b38799cb914e4de3efed27a49ac7c73ceaf953d5f5615c7461",
+      "p01-app-shell__assets": "c0c0e989b34ead1d53477c6c3ae9e619bee01f9de0174100b70491afdcadddfd",
+      "p01-app-shell__assets__CDUT": "ac71296502f94a3013c6eac0b83b78d8a786eb177dd54151ca4471514b395b9f",
+      "p01-app-shell__assets__IP": "3e70fdf2120fe296c31c56391e976b97ceb18015c84769f1243f2ef89e5a733b",
+      "p01-app-shell__docs": "abe5439be233f78fb14687fc7de1717b2b2fdc7060b6273c3a49276d6fa41e57",
+      "p01-app-shell__docs__assets": "03fdaa25b2fd791971b2d7d59319f1f8fee45066352af61bb0fd6e3a94a1ea2a",
+      "p01-app-shell__docs__design__review-agent": "decb0f9ee1102bbf40b3620af68f617daaf5a8f4905aeb2849d71665b065cd57",
+      "p01-app-shell__release-notes": "6c9caccc1d1364335842aee436df3a26e36591f5f6eadb5b226d90e7a1958157",
+      "p01-app-shell__skins": "fc1f204048ef451282e291eec135367a553facca5f21b4a6e86f1d6060e96e49",
+      "p01-app-shell__specs__gui": "49e14980170896bd9da41be0686fea4e264c49caf6041d35a4068ab5adba2337",
+      "p01-app-shell__tutorial": "f9dc461cd9f3dc9e5ae68b590a727f57db44b7888504ecbfcf88c39b017c6b3a",
+      "p01-app-shell__work": "31dc856985df75345255af178abfea1364136b417c47fa42d83d0c8d919813b3",
+      "p01-app-shell__work__reports": "e66ba9d0ee8e53f12a6691b46a063f443c624ebc1645da6bd31613847dc78c3e",
+      "p02-agent-runtime__apps__electron__default-skills": "e050bae07399674926952c4b9b624505d4ed7ec31f82317ce23325640641792c",
+      "p02-agent-runtime__apps__electron__default-skills__docx__scripts": "bd7ceb42ab30136d2312ac5e6a51c0e401e40f97897a3b529ed3ea5429ca55fb",
+      "p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill": "295ae77c8ce5955c7577e60d1d9d92864593d68c3ded19aff0a8a08b3ee74a30",
+      "p02-agent-runtime__apps__electron__default-skills__pptx": "cf0b2a4f2f6d1ef4a4b761d2bf22fc391475aa23041d2719ea76f029ffce8cf8",
+      "p02-agent-runtime__apps__electron__default-skills__session-cleaner": "7cdb81fe35eb1fcedf3021d7e86b06eaaed6da281a8149631b8a843a0fcd668c",
+      "p02-agent-runtime__apps__electron__default-skills__skill-creator": "11b02deba71110d677d2359c5648d4c0edad7cb0fd99e823c908afaf42efac12",
+      "p02-agent-runtime__apps__electron__src__main__lib__pi-harness": "547759b81a7d7004abf543c14320bb0d31bbf5d984aded2bab3d49c51db7069e",
+      "p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals": "0349d9e468d1ae1a31ec0b98082b7e299de84af9d5a21a7dde4fa066fe846f5f",
+      "p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016": "1098f132f6729671c9fe7ffe35ae29fcf002b1c919808361165bc346ca204e4b",
+      "p02-agent-runtime__vendor-xsd__ecma": "39340c0cb9f33bf7535a918ed344e1c98d8a9b537948ddaaebadfcc500e67404",
+      "p02-agent-runtime__vendor-xsd__mce": "5fb854dc17e363e369466f7e05cb9215cbfa731c6af88ed59743a7738417892b",
+      "p02-agent-runtime__vendor-xsd__microsoft": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+      "p03-integrations__demo-data": "63f9fef6a940cb3137654472c42c523da8d27859a1e680d0d1f0e78763bf90d6",
+      "p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case": "b84b7019ce3b1f24d5a52715751b4af0fa6b29051001bebc605cb16263ccb046",
+      "p08-renderer-ui__apps__electron__src__renderer__components__onboarding": "d507ee7978e408289224735cb9c2031f25221e14dce517431ee2b16b4214f256",
+      "p08-renderer-ui__renderer-assets": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba"
+    },
+    "mergedBatchByGroup": {
+      "p01-app-shell__": "index-p01-app-shell__-r1",
+      "p01-app-shell____pycache__": "index-p01-app-shell____pycache__",
+      "p01-app-shell___context": "index-p01-app-shell___context",
+      "p01-app-shell___cursor": "index-p01-app-shell___cursor",
+      "p01-app-shell__apps": "index-p01-app-shell__apps-r1",
+      "p01-app-shell__apps__electron": "index-p01-app-shell__apps__electron-r1",
+      "p01-app-shell__apps__electron__resources": "index-p01-app-shell__apps__electron__resources-r1",
+      "p01-app-shell__apps__electron__resources__cslab": "index-p01-app-shell__apps__electron__resources__cslab-r1",
+      "p01-app-shell__apps__electron__resources__ppt-style-packs": "index-p01-app-shell__apps__electron__resources__ppt-style-packs",
+      "p01-app-shell__assets": "index-p01-app-shell__assets-r1",
+      "p01-app-shell__assets__CDUT": "index-p01-app-shell__assets__CDUT",
+      "p01-app-shell__assets__IP": "index-p01-app-shell__assets__IP",
+      "p01-app-shell__docs": "index-p01-app-shell__docs",
+      "p01-app-shell__docs__assets": "index-p01-app-shell__docs__assets",
+      "p01-app-shell__docs__design__review-agent": "index-p01-app-shell__docs__design__review-agent",
+      "p01-app-shell__release-notes": "index-p01-app-shell__release-notes",
+      "p01-app-shell__skins": "index-p01-app-shell__skins",
+      "p01-app-shell__specs__gui": "index-p01-app-shell__specs__gui",
+      "p01-app-shell__tutorial": "index-p01-app-shell__tutorial",
+      "p01-app-shell__work": "index-p01-app-shell__work",
+      "p01-app-shell__work__reports": "index-p01-app-shell__work__reports-r1",
+      "p02-agent-runtime__apps__electron__default-skills": "index-p02-agent-runtime__apps__electron__default-skills-r1",
+      "p02-agent-runtime__apps__electron__default-skills__docx__scripts": "index-p02-agent-runtime__apps__electron__default-skills__docx__scripts",
+      "p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill": "index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill-r1",
+      "p02-agent-runtime__apps__electron__default-skills__pptx": "index-p02-agent-runtime__apps__electron__default-skills__pptx",
+      "p02-agent-runtime__apps__electron__default-skills__session-cleaner": "index-p02-agent-runtime__apps__electron__default-skills__session-cleaner",
+      "p02-agent-runtime__apps__electron__default-skills__skill-creator": "index-p02-agent-runtime__apps__electron__default-skills__skill-creator",
+      "p02-agent-runtime__apps__electron__src__main__lib__pi-harness": "index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness",
+      "p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals": "index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals",
+      "p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016": "index-p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016-r1",
+      "p02-agent-runtime__vendor-xsd__ecma": "index-p02-agent-runtime__vendor-xsd__ecma-r1",
+      "p02-agent-runtime__vendor-xsd__mce": "index-p02-agent-runtime__vendor-xsd__mce",
+      "p02-agent-runtime__vendor-xsd__microsoft": "index-p02-agent-runtime__vendor-xsd__microsoft",
+      "p03-integrations__demo-data": "index-p03-integrations__demo-data",
+      "p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case": "index-p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case",
+      "p08-renderer-ui__apps__electron__src__renderer__components__onboarding": "index-p08-renderer-ui__apps__electron__src__renderer__components__onboarding",
+      "p08-renderer-ui__renderer-assets": "index-p08-renderer-ui__renderer-assets"
+    },
+    "note": "705 index-only 与 2378 deep 完全分列，不进 deep 任何分子分母；组按唯一 groupId 计（37），index-<gid>-rN 是同组修订、单列不加组数；artifact（整篇 MD）sha 单列；一个 group 是单个 MD 产物，任一行 revision_required 则该版本不干净，整版等待不拆半合入；已合 group 如有更高 rN 且被独立全篇接受，比对 artifact sha 后替换。"
+  },
+  "counts": {
+    "tracked": 3083,
+    "deepPlanned": 2378,
+    "indexOnlyPlanned": 705,
+    "authored": 2378,
+    "authorReady": 0,
+    "qaAcceptedCurrentBytes": 2139,
+    "qaAcceptedCarryForwardBytes": 203,
+    "mergedCandidate": 2378,
+    "inProgressUnsealed": 0,
+    "legacyUnverifiedNotCounted": 922,
+    "mergedButNewerSealPendingQa": 100
+  },
+  "stages": {
+    "1_sealedAuthorBytes": 2378,
+    "2_independentQaAcceptedCurrentBytes": 2342,
+    "3_mergedIntoCandidate": 2378,
+    "4_rejectedOrRevising": 36,
+    "note": "四段互不冒充：封版≠已审，已审≠已合入；legacy 922 篇始终不计入 R07 accepted。mergedButNewerSealPendingQa 指 candidate 仍持有上次已接受字节、但作者已出更新封版等待复核的文件——新版本只有通过 QA 才替换。",
+    "supersededPendingQa": [
+      ".github/workflows/macos-package.yml",
+      ".github/workflows/release.yml",
+      ".github/workflows/review-batch-tests.yml",
+      "apps/electron/scripts/memory-archive-backup.mjs",
+      "apps/electron/scripts/sign-update-metadata.cjs",
+      "apps/electron/src/main/lib/agent-collaboration-tools.ts",
+      "apps/electron/src/main/lib/bridge-command-handler.ts",
+      "apps/electron/src/main/lib/bridge-registry.ts",
+      "apps/electron/src/main/lib/chat-stream-bus.ts",
+      "apps/electron/src/main/lib/chat-tool-config.ts",
+      "apps/electron/src/main/lib/codex-oauth-service.ts",
+      "apps/electron/src/main/lib/codex-plan-quota.ts",
+      "apps/electron/src/main/lib/conversation-manager.ts",
+      "apps/electron/src/main/lib/cslab/cslab-scientific-tools.ts",
+      "apps/electron/src/main/lib/cslab/cslab-share-db.ts",
+      "apps/electron/src/main/lib/cslab/cslab-share-watcher.ts",
+      "apps/electron/src/main/lib/cslab/cslab-tool-audit.ts",
+      "apps/electron/src/main/lib/cslab/cslab-tool-registry.ts",
+      "apps/electron/src/main/lib/cslab/cslab-tool-trust.ts",
+      "apps/electron/src/main/lib/cslab/cslab-track-changes.ts",
+      "apps/electron/src/main/lib/dev-instance.ts",
+      "apps/electron/src/main/lib/longterm-memory/longterm-memory-ipc.ts",
+      "apps/electron/src/main/lib/longterm-memory/longterm-memory-store.ts",
+      "apps/electron/src/main/lib/process-monitor.ts",
+      "apps/electron/src/main/lib/remote-relay-client.ts",
+      "apps/electron/src/main/lib/remote-service.ts",
+      "apps/electron/src/main/lib/review/application-service.ts",
+      "apps/electron/src/main/lib/review/decision-readiness-v2.test.ts",
+      "apps/electron/src/main/lib/review/document-service.ts",
+      "apps/electron/src/main/lib/review/pi-case-review-service.ts",
+      "apps/electron/src/main/lib/review/pi-review-agent-client.ts",
+      "apps/electron/src/main/lib/review/pi-review-executor.ts",
+      "apps/electron/src/main/lib/review/review-run-graph.ts",
+      "apps/electron/src/main/lib/review/review-runtime-contract.ts",
+      "apps/electron/src/main/lib/review/review-source-version-adapter-v3-b2.ts",
+      "apps/electron/src/main/lib/review/review-strict-pi-tools.ts",
+      "apps/electron/src/main/lib/review/review-template-author-store-v3-b1.ts",
+      "apps/electron/src/main/lib/review/review-template-plan-adapter-v3-b1.ts",
+      "apps/electron/src/main/lib/review/review-v3-b4-r25-raw-clause-condition.ts",
+      "apps/electron/src/main/lib/review/review-v3-b4-rule-source-diff.ts",
+      "apps/electron/src/main/lib/review/review-v3-background-technical-coordinator.ts",
+      "apps/electron/src/main/lib/review/review-v3-core-t03-run-gate.ts",
+      "apps/electron/src/main/lib/review/review-v3-d4-demo-publish.ts",
+      "apps/electron/src/main/lib/review/review-v3-execution-contract.ts",
+      "apps/electron/src/main/lib/review/review-v3-execution-proposal-producer.ts",
+      "apps/electron/src/main/lib/review/review-v3-execution-turn-budget.ts",
+      "apps/electron/src/main/lib/review/review-v3-r22-concentrated.test.ts",
+      "apps/electron/src/main/lib/review/review-v3-t04-rules-scoring.ts",
+      "apps/electron/src/main/lib/review/stage-workflow.test.ts",
+      "apps/electron/src/main/lib/skill-routing-eval.test.ts",
+      "apps/electron/src/main/lib/skill-routing-rules.ts",
+      "apps/electron/src/main/lib/skill-routing.ts",
+      "apps/electron/src/main/lib/skin-manager-service.test.ts",
+      "apps/electron/src/main/lib/skin-manager-service.ts",
+      "apps/electron/src/main/lib/title-generation.test.ts",
+      "apps/electron/src/main/lib/title-generation.ts",
+      "apps/electron/src/renderer/atoms/agent-atoms.ts",
+      "apps/electron/src/renderer/atoms/goal-atoms.ts",
+      "apps/electron/src/renderer/components/agent/live-group-set.ts",
+      "apps/electron/src/renderer/components/agent/mention-popup-utils.ts",
+      "apps/electron/src/renderer/components/agent/mention-query-utils.test.ts",
+      "apps/electron/src/renderer/components/agent/mention-query-utils.ts",
+      "apps/electron/src/renderer/components/agent/mention-suggestions.tsx",
+      "apps/electron/src/renderer/components/agent/permission-mode-selector-utils.test.ts",
+      "apps/electron/src/renderer/components/agent/permission-mode-selector-utils.ts",
+      "apps/electron/src/renderer/components/agent/preset-selector-utils.test.ts",
+      "apps/electron/src/renderer/components/agent/preset-selector-utils.ts",
+      "apps/electron/src/renderer/components/agent/render-window.test.ts",
+      "apps/electron/src/renderer/components/agent/render-window.ts",
+      "apps/electron/src/renderer/components/agent/task-progress.test.ts",
+      "apps/electron/src/renderer/components/agent/task-progress.ts",
+      "apps/electron/src/renderer/components/agent/thinking-tag-parser.test.ts",
+      "apps/electron/src/renderer/components/agent/thinking-tag-parser.ts",
+      "apps/electron/src/renderer/components/agent/tool-phrase.test.ts",
+      "apps/electron/src/renderer/components/agent/tool-phrase.ts",
+      "apps/electron/src/renderer/components/agent/tool-result-renderers/bash-result.tsx",
+      "apps/electron/src/renderer/components/agent/tool-supplemental-images.ts",
+      "apps/electron/src/renderer/components/cdut-science/origin/CsLabPeakFitDrawer.tsx",
+      "apps/electron/src/renderer/components/cdut-science/origin/cslab-plot-export.ts",
+      "apps/electron/src/renderer/components/cdut-science/origin/cslab-plot-render-model.ts",
+      "apps/electron/src/renderer/components/content-review/ReviewV3F13AppealHistory.tsx",
+      "apps/electron/src/renderer/components/content-review/ReviewV3SourceLinks.tsx",
+      "apps/electron/src/renderer/components/content-review/ReviewV3T01ConditionEditor.tsx",
+      "apps/electron/src/renderer/components/content-review/ReviewV3T06PhysicalImport.tsx",
+      "apps/electron/src/renderer/components/content-review/ReviewV3T08ReportPanel.tsx",
+      "apps/electron/src/renderer/components/content-review/ReviewV3T09OfflineSection.tsx",
+      "apps/electron/src/renderer/components/content-review/ReviewV3T10WorkspaceOverview.tsx",
+      "apps/electron/src/renderer/components/content-review/RunResultPanel.tsx",
+      "apps/electron/src/renderer/components/content-review/SourceBlockView.tsx",
+      "apps/electron/src/renderer/lib/navigation-controller.ts",
+      "apps/electron/src/renderer/lib/ofv-extensions.ts",
+      "packages/agent-fabric/src/task.ts",
+      "packages/agent-fabric/tsconfig.json",
+      "packages/benchmark-multihop/package.json",
+      "packages/benchmark-multihop/src/metrics.test.ts",
+      "packages/benchmark-multihop/src/metrics.ts",
+      "packages/benchmark-multihop/src/runner.ts",
+      "packages/benchmark-multihop/src/types.ts",
+      "packages/benchmark-multihop/tsconfig.json",
+      "packages/project-core/package.json"
+    ],
+    "reconcile": {
+      "mergedTotal": 2378,
+      "merged_holdingCurrentSeal": 2278,
+      "merged_holdingOlderAcceptedSeal": 100,
+      "acceptedOnCurrentSeal": 2342,
+      "acceptedOnCurrentSeal_merged": 2342,
+      "acceptedOnCurrentSeal_notMerged": [],
+      "carryForwardAwaitingCurrentSealReview": [],
+      "acceptedInResultButReviewNotDone": [
+        "ReviewFirstUseReadiness.tsx",
+        "ReviewSettingsPanel.tsx",
+        "review-atoms.ts",
+        "review-error-text.test.ts",
+        "review-error-text.ts"
+      ],
+      "sealedFiles": 2378,
+      "sealedWithNoAcceptanceYet": 0,
+      "why": "merged 可大于 acceptedOnCurrentSeal：合入时按当时 accepted 的字节，之后作者出新封版等待复核，candidate 保留旧 accepted 字节。acceptedOnCurrentSeal_notMerged 主要是 carry-forward：这些文件在旧 seal 被接受、当前字节未变，但当前 seal 尚未独立复核，按「新版本只有通过 QA 才替换」暂不合入。独立 QA 出 DONE 后才会进入合并队列——它不是「漏合」。acceptedInResultButReviewNotDone 是 QA 已写 RESULT 但该批还没有 DONE 的文件，按「没有 DONE 不算验收」既不计入 accepted 也不合并。"
+    }
+  },
+  "percent": {
+    "authoredOfDeep": 100.0,
+    "authorReadyOfDeep": 0.0,
+    "acceptedOfDeep": 98.5,
+    "mergedOfDeep": 100.0,
+    "indexOnlyOfAll": 22.9
+  },
+  "queue": {
+    "batches": 146,
+    "files": 2364,
+    "states": {
+      "merged": 146
+    }
+  },
+  "pilots": [
+    {
+      "id": "pilot-models",
+      "r0Verdict": "revision_required",
+      "r0Accepted": 3,
+      "r0RevisionRequired": 3,
+      "r0Review": "reviews/pilot-models/RESULT.json",
+      "r1": {
+        "delivery": "deliveries/pilot-models-r1",
+        "sealedAtUtc": "2026-10-23T11:06:00Z",
+        "readySha256": "6639985f6e14064687782d7f2b2871760f220aeeb55bc2522ea562ea09d8242b",
+        "state": "qa_revision",
+        "review": "reviews/pilot-models-r1"
+      },
+      "author": "docs-r07-author-models-20261023",
+      "reviewer": "docs-r07-qa-models-20261023",
+      "mergedFiles": 0
+    },
+    {
+      "id": "pilot-ui",
+      "r0Verdict": "revision_required",
+      "r0Accepted": 5,
+      "r0RevisionRequired": 3,
+      "r0Review": "reviews/pilot-ui/RESULT.json",
+      "r1": {
+        "delivery": "deliveries/pilot-ui-r1",
+        "sealedAtUtc": "2026-10-23T11:20:11Z",
+        "readySha256": "c913ce964986781a76114bc6b993b97e11051f1f278ee8d04b7aba5faf40f4fc",
+        "state": "accepted_pending_merge",
+        "review": "reviews/pilot-ui-r1"
+      },
+      "author": "docs-r07-author-ui-20261023",
+      "reviewer": "docs-r07-qa-ui-20261023",
+      "mergedFiles": 0
+    }
+  ],
+  "sealedDeliveries": [
+    {
+      "batch": "index-p01-app-shell__",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T17:31:38+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__-r1",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:09:24+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell____pycache__",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T17:41:12+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell___context",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T17:37:53+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell___cursor",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T17:40:46+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__apps",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T17:42:03+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__apps-r1",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:09:24+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__apps__electron",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T17:45:46+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__apps__electron-r1",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:09:24+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__apps__electron__resources",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T17:48:24+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__apps__electron__resources-r1",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:09:24+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__apps__electron__resources__cslab",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T17:51:36+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__apps__electron__resources__cslab-r1",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:09:24+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__apps__electron__resources__ppt-style-packs",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T17:53:35+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__assets",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T17:56:21+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__assets-r1",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:09:24+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__assets__CDUT",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T17:57:43+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__assets__IP",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T17:57:43+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__docs",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T18:02:15+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__docs__assets",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T18:04:43+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__docs__design__review-agent",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T18:31:19+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__release-notes",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T18:37:24+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__skins",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T18:39:54+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__specs__gui",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T18:41:42+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__tutorial",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T18:43:31+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__work",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T18:50:27+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__work__reports",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T18:49:51+00:00"
+    },
+    {
+      "batch": "index-p01-app-shell__work__reports-r1",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:09:25+00:00"
+    },
+    {
+      "batch": "index-p02-agent-runtime__apps__electron__default-skills",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T18:49:36+00:00"
+    },
+    {
+      "batch": "index-p02-agent-runtime__apps__electron__default-skills-r1",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:22:47+00:00"
+    },
+    {
+      "batch": "index-p02-agent-runtime__apps__electron__default-skills__docx__scripts",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T18:59:57+00:00"
+    },
+    {
+      "batch": "index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:01:19+00:00"
+    },
+    {
+      "batch": "index-p02-agent-runtime__apps__electron__default-skills__guizang-ppt-skill-r1",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:33:22+00:00"
+    },
+    {
+      "batch": "index-p02-agent-runtime__apps__electron__default-skills__pptx",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:01:26+00:00"
+    },
+    {
+      "batch": "index-p02-agent-runtime__apps__electron__default-skills__session-cleaner",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:03:37+00:00"
+    },
+    {
+      "batch": "index-p02-agent-runtime__apps__electron__default-skills__skill-creator",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:06:14+00:00"
+    },
+    {
+      "batch": "index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:14:06+00:00"
+    },
+    {
+      "batch": "index-p02-agent-runtime__apps__electron__src__main__lib__pi-harness__evals",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:14:06+00:00"
+    },
+    {
+      "batch": "index-p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:12:26+00:00"
+    },
+    {
+      "batch": "index-p02-agent-runtime__vendor-xsd__ISO-IEC29500-4_2016-r1",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:57:51+00:00"
+    },
+    {
+      "batch": "index-p02-agent-runtime__vendor-xsd__ecma",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:29:27+00:00"
+    },
+    {
+      "batch": "index-p02-agent-runtime__vendor-xsd__ecma-r1",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:56:50+00:00"
+    },
+    {
+      "batch": "index-p02-agent-runtime__vendor-xsd__mce",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:29:27+00:00"
+    },
+    {
+      "batch": "index-p02-agent-runtime__vendor-xsd__microsoft",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T18:56:44+00:00"
+    },
+    {
+      "batch": "index-p03-integrations__demo-data",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:24:02+00:00"
+    },
+    {
+      "batch": "index-p05-review-engine__apps__electron__src__main__lib__review__fixtures__mvp-single-case",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:24:02+00:00"
+    },
+    {
+      "batch": "index-p08-renderer-ui__apps__electron__src__renderer__components__onboarding",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:24:02+00:00"
+    },
+    {
+      "batch": "index-p08-renderer-ui__renderer-assets",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T19:30:45+00:00"
+    },
+    {
+      "batch": "nb-01",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T11:34:00Z"
+    },
+    {
+      "batch": "nb-01-r1",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T11:40:00Z"
+    },
+    {
+      "batch": "nb-01-r2",
+      "sealId": "seal-12e9a6388283933e",
+      "sealedAtUtc": "2026-10-23T13:38:47Z"
+    },
+    {
+      "batch": "nb-02",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T11:44:41Z"
+    },
+    {
+      "batch": "nb-02-r1",
+      "sealId": "seal-86590df727d4996a",
+      "sealedAtUtc": "2026-10-23T14:06:02Z"
+    },
+    {
+      "batch": "nb-03",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T11:44:00Z"
+    },
+    {
+      "batch": "nb-03-r1",
+      "sealId": "seal-683aae053235ac6b",
+      "sealedAtUtc": "2026-10-23T15:41:26Z"
+    },
+    {
+      "batch": "nb-04",
+      "sealId": "seal-fb0bf52161a9ed56",
+      "sealedAtUtc": "2026-10-23T13:27:35Z"
+    },
+    {
+      "batch": "nb-04-r1",
+      "sealId": "seal-4f23a5a95a8077f0",
+      "sealedAtUtc": "2026-10-23T16:38:19Z"
+    },
+    {
+      "batch": "nb-05",
+      "sealId": "seal-f98bb2ab84c227ac",
+      "sealedAtUtc": "2026-10-23T15:36:55Z"
+    },
+    {
+      "batch": "nb-05-r1",
+      "sealId": "seal-ce3f146e62a6ede5",
+      "sealedAtUtc": "2026-10-23T15:44:41Z"
+    },
+    {
+      "batch": "nb-05b",
+      "sealId": "seal-2b5c5cf7f7cd4fb5",
+      "sealedAtUtc": "2026-10-23T14:06:14Z"
+    },
+    {
+      "batch": "nb-06",
+      "sealId": "seal-2289f08af7dec4f1",
+      "sealedAtUtc": "2026-10-23T15:42:46Z"
+    },
+    {
+      "batch": "nb-06-r1",
+      "sealId": "seal-5bc74f4b630910a5",
+      "sealedAtUtc": "2026-10-23T16:38:33Z"
+    },
+    {
+      "batch": "nb-06-r2",
+      "sealId": "seal-66d3f266f8e7ed3c",
+      "sealedAtUtc": "2026-10-23T22:10:03Z"
+    },
+    {
+      "batch": "nb-06-r3",
+      "sealId": "seal-0e93a0b3a7065d2d",
+      "sealedAtUtc": "2026-10-23T22:10:43Z"
+    },
+    {
+      "batch": "nb-07",
+      "sealId": "seal-8e29ccc26dd1599e",
+      "sealedAtUtc": "2026-10-23T16:08:36Z"
+    },
+    {
+      "batch": "nb-07-r1",
+      "sealId": "seal-0d36269748879a57",
+      "sealedAtUtc": "2026-10-23T17:22:41Z"
+    },
+    {
+      "batch": "nb-08",
+      "sealId": "seal-26162a91a91bfb18",
+      "sealedAtUtc": "2026-10-23T14:15:53Z"
+    },
+    {
+      "batch": "nb-08-r1",
+      "sealId": "seal-a7f1d861be957b99",
+      "sealedAtUtc": "2026-10-23T17:27:49Z"
+    },
+    {
+      "batch": "nb-08-r2",
+      "sealId": "seal-10be92668c2fa41a",
+      "sealedAtUtc": "2026-10-23T17:29:42Z"
+    },
+    {
+      "batch": "nb-09",
+      "sealId": "seal-4c48427f0a303f08",
+      "sealedAtUtc": "2026-10-23T15:24:41Z"
+    },
+    {
+      "batch": "nb-09-r1",
+      "sealId": "seal-f67c1fca2f34bcc2",
+      "sealedAtUtc": "2026-10-23T16:21:20Z"
+    },
+    {
+      "batch": "nb-10",
+      "sealId": "seal-00afeee06089b3c8",
+      "sealedAtUtc": "2026-10-23T15:20:34Z"
+    },
+    {
+      "batch": "nb-100",
+      "sealId": "seal-37ffd93b1bf882d2",
+      "sealedAtUtc": "2026-10-23T19:19:02Z"
+    },
+    {
+      "batch": "nb-100-r1",
+      "sealId": "seal-67f861f96e6ac0b4",
+      "sealedAtUtc": "2026-10-23T23:15:11Z"
+    },
+    {
+      "batch": "nb-101",
+      "sealId": "seal-19a97232f1c889c4",
+      "sealedAtUtc": "2026-10-23T18:11:19Z"
+    },
+    {
+      "batch": "nb-102",
+      "sealId": "seal-c89f5d80c65554f4",
+      "sealedAtUtc": "2026-10-23T21:03:13Z"
+    },
+    {
+      "batch": "nb-103",
+      "sealId": "seal-4a233fcf6e244ebd",
+      "sealedAtUtc": "2026-10-23T19:45:28Z"
+    },
+    {
+      "batch": "nb-103-r1",
+      "sealId": "seal-feb875a90b0e66ae",
+      "sealedAtUtc": "2026-10-23T19:51:00Z"
+    },
+    {
+      "batch": "nb-103-r2",
+      "sealId": "seal-0c32ec0da9bb5c3d",
+      "sealedAtUtc": "2026-10-23T20:44:13Z"
+    },
+    {
+      "batch": "nb-104",
+      "sealId": "seal-9eb696e4dbc4532a",
+      "sealedAtUtc": "2026-10-23T19:49:17Z"
+    },
+    {
+      "batch": "nb-104-r1",
+      "sealId": "seal-93a7782c22f19564",
+      "sealedAtUtc": "2026-10-23T20:12:49Z"
+    },
+    {
+      "batch": "nb-105",
+      "sealId": "seal-d18240c64a288086",
+      "sealedAtUtc": "2026-10-23T18:11:14Z"
+    },
+    {
+      "batch": "nb-105-r1",
+      "sealId": "seal-af4cbd9b1355f326",
+      "sealedAtUtc": "2026-10-23T18:27:41Z"
+    },
+    {
+      "batch": "nb-106",
+      "sealId": "seal-37377d40fcb344b5",
+      "sealedAtUtc": "2026-10-23T20:20:20Z"
+    },
+    {
+      "batch": "nb-107",
+      "sealId": "seal-3b9bc6e0fc3dd887",
+      "sealedAtUtc": "2026-10-23T18:52:41Z"
+    },
+    {
+      "batch": "nb-108",
+      "sealId": "seal-aff0f74b5c9cf0aa",
+      "sealedAtUtc": "2026-10-23T19:43:06Z"
+    },
+    {
+      "batch": "nb-108-r1",
+      "sealId": "seal-636f8eab2f1c2236",
+      "sealedAtUtc": "2026-10-23T20:17:46Z"
+    },
+    {
+      "batch": "nb-109",
+      "sealId": "seal-c9a05632bfce1644",
+      "sealedAtUtc": "2026-10-23T20:25:54Z"
+    },
+    {
+      "batch": "nb-11",
+      "sealId": "seal-bf9c915eb30296f4",
+      "sealedAtUtc": "2026-10-23T15:57:21Z"
+    },
+    {
+      "batch": "nb-11-r1",
+      "sealId": "seal-6fb9b3e1b81b4b6a",
+      "sealedAtUtc": "2026-10-23T16:50:48Z"
+    },
+    {
+      "batch": "nb-110",
+      "sealId": "seal-cae3ba2f7124aef6",
+      "sealedAtUtc": "2026-10-23T20:25:11Z"
+    },
+    {
+      "batch": "nb-110-r1",
+      "sealId": "seal-981a1fa5a0260af8",
+      "sealedAtUtc": "2026-10-23T20:30:55Z"
+    },
+    {
+      "batch": "nb-111",
+      "sealId": "seal-ada60ff3b8804649",
+      "sealedAtUtc": "2026-10-23T19:41:43Z"
+    },
+    {
+      "batch": "nb-111-r1",
+      "sealId": "seal-73f92b57ecfbd81e",
+      "sealedAtUtc": "2026-10-23T20:28:24Z"
+    },
+    {
+      "batch": "nb-112",
+      "sealId": "seal-b624c966439c3d30",
+      "sealedAtUtc": "2026-10-23T19:30:44Z"
+    },
+    {
+      "batch": "nb-112-r1",
+      "sealId": "seal-03a993464a709291",
+      "sealedAtUtc": "2026-10-23T20:24:42Z"
+    },
+    {
+      "batch": "nb-113",
+      "sealId": "seal-422fb49f69f039a1",
+      "sealedAtUtc": "2026-10-23T17:55:09Z"
+    },
+    {
+      "batch": "nb-114",
+      "sealId": "seal-e77ac71f3ec5197f",
+      "sealedAtUtc": "2026-10-23T19:14:36Z"
+    },
+    {
+      "batch": "nb-114-r1",
+      "sealId": "seal-0af9126abae1bdaf",
+      "sealedAtUtc": "2026-10-23T20:51:49Z"
+    },
+    {
+      "batch": "nb-115",
+      "sealId": "seal-0ed34e82325daaa3",
+      "sealedAtUtc": "2026-10-23T20:30:58Z"
+    },
+    {
+      "batch": "nb-115-r1",
+      "sealId": "seal-976d9b8c4a781eb6",
+      "sealedAtUtc": "2026-10-23T20:49:49Z"
+    },
+    {
+      "batch": "nb-116",
+      "sealId": "seal-b49a01e8ad9f8f0d",
+      "sealedAtUtc": "2026-10-23T18:18:28Z"
+    },
+    {
+      "batch": "nb-116-r1",
+      "sealId": "seal-86b64f80a35ca412",
+      "sealedAtUtc": "2026-10-23T20:17:46Z"
+    },
+    {
+      "batch": "nb-117",
+      "sealId": "seal-e95c34dac08fc153",
+      "sealedAtUtc": "2026-10-23T19:20:22Z"
+    },
+    {
+      "batch": "nb-117-r1",
+      "sealId": "seal-991c7fc6d6868c39",
+      "sealedAtUtc": "2026-10-23T20:57:16Z"
+    },
+    {
+      "batch": "nb-118",
+      "sealId": "seal-75060440ee5e7fe9",
+      "sealedAtUtc": "2026-10-23T19:42:35Z"
+    },
+    {
+      "batch": "nb-118-r1",
+      "sealId": "seal-03ef04174a9755b8",
+      "sealedAtUtc": "2026-10-23T20:19:40Z"
+    },
+    {
+      "batch": "nb-119",
+      "sealId": "seal-d9643962dbfd5f7a",
+      "sealedAtUtc": "2026-10-23T19:41:22Z"
+    },
+    {
+      "batch": "nb-119-r1",
+      "sealId": "seal-caa16feb965c17e6",
+      "sealedAtUtc": "2026-10-23T20:19:41Z"
+    },
+    {
+      "batch": "nb-12",
+      "sealId": "seal-3db5201ebe999d67",
+      "sealedAtUtc": "2026-10-23T16:21:53Z"
+    },
+    {
+      "batch": "nb-12-r1",
+      "sealId": "seal-fbee6a4c41d0ee4d",
+      "sealedAtUtc": "2026-10-23T16:50:48Z"
+    },
+    {
+      "batch": "nb-120",
+      "sealId": "seal-0d5472bde6f5255e",
+      "sealedAtUtc": "2026-10-23T19:00:44Z"
+    },
+    {
+      "batch": "nb-121",
+      "sealId": "seal-bdf6c0926e739f28",
+      "sealedAtUtc": "2026-10-23T20:20:12Z"
+    },
+    {
+      "batch": "nb-121-r1",
+      "sealId": "seal-02b8298d7bb203c0",
+      "sealedAtUtc": "2026-10-23T20:34:31Z"
+    },
+    {
+      "batch": "nb-122",
+      "sealId": "seal-065aa5a22bf529ea",
+      "sealedAtUtc": "2026-10-23T20:22:41Z"
+    },
+    {
+      "batch": "nb-123",
+      "sealId": "seal-a5a2b013540e425d",
+      "sealedAtUtc": "2026-10-23T19:26:40Z"
+    },
+    {
+      "batch": "nb-123-r1",
+      "sealId": "seal-9074a45733510b33",
+      "sealedAtUtc": "2026-10-23T20:19:40Z"
+    },
+    {
+      "batch": "nb-124",
+      "sealId": "seal-b290758531a33481",
+      "sealedAtUtc": "2026-10-23T20:38:40Z"
+    },
+    {
+      "batch": "nb-125",
+      "sealId": "seal-d498dea67ce96158",
+      "sealedAtUtc": "2026-10-23T18:02:35Z"
+    },
+    {
+      "batch": "nb-126",
+      "sealId": "seal-9b8f3a0a9259505a",
+      "sealedAtUtc": "2026-10-23T18:49:09Z"
+    },
+    {
+      "batch": "nb-126-r1",
+      "sealId": "seal-19f87a8a96bf168f",
+      "sealedAtUtc": "2026-10-23T20:18:32Z"
+    },
+    {
+      "batch": "nb-127",
+      "sealId": "seal-542bc76a48f24980",
+      "sealedAtUtc": "2026-10-23T20:28:43Z"
+    },
+    {
+      "batch": "nb-127-r1",
+      "sealId": "seal-8cc163f7d1b29246",
+      "sealedAtUtc": "2026-10-23T20:30:39Z"
+    },
+    {
+      "batch": "nb-127-r2",
+      "sealId": "seal-e6fbb27d09a01ef5",
+      "sealedAtUtc": "2026-10-23T20:44:35Z"
+    },
+    {
+      "batch": "nb-128",
+      "sealId": "seal-f0745cd11bfde5a2",
+      "sealedAtUtc": "2026-10-23T19:16:40Z"
+    },
+    {
+      "batch": "nb-129",
+      "sealId": "seal-a16e92c0248efcab",
+      "sealedAtUtc": "2026-10-23T19:27:51Z"
+    },
+    {
+      "batch": "nb-129-r1",
+      "sealId": "seal-1b4ddc8ed631f55e",
+      "sealedAtUtc": "2026-10-23T20:03:17Z"
+    },
+    {
+      "batch": "nb-13",
+      "sealId": "seal-5792d8dd8dd1d801",
+      "sealedAtUtc": "2026-10-23T15:57:42Z"
+    },
+    {
+      "batch": "nb-13-r1",
+      "sealId": "seal-a8cf3e227783d492",
+      "sealedAtUtc": "2026-10-23T18:30:07Z"
+    },
+    {
+      "batch": "nb-130",
+      "sealId": "seal-a7538012d1542f56",
+      "sealedAtUtc": "2026-10-23T19:27:14Z"
+    },
+    {
+      "batch": "nb-131",
+      "sealId": "seal-36cb2a4818835a51",
+      "sealedAtUtc": "2026-10-23T19:29:17Z"
+    },
+    {
+      "batch": "nb-131-r1",
+      "sealId": "seal-406f5f412ccc3281",
+      "sealedAtUtc": "2026-10-23T20:14:23Z"
+    },
+    {
+      "batch": "nb-132",
+      "sealId": "seal-b4548ff06fa57c47",
+      "sealedAtUtc": "2026-10-23T19:14:55Z"
+    },
+    {
+      "batch": "nb-132-r1",
+      "sealId": "seal-1fa23608fdc044f2",
+      "sealedAtUtc": "2026-10-23T20:22:51Z"
+    },
+    {
+      "batch": "nb-133",
+      "sealId": "seal-f8b485af769bc961",
+      "sealedAtUtc": "2026-10-23T20:31:28Z"
+    },
+    {
+      "batch": "nb-134",
+      "sealId": "seal-0e1ad0720de1fda7",
+      "sealedAtUtc": "2026-10-23T20:48:03Z"
+    },
+    {
+      "batch": "nb-135",
+      "sealId": "seal-0e48f3131713205a",
+      "sealedAtUtc": "2026-10-23T20:00:42Z"
+    },
+    {
+      "batch": "nb-135-r1",
+      "sealId": "seal-671737026912a957",
+      "sealedAtUtc": "2026-10-23T20:19:46Z"
+    },
+    {
+      "batch": "nb-136",
+      "sealId": "seal-e3a7de692ec4e783",
+      "sealedAtUtc": "2026-10-23T19:34:31Z"
+    },
+    {
+      "batch": "nb-136-r1",
+      "sealId": "seal-1c5ef9c9a8e38677",
+      "sealedAtUtc": "2026-10-23T20:19:39Z"
+    },
+    {
+      "batch": "nb-137",
+      "sealId": "seal-212b490607ef8758",
+      "sealedAtUtc": "2026-10-23T20:19:23Z"
+    },
+    {
+      "batch": "nb-137-r1",
+      "sealId": "seal-811b7e4aa980ac55",
+      "sealedAtUtc": "2026-10-23T21:44:40Z"
+    },
+    {
+      "batch": "nb-138",
+      "sealId": "seal-b14eaac1007db937",
+      "sealedAtUtc": "2026-10-23T18:07:04Z"
+    },
+    {
+      "batch": "nb-139",
+      "sealId": "seal-aba7249849fe2e24",
+      "sealedAtUtc": "2026-10-23T18:16:09Z"
+    },
+    {
+      "batch": "nb-14",
+      "sealId": "seal-910d78c7a7cee3ea",
+      "sealedAtUtc": "2026-10-23T15:56:07Z"
+    },
+    {
+      "batch": "nb-14-r1",
+      "sealId": "seal-4059820285b73d8c",
+      "sealedAtUtc": "2026-10-23T17:18:36Z"
+    },
+    {
+      "batch": "nb-140",
+      "sealId": "seal-8d935dad88327e41",
+      "sealedAtUtc": "2026-10-23T19:06:12Z"
+    },
+    {
+      "batch": "nb-140-r1",
+      "sealId": "seal-50f1f9315cb32848",
+      "sealedAtUtc": "2026-10-23T20:19:39Z"
+    },
+    {
+      "batch": "nb-141",
+      "sealId": "seal-d0c7c5966b2f821d",
+      "sealedAtUtc": "2026-10-23T19:44:49Z"
+    },
+    {
+      "batch": "nb-141-r1",
+      "sealId": "seal-bcb469a58e01e570",
+      "sealedAtUtc": "2026-10-23T19:50:09Z"
+    },
+    {
+      "batch": "nb-142",
+      "sealId": "seal-32d3b13346a46d7a",
+      "sealedAtUtc": "2026-10-23T19:33:03Z"
+    },
+    {
+      "batch": "nb-142-r1",
+      "sealId": "seal-8cd5d68f0d5ebf83",
+      "sealedAtUtc": "2026-10-23T20:15:13Z"
+    },
+    {
+      "batch": "nb-143",
+      "sealId": "seal-1d3a1212e3b80b34",
+      "sealedAtUtc": "2026-10-23T20:07:49Z"
+    },
+    {
+      "batch": "nb-143-r1",
+      "sealId": "seal-120611b2c1f5803b",
+      "sealedAtUtc": "2026-10-23T20:32:52Z"
+    },
+    {
+      "batch": "nb-144",
+      "sealId": "seal-d8291aff21041574",
+      "sealedAtUtc": "2026-10-23T19:23:37Z"
+    },
+    {
+      "batch": "nb-144-r1",
+      "sealId": "seal-eb4a33d79142dd96",
+      "sealedAtUtc": "2026-10-23T20:19:40Z"
+    },
+    {
+      "batch": "nb-15",
+      "sealId": "seal-ba78842b3cf9e99b",
+      "sealedAtUtc": "2026-10-23T16:13:49Z"
+    },
+    {
+      "batch": "nb-15-r1",
+      "sealId": "seal-272a7f266a1cca1d",
+      "sealedAtUtc": "2026-10-23T17:26:02Z"
+    },
+    {
+      "batch": "nb-16",
+      "sealId": "seal-3830101cb23e01df",
+      "sealedAtUtc": "2026-10-23T16:40:51Z"
+    },
+    {
+      "batch": "nb-16-r1",
+      "sealId": "seal-f6f07d0025a2affe",
+      "sealedAtUtc": "2026-10-23T17:34:40Z"
+    },
+    {
+      "batch": "nb-17",
+      "sealId": "seal-135ab25eef381d2a",
+      "sealedAtUtc": "2026-10-23T16:57:41Z"
+    },
+    {
+      "batch": "nb-17-r1",
+      "sealId": "seal-6b5a0ccbe833249f",
+      "sealedAtUtc": "2026-10-23T17:58:06Z"
+    },
+    {
+      "batch": "nb-17-r2",
+      "sealId": "seal-9779d45e6ad548dc",
+      "sealedAtUtc": "2026-10-23T18:19:33Z"
+    },
+    {
+      "batch": "nb-18",
+      "sealId": "seal-be9236046c0400d6",
+      "sealedAtUtc": "2026-10-23T16:15:00Z"
+    },
+    {
+      "batch": "nb-18-r1",
+      "sealId": "seal-492ad9dac92a3f8a",
+      "sealedAtUtc": "2026-10-23T21:44:49Z"
+    },
+    {
+      "batch": "nb-19",
+      "sealId": "seal-760acee7124aac19",
+      "sealedAtUtc": "2026-10-23T16:29:09Z"
+    },
+    {
+      "batch": "nb-19-r1",
+      "sealId": "seal-b593fcdfe0242f6e",
+      "sealedAtUtc": "2026-10-23T20:45:15Z"
+    },
+    {
+      "batch": "nb-19-r2",
+      "sealId": "seal-9c56d9fb1b9f5325",
+      "sealedAtUtc": "2026-10-23T21:44:57Z"
+    },
+    {
+      "batch": "nb-20",
+      "sealId": "seal-0432773ba2ec0125",
+      "sealedAtUtc": "2026-10-23T16:34:31Z"
+    },
+    {
+      "batch": "nb-20-r1",
+      "sealId": "seal-ac3b24985b6d2f37",
+      "sealedAtUtc": "2026-10-23T21:45:43Z"
+    },
+    {
+      "batch": "nb-21",
+      "sealId": "seal-0f8d40cbfbca932f",
+      "sealedAtUtc": "2026-10-23T16:14:56Z"
+    },
+    {
+      "batch": "nb-22",
+      "sealId": "seal-f480e1cce3dcd5bd",
+      "sealedAtUtc": "2026-10-23T17:15:03Z"
+    },
+    {
+      "batch": "nb-22-r1",
+      "sealId": "seal-88e06159b7f710b7",
+      "sealedAtUtc": "2026-10-23T18:18:07Z"
+    },
+    {
+      "batch": "nb-23",
+      "sealId": "seal-96b8a71c1efb9d8e",
+      "sealedAtUtc": "2026-10-23T16:07:23Z"
+    },
+    {
+      "batch": "nb-23-r1",
+      "sealId": "seal-3f1f77a0be79558f",
+      "sealedAtUtc": "2026-10-23T17:04:44Z"
+    },
+    {
+      "batch": "nb-24",
+      "sealId": "seal-d92a29824774f7e8",
+      "sealedAtUtc": "2026-10-23T16:44:06Z"
+    },
+    {
+      "batch": "nb-24-r1",
+      "sealId": "seal-d0d7756c0eaa944a",
+      "sealedAtUtc": "2026-10-23T20:13:53Z"
+    },
+    {
+      "batch": "nb-25",
+      "sealId": "seal-31fc75a4a2e8eab3",
+      "sealedAtUtc": "2026-10-23T16:10:17Z"
+    },
+    {
+      "batch": "nb-25-r1",
+      "sealId": "seal-a4aec10c5d4f2240",
+      "sealedAtUtc": "2026-10-23T17:23:38Z"
+    },
+    {
+      "batch": "nb-26",
+      "sealId": "seal-2638d8abe0d142ef",
+      "sealedAtUtc": "2026-10-23T16:24:23Z"
+    },
+    {
+      "batch": "nb-26-r1",
+      "sealId": "seal-3e2cb4d895b6a8aa",
+      "sealedAtUtc": "2026-10-23T17:24:05Z"
+    },
+    {
+      "batch": "nb-27",
+      "sealId": "seal-88f4e9412c6c2464",
+      "sealedAtUtc": "2026-10-23T17:01:53Z"
+    },
+    {
+      "batch": "nb-27-r1",
+      "sealId": "seal-fd8d5a57a30b19bb",
+      "sealedAtUtc": "2026-10-23T17:37:02Z"
+    },
+    {
+      "batch": "nb-28",
+      "sealId": "seal-e225a97a087c07f5",
+      "sealedAtUtc": "2026-10-23T17:17:07Z"
+    },
+    {
+      "batch": "nb-28-r1",
+      "sealId": "seal-4210c45ff817f1b9",
+      "sealedAtUtc": "2026-10-23T17:37:03Z"
+    },
+    {
+      "batch": "nb-29",
+      "sealId": "seal-8ccdc6c2f7fc1367",
+      "sealedAtUtc": "2026-10-23T16:27:44Z"
+    },
+    {
+      "batch": "nb-30",
+      "sealId": "seal-4ea782f61090792b",
+      "sealedAtUtc": "2026-10-23T14:37:07Z"
+    },
+    {
+      "batch": "nb-30-r1",
+      "sealId": "seal-a6f6707875a67266",
+      "sealedAtUtc": "2026-10-23T21:47:05Z"
+    },
+    {
+      "batch": "nb-31",
+      "sealId": "seal-a7b8cab05ffbcb02",
+      "sealedAtUtc": "2026-10-23T16:58:17Z"
+    },
+    {
+      "batch": "nb-31-r1",
+      "sealId": "seal-6784ca0a1725368f",
+      "sealedAtUtc": "2026-10-23T21:47:49Z"
+    },
+    {
+      "batch": "nb-32",
+      "sealId": "seal-0dde78203c13859a",
+      "sealedAtUtc": "2026-10-23T17:31:00Z"
+    },
+    {
+      "batch": "nb-32-r1",
+      "sealId": "seal-6d32e121458a4429",
+      "sealedAtUtc": "2026-10-23T21:48:48Z"
+    },
+    {
+      "batch": "nb-33",
+      "sealId": "seal-eaef37e70dc0bebe",
+      "sealedAtUtc": "2026-10-23T18:00:52Z"
+    },
+    {
+      "batch": "nb-33-r1",
+      "sealId": "seal-118b103844587e55",
+      "sealedAtUtc": "2026-10-23T21:49:38Z"
+    },
+    {
+      "batch": "nb-34",
+      "sealId": "seal-15fadca43cb1f38d",
+      "sealedAtUtc": "2026-10-23T19:35:21Z"
+    },
+    {
+      "batch": "nb-34-r1",
+      "sealId": "seal-1cf241fe976efb0d",
+      "sealedAtUtc": "2026-10-23T22:04:19Z"
+    },
+    {
+      "batch": "nb-34-r2",
+      "sealId": "seal-e48c87c2da829c9e",
+      "sealedAtUtc": "2026-10-23T22:07:22Z"
+    },
+    {
+      "batch": "nb-35",
+      "sealId": "seal-0f98ffbfa8c54312",
+      "sealedAtUtc": "2026-10-23T16:05:17Z"
+    },
+    {
+      "batch": "nb-36",
+      "sealId": "seal-b8174f113fee5de4",
+      "sealedAtUtc": "2026-10-23T16:25:20Z"
+    },
+    {
+      "batch": "nb-37",
+      "sealId": "seal-60cb3c6830deaf64",
+      "sealedAtUtc": "2026-10-23T16:24:30Z"
+    },
+    {
+      "batch": "nb-37-r1",
+      "sealId": "seal-feeed3a61f56b48d",
+      "sealedAtUtc": "2026-10-23T16:32:12Z"
+    },
+    {
+      "batch": "nb-38",
+      "sealId": "seal-0022ecc86492c439",
+      "sealedAtUtc": "2026-10-23T17:02:48Z"
+    },
+    {
+      "batch": "nb-39",
+      "sealId": "seal-1f6d6c57a9e49f8c",
+      "sealedAtUtc": "2026-10-23T16:54:05Z"
+    },
+    {
+      "batch": "nb-39-r1",
+      "sealId": "seal-5be9bf8200d1faa7",
+      "sealedAtUtc": "2026-10-23T17:25:28Z"
+    },
+    {
+      "batch": "nb-40",
+      "sealId": "seal-85687442859918b8",
+      "sealedAtUtc": "2026-10-23T16:20:43Z"
+    },
+    {
+      "batch": "nb-40-r1",
+      "sealId": "seal-5e3a9324082f420e",
+      "sealedAtUtc": "2026-10-23T16:25:11Z"
+    },
+    {
+      "batch": "nb-40-r2",
+      "sealId": "seal-4f9c1643c23a7308",
+      "sealedAtUtc": "2026-10-23T17:11:37Z"
+    },
+    {
+      "batch": "nb-41",
+      "sealId": "seal-e458e44fda060ceb",
+      "sealedAtUtc": "2026-10-23T17:11:50Z"
+    },
+    {
+      "batch": "nb-41-r1",
+      "sealId": "seal-ddafb7f16ba43850",
+      "sealedAtUtc": "2026-10-23T18:10:17Z"
+    },
+    {
+      "batch": "nb-41-r2",
+      "sealId": "seal-246efa6dfd90a0d8",
+      "sealedAtUtc": "2026-10-23T19:40:58Z"
+    },
+    {
+      "batch": "nb-41-r3",
+      "sealId": "seal-aeb3de925e4b6357",
+      "sealedAtUtc": "2026-10-23T20:12:56Z"
+    },
+    {
+      "batch": "nb-41-r4",
+      "sealId": "seal-ac12b1827e0e4754",
+      "sealedAtUtc": "2026-10-23T20:46:38Z"
+    },
+    {
+      "batch": "nb-42",
+      "sealId": "seal-c54eec989385645b",
+      "sealedAtUtc": "2026-10-23T17:15:13Z"
+    },
+    {
+      "batch": "nb-42-r1",
+      "sealId": "seal-8729dc211d982c3d",
+      "sealedAtUtc": "2026-10-23T20:15:25Z"
+    },
+    {
+      "batch": "nb-42-r2",
+      "sealId": "seal-eff8e3b232a8c9b4",
+      "sealedAtUtc": "2026-10-23T21:12:36Z"
+    },
+    {
+      "batch": "nb-43",
+      "sealId": "seal-6ca30b462a9bfb4e",
+      "sealedAtUtc": "2026-10-23T16:49:56Z"
+    },
+    {
+      "batch": "nb-43-r1",
+      "sealId": "seal-d7ec3913642e646a",
+      "sealedAtUtc": "2026-10-23T18:03:03Z"
+    },
+    {
+      "batch": "nb-44",
+      "sealId": "seal-0e1d0693d108885d",
+      "sealedAtUtc": "2026-10-23T16:41:53Z"
+    },
+    {
+      "batch": "nb-44-r1",
+      "sealId": "seal-a1bcbae035df3cdc",
+      "sealedAtUtc": "2026-10-23T18:31:54Z"
+    },
+    {
+      "batch": "nb-44-r2",
+      "sealId": "seal-51c6a318c3e7142c",
+      "sealedAtUtc": "2026-10-23T20:15:49Z"
+    },
+    {
+      "batch": "nb-45",
+      "sealId": "seal-ed2e8ff7ab1e0d4e",
+      "sealedAtUtc": "2026-10-23T16:21:23Z"
+    },
+    {
+      "batch": "nb-45-r1",
+      "sealId": "seal-064fa97f8326a45b",
+      "sealedAtUtc": "2026-10-23T17:05:41Z"
+    },
+    {
+      "batch": "nb-46",
+      "sealId": "seal-cb94526547ddcaf5",
+      "sealedAtUtc": "2026-10-23T17:12:26Z"
+    },
+    {
+      "batch": "nb-46-r1",
+      "sealId": "seal-cbb44e139b497dc3",
+      "sealedAtUtc": "2026-10-23T19:34:09Z"
+    },
+    {
+      "batch": "nb-47",
+      "sealId": "seal-ab78d9648baba40c",
+      "sealedAtUtc": "2026-10-23T15:59:21Z"
+    },
+    {
+      "batch": "nb-47-r1",
+      "sealId": "seal-dfa8d09d170a1e25",
+      "sealedAtUtc": "2026-10-23T20:11:17Z"
+    },
+    {
+      "batch": "nb-48",
+      "sealId": "seal-c56a7463f064139c",
+      "sealedAtUtc": "2026-10-23T17:31:26Z"
+    },
+    {
+      "batch": "nb-48-r1",
+      "sealId": "seal-a44d96e19563048a",
+      "sealedAtUtc": "2026-10-23T20:23:51Z"
+    },
+    {
+      "batch": "nb-49",
+      "sealId": "seal-adac0f7cc92021b8",
+      "sealedAtUtc": "2026-10-23T16:41:57Z"
+    },
+    {
+      "batch": "nb-49-r1",
+      "sealId": "seal-6f6ce4df22879fcf",
+      "sealedAtUtc": "2026-10-23T19:32:33Z"
+    },
+    {
+      "batch": "nb-50",
+      "sealId": "seal-5d4e1ea09abe2bf3",
+      "sealedAtUtc": "2026-10-23T17:52:49Z"
+    },
+    {
+      "batch": "nb-50-r1",
+      "sealId": "seal-e922db8b265df4c2",
+      "sealedAtUtc": "2026-10-23T20:22:48Z"
+    },
+    {
+      "batch": "nb-51",
+      "sealId": "seal-c753a3ad670ad5d1",
+      "sealedAtUtc": "2026-10-23T16:55:43Z"
+    },
+    {
+      "batch": "nb-51-r1",
+      "sealId": "seal-dddcffe30327ed17",
+      "sealedAtUtc": "2026-10-23T18:19:18Z"
+    },
+    {
+      "batch": "nb-52",
+      "sealId": "seal-fef8caa79742c590",
+      "sealedAtUtc": "2026-10-23T18:05:09Z"
+    },
+    {
+      "batch": "nb-52-r1",
+      "sealId": "seal-bb12cbae36d81ee7",
+      "sealedAtUtc": "2026-10-23T20:21:16Z"
+    },
+    {
+      "batch": "nb-53",
+      "sealId": "seal-515c37796ad2ed5b",
+      "sealedAtUtc": "2026-10-23T17:19:25Z"
+    },
+    {
+      "batch": "nb-53-r1",
+      "sealId": "seal-3f748e7210bdfec7",
+      "sealedAtUtc": "2026-10-23T17:45:11Z"
+    },
+    {
+      "batch": "nb-54",
+      "sealId": "seal-7e9e72068eb20b97",
+      "sealedAtUtc": "2026-10-23T17:43:35Z"
+    },
+    {
+      "batch": "nb-54-r1",
+      "sealId": "seal-d3130401f8f6ec3f",
+      "sealedAtUtc": "2026-10-23T18:18:05Z"
+    },
+    {
+      "batch": "nb-55",
+      "sealId": "seal-a15b4c81cc7797fa",
+      "sealedAtUtc": "2026-10-23T17:21:53Z"
+    },
+    {
+      "batch": "nb-56",
+      "sealId": "seal-92a1a77c3461bef5",
+      "sealedAtUtc": "2026-10-23T17:06:11Z"
+    },
+    {
+      "batch": "nb-57",
+      "sealId": "seal-19190657d014320d",
+      "sealedAtUtc": "2026-10-23T16:47:22Z"
+    },
+    {
+      "batch": "nb-57-r1",
+      "sealId": "seal-de69c7827fe1a79a",
+      "sealedAtUtc": "2026-10-23T17:24:15Z"
+    },
+    {
+      "batch": "nb-58",
+      "sealId": "seal-7768334cf89742fc",
+      "sealedAtUtc": "2026-10-23T17:03:03Z"
+    },
+    {
+      "batch": "nb-58-r1",
+      "sealId": "seal-a82417b6e355f8db",
+      "sealedAtUtc": "2026-10-23T17:24:15Z"
+    },
+    {
+      "batch": "nb-59",
+      "sealId": "seal-f6c22ea9169f72de",
+      "sealedAtUtc": "2026-10-23T18:19:59Z"
+    },
+    {
+      "batch": "nb-59-r1",
+      "sealId": "seal-e2106116c58b2c6a",
+      "sealedAtUtc": "2026-10-23T20:22:09Z"
+    },
+    {
+      "batch": "nb-60",
+      "sealId": "seal-015a87984fec56c1",
+      "sealedAtUtc": "2026-10-23T17:29:58Z"
+    },
+    {
+      "batch": "nb-60-r1",
+      "sealId": "seal-f0b144869b19cfc0",
+      "sealedAtUtc": "2026-10-23T22:11:45Z"
+    },
+    {
+      "batch": "nb-61",
+      "sealId": "seal-de8197bee3c8a188",
+      "sealedAtUtc": "2026-10-23T17:25:39Z"
+    },
+    {
+      "batch": "nb-61-r1",
+      "sealId": "seal-bea2fceb2250df02",
+      "sealedAtUtc": "2026-10-23T17:26:49Z"
+    },
+    {
+      "batch": "nb-61-r2",
+      "sealId": "seal-83f905f6ad193c57",
+      "sealedAtUtc": "2026-10-23T18:21:36Z"
+    },
+    {
+      "batch": "nb-62",
+      "sealId": "seal-f1351759ce3395a5",
+      "sealedAtUtc": "2026-10-23T16:55:34Z"
+    },
+    {
+      "batch": "nb-63",
+      "sealId": "seal-c558739b1b1c56a2",
+      "sealedAtUtc": "2026-10-23T17:48:07Z"
+    },
+    {
+      "batch": "nb-63-r1",
+      "sealId": "seal-f2150d29c4d5349e",
+      "sealedAtUtc": "2026-10-23T17:48:49Z"
+    },
+    {
+      "batch": "nb-63-r2",
+      "sealId": "seal-49adecc2ffe46950",
+      "sealedAtUtc": "2026-10-23T17:49:18Z"
+    },
+    {
+      "batch": "nb-63-r3",
+      "sealId": "seal-213c8f902e0a1413",
+      "sealedAtUtc": "2026-10-23T18:06:14Z"
+    },
+    {
+      "batch": "nb-63-r4",
+      "sealId": "seal-f63749e2d6801247",
+      "sealedAtUtc": "2026-10-23T18:07:15Z"
+    },
+    {
+      "batch": "nb-64",
+      "sealId": "seal-f388c82ef0fece41",
+      "sealedAtUtc": "2026-10-23T18:01:29Z"
+    },
+    {
+      "batch": "nb-64-r1",
+      "sealId": "seal-6525ea27cec3df33",
+      "sealedAtUtc": "2026-10-23T20:12:57Z"
+    },
+    {
+      "batch": "nb-64-r2",
+      "sealId": "seal-b16de1b4ca8b6bb6",
+      "sealedAtUtc": "2026-10-23T20:46:38Z"
+    },
+    {
+      "batch": "nb-64-r3",
+      "sealId": "seal-da0909a0776ec70b",
+      "sealedAtUtc": "2026-10-23T21:09:12Z"
+    },
+    {
+      "batch": "nb-65",
+      "sealId": "seal-334eed303c3c09c0",
+      "sealedAtUtc": "2026-10-23T17:41:44Z"
+    },
+    {
+      "batch": "nb-65-r1",
+      "sealId": "seal-e8d0b223a1be9e8e",
+      "sealedAtUtc": "2026-10-23T17:42:26Z"
+    },
+    {
+      "batch": "nb-65-r2",
+      "sealId": "seal-3275ba91ba093c16",
+      "sealedAtUtc": "2026-10-23T22:12:44Z"
+    },
+    {
+      "batch": "nb-66",
+      "sealId": "seal-cdaf0036ff036647",
+      "sealedAtUtc": "2026-10-23T17:51:56Z"
+    },
+    {
+      "batch": "nb-66-r1",
+      "sealId": "seal-6e4ba1efcd0d61bf",
+      "sealedAtUtc": "2026-10-23T18:15:02Z"
+    },
+    {
+      "batch": "nb-67",
+      "sealId": "seal-99fa6e149b8a0794",
+      "sealedAtUtc": "2026-10-23T17:30:56Z"
+    },
+    {
+      "batch": "nb-67-r1",
+      "sealId": "seal-4377a0aa45b9e604",
+      "sealedAtUtc": "2026-10-23T18:07:06Z"
+    },
+    {
+      "batch": "nb-68",
+      "sealId": "seal-001317b884d36028",
+      "sealedAtUtc": "2026-10-23T18:54:15Z"
+    },
+    {
+      "batch": "nb-68-r1",
+      "sealId": "seal-699e913804f05170",
+      "sealedAtUtc": "2026-10-23T20:20:35Z"
+    },
+    {
+      "batch": "nb-69",
+      "sealId": "seal-2ae04e8153f86c0e",
+      "sealedAtUtc": "2026-10-23T19:04:20Z"
+    },
+    {
+      "batch": "nb-70",
+      "sealId": "seal-b62f9260e5512dde",
+      "sealedAtUtc": "2026-10-23T18:13:07Z"
+    },
+    {
+      "batch": "nb-70-r1",
+      "sealId": "seal-b590a06bc175f4bf",
+      "sealedAtUtc": "2026-10-23T20:46:37Z"
+    },
+    {
+      "batch": "nb-71",
+      "sealId": "seal-d76fb1b335628a8d",
+      "sealedAtUtc": "2026-10-23T17:22:35Z"
+    },
+    {
+      "batch": "nb-71-r1",
+      "sealId": "seal-365a12a831f5b358",
+      "sealedAtUtc": "2026-10-23T17:39:39Z"
+    },
+    {
+      "batch": "nb-72",
+      "sealId": "seal-198e38ab7fe4ceea",
+      "sealedAtUtc": "2026-10-23T17:14:23Z"
+    },
+    {
+      "batch": "nb-72-r1",
+      "sealId": "seal-043764421580a30a",
+      "sealedAtUtc": "2026-10-23T18:34:09Z"
+    },
+    {
+      "batch": "nb-73",
+      "sealId": "seal-67ea81ee4d343593",
+      "sealedAtUtc": "2026-10-23T20:48:52Z"
+    },
+    {
+      "batch": "nb-73-r1",
+      "sealId": "seal-2428ba99db71b5b2",
+      "sealedAtUtc": "2026-10-23T22:32:38Z"
+    },
+    {
+      "batch": "nb-73-r2",
+      "sealId": "seal-22b44b0e335e3796",
+      "sealedAtUtc": "2026-10-23T22:42:13Z"
+    },
+    {
+      "batch": "nb-74",
+      "sealId": "seal-f47e410a4d267681",
+      "sealedAtUtc": "2026-10-23T18:01:19Z"
+    },
+    {
+      "batch": "nb-74-r1",
+      "sealId": "seal-b62a424686d841f6",
+      "sealedAtUtc": "2026-10-23T18:14:26Z"
+    },
+    {
+      "batch": "nb-75",
+      "sealId": "seal-55d8ed22f35e1b91",
+      "sealedAtUtc": "2026-10-23T18:07:55Z"
+    },
+    {
+      "batch": "nb-75-r1",
+      "sealId": "seal-1e29c6bccdb0a4d6",
+      "sealedAtUtc": "2026-10-23T22:13:41Z"
+    },
+    {
+      "batch": "nb-76",
+      "sealId": "seal-0eadc153bec5d3ca",
+      "sealedAtUtc": "2026-10-23T19:12:28Z"
+    },
+    {
+      "batch": "nb-77",
+      "sealId": "seal-3c634b8ef06bc19d",
+      "sealedAtUtc": "2026-10-23T19:51:55Z"
+    },
+    {
+      "batch": "nb-78",
+      "sealId": "seal-9a07b90e37406736",
+      "sealedAtUtc": "2026-10-23T21:23:59Z"
+    },
+    {
+      "batch": "nb-78-r1",
+      "sealId": "seal-5f50b9204af138a2",
+      "sealedAtUtc": "2026-10-23T21:49:41Z"
+    },
+    {
+      "batch": "nb-78-r2",
+      "sealId": "seal-26e8e696efe7ea61",
+      "sealedAtUtc": "2026-10-23T21:59:15Z"
+    },
+    {
+      "batch": "nb-79",
+      "sealId": "seal-53e6ec92c6df0c84",
+      "sealedAtUtc": "2026-10-23T17:22:57Z"
+    },
+    {
+      "batch": "nb-79-r1",
+      "sealId": "seal-24cf7f2f472e1ec0",
+      "sealedAtUtc": "2026-10-23T18:35:41Z"
+    },
+    {
+      "batch": "nb-80",
+      "sealId": "seal-e48d8e2409a25e54",
+      "sealedAtUtc": "2026-10-23T18:08:44Z"
+    },
+    {
+      "batch": "nb-80-r1",
+      "sealId": "seal-224d7c837b5825df",
+      "sealedAtUtc": "2026-10-23T18:10:33Z"
+    },
+    {
+      "batch": "nb-80-r2",
+      "sealId": "seal-58c9dd0ff97203a6",
+      "sealedAtUtc": "2026-10-23T23:20:37Z"
+    },
+    {
+      "batch": "nb-81",
+      "sealId": "seal-8feb96f56f0ae1bf",
+      "sealedAtUtc": "2026-10-23T20:08:38Z"
+    },
+    {
+      "batch": "nb-81-r1",
+      "sealId": "seal-a3bb86075bd8c2ee",
+      "sealedAtUtc": "2026-10-23T21:08:25Z"
+    },
+    {
+      "batch": "nb-82",
+      "sealId": "seal-23d161e252555a15",
+      "sealedAtUtc": "2026-10-23T18:18:09Z"
+    },
+    {
+      "batch": "nb-82-r1",
+      "sealId": "seal-59f0ecd46cc43d97",
+      "sealedAtUtc": "2026-10-23T22:14:58Z"
+    },
+    {
+      "batch": "nb-83",
+      "sealId": "seal-625dd7250f20573b",
+      "sealedAtUtc": "2026-10-23T17:37:29Z"
+    },
+    {
+      "batch": "nb-83-r1",
+      "sealId": "seal-76f882de54e90923",
+      "sealedAtUtc": "2026-10-23T17:59:56Z"
+    },
+    {
+      "batch": "nb-84",
+      "sealId": "seal-066114c48847056c",
+      "sealedAtUtc": "2026-10-23T17:32:09Z"
+    },
+    {
+      "batch": "nb-85",
+      "sealId": "seal-da446ce6ae62f168",
+      "sealedAtUtc": "2026-10-23T18:57:58Z"
+    },
+    {
+      "batch": "nb-85-r1",
+      "sealId": "seal-b33ffdaa44197cee",
+      "sealedAtUtc": "2026-10-23T18:58:29Z"
+    },
+    {
+      "batch": "nb-86",
+      "sealId": "seal-a0bf21b3ada5510f",
+      "sealedAtUtc": "2026-10-23T19:08:54Z"
+    },
+    {
+      "batch": "nb-86-r1",
+      "sealId": "seal-1cbe3e110e3a39d2",
+      "sealedAtUtc": "2026-10-23T19:09:54Z"
+    },
+    {
+      "batch": "nb-87",
+      "sealId": "seal-8588e705c0ad4937",
+      "sealedAtUtc": "2026-10-23T17:44:55Z"
+    },
+    {
+      "batch": "nb-87-r1",
+      "sealId": "seal-0dc38ad7f491139e",
+      "sealedAtUtc": "2026-10-23T18:37:00Z"
+    },
+    {
+      "batch": "nb-88",
+      "sealId": "seal-9cb6093510813032",
+      "sealedAtUtc": "2026-10-23T17:54:40Z"
+    },
+    {
+      "batch": "nb-88-r1",
+      "sealId": "seal-50499cb08cc07800",
+      "sealedAtUtc": "2026-10-23T18:38:10Z"
+    },
+    {
+      "batch": "nb-89",
+      "sealId": "seal-f43ff3760c5b3215",
+      "sealedAtUtc": "2026-10-23T19:18:17Z"
+    },
+    {
+      "batch": "nb-90",
+      "sealId": "seal-996073083f29b312",
+      "sealedAtUtc": "2026-10-23T19:40:34Z"
+    },
+    {
+      "batch": "nb-90-r1",
+      "sealId": "seal-5f88dc1702a182d6",
+      "sealedAtUtc": "2026-10-23T20:04:39Z"
+    },
+    {
+      "batch": "nb-91",
+      "sealId": "seal-8c64c6d25d2c80ba",
+      "sealedAtUtc": "2026-10-23T19:06:40Z"
+    },
+    {
+      "batch": "nb-91-r1",
+      "sealId": "seal-229c1f182c83b019",
+      "sealedAtUtc": "2026-10-23T20:45:14Z"
+    },
+    {
+      "batch": "nb-92",
+      "sealId": "seal-aa70ad1180dc205c",
+      "sealedAtUtc": "2026-10-23T18:03:07Z"
+    },
+    {
+      "batch": "nb-92-r1",
+      "sealId": "seal-989238a566f60ca3",
+      "sealedAtUtc": "2026-10-23T18:22:43Z"
+    },
+    {
+      "batch": "nb-93",
+      "sealId": "seal-fe2849f915768fe5",
+      "sealedAtUtc": "2026-10-23T20:32:20Z"
+    },
+    {
+      "batch": "nb-93-r1",
+      "sealId": "seal-ed5a8900fec0e70c",
+      "sealedAtUtc": "2026-10-23T21:08:25Z"
+    },
+    {
+      "batch": "nb-94",
+      "sealId": "seal-a76d4becbd9b0a1f",
+      "sealedAtUtc": "2026-10-23T19:03:28Z"
+    },
+    {
+      "batch": "nb-94-r1",
+      "sealId": "seal-edb14478c328eb9b",
+      "sealedAtUtc": "2026-10-23T20:45:57Z"
+    },
+    {
+      "batch": "nb-95",
+      "sealId": "seal-196fe0f57589055b",
+      "sealedAtUtc": "2026-10-23T17:58:29Z"
+    },
+    {
+      "batch": "nb-96",
+      "sealId": "seal-3e32d2d16c12ba9b",
+      "sealedAtUtc": "2026-10-23T17:42:53Z"
+    },
+    {
+      "batch": "nb-96-r1",
+      "sealId": "seal-2a87f04feb20e06d",
+      "sealedAtUtc": "2026-10-23T20:06:20Z"
+    },
+    {
+      "batch": "nb-97",
+      "sealId": "seal-8e1d1524f3ea34e5",
+      "sealedAtUtc": "2026-10-23T19:28:42Z"
+    },
+    {
+      "batch": "nb-98",
+      "sealId": "seal-403fd21ad8c357e9",
+      "sealedAtUtc": "2026-10-23T20:10:06Z"
+    },
+    {
+      "batch": "nb-99",
+      "sealId": "seal-247a39d912d52328",
+      "sealedAtUtc": "2026-10-23T19:06:36Z"
+    },
+    {
+      "batch": "nb-skins",
+      "sealId": "seal-43516b0d3c0346ae",
+      "sealedAtUtc": "2026-10-23T15:56:14Z"
+    },
+    {
+      "batch": "nb-skins-r1",
+      "sealId": "seal-744759f3155b77ec",
+      "sealedAtUtc": "2026-10-23T16:01:46Z"
+    },
+    {
+      "batch": "nb-skins-r2",
+      "sealId": "seal-b20974d4a015f324",
+      "sealedAtUtc": "2026-10-23T16:38:19Z"
+    },
+    {
+      "batch": "pilot-models",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T10:52:00Z"
+    },
+    {
+      "batch": "pilot-models-r1",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T11:06:00Z"
+    },
+    {
+      "batch": "pilot-models-r2",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T11:30:33.922166+00:00"
+    },
+    {
+      "batch": "pilot-ui",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T10:56:50Z"
+    },
+    {
+      "batch": "pilot-ui-r1",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T11:20:11Z"
+    },
+    {
+      "batch": "pilot-ui-r2",
+      "sealId": null,
+      "sealedAtUtc": "2026-10-23T13:38:41Z"
+    }
+  ],
+  "writer": "docs-r07-lead-20261023",
+  "managerMayWrite": false,
+  "writeRule": "PROGRESS 由 lead 依磁盘证据生成；manager 只改 prompts/ 与 assignments/，不并发改本文件。",
+  "perPackage": {
+    "p01-app-shell": {
+      "files": 736,
+      "deep": 297,
+      "indexOnly": 439,
+      "authored": 297,
+      "authorReady": 0,
+      "acceptedCurrent": 297,
+      "merged": 297
+    },
+    "p02-agent-runtime": {
+      "files": 528,
+      "deep": 355,
+      "indexOnly": 173,
+      "authored": 355,
+      "authorReady": 0,
+      "acceptedCurrent": 351,
+      "merged": 355
+    },
+    "p03-integrations": {
+      "files": 279,
+      "deep": 272,
+      "indexOnly": 7,
+      "authored": 272,
+      "authorReady": 0,
+      "acceptedCurrent": 272,
+      "merged": 272
+    },
+    "p04-review-case-core": {
+      "files": 108,
+      "deep": 108,
+      "indexOnly": 0,
+      "authored": 108,
+      "authorReady": 0,
+      "acceptedCurrent": 108,
+      "merged": 108
+    },
+    "p05-review-engine": {
+      "files": 194,
+      "deep": 191,
+      "indexOnly": 3,
+      "authored": 191,
+      "authorReady": 0,
+      "acceptedCurrent": 174,
+      "merged": 191
+    },
+    "p06-review-batch": {
+      "files": 80,
+      "deep": 80,
+      "indexOnly": 0,
+      "authored": 80,
+      "authorReady": 0,
+      "acceptedCurrent": 80,
+      "merged": 80
+    },
+    "p07-shared-libs": {
+      "files": 294,
+      "deep": 294,
+      "indexOnly": 0,
+      "authored": 294,
+      "authorReady": 0,
+      "acceptedCurrent": 289,
+      "merged": 294
+    },
+    "p08-renderer-ui": {
+      "files": 864,
+      "deep": 781,
+      "indexOnly": 83,
+      "authored": 781,
+      "authorReady": 0,
+      "acceptedCurrent": 771,
+      "merged": 781
+    }
+  },
+  "honesty": [
+    "authored ≠ accepted；authorReady 只是等 QA。",
+    "qaAcceptedCurrentBytes 只计独立 QA 接受且与当前封版字节同 hash 的文件。",
+    "carryForward 是旧 seal 接受、当前字节仍相同的文件；在 rN QA 复核前不合并。",
+    "mergedCandidate 是实际复制进 candidate 的文件数；legacy 922 不计入。",
+    "indexOnly 是独立工作流，不计入 deep 完成。",
+    "inProgressUnsealed 是 stage 里已有但未封版的手册，不算 authored。",
+    "sealedDeliveries 列出已封版批次与其 sealId，供 QA/合入引用。"
+  ]
+}

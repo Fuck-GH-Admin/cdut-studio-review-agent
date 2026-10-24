@@ -1,0 +1,65 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-107",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-models-20261023",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T19:06:25.665520+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "files": 18,
+ "accepted": 18,
+ "revisionRequired": 0,
+ "unknown": 0,
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/ai-elements/InputToolbarOverflow.tsx.md": "3b9dfd3ade789333bde0864566d35e5e49805b7a1a4519c902b043a0a9bc07c5",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/ai-elements/MindMapBlock.tsx.md": "85e6f408d585a80b8690c7741a537be4ac146ef558c941b80f9b18e5a12f6042",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/ai-elements/agent-block-copy.test.ts.md": "9e1e91dc0fc63596b746275a5f3543c9725e05ab9440e158c6104101350b0ead",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/ai-elements/agent-block-copy.ts.md": "b69d86e70da04db7395dfcc6b2d7cf2a3a08f284389d918164c88f6f52890fea",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/ai-elements/composer/ComposerTool.tsx.md": "7b289dbf9aa67e6370c952a759263419fcaeab1751caeee547f27dd3db02cd79",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/ai-elements/composer/composer-tool.test.ts.md": "75707d329a5d67bc71d6ad44dbfae275385ebed92f518050fddefaee1e6435ef",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/ai-elements/context-divider.tsx.md": "ca055ffcef52634d3ae4966ca8a2ecd91e2bdb32b163865a32703beb7f30ea59",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/ai-elements/conversation.tsx.md": "da026253be5c5738e247455a6b36a368943781438c9e04c013571546233566f1",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/ai-elements/file-access-context.tsx.md": "d00274158d92fc33ef9ec2d84d4297f41767a4add57ff783f84b320280ad2d1f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/ai-elements/file-path-chip.test.ts.md": "3ac76327162396a1c465fddd38caaa1974f9e8c5ec65f545ff747cdd68019122",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/ai-elements/file-path-chip.tsx.md": "eb0d51a77c91f71178b597507f7fce2ea29001d3aae593d609f9ab7b2af2c7e2",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/ai-elements/message.test.ts.md": "3c5031eb3b1093a0a7959ea5b00c9b0600d1ba70653d270fb9f182fc04dc5b3e",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/ai-elements/message.tsx.md": "4b52b57ac09577c76b7d2520f0634fdcb9b8443bd2d10904123672f9716114c7",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/ai-elements/mindmap-canvas.tsx.md": "33905da1cb689a3ab2605e3fa9fe9fa9522ee872eb2b21f1f6f762f6fc677df5",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/ai-elements/reasoning.tsx.md": "3a8d307dd506031f708de0984628cb69c74b074f710c7078f87f2bfe8b41535f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/ai-elements/rich-text-input.tsx.md": "ee57531700eeb5dc4231d1a034d89044fbcb5519eefe36ec2699be9695440c32",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/ai-elements/scroll-minimap.tsx.md": "9548bfe2a1e3ce21f6d34615d6d197403c598641301ea912145ef8e4af238cf2",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/ai-elements/session-mention.ts.md": "e0b1dbe2d8c9cedfcab0efd0fff684907775a3905c689a0411c091bceee62465"
+ },
+ "revisionHashes": {},
+ "findings": {
+  "revision": [],
+  "notes": []
+ },
+ "deliverySeal": {
+  "sealId": "seal-3b9bc6e0fc3dd887",
+  "sealedAtUtc": "2026-10-23T18:52:41Z",
+  "readySha256": "9ffa30c75a2ff8cebe79a904f5abb87b6fa53085da62fa38d0a6d17cf71015ff",
+  "doneSha256": "4eabaf614e112382ebec7fd8e08dd42285de518c2f1f67b17c209c893ab84d97",
+  "manifestSha256": "dfd39011fe82c0f01891e59ab10538befecae37de455f1ffd01278bc7a0b0895",
+  "zipSha256": "736b2ad8974363c7ede00a157b7219d4a9cc365d7370db4b067378a179cb8522"
+ },
+ "notRun": [
+  "bun test",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "artifacts": {
+  "RESULT.json": "52cbb11a9f29b4aa5b6ee93b1bb6781f2620ee8b0c0f7906e8738434032a55d0",
+  "RESULT.md": "0da1340e05c60107048fe363c80c61d486bdfdf7033ae3d6f106499ea1393de1",
+  "REVIEWED-HASHES.json": "2361bb0ad63dcbac91358eecd621f6a31f6a47d0f3f08b6d5958dd2313a24cdd"
+ },
+ "next": "lead 合入"
+}

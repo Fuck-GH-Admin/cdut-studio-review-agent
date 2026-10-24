@@ -1,0 +1,241 @@
+{
+  "schema": "dsh-r07-review-result/2",
+  "batch": "nb-80-r2",
+  "revisionOf": "nb-80-r1",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-09-20261023",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-23T23:35:00Z",
+  "sealId": "seal-58c9dd0ff97203a6",
+  "sealedAtUtc": "2026-10-23T23:20:37Z",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0,
+    "blocking": 0,
+    "nonBlocking": 1
+  },
+  "gates": {
+    "G0": "PASS",
+    "G1": "PASS",
+    "G2": "PASS_WITH_NOTES",
+    "note": "F-01 限引用修复逐行实测核实（全方法重导，不止尾部 4 处）；N-01 同篇部分随修；cdp/policy 两篇 minor 漂移如实留 errata"
+  },
+  "revisionVerification": {
+    "changedManuals": 1,
+    "unchangedManuals": 17,
+    "findingsClosure": [
+      {
+        "id": "NB80R1-F-01",
+        "status": "resolved",
+        "evidence": "browser-controller.ts.md 行号全面重导：screenshot :2041-2066、hide/hideAll :2073-2108、disposeSession/close/dispose :2118-2151（全部 ≤2154 界内）、§3.4 截图诚实 :2050-2063（105s 注释保留）；QA 抽核实测：MAX_TRACE_ITEMS :40、resolvePreviewTheme :171、class :255、createTab :818、hide :2073、hideAll :2092、disposeSession :2118 全部吻合"
+      }
+    ],
+    "residual": "NB80R1-N-01 的 browser-cdp.ts.md/browser-policy.ts.md 行号漂移未随本批修（minor、符号可定位、行为结论不变），RESPONSE 如实记录交 lead errata"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/main/lib/browser-cdp.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-cdp.ts.md",
+      "sourceBlob": "38fe61d8a7be68cb5342535e51f373f05da99294",
+      "sourceSha256": "bd7ea6e5e0342b755cce7a319621009dd6d85f2b968e185fbcd0dc2ab2d71bcd",
+      "manualSha256": "ebf0e139e90fc19e8e77cd1bf742ebb48b9c2c37ceb32b90b1a1bd6c8b80e010",
+      "verdict": "accepted",
+      "note": "inherited: byte-identical to nb-80-r1, evidence inherited from reviews/nb-80 + independent spot-check"
+    },
+    {
+      "path": "apps/electron/src/main/lib/browser-controller-fresh-session-tab.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-controller-fresh-session-tab.test.ts.md",
+      "sourceBlob": "e8dc0c1978088577982044994909ea079c48bf4b",
+      "sourceSha256": "b6f50d86d2a65183212805c23a6a8e0a5f84b60178344bce52047a65793d4881",
+      "manualSha256": "610f95ddfc9b1131b0e82576b2fcca120849713c0822e4a17fedbfad86219a22",
+      "verdict": "accepted",
+      "note": "inherited: byte-identical to nb-80-r1, evidence inherited from reviews/nb-80 + independent spot-check"
+    },
+    {
+      "path": "apps/electron/src/main/lib/browser-controller-local-file-sentinel.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-controller-local-file-sentinel.test.ts.md",
+      "sourceBlob": "03d97380557609b4f9a15f8d15bdd10b786cd5e4",
+      "sourceSha256": "68a4579c57a986f4dda110053f4400a3fe7ed62532b37e416a497c4935d6a264",
+      "manualSha256": "e724c13f21859a5085636073f0a852d9b568d3c69854a2b84de5f64a9d086494",
+      "verdict": "accepted",
+      "note": "inherited: byte-identical to nb-80-r1, evidence inherited from reviews/nb-80 + independent spot-check"
+    },
+    {
+      "path": "apps/electron/src/main/lib/browser-controller-preview-theme.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-controller-preview-theme.test.ts.md",
+      "sourceBlob": "2464a87235b0475bf79c08650f8fd7e0bd44542c",
+      "sourceSha256": "47e6c5380ee9b795396c3367fbaf22de09c94772fe494efc355bd0490c00473a",
+      "manualSha256": "62f890b0a8ef38596b8c02cf7ac4e17b4f5616c340c789d41ac760bbfaa7fed3",
+      "verdict": "accepted",
+      "note": "inherited: byte-identical to nb-80-r1, evidence inherited from reviews/nb-80 + independent spot-check"
+    },
+    {
+      "path": "apps/electron/src/main/lib/browser-controller-screenshot.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-controller-screenshot.test.ts.md",
+      "sourceBlob": "d9812291e14d4b0e1e23fdbc308d4e19df9ef4a2",
+      "sourceSha256": "8394b148346ef403747c2230779b6df343c05f5251fe08a9d20e6e5bb3bd1943",
+      "manualSha256": "1317081e30094922745f5b59bf3ea3051635c054d54bdfb3549a0cfc2078cf4c",
+      "verdict": "accepted",
+      "note": "inherited: byte-identical to nb-80-r1, evidence inherited from reviews/nb-80 + independent spot-check"
+    },
+    {
+      "path": "apps/electron/src/main/lib/browser-controller.lifecycle.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-controller.lifecycle.test.ts.md",
+      "sourceBlob": "db90f09237aac82b14315d29a8c34dfabe8dd4be",
+      "sourceSha256": "d793741580e5e143ce88bf2505779ea7240734f1c55e83cbc4c679b0e73277a3",
+      "manualSha256": "66ef8b3c78e153a864728e781704d6728f61ee4b4daa2e4cb48d5a065b84e2dc",
+      "verdict": "accepted",
+      "note": "inherited: byte-identical to nb-80-r1, evidence inherited from reviews/nb-80 + independent spot-check"
+    },
+    {
+      "path": "apps/electron/src/main/lib/browser-controller.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-controller.ts.md",
+      "sourceBlob": "390187829184b4307323e440e7252566e39f957e",
+      "sourceSha256": "24104c6be618677b9379150992e56351545ad95c97e96eedcd3f6c163c4a2e16",
+      "manualSha256": "679cc57a7b806af78ba06b33196bdc119a1c290d0321cee55d6004ebfc7a2472",
+      "verdict": "accepted",
+      "note": "revised in r2 (F-01 limited-reference fix, verified)"
+    },
+    {
+      "path": "apps/electron/src/main/lib/browser-identity.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-identity.ts.md",
+      "sourceBlob": "bd3b19ca768b741fa051a4725dab3eabed98fd5b",
+      "sourceSha256": "f578d5f283b623e99fba7cf0baa7b1a7ab84be44d0b8dd5066e206f8bfb8560c",
+      "manualSha256": "4fb0cc3da3c94ba17c0b9621ef6c86047da7f5b1cdcdf7fca9e3669cc4e1d3bf",
+      "verdict": "accepted",
+      "note": "inherited: byte-identical to nb-80-r1, evidence inherited from reviews/nb-80 + independent spot-check"
+    },
+    {
+      "path": "apps/electron/src/main/lib/browser-key-policy.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-key-policy.ts.md",
+      "sourceBlob": "6b0221141f5870680ccda1c8c15ff2c966a234d6",
+      "sourceSha256": "775454281b4895a6c3beaac401dcdc521a054dd9f06adf77de370cbdfe512a7a",
+      "manualSha256": "73af048a1f7db548057cf5b0809686167a9648baeef1614cfea2f64f31f467eb",
+      "verdict": "accepted",
+      "note": "inherited: byte-identical to nb-80-r1, evidence inherited from reviews/nb-80 + independent spot-check"
+    },
+    {
+      "path": "apps/electron/src/main/lib/browser-observation-policy.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-observation-policy.ts.md",
+      "sourceBlob": "c48fb7db5c71d2d721c8437906d6757eb14ee762",
+      "sourceSha256": "22158f9ced10cacf5215fef06f35fa5658510741d59667896e866c886b046d5b",
+      "manualSha256": "a7d6e9776517b96e6bc8195ae4a81726cf9a954bbf24cec0a426ae781ab599b8",
+      "verdict": "accepted",
+      "note": "inherited: byte-identical to nb-80-r1, evidence inherited from reviews/nb-80 + independent spot-check"
+    },
+    {
+      "path": "apps/electron/src/main/lib/browser-policy.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-policy.test.ts.md",
+      "sourceBlob": "4a69dac9df536f12b105c0841d8615b4c171a5a3",
+      "sourceSha256": "e5ada5e11773f356f0b5d7800f76a801bb0f473eed36b52bec3973ba3b8a098b",
+      "manualSha256": "2c9fcc482c96dd708004a1f20714e026c33a7a77d881249496d49018d82ca136",
+      "verdict": "accepted",
+      "note": "inherited: byte-identical to nb-80-r1, evidence inherited from reviews/nb-80 + independent spot-check"
+    },
+    {
+      "path": "apps/electron/src/main/lib/browser-policy.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-policy.ts.md",
+      "sourceBlob": "289faf8e10524057796e4f3d05e7d0de9447855f",
+      "sourceSha256": "5deef627338f1995d97db8f041a383a869d039c3a01549c229e88a5da96b2db4",
+      "manualSha256": "1bb9e31d65729a0f4f3535d06b0304d5653da332f75a3e680b1eb25c8b6b4611",
+      "verdict": "accepted",
+      "note": "inherited: byte-identical to nb-80-r1, evidence inherited from reviews/nb-80 + independent spot-check"
+    },
+    {
+      "path": "apps/electron/src/main/lib/browser-preview-service.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-preview-service.test.ts.md",
+      "sourceBlob": "ffdaf8bbfb273ba19a7e1e72dd362ba39946b037",
+      "sourceSha256": "802adbcecbf592de40dea3a6f560d0c87b1aa5860026bef5a17a367bd774aebb",
+      "manualSha256": "935055b7bf07b25ed729cf340ab88edf6f88c92be02c6931d64fadce7125f3e9",
+      "verdict": "accepted",
+      "note": "inherited: byte-identical to nb-80-r1, evidence inherited from reviews/nb-80 + independent spot-check"
+    },
+    {
+      "path": "apps/electron/src/main/lib/browser-preview-service.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-preview-service.ts.md",
+      "sourceBlob": "d416dff622cf2b6ab66756ea6666cdc8262e4ae2",
+      "sourceSha256": "fb9cc2f3cbdfbc2235514e0773e81c8f57cd254ceb792542ae2cc416ce86213e",
+      "manualSha256": "89a47b8ce7b32d899e3e179c6919e959c4a338b6463393135fc02b8b0c3136ed",
+      "verdict": "accepted",
+      "note": "inherited: byte-identical to nb-80-r1, evidence inherited from reviews/nb-80 + independent spot-check"
+    },
+    {
+      "path": "apps/electron/src/main/lib/browser-profile-policy.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-profile-policy.ts.md",
+      "sourceBlob": "fe875aea51e05c4af880462f09d1490cfed625dc",
+      "sourceSha256": "6fa3ce38757f712fc1ad77fe4fd30db2de99812d57188736e1468af2fe5fe9a0",
+      "manualSha256": "299a5160bdc8ec8d3500b65cad0a2089223653dc0709fbd4d7f5fe83460229aa",
+      "verdict": "accepted",
+      "note": "inherited: byte-identical to nb-80-r1, evidence inherited from reviews/nb-80 + independent spot-check"
+    },
+    {
+      "path": "apps/electron/src/main/lib/browser-risk-disclaimer.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-risk-disclaimer.ts.md",
+      "sourceBlob": "6f1c57cb110e0ffbb77b61ec97be30b7806534ea",
+      "sourceSha256": "5d4de7c2357a42945d3e0da6402efe1f3b8a3ef8605e71851157e4eff0363e99",
+      "manualSha256": "6a05990e47a46c20a55f375c6e57106be44eb9b391713013df8574b49c14abc7",
+      "verdict": "accepted",
+      "note": "inherited: byte-identical to nb-80-r1, evidence inherited from reviews/nb-80 + independent spot-check"
+    },
+    {
+      "path": "apps/electron/src/main/lib/browser-script-policy.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-script-policy.ts.md",
+      "sourceBlob": "af2552ed6568fa2ba9589434eb707d0aa9a9d87e",
+      "sourceSha256": "a506c23fb73f6844a4b89b1658c5e203f7c04077775a74c5f4e5ce354d4f8631",
+      "manualSha256": "e0f1e15de3d135cb7ae5788beb9440cf564b2e550bd97fa1f8462d78319e957e",
+      "verdict": "accepted",
+      "note": "inherited: byte-identical to nb-80-r1, evidence inherited from reviews/nb-80 + independent spot-check"
+    },
+    {
+      "path": "apps/electron/src/main/lib/browser-start-page-store.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-start-page-store.ts.md",
+      "sourceBlob": "e1a37c376525132c54b85d2e83ab3196c304ead1",
+      "sourceSha256": "19eedaa51219950137e47419827365313319a62d919fa747a6ecd590dd76e852",
+      "manualSha256": "bde45b59b226d0ca52fc92e8608e9ccdeb9e17f1b4fd5e7c9326284a4e691015",
+      "verdict": "accepted",
+      "note": "inherited: byte-identical to nb-80-r1, evidence inherited from reviews/nb-80 + independent spot-check"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-cdp.ts.md": "ebf0e139e90fc19e8e77cd1bf742ebb48b9c2c37ceb32b90b1a1bd6c8b80e010",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-controller-fresh-session-tab.test.ts.md": "610f95ddfc9b1131b0e82576b2fcca120849713c0822e4a17fedbfad86219a22",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-controller-local-file-sentinel.test.ts.md": "e724c13f21859a5085636073f0a852d9b568d3c69854a2b84de5f64a9d086494",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-controller-preview-theme.test.ts.md": "62f890b0a8ef38596b8c02cf7ac4e17b4f5616c340c789d41ac760bbfaa7fed3",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-controller-screenshot.test.ts.md": "1317081e30094922745f5b59bf3ea3051635c054d54bdfb3549a0cfc2078cf4c",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-controller.lifecycle.test.ts.md": "66ef8b3c78e153a864728e781704d6728f61ee4b4daa2e4cb48d5a065b84e2dc",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-controller.ts.md": "679cc57a7b806af78ba06b33196bdc119a1c290d0321cee55d6004ebfc7a2472",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-identity.ts.md": "4fb0cc3da3c94ba17c0b9621ef6c86047da7f5b1cdcdf7fca9e3669cc4e1d3bf",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-key-policy.ts.md": "73af048a1f7db548057cf5b0809686167a9648baeef1614cfea2f64f31f467eb",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-observation-policy.ts.md": "a7d6e9776517b96e6bc8195ae4a81726cf9a954bbf24cec0a426ae781ab599b8",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-policy.test.ts.md": "2c9fcc482c96dd708004a1f20714e026c33a7a77d881249496d49018d82ca136",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-policy.ts.md": "1bb9e31d65729a0f4f3535d06b0304d5653da332f75a3e680b1eb25c8b6b4611",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-preview-service.test.ts.md": "935055b7bf07b25ed729cf340ab88edf6f88c92be02c6931d64fadce7125f3e9",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-preview-service.ts.md": "89a47b8ce7b32d899e3e179c6919e959c4a338b6463393135fc02b8b0c3136ed",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-profile-policy.ts.md": "299a5160bdc8ec8d3500b65cad0a2089223653dc0709fbd4d7f5fe83460229aa",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-risk-disclaimer.ts.md": "6a05990e47a46c20a55f375c6e57106be44eb9b391713013df8574b49c14abc7",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-script-policy.ts.md": "e0f1e15de3d135cb7ae5788beb9440cf564b2e550bd97fa1f8462d78319e957e",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-start-page-store.ts.md": "bde45b59b226d0ca52fc92e8608e9ccdeb9e17f1b4fd5e7c9326284a4e691015"
+  },
+  "changedFromParent": {
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/browser-controller.ts.md": {
+      "before": "64d4d42f34fd0b2f66ae5b97c2820d812d870b6ef4eaf5af386c6a85e62a9702",
+      "after": "679cc57a7b806af78ba06b33196bdc119a1c290d0321cee55d6004ebfc7a2472"
+    }
+  },
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network",
+    "real browser/CDP"
+  ],
+  "verificationNotes": [
+    "G0：18 源绑定脚本实算==SCOPE==MANIFEST；18 手册 hash 磁盘=MANIFEST=READY；链一致；ZIP 21 条目安全逐字节一致；before/==父 nb-80-r1 stage；changes.diff 重放 1/1。",
+    "G2：F-01 修复独立实测（grep -n 逐符号）：重导行号全部真值且无越界；行为/安全结论未变；17 篇逐字节继承（证据继承 reviews/nb-80 + 抽核）。",
+    "NOT_RUN 不变；哈希脚本生成；未改作者手册/产品/全局账。"
+  ]
+}

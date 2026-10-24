@@ -1,0 +1,252 @@
+{
+ "schema": "r07-review-result/2",
+ "batch": "nb-98",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-ui-20261023",
+ "reviewerSession": "docs-r07-qa-ui-20261023",
+ "reviewedAtUtc": "2026-10-24T04:40:00Z",
+ "batchVerdict": "accepted",
+ "verdictNote": "G0/G1/G2 全过，18/18 accepted（二次再平衡新单，cdut-science UI）。导出覆盖 18/18 COMPLETE；交付前预读事实（getAuthStatus 失败降级/ComposerLock :22-38/DeleteLab 完整名称确认红线/electronAPI.cslab 桥）逐项对照吻合。1 条低级省略号行段。accepted 仅限静态文档 scope；NOT_RUN。",
+ "scope": "manager/assignments/nb-98-SCOPE.json",
+ "sealed": {
+  "root": "deliveries/nb-98",
+  "readySha256": "7bbbe56dc87dc5fc34fdca3aa102fea31a0e9b04170325a166d3852feb48dd25",
+  "doneSha256": "cfa9b6ff77b1cc5e8a8733ce5a683a7f9ac3132f1c84fc16927459142cddb67f",
+  "manifestSha256": "29d41d1307008d651acd1622c8aa56a9f9da7d619f56e3dc052f4174e2af09e3",
+  "zipSha256": "dd432cce28d982deb635e67686240c4e933791c81f386a97eb2e57836af2f6f7",
+  "zipBytes": 33975,
+  "zipEntries": 21
+ },
+ "gates": {
+  "G0": "PASS",
+  "G1": "PASS",
+  "G2": "ACCEPTED"
+ },
+ "g0Evidence": [
+  "18 篇四方哈希一致；源 18/18 blob+sha+行数一致；SCOPE==MANIFEST；ZIP 21 entries 安全、无漂移、链自洽"
+ ],
+ "g1Evidence": [
+  "18 source 11 章（0 测试随批）；front matter 复算一致；§2 符号行号严格核验 18/18 全过"
+ ],
+ "g2Evidence": [
+  "导出覆盖 18/18 COMPLETE（各 1 组件导出，0 缺）",
+  "预读对照：CdutScienceView getAuthStatus 首屏同步+失败降级「需要验密」(:36) ✓；CsLabComposerLock :22-38 锁定占位 ✓；DeleteLabDialog 完整名称输入红线+主进程物理删除 ✓；IPC 桥 electronAPI.cslab 与预读扫描一致",
+  "loadState/RibbonTab/ViewTransform 等内部符号行号核验全过；4 处省略号中 3 处为 UI 文案/形状省略，1 处行段（N98-1）"
+ ],
+ "files": [
+  {
+   "path": "apps/electron/src/renderer/components/cdut-science/CdutScienceView.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CdutScienceView.tsx.md",
+   "sourceBlob": "3614bc8a4c5072415afdf2aaa22f758ff3df1a52",
+   "sourceSha256": "ff51afad47fbd9162e24cb3442cf411a3d6095c01e8bc243cd4535550ccb32fe",
+   "manualSha256": "ccb54edb1c2fa7709ec36e1d8f385e6f38e009ddb2d77fc06a9fd276ca85305f",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-science/CsLabAgentGuards.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabAgentGuards.tsx.md",
+   "sourceBlob": "91d2c854f66e985998e2728116b3ff6e3d0d5f3b",
+   "sourceSha256": "fd42db5d87dc6bfedbc9606b0e58829343b2a69f1e16d76b88b5cd8c257a4c24",
+   "manualSha256": "bd582b3eb32104c3373dbcb61400f754a0e5015320638270796b285a3d6a4f92",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-science/CsLabAssetRail.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabAssetRail.tsx.md",
+   "sourceBlob": "654795602fd8a90e43f92ae3f83d38076f85eb2d",
+   "sourceSha256": "e7539bd84ccb130a6e49f470673301d92ef984160c3a435cf2fc45e690645584",
+   "manualSha256": "f87ce011dcad8508b2a86c5473026c6b656c534ca71943e02c75aa3fa1d73802",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-science/CsLabAuthGate.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabAuthGate.tsx.md",
+   "sourceBlob": "790acd602ecc0bab6ae56cb81045cd51b0e98119",
+   "sourceSha256": "c9a1b67b926aee322fe375dcc4bd8de9102427b672ce8da0312b56a19360093d",
+   "manualSha256": "f152506ae810fb74c7f65bd25453fbd14d9f25f3b001dd138f4e1a97db072984",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-science/CsLabCreateLabDialog.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabCreateLabDialog.tsx.md",
+   "sourceBlob": "e11daa1563ea3e673ea528aea79a498b1e53e6ad",
+   "sourceSha256": "22eea0eb8967ea0c54d5633a5972e6396476a49d657b4d93171a2b9d18f922e7",
+   "manualSha256": "04490ac8e1c371c7a082767220f448b2e05de251c85ea1c64a80e0b8a9ed6b2b",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-science/CsLabDagCanvas.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabDagCanvas.tsx.md",
+   "sourceBlob": "4c0cab44c64fb58db09298bad0652248d2c218fd",
+   "sourceSha256": "58abe23dac41021e9cb13ab76beb4b1ed32e9be4a959ddd55d67b37e650f0c59",
+   "manualSha256": "769c1357cb6347f8eafb3f2234053111869916f0175d5385ccc226976f8f9ddb",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-science/CsLabDatasetView.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabDatasetView.tsx.md",
+   "sourceBlob": "13dd4b94f21cd4e13e38bc9e6ec34238ee61015e",
+   "sourceSha256": "fe2a4e925233725b8bcb1a84c0e732e0279bf595d739cd87eb326e6cabfb7a26",
+   "manualSha256": "cce51c022f9d26c24cba6c0934cca25e008b4ce7afcaa125b40fe8a291b194ac",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-science/CsLabDeleteLabDialog.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabDeleteLabDialog.tsx.md",
+   "sourceBlob": "76e7c8bdb75d226cfbd2eab9a2268929a60d5f68",
+   "sourceSha256": "996a24aa15cfdfd5e884643c32a13528876aa31d4b285b4950827640b8f0388d",
+   "manualSha256": "8e121ae9bcb190f4350a8db998a17d9b70c3a45c54b782fda401931726bd1a6c",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-science/CsLabFigureView.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabFigureView.tsx.md",
+   "sourceBlob": "859b4ddd82e3951d27494101bd1cbc7dab67a9ff",
+   "sourceSha256": "3992b066dee42dfdc03a95e087cf76d08b64c31a04394a3d5f3b1c4a1f70a37c",
+   "manualSha256": "f7bb7ae48f9c32c221f2ded282dfb7f797d2b5aaa8145733b3555c85280e1f48",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-science/CsLabFormulaPanel.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabFormulaPanel.tsx.md",
+   "sourceBlob": "b67d99612d88f856098b3555bdc3fdaefc3ce457",
+   "sourceSha256": "037583e44464f0410fd8aee8501ac211e799622d282c5231bac23e6424a8aeff",
+   "manualSha256": "1a646e5582825bb350a206f4e7c1f0174745a5fb1bb4f02bb403b2f77296c9a7",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-science/CsLabHpcPanel.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabHpcPanel.tsx.md",
+   "sourceBlob": "ab7468a1d2d6aebe5d9e9914cbe5a22e4b803535",
+   "sourceSha256": "e34c7f7f687ca2d4fe1cc8b60a06cfed62cca1c49c35002fb1c75d8fec5c6cff",
+   "manualSha256": "89e8dc34ae5e55f2f9a40fc9af01596804bf2e25c716f92be5da347a94157691",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-science/CsLabIronCageTable.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabIronCageTable.tsx.md",
+   "sourceBlob": "370ae2c497ad02f9c995879facc0263137ea0f1a",
+   "sourceSha256": "c7f2148a247e2cbcce5e31f0ceb8a73ec53ce7ec85e0d4c76b750f1de553b933",
+   "manualSha256": "b35ce45b6e0647a92516bbe1f5c2c845d4857aea4f7001601f6b7bb65ac373d6",
+   "verdict": "accepted",
+   "findings": [
+    "N98-1"
+   ]
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-science/CsLabLiteratureBrainPanel.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabLiteratureBrainPanel.tsx.md",
+   "sourceBlob": "81a09d2462a623c3e06e6e9d6050f7ae6b24151d",
+   "sourceSha256": "fb27e398ffc820b2515b6b52713ed2ebb0325dbc082b6120577f849a0447b450",
+   "manualSha256": "111fb7c11cf88b3dbd98a023e93019b8fc6378ab09734e76cdb36b5782188cf0",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-science/CsLabManuscriptEditor.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabManuscriptEditor.tsx.md",
+   "sourceBlob": "f82ebfffc8fa6f5d6ad50d237c611206b5a7ca12",
+   "sourceSha256": "0e93d01c37254c7e4489ef7b5a75bfb1ac6a3b449e4853f2fe974b64036e2b20",
+   "manualSha256": "3acb16b59a1131bc67f430e2e27d435856a4298816ffa7050ae57c3a6c66e26f",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-science/CsLabMolstarViewer.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabMolstarViewer.tsx.md",
+   "sourceBlob": "b667d138071acc296cf333e7b868ad6e1819a636",
+   "sourceSha256": "deccdff494bb68a5ca1af20bed5198c3a8e84ffd19f194b34146dcc56d292a28",
+   "manualSha256": "2319160b438e491333247130e960378c24db45160f72c468ee4777a2e68c3766",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-science/CsLabNetworkSharePanel.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabNetworkSharePanel.tsx.md",
+   "sourceBlob": "9a0ae2aa57c76d79e2ccb8a2bec5a24c7406a478",
+   "sourceSha256": "186d6f71fa84153e6387bf1ea2665b6cfeeb6967284c4d6ad06d2383b7e0bcfd",
+   "manualSha256": "4e9cc49b015ca7dc9c79b4620a956237f8fee26f95ab7ded6dab9491edcdced9",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-science/CsLabNotesPanel.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabNotesPanel.tsx.md",
+   "sourceBlob": "739860ae153370a36c76e8d8a826f8d9deac53a8",
+   "sourceSha256": "753c55e690adf66ca6d4ceec686116a15637adaac99a2d17a2989f8507d1c745",
+   "manualSha256": "d3583bdab065c2aca927d3a82f5adf3f41439749da6aab999e04f9f9486f1545",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/cdut-science/CsLabOriginPlotPane.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabOriginPlotPane.tsx.md",
+   "sourceBlob": "22953644fddac68c9eb996b6a2b1553d9354ce62",
+   "sourceSha256": "6b2a4874aa07f385e20ff2c3434004093236ab6429f08e0159d7eb10aae5ff89",
+   "manualSha256": "98dfcf3e595167c3bd24258c1388e3fe8496611446a66e3da4d1cc4ffb467e48",
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CdutScienceView.tsx.md": "ccb54edb1c2fa7709ec36e1d8f385e6f38e009ddb2d77fc06a9fd276ca85305f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabAgentGuards.tsx.md": "bd582b3eb32104c3373dbcb61400f754a0e5015320638270796b285a3d6a4f92",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabAssetRail.tsx.md": "f87ce011dcad8508b2a86c5473026c6b656c534ca71943e02c75aa3fa1d73802",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabAuthGate.tsx.md": "f152506ae810fb74c7f65bd25453fbd14d9f25f3b001dd138f4e1a97db072984",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabCreateLabDialog.tsx.md": "04490ac8e1c371c7a082767220f448b2e05de251c85ea1c64a80e0b8a9ed6b2b",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabDagCanvas.tsx.md": "769c1357cb6347f8eafb3f2234053111869916f0175d5385ccc226976f8f9ddb",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabDatasetView.tsx.md": "cce51c022f9d26c24cba6c0934cca25e008b4ce7afcaa125b40fe8a291b194ac",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabDeleteLabDialog.tsx.md": "8e121ae9bcb190f4350a8db998a17d9b70c3a45c54b782fda401931726bd1a6c",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabFigureView.tsx.md": "f7bb7ae48f9c32c221f2ded282dfb7f797d2b5aaa8145733b3555c85280e1f48",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabFormulaPanel.tsx.md": "1a646e5582825bb350a206f4e7c1f0174745a5fb1bb4f02bb403b2f77296c9a7",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabHpcPanel.tsx.md": "89e8dc34ae5e55f2f9a40fc9af01596804bf2e25c716f92be5da347a94157691",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabIronCageTable.tsx.md": "b35ce45b6e0647a92516bbe1f5c2c845d4857aea4f7001601f6b7bb65ac373d6",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabLiteratureBrainPanel.tsx.md": "111fb7c11cf88b3dbd98a023e93019b8fc6378ab09734e76cdb36b5782188cf0",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabManuscriptEditor.tsx.md": "3acb16b59a1131bc67f430e2e27d435856a4298816ffa7050ae57c3a6c66e26f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabMolstarViewer.tsx.md": "2319160b438e491333247130e960378c24db45160f72c468ee4777a2e68c3766",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabNetworkSharePanel.tsx.md": "4e9cc49b015ca7dc9c79b4620a956237f8fee26f95ab7ded6dab9491edcdced9",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabNotesPanel.tsx.md": "d3583bdab065c2aca927d3a82f5adf3f41439749da6aab999e04f9f9486f1545",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/cdut-science/CsLabOriginPlotPane.tsx.md": "98dfcf3e595167c3bd24258c1388e3fe8496611446a66e3da4d1cc4ffb467e48"
+ },
+ "findings": [
+  {
+   "id": "N98-1",
+   "severity": "low",
+   "type": "unresolvable_ref",
+   "status": "open",
+   "file": "apps/electron/src/renderer/components/cdut-science/CsLabIronCageTable.tsx",
+   "manualLines": "§2",
+   "claim": "IronCageTableProps 行段「:12-…」尾省略号应改实值",
+   "sourceEvidence": [
+    "Props interface :12 起，止行可实测"
+   ],
+   "action": "下次触碰改实值；非阻断"
+  }
+ ],
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "boundaries": [
+  "未改源码/作者正文/candidate/全局总账；旧 seal/旧预读不回写；NOT_RUN 不等于测试通过",
+  "accepted 仅限静态文档 scope；运行期行为未知"
+ ],
+ "next": [
+  "18 篇可按 acceptedHashes 合入",
+  "nb-116-r1/nb-44-r2 返修出现后优先复验"
+ ]
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "dsh-r07-index-review-result/1",
+  "batch": "index-p01-app-shell____pycache__",
+  "groupId": "p01-app-shell____pycache__",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-index-author-20261023",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T18:22:00Z",
+  "sealedAtUtc": "2026-10-23T17:41:12Z",
+  "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell____pycache__.md",
+  "artifactSha256": "386e2267f3f7dc8ced32ceafcd24d8a52c87d59a0cb17ae6c42556dfa4d2050c",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 1,
+    "accepted": 1,
+    "revision_required": 0,
+    "unknown": 0,
+    "blocking": 0,
+    "nonBlocking": 0
+  },
+  "gates": {
+    "G0_INDEX": "PASS",
+    "G1_INDEPENDENT_SOURCE_REVIEW": "PASS",
+    "G2_SEAL_CONSISTENCY": "PASS",
+    "note": "G0 等价检查 1/1；封版三方哈希全对（386e2267…/9fed63e7…/a2ad94bf…）。G1：pyc 头（magic f30d0d0a、flags 0、mtime 2026-10-23 01:26:59 UTC、源 1095B）与 QA 重算一致；「实际消费者=无、源 verify_doc.py 不在树」与 QA 全树检索/预读独立结论一致（QA 附加 marshal 证据：co_filename=C:\\Users\\Belie\\Desktop\\CDUT-Studio\\verify_doc.py、python-docx 文档核对脚本，佐证作者「文档核对脚本」推断方向正确）；未把 import 约定冒充实际消费者。"
+  },
+  "g0Evidence": {
+    "stockScript": "ERRATA-E1 路径约定缺陷沿登记；等价检查 1/1 PASS"
+  },
+  "files": [
+    {
+      "path": "__pycache__/verify_doc.cpython-313.pyc",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell____pycache__.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell____pycache__.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#__pycache__--verify_doc.cpython-313.pyc",
+      "line": 6,
+      "sourceBlob": "bdb21ac626363030693ba20e2ee3b83cee2a51fe",
+      "sourceSha256": "303368816bb62789b6787480ec7f699bcfb2af24131e6267469e8f7af6eceeec",
+      "manualSha256": "386e2267f3f7dc8ced32ceafcd24d8a52c87d59a0cb17ae6c42556dfa4d2050c",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "七项齐全；消费（import 约定=推断/实际消费者=无=证实）、来源（CPython 生成）、影响（零影响+风险评估）与 QA 实测一致；证实/推断/未知分层诚实。"
+    }
+  ],
+  "findings": [],
+  "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局账；未跑产品测试/typecheck/构建/GUI/Python 导入执行；未 commit/push；结论只覆盖本批。"
+}

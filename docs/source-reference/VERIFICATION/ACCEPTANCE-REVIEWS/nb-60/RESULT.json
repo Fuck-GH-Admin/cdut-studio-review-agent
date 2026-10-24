@@ -1,0 +1,201 @@
+{
+  "schema": "dsh-r07-review-result/2",
+  "batch": "nb-60",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "reviewedAtUtc": "2026-10-24T00:40:00Z",
+  "sealedAtUtc": "2026-10-23T17:29:58Z",
+  "sealId": "seal-015a87984fec56c1",
+  "runStatus": "NOT_RUN",
+  "batchVerdict": "accepted",
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass_with_findings"
+  },
+  "g0Evidence": {
+    "sealChain": "manifestSha/readySha/zipSha 三层独立重算全相等；zip 13 条目合规",
+    "manualHashes": "10/10 磁盘=MANIFEST=READY 全等",
+    "scopeBinding": "10/10 源 blob+sha256+lines 与 nb-60-SCOPE 全等"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/main/lib/skill-policy-projection.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-policy-projection.test.ts.md",
+      "sourceBlob": "69a03bad1cd1dfee35ace4f42a7567481db3d87e",
+      "sourceSha256": "b214edb31b33c6504ee7ed5d8ceebfed2fbee10bc277915f18509c05904b503c",
+      "manualSha256": "eb9cf7828aecd57f92dda286185304fd1dd92e609fdab55210c9135c6e34cf4a",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/skill-routing-eval.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-routing-eval.test.ts.md",
+      "sourceBlob": "5559b72511a8d65e4255e581f275d32cc8379dff",
+      "sourceSha256": "007af42625d14b211a702d3343efb35704ddb932e9d16fb347b9de90da1dd3bc",
+      "manualSha256": "fef6e49903e7fe79dc18090fcd45319f4232ab8418e7812b4fef6e10485b83c0",
+      "verdict": "accepted",
+      "findings": [
+        "NB60-N3",
+        "NB60-N4"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/skill-routing-rules.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-routing-rules.ts.md",
+      "sourceBlob": "29346bdc7c10ffd7efb88ce1471d11b45a6c57a1",
+      "sourceSha256": "a14b788c2ebfea755cbc62e8da3926f1093febed3425d4155df3d2a8904fe048",
+      "manualSha256": "92c2cc4baaebe234d1212ff4bb227ef7fb75f6c0aaf8e17ad58e0110dee28b4f",
+      "verdict": "accepted",
+      "findings": [
+        "NB60-N1"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/skill-routing.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-routing.test.ts.md",
+      "sourceBlob": "20624bf24d9452cbc1eed7e75c9c91eb577dfa5d",
+      "sourceSha256": "cc792630e09d5a5688e7e019bcaffcf8f57ce07d5e56bd8f0a329f23ba15476b",
+      "manualSha256": "d1783ebf317231f1503cd3d764af02d470a8c26dc687ccaf307bc1776afd93e5",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/skill-routing.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-routing.ts.md",
+      "sourceBlob": "ff4e2836bc3e486775ad9aa0aee9f84f7ef7511b",
+      "sourceSha256": "2dc5f4dd260661817640cf297bdcaee1fa5e77c7ae34f3b54ba6a9dc6fdfc591",
+      "manualSha256": "1053d91be11dfb75c3243e4099d49bca8ce6cbe0c55c964eaf7d15117119c66e",
+      "verdict": "accepted",
+      "findings": [
+        "NB60-N2"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/skill-runtime-routing.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-runtime-routing.ts.md",
+      "sourceBlob": "b510f98690fac8fdb0a77440ae1dc94178f00c4b",
+      "sourceSha256": "db2e7d35aa257b943b4c3f3a509cbff2f3408c5021b1a66426a58172b911e848",
+      "manualSha256": "06ebb6d8f1e1a775f6a8b91d19f337c7bb1d683f336e70a866a176334e413f71",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/skill-runtime-smoke.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-runtime-smoke.test.ts.md",
+      "sourceBlob": "638a9b5522e0dcc10219d3c9062ca88a86fd7891",
+      "sourceSha256": "3e32ea90f0c430f3a9fe57f8aca872de1a22b2c6f69752e60e1212035fb35638",
+      "manualSha256": "839490bd1e8d35f70a15ebbea5185d35f22f168252ce9126a10f3485ed36636f",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/title-generation.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/title-generation.test.ts.md",
+      "sourceBlob": "4ee098f1a8fe0d89ec8ff6351b2963133477571e",
+      "sourceSha256": "376a5b122e37fd0d42b808493072557d4e2bff78305f96f17f4ac20fd4cac531",
+      "manualSha256": "5ff9152da64619c65203d85f5327a3c68b52ec514f15dd2650458e0a38823384",
+      "verdict": "accepted",
+      "findings": [
+        "NB60-N6"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/title-generation.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/title-generation.ts.md",
+      "sourceBlob": "db36c58af44de0434cdad39ba112dfdd217db41f",
+      "sourceSha256": "2f420853a9144a548fa3240140e7bb4e3629672b483b8603604496af7db2d1a3",
+      "manualSha256": "f525413393f438d98eca7efd7e009ff3b0f08f376e9cf4fb8138edd4be1061b3",
+      "verdict": "accepted",
+      "findings": [
+        "NB60-N5"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/titlebar-overlay.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/titlebar-overlay.ts.md",
+      "sourceBlob": "16571509d014129891a49cb3ee34686802a48cb7",
+      "sourceSha256": "bb0d8381ce41726b91a31f3818d3474e208cf10a9af15697d8de470129ee1193",
+      "manualSha256": "c8fcf50d661add37f550810d0c88ddc7e2084426f4103eb61b2a4acf422fec55",
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "NB60-N1",
+      "file": "apps/electron/src/main/lib/skill-routing-rules.ts",
+      "severity": "minor",
+      "claim": "§3/§2 称 skillTaskMatch『按 slug 九分支（:45-56）』，实际 switch 有 10 个 case（code-honor/brainstorming/writing-plans/agent-collaboration/automation/in-app-browser/pdf/docx/xlsx/pptx）+ default。",
+      "sourceEvidence": "skill-routing-rules.ts :45-56 逐行（10 case :46-55 + default :56）。",
+      "action": "九分支→十分支。"
+    },
+    {
+      "id": "NB60-N2",
+      "file": "apps/electron/src/main/lib/skill-routing.ts",
+      "severity": "minor",
+      "claim": "§10 称『5 导出+8 内部』，实际 9 个导出（SkillRoutingCode/SkillRoutingDiagnostic/RoutingSkill/SkillRoutingSnapshot/SkillSelection/SkillRoutingResult/createSkillRoutingSnapshot/extractSkillMentions/routeSkillsForTask；表内 5 行合并了 5 个 interface）。",
+      "sourceEvidence": "grep -c \"^export \" skill-routing.ts = 9。",
+      "action": "5→9（或注明表行口径）。"
+    },
+    {
+      "id": "NB60-N3",
+      "file": "apps/electron/src/main/lib/skill-routing-eval.test.ts",
+      "severity": "minor",
+      "claim": "§2 称『29 个参数化用例 + 1 个组合用例 = 30 个 test()』，实际参数化 28 条（应推荐 15 + 不应推荐 13）+ 1 = 29 个 test()；『不应推荐（14）』实为 13。",
+      "sourceEvidence": "skill-routing-eval.test.ts :6-33 cases 数组 28 条（15 正 :6-20 + 13 负 :21-33）+ :40 组合用例；for 生成 test = 29。",
+      "action": "30→29、14→13、参数化 29→28。"
+    },
+    {
+      "id": "NB60-N4",
+      "file": "apps/electron/src/main/lib/skill-routing-eval.test.ts",
+      "severity": "minor",
+      "claim": "§6 称『九 slug 正向 15』，正向样本覆盖 10 个 slug（code-honor/brainstorming/writing-plans/agent-collaboration/automation/in-app-browser/pdf/docx/xlsx/pptx）。",
+      "sourceEvidence": "cases :6-20 逐条对名。",
+      "action": "九 slug→十 slug。"
+    },
+    {
+      "id": "NB60-N5",
+      "file": "apps/electron/src/main/lib/title-generation.ts",
+      "severity": "minor",
+      "claim": "§2/§10/§11 称『14 导出』，实际 15 个（TITLE_SOURCE_MAX_COUNT/CHARS 两常量合并为一行后被少数 1）。",
+      "sourceEvidence": "grep -c \"^export \" title-generation.ts = 15。",
+      "action": "14→15（或注明表行口径）。"
+    },
+    {
+      "id": "NB60-N6",
+      "file": "apps/electron/src/main/lib/title-generation.test.ts",
+      "severity": "minor",
+      "claim": "交付字节含 2 处标签字面量被剥离后的残片（同 NB43-N1 根因）：§1『…trim 抛异常、` 退化）』与 §3『清洗：…；` 包裹剥离（:111-113）』——原文应为思考标签字面量（think/thinking/reasoning 块），被剥离后留下孤立反引号。所幸表格/结构完好、行号可回溯，语义可恢复。",
+      "sourceEvidence": "python repr 核 :19 与 §3 清洗行均含孤立 \"` \"；对照源码 :109 注释与 :110-113 用例（think 块剥离回归）。",
+      "action": "用符号名（THINK_BLOCK/think 块）或转义写法重写两处残句，勿内嵌会被剥离的标记字面量。"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-policy-projection.test.ts.md": "eb9cf7828aecd57f92dda286185304fd1dd92e609fdab55210c9135c6e34cf4a",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-routing-eval.test.ts.md": "fef6e49903e7fe79dc18090fcd45319f4232ab8418e7812b4fef6e10485b83c0",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-routing-rules.ts.md": "92c2cc4baaebe234d1212ff4bb227ef7fb75f6c0aaf8e17ad58e0110dee28b4f",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-routing.test.ts.md": "d1783ebf317231f1503cd3d764af02d470a8c26dc687ccaf307bc1776afd93e5",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-routing.ts.md": "1053d91be11dfb75c3243e4099d49bca8ce6cbe0c55c964eaf7d15117119c66e",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-runtime-routing.ts.md": "06ebb6d8f1e1a775f6a8b91d19f337c7bb1d683f336e70a866a176334e413f71",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-runtime-smoke.test.ts.md": "839490bd1e8d35f70a15ebbea5185d35f22f168252ce9126a10f3485ed36636f",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/title-generation.test.ts.md": "5ff9152da64619c65203d85f5327a3c68b52ec514f15dd2650458e0a38823384",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/title-generation.ts.md": "f525413393f438d98eca7efd7e009ff3b0f08f376e9cf4fb8138edd4be1061b3",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/titlebar-overlay.ts.md": "c8fcf50d661add37f550810d0c88ddc7e2084426f4103eb61b2a4acf422fec55"
+  },
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "notes": [
+    "G2：10 文件 1374 行全文逐行读 + 10 篇手册全文比对；5 测试文件 93 用例（2/29/14/4/44）复算——title-generation.test 44 用例与手册全对、skill-routing.test 14 全对；eval 测试手册用例总数 30 实为 29（NB60-N3）。",
+    "独立复算命中：MAX_TITLE_LENGTH=20/SHORT_MESSAGE_THRESHOLD=4/TITLE_SOURCE 4 条/400 字、推荐 ≤3 上限 5、正文预算 24000 上限 64000、9 拒绝码、THEME_COLORS 9 主题、EMPTY_INTENT_TOKENS 消费算法、toolIsAvailable MCP 全名精确语义等全对。",
+    "NB60-N6 与 NB43-N1 同根因（生成时特殊标记字面量被剥离留孤立反引号），但本处表格/结构完好、行号可回溯语义可恢复，定级 minor（NB43-N1 为表格被拆+多处残句故 major 退回）。请作者全组统一用符号名/转义写法。",
+    "6 条 findings 均为计数口径（九/十、N 导出、用例总数）+1 处文字残片，每文件 ≤2；无行为/红线错误。",
+    "manualSha256 脚本生成=READY 三方核验。"
+  ]
+}

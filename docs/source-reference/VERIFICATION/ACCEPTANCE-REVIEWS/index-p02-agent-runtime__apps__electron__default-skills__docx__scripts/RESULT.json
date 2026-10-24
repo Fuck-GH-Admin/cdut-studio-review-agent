@@ -1,0 +1,156 @@
+{
+ "schema": "dsh-r07-index-review-result/1",
+ "batch": "index-p02-agent-runtime__apps__electron__default-skills__docx__scripts",
+ "groupId": "p02-agent-runtime__apps__electron__default-skills__docx__scripts",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-02-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T19:15:00Z",
+ "sealedAtUtc": "2026-10-23T18:59:57+00:00",
+ "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__docx__scripts.md",
+ "artifactSha256": "bd7ceb42ab30136d2312ac5e6a51c0e401e40f97897a3b529ed3ea5429ca55fb",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 5,
+  "accepted": 5,
+  "revision_required": 0,
+  "unknown": 0,
+  "blocking": 0,
+  "nonBlocking": 5
+ },
+ "gates": {
+  "G0_INDEX": "PASS",
+  "G1_INDEPENDENT_SOURCE_REVIEW": "PASS",
+  "G2_SEAL_CONSISTENCY": "PASS",
+  "note": "G0 等价 5/5、封版链四方哈希全对、锚点/行号逐行命中、锁逐字段一致。G1 独立实读 comment.py 全文（318 行）+ 模板 5 件 + validators/base.py + skill-master-manager/agent-prompt-builder/index.ts/electron-builder.yml：五文件「真实加载/消费者」「修改影响」全部属实（含 people.xml 零代码消费者负向结论成立）。发现行号引证簇漂移（N-01..N-05，非阻断）。"
+ },
+ "g0Evidence": {
+  "stockScript": "ERRATA-E1 沿登记（g0_index_check.py:99-100 现按 deliveries/index-<gid> 寻址看似已修，QA 以自写等价检查为准）；等价检查 5/5 PASS"
+ },
+ "files": [
+  {
+   "path": "apps/electron/default-skills/docx/scripts/templates/comments.xml",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__docx__scripts.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__docx__scripts.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--docx--scripts--templates--comments.xml",
+   "line": 17,
+   "sourceBlob": "cd01a7d7155f9a78cf3d11470e2ce2b5ccdac640",
+   "sourceSha256": "a08ba83ee8790ac9e3dc61921f4988f19edd7e06ac09d6f1897a877c1581818d",
+   "manualSha256": "bd7ceb42ab30136d2312ac5e6a51c0e401e40f97897a3b529ed3ea5429ca55fb",
+   "verdict": "accepted",
+   "findings": [
+    "N-01",
+    "N-03",
+    "N-05"
+   ],
+   "note": "复制/追加/登记语义全部属实（QA 实读 comment.py:233-250）；首注才复制+append 到模板根、弯引号转实体、4 rel/4 override 属实。"
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/templates/commentsExtended.xml",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__docx__scripts.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__docx__scripts.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--docx--scripts--templates--commentsExtended.xml",
+   "line": 27,
+   "sourceBlob": "411003cc485356c560e29687ca359d64cd89d4b4",
+   "sourceSha256": "544eeecfeceed4b468fff163cd9c366d33641c8b8ab691ce002576197846afe8",
+   "manualSha256": "bd7ceb42ab30136d2312ac5e6a51c0e401e40f97897a3b529ed3ea5429ca55fb",
+   "verdict": "accepted",
+   "findings": [
+    "N-01"
+   ],
+   "note": "paraIdParent 父子链/done=\"0\" 属实（:255-269 精确命中）；_find_para_id 锚点偏移见 N-01。"
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/templates/commentsExtensible.xml",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__docx__scripts.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__docx__scripts.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--docx--scripts--templates--commentsExtensible.xml",
+   "line": 37,
+   "sourceBlob": "f5572d710826dd7a1f455af7487e2157ef01ada0",
+   "sourceSha256": "bad10b3283e6ad6e7ef6d1ca5169683721ed690ee331282c65df04017e080631",
+   "manualSha256": "bd7ceb42ab30136d2312ac5e6a51c0e401e40f97897a3b529ed3ea5429ca55fb",
+   "verdict": "accepted",
+   "findings": [
+    "N-02"
+   ],
+   "note": "durableId 共用、dateUtc 写入属实（:283-287 精确命中）；_generate_hex_id 锚点错见 N-02。"
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/templates/commentsIds.xml",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__docx__scripts.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__docx__scripts.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--docx--scripts--templates--commentsIds.xml",
+   "line": 47,
+   "sourceBlob": "32f1629f2a8bb9aafebb0699349d0d799edce9f3",
+   "sourceSha256": "db20f9616e004ec42ef736e80c2384e45db0f8d1194d31dc8b37c7d6ecdd6420",
+   "manualSha256": "bd7ceb42ab30136d2312ac5e6a51c0e401e40f97897a3b529ed3ea5429ca55fb",
+   "verdict": "accepted",
+   "findings": [],
+   "note": ":271-273/:274-278 逐行命中、validators/base.py:53 属实，零缺陷。"
+  },
+  {
+   "path": "apps/electron/default-skills/docx/scripts/templates/people.xml",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__docx__scripts.md",
+   "targetMd": "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__docx__scripts.md",
+   "anchor": "MODULE-REFERENCE/p02-agent-runtime/INDEX.md#apps--electron--default-skills--docx--scripts--templates--people.xml",
+   "line": 57,
+   "sourceBlob": "3803d2de0faa635687a48947b52ab98b9655f631",
+   "sourceSha256": "056f63aa1197fd8c9dda980c9f1b9ff016fd5fa4a462df8aec5f384f39d23e37",
+   "manualSha256": "bd7ceb42ab30136d2312ac5e6a51c0e401e40f97897a3b529ed3ea5429ca55fb",
+   "verdict": "accepted",
+   "findings": [
+    "N-04",
+    "N-05"
+   ],
+   "note": "零代码消费者负向结论 QA 独立成立（全树检索）；语义/校验映射如实登记，未用『资源/无逻辑』带过。"
+  }
+ ],
+ "findings": [
+  {
+   "id": "N-01",
+   "severity": "low",
+   "type": "citation_precision",
+   "file": "apps/electron/default-skills/docx/scripts/comment.py",
+   "manualLines": "家族背景；comments.xml 段；commentsExtended 段",
+   "detail": "comment.py 行号引证漂移：TEMPLATE_DIR 实为 :25（写 :22）；shutil.copy(comments.xml) 实为 :236（写 :233-235，范围未含复制行）；_append_xml(comments,\"w:comments\") 调用实为 :239-250（写 :236-247）；relationship/Content-Type 登记实为 :237-238（写 :236-237）；_append_xml def 实为 :86-95（写 :91-101）；_find_para_id def 实为 :98-105（写 :104-111）；_encode_smart_quotes 实为 :80-83（写 :80-88）。语义断言全部属实，仅锚点不准。",
+   "action": "下次触碰/合并 errata 时按 grep -n 重导；非阻断。"
+  },
+  {
+   "id": "N-02",
+   "severity": "low",
+   "type": "citation_precision",
+   "file": "apps/electron/default-skills/docx/scripts/comment.py",
+   "manualLines": "commentsExtensible 段",
+   "detail": "_generate_hex_id() 引 :73-74，实际函数在 :68-69；:73-74 是 SMART_QUOTE_ENTITIES 表项，指向无关代码。durableId 与 commentsIds 共用同一变量=属实。",
+   "action": "改为 :68-69；非阻断。"
+  },
+  {
+   "id": "N-03",
+   "severity": "low",
+   "type": "verification_instruction",
+   "file": "apps/electron/default-skills/docx/scripts/templates/comments.xml",
+   "manualLines": "comments.xml 段·验证①",
+   "detail": "自证验证指令「grep -n 'TEMPLATE_DIR / \"comments.xml\"' comment.py 应命中 :234」实测命中 :236，按文执行会误判。",
+   "action": "期望值改 :236；非阻断。"
+  },
+  {
+   "id": "N-04",
+   "severity": "low",
+   "type": "evidence_wording",
+   "file": "apps/electron/default-skills/docx/scripts/templates/people.xml",
+   "manualLines": "people.xml 段·消费/验证",
+   "detail": "负向证据口径夸大：grep -rn \"people\" apps/（.py/.ts/.md/.js）并非「除 base.py:52 外零命中」——review 测试族有 check('people')/peopleRule/peopleCount 等同名无关命中（case 字段名）。结论（templates/people.xml 无运行时复制点、唯一消费者=validators/base.py:52 SCHEMA_MAPPINGS）经 QA 独立复核成立；证据表述应改为 grep 'people.xml' 口径（命中=3 份 validators base.py:52 + 模板自身）。",
+   "action": "修口径措辞；非阻断。"
+  },
+  {
+   "id": "N-05",
+   "severity": "low",
+   "type": "citation_precision",
+   "file": "(共通链)",
+   "manualLines": "家族背景·加载链/打包",
+   "detail": "共通链引证漂移：electron-builder.yml extraResources 实为 :70-75（from/to :72-73、filter :74-75；写 :71-73 且 :71 为陈旧 ~/.proma 注释行）；index.ts bundledGlobalSkillsDir 赋值起 :939（ternary :940-941，写 :940-941）；_ensure_comment_relationships def :137-177（写 :139-176）；_ensure_comment_content_types def :179-217（写 :179-218）。4 条 relationship/4 条 Override 计数属实。",
+   "action": "合并 errata 修正；非阻断。"
+  }
+ ],
+ "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局账；产品测试/typecheck/构建/GUI/实际 validate·COM 运行 NOT_RUN；结论只覆盖本批。非阻断≠已修。"
+}

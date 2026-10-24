@@ -1,0 +1,37 @@
+{
+ "schema": "dsh-r07-index-review-done/1",
+ "batch": "index-p02-agent-runtime__apps__electron__default-skills__docx__scripts",
+ "groupId": "p02-agent-runtime__apps__electron__default-skills__docx__scripts",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-02-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T19:15:00Z",
+ "sealedAtUtc": "2026-10-23T18:59:57+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 5,
+  "accepted": 5,
+  "revision_required": 0,
+  "unknown": 0,
+  "findingsBlocking": 0,
+  "findingsNonBlocking": 5
+ },
+ "artifactSha256": "bd7ceb42ab30136d2312ac5e6a51c0e401e40f97897a3b529ed3ea5429ca55fb",
+ "artifacts": [
+  "reviews/index-p02-agent-runtime__apps__electron__default-skills__docx__scripts/RESULT.json",
+  "reviews/index-p02-agent-runtime__apps__electron__default-skills__docx__scripts/REVIEWED-HASHES.json",
+  "reviews/index-p02-agent-runtime__apps__electron__default-skills__docx__scripts/SOURCE-CHECKLIST.md",
+  "reviews/index-p02-agent-runtime__apps__electron__default-skills__docx__scripts/DONE.json"
+ ],
+ "notRun": [
+  "产品测试",
+  "typecheck",
+  "构建",
+  "Electron/GUI",
+  "实际 validate.py/comment.py/chartlib/profer CLI 运行（本轮统一 NOT_RUN）"
+ ],
+ "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局账；未 commit/push；结论只覆盖本批。",
+ "findingsSummary": "5/5 accepted。G0 等价 5/5、封版链全对；独立实读复核加载链/校验映射/people.xml 负向结论全部属实。5 条非阻断 findings（N-01..N-05 行号引证簇/验证指令期望值/负向证据口径）已登记，非阻断≠已修。ERRATA-E1/E2/E3 沿登记。",
+ "next": "lead 按 REVIEWED-HASHES.json 合入（artifactSha256=bd7ceb42ab30136d2312ac5e6a51c0e401e40f97897a3b529ed3ea5429ca55fb）；作者 N-01..N-05 随合并 errata 修正；QA 续审 skill-creator（封版后）与 vendor-xsd__ISO-IEC29500-4_2016（交付后）。"
+}

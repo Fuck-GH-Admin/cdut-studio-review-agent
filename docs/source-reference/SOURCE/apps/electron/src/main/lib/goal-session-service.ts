@@ -1,0 +1,233 @@
+import { createHash, randomUUID } from 'node:crypto'
+import type { AgentGoalContract, AgentGoalIterationResult, AgentGoalLimits, AgentGoalState, AgentGoalUsage, AgentSendInput, SDKMessage } from '@profer/shared'
+import { GoalController } from './goal-controller'
+import { buildGoalIterationPrompt } from './goal-loop'
+import { normalizeGoalToolResult } from './goal-tools'
+import { validateGoalUpdatePatch } from './goal-update-validation'
+
+type GoalSession = Partial<Pick<AgentSendInput, 'channelId' | 'modelId' | 'workspaceId' | 'agentRuntime'>> & { title?: string; permissionMode?: AgentSendInput['permissionModeOverride'] }
+type GoalPatch = { goal?: string; contract?: AgentGoalContract; limits?: Partial<AgentGoalLimits> }
+
+type Dependencies = {
+  getSession: (sessionId: string) => GoalSession | undefined
+  run: (input: AgentSendInput) => Promise<void>
+  isSessionActive: (sessionId: string) => boolean
+  stopRun: (sessionId: string, runId: string) => Promise<void>
+  permissionError: (sessionId: string) => string | undefined
+  readStates: () => AgentGoalState[]
+  saveStates: (states: AgentGoalState[]) => void
+  archive: (state: AgentGoalState) => void
+  history: (sessionId: string) => AgentGoalState[]
+  readMessages: (sessionId: string) => SDKMessage[]
+  appendMessages: (sessionId: string, messages: SDKMessage[]) => void
+  createBlockedTodo: (state: AgentGoalState, session?: GoalSession) => string
+  updateBlockedTodo: (id: string, status: 'open' | 'completed', notes: string) => void
+  publish: (state: AgentGoalState) => void
+  logError: (error: unknown) => void
+}
+
+/** Goal 只读取当前轮 runtime usage；消息正文永远不能成为控制协议。 */
+export function collectGoalRunUsage(messages: SDKMessage[]): AgentGoalUsage | undefined {
+  for (let index = messages.length - 1; index >= 0; index--) {
+    const message = messages[index] as { type?: string; usage?: Record<string, unknown> }
+    if (message.type !== 'result' || !message.usage) continue
+    const value = (key: string) => {
+      const number = Number(message.usage?.[key] ?? 0)
+      return Number.isFinite(number) && number >= 0 ? number : 0
+    }
+    const inputTokens = value('input_tokens') + value('cache_read_input_tokens') + value('cache_creation_input_tokens')
+    const outputTokens = value('output_tokens')
+    return { inputTokens, outputTokens, totalTokens: inputTokens + outputTokens }
+  }
+  return undefined
+}
+
+function resultKey(state: AgentGoalState): string {
+  return `goal:${state.id}:${state.iteration}:${state.status}`
+}
+
+function stableUuid(key: string): string {
+  const hex = createHash('sha256').update(key).digest('hex')
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-5${hex.slice(13, 16)}-a${hex.slice(17, 20)}-${hex.slice(20, 32)}`
+}
+
+/** 会话级 Goal 接线：生命周期、消息投影、Todo 与运行归属统一在这里。 */
+export class GoalSessionService {
+  readonly controller: GoalController
+  private readonly projecting = new Set<string>()
+  private readonly todoHandled = new Set<string>()
+  private readonly publishedRevision = new Map<string, number>()
+  private readonly archived = new Set<string>()
+  private restored = false
+
+  constructor(private readonly deps: Dependencies) {
+    this.controller = new GoalController({
+      canRun: (sessionId) => !deps.isSessionActive(sessionId),
+      runTurn: async ({ sessionId, state, previousSummary, runId }) => {
+        const session = deps.getSession(sessionId)
+        if (!session?.channelId) throw new Error('Goal 会话缺少渠道配置')
+        const permissionError = deps.permissionError(sessionId)
+        if (permissionError) return { status: 'blocked', summary: permissionError, evidence: [] }
+        let report: AgentGoalIterationResult | undefined
+        let outcome: { status: 'completed' | 'failed' | 'stopped'; error?: string } | undefined
+        const messages: SDKMessage[] = []
+        try {
+          await deps.run({
+            sessionId,
+            ...session,
+            channelId: session.channelId,
+            permissionModeOverride: session.permissionMode,
+            userMessage: state.goal,
+            internalPrompt: buildGoalIterationPrompt(state, { previousSummary }),
+            suppressUserMessagePersistence: true,
+            triggeredBy: 'goal',
+            goalIteration: state.iteration,
+            goalRunId: runId,
+            titleSourceText: state.goal,
+            onRuntimeMessage: (message) => {
+              if (!(message as { isReplay?: boolean }).isReplay) messages.push(message)
+            },
+            reportGoalResult: (result) => { report = normalizeGoalToolResult(result) },
+            onRunOutcome: (result) => { outcome = result },
+          })
+        } catch (error) {
+          // 未获得宿主所有权的自动轮次应延后，不把用户当前工作标成失败。
+          if (deps.isSessionActive(sessionId)) return { status: 'continue', summary: '等待当前会话空闲', evidence: [], outcome: 'deferred' }
+          throw error
+        }
+        const usage = collectGoalRunUsage(messages)
+        if (outcome?.status === 'stopped') return { status: 'continue', summary: '用户已停止 Goal', evidence: [], outcome: 'stopped', usage }
+        if (outcome?.status === 'failed') return { status: 'continue', summary: outcome.error || 'Goal 本轮执行失败', error: outcome.error, evidence: [], outcome: 'failed', usage }
+        if (!outcome) return { status: 'continue', summary: '运行没有产生终态，不能采信完成报告', evidence: [], outcome: 'failed', usage }
+        if (!report) return { status: 'continue', summary: '本轮未提交有效的 update_goal 报告，不能判定完成', evidence: [], outcome: 'failed', usage }
+        return { ...report, usage, outcome: report.outcome ?? 'success' }
+      },
+      stopTurn: (sessionId, runId) => runId ? deps.stopRun(sessionId, runId) : Promise.resolve(),
+      onStateChange: (state) => this.onStateChange(state),
+    })
+  }
+
+  restore(states?: AgentGoalState[]): void {
+    if (this.restored) return
+    // hydrate 不调用 live 投影；所有状态装载完成后一次写入。
+    this.controller.restore(states ?? this.deps.readStates())
+    this.deps.saveStates(this.controller.list())
+    this.restored = true
+  }
+
+  get(sessionId: string): AgentGoalState | undefined { return this.controller.get(sessionId) }
+  list(): AgentGoalState[] { return this.controller.list() }
+  history(sessionId: string): AgentGoalState[] {
+    const current = this.get(sessionId)
+    const states = this.deps.history(sessionId)
+    return current ? [current, ...states.filter((state) => state.id !== current.id)] : states
+  }
+
+  async start(sessionId: string, goal: string, contract?: AgentGoalContract): Promise<AgentGoalState> {
+    if (!goal.trim()) throw new Error('Goal 不能为空')
+    if (!this.deps.getSession(sessionId)?.channelId) throw new Error('Goal 会话缺少渠道配置')
+    const permissionError = this.deps.permissionError(sessionId)
+    if (permissionError) throw new Error(permissionError)
+    const existing = this.get(sessionId)
+    if (existing && existing.status !== 'completed') throw new Error('当前会话有未完成的 Goal，请先恢复或明确清除它')
+    if (existing) this.archive(existing)
+    const contractLines = [
+      contract?.verification ? `\n@verify: ${contract.verification}` : '',
+      contract?.constraints ? `\n@constraint: ${contract.constraints}` : '',
+      contract?.stopWhen ? `\n@stop: ${contract.stopWhen}` : '',
+    ].join('')
+    // 先记录用户意图；失败时尚未创建/调度 Goal。
+    this.appendUser(sessionId, `/goal ${goal}${contractLines}`)
+    return this.controller.start(sessionId, goal, contract)
+  }
+
+  async pause(sessionId: string): Promise<AgentGoalState> { return this.controller.pause(sessionId) }
+  async resume(sessionId: string): Promise<AgentGoalState> {
+    const permissionError = this.deps.permissionError(sessionId)
+    if (permissionError) throw new Error(permissionError)
+    return this.controller.resume(sessionId)
+  }
+  async stop(sessionId: string): Promise<AgentGoalState> { return this.controller.stop(sessionId) }
+  update(sessionId: string, input: GoalPatch): AgentGoalState {
+    const patch = validateGoalUpdatePatch(input)
+    const state = this.controller.update(sessionId, patch)
+    // 目标与预算修改也是用户的明确操作，保留可追溯记录。
+    const changes = [patch.goal ? `目标：${patch.goal}` : '', patch.limits ? `预算：${JSON.stringify(patch.limits)}` : '', patch.contract ? `契约：${JSON.stringify(patch.contract)}` : ''].filter(Boolean).join('\n')
+    this.appendUser(sessionId, `/goal update\n${changes}`)
+    this.deps.publish(state)
+    return state
+  }
+  clear(sessionId: string): void {
+    const state = this.get(sessionId)
+    if (!state) return
+    if (state.activeRunId || state.status === 'active' || state.status === 'stopping') throw new Error('运行中的 Goal 不能直接清除')
+    this.archive(state)
+    if (state.blockedTodoId) this.deps.updateBlockedTodo(state.blockedTodoId, 'completed', '关联 Goal 已由用户清除；历史已归档。')
+    this.controller.clear(sessionId)
+  }
+  stopAll(): void { this.controller.stopAll() }
+
+  private archive(state: AgentGoalState): void {
+    if (this.archived.has(state.id)) return
+    this.deps.archive(state)
+    this.archived.add(state.id)
+  }
+
+  private appendUser(sessionId: string, text: string): void {
+    this.deps.appendMessages(sessionId, [{ type: 'user', message: { content: [{ type: 'text', text }] }, parent_tool_use_id: null, uuid: randomUUID(), _createdAt: Date.now() } as unknown as SDKMessage])
+  }
+
+  private onStateChange(state: AgentGoalState): void {
+    const current = this.get(state.sessionId)
+    if (current && current.id !== state.id) return
+    const key = resultKey(state)
+    if (!this.projecting.has(key)) {
+      this.projecting.add(key)
+      try {
+        this.persistVisibleResult(state)
+        this.syncTodo(state, key)
+      } catch (error) {
+        this.deps.logError(error)
+      } finally {
+        this.projecting.delete(key)
+      }
+    }
+    try { this.deps.saveStates(this.controller.list()) } catch (error) { this.deps.logError(error) }
+    // Todo patch 可能同步重入；只发送 controller 当前快照，不把外层旧值再次覆盖 UI。
+    const latest = state.stopReason === 'cleared' ? state : this.get(state.sessionId)
+    if (!latest || latest.id !== state.id) return
+    const revision = latest.revision ?? 0
+    if ((this.publishedRevision.get(latest.id) ?? -1) >= revision) return
+    this.publishedRevision.set(latest.id, revision)
+    this.deps.publish(latest)
+  }
+
+  private persistVisibleResult(state: AgentGoalState): void {
+    if (!['completed', 'blocked', 'failed', 'budget_limited', 'stopped'].includes(state.status) || state.stopReason === 'cleared') return
+    const record = state.history?.at(-1)
+    const summary = state.stopReason || record?.summary || state.lastSummary
+    if (!summary) return
+    const key = resultKey(state)
+    const uuid = stableUuid(key)
+    if (this.deps.readMessages(state.sessionId).some((message) => (message as { uuid?: string }).uuid === uuid || (message as { _goalResultKey?: string })._goalResultKey === key)) return
+    const labels: Record<string, string> = { completed: '已完成', blocked: '需要输入', failed: '执行失败', budget_limited: '预算已耗尽', stopped: '已停止' }
+    const evidence = record?.evidence ?? state.lastEvidence ?? []
+    const text = `Goal ${labels[state.status]}\n\n${summary}${evidence.length ? `\n\n证据：\n${evidence.map((item) => `- ${item}`).join('\n')}` : ''}`
+    this.deps.appendMessages(state.sessionId, [{ type: 'assistant', message: { content: [{ type: 'text', text }] }, parent_tool_use_id: null, uuid, _createdAt: state.updatedAt, _goalVisibleResult: true, _goalResultKey: key } as unknown as SDKMessage])
+  }
+
+  private syncTodo(state: AgentGoalState, key: string): void {
+    if (this.todoHandled.has(key)) return
+    if (state.status === 'blocked') {
+      if (state.blockedTodoId) this.deps.updateBlockedTodo(state.blockedTodoId, 'open', `最新阻塞原因：${state.stopReason || state.lastSummary || '需要输入'}`)
+      else {
+        const todoId = this.deps.createBlockedTodo(state, this.deps.getSession(state.sessionId))
+        this.controller.patch(state.sessionId, { blockedTodoId: todoId })
+      }
+      this.todoHandled.add(key)
+    } else if (state.status === 'completed' && state.blockedTodoId) {
+      this.deps.updateBlockedTodo(state.blockedTodoId, 'completed', 'Goal 已完成')
+      this.todoHandled.add(key)
+    }
+  }
+}

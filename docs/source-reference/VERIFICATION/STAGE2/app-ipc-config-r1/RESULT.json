@@ -1,0 +1,35 @@
+{
+ "schema": "dsh-r07-stage2-result/1",
+ "revision": "r1",
+ "track": "app-ipc-config",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "atUtc": "2026-10-23T21:41:41Z",
+ "supersedes": "manager/STAGE2/app-ipc-config/（首版保留为证据，未改动）",
+ "managerRejectionsAddressed": {
+  "bounds写点": "已闭合：resize/move:767-768→防抖:757-766→saveMainWindowState:457-472→updateSettings:465-471→settings-service:117→~/.cdutai/settings.json（键 types:328）；恢复:499",
+  "certificate-error最终决策": "已闭合：三分支——compromised 拒绝:145-149（cert-blacklist:59-69 issuer 链判定）/cdut.edu.cn 域放行:150-154（gatekeeper:25-33）/默认拒绝:156；另 installCertificateSecurityPolicy 双会话:925-926",
+  "IPC范围与列证": "已列 5 组实际核对端到端通道（settings.GET/UPDATE/SET_REVIEW_AGENT_AUTO_APPROVAL 专用确认、workspace.LIST/CREATE、单向事件样例）从 renderer→preload→main→存储与权限边（isMainFrame 帧级+UPDATE 剥离字段+Agent 不可达专用通道）；范围声明 590+105 不全做业务深读",
+  "CONFLICTS-01判定": "已逐字读当前手册 electron-builder.yml.md:58——「首启同步 ~/.proma/default-skills/」确实沿用旧路径→doc_error 成立（非误派）；源注释陈旧另列 CONFLICTS-05 implementation_gap 不混派",
+  "术语": "全文改「静态源码核对」；真实运行 NOT_RUN；静态断言不冒充实测"
+ },
+ "coverage": {
+  "chains": 9,
+  "keyUnknownsRemaining": 0,
+  "conflicts": 5,
+  "doc_error": 1,
+  "implementation_gap": 4
+ },
+ "chainsSummary": "C1-C9 主边全部静态源码核对命中；首版两处关键未知（bounds 写点、cert 决策）已清零",
+ "dedup": "唯一规范路径全表（CHAIN-REGISTER.tsv 全路径）；isCdutDomain×2/index.ts×3/paths.ts×3 等同名碰撞已注明实际导入归属",
+ "notRun": [
+  "产品测试",
+  "typecheck",
+  "构建",
+  "Electron/GUI 实跑",
+  "IPC 实际收发",
+  "seed/migration 实跑（统一 NOT_RUN）"
+ ],
+ "boundaries": "未改产品/测试/依赖/作者 seal/已有 review/candidate；未写阶段三文档（CODEBASE-MAP/ARCHITECTURE 等）；未自覆盖主责文档；不宣称全仓通过；实现缺陷（CONFLICTS-02/03/04/05）如实留阶段三设计差异报告",
+ "nonKeyBoundaries": "590+105 通道逐条业务语义、cslab/planning 窗口写点函数体、session/workspace 动态语义（取消/恢复/并发/崩溃）、initializeRuntime 与三服务内部、renderer 状态层调用图、cert-blacklist 内存放行登记语义（详见 CHAINS.md 非关键边界节，均非关键缺口、不冒称已验）",
+ "verdict": "TRACK_COMPLETE"
+}

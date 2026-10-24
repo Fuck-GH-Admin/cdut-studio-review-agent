@@ -1,0 +1,65 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "nb-144-r1",
+ "revisionOf": "nb-144",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T22:05:00Z",
+ "sealId": "seal-eb4a33d79142dd96",
+ "note": "ALL accepted. B-01 chain fields fixed; B-02 DR truth corrected (identifier <CFBundleIdentifier>, com.cdutai.studio inferred; com.profer.app marked stale/fixture); N-01 3-vs-4 gate gap; N-02 StrictHostKeyChecking asymmetry; N-03 replace('v','') quirk. Merge per this table (r1 hashes supersede base review hashes).",
+ "acceptedManuals": {
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/scripts/patch-bridge-semantic.py.md": "aa4cacda71327f7fec8197c685077735e02f74ea0086fcd7636d3d2d0c95b2d0",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/scripts/push-mac-release.cjs.md": "d45628e5b7a1b717f8a247c07c057e8ec2d02c405af825b5fac477baa230633c",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/scripts/push-release.cjs.md": "b928968ed52a1385a867ad967c484ec768dbc6536e6d6fa67c072e1f29cd28e7",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/scripts/qa/review-background-p06-contract.mjs.md": "996789d185896d4d35253b3e1181248033efd1a58ab637450b3696d12c1ff958",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/scripts/qa/review-background-p06.mjs.md": "dca0dfea366f15ce2065fba2ba4a50665bebff1d7015a57e6bec5626d7a28ff6",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/scripts/release-asset-contract.cjs.md": "40e75d6987449065daea6c65b6e54f0686275b12b8b16b7ab5aee94f3574f3b8",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/scripts/release-asset-contract.test.ts.md": "02cf9f78c272f2dfca7608895e068fe6bd0f639d496052495ced67cb5fa0a18d",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/scripts/verify-release-preflight.cjs.md": "9fe5104fdddc2ea431b94d1164a40344b68251e9f42bc213a5cc6d8a84497717",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/test/preload-electron-mock.ts.md": "cc308a1cc949510f6b5de21ed75d912808ee67eee62059785a62fd8b51d3ff4b",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/tsconfig.json.md": "20731e9645650de783afdcb2dce01756f807992b5bae0d2c4586ccf06003c4e1"
+ },
+ "revisionRequiredManuals": {},
+ "reviewedSourceBindings": {
+  "scripts/patch-bridge-semantic.py": {
+   "blob": "857e8c024914385a28c335641a03f22b2ae083aa",
+   "sha256": "8647d857ae4e4709265638a49fc579b7e0c8f7faff5aae6b157347b1636df5b2"
+  },
+  "scripts/push-mac-release.cjs": {
+   "blob": "df45368fe25a77ef9152e282cf3874d903133dfb",
+   "sha256": "9c42b2d26dfbb959dc3f1c4d887b5afec3a1fc667a593dcadfe255044a201b01"
+  },
+  "scripts/push-release.cjs": {
+   "blob": "a12e0ff16e9dd57a860e175686ac66027b59e61b",
+   "sha256": "f269bdc3e267630e227cd4c8753ce8beb605477022a97b86643712a2b7086387"
+  },
+  "scripts/qa/review-background-p06-contract.mjs": {
+   "blob": "43d8fcd2bc1b23328b8d7bb2ba92d95a55fa9250",
+   "sha256": "ab70f302ded8ea52b33d3106854ee26b68471de83edd39cd99059478810b22b7"
+  },
+  "scripts/qa/review-background-p06.mjs": {
+   "blob": "6f238a4a76fdb49a0cdd3d710f0afbec86364ed2",
+   "sha256": "1f100d953371de88b069bcf26f217354bce2d7a9f61645787878a27fb1c0a0c9"
+  },
+  "scripts/release-asset-contract.cjs": {
+   "blob": "8df04f55650fdd00cb6a4c446d9ef57f81848d02",
+   "sha256": "95636c3697807d3b49687e8f840f6576ccc62335f5365feb8ab6a6fd29433ff6"
+  },
+  "scripts/release-asset-contract.test.ts": {
+   "blob": "1e5b49179f46fe4602136bb2b6459d9a4790a92c",
+   "sha256": "4476fbb2becbe2ba6e4767a371b19f89a2dc219bd4325fb518340a4002e017b4"
+  },
+  "scripts/verify-release-preflight.cjs": {
+   "blob": "6b882acfc94fc9e42ed96afcb80cd01665634106",
+   "sha256": "b041c93b4340b0a71b91321949c3038f1022a461eada62a6ea83a75c8d338b72"
+  },
+  "test/preload-electron-mock.ts": {
+   "blob": "50744dccd3048bc32d86ab19876c61dd09816ec3",
+   "sha256": "8c275f5d87494bbb9e45013e322bb64490b97f355a0cab10d07acfa8ef0bc6f1"
+  },
+  "tsconfig.json": {
+   "blob": "bfa0fead54e8070848b4572df2e14b62a86d570f",
+   "sha256": "11a68339a9c6a0c04a67b95dff9eefd9a92c42fa35161411048405272ab192c8"
+  }
+ }
+}

@@ -1,0 +1,237 @@
+{
+ "schema": "dsh-r07-review-result/1",
+ "batch": "nb-45-r1",
+ "revisionOf": "nb-45",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-models-20261023",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T17:07:38.161020+00:00",
+ "deliverySeal": {
+  "sealId": "seal-064fa97f8326a45b",
+  "sealedAtUtc": "2026-10-23T17:05:41Z",
+  "readySha256": "b20acbafbaa7748fde8e290e454eaa476eb5e5859c433399133bc28cb3d3b99f",
+  "doneSha256": "0f4e8093158fdc2fee7a876b97d8aff9b5af3ef997e29cf0c2c30bba683c5bb3",
+  "manifestSha256": "e47b983246ed0839bd5b22f1e3531f11fd5fd52d733f2a01820bef3873c1a9d2",
+  "zipSha256": "7cde36dd3f025c30bd8e6b569d60150b310ac6acf9237bf9ab179fc8fd7070b6"
+ },
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "gatesNote": "G0 链自洽；变更恰 4 篇返修文件（14 篇 accepted 字节保持）；G2 修复逐条回源：NB45-TEST-01 CsLabLab 18 夹具、NB45-TEST-02 pi-harness-view-model.test.ts :2/:5/:24/:32/:35 五处、NB45-TEST-03 双引擎测试、NB45-TEST-04 cslab-science.test.ts:10——全部如实改写且保留真实为 0 的部分（CSLAB_IPC_CHANNELS/normalizePointBBox/CsLabFitRequest）",
+ "batchVerdict": "accepted",
+ "files": [
+  {
+   "path": "packages/shared/src/types/chat.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/chat.ts.md",
+   "sourceBlob": "29bb965f3c5fbad3531508ab49b4398047755374",
+   "sourceSha256": "75032419642293e65096102752d1d573be820f27bf7461c308f7b106582479ea",
+   "lines": 618,
+   "manualSha256": "5f00f74b055a4b00b929127b916e5f9bf3e9919233c25db2eb5de1016273f05f",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/shared/src/types/cslab-origin-types.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/cslab-origin-types.ts.md",
+   "sourceBlob": "9e649af2268dc62405db3b7a19582b7e38271642",
+   "sourceSha256": "146df77983c5c63539b83f8558d3e1aed69faf8f9b359e05bb8a2fc410816fc1",
+   "lines": 249,
+   "manualSha256": "1df05fb1e7dae203f963133577ba97b45660383ccaf048e78a2de1256eeeb3dd",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/shared/src/types/cslab-vesta-types.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/cslab-vesta-types.ts.md",
+   "sourceBlob": "928c82268daa2150de1f37fbe4515fe7353f5bfe",
+   "sourceSha256": "d8706d8f0011f7e9c226edae2d878e12b633f1b92d6cec25d03b2a41244eb86b",
+   "lines": 239,
+   "manualSha256": "f08f31efc9c0fbcd46dbca301bad0885da7c03e194cd0c47ae315f6f902f500b",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/shared/src/types/cslab.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/cslab.ts.md",
+   "sourceBlob": "32309436d0c36c559a7da2483982bcec4d4fb0fc",
+   "sourceSha256": "fa45aefb206d29b62bba8f3068b2c39193110edfd05edd4d293028b249d92029",
+   "lines": 1640,
+   "manualSha256": "c899e86bc92a52f6f0112c4e78957fc510c488e764e9c8f62feee04332e43403",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/shared/src/types/deepseek-model-alias.test.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/deepseek-model-alias.test.ts.md",
+   "sourceBlob": "860117c2c92994d27b7c8e56766d5157b33f10b9",
+   "sourceSha256": "133be384df607fff3541cb87f4755d6ac9c064d8d210dbbddb53c04cf5644f78",
+   "lines": 60,
+   "manualSha256": "68f68e831965cd334f2723fd777fd69c0959396cda7bee9a32cd0a998db9227a",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/shared/src/types/deepseek-model-alias.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/deepseek-model-alias.ts.md",
+   "sourceBlob": "0645e7b531e4bd1881d1e8f19a22eb4ac87e47c7",
+   "sourceSha256": "9ef3cebe8dbe86805e097a9c21dadb662c900165a3052ca901d1a87d458f1ba4",
+   "lines": 68,
+   "manualSha256": "c7eeef3ecf3d0a4ce26bbd5baa1c550df9434038e8e292786e9dc4d3f4a998f2",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/shared/src/types/dingtalk.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/dingtalk.ts.md",
+   "sourceBlob": "11ebe68277f992564d18e02320ce40937cce5e0d",
+   "sourceSha256": "117d77264a48c63beb05331723688f387c1e4b4bca04b75bf086bb96145a9744",
+   "lines": 153,
+   "manualSha256": "5fc564eba37505b33b26ac732dfe91cd0d4b929b318ed2ef19f3dff79f7c3477",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/shared/src/types/environment.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/environment.ts.md",
+   "sourceBlob": "be003f1d30fea56af35392715e56feb1af7d5a9a",
+   "sourceSha256": "d8401d75d4c189b8b7368af4335816f48e68cad0e2553083d507037abad9b193",
+   "lines": 60,
+   "manualSha256": "90b09493639088e542b91e1bdefeab8fc302107d2adfdc627cf9c9301b816fc1",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/shared/src/types/feishu.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/feishu.ts.md",
+   "sourceBlob": "537a45ead3b3340ffe38ea77fadcd98c4dc4f276",
+   "sourceSha256": "638ff895c7334f202b5f4185563340d39e6b4859181ce02d8bb22f896028df2a",
+   "lines": 338,
+   "manualSha256": "da024f62966e6ecaff9f6c9744962c0ad6b2ed5c85b53d3765fb42f82d52ff91",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/shared/src/types/github.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/github.ts.md",
+   "sourceBlob": "fbfc18b8a351c1c486d9a70acdb8c854fd1f0447",
+   "sourceSha256": "e2220cd8f09ffd45653198dd2c3107409a6df46b38b8d9318698b5ddd0455139",
+   "lines": 45,
+   "manualSha256": "f434f9b8bd9119c6a0656fe877fb48b5a09fca7a99dae1ae39bb9e0abed3fd46",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/shared/src/types/global-skill.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/global-skill.ts.md",
+   "sourceBlob": "135205deb966e6d99e53fda79d8714fad0b91c24",
+   "sourceSha256": "03ac0cbe5aa995def779ab179f35c613419f72f00f69a5b4d87337973d821ee7",
+   "lines": 160,
+   "manualSha256": "189df1377704be2405302bec183725018fadeed8c55ade9ff6116849c2a486de",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/shared/src/types/installer.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/installer.ts.md",
+   "sourceBlob": "3941fdf3a05c047a41258fff317276421e2f3288",
+   "sourceSha256": "203e3f57d358b8a83d55691af7ae3849f4956eafbfd4244db35f09ef875fa56a",
+   "lines": 93,
+   "manualSha256": "64bb18511453a54daccf0e2b349034c21aca7b6d6c49be49fca40a86bae515c2",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/shared/src/types/knowledge-base.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/knowledge-base.ts.md",
+   "sourceBlob": "933e77798ec6b82595cd78a2d8f9837b0458ff1e",
+   "sourceSha256": "900f61c77493f3d4ad946519ac874d26ab18cbe5049fcc09c6798e17d97053e1",
+   "lines": 91,
+   "manualSha256": "f26e4fd91b96e7fbcfdbcda0dbc9ec7a20e937aeb3ce4de3c1048c1709241bd9",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/shared/src/types/lark.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/lark.ts.md",
+   "sourceBlob": "f88d0213007510c65642c65923b64a8079d06ecc",
+   "sourceSha256": "ccebda3cf25da31aff3bd4de8e945bccb9e18b1f0101c59f38c9b303c480942c",
+   "lines": 84,
+   "manualSha256": "04bd41c9dffe7d119df4cb84b83219ef70512d49bf2dc340cfa6c50556e12f41",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/shared/src/types/pdf.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/pdf.ts.md",
+   "sourceBlob": "e083a32caf2cf4f9410659d99ec11b2c6ce6161d",
+   "sourceSha256": "ba9ac409848d4c66761c0b47b1a795c41dd0f068087521bdc2a109a3c8e72112",
+   "lines": 123,
+   "manualSha256": "5a0b7f7cbf534ae3dc91e1c23a0f5c0880a06d1583e9dda033bb5d87ad542d96",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/shared/src/types/pi-harness.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/pi-harness.ts.md",
+   "sourceBlob": "e93fb254a1175a412e62e1adf166a54250da1cbb",
+   "sourceSha256": "1898532fbe7d38b6242f338b539fc776fb3ce0ce4a654d990cb0f75c5530bc09",
+   "lines": 58,
+   "manualSha256": "c8c2481577850b3226cf9988047334744065e9b7f2a62d49c11ac079fca296a2",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/shared/src/types/planning.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/planning.ts.md",
+   "sourceBlob": "48897f698b50c13368be31275a5fd6c77c2b3bda",
+   "sourceSha256": "08fd0769291259495f745a73811af7d853c0e3420d04eb379a2f3ebea34918c2",
+   "lines": 302,
+   "manualSha256": "101a3cedd05f58389e9d77de7eb865aae9cf00f09ac20ae06247e75f043d1571",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "packages/shared/src/types/ppt-deck.ts",
+   "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/ppt-deck.ts.md",
+   "sourceBlob": "72495b8ddd0b0534933fa677bf06fefea91cdb1a",
+   "sourceSha256": "b3e78fd50d33e2c45a20d3c9fdbf7932d08ded9b479d9c46df766d24df648778",
+   "lines": 103,
+   "manualSha256": "850141345ad03dc3766f513fabf1600cbc0f547bf9b1b8c1dec4462447e05105",
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "findings": [],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/chat.ts.md": "5f00f74b055a4b00b929127b916e5f9bf3e9919233c25db2eb5de1016273f05f",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/cslab-origin-types.ts.md": "1df05fb1e7dae203f963133577ba97b45660383ccaf048e78a2de1256eeeb3dd",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/cslab-vesta-types.ts.md": "f08f31efc9c0fbcd46dbca301bad0885da7c03e194cd0c47ae315f6f902f500b",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/cslab.ts.md": "c899e86bc92a52f6f0112c4e78957fc510c488e764e9c8f62feee04332e43403",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/deepseek-model-alias.test.ts.md": "68f68e831965cd334f2723fd777fd69c0959396cda7bee9a32cd0a998db9227a",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/deepseek-model-alias.ts.md": "c7eeef3ecf3d0a4ce26bbd5baa1c550df9434038e8e292786e9dc4d3f4a998f2",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/dingtalk.ts.md": "5fc564eba37505b33b26ac732dfe91cd0d4b929b318ed2ef19f3dff79f7c3477",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/environment.ts.md": "90b09493639088e542b91e1bdefeab8fc302107d2adfdc627cf9c9301b816fc1",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/feishu.ts.md": "da024f62966e6ecaff9f6c9744962c0ad6b2ed5c85b53d3765fb42f82d52ff91",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/github.ts.md": "f434f9b8bd9119c6a0656fe877fb48b5a09fca7a99dae1ae39bb9e0abed3fd46",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/global-skill.ts.md": "189df1377704be2405302bec183725018fadeed8c55ade9ff6116849c2a486de",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/installer.ts.md": "64bb18511453a54daccf0e2b349034c21aca7b6d6c49be49fca40a86bae515c2",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/knowledge-base.ts.md": "f26e4fd91b96e7fbcfdbcda0dbc9ec7a20e937aeb3ce4de3c1048c1709241bd9",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/lark.ts.md": "04bd41c9dffe7d119df4cb84b83219ef70512d49bf2dc340cfa6c50556e12f41",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/pdf.ts.md": "5a0b7f7cbf534ae3dc91e1c23a0f5c0880a06d1583e9dda033bb5d87ad542d96",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/pi-harness.ts.md": "c8c2481577850b3226cf9988047334744065e9b7f2a62d49c11ac079fca296a2",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/planning.ts.md": "101a3cedd05f58389e9d77de7eb865aae9cf00f09ac20ae06247e75f043d1571",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/ppt-deck.ts.md": "850141345ad03dc3766f513fabf1600cbc0f547bf9b1b8c1dec4462447e05105"
+ },
+ "revisionHashes": {},
+ "notRun": [
+  "bun test",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "limits": "静态复验；按 r1 新 hash 复验",
+ "next": "18 篇可合入；nb-45 系列闭环"
+}

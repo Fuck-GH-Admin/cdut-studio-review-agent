@@ -1,0 +1,17 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-143-r1",
+ "revisionOf": "nb-143",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-qa-extra-05-20261024",
+ "reviewedAtUtc": "2026-10-23T20:38:16Z",
+ "status": "REVIEW_COMPLETE",
+ "batchVerdict": "accepted",
+ "fileVerdictsCount": {"accepted": 18, "revision_required": 0},
+ "findingsClosed": ["F-1"],
+ "deliverySeal": {"sealId": "seal-120611b2c1f5803b", "manifestSha256": "82ee08fbf786c240219f44a51e679efe9df1e332cc669c9dd1a7081dc5d43708", "zipSha256": "f8d903daf48f2fb54d7b62dc6ae4996b9f7b05d34d30a19b7f219c5fd4cab6bc"},
+ "artifacts": ["reviews/nb-143-r1/RESULT.json", "reviews/nb-143-r1/RESULT.md", "reviews/nb-143-r1/REVIEWED-HASHES.json", "reviews/nb-143-r1/TO-AUTHOR.md", "reviews/nb-143-r1/TO-LEAD.md"],
+ "notRun": ["product tests (8 defs/14 runs)", "typecheck", "build", "patch application", "bridge scripts", "release chain"],
+ "next": "qa-extra-05 组 5/5 批全部闭环；lead 按 r1 hash 合入 0.82.1 手册；无在途返修",
+ "note": "D0 自洽；17 篇=父版字节。"
+}

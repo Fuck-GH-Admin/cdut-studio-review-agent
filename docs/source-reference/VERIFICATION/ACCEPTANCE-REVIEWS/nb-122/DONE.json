@@ -1,0 +1,38 @@
+{
+  "schema": "dsh-r07-qa-done/1",
+  "batch": "nb-122",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-extra-03-20261024",
+  "reviewerSession": "docs-r07-qa-extra-03-20261024",
+  "reviewRoot": "reviews/nb-122",
+  "reviewedAtUtc": "2026-10-23T21:40:00Z",
+  "status": "REVIEW_COMPLETE_ACCEPTED",
+  "batchVerdict": "accepted",
+  "gates": {
+    "G0": "G0_PASS",
+    "G1": "G1_PASS",
+    "G2": "G2_PASS"
+  },
+  "verdictCounts": {
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "seal": {
+    "sealId": "seal-065aa5a22bf529ea",
+    "tool": "seal_delivery.py/1",
+    "zip": {
+      "sha256": "d632564942d3ed79c55a63bd7bb25113f275453787f26f4830459c4bc019643b",
+      "bytes": 74141,
+      "entries": 21
+    }
+  },
+  "openNonBlocking": [
+    "NB122-N-01 (minor 交叉引用)"
+  ],
+  "note": "nb-122 独立 accepted；extra-03 组 3 批全部完成真值审查（nb-142 经 r1 闭合）",
+  "artifactSha256": {
+    "RESULT.json": "71dc22149c46b3d7dbcca0905e24d38059cefd3f24fb15c4a0d43dccba1dc929",
+    "REVIEWED-HASHES.json": "b890c519e4e3211e0b44a4395b74c00940f598a5ae619c70f6987a9152e58254"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "r07-qa-done/1",
+  "batch": "nb-41",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewedAtUtc": "2026-10-23T17:55:00Z",
+  "sealId": "seal-e458e44fda060ceb",
+  "batchVerdict": "revision_required",
+  "counts": {
+    "files": 18,
+    "accepted": 10,
+    "revision_required": 8,
+    "unknown": 0
+  },
+  "result": "reviews/nb-41/RESULT.json",
+  "resultSha256": "5a928f65ddba0ab763e6d270c2a454156a022bde77eb0399cfb9bbc1411fb2c0",
+  "reviewedHashes": "reviews/nb-41/REVIEWED-HASHES.json",
+  "reviewedHashesSha256": "9eeb4173acee4ec61c936d06c602ed7839c193f6581e349183f1c6f28ed40f93",
+  "testsRun": [],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "knownUnknowns": [
+    "main-process benchmark service implementation (out of scope)",
+    "graph-state/applyEvent (out of scope)",
+    "HF official schema compatibility (NOT_RUN)",
+    "runtime evaluation results (NOT_RUN)"
+  ]
+}

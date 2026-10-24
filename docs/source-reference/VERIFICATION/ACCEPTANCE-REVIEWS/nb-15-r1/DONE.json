@@ -1,0 +1,36 @@
+{
+  "schema": "dsh-r07-review-done/1",
+  "batch": "nb-15-r1",
+  "revisionOf": "nb-15",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-09-20261023",
+  "reviewerSession": "docs-r07-qa-nb-09-20261023",
+  "reviewedAtUtc": "2026-10-23T18:10:00Z",
+  "sealId": "seal-272a7f266a1cca1d",
+  "status": "REVIEW_COMPLETE_ACCEPTED",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 17,
+    "accepted": 17,
+    "revision_required": 0,
+    "unknown": 0,
+    "findingsResolved": 2
+  },
+  "artifacts": [
+    "reviews/nb-15-r1/RESULT.json",
+    "reviews/nb-15-r1/RESULT.md",
+    "reviews/nb-15-r1/REVIEWED-HASHES.json",
+    "reviews/nb-15-r1/DONE.json",
+    "handoffs/nb-15-r1-REVIEW-TO-AUTHOR.md",
+    "handoffs/nb-15-r1-REVIEW-TO-LEAD.md"
+  ],
+  "notRun": [
+    "product tests (bun test)",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "boundaries": "QA 只读复验：未改作者正文/源码/测试/依赖/candidate/全局 FILES/COVERAGE/MANIFEST/INDEX/inventory/g0；未 commit/push；父批 deliveries/nb-15 与 reviews/nb-15 字节未改写；NOT_RUN。",
+  "next": "lead 按 17 exact manualSha256 机械合入（2 新+15 同 r0）；nb-15 系列闭链；QA 续 nb-16-r1 复验→nb-17 验收"
+}

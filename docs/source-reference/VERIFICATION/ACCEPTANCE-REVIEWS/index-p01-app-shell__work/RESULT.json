@@ -1,0 +1,47 @@
+{
+  "schema": "dsh-r07-index-review-result/1",
+  "batch": "index-p01-app-shell__work",
+  "groupId": "p01-app-shell__work",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-index-author-20261023",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T21:40:00Z",
+  "sealedAtUtc": "2026-10-23T18:50:27Z",
+  "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__work.md",
+  "artifactSha256": "31dc856985df75345255af178abfea1364136b417c47fa42d83d0c8d919813b3",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 1,
+    "accepted": 1,
+    "revision_required": 0,
+    "unknown": 0,
+    "blocking": 0,
+    "nonBlocking": 0
+  },
+  "gates": {
+    "G0_INDEX": "PASS",
+    "G1_INDEPENDENT_SOURCE_REVIEW": "PASS",
+    "G2_SEAL_CONSISTENCY": "PASS",
+    "note": "G0 等价全过、封版三方哈希全对、change 与锁一致；消费链 QA 行级实证。"
+  },
+  "g0Evidence": {
+    "stockScript": "ERRATA-E1 沿登记；等价检查 PASS"
+  },
+  "files": [
+    {
+      "path": "work/decision-log/2026-10-02-decision-log.md",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__work.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__work.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#work--decision-log--2026-10-02-decision-log.md",
+      "line": 6,
+      "sourceBlob": "eca84b8d0f18df8493d919cfe02a76f24a2fadf5",
+      "sourceSha256": "adc5423d0da65d8e21bed88777a58c8e59c07713a5afa0370467281564cd41e7",
+      "manualSha256": "31dc856985df75345255af178abfea1364136b417c47fa42d83d0c8d919813b3",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "work/reports/2026-10-02-acceptance-report.md:4 反引 QA 命中；code-review.md:3 F1-F15 修复去向引用链 QA 命中"
+    }
+  ],
+  "findings": [],
+  "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局账；未跑产品测试/typecheck/构建/GUI；未 commit/push；结论只覆盖本批。"
+}

@@ -1,0 +1,63 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "nb-140",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T19:25:00Z",
+ "sealId": "seal-8d935dad88327e41",
+ "note": "10/10 手册内容 accepted（N-01..N-03 可选补充、N-04/R-01 info）；batchVerdict=revision_required 仅因 D0 链 author/reviewer 错标（B-01）：合入须待 nb-140-r1 重封后按本表 hash 复核（手册字节不变时 hash 相同）。manualSha256 为 QA 实算封版字节（=MANIFEST=READY=磁盘=ZIP）。",
+ "acceptedManuals": {
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/.context/start-profer-dev-direct.cmd.md": "b233575cf6af98832467677510b520cacd54944790550a5a3fa738d20da20278",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/.context/start-profer-dev.cmd.md": "b06d047da747c4338bf51481c1961f25bc13ca17245e6016d1aa86e5efa41c93",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/.github/workflows/ci.yml.md": "b755bc0144cf9b38a02ef52bc510bd4d9ef202d03edf7d27e4240aa6ece24a51",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/.github/workflows/macos-package.yml.md": "1b17431bdd23a19682d0805aaca34adefe7b3951358cf408338f06223d947ec8",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/.github/workflows/release.yml.md": "2b3796ada9d0b94f6b3631552422df2e8f7082115d94898f28702f1dc7845439",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/.github/workflows/review-batch-tests.yml.md": "b089430bf6236d4edd7a32763dd75568092d9ec6d6fa410720eb3a7bbd18e839",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/.github/workflows/review-ci-baseline.yml.md": "6e5ddcb34d44716a05647a3c5fedb64d1f4310b1a731977f63da223dc3e463b1",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/.github/workflows/review-d05-tests.yml.md": "5d7fc04b46f325c3ea9b9702d245f967354d3034429ff3612edd72835ad2bdd2",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/.github/workflows/review-d1-tests.yml.md": "d43e0fb5085cdedff5fc8bcdd573251d73ce1322011397120795032040e01f93",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/.github/workflows/review-d2-tests.yml.md": "007021437909d11313d83aaf4198d0f087cdbcb07832115032cee2fa211ac44d"
+ },
+ "reviewedSourceBindings": {
+  ".context/start-profer-dev-direct.cmd": {
+   "blob": "c83922b0a3ae8b15af10f5367c1de025dfe3b097",
+   "sha256": "ecce35fd2554a68b94f954f816c8024e140ad26f072004880c06ae7034b0e95e"
+  },
+  ".context/start-profer-dev.cmd": {
+   "blob": "fe47b9ecd18f3b97e0d452d6ade0b01a3edaa317",
+   "sha256": "489c652b2ec97b80a577062611272d35b051e5fb70dc301e7c8d2cd0eff1d1ef"
+  },
+  ".github/workflows/ci.yml": {
+   "blob": "e8d00179d5cc4515660d79c62ba9753674c521c4",
+   "sha256": "d52e01a1da2c5a05205f719178adae0c492c9a04a39a83b5a1ddbe18eaa5d5a0"
+  },
+  ".github/workflows/macos-package.yml": {
+   "blob": "0b65f0575a4b4cde07f9b8be0da02d26dfacc158",
+   "sha256": "04a875e0ad2a3a1859e9137d75b4e40b474be021199b1df427e0eaa53d9eea1a"
+  },
+  ".github/workflows/release.yml": {
+   "blob": "86ea3fea4e5beaa5d2b35fdf74c6784f028bd0d4",
+   "sha256": "9d52cc757d5509ddb94d7f08173bca9b23b550b5acf64973bf1fc2b167aa33ae"
+  },
+  ".github/workflows/review-batch-tests.yml": {
+   "blob": "d7a6f567e370d76cda55d7f67cd72b18af7d035b",
+   "sha256": "f64bf27e544dbee51df68f5ceeb408e98b1b97e3b2358ee942de9a3c7edb0dba"
+  },
+  ".github/workflows/review-ci-baseline.yml": {
+   "blob": "d935c32ccbde4d666f93ed1f75a411d021dfd29a",
+   "sha256": "4b61ced798790de6fefbb97a314a8874a555a0ca95816ad094b3c06d147ab853"
+  },
+  ".github/workflows/review-d05-tests.yml": {
+   "blob": "8fde2d2c7f0764fb1aa2181a91b7ad7381508392",
+   "sha256": "df1dcbd4bfd149267debfcf6390fe86a87b55b4e8940197efc0e29c8f96a027c"
+  },
+  ".github/workflows/review-d1-tests.yml": {
+   "blob": "84731d2cecac00605afa6636ed779ed375ddf67f",
+   "sha256": "06a494b13501662ad356cda70522f0240d5303f5eeeed6d5d0b0de3466fbc41a"
+  },
+  ".github/workflows/review-d2-tests.yml": {
+   "blob": "01a03c66ff93777bb9f805c061476a56bad022ef",
+   "sha256": "e99b252b9f79d826c06e69f04c73db53e45cbc27a0d708078e5dd4f6f90cc341"
+  }
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "schema": "dsh-r07-qa-done/1",
+ "batch": "nb-47",
+ "id": "NB-47",
+ "revisionOf": null,
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewRoot": "reviews/nb-47",
+ "reviewedAtUtc": "2026-10-23T17:35:00Z",
+ "status": "REVIEW_COMPLETE_REVISION_REQUIRED",
+ "batchVerdict": "revision_required",
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PARTIAL",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 17,
+  "revision_required": 1,
+  "unknown": 0
+ },
+ "acceptedManuals": 17,
+ "acceptedHashesCount": 17,
+ "revisionRequiredManuals": {
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-end-reason.ts.md": "F-01"
+ },
+ "findingsSummary": {
+  "agent-end-reason.ts.md": [
+   "F-01"
+  ],
+  "agent-collaboration-tools.ts.md": [
+   "N-01",
+   "N-02"
+  ]
+ },
+ "batchFindings": [
+  "M-01",
+  "M-02",
+  "M-03"
+ ],
+ "resultSha256": "b77d10fc52a00e029dbc3b27992dc84764521d23b84ff139d5c0d72106456649",
+ "reviewedHashesSha256": "46a672eb8a5023461800ca94eda4d510083a12f32a195d0b26d4a24d393d81de",
+ "zip": {
+  "path": "deliveries/nb-47/R07-nb-47-05fb2565.zip",
+  "sha256": "4ca86e87cc2037bbdfd53863cb9eb65afdc4cefb8843b6399edc06ac5102eb3b",
+  "entries": 21,
+  "note": "18 手册+MANIFEST+2 mechanical TSV；无 READY/DONE（v2）；无穿越/符号链接/0 mismatch"
+ },
+ "sealId": "seal-ab78d9648baba40c",
+ "artifacts": [
+  "reviews/nb-47/RESULT.json",
+  "reviews/nb-47/RESULT.md",
+  "reviews/nb-47/REVIEWED-HASHES.json",
+  "reviews/nb-47/DONE.json",
+  "handoffs/nb-47-REVIEW-TO-AUTHOR.md",
+  "handoffs/nb-47-REVIEW-TO-LEAD.md"
+ ],
+ "priorReviewsUntouched": true,
+ "parentPreserved": null,
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "writtenOnlyIn": "reviews/nb-47 + handoffs；未写 deliveries/inventory/manager/candidate/全局 FILES/MANIFEST",
+ "next": "作者开 nb-47-r1 仅改 agent-end-reason.ts.md 的 F-01 两处表述（保留父字节）；lead 按 17 个 acceptedHashes 合入"
+}

@@ -1,0 +1,64 @@
+{
+  "schema": "dsh-r07-stage2-result/1",
+  "track": "review-business",
+  "role": "DSH 执行（Codex 统筹）",
+  "session": "docs-r07-index-qa-20261023（本回合执行阶段二模块调查收口）",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "windowStartUtc": "2026-10-23T21:29:01Z",
+  "firstArtifactUtc": "2026-10-23T21:42:00Z",
+  "evidenceBase": {
+    "acceptedReuse": "inventory/ACCEPTED.json（6 关键文件 manual 均 accepted 且哈希实算对上 candidate/source-reference）、TEAM-FILE-OWNERSHIP.json、已 accepted 事实（NB09-F-01 CAS 缺陷等）复用并本轮重验",
+    "legacy922": "不继承接受（未作证据）",
+    "unacceptedDrafts": "未使用；plan-binding-v3 行级断言仅以 accepted manual 为线索并标待验"
+  },
+  "chains": {
+    "verified_full": [
+      "C1",
+      "C2",
+      "C3",
+      "C4",
+      "C5",
+      "C8"
+    ],
+    "verified_store_partial": [
+      "C6",
+      "C7"
+    ],
+    "uncovered": [
+      "C9"
+    ]
+  },
+  "checkpointResults": {
+    "academicYear空字符串": "证实：C1 legacy 入口 trim 后无空串拒、saveCase 无字段校验→可持久化（case-creation.ts:35、case-store.ts:224-233）；与 C2 模板入口案卷级校验面不一致→RC-01",
+    "draft/archived入口差异": "证实：draft 可补录（application-service.ts:501 仅 draft）；archived 除 RestoreReviewCaseV3 外全拒（case-store-v2.ts:235-241）；旧 V1 口对 V2 案卷拒写拒删（case-store.ts:219/:365）；恢复落 draft 非 previousStage（case-lifecycle-v3.ts:87）→RC-04",
+    "expectedRevision/CAS": "证实双 CAS：V2 submitCommand（case-store-v2.ts:231-233 VERSION_CONFLICT 携 currentRevision）+ V1 updateCase（case-store.ts:290-292，**缺省跳过=已证实现缺陷** RC-02）",
+    "author/v3双入口": "证实 store 层双链：v1 review-authoring-store-v1（append-only+digest+AUTHORING_HISTORY_BROKEN）与 v3-b1 review-template-author-store-v3（parentDigest 链+author.lock+preview/freeze 校验点）；服务层并存调用关系待验",
+    "取消/失败补偿": "证实：review-run-graph 取消语义（不启动新节点/run=cancelled/不产生完成事件 K18，:200-201）；interruptedResumeGate 默认拒自动续跑（review-runtime-contract.ts:220-233）；run-store-v2 RUN-43 拒止→续交状态机（:36-37/:45-53/:59-61）；写失败补偿全貌待验",
+    "权威状态与事务": "证实：writeAggregate 唯一业务写者（case-lifecycle-v3.ts:4 注释+case-store-v2.ts:167）；submitCommand 七步事务（幂等/CAS/archived门/整体拒绝/rev+1一次/回执同事务落盘）；withC2CaseDiskTransaction+writeC2CaseStateDurably（tmp+fsync+rename+父目录 fsync，失败重读 receipt 补偿契约）；SQLite 本轨零直接引用"
+  },
+  "conflicts": {
+    "total": 4,
+    "doc_error": 0,
+    "implementation_gap": 2,
+    "unknown": 2,
+    "detail": "manager/STAGE2/review-business/CONFLICTS.json（RC-01..04，均绑 manual sha256 前缀+源行+主责作者）"
+  },
+  "implementationDefectsPreservedForStage3": [
+    "RC-02 case-store.ts:290-292 CAS 缺省跳过（NB09-F-01，本轮重证）",
+    "RC-01 双入口学年校验面不一致",
+    "RC-04 restore 落 draft 语义待裁"
+  ],
+  "gaps": [
+    "C9 plan/结果输出链未覆盖",
+    "plan-binding-v3 行级断言待验",
+    "run-service 失败补偿待验",
+    "review-authoring-v1 服务层与 v3 并存关系待验",
+    "review-c0-authority 权限体未逐行（推断）",
+    "SQLite 间接依赖未知",
+    "restore/previousStage manual 全文比对待做"
+  ],
+  "staticNotRuntime": "全部断言为静态实读；产品测试/typecheck/构建/GUI/真实审核运行 NOT_RUN",
+  "verdict": "accepted_partial_with_gaps",
+  "verdictScope": "仅本轨已覆盖链（C1-C8）判定可靠；C9 与 6 项待验/缺口如实列出，不宣称全轨/全仓通过",
+  "boundaries": "源码只读；未改产品/测试/依赖/作者 seal/已有 review/candidate/全局账；新时间均 date -u；历史未来时间未改动（本轨未涉）；未开 ACP 根"
+}

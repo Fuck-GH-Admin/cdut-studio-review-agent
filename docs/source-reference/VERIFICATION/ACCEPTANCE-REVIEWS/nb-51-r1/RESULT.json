@@ -1,0 +1,223 @@
+{
+  "schema": "dsh-r07-review-result/1",
+  "batch": "nb-51-r1",
+  "revisionOf": "nb-51",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T19:30:00Z",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass"
+  },
+  "g0Evidence": {
+    "chain": "READY/DONE/MANIFEST/ZIP 交叉一致（sealId seal-dddcffe30327ed17，revisionOf nb-51）；18 manualHashes=磁盘 0 mismatch",
+    "revisionChain": "before/ 18/18==nb-51 stage（17 篇 hash 逐字节未变==声明）；changes.diff 3 hunks/1 文件（session-manager.ts.md 计数修正）git apply 重放==stage 逐字节",
+    "zip": "21 条目 0 穿越/符号链接/字节 mismatch"
+  },
+  "g2Evidence": {
+    "fixVerification": "F-01 字节级关闭：§4'54 用例'+全组口径句（10 文件 81：+compaction 11/send-binding 6/send-coordinator 4/deletion 6）/§8'54 断言（6 文件口径）'/§9'54 个 test(（2/17/11/13/10/1=54）'/§11'54 用例（6 文件口径；全组 81）'——四处修正一致且与 QA 机械实测（54/81）完全吻合；无新错误"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/main/lib/agent-send-binding.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-send-binding.test.ts.md",
+      "sourceBlob": "80dec722c27fa9a9bd46bf238e037cc90cbc362a",
+      "sourceSha256": "9fda6573f062f2ea2db9dd2401e75dab4eb993510ede178dc029fe1b401a2a74",
+      "manualSha256": "5bcbbd535cdbeb72463f8d070a0b2a7383054fa46fee3bb7529c316c47019e96",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-send-binding.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-send-binding.ts.md",
+      "sourceBlob": "22c7213c854e13026351ebba531c65b14c42bf0b",
+      "sourceSha256": "37f0bcff18ddf24c712e2f087b05a6890ffd3e334f2944ff853ef44a87ab9ff6",
+      "manualSha256": "4c269d01f3dfe121724bf80c17aed35a81aaa941b4a061f11a8f59165a79d623",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-send-coordinator.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-send-coordinator.test.ts.md",
+      "sourceBlob": "ef1ab99611af6cc5af3c28070ec4cbad66e548c9",
+      "sourceSha256": "abee4930f54e93185999164d661f3a92f5291d834bc8523df1b674bd44706744",
+      "manualSha256": "da56213d750ce336a92803f2e8237895d1b861f96f1bd9c9313ac030a10cd8b5",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-send-coordinator.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-send-coordinator.ts.md",
+      "sourceBlob": "f6b20ec9d9814db451c329b000b660417f1fceba",
+      "sourceSha256": "b1ad0357d6be413a3d474e7f44b7139d00057da7f4dfa4cfc6dd744f14aea9ad",
+      "manualSha256": "8485da77b3cdc7148c82bd472d91b695a5c70bbcc0e23f3593a0bf15902cee9a",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-service.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-service.ts.md",
+      "sourceBlob": "504af48b54eab9c8817f5e1390821fd688aabff3",
+      "sourceSha256": "b95ba3366b750539ad63803a67e7f684d9a2353eac64f0c5fc58a228c850b8c8",
+      "manualSha256": "023b7bda68413259efdffb750e00c74111d918e760a76eb52ff1e62b45ead1ba",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-session-compaction.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-compaction.test.ts.md",
+      "sourceBlob": "38bc7f00d74dc7188816b1fb097c626b7e7c3b46",
+      "sourceSha256": "e5cd01a534eca867e9a11393bf901cbca3769750a0da43f5ee35bb1a70c68a10",
+      "manualSha256": "440d40d15f4999b194789a36b95cf9d50f5804c837a7aa62db75c1bb33cd45d5",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-session-compaction.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-compaction.ts.md",
+      "sourceBlob": "923f44095d527577fe55b7282abcc36eb83d0be9",
+      "sourceSha256": "94a79479aa33e8a44725b45f784e60e44d162d2518dd921de2ca92b904dadd5a",
+      "manualSha256": "83138970ecd0dd79bb0bb53f0a5fdf8cd1e0cbc51501337b3139627f9f29acc7",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-session-deletion.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-deletion.test.ts.md",
+      "sourceBlob": "30769fabb180c208934e3e3fd8e26d2669781f42",
+      "sourceSha256": "5878f58256185f208dc01869cf207f4943050074532df2eed3cd093d31d7c637",
+      "manualSha256": "f5fb8e8d369ccd6183d3f936d87858fe1cdddd1ddfce086c380abe66be57db5f",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-session-deletion.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-deletion.ts.md",
+      "sourceBlob": "e8b53aeab43d1549d164b2cb7513d3072f2da56a",
+      "sourceSha256": "8d96d4e314cff9f5dddbb45e96fb395153661f377cb81faa3814b12d7844a650",
+      "manualSha256": "9b95440a50ebf25016936488888b779574feebb1214290edb3cf7ec931214a7a",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-session-index-cache.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-index-cache.test.ts.md",
+      "sourceBlob": "4f4d6595f9947f6249e087674172c1465a7865c7",
+      "sourceSha256": "9a6ab4221876c9261ea213b2401f315de4da94138e2b477213f80bc3aec8e789",
+      "manualSha256": "0703ad21e2465289fdc2de21b36f9004bb4cd6e29b1427ef1b487baa0bb7315e",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-session-manager.oversized-sanitize.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-manager.oversized-sanitize.test.ts.md",
+      "sourceBlob": "05567eba08772c1f67dc779c8c6f1c4cf7f0a5ed",
+      "sourceSha256": "e0dcd4332f1effe857713e332b4c02faafddbbdae62b44bf2536d143ff597076",
+      "manualSha256": "ed6a9269f3d33331da786379c787bc0a47c9c3402847b5fccc9df5354819282f",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-session-manager.pi-fork.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-manager.pi-fork.test.ts.md",
+      "sourceBlob": "66e131101144ab55c3d4ebb1a1f169634e99c725",
+      "sourceSha256": "373a6ab158035192bb4782e2a33c859fd4dd6e30fb82c6215ca5a2a2345f4801",
+      "manualSha256": "3585db1d6ded5285ffe9f1c2fcb124e9fb1862e73c3ceb0cdcd018bcb28438c6",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-session-manager.pi-runtime.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-manager.pi-runtime.test.ts.md",
+      "sourceBlob": "5f2516de6c3cb47ef097c860c32d646b9bf0481b",
+      "sourceSha256": "3665dfb3c1225b543d64c9f27ee045f6855a9ac0b29a33416b1cffe2b829df5b",
+      "manualSha256": "1db14c5df964c2d76a3ca41c90f7a18a3fb0a332d738acc3c926dad780022afa",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-session-manager.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-manager.ts.md",
+      "sourceBlob": "b573a67c8cacfb940daab6702ff699f1f7170829",
+      "sourceSha256": "3ce25a205b03ff71eb246b8c9dd64d2a4f0e6e18b7d42a0d1ba4ff26c90142e7",
+      "manualSha256": "c3a192ce4b74e3ae6668afc69e84bd855681833228252cbde699bd21ad5dd9e7",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-session-pagination.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-pagination.test.ts.md",
+      "sourceBlob": "7b27d214e1a49d514b075fb10235db3e8e29a463",
+      "sourceSha256": "61d9fa26f7e47b1a16ab67e9398e7941142136ac4f41dda57c7506e4a1b88a49",
+      "manualSha256": "d352c000524dbff8a656e29553e19ca76771af47dfec0fdcadf0d757a82cd7a3",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-session-payload-externalization.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-payload-externalization.test.ts.md",
+      "sourceBlob": "cf33e4cde02a3a3cabfb15e461dc75f58922d648",
+      "sourceSha256": "68dc5c7c5890c4adec6e3711cc9abf4cb03770ddb839ee44a271bb5e2afd84a0",
+      "manualSha256": "7d979dd850804eb31dfe847504a621ac28b5bd45e3a6f370115f98833128fb23",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-session-ui-projection-publisher.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-ui-projection-publisher.ts.md",
+      "sourceBlob": "30f0d1f4ae5b90d774699a9a7fc4d84389c955c9",
+      "sourceSha256": "a5366c0b4e27fb68059394287c49a5a4c68bb94c2ac02600dd8e2a53ca9287ce",
+      "manualSha256": "179a805048595cb64bfa0b84fb5dde2ec7f996ad35eb162ea492cfdf0955dc72",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-session-ui-projection.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-ui-projection.ts.md",
+      "sourceBlob": "af7eef6be70af1b0925349ac36521fc4a326cd36",
+      "sourceSha256": "7acf33048ef449d959c9cedf787dc091ea0ae6234151fec9f4045e250e8909d4",
+      "manualSha256": "48dd3173e9fd99aa1a69b501d013683c9da7d72dc0bb7b361b6387150b78a7ec",
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-send-binding.test.ts.md": "5bcbbd535cdbeb72463f8d070a0b2a7383054fa46fee3bb7529c316c47019e96",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-send-binding.ts.md": "4c269d01f3dfe121724bf80c17aed35a81aaa941b4a061f11a8f59165a79d623",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-send-coordinator.test.ts.md": "da56213d750ce336a92803f2e8237895d1b861f96f1bd9c9313ac030a10cd8b5",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-send-coordinator.ts.md": "8485da77b3cdc7148c82bd472d91b695a5c70bbcc0e23f3593a0bf15902cee9a",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-service.ts.md": "023b7bda68413259efdffb750e00c74111d918e760a76eb52ff1e62b45ead1ba",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-compaction.test.ts.md": "440d40d15f4999b194789a36b95cf9d50f5804c837a7aa62db75c1bb33cd45d5",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-compaction.ts.md": "83138970ecd0dd79bb0bb53f0a5fdf8cd1e0cbc51501337b3139627f9f29acc7",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-deletion.test.ts.md": "f5fb8e8d369ccd6183d3f936d87858fe1cdddd1ddfce086c380abe66be57db5f",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-deletion.ts.md": "9b95440a50ebf25016936488888b779574feebb1214290edb3cf7ec931214a7a",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-index-cache.test.ts.md": "0703ad21e2465289fdc2de21b36f9004bb4cd6e29b1427ef1b487baa0bb7315e",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-manager.oversized-sanitize.test.ts.md": "ed6a9269f3d33331da786379c787bc0a47c9c3402847b5fccc9df5354819282f",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-manager.pi-fork.test.ts.md": "3585db1d6ded5285ffe9f1c2fcb124e9fb1862e73c3ceb0cdcd018bcb28438c6",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-manager.pi-runtime.test.ts.md": "1db14c5df964c2d76a3ca41c90f7a18a3fb0a332d738acc3c926dad780022afa",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-manager.ts.md": "c3a192ce4b74e3ae6668afc69e84bd855681833228252cbde699bd21ad5dd9e7",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-pagination.test.ts.md": "d352c000524dbff8a656e29553e19ca76771af47dfec0fdcadf0d757a82cd7a3",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-payload-externalization.test.ts.md": "7d979dd850804eb31dfe847504a621ac28b5bd45e3a6f370115f98833128fb23",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-ui-projection-publisher.ts.md": "179a805048595cb64bfa0b84fb5dde2ec7f996ad35eb162ea492cfdf0955dc72",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-session-ui-projection.ts.md": "48dd3173e9fd99aa1a69b501d013683c9da7d72dc0bb7b361b6387150b78a7ec"
+  },
+  "findings": [],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network",
+    "bun 测试运行"
+  ],
+  "notes": "nb-51 链 r0→r1 闭合；17 篇沿用 nb-51 accepted 字节（hash 相同），session-manager.ts.md 以 r1 新 hash 合入。"
+}

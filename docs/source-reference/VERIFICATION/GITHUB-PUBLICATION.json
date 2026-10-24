@@ -1,0 +1,16 @@
+{
+  "schema": "r07-github-documentation-publication/1",
+  "preparedAtUtc": "2026-10-24T05:49:45.889717+00:00",
+  "repository": "https://github.com/Fuck-GH-Admin/cdut-studio-review-agent",
+  "branch": "docs/source-reference-r07-20261024",
+  "branchBase": "7b6cdc843d26e926c0c63b8c51a451ff3925cfad",
+  "sourceBaseline": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "documentationRoot": "docs/source-reference",
+  "sourceSnapshot": "SOURCE/",
+  "acceptedDeep": 2378,
+  "acceptedIndexSources": 705,
+  "pending": 0,
+  "runtime": "NOT_RUN",
+  "originalZipSha256": "e028aafe534e83ec39607920323fa79c3af74019d8e31eb4e13f51cb09e9bc8a",
+  "preservation": "All sealed per-file manuals, authored technical documents and source snapshot bytes match the delivered package. README publication state and this metadata are the only content additions; MANIFEST/SHA256SUMS regenerated."
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "dsh-r07-index-review-done/1",
+  "batch": "index-p02-agent-runtime__vendor-xsd__microsoft",
+  "groupId": "p02-agent-runtime__vendor-xsd__microsoft",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-index-author-extra-01-20261024",
+  "reviewerSession": "docs-r07-index-qa-extra-01-20261024",
+  "reviewedAtUtc": "2026-10-23T19:20:00Z",
+  "sealedAtUtc": "2026-10-23T18:56:44+00:00",
+  "status": "REVIEW_COMPLETE_ACCEPTED",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 21,
+    "accepted": 21,
+    "revision_required": 0,
+    "unknown": 0,
+    "findingsBlocking": 0,
+    "findingsNonBlocking": 1
+  },
+  "artifactSha256": "1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf",
+  "artifacts": [
+    "reviews/index-p02-agent-runtime__vendor-xsd__microsoft/RESULT.json",
+    "reviews/index-p02-agent-runtime__vendor-xsd__microsoft/REVIEWED-HASHES.json",
+    "reviews/index-p02-agent-runtime__vendor-xsd__microsoft/SOURCE-CHECKLIST.md",
+    "reviews/index-p02-agent-runtime__vendor-xsd__microsoft/DONE.json"
+  ],
+  "notRun": [
+    "产品测试",
+    "typecheck",
+    "构建",
+    "Electron/GUI",
+    "lxml 校验/编译 smoke（本轮统一 NOT_RUN）"
+  ],
+  "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局账；未 commit/push；结论只覆盖本批；已接受不套新字节。",
+  "findingsSummary": "N-01（nonBlocking，wml-cex-2018.xsd 三副本条目）内容行号 ±2 漂移：「属性 :13-17」实为 :15-17、「根 :18」实为 :19，另 SCHEMA_MAPPINGS 范围引用 :43-58/:43-59 不一；内容主体正确。非阻断≠已修，登记待 errata。",
+  "mergePolicy": "21/21 accepted，lead 可按 REVIEWED-HASHES.json 合入（artifactSha256=1591b0c8dd82aff9fb28007e9e7197042ad4479f3d545773a61c80b61c5e84bf）；若作者出 errata r1，按「已接受不套新字节」核对差异字节后再审。",
+  "next": "lead 合入本组 21 文件；N-01 并入勘误登记（非阻断≠已修）；QA 待 default-skills 组 F-01 的 r1（返修优先）后续审。"
+}

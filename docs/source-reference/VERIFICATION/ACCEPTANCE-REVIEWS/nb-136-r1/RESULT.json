@@ -1,0 +1,267 @@
+{
+ "schema": "dsh-r07-review-result/2",
+ "batch": "nb-136-r1",
+ "revisionOf": "nb-136",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-02-20261024",
+ "reviewerSession": "docs-r07-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T22:05:00Z",
+ "sealId": "seal-1c5ef9c9a8e38677",
+ "sealedAtUtc": "2026-10-23T20:19:39Z",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 18,
+  "accepted": 18,
+  "revision_required": 0,
+  "unknown": 0,
+  "blocking": 0,
+  "nonBlocking": 0
+ },
+ "gates": {
+  "G0": "PASS",
+  "G1": "PASS",
+  "G2": "PASS",
+  "note": "r1 re-verify: D0 chain author/reviewer now actual sessions (B-01 closed); seal chain hashes all match; manual-source bindings 0 diff; changed manuals re-reviewed G2 against frozen source (B-01 chain fields fixed; B-02 smoke identity reframed as stale-comment claim w/ cdutai-dev truth; N-01 dist platform gap; N-02/N-03 dev-kill quirks; N-04 surface-contract comment-token quirk) — fixes accurate, no regressions; unchanged manuals byte-identical to r0 accepted hashes"
+ },
+ "files": [
+  {
+   "path": "apps/electron/scripts/after-pack.cjs",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/after-pack.cjs.md",
+   "sourceBlob": "2e6c365ec6fc42a774e94ee626941b01d7b9a655",
+   "sourceSha256": "a4291be14b2a06928593b725779a7aefbdd52efdc5e37d30df944b2278c179f6",
+   "manualSha256": "ba4998ac77c1b01c807154916bf3e56fffe3514dcbf29d0a2f6f7bb05133b602",
+   "verdict": "accepted",
+   "findings": [
+    "NB-136-R1-HASH-EQUAL"
+   ]
+  },
+  {
+   "path": "apps/electron/scripts/after-sign-mac.cjs",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/after-sign-mac.cjs.md",
+   "sourceBlob": "3b9d9a39292d5e322424ab802d742aca0ad6b1fd",
+   "sourceSha256": "303ec8ffb30c73b10817e02044a972fe92fe381aa185fb2a7323fa9818476f5d",
+   "manualSha256": "80ad24b49fa5a27e8ce053ac6fbaa096059c94503bf5df2b19479a3170c2c164",
+   "verdict": "accepted",
+   "findings": [
+    "NB-136-R1-HASH-EQUAL"
+   ]
+  },
+  {
+   "path": "apps/electron/scripts/agent-session-smoke.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/agent-session-smoke.ts.md",
+   "sourceBlob": "dba21010cced79cbf42f6e11fb9ce2b27edb8a6d",
+   "sourceSha256": "258fa2fa9c08478887df0f1e1cb134141f8e598926a2c07f6a3f9ff04afa926a",
+   "manualSha256": "05d62161a52c1dabbc206df92f2417f16de65a7f793a6e0113c935e1a438bd2b",
+   "verdict": "accepted",
+   "findings": [
+    "NB-136-R1-REVIEWED-CHANGED"
+   ]
+  },
+  {
+   "path": "apps/electron/scripts/build-cli-runtime.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/build-cli-runtime.test.ts.md",
+   "sourceBlob": "24c6e4a5aef546bfdf48abcf4befdf6a8a14b638",
+   "sourceSha256": "a9d5d0ac5c5c1eebbfb3791a87fc2e0aaf20c187c2a0dde9e8b184d5055086ae",
+   "manualSha256": "e89d3fbdc9364c3ba980e74c237b47b47eec35168c27761be92432c0fe2126b5",
+   "verdict": "accepted",
+   "findings": [
+    "NB-136-R1-HASH-EQUAL"
+   ]
+  },
+  {
+   "path": "apps/electron/scripts/build-cli-runtime.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/build-cli-runtime.ts.md",
+   "sourceBlob": "3734ab6773cb466828d485ad95232f7c5130b563",
+   "sourceSha256": "160118c5d213413af90048bb2588895968a1e2a14173419f752fe4d391d99178",
+   "manualSha256": "176e052fb4a2ed9ca959f1135f962ad76ae387c5e5cc705dd49ce58b9284ce84",
+   "verdict": "accepted",
+   "findings": [
+    "NB-136-R1-HASH-EQUAL"
+   ]
+  },
+  {
+   "path": "apps/electron/scripts/build-cli.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/build-cli.ts.md",
+   "sourceBlob": "08e05670dfcb2f055181ffb712f25e845d537178",
+   "sourceSha256": "4d795867236659aff5276a344a1e2faf8cf95c4b21ddc2da15507b1077f5358c",
+   "manualSha256": "1f4a83eb96bcb9284a19b0938bf99ac1611b2ecf1d9074168dd8cd9346f5628c",
+   "verdict": "accepted",
+   "findings": [
+    "NB-136-R1-HASH-EQUAL"
+   ]
+  },
+  {
+   "path": "apps/electron/scripts/build-ooxml.mjs",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/build-ooxml.mjs.md",
+   "sourceBlob": "68161d8af10e9c1392b8227461f2ac6fb8e0f332",
+   "sourceSha256": "44e3ec54f50c786ada8bbcc608c4770db1fc3b149c09cc526aadf96aced9168f",
+   "manualSha256": "12b863af0b770f1c5d9a980e4e9cf4fd7ed5707be8e47d4082303979d001a6af",
+   "verdict": "accepted",
+   "findings": [
+    "NB-136-R1-HASH-EQUAL"
+   ]
+  },
+  {
+   "path": "apps/electron/scripts/build-renderer.mjs",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/build-renderer.mjs.md",
+   "sourceBlob": "3cf8d8bf2c7a71a1669aa9819cb095f20ff334d0",
+   "sourceSha256": "9a344f17e2e2131b5daf2df33770d5086a639e47e87daa44f8b2f84efe6c69be",
+   "manualSha256": "526060b737d29ecac7b6d3e7f0d1f996e94163dfedc7ac38dffeda9a6c3623fc",
+   "verdict": "accepted",
+   "findings": [
+    "NB-136-R1-HASH-EQUAL"
+   ]
+  },
+  {
+   "path": "apps/electron/scripts/check-skin-surface-contract.mjs",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/check-skin-surface-contract.mjs.md",
+   "sourceBlob": "06471c43e17e901ef02adb3248f79e39ede9bedc",
+   "sourceSha256": "a27c8f9a8780d4989b62d1ecc0025398b4e4617adc729c6215f99b625009ec45",
+   "manualSha256": "1c1ed08bd8c8188bc784526a5ad3b46ee07256766dd012b2f419f01b5b775bf6",
+   "verdict": "accepted",
+   "findings": [
+    "NB-136-R1-REVIEWED-CHANGED"
+   ]
+  },
+  {
+   "path": "apps/electron/scripts/check-skin-token-sync.mjs",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/check-skin-token-sync.mjs.md",
+   "sourceBlob": "5614914afbae4bab488f9aa47f3d81c10488207f",
+   "sourceSha256": "3f24e3fb1bfcbdbc99c49e602ee5ce334210ce7e5319f299cba24b03ff687603",
+   "manualSha256": "55c2aa150e804418df9aeadad48a5059b19f18e1fabf2c63b988933a925e9e8b",
+   "verdict": "accepted",
+   "findings": [
+    "NB-136-R1-HASH-EQUAL"
+   ]
+  },
+  {
+   "path": "apps/electron/scripts/copy-resources.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/copy-resources.ts.md",
+   "sourceBlob": "99ae0155627c24b1dd23e1050378c9408c9f67f8",
+   "sourceSha256": "c7106ec13c96438d4bc0213ae9ad8e4a0ecc3643e4a2d8068f8a801b89466fac",
+   "manualSha256": "921bf5adca69bf836d0d772c76ed50fcc43dbfc3a379113a8b2e635ecd9edf52",
+   "verdict": "accepted",
+   "findings": [
+    "NB-136-R1-HASH-EQUAL"
+   ]
+  },
+  {
+   "path": "apps/electron/scripts/crop-cdut-white-logo.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/crop-cdut-white-logo.ts.md",
+   "sourceBlob": "2a66a8adbf028d8eb25101519cc4d75e8aedb326",
+   "sourceSha256": "f044714770e62e6df60e78f74d2a2fa18b36e9a038e0e685ea35e27cca14cd52",
+   "manualSha256": "ab04ca87389a05f7c58e621b8462ded911b3147883495b4d7cb47e401baf818e",
+   "verdict": "accepted",
+   "findings": [
+    "NB-136-R1-HASH-EQUAL"
+   ]
+  },
+  {
+   "path": "apps/electron/scripts/dark-mode-guards.test.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/dark-mode-guards.test.ts.md",
+   "sourceBlob": "a18bd8d17cf53cd882060a340ddc825a8feb4afc",
+   "sourceSha256": "cc2898de2247c1dbaf7a5b302f274709c5c7c4dc3b41fdd297b7971e17ad6668",
+   "manualSha256": "a5aafcc42260c27e5cbdb714c89339eea1029bac64d5a98569b7f7231f469840",
+   "verdict": "accepted",
+   "findings": [
+    "NB-136-R1-HASH-EQUAL"
+   ]
+  },
+  {
+   "path": "apps/electron/scripts/dev-kill.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/dev-kill.ts.md",
+   "sourceBlob": "0d7ac4017a03a399ce6da96e9769fbdd2b7d2c4e",
+   "sourceSha256": "6cdfa1f8318eb3a94026fd502735cebb4aab67ae7398e7c4f63def2b4240d71d",
+   "manualSha256": "27351b51d78e6ef0d5d93bb9bec1f548040444427047824159598eb5e30aa9bf",
+   "verdict": "accepted",
+   "findings": [
+    "NB-136-R1-REVIEWED-CHANGED"
+   ]
+  },
+  {
+   "path": "apps/electron/scripts/dev-split.sh",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/dev-split.sh.md",
+   "sourceBlob": "f331ff3c4874fb55ec872e3157874249c2cd8f03",
+   "sourceSha256": "7d4226e4612fc77c74020f9a43caac826afd76b7210d5765a43337e3001dd061",
+   "manualSha256": "0ee53549f3755bbf20d234b1a355bea530690d87b0c9c1295161648a409c0275",
+   "verdict": "accepted",
+   "findings": [
+    "NB-136-R1-HASH-EQUAL"
+   ]
+  },
+  {
+   "path": "apps/electron/scripts/diagnose-openai-reasoning.mjs",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/diagnose-openai-reasoning.mjs.md",
+   "sourceBlob": "87c7d89b88d4915936e8c31e497f6b9ce52073ad",
+   "sourceSha256": "187b0bda98c221c6565bfac43e43c2ad6b956060426b0f200eead42597399c36",
+   "manualSha256": "e1d6cf09f8f6169b3a35b4e0e725139064b27a4b0066f8b46a92b62059469ec3",
+   "verdict": "accepted",
+   "findings": [
+    "NB-136-R1-HASH-EQUAL"
+   ]
+  },
+  {
+   "path": "apps/electron/scripts/dist.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/dist.ts.md",
+   "sourceBlob": "2aea82d4a93e970ca1cc21ed937cb0a31dd04222",
+   "sourceSha256": "40e620c1e8c533d24fffb1e42489a7d75e14a488ebb3eef0813792f55472d104",
+   "manualSha256": "d27f263fe6bf44dfef5f9bb7a783fd0a65129e551aeb1755df090f396dcce75e",
+   "verdict": "accepted",
+   "findings": [
+    "NB-136-R1-REVIEWED-CHANGED"
+   ]
+  },
+  {
+   "path": "apps/electron/scripts/ensure-mingit.ts",
+   "manual": "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/ensure-mingit.ts.md",
+   "sourceBlob": "c81ff7af16488fb2097c141a72a084497efef6e6",
+   "sourceSha256": "2e256f79a3c04d2b861e699e47b85cc720155abf5b8141cbee7a8198100dcded",
+   "manualSha256": "e8374e07e43cd003729ff1bc0842ed9fe5f05fd8d8a90d83c293c3e94d61c15a",
+   "verdict": "accepted",
+   "findings": [
+    "NB-136-R1-HASH-EQUAL"
+   ]
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/after-pack.cjs.md": "ba4998ac77c1b01c807154916bf3e56fffe3514dcbf29d0a2f6f7bb05133b602",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/after-sign-mac.cjs.md": "80ad24b49fa5a27e8ce053ac6fbaa096059c94503bf5df2b19479a3170c2c164",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/agent-session-smoke.ts.md": "05d62161a52c1dabbc206df92f2417f16de65a7f793a6e0113c935e1a438bd2b",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/build-cli-runtime.test.ts.md": "e89d3fbdc9364c3ba980e74c237b47b47eec35168c27761be92432c0fe2126b5",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/build-cli-runtime.ts.md": "176e052fb4a2ed9ca959f1135f962ad76ae387c5e5cc705dd49ce58b9284ce84",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/build-cli.ts.md": "1f4a83eb96bcb9284a19b0938bf99ac1611b2ecf1d9074168dd8cd9346f5628c",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/build-ooxml.mjs.md": "12b863af0b770f1c5d9a980e4e9cf4fd7ed5707be8e47d4082303979d001a6af",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/build-renderer.mjs.md": "526060b737d29ecac7b6d3e7f0d1f996e94163dfedc7ac38dffeda9a6c3623fc",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/check-skin-surface-contract.mjs.md": "1c1ed08bd8c8188bc784526a5ad3b46ee07256766dd012b2f419f01b5b775bf6",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/check-skin-token-sync.mjs.md": "55c2aa150e804418df9aeadad48a5059b19f18e1fabf2c63b988933a925e9e8b",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/copy-resources.ts.md": "921bf5adca69bf836d0d772c76ed50fcc43dbfc3a379113a8b2e635ecd9edf52",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/crop-cdut-white-logo.ts.md": "ab04ca87389a05f7c58e621b8462ded911b3147883495b4d7cb47e401baf818e",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/dark-mode-guards.test.ts.md": "a5aafcc42260c27e5cbdb714c89339eea1029bac64d5a98569b7f7231f469840",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/dev-kill.ts.md": "27351b51d78e6ef0d5d93bb9bec1f548040444427047824159598eb5e30aa9bf",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/dev-split.sh.md": "0ee53549f3755bbf20d234b1a355bea530690d87b0c9c1295161648a409c0275",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/diagnose-openai-reasoning.mjs.md": "e1d6cf09f8f6169b3a35b4e0e725139064b27a4b0066f8b46a92b62059469ec3",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/dist.ts.md": "d27f263fe6bf44dfef5f9bb7a783fd0a65129e551aeb1755df090f396dcce75e",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/ensure-mingit.ts.md": "e8374e07e43cd003729ff1bc0842ed9fe5f05fd8d8a90d83c293c3e94d61c15a"
+ },
+ "allManualHashes": {
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/after-pack.cjs.md": "ba4998ac77c1b01c807154916bf3e56fffe3514dcbf29d0a2f6f7bb05133b602",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/after-sign-mac.cjs.md": "80ad24b49fa5a27e8ce053ac6fbaa096059c94503bf5df2b19479a3170c2c164",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/agent-session-smoke.ts.md": "05d62161a52c1dabbc206df92f2417f16de65a7f793a6e0113c935e1a438bd2b",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/build-cli-runtime.test.ts.md": "e89d3fbdc9364c3ba980e74c237b47b47eec35168c27761be92432c0fe2126b5",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/build-cli-runtime.ts.md": "176e052fb4a2ed9ca959f1135f962ad76ae387c5e5cc705dd49ce58b9284ce84",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/build-cli.ts.md": "1f4a83eb96bcb9284a19b0938bf99ac1611b2ecf1d9074168dd8cd9346f5628c",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/build-ooxml.mjs.md": "12b863af0b770f1c5d9a980e4e9cf4fd7ed5707be8e47d4082303979d001a6af",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/build-renderer.mjs.md": "526060b737d29ecac7b6d3e7f0d1f996e94163dfedc7ac38dffeda9a6c3623fc",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/check-skin-surface-contract.mjs.md": "1c1ed08bd8c8188bc784526a5ad3b46ee07256766dd012b2f419f01b5b775bf6",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/check-skin-token-sync.mjs.md": "55c2aa150e804418df9aeadad48a5059b19f18e1fabf2c63b988933a925e9e8b",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/copy-resources.ts.md": "921bf5adca69bf836d0d772c76ed50fcc43dbfc3a379113a8b2e635ecd9edf52",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/crop-cdut-white-logo.ts.md": "ab04ca87389a05f7c58e621b8462ded911b3147883495b4d7cb47e401baf818e",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/dark-mode-guards.test.ts.md": "a5aafcc42260c27e5cbdb714c89339eea1029bac64d5a98569b7f7231f469840",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/dev-kill.ts.md": "27351b51d78e6ef0d5d93bb9bec1f548040444427047824159598eb5e30aa9bf",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/dev-split.sh.md": "0ee53549f3755bbf20d234b1a355bea530690d87b0c9c1295161648a409c0275",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/diagnose-openai-reasoning.mjs.md": "e1d6cf09f8f6169b3a35b4e0e725139064b27a4b0066f8b46a92b62059469ec3",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/dist.ts.md": "d27f263fe6bf44dfef5f9bb7a783fd0a65129e551aeb1755df090f396dcce75e",
+  "MODULE-REFERENCE/p01-app-shell/FILE-REFERENCE/apps/electron/scripts/ensure-mingit.ts.md": "e8374e07e43cd003729ff1bc0842ed9fe5f05fd8d8a90d83c293c3e94d61c15a"
+ },
+ "findings": []
+}

@@ -1,0 +1,276 @@
+{
+  "schema": "dsh-r07-review-result/1",
+  "batch": "nb-125",
+  "revisionOf": null,
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T21:45:00Z",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass"
+  },
+  "g0Evidence": {
+    "chain": "READY/DONE/MANIFEST/ZIP 交叉一致（sealId seal-d498dea67ce96158）；18 manualHashes=磁盘 0 mismatch；ZIP 21 条目 0 穿越/符号链接/字节 mismatch；18/18 源绑定==SCOPE==MANIFEST（独立实算）；非返修批"
+  },
+  "g1Evidence": {
+    "sections": "18/18 章节齐备；行号引用抽查进 G2（吻合）；frontmatter 记 N-01"
+  },
+  "g2Evidence": {
+    "coverage": "QA 全量逐行读毕 18 源（3365 行：useGlobalAgentListeners 1842 四段/useMigrationImport 212/useCloseTab 164/useOpenSession 149/useBackgroundTasks 121/usePanelAutoLayout 123/useConversationSettings 115/use-plan-quota 98/useCreateSession 95/useBulletinStartupTrigger 88/useDefaultAppForFile 62/useBrowserLocalFileSelectionQuote 56+test 64/useBrowserPreviewThemeSync 52/useEnterCdutAiClass 37/useCdutAccountHydration 35/use-window-inner-height 34/use-is-dark-theme 18）+18 手册（1210 行）逐篇；独立基线 reviews/nb-125/SOURCE-CHECKLIST.md（17 组源事实+4 观察点）；机械核 test( 6",
+    "verifiedTrue": "18 篇全对：DOM .dark 取或防闪烁、rAF 节流、水合双通道、速课堂四步联动、主题+tokens 双通道+whenSkinCssApplied 守护、reduce 三边界（6 测试逐条吻合）、额度旧值优先+in-flight 复用、公告三层竞态防护（600ms+双检+版本识别）、默认 App 缓存防污染（access-null 不入缓存）、面板 A/B 分离+滞后带、后台任务去重/rethrow、per-conversation 回落语义、双创建路径+draft、**useOpenSession 三重门禁**（review-owner/工作区不可见/未知 ID Main 授权）+绿标幂等消费、useCloseTab 防竞态约定+浏览器级联+缓存释放、useMigrationImport v2 映射+reset 清临时目录、**useGlobalAgentListeners 全链**（未知 ID 有界队列 4096/终态专用 IPC/提交屏障/isCurrentAgentStreamCompletion/恢复闸门/外源 run 不抢占 #985/通知仅正常完成响铃/backgroundTasksPending 续轮/聚焦 hash LRU 100）",
+    "problems": "1 条 minor（frontmatter reviewer 模板残留×18）"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/renderer/hooks/use-is-dark-theme.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/use-is-dark-theme.ts.md",
+      "sourceBlob": "c8363fc4f2f2510412e08e5c30182eac7261948f",
+      "sourceSha256": "60106096f3ecbf98e626f3cf75f70b9f39d1c118b56c05cc267f4f1605c69d40",
+      "manualSha256": "d1bdba10e3aa9dc0eb95a57957c8b6903de1eb79fcfb32c0c3bff269f26a83eb",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/hooks/use-plan-quota.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/use-plan-quota.ts.md",
+      "sourceBlob": "9262685a58eabc648345ba361d17d3ac5f248982",
+      "sourceSha256": "8c7411c1278a04dc5065609d1f52952ad9c05cbb2060dea2236c19cfb625b148",
+      "manualSha256": "7aa6dbf83fd2489e28a9d0e3e3627cda8324e116e9925d2a6e9245f2c836082c",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/hooks/use-window-inner-height.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/use-window-inner-height.ts.md",
+      "sourceBlob": "77281e0aac091c818060b54dc9858fe84c016b57",
+      "sourceSha256": "73feacc84ca622f46c4bb5b32ce614345e01c2b14b53475b060e3adc2eafea92",
+      "manualSha256": "a158a39084569581886abb44e57e99187e4a48bc074b2ad17934926f17bf4b72",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/hooks/useBackgroundTasks.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useBackgroundTasks.ts.md",
+      "sourceBlob": "c3e3c757405619981abe9414e2183c6459d09531",
+      "sourceSha256": "0dd1d37e27575c875210a41bc8561065d8a26dea51fa2efe45bde3ff8baa95fe",
+      "manualSha256": "8bf42ae83b892128ca019ca3e4770863f06fbdd0b0cfcb57223b9c09505a022c",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/hooks/useBrowserLocalFileSelectionQuote.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useBrowserLocalFileSelectionQuote.test.ts.md",
+      "sourceBlob": "c8b5f40ddfb5a9ab149d78a2a38151b1379e7851",
+      "sourceSha256": "a7d1d13d67370b28a2391e2a70daabae2c1dee46ca371bd7658ce9375447972b",
+      "manualSha256": "7d9ecf16cd4b3856449758cab8b8e1289d43e58efe6ff91bccafd5c8382b6011",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/hooks/useBrowserLocalFileSelectionQuote.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useBrowserLocalFileSelectionQuote.ts.md",
+      "sourceBlob": "327f1d0683cf3b172556101fcc8f686a381f530b",
+      "sourceSha256": "866ea7aa03c8b0d95f0738438266d75870668a26f2af8b4d8864693715dff9df",
+      "manualSha256": "d1ed2fe35475af127688eabdc2e4e02f004ec603db51e1641af168f36c50df83",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/hooks/useBrowserPreviewThemeSync.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useBrowserPreviewThemeSync.ts.md",
+      "sourceBlob": "2069373b7061860911852a833cd2a3c5260dc609",
+      "sourceSha256": "1c04c34f32b2ed0471183e6842ca12afdfaae5e409dadb464c2eca3bb640d13a",
+      "manualSha256": "e2b24c10983ae02bf6a57964366448dc638cea74f2049a9207e29765e7e4a450",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/hooks/useBulletinStartupTrigger.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useBulletinStartupTrigger.ts.md",
+      "sourceBlob": "6d10857a4c238910ffc66b0fc1776ee56e93d4f0",
+      "sourceSha256": "d7a2f5d637bddf79d5fb004b3e43dd4df7066f8926ac90c7ba42e945c75df570",
+      "manualSha256": "3eefcf9d320983959605e94ada756429aa236957c02197e98ff995804a470739",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/hooks/useCdutAccountHydration.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useCdutAccountHydration.ts.md",
+      "sourceBlob": "0db887a48a9872253ac63e9b844bded19e2d5d4f",
+      "sourceSha256": "645d69d3e70d91934af779c1bd23fc9479c606ef1cc3fd392dcc7de54141686a",
+      "manualSha256": "e0c84e120162b7256f7576264258eab1bf8a57f9beae23d1ed3c18465dec90f6",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/hooks/useCloseTab.tsx",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useCloseTab.tsx.md",
+      "sourceBlob": "10dd01c14600dd96b93cadc6c13bcd2823c781a3",
+      "sourceSha256": "7a5fe2eca3d29c8652d4667ed56c55c0c2d4ede895604f12699c220f1e59ade4",
+      "manualSha256": "16ee27c615ebccbf85b7800357bebd32e57914dd3b61367130e9ad10d17ab7c9",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/hooks/useConversationSettings.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useConversationSettings.ts.md",
+      "sourceBlob": "f7fb809dadaa017bd546ff2aa8bf1b470d4de816",
+      "sourceSha256": "687a3c14b5fee5d928345a1ccc891e59ab9814d9c004a722c052e798f46c76e8",
+      "manualSha256": "7dda91b569facee8ba56281bbec4804186f8378f16d17dbfd95920b4551ea555",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/hooks/useCreateSession.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useCreateSession.ts.md",
+      "sourceBlob": "41b832fea092f1f437801f1b61c6713ffa665783",
+      "sourceSha256": "12bae2b14c8b0d32eb37b8b34ab2636e34c1f208d12f1946ad0498bb1e950a03",
+      "manualSha256": "2ea791364c78f42f59e3cc2073bcbf1b8d4b902ab1b4ca63632f9a18c7089765",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/hooks/useDefaultAppForFile.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useDefaultAppForFile.ts.md",
+      "sourceBlob": "07f1e1457e2c5038727f1f473f4cd595827c8ad7",
+      "sourceSha256": "56230d5402d02232067395b5ea2afda42ccfa7ec3873e78ce751e8858119ae4e",
+      "manualSha256": "39b0cc89e0555520ff6d2c636f5214cf6b894dcc4275b4069980587d3e0c57f9",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/hooks/useEnterCdutAiClass.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useEnterCdutAiClass.ts.md",
+      "sourceBlob": "07ecade6e63d8d0cda87427b6de2d0f5505d7abf",
+      "sourceSha256": "32c70dfc0c67a91dafd9eb360d40ce64de9e8f15d63b7505230b09b0d3c019fa",
+      "manualSha256": "18c567475726a2c19db231f601a5f373f63c4259f0db32752d991a98a5edb224",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/hooks/useGlobalAgentListeners.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useGlobalAgentListeners.ts.md",
+      "sourceBlob": "7f589fafd259f06e7c004282e8f72807d5f22fe1",
+      "sourceSha256": "8ced2f5e0b6bb3eb9c9f72c523a185c2606cec7da344d5e5cbc96632a9808432",
+      "manualSha256": "7a964fd34793bda86d5a531c39ba709242c34f82eaa6128efc656173b8fa0f0a",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/hooks/useMigrationImport.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useMigrationImport.ts.md",
+      "sourceBlob": "1f112f815930fa95d36a8059818bfb9aecef66d7",
+      "sourceSha256": "53475eb77cc976102b4b39bf14f558ace23c7f214e8fadb33f5e80683ce7dd8c",
+      "manualSha256": "a828ad4ff72c1eeb510ce886f43c43fb7d308262c2de3c77436647eb8390a714",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/hooks/useOpenSession.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useOpenSession.ts.md",
+      "sourceBlob": "e5561f1b3bc7e8c663904dcdfe15e3c0fb1b28ed",
+      "sourceSha256": "2e44745d01a2852bfb4c7c3e8eca90350e57a5886f0eae0bc2692e0858ebf2cd",
+      "manualSha256": "cf3f819390ce0b54e923f78d77d29aaad2b00954f6ac6a7f5548c6543ea40ef4",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/hooks/usePanelAutoLayout.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/usePanelAutoLayout.ts.md",
+      "sourceBlob": "22504c9368ab12d5c04829a61a57aa30532586c0",
+      "sourceSha256": "07e04d293663901f7d1dd23afb6001cdbeb7ba812af62dc7923628a1854cc9f2",
+      "manualSha256": "25c66eb955680c01bc7699b60f8b41579ce34328fabea8619be06b7fb2a44ad2",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/use-is-dark-theme.ts.md": "d1bdba10e3aa9dc0eb95a57957c8b6903de1eb79fcfb32c0c3bff269f26a83eb",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/use-plan-quota.ts.md": "7aa6dbf83fd2489e28a9d0e3e3627cda8324e116e9925d2a6e9245f2c836082c",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/use-window-inner-height.ts.md": "a158a39084569581886abb44e57e99187e4a48bc074b2ad17934926f17bf4b72",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useBackgroundTasks.ts.md": "8bf42ae83b892128ca019ca3e4770863f06fbdd0b0cfcb57223b9c09505a022c",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useBrowserLocalFileSelectionQuote.test.ts.md": "7d9ecf16cd4b3856449758cab8b8e1289d43e58efe6ff91bccafd5c8382b6011",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useBrowserLocalFileSelectionQuote.ts.md": "d1ed2fe35475af127688eabdc2e4e02f004ec603db51e1641af168f36c50df83",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useBrowserPreviewThemeSync.ts.md": "e2b24c10983ae02bf6a57964366448dc638cea74f2049a9207e29765e7e4a450",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useBulletinStartupTrigger.ts.md": "3eefcf9d320983959605e94ada756429aa236957c02197e98ff995804a470739",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useCdutAccountHydration.ts.md": "e0c84e120162b7256f7576264258eab1bf8a57f9beae23d1ed3c18465dec90f6",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useCloseTab.tsx.md": "16ee27c615ebccbf85b7800357bebd32e57914dd3b61367130e9ad10d17ab7c9",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useConversationSettings.ts.md": "7dda91b569facee8ba56281bbec4804186f8378f16d17dbfd95920b4551ea555",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useCreateSession.ts.md": "2ea791364c78f42f59e3cc2073bcbf1b8d4b902ab1b4ca63632f9a18c7089765",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useDefaultAppForFile.ts.md": "39b0cc89e0555520ff6d2c636f5214cf6b894dcc4275b4069980587d3e0c57f9",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useEnterCdutAiClass.ts.md": "18c567475726a2c19db231f601a5f373f63c4259f0db32752d991a98a5edb224",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useGlobalAgentListeners.ts.md": "7a964fd34793bda86d5a531c39ba709242c34f82eaa6128efc656173b8fa0f0a",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useMigrationImport.ts.md": "a828ad4ff72c1eeb510ce886f43c43fb7d308262c2de3c77436647eb8390a714",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/useOpenSession.ts.md": "cf3f819390ce0b54e923f78d77d29aaad2b00954f6ac6a7f5548c6543ea40ef4",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/hooks/usePanelAutoLayout.ts.md": "25c66eb955680c01bc7699b60f8b41579ce34328fabea8619be06b7fb2a44ad2"
+  },
+  "findings": [
+    {
+      "id": "N-01",
+      "severity": "minor",
+      "file": "（全 18 篇 frontmatter）",
+      "claim": "frontmatter `reviewer: p03-integrations` 18/18——系统性模板残留（与 nb-113 同源，比照 nb-30 先例记 N）；author 字段正确。",
+      "sourceEvidence": "grep '^reviewer:' stage/**/ = 18×p03-integrations",
+      "action": "任一 rN 批量更正或去除。"
+    }
+  ],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network",
+    "bun 测试运行"
+  ],
+  "knownUnknowns": [
+    "agent-atoms/lib 各实现域外（AgentStreamRestoreGate/session-update-batcher/channel-plan-quota/bulletin-startup/panel-layout/agent-tab-access）",
+    "桌面通知/提示音实际效果",
+    "运行验证 NOT_RUN"
+  ],
+  "notes": "N-01 不阻断；18 篇全部可合。判定口径一致。"
+}

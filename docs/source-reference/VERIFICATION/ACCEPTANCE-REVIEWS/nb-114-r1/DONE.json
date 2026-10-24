@@ -1,0 +1,59 @@
+{
+ "schema": "dsh-r07-qa-done/1",
+ "batch": "nb-114-r1",
+ "id": "NB-114",
+ "revisionOf": "nb-114",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewRoot": "reviews/nb-114-r1",
+ "reviewedAtUtc": "2026-10-24T21:10:00Z",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PASS",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 18,
+  "revision_required": 0,
+  "unknown": 0
+ },
+ "acceptedManuals": 18,
+ "acceptedHashesCount": 18,
+ "findingsClosure": {
+  "F-01": "CLOSED（cslab-atoms DrawerMode 17→18 态 + 30+→59 导出 ✓）",
+  "F-02": "CLOSED（conversation 15→21 ✓）",
+  "F-03": "CLOSED（automation 6→8 ✓）",
+  "F-04": "CLOSED（vesta 9→10 ✓）"
+ },
+ "resultSha256": "00001ae11487119d9bcfff4e25cbc2a07fecfbb6316522eacb8afa59e5a7c0c8",
+ "reviewedHashesSha256": "cde301aed27c9232e549fc3d817ff9f452f2d4c43d2128748be8f93601c45277",
+ "zip": {
+  "path": "deliveries/nb-114-r1/R07-nb-114-r1-05fb2565.zip",
+  "sha256": "2ae42fac5303d85a2440388bde292957082cf777004093410c20863174dd5b05",
+  "note": "v2 无穿越/0 mismatch"
+ },
+ "sealId": "seal-0af9126abae1bdaf",
+ "artifacts": [
+  "reviews/nb-114-r1/RESULT.json",
+  "reviews/nb-114-r1/RESULT.md",
+  "reviews/nb-114-r1/REVIEWED-HASHES.json",
+  "reviews/nb-114-r1/DONE.json",
+  "handoffs/nb-114-r1-REVIEW-TO-AUTHOR.md",
+  "handoffs/nb-114-r1-REVIEW-TO-LEAD.md"
+ ],
+ "priorReviewsUntouched": true,
+ "parentPreserved": "r0 交付未动；4 篇 before/=父批原字节",
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "real model/network"
+ ],
+ "writtenOnlyIn": "reviews/nb-114-r1 + handoffs",
+ "next": "lead 按 18 个新 acceptedHashes 合入；nb-114 循环闭合"
+}

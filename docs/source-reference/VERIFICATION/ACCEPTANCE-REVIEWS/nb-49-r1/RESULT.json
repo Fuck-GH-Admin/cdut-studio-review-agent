@@ -1,0 +1,224 @@
+{
+  "schema": "dsh-r07-review-result/1",
+  "batch": "nb-49-r1",
+  "revisionOf": "nb-49",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T20:35:00Z",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass"
+  },
+  "g0Evidence": {
+    "chain": "READY/DONE/MANIFEST/ZIP 交叉一致（sealId seal-6f6ce4df22879fcf，revisionOf nb-49）；18 manualHashes=磁盘 0 mismatch",
+    "revisionChain": "before/ 18/18==nb-49 stage（11 篇未变==声明）；changes.diff 13 hunks/7 文件 git apply 重放==stage 逐字节",
+    "zip": "21 条目 0 穿越/符号链接/字节 mismatch"
+  },
+  "g2Evidence": {
+    "fixVerification": "逐 hunk 核验 F-01~F-07+N 全关闭：F-01 model-routing '5 导出对象'（§2 列名+§11）；F-02/F-05 permission-service respondToPermission 形状改 `{behavior:'allow', updatedInput: pending.request.toolInput}`（:206-209）+'代码不写 decisionClassification（仅类型字段）'照实+§11 '5 条 export' 列名；F-03 p0-guards 补 `BrowserToolPermissionDecision :123` 行+'15 导出（14+1 接口）'两处；F-04 preset-operations 7 处行号全部更正（getPending :631→:254、summarize :264→:323、create :338→:394、propose :453→:478、依赖接口 :308,618→:158,152）+§11 '26 条 export'；F-06 迁移状态文件名 `preset-migration-state.json`→`agent-preset-migration.json`（§2+§5 两处）；F-07 preset-manager 16 处行号更正（create :379→:1174、ensure :1283→:635、rebind :1127→:1022、setDefaultRef :1225→:860、restore :1333→:1238、全局族改'分散无连续区间'诚实化）；N×3 附带（platform-prompt 转义覆盖面照实、preset-manager.test 分组小计修正+87 合计）",
+    "spotCheck": "QA 机械抽核：listAgentPresets :252/ensure :635/setDefaultReference :860/rebind :1022/create :1174/restore :1238/normalize :1497、preset-operations Switch :152/PresetChangeOp :158/getPending :254/clear :258/summarize :323/createWs :394/propose :478 **全部精确**；test( 计数=87 与手册'机械核 87'一致；无新错误"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/main/lib/agent-model-routing.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-model-routing.test.ts.md",
+      "sourceBlob": "0805c3481b71e88b060596364a88ec8b68584e8e",
+      "sourceSha256": "7428cdd60f6aef8084adb32dc172ee8c16432c1559cab53c4f8de4c8da9c66ed",
+      "manualSha256": "c631fdb6057334bd8b5a34aaeb69581e904dcd110e2e98d490163477ecf8b338",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-model-routing.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-model-routing.ts.md",
+      "sourceBlob": "5cb1da85f98ca02a0f92dfc2b84606da8c1aeefe",
+      "sourceSha256": "26c75af3c7042c1e9fc7b0dee14e034a718b6941c0467ab8ea0c0146f97b4939",
+      "manualSha256": "cf09820949afa43b3f3e510ccf8995da46f0d320c0fd278167dd0c699a4b4ba0",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-model-selection.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-model-selection.test.ts.md",
+      "sourceBlob": "1559f94f01267319aaf2f935116c35c7a16427ff",
+      "sourceSha256": "f4ef49b0894e26d5542b94f6b75975e2df85f6b042db9721ed0574c92385b4a4",
+      "manualSha256": "43fd4f3b827d748029e4306b60496705d9e5a6c9e35833300c08f8d6f0735970",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-model-selection.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-model-selection.ts.md",
+      "sourceBlob": "183e480463b107f998280c5994e2dc43bf5c02df",
+      "sourceSha256": "81c73e623196f3a21317a606668ea0d463673c7c162927e8f0475dcde69ad167",
+      "manualSha256": "e2ce0d10527afc05f3de41cbf1956e0d23092c1c945bfc59364da57ec802b02c",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-orchestrator-p0-guards.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-orchestrator-p0-guards.test.ts.md",
+      "sourceBlob": "7acebf8f4e225afc7433c6a3f7c426e6124b7a5d",
+      "sourceSha256": "807e9edb77def45621988f3f83e5d1270d59d9fb06faebf9c4e802fb6a206c84",
+      "manualSha256": "f9ca2c915604bf5894f2739895358edb4662448b43daf88f2125a3a85fea947f",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-orchestrator-p0-guards.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-orchestrator-p0-guards.ts.md",
+      "sourceBlob": "dc2564b72f843924ac4e946fc66153560d818a5e",
+      "sourceSha256": "19ff7037f919d3f92084ef393fbcc131978e790e93bfef3a5d667d57b79669d8",
+      "manualSha256": "763fc613f33d1a75a5a58fd9b0a5a8b3f5e193a90dd894e9ea54f4674bc9b3d7",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-orchestrator-permission-wiring.p06.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-orchestrator-permission-wiring.p06.test.ts.md",
+      "sourceBlob": "b56edf6cd754468dfe22d4c799aefe79b47b8298",
+      "sourceSha256": "8bc94e0542c388a803f21b8d258b77204c9656ba9b95d8c607ef951a42023756",
+      "manualSha256": "fa7d9a752f02e33ac4475a8d8fa52a208cdf412fa1feefea64e6295645997958",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-orchestrator.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-orchestrator.test.ts.md",
+      "sourceBlob": "baae882eaa58a2daa76a37f4ce1a623902fa625d",
+      "sourceSha256": "d325d441db074bbe6599a881d4915edcb01f84b6742337a3cc673a7e21c81452",
+      "manualSha256": "bcf948a5b7ad95f00d2dd5189477f1b1bc1c94b3146c2df9b13e4e6999f3bc1d",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-ordinary-pending-access.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-ordinary-pending-access.ts.md",
+      "sourceBlob": "a0579994773af5eb536adcc0604fa21c23953b6e",
+      "sourceSha256": "f7dcaa929269ae205c6703445d190f937954127850f0283c5078fa558824ca57",
+      "manualSha256": "169a0f39a5d90357a674595c20ee73e42d939cb95d98afc2d364bc424836eb25",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-permission-service.cslab.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-permission-service.cslab.test.ts.md",
+      "sourceBlob": "32e9e9466363f34ce6d1df744a9fce0086579a6d",
+      "sourceSha256": "4cc3c70fc23b89b7b165d319ae47cb960b5375ddcbc95dd21aa61e228e453b1a",
+      "manualSha256": "9bf38b10fdeb13b6843a36922e14bed4b5a030453775c91a9f947d62c15f179c",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-permission-service.powershell.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-permission-service.powershell.test.ts.md",
+      "sourceBlob": "85fecde541dcc90f526cc32ce75697aeb6b09ceb",
+      "sourceSha256": "106be1e4563cb89d8acd6d1ea380b368e0bbc823af004b227e15d79728f3596d",
+      "manualSha256": "66c58da434302d8a09ecb9e70cceff828e2b65aea25745b2c5806bb3bafe252c",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-permission-service.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-permission-service.ts.md",
+      "sourceBlob": "a0a6bb1417429083e0d6e14e4f17fac4ea2ef0e1",
+      "sourceSha256": "2ae999ca96211f1904a087e6499f0c3797d5c54989361e838825ea1262b850fd",
+      "manualSha256": "a73c9a990dcf5287661e07e13d5f60168c21c9f3664d9f29666323665c0cd5b6",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-platform-prompt.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-platform-prompt.test.ts.md",
+      "sourceBlob": "acb2c442e6aa72c70a2d79ec2484c4440f844e9c",
+      "sourceSha256": "4d2a5fd2ec5ac351346f8cab39346f76e5ca0953a5a430fd5aac0c6041cd3290",
+      "manualSha256": "e438ffff2bc847135e7e9d22630214d656f1288441a7f63510e6d05252c4bb4b",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-platform-prompt.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-platform-prompt.ts.md",
+      "sourceBlob": "e60a37bec9e20671e9718b7b490f7c5e3a88008d",
+      "sourceSha256": "fe8890e1ebf22722d8e18a96f709f3f561d87b008b8854b632cb4132a430502c",
+      "manualSha256": "3ad401973ce4377c2b76a96240fa7fcc6eb20f4b0ea549b5f981060dc38952f3",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-preset-manager.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-preset-manager.test.ts.md",
+      "sourceBlob": "215fb68dd2b2f3706243191f9fbc7500f048b60b",
+      "sourceSha256": "d5a47d7f1513984e330ed2d3d8d2ddfa6fa3cb92e9f979223015e36bf03ca5d3",
+      "manualSha256": "d9cb0629ac339de6b9f9b5a746beb181f0a9a6be37526ab159a0dd1c14cf7bd4",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-preset-manager.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-preset-manager.ts.md",
+      "sourceBlob": "6624a1fd2510f30694a60d6468fb0b0d6033e5e3",
+      "sourceSha256": "67a7b0302dcfac825688abf99b05f7ac4215dcb65dfd7b46a619be78b20364d8",
+      "manualSha256": "4cce9a47e3b4f7388c31e27c8d36e3e10ed28e2ddae4ee437dc5d7e9d6f98694",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-preset-operations.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-preset-operations.test.ts.md",
+      "sourceBlob": "02b378b049ceb7ef91ef4d2b484fb6b89dd15c12",
+      "sourceSha256": "439c61070510f3abf2ab1d500380f3acee5e9dbe125ffbc693f9a49167dca666",
+      "manualSha256": "27623989b357a3f2c6beb547b9af95d351a640e1998172ad9922f55e26ba25ce",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/agent-preset-operations.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-preset-operations.ts.md",
+      "sourceBlob": "4b7257df532a534b26c5f807ccb7a87c5fad70cc",
+      "sourceSha256": "d0d3d18d0c0f0bb2fb3f31673a15fd1325132cc0cae33999b29ae898801c534f",
+      "manualSha256": "d3d6c5cd740fadb8e01153d9276ef78f40865ae8982910b4ca284c90fb120772",
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-model-routing.test.ts.md": "c631fdb6057334bd8b5a34aaeb69581e904dcd110e2e98d490163477ecf8b338",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-model-routing.ts.md": "cf09820949afa43b3f3e510ccf8995da46f0d320c0fd278167dd0c699a4b4ba0",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-model-selection.test.ts.md": "43fd4f3b827d748029e4306b60496705d9e5a6c9e35833300c08f8d6f0735970",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-model-selection.ts.md": "e2ce0d10527afc05f3de41cbf1956e0d23092c1c945bfc59364da57ec802b02c",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-orchestrator-p0-guards.test.ts.md": "f9ca2c915604bf5894f2739895358edb4662448b43daf88f2125a3a85fea947f",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-orchestrator-p0-guards.ts.md": "763fc613f33d1a75a5a58fd9b0a5a8b3f5e193a90dd894e9ea54f4674bc9b3d7",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-orchestrator-permission-wiring.p06.test.ts.md": "fa7d9a752f02e33ac4475a8d8fa52a208cdf412fa1feefea64e6295645997958",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-orchestrator.test.ts.md": "bcf948a5b7ad95f00d2dd5189477f1b1bc1c94b3146c2df9b13e4e6999f3bc1d",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-ordinary-pending-access.ts.md": "169a0f39a5d90357a674595c20ee73e42d939cb95d98afc2d364bc424836eb25",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-permission-service.cslab.test.ts.md": "9bf38b10fdeb13b6843a36922e14bed4b5a030453775c91a9f947d62c15f179c",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-permission-service.powershell.test.ts.md": "66c58da434302d8a09ecb9e70cceff828e2b65aea25745b2c5806bb3bafe252c",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-permission-service.ts.md": "a73c9a990dcf5287661e07e13d5f60168c21c9f3664d9f29666323665c0cd5b6",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-platform-prompt.test.ts.md": "e438ffff2bc847135e7e9d22630214d656f1288441a7f63510e6d05252c4bb4b",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-platform-prompt.ts.md": "3ad401973ce4377c2b76a96240fa7fcc6eb20f4b0ea549b5f981060dc38952f3",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-preset-manager.test.ts.md": "d9cb0629ac339de6b9f9b5a746beb181f0a9a6be37526ab159a0dd1c14cf7bd4",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-preset-manager.ts.md": "4cce9a47e3b4f7388c31e27c8d36e3e10ed28e2ddae4ee437dc5d7e9d6f98694",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-preset-operations.test.ts.md": "27623989b357a3f2c6beb547b9af95d351a640e1998172ad9922f55e26ba25ce",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/agent-preset-operations.ts.md": "d3d6c5cd740fadb8e01153d9276ef78f40865ae8982910b4ca284c90fb120772"
+  },
+  "findings": [],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network",
+    "bun 测试运行"
+  ],
+  "notes": "nb-49 链 r0→r1 闭合；F-01~F-07+N-01~N-03 全关闭；11 篇沿用 nb-49 字节（hash 相同），7 篇 r1 新 hash 入列。"
+}

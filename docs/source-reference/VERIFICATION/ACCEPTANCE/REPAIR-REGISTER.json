@@ -1,0 +1,497 @@
+{
+  "schema": "dsh-r07-repair-register/5",
+  "atUtc": "2026-10-23T21:16:58+00:00",
+  "rule": "三证关账：最新有效独立 review + accepted 字节已合入 + candidate hash 一致。历史不删、版本不相加、已关闭项不重复刷新。",
+  "notes": [
+    "只取各修订链最新版的 G0 缺口；旧版重复项不再刷新",
+    "328 处手填未来时间戳记 UNVERIFIED（inventory/UNVERIFIED-TIMESTAMPS.json），不归责、不就地改 seal",
+    "merge_accepted 已兼容 reviewedSeal/sealBinding/deliverySeal 三 schema，12 项 false-drift 已消"
+  ],
+  "counts": {
+    "open": 0,
+    "closed": 43,
+    "historyKept": true
+  },
+  "openItems": [],
+  "closedItems": [
+    {
+      "batch": "nb-05",
+      "source": "apps/electron/src/main/ipc.ts",
+      "manual": "ipc.ts.md",
+      "code": "G1-LINE-REF-RANGE",
+      "detail": "1 out-of-range refs, e.g. ['ipc.ts:4266-2475 -> apps/electron/src/main/ipc.ts (8114 lines)']",
+      "author": "docs-r07-author-nb-05-20261023",
+      "reviewer": "docs-r07-qa-nb-05-20261023",
+      "status": "CLOSED_MERGED_ACCEPTED_BYTES",
+      "closedEvidence": "in ACCEPTED.json manualSha256 7a8d945a0915a74c"
+    },
+    {
+      "batch": "nb-08-r1",
+      "source": "apps/electron/src/main/lib/review/decision-readiness-v2.test.ts",
+      "manual": "decision-readiness-v2.test.ts.md",
+      "code": "G1-MISSING-SECTION",
+      "detail": "missing section: 4. 未覆盖",
+      "author": "docs-r07-author-nb-03-20261023",
+      "reviewer": "docs-r07-qa-nb-03-20261023",
+      "status": "CLOSED_MERGED_ACCEPTED_BYTES",
+      "closedEvidence": "in ACCEPTED.json manualSha256 0bd2e3536d217b6d"
+    },
+    {
+      "batch": "nb-08-r1",
+      "source": "apps/electron/src/main/lib/review/stage-workflow.test.ts",
+      "manual": "stage-workflow.test.ts.md",
+      "code": "G1-MISSING-SECTION",
+      "detail": "missing section: 4. 未覆盖",
+      "author": "docs-r07-author-nb-03-20261023",
+      "reviewer": "docs-r07-qa-nb-03-20261023",
+      "status": "CLOSED_MERGED_ACCEPTED_BYTES",
+      "closedEvidence": "in ACCEPTED.json manualSha256 29c7b70aaf6868ee"
+    },
+    {
+      "batch": "nb-141",
+      "source": "apps/cli/package.json",
+      "manual": "package.json.md",
+      "code": "G1-MISSING-SECTION",
+      "detail": "missing section: 1. 结论与边界",
+      "author": "docs-r07-author-extra-05-20261024",
+      "reviewer": "docs-r07-qa-extra-05-20261024",
+      "status": "CLOSED_MERGED_ACCEPTED_BYTES",
+      "closedEvidence": "in ACCEPTED.json manualSha256 cfcc79bcacbc4441"
+    },
+    {
+      "batch": "nb-141",
+      "source": "apps/cli/tsconfig.json",
+      "manual": "tsconfig.json.md",
+      "code": "G1-MISSING-SECTION",
+      "detail": "missing section: 1. 结论与边界",
+      "author": "docs-r07-author-extra-05-20261024",
+      "reviewer": "docs-r07-qa-extra-05-20261024",
+      "status": "CLOSED_MERGED_ACCEPTED_BYTES",
+      "closedEvidence": "in ACCEPTED.json manualSha256 368fc0f6eac24fc3"
+    },
+    {
+      "batch": "nb-41",
+      "source": "packages/agent-fabric/tsconfig.json",
+      "manual": "tsconfig.json.md",
+      "code": "G1-MISSING-SECTION",
+      "detail": "missing section: 1. 结论与边界",
+      "author": "docs-r07-author-nb-07-20261023",
+      "reviewer": "docs-r07-qa-nb-07-20261023",
+      "status": "CLOSED_MERGED_ACCEPTED_BYTES",
+      "closedEvidence": "in ACCEPTED.json manualSha256 38b1d9c1c8de7738"
+    },
+    {
+      "batch": "nb-41",
+      "source": "packages/benchmark-multihop/package.json",
+      "manual": "package.json.md",
+      "code": "G1-MISSING-SECTION",
+      "detail": "missing section: 1. 结论与边界",
+      "author": "docs-r07-author-nb-07-20261023",
+      "reviewer": "docs-r07-qa-nb-07-20261023",
+      "status": "CLOSED_MERGED_ACCEPTED_BYTES",
+      "closedEvidence": "in ACCEPTED.json manualSha256 d0d64d81cadb0578"
+    },
+    {
+      "batch": "nb-41",
+      "source": "packages/benchmark-multihop/tsconfig.json",
+      "manual": "tsconfig.json.md",
+      "code": "G1-MISSING-SECTION",
+      "detail": "missing section: 1. 结论与边界",
+      "author": "docs-r07-author-nb-07-20261023",
+      "reviewer": "docs-r07-qa-nb-07-20261023",
+      "status": "CLOSED_MERGED_ACCEPTED_BYTES",
+      "closedEvidence": "in ACCEPTED.json manualSha256 4aee1bbb7664fc72"
+    },
+    {
+      "batch": "nb-41",
+      "source": "packages/project-core/package.json",
+      "manual": "package.json.md",
+      "code": "G1-MISSING-SECTION",
+      "detail": "missing section: 1. 结论与边界",
+      "author": "docs-r07-author-nb-07-20261023",
+      "reviewer": "docs-r07-qa-nb-07-20261023",
+      "status": "CLOSED_MERGED_ACCEPTED_BYTES",
+      "closedEvidence": "in ACCEPTED.json manualSha256 8e864652d8843738"
+    },
+    {
+      "batch": "nb-41-r1",
+      "source": "packages/agent-fabric/tsconfig.json",
+      "manual": "tsconfig.json.md",
+      "code": "G1-MISSING-SECTION",
+      "detail": "missing section: 1. 结论与边界",
+      "author": "docs-r07-author-nb-07-20261023",
+      "reviewer": "docs-r07-qa-nb-07-20261023",
+      "status": "CLOSED_MERGED_ACCEPTED_BYTES",
+      "closedEvidence": "in ACCEPTED.json manualSha256 38b1d9c1c8de7738"
+    },
+    {
+      "batch": "nb-41-r1",
+      "source": "packages/benchmark-multihop/package.json",
+      "manual": "package.json.md",
+      "code": "G1-MISSING-SECTION",
+      "detail": "missing section: 1. 结论与边界",
+      "author": "docs-r07-author-nb-07-20261023",
+      "reviewer": "docs-r07-qa-nb-07-20261023",
+      "status": "CLOSED_MERGED_ACCEPTED_BYTES",
+      "closedEvidence": "in ACCEPTED.json manualSha256 d0d64d81cadb0578"
+    },
+    {
+      "batch": "nb-41-r1",
+      "source": "packages/benchmark-multihop/tsconfig.json",
+      "manual": "tsconfig.json.md",
+      "code": "G1-MISSING-SECTION",
+      "detail": "missing section: 1. 结论与边界",
+      "author": "docs-r07-author-nb-07-20261023",
+      "reviewer": "docs-r07-qa-nb-07-20261023",
+      "status": "CLOSED_MERGED_ACCEPTED_BYTES",
+      "closedEvidence": "in ACCEPTED.json manualSha256 4aee1bbb7664fc72"
+    },
+    {
+      "batch": "nb-41-r1",
+      "source": "packages/project-core/package.json",
+      "manual": "package.json.md",
+      "code": "G1-MISSING-SECTION",
+      "detail": "missing section: 1. 结论与边界",
+      "author": "docs-r07-author-nb-07-20261023",
+      "reviewer": "docs-r07-qa-nb-07-20261023",
+      "status": "CLOSED_MERGED_ACCEPTED_BYTES",
+      "closedEvidence": "in ACCEPTED.json manualSha256 8e864652d8843738"
+    },
+    {
+      "batch": "nb-41-r2",
+      "source": "packages/agent-fabric/tsconfig.json",
+      "manual": "tsconfig.json.md",
+      "code": "G1-MISSING-SECTION",
+      "detail": "missing section: 1. 结论与边界",
+      "author": "docs-r07-author-nb-07-20261023",
+      "reviewer": "docs-r07-qa-nb-07-20261023",
+      "status": "CLOSED_MERGED_ACCEPTED_BYTES",
+      "closedEvidence": "in ACCEPTED.json manualSha256 38b1d9c1c8de7738"
+    },
+    {
+      "batch": "nb-41-r2",
+      "source": "packages/benchmark-multihop/package.json",
+      "manual": "package.json.md",
+      "code": "G1-MISSING-SECTION",
+      "detail": "missing section: 1. 结论与边界",
+      "author": "docs-r07-author-nb-07-20261023",
+      "reviewer": "docs-r07-qa-nb-07-20261023",
+      "status": "CLOSED_MERGED_ACCEPTED_BYTES",
+      "closedEvidence": "in ACCEPTED.json manualSha256 d0d64d81cadb0578"
+    },
+    {
+      "batch": "nb-41-r2",
+      "source": "packages/benchmark-multihop/tsconfig.json",
+      "manual": "tsconfig.json.md",
+      "code": "G1-MISSING-SECTION",
+      "detail": "missing section: 1. 结论与边界",
+      "author": "docs-r07-author-nb-07-20261023",
+      "reviewer": "docs-r07-qa-nb-07-20261023",
+      "status": "CLOSED_MERGED_ACCEPTED_BYTES",
+      "closedEvidence": "in ACCEPTED.json manualSha256 4aee1bbb7664fc72"
+    },
+    {
+      "batch": "nb-41-r2",
+      "source": "packages/project-core/package.json",
+      "manual": "package.json.md",
+      "code": "G1-MISSING-SECTION",
+      "detail": "missing section: 1. 结论与边界",
+      "author": "docs-r07-author-nb-07-20261023",
+      "reviewer": "docs-r07-qa-nb-07-20261023",
+      "status": "CLOSED_MERGED_ACCEPTED_BYTES",
+      "closedEvidence": "in ACCEPTED.json manualSha256 8e864652d8843738"
+    },
+    {
+      "batch": "nb-61",
+      "source": "apps/electron/default-skills/pptx/scripts/__init__.py",
+      "manual": "__init__.py.md",
+      "code": "G1-EMPTY-SECTION",
+      "detail": "section too thin: 2. 导出与关键符号",
+      "author": "docs-r07-author-nb-05-20261023",
+      "reviewer": "docs-r07-qa-nb-05-20261023",
+      "status": "CLOSED_MERGED_ACCEPTED_BYTES",
+      "closedEvidence": "in ACCEPTED.json manualSha256 f83a275946a12605"
+    },
+    {
+      "batch": "nb-61",
+      "source": "apps/electron/default-skills/pptx/scripts/office/helpers/__init__.py",
+      "manual": "__init__.py.md",
+      "code": "G1-EMPTY-SECTION",
+      "detail": "section too thin: 2. 导出与关键符号",
+      "author": "docs-r07-author-nb-05-20261023",
+      "reviewer": "docs-r07-qa-nb-05-20261023",
+      "status": "CLOSED_MERGED_ACCEPTED_BYTES",
+      "closedEvidence": "in ACCEPTED.json manualSha256 100968170367ed13"
+    },
+    {
+      "batch": "nb-80",
+      "source": "apps/electron/src/main/lib/browser-identity.ts",
+      "code": "POST-REVIEW-DRIFT-RETRACTED",
+      "detail": "manual 在独立 QA 之后字节变更（stage 4fb0cc3da3c9 != review 记录 4eb5a5cd99b6）",
+      "status": "CLOSED_FALSE_POSITIVE_TOOL_BATCH_BINDING",
+      "closedEvidence": "DONE.reviewedSeal=nb-80-r1；review 记录 hash 与 deliveries/nb-80-r1/stage 一致；merge_accepted 原按 review 目录名绑 base 交付，已改为按 reviewedSeal 绑定版本"
+    },
+    {
+      "batch": "nb-80",
+      "source": "apps/electron/src/main/lib/browser-policy.test.ts",
+      "code": "POST-REVIEW-DRIFT-RETRACTED",
+      "detail": "manual 在独立 QA 之后字节变更（stage 2c9fcc482c96 != review 记录 ca0d84365af5）",
+      "status": "CLOSED_FALSE_POSITIVE_TOOL_BATCH_BINDING",
+      "closedEvidence": "DONE.reviewedSeal=nb-80-r1；review 记录 hash 与 deliveries/nb-80-r1/stage 一致；merge_accepted 原按 review 目录名绑 base 交付，已改为按 reviewedSeal 绑定版本"
+    },
+    {
+      "batch": "nb-80",
+      "source": "apps/electron/src/main/lib/browser-profile-policy.ts",
+      "code": "POST-REVIEW-DRIFT-RETRACTED",
+      "detail": "manual 在独立 QA 之后字节变更（stage 299a5160bdc8 != review 记录 d7dad70174d5）",
+      "status": "CLOSED_FALSE_POSITIVE_TOOL_BATCH_BINDING",
+      "closedEvidence": "DONE.reviewedSeal=nb-80-r1；review 记录 hash 与 deliveries/nb-80-r1/stage 一致；merge_accepted 原按 review 目录名绑 base 交付，已改为按 reviewedSeal 绑定版本"
+    },
+    {
+      "batch": "index-p01-app-shell__",
+      "source": "LICENSE",
+      "code": "IDX-G01-F-01",
+      "field": "来源",
+      "detail": "「随仓库初始提交引入」",
+      "evidence": "git 实证：root commit 019f64e89（2026-01-26 'init'）不含 LICENSE（git cat-file -e 019f64e89:LICENSE 失败）；LICENSE 由 6382c6a21（2026-05-25 'chore(license): switch from Apache-2.0/MIT to AGPL-3.0 with commercial dual-license'）引入。",
+      "requiredFix": "来源行改为事实表述：如「AGPL-3.0 标准文本 v3/2007-11-19（FSF）；2026-05-25 随 6382c6a21 协议切换提交引入（此前仓库为 Apache-2.0/MIT）」；其余各列不动。",
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__-r1 artifactSha256 dc783a517280018f"
+    },
+    {
+      "batch": "index-p01-app-shell__",
+      "source": "LICENSE",
+      "code": "IDX-ROW-REVISION",
+      "field": null,
+      "detail": "整行被判 revision_required",
+      "evidence": "消费/打包/影响/验证四项与 QA 独立实测一致（README:20/:437 链接、8 处 package.json:4 license 声明、src/ 零代码消费者、electron-builder 无 LICENSE 条目均复核属实）；仅来源叙事断言错误。",
+      "requiredFix": null,
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__-r1 artifactSha256 dc783a517280018f"
+    },
+    {
+      "batch": "index-p01-app-shell__apps",
+      "source": "apps/electron/icon.ico",
+      "code": "IDX-G05-F-01",
+      "field": "消费/打包/影响",
+      "detail": "「electron-builder.yml:180 win.icon: icon.ico（路径相对项目目录 apps/electron/，即本文件）」→ 根 icon.ico 是 Windows 构建图标输入",
+      "evidence": "electron-builder 解析实现实测（app-builder-lib platformPackager.js getResource：先 readdir(buildResourcesDir) 列表命中即返回 buildResources 路径，才回退 resolve(buildResourcesDir,custom)，再回退 projectDir；resolveIcon 亦 --root buildResourcesDir -",
+      "requiredFix": "icon.ico 的消费/打包/影响三列更正为：win.icon 实输入=resources/icon.ico（buildResources 优先解析）；根 icon.ico 与根 icon.png 同为「无已知消费者」（仅当 resources/icon.ico 缺失时才可能经 projectDir 兜底被解析=推断）；删除影响=零已知影响。来源/验证可保持。",
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__apps-r1 artifactSha256 7ae04e2705414a7b"
+    },
+    {
+      "batch": "index-p01-app-shell__apps",
+      "source": "apps/electron/icon.ico",
+      "code": "IDX-ROW-REVISION",
+      "field": null,
+      "detail": "整行被判 revision_required",
+      "evidence": "6 帧 ICO 结构/字节数属实；但「win.icon: icon.ico 即本文件」消费断言与 electron-builder 实际解析不符（见 findings），打包/影响两列随之失实。",
+      "requiredFix": null,
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__apps-r1 artifactSha256 7ae04e2705414a7b"
+    },
+    {
+      "batch": "index-p01-app-shell__apps__electron",
+      "source": [
+        "apps/electron/resources/CHANGELOG.json",
+        "apps/electron/resources/bulletin.json",
+        "apps/electron/resources/tutorial.md"
+      ],
+      "code": "IDX-G06-F-01",
+      "field": "来源",
+      "detail": "三文件来源行均写 `change=unchanged_since_093f`",
+      "evidence": "INDEX-SCOPE-LOCK/FILES.tsv 三文件 change=r03_pr44；git diff 093f1143c..HEAD 实测三文件均变更（CHANGELOG.json +30 行、bulletin.json +32 行、tutorial.md 1 行改动）。8 个文件的 change 全部被写成 unchanged_since_093f，属未核实的统一模板化标注。",
+      "requiredFix": "三文件来源行 change 更正为 `r03_pr44`（与锁/manifest 一致），其余列不动；建议作者对机械列逐行取自 manifest，勿模板化。",
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__apps__electron-r1 artifactSha256 7374ec6ade25e245"
+    },
+    {
+      "batch": "index-p01-app-shell__apps__electron",
+      "source": "apps/electron/resources/CHANGELOG.json",
+      "code": "IDX-ROW-REVISION",
+      "field": null,
+      "detail": "整行被判 revision_required",
+      "evidence": "消费链（changelog-service.ts:15-19 双路径、yml:104-106）属实；但来源行 change 标注错误→IDX-G06-F-01。",
+      "requiredFix": null,
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__apps__electron-r1 artifactSha256 7374ec6ade25e245"
+    },
+    {
+      "batch": "index-p01-app-shell__apps__electron",
+      "source": "apps/electron/resources/bulletin.json",
+      "code": "IDX-ROW-REVISION",
+      "field": null,
+      "detail": "整行被判 revision_required",
+      "evidence": "消费链（bulletin-service.ts:15-19、yml:107-109）属实；但来源行 change 标注错误→IDX-G06-F-01。",
+      "requiredFix": null,
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__apps__electron-r1 artifactSha256 7374ec6ade25e245"
+    },
+    {
+      "batch": "index-p01-app-shell__apps__electron",
+      "source": "apps/electron/resources/tutorial.md",
+      "code": "IDX-ROW-REVISION",
+      "field": null,
+      "detail": "整行被判 revision_required",
+      "evidence": "双来源漂移发现与 QA 预读独立结论一致（resources/tutorial.md vs tutorial-v2.md→tutorial.md，sha 实比 cbac2d9e…≠76b14920…）；但来源行 change 标注错误→IDX-G06-F-01。",
+      "requiredFix": null,
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__apps__electron-r1 artifactSha256 7374ec6ade25e245"
+    },
+    {
+      "batch": "index-p01-app-shell__apps__electron__resources",
+      "source": "apps/electron/resources/demo/hongloumeng-quan-shu.txt",
+      "code": "IDX-G07-F-01",
+      "field": "来源",
+      "detail": "`change=unchanged_since_093f`",
+      "evidence": "锁/FILES.tsv=r03_pr44；git diff 093f1143c..HEAD 实测该文件 +6301 行（新入库），并非 unchanged。与 IDX-G06-F-01 同类（机械列模板化臆写）。",
+      "requiredFix": "来源行 change 更正为 `r03_pr44`；并建议按 N-01 顺手补全解析候选链。",
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__apps__electron__resources-r1 artifactSha256 d09a1e91bb3a5666"
+    },
+    {
+      "batch": "index-p01-app-shell__apps__electron__resources",
+      "source": "apps/electron/resources/demo/hongloumeng-quan-shu.txt",
+      "code": "IDX-ROW-REVISION",
+      "field": null,
+      "detail": "整行被判 revision_required",
+      "evidence": "消费点（:214/:234-235/:268/:282/:290、coach-tour :45/:190）与打包映射（yml:113-116）实证属实；来源行 change 误标（F-01）；解析候选链可补全（N-01）。",
+      "requiredFix": null,
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__apps__electron__resources-r1 artifactSha256 d09a1e91bb3a5666"
+    },
+    {
+      "batch": "index-p01-app-shell__apps__electron__resources__cslab",
+      "source": [
+        "apps/electron/resources/cslab/__pycache__/cslab-plot-digitizer.cpython-313.pyc",
+        "apps/electron/resources/cslab/demo/1792573114138-6ac8d0-石榴石_Y_Al_O____YAG____Ia-3d_完整立方晶胞.cif",
+        "apps/electron/resources/cslab/demo/demo-digitizer-spectrum.png",
+        "apps/electron/resources/cslab/demo/rutile-chgcar-sample.chgcar",
+        "apps/electron/resources/cslab/demo/rutile-locpot-sample.locpot",
+        "apps/electron/resources/cslab/demo/silicon-srm640-benchmark.csv"
+      ],
+      "code": "IDX-G08-F-01",
+      "field": "来源",
+      "detail": "6 文件来源行写 `change=unchanged_since_093f`",
+      "evidence": "锁/FILES.tsv：6 文件 change=r03_pr44（cslab-plot-digitizer.cpython-313.pyc、石榴石.cif、demo-digitizer-spectrum.png、rutile-chgcar-sample.chgcar、rutile-locpot-sample.locpot、silicon-srm640-benchmark.csv）。与 IDX-G06/07-F-01 同类系统性错误（第 ",
+      "requiredFix": "6 文件来源行 change 更正为 r03_pr44；机械列必须逐行取自 manifest，禁止模板化。",
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__apps__electron__resources__cslab-r1 artifactSha256 f18230b24c0a7ec7"
+    },
+    {
+      "batch": "index-p01-app-shell__apps__electron__resources__cslab",
+      "source": "apps/electron/resources/cslab/__pycache__/cslab-plot-digitizer.cpython-313.pyc",
+      "code": "IDX-ROW-REVISION",
+      "field": null,
+      "detail": "整行被判 revision_required",
+      "evidence": "消费/打包/影响经 QA 抽样实证（cslab-demo.ts 清单/断言、cslab-python-runtime.ts:82-89/:330/:342、cslab-router.ts:1944 四 profile、cslab-demo-plates.ts:407、demo-data 同名异物鉴别、pycache 无消费者定性）；来源行 change 误标→F-01",
+      "requiredFix": null,
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__apps__electron__resources__cslab-r1 artifactSha256 f18230b24c0a7ec7"
+    },
+    {
+      "batch": "index-p01-app-shell__apps__electron__resources__cslab",
+      "source": "apps/electron/resources/cslab/demo/1792573114138-6ac8d0-石榴石_Y_Al_O____YAG____Ia-3d_完整立方晶胞.cif",
+      "code": "IDX-ROW-REVISION",
+      "field": null,
+      "detail": "整行被判 revision_required",
+      "evidence": "消费/打包/影响经 QA 抽样实证（cslab-demo.ts 清单/断言、cslab-python-runtime.ts:82-89/:330/:342、cslab-router.ts:1944 四 profile、cslab-demo-plates.ts:407、demo-data 同名异物鉴别、pycache 无消费者定性）；来源行 change 误标→F-01；DEMO_ASSET_FILES 符号误名→N-01",
+      "requiredFix": null,
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__apps__electron__resources__cslab-r1 artifactSha256 f18230b24c0a7ec7"
+    },
+    {
+      "batch": "index-p01-app-shell__apps__electron__resources__cslab",
+      "source": "apps/electron/resources/cslab/demo/demo-digitizer-spectrum.png",
+      "code": "IDX-ROW-REVISION",
+      "field": null,
+      "detail": "整行被判 revision_required",
+      "evidence": "消费/打包/影响经 QA 抽样实证（cslab-demo.ts 清单/断言、cslab-python-runtime.ts:82-89/:330/:342、cslab-router.ts:1944 四 profile、cslab-demo-plates.ts:407、demo-data 同名异物鉴别、pycache 无消费者定性）；来源行 change 误标→F-01",
+      "requiredFix": null,
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__apps__electron__resources__cslab-r1 artifactSha256 f18230b24c0a7ec7"
+    },
+    {
+      "batch": "index-p01-app-shell__apps__electron__resources__cslab",
+      "source": "apps/electron/resources/cslab/demo/rutile-chgcar-sample.chgcar",
+      "code": "IDX-ROW-REVISION",
+      "field": null,
+      "detail": "整行被判 revision_required",
+      "evidence": "消费/打包/影响经 QA 抽样实证（cslab-demo.ts 清单/断言、cslab-python-runtime.ts:82-89/:330/:342、cslab-router.ts:1944 四 profile、cslab-demo-plates.ts:407、demo-data 同名异物鉴别、pycache 无消费者定性）；来源行 change 误标→F-01；DEMO_ASSET_FILES 符号误名→N-01",
+      "requiredFix": null,
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__apps__electron__resources__cslab-r1 artifactSha256 f18230b24c0a7ec7"
+    },
+    {
+      "batch": "index-p01-app-shell__apps__electron__resources__cslab",
+      "source": "apps/electron/resources/cslab/demo/rutile-locpot-sample.locpot",
+      "code": "IDX-ROW-REVISION",
+      "field": null,
+      "detail": "整行被判 revision_required",
+      "evidence": "消费/打包/影响经 QA 抽样实证（cslab-demo.ts 清单/断言、cslab-python-runtime.ts:82-89/:330/:342、cslab-router.ts:1944 四 profile、cslab-demo-plates.ts:407、demo-data 同名异物鉴别、pycache 无消费者定性）；来源行 change 误标→F-01；DEMO_ASSET_FILES 符号误名→N-01",
+      "requiredFix": null,
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__apps__electron__resources__cslab-r1 artifactSha256 f18230b24c0a7ec7"
+    },
+    {
+      "batch": "index-p01-app-shell__apps__electron__resources__cslab",
+      "source": "apps/electron/resources/cslab/demo/silicon-srm640-benchmark.csv",
+      "code": "IDX-ROW-REVISION",
+      "field": null,
+      "detail": "整行被判 revision_required",
+      "evidence": "消费/打包/影响经 QA 抽样实证（cslab-demo.ts 清单/断言、cslab-python-runtime.ts:82-89/:330/:342、cslab-router.ts:1944 四 profile、cslab-demo-plates.ts:407、demo-data 同名异物鉴别、pycache 无消费者定性）；来源行 change 误标→F-01；DEMO_ASSET_FILES 符号误名→N-01",
+      "requiredFix": null,
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__apps__electron__resources__cslab-r1 artifactSha256 f18230b24c0a7ec7"
+    },
+    {
+      "batch": "index-p01-app-shell__assets",
+      "source": [
+        "assets/CDUT/CDUT-CE-white.png",
+        "assets/MultiHop-RAG-Scores/multihop-rag-report.json",
+        "assets/MultiHop-RAG-Scores/multihop-rag-report.md"
+      ],
+      "code": "IDX-G10-F-01",
+      "field": "来源",
+      "detail": "3 文件来源行写 `change=unchanged_since_093f`",
+      "evidence": "锁/FILES.tsv 3 文件 change=r03_pr44。与 IDX-G06/07/08-F-01 同类系统性错误（第 4 批）。",
+      "requiredFix": "3 文件来源行 change 更正为 r03_pr44；机械列逐行取自 manifest。",
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__assets-r1 artifactSha256 c0c0e989b34ead1d"
+    },
+    {
+      "batch": "index-p01-app-shell__assets",
+      "source": "assets/CDUT/CDUT-CE-white.png",
+      "code": "IDX-ROW-REVISION",
+      "field": null,
+      "detail": "整行被判 revision_required",
+      "evidence": "消费链经 QA 逐点实证（CdutLogo/CdutWatermark/crop-script/vite alias/AboutSettings:25-29/README 行号/report.ts:46/server.ts:195/零命中检索）；来源行 change 误标→F-01",
+      "requiredFix": null,
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__assets-r1 artifactSha256 c0c0e989b34ead1d"
+    },
+    {
+      "batch": "index-p01-app-shell__assets",
+      "source": "assets/MultiHop-RAG-Scores/multihop-rag-report.json",
+      "code": "IDX-ROW-REVISION",
+      "field": null,
+      "detail": "整行被判 revision_required",
+      "evidence": "消费链经 QA 逐点实证（CdutLogo/CdutWatermark/crop-script/vite alias/AboutSettings:25-29/README 行号/report.ts:46/server.ts:195/零命中检索）；来源行 change 误标→F-01",
+      "requiredFix": null,
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__assets-r1 artifactSha256 c0c0e989b34ead1d"
+    },
+    {
+      "batch": "index-p01-app-shell__assets",
+      "source": "assets/MultiHop-RAG-Scores/multihop-rag-report.md",
+      "code": "IDX-ROW-REVISION",
+      "field": null,
+      "detail": "整行被判 revision_required",
+      "evidence": "消费链经 QA 逐点实证（CdutLogo/CdutWatermark/crop-script/vite alias/AboutSettings:25-29/README 行号/report.ts:46/server.ts:195/零命中检索）；来源行 change 误标→F-01",
+      "requiredFix": null,
+      "status": "CLOSED_SUPERSEDED_BY_ACCEPTED_REVISION",
+      "closedEvidence": "merged batch index-p01-app-shell__assets-r1 artifactSha256 c0c0e989b34ead1d"
+    }
+  ]
+}

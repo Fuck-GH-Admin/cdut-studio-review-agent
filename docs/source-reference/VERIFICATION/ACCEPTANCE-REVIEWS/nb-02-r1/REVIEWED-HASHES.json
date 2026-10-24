@@ -1,0 +1,64 @@
+{
+  "schema": "r07-reviewed-hashes/2",
+  "batch": "nb-02-r1",
+  "revisionOf": "nb-02",
+  "reviewer": "docs-r07-qa-ui-20261023",
+  "reviewedAtUtc": "2026-10-23T15:52:00Z",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "sourceWorktreeClean": true,
+  "sourceFiles": [
+    {"path": "apps/electron/src/renderer/components/content-review/CreateCaseDialog.tsx", "blob": "7a7d49d9c582335af6d655defda12b9f81968541", "sha256": "bb91ede4c7d60321933025a35105c7a0ac620a9362339cc0e522e8e57a90e995", "lines": 245},
+    {"path": "apps/electron/src/renderer/components/content-review/D4CaseSetup.tsx", "blob": "01e85163d1bddcca5e5d7862ecf4b796a898db5d", "sha256": "8cf93680c00949b35fd95f9b4a4743bb3b481f5bcd43ce4c536fd884e93a8ff1", "lines": 121},
+    {"path": "apps/electron/src/renderer/components/content-review/ReviewV3T05RunDecision.tsx", "blob": "680f7f36034a44c2d31fdf5cfdf7e38f32fc44e8", "sha256": "ba4d874574c4b237c772b9f7f469c97387f22b641c0f1281a733575665f09611", "lines": 280},
+    {"path": "apps/electron/src/renderer/components/content-review/ReviewV3TemplateRoutingAssistant.tsx", "blob": "566ffe94f67e62b729e7bfe5b593ec6b4cc6506b", "sha256": "f66a30ae6365c9ae872539b084518835f56ec6b274b29cbd23eed4ac7aa94781", "lines": 279},
+    {"path": "apps/electron/src/renderer/components/review-v3-dev-b/ReviewV3CandidateIntakeSurface.tsx", "blob": "a9b7382971f4b9117d1ad670bbdfc71e4f702aae", "sha256": "7eb9d41c00a3b661a276655fd3f0d00b0e30c1ba99af900486cf27ca588b8549", "lines": 220},
+    {"path": "apps/electron/src/renderer/components/review-v3-dev-b/ReviewV3ProductWorkspace.tsx", "blob": "9042652a383aaa55acb1655fec96dd02b6a7a2a2", "sha256": "b9d75ee8e41bc8432ab5149292fff00f6c1ae01b9bcdb83921c7d2b44ff8a74c", "lines": 503}
+  ],
+  "manuals": [
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/CreateCaseDialog.tsx.md", "sha256": "1ba2acfaa420e5a37cf67026b258330030bb0672ad28a2fd30bc5a149061cf69", "parentSha256": "17d51826fc503f853c4ee1a1c774a6918eac419540ffa24fa9c05aa572c95803", "changed": true, "verdict": "accepted"},
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/D4CaseSetup.tsx.md", "sha256": "d9328e671d62871aaf3c0ee1ec4017aad4341c0bb12976530f4e6dfa58f5b597", "parentSha256": "d180d6825141528533bd61ca3946a7f1f6a185a88071d459479216489235de8f", "changed": true, "verdict": "accepted"},
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewV3T05RunDecision.tsx.md", "sha256": "93bcf3fc4efd8d0ed1ca094a69bf2f85e9c8c5f899fbe59895fe17877a5b792c", "parentSha256": "cca21b61f2a1376ce38fbe79c677004458377971611794916d98cf01fbfd9374", "changed": true, "verdict": "accepted"},
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewV3TemplateRoutingAssistant.tsx.md", "sha256": "cf398df9ef81bb5d52563e8b71aff941d3aa501d13c01a1d5c6bcb73742cb9a7", "parentSha256": "20b230313e4cd01b6758d6d1228bd81a3678e57c8fa4cd235ff9f7fc3ea34eff", "changed": true, "verdict": "accepted"},
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/review-v3-dev-b/ReviewV3CandidateIntakeSurface.tsx.md", "sha256": "e07001fda08fb2fa51617596d94bbc913f280ed81d7f19eccfd01c1fb02496d7", "parentSha256": "7ec20b1698fef1d1df6e6d4e92d8ff0d4adc51946a8d3742fc295ad97f6fcd79", "changed": true, "verdict": "accepted"},
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/review-v3-dev-b/ReviewV3ProductWorkspace.tsx.md", "sha256": "a7214a03ca78c3d922f1cdd0d4019450b76402292252e31ee3c8b53dc09e3c6e", "parentSha256": "a7214a03ca78c3d922f1cdd0d4019450b76402292252e31ee3c8b53dc09e3c6e", "changed": false, "verdict": "accepted"}
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/CreateCaseDialog.tsx.md": "1ba2acfaa420e5a37cf67026b258330030bb0672ad28a2fd30bc5a149061cf69",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/D4CaseSetup.tsx.md": "d9328e671d62871aaf3c0ee1ec4017aad4341c0bb12976530f4e6dfa58f5b597",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewV3T05RunDecision.tsx.md": "93bcf3fc4efd8d0ed1ca094a69bf2f85e9c8c5f899fbe59895fe17877a5b792c",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewV3TemplateRoutingAssistant.tsx.md": "cf398df9ef81bb5d52563e8b71aff941d3aa501d13c01a1d5c6bcb73742cb9a7",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/review-v3-dev-b/ReviewV3CandidateIntakeSurface.tsx.md": "e07001fda08fb2fa51617596d94bbc913f280ed81d7f19eccfd01c1fb02496d7",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/review-v3-dev-b/ReviewV3ProductWorkspace.tsx.md": "a7214a03ca78c3d922f1cdd0d4019450b76402292252e31ee3c8b53dc09e3c6e"
+  },
+  "before": [
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/CreateCaseDialog.tsx.md", "sha256": "17d51826fc503f853c4ee1a1c774a6918eac419540ffa24fa9c05aa572c95803", "equalsParent": true},
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/D4CaseSetup.tsx.md", "sha256": "d180d6825141528533bd61ca3946a7f1f6a185a88071d459479216489235de8f", "equalsParent": true},
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewV3T05RunDecision.tsx.md", "sha256": "cca21b61f2a1376ce38fbe79c677004458377971611794916d98cf01fbfd9374", "equalsParent": true},
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/ReviewV3TemplateRoutingAssistant.tsx.md", "sha256": "20b230313e4cd01b6758d6d1228bd81a3678e57c8fa4cd235ff9f7fc3ea34eff", "equalsParent": true},
+    {"manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/review-v3-dev-b/ReviewV3CandidateIntakeSurface.tsx.md", "sha256": "7ec20b1698fef1d1df6e6d4e92d8ff0d4adc51946a8d3742fc295ad97f6fcd79", "equalsParent": true}
+  ],
+  "sealedArtifacts": {
+    "READY.json": "dbef0656a84931e1f48a792e71f2db8b5cb8dcefe13eead103788f1ebe332302",
+    "DONE.json": "890e35fa2de6c14cea67ac52066d725457263151f182381fb4d0ac4a68a2df56",
+    "MANIFEST.json": "40a7f71b11e0bf563589a11a2199439e65531028f116476c01718c13062d10a1",
+    "R07-nb-02-r1-05fb2565.zip": "e3be4a2395b40affdb40c29c043d654685d0f47ead856149ee11ed70510c695a"
+  },
+  "zipChecks": {
+    "entries": 9, "unsafePaths": 0, "symlinks": 0,
+    "integrity": "unzip -t: No errors detected",
+    "stageManuals": 6, "beforeManuals": 5,
+    "stageDriftVsLive": "none", "metadataFilesMatchLive": true,
+    "note": "seal v2：ZIP 不含 READY/DONE/before，按实际链（READY.manualHashes+MANIFEST+zip）绑定"
+  },
+  "changesDiffReplay": {"base": "deliveries/nb-02/stage", "patchExit": 0, "result": "6/6 sha256 equal nb-02-r1 READY.manualHashes", "replayAllOk": true},
+  "parentPreserved": {
+    "deliveries/nb-02/READY.json": "400244e70572f7134cc0fa1210c0c6ba732907d646b7c02da7ccb4f3d8a64764",
+    "deliveries/nb-02/ZIP": "ffde9be6f39043eb5326459d5532727770c4da3bde24c6b24bf7351bb46c7a95",
+    "note": "nb-02 r0 交付与 QA 报告（reviews/nb-02）字节未改"
+  },
+  "errataClosure": {
+    "NB02-CCD-1": "closed", "NB02-D4-N1": "closed", "NB02-T5-N1": "closed",
+    "NB02-T5-N2": "closed", "NB02-RT-N1": "closed", "NB02-RT-N2": "closed", "NB02-IS-N1": "closed"
+  },
+  "openNotes": ["N-R1-1"]
+}

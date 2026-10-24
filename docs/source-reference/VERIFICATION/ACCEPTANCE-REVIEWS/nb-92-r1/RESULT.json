@@ -1,0 +1,254 @@
+{
+ "schema": "r07-review-result/2",
+ "batch": "nb-92-r1",
+ "revisionOf": "nb-92",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-ui-20261023",
+ "reviewerSession": "docs-r07-qa-ui-20261023",
+ "reviewedAtUtc": "2026-10-24T01:20:00Z",
+ "batchVerdict": "accepted",
+ "verdictNote": "返修复验：N92-1 closed（SDK 18/18 导出+计数 18）、N92-2 closed（ProcessBlock 6/6）、N92-3 closed（Process test 20 行全列、:205/:221/:237/:246/:258/:273/:283/:299 齐、省略号消除）、N92-4 closed（GoalStatusBar 计数改）。4 篇变更、14 篇未变。accepted 仅限静态文档 scope；NOT_RUN。",
+ "scope": "manager/assignments/nb-92-SCOPE.json",
+ "sealed": {
+  "root": "deliveries/nb-92-r1",
+  "revisionOf": "nb-92",
+  "readySha256": "eb96337726b00509db35917f94a1a1e7bf3016ca25299fcf86c4b41139a9098c",
+  "doneSha256": "db9470f5f077b7fe2a8137ce7c0b795a4c64e92735679fa91e1b4414fc58b0a6",
+  "manifestSha256": "932e9696aa1e9ad790f85daed6eb0ad5cf5a898e530abb87e673be8a65be07d1",
+  "zipSha256": "d4cd96880f587ad55862a96551eb19712f012f9cac8cd8736b0f0c2d120dc7ab"
+ },
+ "gates": {
+  "G0": "PASS",
+  "G1": "PASS",
+  "G2": "ACCEPTED"
+ },
+ "g0Evidence": [
+  "18 篇四方哈希一致；源 18/18 blob 一致；14 篇未变逐字节；before/=r0"
+ ],
+ "g2Evidence": [
+  "N92-1 closed：SDK 手册 18/18 导出全提及、计数 18",
+  "N92-2 closed：ProcessBlock 6/6（含 buildAssistantTurnRenderItems/buildProcessGroupToolNames）",
+  "N92-3 closed：Process test「1 describe / 20 test（:25-299）」20 行全列、AskUserQuestion 三态/多块纯正文/:237 行齐、无省略号行段",
+  "N92-4 closed：GoalStatusBar 计数改"
+ ],
+ "files": [
+  {
+   "path": "apps/electron/src/renderer/components/agent/ExplorationBranchBar.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ExplorationBranchBar.tsx.md",
+   "sourceBlob": "62fc25e12b2e80885f89e8a00cc77406bab5630b",
+   "sourceSha256": "2c3fa68ed8e2f339a332a0d20898080670245c56176c343f3880e6e82e26119e",
+   "manualSha256": "c5983bbb021deb9005547e1539450071d72cd9bdf290babf9550fe618979c6eb",
+   "parentSha256": "c5983bbb021deb9005547e1539450071d72cd9bdf290babf9550fe618979c6eb",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/FoldedSegmentsRegion.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/FoldedSegmentsRegion.tsx.md",
+   "sourceBlob": "35216460dd0309e5456287c6251bb510f39caf3f",
+   "sourceSha256": "d697bd7334f78ecc54ed099a51993355e56bdfe9f5b6df05b4a43d304573eae4",
+   "manualSha256": "c3cd1304a16e92640c9178b7ae1397228ee61b92c8fb4cd53015b3bf91c74b02",
+   "parentSha256": "c3cd1304a16e92640c9178b7ae1397228ee61b92c8fb4cd53015b3bf91c74b02",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/GoalStatusBar.test.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/GoalStatusBar.test.tsx.md",
+   "sourceBlob": "fddcac9bf22dbaf7db8fb9e2be3d1c0f6c52705d",
+   "sourceSha256": "dc780a46e7c2d0f8025c9a785d3e4eeb0aeb99d46813110979b6796ebb4d7daa",
+   "manualSha256": "6bf1010ad675fc660804fdaa1c017487ef8939abb1be6fd2dd9af36c6b848cfd",
+   "parentSha256": "a37ec50e2f763467282e7b83193084dbb34c7a61e3747fd4a44cdea043c9dd10",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/GoalStatusBar.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/GoalStatusBar.tsx.md",
+   "sourceBlob": "4098a8a9592f555c889912871760ccbbc4e0c2ee",
+   "sourceSha256": "c03cf3251c1037be3e50dbdfe12b9679c0b95cd28728eb9bc82eff1a4087bf78",
+   "manualSha256": "d3de354266db6ec8c6365f2545a32676c46e9182236dc468b73f84bee447b0b8",
+   "parentSha256": "d3de354266db6ec8c6365f2545a32676c46e9182236dc468b73f84bee447b0b8",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/GraphQuestionInput.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/GraphQuestionInput.tsx.md",
+   "sourceBlob": "f89a61f44077a7c5eb71577db49640f255734473",
+   "sourceSha256": "ce33dec0b682c90ff2b01f17118510daad775c76bb0f7f5fbe90669c19068d7b",
+   "manualSha256": "3067dd094593de79f9282887266cd673ae4f2a0455b3613e432ab4e2b0be320f",
+   "parentSha256": "3067dd094593de79f9282887266cd673ae4f2a0455b3613e432ab4e2b0be320f",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/MentionList.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/MentionList.tsx.md",
+   "sourceBlob": "0f4f157459c45aee1790e563f514bca8292e0f7f",
+   "sourceSha256": "85e9e3cbd4355efd35078d798af5f44fbb1fd46fd2433044804c55a41d38a335",
+   "manualSha256": "08b8ee77264329344df120bdde53ecd7943dc3eb27142a32aef005d21e4f522d",
+   "parentSha256": "08b8ee77264329344df120bdde53ecd7943dc3eb27142a32aef005d21e4f522d",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/MoveSessionDialog.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/MoveSessionDialog.tsx.md",
+   "sourceBlob": "960ae57f9d3baf02963cdc1bcd19921b2ef567b5",
+   "sourceSha256": "d78620f5fef05bfee953af99bd8edfe57b9468602d79f44fe94d1ec9fc1f2144",
+   "manualSha256": "3ce92677a3f10ab8b9c6e97be4126bb5049858732d1c3d2f6236856770eeedba",
+   "parentSha256": "3ce92677a3f10ab8b9c6e97be4126bb5049858732d1c3d2f6236856770eeedba",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/PermissionBanner.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/PermissionBanner.tsx.md",
+   "sourceBlob": "dfdd0105fcc2acf3affdeebf4ec0762db2202152",
+   "sourceSha256": "c08e35608d9b0b2d350de7b8b3d2d4d3a6bc91972bd0c8b6131635d8bdbdd423",
+   "manualSha256": "6aed96a592659a6c3f51e8ba5274ad894b007485b73076f474ecd23383dcec0f",
+   "parentSha256": "6aed96a592659a6c3f51e8ba5274ad894b007485b73076f474ecd23383dcec0f",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/PermissionModeSelector.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/PermissionModeSelector.tsx.md",
+   "sourceBlob": "96599f7c4705658802f3f843783e8286d6dfed4d",
+   "sourceSha256": "3fa5997ee4941c01432e9de0e14822e153104fe0fca83cad9916c30e159a2f90",
+   "manualSha256": "951a631980fa1eaa787374a8ef9670f6bc46cd167340d8ca2507e03100ab9ce5",
+   "parentSha256": "951a631980fa1eaa787374a8ef9670f6bc46cd167340d8ca2507e03100ab9ce5",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/PlanModeDashedBorder.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/PlanModeDashedBorder.test.ts.md",
+   "sourceBlob": "d579e5e252cc2c7607806bf2350f6cba38c28c52",
+   "sourceSha256": "2b42cc56e9037e923ab94f896b127ce48464dba7a6b30a27652455e0803b8a3c",
+   "manualSha256": "af53ad983d903acb7b262ed0c6789f388057d50423b548768df4d43eb132e0a9",
+   "parentSha256": "af53ad983d903acb7b262ed0c6789f388057d50423b548768df4d43eb132e0a9",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/PlanModeDashedBorder.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/PlanModeDashedBorder.tsx.md",
+   "sourceBlob": "9d10c1fa64ee531d62ce01eceac05ae77e9028ab",
+   "sourceSha256": "dbcba309406e48015b3acf17f280d2fc2868e81c0a7a98c4670d80a5cc2bd41e",
+   "manualSha256": "1646a1eeb69ad43c91f83bf33ac7249015bf861bdcf0b94d0a17728a55330ae3",
+   "parentSha256": "1646a1eeb69ad43c91f83bf33ac7249015bf861bdcf0b94d0a17728a55330ae3",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/PresetSelector.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/PresetSelector.tsx.md",
+   "sourceBlob": "8641bc9f4495ad4a2cb31bf68204d57fb1a22371",
+   "sourceSha256": "6d71d9d00fd91eaf68b2ab6d7c717827d408b3d748ced4e835ff0dec3d467c98",
+   "manualSha256": "66b43a2d194e79f420babb4693df3bd9fe31d064ef45f9eb5d918297087db0d8",
+   "parentSha256": "66b43a2d194e79f420babb4693df3bd9fe31d064ef45f9eb5d918297087db0d8",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/ProcessBlockGroup.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ProcessBlockGroup.test.ts.md",
+   "sourceBlob": "ca3120fd70f6897e58976a21d6889c2b22c53fe2",
+   "sourceSha256": "fd13d23ab4bb11934be95b427dc7a7d1dcc23ffc2bebf8ca4f67de313f6df10e",
+   "manualSha256": "5bf6af1f87662b85f53e4f9f5feda2062ed85d757fd32c1e4cb39287909dce31",
+   "parentSha256": "767d1bfdef8047c2841fab27c0f3f8bbbbf9c860cb56b143f4f77c79b4143b45",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/ProcessBlockGroup.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ProcessBlockGroup.tsx.md",
+   "sourceBlob": "d2fe354c97adc8ba0c87533878fb4713b73d2f57",
+   "sourceSha256": "ffd17bb5c9d0850c6b04532105374dfd1022cbdffcc53113e3ea162e6a276f71",
+   "manualSha256": "fc135b9a31e7757fde1efdda83e71e9e6792a0eea98545dda3880f5b54c1a301",
+   "parentSha256": "1a5a0fb3275ce333e22f4c56cd4c928014b80e813feb50595ffd67c850940caa",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/ProjectGraphPanel.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ProjectGraphPanel.tsx.md",
+   "sourceBlob": "a02086c4548329f44f7b3e90344dbcd8d77a2476",
+   "sourceSha256": "99072d4f21db251a4b5e0dc183203cd9d436c007f89b5bc72aee72f88cce38c4",
+   "manualSha256": "aa8e3c1ce93a8032c5662a3c84ad0470a8b0dea820520a60c395a966c790bd83",
+   "parentSha256": "aa8e3c1ce93a8032c5662a3c84ad0470a8b0dea820520a60c395a966c790bd83",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/RuntimeProcessPanel.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/RuntimeProcessPanel.tsx.md",
+   "sourceBlob": "fc8a588def50b55288fdf699b9bf574781479676",
+   "sourceSha256": "2f547dd7ef642d0b9b3d02bec1fe529ac9f4a8caf3f8062982d4424a1830a1e9",
+   "manualSha256": "fe0ea2af49bf6b05a0d0bc7d8e1726672c9834213ada8862ae1ec95d57f46e6d",
+   "parentSha256": "fe0ea2af49bf6b05a0d0bc7d8e1726672c9834213ada8862ae1ec95d57f46e6d",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/SDKMessageRenderer.test.ts",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/SDKMessageRenderer.test.ts.md",
+   "sourceBlob": "34e4a04bdbf2f48aadb00ef5dcf5de7ce407cfae",
+   "sourceSha256": "1632b9eabeb2697a3e60208ed3ab81533d72d84c3f408bf5c10d2afaf548d512",
+   "manualSha256": "d4f60369ec243c5dfadaa6c1356935e49644e459e09f1e5b5452bb2544860f8f",
+   "parentSha256": "d4f60369ec243c5dfadaa6c1356935e49644e459e09f1e5b5452bb2544860f8f",
+   "verdict": "accepted",
+   "findings": []
+  },
+  {
+   "path": "apps/electron/src/renderer/components/agent/SDKMessageRenderer.tsx",
+   "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/SDKMessageRenderer.tsx.md",
+   "sourceBlob": "b1763bb427ccbc321f52c7520949d509c95b31ce",
+   "sourceSha256": "cc0a5e7f766ac6daafec06f02eef6514b45f99f39ff950c461ce854debbc0967",
+   "manualSha256": "592f693ab7004caf394fff86a0851a2b0c4cd3795c67f33a9bbfa835d59510ae",
+   "parentSha256": "1c6b5d694ea1c718dab0d2ce3a497fce0195ffd7f33fb5e2cb9c5b784a010de7",
+   "verdict": "accepted",
+   "findings": []
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ExplorationBranchBar.tsx.md": "c5983bbb021deb9005547e1539450071d72cd9bdf290babf9550fe618979c6eb",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/FoldedSegmentsRegion.tsx.md": "c3cd1304a16e92640c9178b7ae1397228ee61b92c8fb4cd53015b3bf91c74b02",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/GoalStatusBar.test.tsx.md": "6bf1010ad675fc660804fdaa1c017487ef8939abb1be6fd2dd9af36c6b848cfd",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/GoalStatusBar.tsx.md": "d3de354266db6ec8c6365f2545a32676c46e9182236dc468b73f84bee447b0b8",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/GraphQuestionInput.tsx.md": "3067dd094593de79f9282887266cd673ae4f2a0455b3613e432ab4e2b0be320f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/MentionList.tsx.md": "08b8ee77264329344df120bdde53ecd7943dc3eb27142a32aef005d21e4f522d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/MoveSessionDialog.tsx.md": "3ce92677a3f10ab8b9c6e97be4126bb5049858732d1c3d2f6236856770eeedba",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/PermissionBanner.tsx.md": "6aed96a592659a6c3f51e8ba5274ad894b007485b73076f474ecd23383dcec0f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/PermissionModeSelector.tsx.md": "951a631980fa1eaa787374a8ef9670f6bc46cd167340d8ca2507e03100ab9ce5",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/PlanModeDashedBorder.test.ts.md": "af53ad983d903acb7b262ed0c6789f388057d50423b548768df4d43eb132e0a9",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/PlanModeDashedBorder.tsx.md": "1646a1eeb69ad43c91f83bf33ac7249015bf861bdcf0b94d0a17728a55330ae3",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/PresetSelector.tsx.md": "66b43a2d194e79f420babb4693df3bd9fe31d064ef45f9eb5d918297087db0d8",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ProcessBlockGroup.test.ts.md": "5bf6af1f87662b85f53e4f9f5feda2062ed85d757fd32c1e4cb39287909dce31",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ProcessBlockGroup.tsx.md": "fc135b9a31e7757fde1efdda83e71e9e6792a0eea98545dda3880f5b54c1a301",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/ProjectGraphPanel.tsx.md": "aa8e3c1ce93a8032c5662a3c84ad0470a8b0dea820520a60c395a966c790bd83",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/RuntimeProcessPanel.tsx.md": "fe0ea2af49bf6b05a0d0bc7d8e1726672c9834213ada8862ae1ec95d57f46e6d",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/SDKMessageRenderer.test.ts.md": "d4f60369ec243c5dfadaa6c1356935e49644e459e09f1e5b5452bb2544860f8f",
+  "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/agent/SDKMessageRenderer.tsx.md": "592f693ab7004caf394fff86a0851a2b0c4cd3795c67f33a9bbfa835d59510ae"
+ },
+ "findings": [],
+ "closedFindings": {
+  "N92-1": "closed",
+  "N92-2": "closed",
+  "N92-3": "closed",
+  "N92-4": "closed"
+ },
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "boundaries": [
+  "未改源码/作者正文/candidate/全局总账；旧 seal 不回写；NOT_RUN 不等于测试通过",
+  "accepted 仅限静态文档 scope"
+ ]
+}

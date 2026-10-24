@@ -1,0 +1,257 @@
+{
+  "schema": "dsh-r07-review-result/1",
+  "batch": "nb-56",
+  "revisionOf": null,
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T19:15:00Z",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass"
+  },
+  "g0Evidence": {
+    "chain": "READY/DONE/MANIFEST/ZIP 交叉一致（sealId seal-92a1a77c3461bef5）；18 manualHashes=磁盘 0 mismatch；ZIP 21 条目 0 穿越/符号链接/字节 mismatch；18/18 源绑定==SCOPE==MANIFEST（独立实算）；非返修批"
+  },
+  "g1Evidence": {
+    "sections": "18/18 齐备；行号引用抽查进 G2（全部吻合）"
+  },
+  "g2Evidence": {
+    "coverage": "QA 全量逐行读毕 18 源（1860 行：bridge 491/两段+reducer 164+graph-focus-packet 125+store 108+goal-controller 88+governor 68+replay 81+feature-gate 30+evals/types 36+reconciler 26）+8 测试（643 行）+18 手册（1158 行）；机械核 test( 计数 2/5/6/4/3/13/5/1=39（replay 2 静态含 for 循环 6 fixture=运行 7）",
+    "verifiedTrue": "18 篇主体全部准确：特性门默认开+' 0 ' trim、intake 四类保守判定+marker 行级提取、governor 四级只记不跑+失败无 mutation 阻断、reducer 11 类事件归并、store 解析三诊断/fork settled-only+ID 全重映射、focus 包双限+脱敏+截断尾标、bridge 一次性票据三拒/消耗前重校验/modelCalls 防双计/Turn settle≠Goal settle/setup 失败兜底、evals 12 指标回放；测试手册断言与用例数全核（含 2 静态/7 运行精确区分）；域外边界（telemetry/tool-facts/verification-evaluator/types/fixtures）全部如实标注",
+    "problems": "3 条 minor 计数小偏差（governor 死枚举、focus-packet 4→5 导出、bridge 7→8 导出）"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/main/lib/pi-harness/evals/replay.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/evals/replay.test.ts.md",
+      "sourceBlob": "8313777a95a50412b50254c38c7f28d00cf67827",
+      "sourceSha256": "7fb1a921fe9e0b1770a6c75a6efd1fa9577eb5abc90707d617b4527f94696a09",
+      "manualSha256": "4557b5585c05ef18466808e94df55cd7ed9cdc073db7ddba5f5b924649f68b87",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/pi-harness/evals/replay.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/evals/replay.ts.md",
+      "sourceBlob": "600da975327594c6ee6f060d7095384ce4c8c0ae",
+      "sourceSha256": "a0d7126cb0cccdd8a63f4792b091acc379452dd3b5e1887183c0651c85bd7430",
+      "manualSha256": "24888c0509521b6b7cc055aacfcb8381ad8a290a54365718bc0437b9c1557eae",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/pi-harness/evals/types.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/evals/types.ts.md",
+      "sourceBlob": "4699f4c5e529f28f0a455c8eb6c2bd07f4f5bed8",
+      "sourceSha256": "5708214b0ecca287691307e056236f96a03043304f3110a96a7df15ab4bf9224",
+      "manualSha256": "e350dc5cfde67cef5ec7d19848e44ecb689d49c59c8e91f300b631443c306235",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/pi-harness/feature-gate.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/feature-gate.test.ts.md",
+      "sourceBlob": "c23f09422a3e3c28dd0ccd54437c54cc4e5ec6c2",
+      "sourceSha256": "2696faf6e73fc1715d38c3e3876a1b1a69c7c7f11b5eccebafccb1ed3ad26c61",
+      "manualSha256": "3eb5a230f9583636f234235f38c49fe3522e26c4bc0b40321f0a26517ca8cfc0",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/pi-harness/feature-gate.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/feature-gate.ts.md",
+      "sourceBlob": "e84f0735867a002fc32c6acac4397e8ff8a7fc7f",
+      "sourceSha256": "4bae5be0e0f662bf8cefefadf188664d3247eeded29a0e83b831638a6d4da6b7",
+      "manualSha256": "d8939c111b6234acbafac5744c7743c479db93d54fc7bfafc1460885b9e2d1ab",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/pi-harness/goal-controller.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/goal-controller.test.ts.md",
+      "sourceBlob": "eaf1ca53eb4bd9f7188ddbeed777bd06e938b519",
+      "sourceSha256": "05412d900d589d843c394a5c1a1c75269b1aea68d02eaf1175a1db53cce79475",
+      "manualSha256": "9fd6b71552c5b979fa09fdd01614c2737a35a01671544c91bc74c64f0d47cc27",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/pi-harness/goal-controller.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/goal-controller.ts.md",
+      "sourceBlob": "f2adfb9df66631355eabc772a2f1794fe6044d8f",
+      "sourceSha256": "33b95d551369ce26af984f68e181c02cbe0ae42467469396475481457074bf0e",
+      "manualSha256": "c300cbf56847bb0df8d71d919c7f9895e3d41ee5ed5f6fcf83fd56abd794659f",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/pi-harness/governor.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/governor.test.ts.md",
+      "sourceBlob": "0e1aca03a9f68e967a21302ee506cfcb384215b6",
+      "sourceSha256": "e33d286bc4f61c2a25fb8169f0417e0983526fbd724bc60e658bff0c4a79d506",
+      "manualSha256": "25213a85c47e173da989c33dc7fdf08c377c2ae4b53e070c78384aaad2b5db37",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/pi-harness/governor.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/governor.ts.md",
+      "sourceBlob": "07473d6b3ac37958979dcdcf7d2f951836ad045f",
+      "sourceSha256": "b8d0690f9fd18cfd977dd9d040aa619a2d4ee6f5297751ef01c155680103bd2f",
+      "manualSha256": "673f8490dfac45c0897b9f2665457017453eed725a64899acc56eef59271036f",
+      "verdict": "accepted",
+      "findings": [
+        "N-01"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/pi-harness/graph-focus-packet.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/graph-focus-packet.test.ts.md",
+      "sourceBlob": "7f8010fb8d2d55d5407d28dcddb8664984f70e7e",
+      "sourceSha256": "fd8bf16d5070183f000bb24b03288e45fe65ff8a4148e0439269938938ad5ce6",
+      "manualSha256": "fe10a4316fa3e793da967c790fc935a75d6e5ee6b5d9f358ef3f6f55c504879c",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/pi-harness/graph-focus-packet.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/graph-focus-packet.ts.md",
+      "sourceBlob": "caaeaa08c346d3cd9a885793643f263e0e76bd79",
+      "sourceSha256": "dc84fd67ba3d871182111e653ce242e61845542290fb59d3690db5ccd63e225f",
+      "manualSha256": "a36b758b28c39a203f02ef0397201d3fde94b108891efc893bda01b22f6f9823",
+      "verdict": "accepted",
+      "findings": [
+        "N-02"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/pi-harness/orchestrator-bridge.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/orchestrator-bridge.test.ts.md",
+      "sourceBlob": "8cc0058516c64cbd514de83704f77fb80e8cf913",
+      "sourceSha256": "f010ad68a3b256a7ebc1c488b931e82b90cf4ed4afd2e39297088666896393ab",
+      "manualSha256": "ee85b739f9ae8127b358ad977350962fbecc845ace669b4c8c5fecca081a641c",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/pi-harness/orchestrator-bridge.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/orchestrator-bridge.ts.md",
+      "sourceBlob": "2921313582a8108d8bc8db2feb595b6201dbb705",
+      "sourceSha256": "c28e5286b215621ca1fcef6c71b399e5f94b431287e15be3006684214e5f8fba",
+      "manualSha256": "ae621245de5dfc2cd0c7d47b6ab4ce108ef84c6e5dbe20308087b9b0b9ab7ba0",
+      "verdict": "accepted",
+      "findings": [
+        "N-03"
+      ]
+    },
+    {
+      "path": "apps/electron/src/main/lib/pi-harness/pi-harness-reducer.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/pi-harness-reducer.ts.md",
+      "sourceBlob": "dabf78fc3b056417b3fe107071951a37e1f5d047",
+      "sourceSha256": "2cfe7a087bcb912c08cfce9469b6fc13bb0499780329101eaba37bf5e94add0d",
+      "manualSha256": "f963113ba7777c3cbdbd09e38b8eaf65a11d43d39cdc7282bd689fb7dd6e149c",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/pi-harness/pi-harness-store.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/pi-harness-store.test.ts.md",
+      "sourceBlob": "589ab64b0f0392fafa56bb7db3c048c4ebc783bc",
+      "sourceSha256": "9ed4462dd9a987cdb7de7565ed87193dc7f690db50a0d8c5e04bd0e1aa522d51",
+      "manualSha256": "4590a87c4da5a90cd916df902a2e5fe5110c39faaf4525263bb7238dc2f0a5d9",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/pi-harness/pi-harness-store.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/pi-harness-store.ts.md",
+      "sourceBlob": "957ce36cceb49ccf5f3af97cbba3b8673cb297f7",
+      "sourceSha256": "e2bd7c67449946bc64219387523a4fbb7566ee8ec3f854a4b05df3dcb4da5ab1",
+      "manualSha256": "a83c042076cbf0e4ca547d0eaa0cccce336817aa4dff6a77c3feb57e6a136bf4",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/pi-harness/reconciler.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/reconciler.ts.md",
+      "sourceBlob": "3fdb496f3f7ed8838c75e9eaf039a9bb8a513f4d",
+      "sourceSha256": "4dc3188acb900024523f207daa84cc9f5e024ee3c14c72912735731f794fc78b",
+      "manualSha256": "4208562a38cc21a205ba15e331f341aeee98db24ff3211a6d4e7bd349f62cde6",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/pi-harness/session-telemetry.test.ts",
+      "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/session-telemetry.test.ts.md",
+      "sourceBlob": "7801571a09682c5e8395adff13394b7ac65c0bd2",
+      "sourceSha256": "b64231f351e02622730e6efd6eea40093bd8659bb04ffdec066585571c9c8b4a",
+      "manualSha256": "0239a4e92760aae6d8bd6336de290a01a30eeef72059b988db4048834be3816e",
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/evals/replay.test.ts.md": "4557b5585c05ef18466808e94df55cd7ed9cdc073db7ddba5f5b924649f68b87",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/evals/replay.ts.md": "24888c0509521b6b7cc055aacfcb8381ad8a290a54365718bc0437b9c1557eae",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/evals/types.ts.md": "e350dc5cfde67cef5ec7d19848e44ecb689d49c59c8e91f300b631443c306235",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/feature-gate.test.ts.md": "3eb5a230f9583636f234235f38c49fe3522e26c4bc0b40321f0a26517ca8cfc0",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/feature-gate.ts.md": "d8939c111b6234acbafac5744c7743c479db93d54fc7bfafc1460885b9e2d1ab",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/goal-controller.test.ts.md": "9fd6b71552c5b979fa09fdd01614c2737a35a01671544c91bc74c64f0d47cc27",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/goal-controller.ts.md": "c300cbf56847bb0df8d71d919c7f9895e3d41ee5ed5f6fcf83fd56abd794659f",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/governor.test.ts.md": "25213a85c47e173da989c33dc7fdf08c377c2ae4b53e070c78384aaad2b5db37",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/governor.ts.md": "673f8490dfac45c0897b9f2665457017453eed725a64899acc56eef59271036f",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/graph-focus-packet.test.ts.md": "fe10a4316fa3e793da967c790fc935a75d6e5ee6b5d9f358ef3f6f55c504879c",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/graph-focus-packet.ts.md": "a36b758b28c39a203f02ef0397201d3fde94b108891efc893bda01b22f6f9823",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/orchestrator-bridge.test.ts.md": "ee85b739f9ae8127b358ad977350962fbecc845ace669b4c8c5fecca081a641c",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/orchestrator-bridge.ts.md": "ae621245de5dfc2cd0c7d47b6ab4ce108ef84c6e5dbe20308087b9b0b9ab7ba0",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/pi-harness-reducer.ts.md": "f963113ba7777c3cbdbd09e38b8eaf65a11d43d39cdc7282bd689fb7dd6e149c",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/pi-harness-store.test.ts.md": "4590a87c4da5a90cd916df902a2e5fe5110c39faaf4525263bb7238dc2f0a5d9",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/pi-harness-store.ts.md": "a83c042076cbf0e4ca547d0eaa0cccce336817aa4dff6a77c3feb57e6a136bf4",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/reconciler.ts.md": "4208562a38cc21a205ba15e331f341aeee98db24ff3211a6d4e7bd349f62cde6",
+    "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/session-telemetry.test.ts.md": "0239a4e92760aae6d8bd6336de290a01a30eeef72059b988db4048834be3816e"
+  },
+  "findings": [
+    {
+      "id": "N-01",
+      "severity": "minor",
+      "file": "apps/electron/src/main/lib/pi-harness/governor.ts.md",
+      "claim": "§2 blockedReason 枚举含 'repeat_failed_verification'，但代码从未产出该值（无变化失败循环分支直接 return undefined，governor.ts:37-41）——死枚举值未照实记录。",
+      "sourceEvidence": "governor.ts 全文 blockedReason 仅赋 'permission_mode'/'shadow_mode'",
+      "action": "任一 rN 补注'该枚举值保留未用'。"
+    },
+    {
+      "id": "N-02",
+      "severity": "minor",
+      "file": "apps/electron/src/main/lib/pi-harness/graph-focus-packet.ts.md",
+      "claim": "§11 '4 导出+4 内部' vs 实 5 导出（GRAPH_FOCUS_MAX_CHARS/MAX_TOKENS/GraphFocusPacketInput/buildGraphFocusPacket/estimateGraphFocusPacketTokens）+5 内部（estimateTokens 未单列，仅在 estimate 行附带 :24-37）。",
+      "sourceEvidence": "graph-focus-packet.ts 5 条 export 语句 + 5 个内部函数",
+      "action": "任一 rN 改计数并单列 estimateTokens 行。"
+    },
+    {
+      "id": "N-03",
+      "severity": "minor",
+      "file": "apps/electron/src/main/lib/pi-harness/orchestrator-bridge.ts.md",
+      "claim": "§11 '7 导出' vs 实 8 条 export（getActivePiHarnessRunForTest/clearPiHarnessRunsForTest 两行合并致漏 1）。",
+      "sourceEvidence": "orchestrator-bridge.ts 8 条 export 语句（1 接口+7 函数）",
+      "action": "任一 rN 改计数 8。"
+    }
+  ],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network",
+    "bun 测试运行"
+  ],
+  "notes": "判定口径一致（N=正确枚举在场的小计数偏差）。3 条 N 不阻断，18 篇全部可合。QA 观察（非手册错）：GovernorCandidate.blockedReason 的 'repeat_failed_verification' 为死枚举值（N-01 记录）。"
+}

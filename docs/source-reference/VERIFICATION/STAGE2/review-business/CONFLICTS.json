@@ -1,0 +1,75 @@
+{
+  "schema": "dsh-r07-stage2-conflicts/1",
+  "track": "review-business",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "items": [
+    {
+      "id": "RC-01",
+      "class": "implementation_gap",
+      "symbol": "academicYear",
+      "source": "apps/electron/src/main/lib/review/case-creation.ts:35",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/case-creation.ts.md",
+      "manualSha256": "57a469d49e73d02ededf8e89192cb5ce6f5876bd745f06146cb7db1bbb42ba89",
+      "primaryAuthor": "docs-r07-author-ui-20261023",
+      "evidence": "C1 入口 academicYear.trim() 后无空串拒、saveCase(case-store.ts:224-233)无字段校验→空学年可持久化；C2 模板入口经 validateFieldValuesV2 案卷级校验(application-service.ts createCaseFromTemplate 内 caseFieldIssues 区段)两入口校验面不一致",
+      "suggestedFix": "createEmptyCase 增加非空校验或在 manual 明示 V1 入口契约与 V2 差异",
+      "status": "open_for_stage3"
+    },
+    {
+      "id": "RC-02",
+      "class": "implementation_gap",
+      "symbol": "case-store.updateCase(expectedRevision)",
+      "source": "apps/electron/src/main/lib/review/case-store.ts:290-292",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/case-store.ts.md",
+      "manualSha256": "4d4092ece518b480b0a393908e1b0c1c0c242cccc8490fc6bdd46da8cea0c791",
+      "primaryAuthor": "docs-r07-author-nb-09-20261023",
+      "evidence": "实现 expectedRevision===undefined 时 CAS 完全跳过(:290-292)，与注释:273-274「缺省视为0：仅当盘上revision也是0/缺省时接受」矛盾(已证缺陷 NB09-F-01 复核)",
+      "suggestedFix": "按注释语义实现缺省=0校验或强制显式revision并同步注释；留阶段三设计差异报告，本阶段不修",
+      "status": "open_for_stage3"
+    },
+    {
+      "id": "RC-03",
+      "class": "unknown",
+      "symbol": "enqueueCase / enqueueCaseWrite",
+      "source": "apps/electron/src/main/lib/review/case-store-v2.ts(:211 调用) vs case-store.ts:243-255",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/case-store-v2.ts.md",
+      "manualSha256": "ba77185d1c9020638bd8e00cba29bc55789e14df9644e126725487d1e25efc14",
+      "primaryAuthor": "docs-r07-author-nb-09-20261023",
+      "evidence": "同目录近义双实现(V2聚合队列/V1写队列)，独立实现无共享；manual 交叉引用是否误归属未查(窗口内未核 manual 正文)",
+      "suggestedFix": "阶段三统一命名或在两 manual 互链注明差异",
+      "status": "needs_manual_crosscheck"
+    },
+    {
+      "id": "RC-04",
+      "class": "unknown",
+      "symbol": "restoreReviewCaseV3→stage",
+      "source": "apps/electron/src/main/lib/review/case-lifecycle-v3.ts:87(实现stage='draft')",
+      "manual": "MODULE-REFERENCE/p04-review-case-core/FILE-REFERENCE/apps/electron/src/main/lib/review/case-lifecycle-v3.ts.md",
+      "manualSha256": "a718dda9d3bf38f83af5e69333c6a23e0e9fc3ea32aa7a48c7626d542e1bc1b8",
+      "primaryAuthor": "docs-r07-author-ui-20261023",
+      "evidence": "实现恢复后 stage='draft' 而非 caseArchive.previousStage(:87)；manual 摘录未见明确表述(grep 未命中恢复目标阶段)→是否 doc_error 待 manual 全文比对",
+      "suggestedFix": "manual 明示恢复落 draft 的语义(或实现改回 previousStage)；交主责作者比对",
+      "status": "needs_manual_crosscheck"
+    }
+  ],
+  "notConflicts_gaps": [
+    {
+      "gap": "SQLite：review 业务目录 grep sqlite/.db 零命中(证实无直接引用)；间接驱动/其他模块落库=未知"
+    },
+    {
+      "gap": "C6 v1服务层 review-authoring-v1.ts 与 v3-b1 并存调用关系=待验(338行未逐行)"
+    },
+    {
+      "gap": "plan-binding-v3.ts 行级断言(首绑唯一/ACK/双重复核)=待验(accepted manual 已记，本轨未复核)"
+    },
+    {
+      "gap": "run-service/run-service-v2 失败补偿(写失败保留拒止)=待验"
+    },
+    {
+      "gap": "C9 结果/报告输出链(report-service/report-export-v2)未覆盖"
+    },
+    {
+      "gap": "bindC0LocalCaseCommand/bindC0LocalCreateIntent 权限体(review-c0-authority.ts)未逐行=推断"
+    }
+  ]
+}

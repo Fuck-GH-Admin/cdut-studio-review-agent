@@ -1,0 +1,249 @@
+import { afterEach, describe, expect, mock, test } from 'bun:test'
+
+mock.module('electron', () => ({
+  app: { getPath: () => '', isPackaged: false },
+  safeStorage: { isEncryptionAvailable: () => false, encryptString: (value: string) => Buffer.from(value), decryptString: (value: Buffer) => value.toString() },
+}))
+
+let credentials = { provider: 'openai' as 'openai' | 'xai', mode: 'official' as 'official' | 'byok', apiKey: '', baseUrl: '', model: '' }
+let auth: { baseUrl: string; token: string; proxyToken?: string } | undefined = {
+  baseUrl: 'https://team.example/', token: 'team-token', proxyToken: 'proxy-token',
+}
+let recoveredAuth: typeof auth = auth
+
+mock.module('./chat-tool-config', () => ({ getGptImageCredentials: () => credentials }))
+mock.module('./auth-service', () => ({
+  getTeamAuthWithRefresh: async () => auth,
+  recoverCommercialProxyAuth: async () => recoveredAuth,
+}))
+
+const { generateGptImage, __setOfficialImageRecoveryDelaysForTest } = await import('./gpt-image-service')
+const originalFetch = globalThis.fetch
+const png = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])
+
+function response(data: unknown, status = 200, headers?: HeadersInit): Response {
+  return new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json', ...headers } })
+}
+
+afterEach(() => {
+  globalThis.fetch = originalFetch
+  credentials = { provider: 'openai', mode: 'official', apiKey: '', baseUrl: '', model: '' }
+  auth = { baseUrl: 'https://team.example/', token: 'team-token', proxyToken: 'proxy-token' }
+  recoveredAuth = auth
+  __setOfficialImageRecoveryDelaysForTest(undefined)
+})
+
+describe('generateGptImage', () => {
+  test('official generation posts a fixed model JSON request with caller idempotency key', async () => {
+    const calls: Request[] = []
+    globalThis.fetch = (async (input, init) => {
+      calls.push(new Request(input, init))
+      return response({ data: [{ b64_json: png.toString('base64') }] })
+    }) as typeof fetch
+
+    const result = await generateGptImage({ prompt: 'blue square', size: '1024x1024', quality: 'high', idempotencyKey: 'call-1' })
+
+    expect(result.ok).toBe(true)
+    expect(calls).toHaveLength(1)
+    expect(calls[0]!.url).toBe('https://team.example/v1/proxy/images/generations')
+    expect(calls[0]!.headers.get('authorization')).toBe('Bearer proxy-token')
+    expect(calls[0]!.headers.get('idempotency-key')).toBe('call-1')
+    expect(await calls[0]!.json()).toEqual({ model: 'gpt-image-2', prompt: 'blue square', size: '1024x1024', quality: 'high', n: 1 })
+  })
+
+  test('restores an official image result after a gateway 504 using the original idempotency key', async () => {
+    __setOfficialImageRecoveryDelaysForTest([0])
+    const calls: Request[] = []
+    globalThis.fetch = (async (input, init) => {
+      const request = new Request(input, init)
+      calls.push(request)
+      if (calls.length === 1) return new Response('<html><title>504 Gateway Time-out</title></html>', { status: 504 })
+      return response({ data: [{ b64_json: png.toString('base64') }] })
+    }) as typeof fetch
+
+    const result = await generateGptImage({ prompt: 'recover image', idempotencyKey: 'gateway-recovery-key' })
+
+    expect(result.ok).toBe(true)
+    expect(calls).toHaveLength(2)
+    expect(calls[1]!.url).toBe('https://team.example/v1/proxy/images/operations/by-idempotency/generation/gateway-recovery-key')
+    expect(calls[1]!.method).toBe('GET')
+    expect(calls[1]!.headers.get('authorization')).toBe('Bearer proxy-token')
+  })
+
+  test('continues recovery polling only while the operation reports processing', async () => {
+    __setOfficialImageRecoveryDelaysForTest([0, 0])
+    const calls: Request[] = []
+    globalThis.fetch = (async (input, init) => {
+      const request = new Request(input, init)
+      calls.push(request)
+      if (calls.length === 1) return new Response('<html><title>504 Gateway Time-out</title></html>', { status: 504 })
+      if (calls.length === 2) return response({ code: 'IMAGE_OPERATION_PROCESSING' }, 409)
+      return response({ data: [{ b64_json: png.toString('base64') }] })
+    }) as typeof fetch
+
+    await expect(generateGptImage({ prompt: 'wait for operation', idempotencyKey: 'gateway-processing-key' })).resolves.toMatchObject({ ok: true })
+    expect(calls).toHaveLength(3)
+  })
+
+  test('refreshes a stale relay token once and reuses the idempotency key', async () => {
+    const calls: Request[] = []
+    const freshAuth = { baseUrl: 'https://team.example/', token: 'fresh-team-token', proxyToken: 'fresh-proxy-token' }
+    recoveredAuth = freshAuth
+    globalThis.fetch = (async (input, init) => {
+      const request = new Request(input, init)
+      calls.push(request)
+      if (calls.length === 1) return response({ error: 'relay 令牌无效' }, 401)
+      return response({ data: [{ b64_json: png.toString('base64') }] })
+    }) as typeof fetch
+
+    const result = await generateGptImage({ prompt: 'retry image', idempotencyKey: 'retry-key-1' })
+
+    expect(result.ok).toBe(true)
+    expect(calls).toHaveLength(2)
+    expect(calls[0]!.headers.get('authorization')).toBe('Bearer proxy-token')
+    expect(calls[1]!.headers.get('authorization')).toBe('Bearer fresh-proxy-token')
+    expect(calls[0]!.headers.get('idempotency-key')).toBe('retry-key-1')
+    expect(calls[1]!.headers.get('idempotency-key')).toBe('retry-key-1')
+  })
+
+  test('official edit uses multipart endpoint and caps references at four', async () => {
+    const calls: Request[] = []
+    globalThis.fetch = (async (input, init) => {
+      calls.push(new Request(input, init))
+      return response({ data: [{ b64_json: png.toString('base64') }] })
+    }) as typeof fetch
+    const references = Array.from({ length: 5 }, (_, index) => ({ data: png.toString('base64'), mediaType: 'image/png', filename: `ref-${index}.png` }))
+
+    const result = await generateGptImage({ prompt: 'edit', references, idempotencyKey: 'edit-1' })
+
+    expect(result.ok).toBe(true)
+    expect(calls[0]!.url).toBe('https://team.example/v1/proxy/images/edits')
+    const form = await calls[0]!.formData()
+    expect(form.getAll('image[]')).toHaveLength(4)
+  })
+
+  test('BYOK OpenAI generation uses configured base URL, key and b64 response format', async () => {
+    credentials = { provider: 'openai', mode: 'byok', apiKey: 'sk-test', baseUrl: 'https://byok.example/', model: 'custom-image' }
+    const calls: Request[] = []
+    globalThis.fetch = (async (input, init) => {
+      calls.push(new Request(input, init))
+      return response({ data: [{ b64_json: png.toString('base64') }] })
+    }) as typeof fetch
+
+    const result = await generateGptImage({ prompt: 'cat', idempotencyKey: 'ignored-for-byok' })
+
+    expect(result).toMatchObject({ ok: true, mode: 'byok', mediaType: 'image/png' })
+    expect(calls[0]!.url).toBe('https://byok.example/v1/images/generations')
+    expect(calls[0]!.headers.get('authorization')).toBe('Bearer sk-test')
+    expect(await calls[0]!.json()).toMatchObject({ model: 'custom-image', response_format: 'b64_json', n: 1 })
+  })
+
+  test('xAI BYOK generation maps GPT-style size and quality to Grok Imagine fields', async () => {
+    credentials = { provider: 'xai', mode: 'byok', apiKey: 'xai-test', baseUrl: 'https://api.x.ai', model: '' }
+    const calls: Request[] = []
+    globalThis.fetch = (async (input, init) => {
+      calls.push(new Request(input, init))
+      return response({ data: [{ b64_json: png.toString('base64') }] })
+    }) as typeof fetch
+
+    const result = await generateGptImage({ prompt: 'mountain', size: '1536x1024', quality: 'high', idempotencyKey: 'xai-1' })
+
+    expect(result).toMatchObject({ ok: true, mode: 'byok', mediaType: 'image/png' })
+    expect(calls[0]!.url).toBe('https://api.x.ai/v1/images/generations')
+    expect(calls[0]!.headers.get('authorization')).toBe('Bearer xai-test')
+    expect(await calls[0]!.json()).toEqual({
+      model: 'grok-imagine-image-2.0', prompt: 'mountain', aspect_ratio: '3:2', resolution: '2k',
+      quality: 'medium', response_format: 'b64_json', n: 1,
+    })
+  })
+
+  test('xAI BYOK single-image editing uses the singular image field required by the API', async () => {
+    credentials = { provider: 'xai', mode: 'byok', apiKey: 'xai-edit', baseUrl: 'https://api.x.ai', model: '' }
+    const calls: Request[] = []
+    globalThis.fetch = (async (input, init) => {
+      calls.push(new Request(input, init))
+      return response({ data: [{ b64_json: png.toString('base64') }] })
+    }) as typeof fetch
+
+    await expect(generateGptImage({
+      prompt: 'add a hat', references: [{ data: png.toString('base64'), mediaType: 'image/png', filename: 'one.png' }],
+      idempotencyKey: 'xai-single-edit-1',
+    })).resolves.toMatchObject({ ok: true, mode: 'byok' })
+
+    const body = await calls[0]!.json() as Record<string, unknown>
+    expect(body).toMatchObject({
+      model: 'grok-imagine-image-2.0',
+      image: { type: 'image_url', url: `data:image/png;base64,${png.toString('base64')}` },
+    })
+    expect(body.images).toBeUndefined()
+  })
+
+  test('xAI BYOK editing sends JSON data URLs instead of OpenAI multipart fields', async () => {
+    credentials = { provider: 'xai', mode: 'byok', apiKey: 'xai-edit', baseUrl: 'https://api.x.ai/v1/', model: 'grok-imagine-image-2.0' }
+    const calls: Request[] = []
+    globalThis.fetch = (async (input, init) => {
+      calls.push(new Request(input, init))
+      return response({ data: [{ b64_json: png.toString('base64') }] })
+    }) as typeof fetch
+    const references = [
+      { data: png.toString('base64'), mediaType: 'image/png', filename: 'one.png' },
+      { data: png.toString('base64'), mediaType: 'image/png', filename: 'two.png' },
+    ]
+
+    const result = await generateGptImage({ prompt: 'combine them', references, size: '1024x1536', quality: 'low', idempotencyKey: 'xai-edit-1' })
+
+    expect(result).toMatchObject({ ok: true, mode: 'byok' })
+    expect(calls[0]!.url).toBe('https://api.x.ai/v1/images/edits')
+    expect(calls[0]!.headers.get('content-type')).toContain('application/json')
+    expect(await calls[0]!.json()).toEqual({
+      model: 'grok-imagine-image-2.0', prompt: 'combine them',
+      images: [
+        { type: 'image_url', url: `data:image/png;base64,${png.toString('base64')}` },
+        { type: 'image_url', url: `data:image/png;base64,${png.toString('base64')}` },
+      ],
+      aspect_ratio: '2:3', resolution: '2k', quality: 'low', response_format: 'b64_json', n: 1,
+    })
+  })
+
+  test('downloads URL result with the BYOK bearer key', async () => {
+    credentials = { provider: 'openai', mode: 'byok', apiKey: 'sk-download', baseUrl: 'https://byok.example', model: '' }
+    const calls: Request[] = []
+    globalThis.fetch = (async (input, init) => {
+      const request = new Request(input, init)
+      calls.push(request)
+      return calls.length === 1
+        ? response({ data: [{ url: 'https://cdn.example/image.png' }] })
+        : new Response(png, { headers: { 'content-type': 'image/png' } })
+    }) as typeof fetch
+
+    const result = await generateGptImage({ prompt: 'from url', idempotencyKey: 'url-1' })
+
+    expect(result).toMatchObject({ ok: true, mediaType: 'image/png' })
+    expect(calls[1]!.headers.get('authorization')).toBe('Bearer sk-download')
+  })
+
+  test('xAI URL 结果下载时不转发用户 API Key', async () => {
+    credentials = { provider: 'xai', mode: 'byok', apiKey: 'xai-download', baseUrl: 'https://api.x.ai', model: '' }
+    const calls: Request[] = []
+    globalThis.fetch = (async (input, init) => {
+      const request = new Request(input, init)
+      calls.push(request)
+      return calls.length === 1
+        ? response({ data: [{ url: 'https://cdn.example/grok-image.jpg', mime_type: 'image/jpeg' }] })
+        : new Response(png, { headers: { 'content-type': 'image/jpeg' } })
+    }) as typeof fetch
+
+    const result = await generateGptImage({ prompt: 'from xAI url', idempotencyKey: 'xai-url-1' })
+
+    expect(result).toMatchObject({ ok: true, mediaType: 'image/png' })
+    expect(calls[1]!.headers.get('authorization')).toBeNull()
+  })
+
+  test('maps safe official error messages and never reports a success object for missing image bytes', async () => {
+    globalThis.fetch = (async () => response({ error: { code: 'INSUFFICIENT_CREDITS' } }, 402)) as unknown as typeof fetch
+    await expect(generateGptImage({ prompt: 'x', idempotencyKey: 'credits' })).resolves.toMatchObject({ ok: false, error: expect.stringContaining('积分不足') })
+
+    globalThis.fetch = (async () => response({ data: [{ b64_json: '' }] })) as unknown as typeof fetch
+    await expect(generateGptImage({ prompt: 'x', idempotencyKey: 'empty' })).resolves.toMatchObject({ ok: false })
+  })
+})

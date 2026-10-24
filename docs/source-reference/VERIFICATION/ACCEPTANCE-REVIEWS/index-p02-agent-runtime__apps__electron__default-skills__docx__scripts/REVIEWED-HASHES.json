@@ -1,0 +1,18 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "index-p02-agent-runtime__apps__electron__default-skills__docx__scripts",
+ "groupId": "p02-agent-runtime__apps__electron__default-skills__docx__scripts",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-index-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T19:15:00Z",
+ "sealedAtUtc": "2026-10-23T18:59:57+00:00",
+ "artifactSha256": "bd7ceb42ab30136d2312ac5e6a51c0e401e40f97897a3b529ed3ea5429ca55fb",
+ "note": "QA 实算封版链全对（MANIFEST/READY/DONE artifactSha256 == stage sha == manualHashes）。5/5 accepted；5 条非阻断 findings 已登记。",
+ "acceptedManuals": {
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__docx__scripts.md@apps/electron/default-skills/docx/scripts/templates/comments.xml": "bd7ceb42ab30136d2312ac5e6a51c0e401e40f97897a3b529ed3ea5429ca55fb",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__docx__scripts.md@apps/electron/default-skills/docx/scripts/templates/commentsExtended.xml": "bd7ceb42ab30136d2312ac5e6a51c0e401e40f97897a3b529ed3ea5429ca55fb",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__docx__scripts.md@apps/electron/default-skills/docx/scripts/templates/commentsExtensible.xml": "bd7ceb42ab30136d2312ac5e6a51c0e401e40f97897a3b529ed3ea5429ca55fb",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__docx__scripts.md@apps/electron/default-skills/docx/scripts/templates/commentsIds.xml": "bd7ceb42ab30136d2312ac5e6a51c0e401e40f97897a3b529ed3ea5429ca55fb",
+  "MODULE-REFERENCE/p02-agent-runtime/INDEX/p02-agent-runtime__apps__electron__default-skills__docx__scripts.md@apps/electron/default-skills/docx/scripts/templates/people.xml": "bd7ceb42ab30136d2312ac5e6a51c0e401e40f97897a3b529ed3ea5429ca55fb"
+ }
+}

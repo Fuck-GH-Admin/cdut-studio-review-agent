@@ -1,0 +1,251 @@
+{
+  "schema": "dsh-r07-review-result/2",
+  "batch": "nb-89",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-06-20261023",
+  "reviewerSession": "docs-r07-qa-nb-06-20261023",
+  "reviewedAtUtc": "2026-10-24T19:00:00Z",
+  "sealedAtUtc": "2026-10-23T19:18:17Z",
+  "sealId": "seal-f43ff3760c5b3215",
+  "runStatus": "NOT_RUN",
+  "batchVerdict": "accepted",
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass_with_findings"
+  },
+  "g0Evidence": {
+    "sealChain": "manifestSha/readySha/zipSha 三层独立重算全相等；zip 21 条目合规",
+    "manualHashes": "18/18 磁盘=MANIFEST=READY 全等",
+    "scopeBinding": "18/18 源 blob+sha256+lines 与 nb-89-SCOPE 全等"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/renderer/components/content-review/review-v3-t05-stage-actions.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t05-stage-actions.ts.md",
+      "sourceBlob": "c684404c5bf26ec3560eda9b518d8ce1e2054e9f",
+      "sourceSha256": "9a19a27b5a0e2b711ac9fab2421c3bcb1b5042fabfe719daf858162f71392cbc",
+      "manualSha256": "2518eb79eb57a26c7e01f89e06ea87d9596c74bd0948355510dfb309339b6b01",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/content-review/review-v3-t06-batch-intake.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t06-batch-intake.test.ts.md",
+      "sourceBlob": "2f8a991c7d7b7a242d3eb7bee43ad5b996b50f85",
+      "sourceSha256": "59f2ac7625e03a14b9bd3ddbba88e1f7e30ab068569982898c0ee3a9123795eb",
+      "manualSha256": "a6e8ad0cdaeed5715e5ef07fcaacad14c58789753290012f6582e2f1e68b0a27",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/content-review/review-v3-t06-batch-intake.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t06-batch-intake.ts.md",
+      "sourceBlob": "9ad41fa949db9bde51c647d5a9bd2f00382887c3",
+      "sourceSha256": "d94ff1b398d4f8020bb781ac62b149fe86986208a378d1040c62f80e14661bc9",
+      "manualSha256": "13f4d7352a8eede3030aee4a703c2b4565faafd8aee5b5eef0364d6fed2edcef",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/content-review/review-v3-t06-physical-intake.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t06-physical-intake.test.ts.md",
+      "sourceBlob": "ade7abcca0c4dd98793e8f2f9a2bfbaf370b3b50",
+      "sourceSha256": "6d1b002903a106803500d2d2377d1f14393e4ebe45aa44bc06f3f1ef9f31b887",
+      "manualSha256": "35737433392ce2603ef860cda2b97e446a3a17750cebcfd1bb5213d4d6b698cc",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/content-review/review-v3-t06-physical-intake.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t06-physical-intake.ts.md",
+      "sourceBlob": "686597ae428fa6bd42b71f69055729bf5defff5b",
+      "sourceSha256": "f5501864f121cd3a8d984597204d9990c2d4ce0288e735afa330e6d47ed592d9",
+      "manualSha256": "56c354ab0ad83696a1f3617b49c4ff98cd7636400a4500da4b38224cc14feae9",
+      "verdict": "accepted",
+      "findings": [
+        "NB89-N1"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/content-review/review-v3-t06-physical-manifest.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t06-physical-manifest.ts.md",
+      "sourceBlob": "d1a889779b3774d1bb5820ab9f0eda072003f501",
+      "sourceSha256": "5ad396cc33180346937eda39aded546f82046ae5a736d1f80a2ed8dde782ab3c",
+      "manualSha256": "04de12d3add7b3eeab766162562a74e802674f5f13de5f2bbd32d834a352c062",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/content-review/review-v3-t06-template-route.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t06-template-route.test.ts.md",
+      "sourceBlob": "c0842ae18e58bbf643e307d4dbd6a39257f87988",
+      "sourceSha256": "b880e32f8e83118e8197d90fe5c9b97eacc12055c8c844764f3a362d15130a43",
+      "manualSha256": "4364889464a753f798b22b86bdf081fbae7251432cd5c28348727cb4635c4122",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/content-review/review-v3-t06-template-route.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t06-template-route.ts.md",
+      "sourceBlob": "17e7a59f80b16b5d1ef1b4d7d52bfe11366e3641",
+      "sourceSha256": "185d8cff4b9289b8e52a5a1b1d811943c7378b65dfb9a001dfb7b23dfbac952c",
+      "manualSha256": "6b7f2f8facba24bdc952473613c000a8bd537dba9b744cd52e8c33ab19ea96c0",
+      "verdict": "accepted",
+      "findings": [
+        "NB89-N2"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/content-review/review-v3-t08-case-report.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t08-case-report.test.ts.md",
+      "sourceBlob": "d9bbf6c34496d8b0b1a81b12d8913f5899c25ec2",
+      "sourceSha256": "d42ae2050090d40e736a9a92511757b35598a18c1a462b9db3f11242041f1eaa",
+      "manualSha256": "440155e726bdb885188f0bcb91ba10eac53592ac0b2d73b187a41c81f36efb5c",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/content-review/review-v3-t08-case-report.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t08-case-report.ts.md",
+      "sourceBlob": "d382bb8f20278dba27d45ab363d29b9102c71307",
+      "sourceSha256": "7665dca5c84edfd6ad9e3693895d2c0912be0983cad1a143f96816a5c78bfb7e",
+      "manualSha256": "cda4ea761e7c57b0e7bc0ad8326545a4059353a60889f1af1f00ac33744b93ca",
+      "verdict": "accepted",
+      "findings": [
+        "NB89-N3"
+      ]
+    },
+    {
+      "path": "apps/electron/src/renderer/components/content-review/review-v3-t08-pdf.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t08-pdf.test.ts.md",
+      "sourceBlob": "b6cceab037d64ce44a49fd4933ece8b82e03bb00",
+      "sourceSha256": "612e037a79ad68ce69216c8cf75f3276dd944d75d2e33c5bf630b5c9e92028a4",
+      "manualSha256": "b4d50fbdcd474955bf3c1e4c78444930637ad2566b6f9a521e06da3c9e53e97b",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/content-review/review-v3-t08-pdf.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t08-pdf.ts.md",
+      "sourceBlob": "fa3c5edc3c280f2e946b58a6570724cfb49ab1a1",
+      "sourceSha256": "32cee8c4faa715d6ff3641be5db8208744073f8a2218f81d59cd422dc6103b9f",
+      "manualSha256": "20ba78676efb71602447c5976dfb68df66424eea4c0f8d5577f53b322be88556",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/content-review/review-v3-t08-suggestion.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t08-suggestion.test.ts.md",
+      "sourceBlob": "58d5edfa813f372e434d625dcbf5b60874ef88a0",
+      "sourceSha256": "f287272a1586c9c9996e5024690f27bbf30f5eb8915d665169081603f70b5322",
+      "manualSha256": "031a55631657fde7d321a037a05d3e6ebe66f01d3a0ad1df944cc8e53e0c52b7",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/content-review/review-v3-t08-suggestion.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t08-suggestion.ts.md",
+      "sourceBlob": "12212473de82b5c835b3517f160a40429c0facd1",
+      "sourceSha256": "8a2f030480fd46258d60c38eaa3052e64c992d95a054ff8bb9cc2071c946a138",
+      "manualSha256": "d2b747a34cb7d0f46ec340aaa0f24fd29e837e146d8865ec5cf07db60df44b2a",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/content-review/review-v3-t09-offline-form.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t09-offline-form.test.ts.md",
+      "sourceBlob": "2842da085792c2e24d32039807c3a330aa3a1df5",
+      "sourceSha256": "c0cc4a1b85ec2f0b7249c86bc04317a1c08da652dbf71525b9d4c844dc328657",
+      "manualSha256": "5d396c27bf68a7da4670c8a719c2277f97cb2acd3591450bc5a8a7b60ada5cb0",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/content-review/review-v3-t09-offline-form.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t09-offline-form.ts.md",
+      "sourceBlob": "960c863370c27174b277acc7f7a69c52def03837",
+      "sourceSha256": "ef904a10a198201cc024e34a02ebb3b5d8ef31e973e4a4b4cad7d2923f7fd23d",
+      "manualSha256": "25f62615365a886a8bfeec4815c2509aca705ebef452f20ab6edefbd463599ba",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/content-review/review-workspace-recheck-independent.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-workspace-recheck-independent.test.ts.md",
+      "sourceBlob": "6ff03bdfce1312df01ad95c771aaacf7c7330559",
+      "sourceSha256": "2a1263ef2341027d93566bc31c96e774b7c524d68b1c8bb984a07692af99a9a9",
+      "manualSha256": "81d450491dba28f8886de20f33dc53356cc26f90ba654781b72c13de53be6ad2",
+      "verdict": "accepted",
+      "findings": []
+    },
+    {
+      "path": "apps/electron/src/renderer/components/content-review/review-workspace-view-model.test.ts",
+      "manual": "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-workspace-view-model.test.ts.md",
+      "sourceBlob": "9908094841916c6444b9ce5ad9280762b12ed220",
+      "sourceSha256": "dda9e18eb71b9a6ef0ce3d776a5141c8e3ef4d0a8d4f9af355068fbdbef0aa50",
+      "manualSha256": "0619304c99f999eae919d08d833da172903ebb369f457210df0cc406b1c2d732",
+      "verdict": "accepted",
+      "findings": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "NB89-N1",
+      "file": "apps/electron/src/renderer/components/content-review/review-v3-t06-physical-intake.ts",
+      "severity": "minor",
+      "claim": "§10 称『14 导出』，实际 20 个（7 类型接口+previewT06PhysicalImport/planT06PhysicalImport/executeT06PhysicalImport 等）。",
+      "sourceEvidence": "grep -c \"^export \" review-v3-t06-physical-intake.ts = 20。",
+      "action": "14→20（或注明表行合并口径）。"
+    },
+    {
+      "id": "NB89-N2",
+      "file": "apps/electron/src/renderer/components/content-review/review-v3-t06-template-route.ts",
+      "severity": "minor",
+      "claim": "§10 称『6 导出』，实际 7 个（3 接口+4 函数）。",
+      "sourceEvidence": "grep -c \"^export \" review-v3-t06-template-route.ts = 7。",
+      "action": "6→7。"
+    },
+    {
+      "id": "NB89-N3",
+      "file": "apps/electron/src/renderer/components/content-review/review-v3-t08-case-report.ts",
+      "severity": "minor",
+      "claim": "§10 称『10 导出』，实际 11 个（6 接口/类型+resolveT08Source/makeT08CaseReport/t08ReportTable/t08ReportWorkbookSheets/t08AssistantContext）。",
+      "sourceEvidence": "grep -c \"^export \" review-v3-t08-case-report.ts = 11。",
+      "action": "10→11。"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t05-stage-actions.ts.md": "2518eb79eb57a26c7e01f89e06ea87d9596c74bd0948355510dfb309339b6b01",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t06-batch-intake.test.ts.md": "a6e8ad0cdaeed5715e5ef07fcaacad14c58789753290012f6582e2f1e68b0a27",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t06-batch-intake.ts.md": "13f4d7352a8eede3030aee4a703c2b4565faafd8aee5b5eef0364d6fed2edcef",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t06-physical-intake.test.ts.md": "35737433392ce2603ef860cda2b97e446a3a17750cebcfd1bb5213d4d6b698cc",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t06-physical-intake.ts.md": "56c354ab0ad83696a1f3617b49c4ff98cd7636400a4500da4b38224cc14feae9",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t06-physical-manifest.ts.md": "04de12d3add7b3eeab766162562a74e802674f5f13de5f2bbd32d834a352c062",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t06-template-route.test.ts.md": "4364889464a753f798b22b86bdf081fbae7251432cd5c28348727cb4635c4122",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t06-template-route.ts.md": "6b7f2f8facba24bdc952473613c000a8bd537dba9b744cd52e8c33ab19ea96c0",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t08-case-report.test.ts.md": "440155e726bdb885188f0bcb91ba10eac53592ac0b2d73b187a41c81f36efb5c",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t08-case-report.ts.md": "cda4ea761e7c57b0e7bc0ad8326545a4059353a60889f1af1f00ac33744b93ca",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t08-pdf.test.ts.md": "b4d50fbdcd474955bf3c1e4c78444930637ad2566b6f9a521e06da3c9e53e97b",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t08-pdf.ts.md": "20ba78676efb71602447c5976dfb68df66424eea4c0f8d5577f53b322be88556",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t08-suggestion.test.ts.md": "031a55631657fde7d321a037a05d3e6ebe66f01d3a0ad1df944cc8e53e0c52b7",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t08-suggestion.ts.md": "d2b747a34cb7d0f46ec340aaa0f24fd29e837e146d8865ec5cf07db60df44b2a",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t09-offline-form.test.ts.md": "5d396c27bf68a7da4670c8a719c2277f97cb2acd3591450bc5a8a7b60ada5cb0",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-v3-t09-offline-form.ts.md": "25f62615365a886a8bfeec4815c2509aca705ebef452f20ab6edefbd463599ba",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-workspace-recheck-independent.test.ts.md": "81d450491dba28f8886de20f33dc53356cc26f90ba654781b72c13de53be6ad2",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/content-review/review-workspace-view-model.test.ts.md": "0619304c99f999eae919d08d833da172903ebb369f457210df0cc406b1c2d732"
+  },
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network"
+  ],
+  "notes": [
+    "G2：18 文件 2113 行全文逐行读（t08-case-report 388 两段/t06-physical-intake 239/t09-offline-form 133 均完整）+ 18 篇手册全文比对；8 测试文件 43 用例（3/8/3/5/2/2/1/4/15）断言行号全对。",
+    "红线逐条对源命中：t05-stage-actions 能力投影非授权令牌+禁旧式降级提交；t06-physical-intake entryId 不透明令牌非本地路径/重复路径与 ../ 穿越提交前拒/剥壳显式/根文件不静默归属/仅完整导入案卷进批次；t06-batch-intake 文件名不作身份+CSV 公式注入防护（=+@- 前缀转义）；t08-case-report 学生版 8 项内部信息零泄露（测试锁定）+历史报告不混当前字段+JDG-12 无快照如实声明+ASSET-10 恢复前决定标注+RUN-31 未授权提示+t08AssistantContext 注入边界（材料仅事实引用非指令）；t08-suggestion AI 建议是散文非命令+非 text 类型拒存防类型降级；t09-offline-form script 注入防护（\\u003c 转义）+哈希仅完整性非认证+附件 16/40MB；t08-pdf 真实 A4 多页+xref 校验。",
+    "3 条 findings 全为导出计数口径（14→20/6→7/10→11，每文件恰 1 条）；无行为/红线/测试存在性错误。",
+    "manualSha256 脚本生成=READY 三方核验。"
+  ]
+}

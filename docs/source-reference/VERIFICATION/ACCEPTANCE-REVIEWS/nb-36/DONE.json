@@ -1,0 +1,65 @@
+{
+ "schema": "dsh-r07-review-done/2",
+ "batch": "nb-36",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-ui-20261023",
+ "reviewerSession": "docs-r07-qa-ui-20261023",
+ "reviewedAtUtc": "2026-10-23T17:45:00Z",
+ "state": "QA_COMPLETE",
+ "batchVerdict": "accepted",
+ "counts": {
+  "filesReviewed": 11,
+  "accepted": 11,
+  "revisionRequired": 0,
+  "openNonBlocking": 2
+ },
+ "reviewedSeal": {
+  "root": "deliveries/nb-36",
+  "readySha256": "b037e19edad93f9d99753700d201cebc86da6ad7d862ecbd4616acaa80dec0ec",
+  "doneSha256": "a383955d919cca0fc0cffe29aa39a4f4dbf091661e4f2f8d109040e193d7cdb8",
+  "manifestSha256": "27ad308a14684b8ffc9fd36414e31c9a2af132292d079e6e622a2d519987e350",
+  "zipSha256": "bb343d789f3df81d0e06c47cd59b0f7cefad1e399a1100b992f5a49c2007e1e8",
+  "zipBytes": 33037,
+  "zipEntries": 14,
+  "note": "seal v2；新批无 before；源 11/11 blob+sha+行数与冻结树一致"
+ },
+ "findings": {
+  "lowOpen": [
+   "N36-1",
+   "N36-2"
+  ]
+ },
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/sse-reader.test.ts.md": "8cb87f49fe76826f52e3fe6f3793882d6cdb47f995943a1deab9a6ee15e31371",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/sse-reader.ts.md": "7efc5c88f22b9a9b5fc90c887b097feabf078ed1936da21860e0c831fe5aea2d",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/thinking-capability.ts.md": "fe2c0793f684dd855ef696fed0f8d77ffe25c8cdd225a582b79654763902ca3e",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/url-utils.test.ts.md": "13bd47b229076879ab9fe612c4f60f4190cf1bffa09f8d6c0e7daaa8af042eb4",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/url-utils.ts.md": "ba749ed00a84833f8a39fdb195e82d804769e089e7489f69c2d70ab7b16ba4c3",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/usage-parsing.test.ts.md": "a129629c5f286fe61ff501aab6b6cf151be81625fbc0fb0915553e6215c4cebb",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/core/src/providers/user-agent.ts.md": "1d53c18ee75c191f66127a269b484703701d5ff0b256184da35178602c1a8593",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/runtime.ts.md": "fc9f588ed9c56237099deeb983362b6fcbe2bf69bdcc231172858ec6574362b4",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/study.ts.md": "d64bda4865cc8fbf8aed26514aeab88bc47b222e1c132e0ee061e487f60be8ca",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/types/wechat.ts.md": "269470b3caf3b0a20ff32be7bb3db12b7c5e885c1c9a786ae37a5e2a0bf4aace",
+  "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/url-nul-safety.ts.md": "99c9015f3f493db33731a781ef1ead8f0c98cdafc4638e22c738b92867232c4d"
+ },
+ "outputs": {
+  "RESULT.json": "9b71433b254ec7d66590352ccdb9137c4e00aa0e3fab6250cdc7ea604864b809",
+  "RESULT.md": "2b6a5dbb5ee771659577a58948d59b2da4b3fd8be22a558af420be39b6b0a7b6",
+  "REVIEWED-HASHES.json": "e0aee1ea8f706a3e58f80db51d9b050a5096365c67cc075e258cb90667e2199b"
+ },
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network"
+ ],
+ "boundaries": [
+  "未改源码/测试/依赖/作者正文/candidate/全局 FILES/COVERAGE/MANIFEST/INDEX",
+  "已 seal 不回写；NOT_RUN 不等于测试通过",
+  "accepted 仅限静态文档 scope；运行期行为未知"
+ ],
+ "notes": [
+  "N36-1 study 45→44；N36-2 url-utils.test 11/约52→12/65；覆盖均完整，非阻断，G4 前关闭"
+ ]
+}

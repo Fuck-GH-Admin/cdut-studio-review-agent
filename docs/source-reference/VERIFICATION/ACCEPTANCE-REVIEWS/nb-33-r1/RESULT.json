@@ -1,0 +1,245 @@
+{
+  "schema": "dsh-r07-review-result/1",
+  "batch": "nb-33-r1",
+  "revisionOf": "nb-33",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T21:52:50Z",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 18,
+    "accepted": 18,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "gates": {
+    "G0": "pass",
+    "G1": "pass",
+    "G2": "pass"
+  },
+  "g0Evidence": {
+    "chain": "自洽（sealId seal-118b103844587e55，revisionOf nb-33）；18 manualHashes=磁盘 0 mismatch",
+    "revisionChain": "before/ 18/18==nb-33 stage；changes.diff 3 hunks/1 文件重放==stage；FINDINGS-RESPONSE 在",
+    "zip": "21 条目 0 穿越/字节 mismatch"
+  },
+  "g2Evidence": {
+    "fixVerification": "F01 三处 40→**38 模块再导出**（§1/§2/§4，基线 named-from 语句=38 精确；'约 59 条 export 语句'保留与实测一致；1 自身定义 noop 保留）",
+    "noNewErrors": "修订区无新错误",
+    "evidenceBinding": "17 篇未变==旧 acceptedHashes 同源绑定（17/17）"
+  },
+  "files": [
+    {
+      "path": "packages/shared/src/utils/cslab-symmetry.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-symmetry.ts.md",
+      "sourceBlob": "cc9eade49dc036e64693f37511cdb148cc1ddf95",
+      "sourceSha256": "942c480b313066ba40506c4418acd40e261b55e9095f6768b9b35c9ba157a6f8",
+      "manualSha256": "7ebbda0244f66720ae1fe02c52a087e5965e11ecea54949eeb488806ae110595",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-track-changes.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-track-changes.ts.md",
+      "sourceBlob": "6cb53a1c38d22ba8357fc1e06de9fa7579022d9e",
+      "sourceSha256": "5cdddf8da186b04db020d16a6cbf5800b4b70171c23341e1a86f5b2bbe4e5d55",
+      "manualSha256": "09ce2d40fe183c940faba0b6c36527e840bcf000b0443df7644936d3eb7d28ed",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-volume.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-volume.test.ts.md",
+      "sourceBlob": "3542f2da30e0c5842c43bbd3200e50941cd39990",
+      "sourceSha256": "ee50dd4f3b97348de15fad10b51a01fa0d2c8cbc0e3cdca95f5a88912894ed4b",
+      "manualSha256": "d2a5776a7ed11ef2be26335ada0615c661f8118541344350cd673fc7c9d31e8d",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-volume.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-volume.ts.md",
+      "sourceBlob": "b536127367939661cff812e0bc73d534889da32d",
+      "sourceSha256": "43e83bb70e9f8bbfdb75ad900551d429dd9630ab637a61865434f3af6da7d44c",
+      "manualSha256": "7b78bba7d42244b60075a5126360859cdf8d40ebe168d83ce697c7c1cdd48331",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-xyz.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-xyz.ts.md",
+      "sourceBlob": "f1833f4bfa41bc3b8174ccadd75136e7e60b5a22",
+      "sourceSha256": "1939200803fbffd5343d51f6b0f33c143e75bb192c6ade183d3bb91f6a8ee0af",
+      "manualSha256": "a264f645182ca4a526c4d873386cf357fcd2132378a8ae2b64f9ec34466d6f8f",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/cslab-zotero.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-zotero.ts.md",
+      "sourceBlob": "5a4b2298bed83d248f95bd5d91ac2b22276c4177",
+      "sourceSha256": "9770eb759f5933227cae639d38cc5eb68c3b3ab79abdf05402e4defad0655da3",
+      "manualSha256": "781b63cf931ce29e72ee4202abf446de719b559a72ad00b47de26a68a44643ad",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/fim-engine.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/fim-engine.ts.md",
+      "sourceBlob": "dd6682c8a5841216a92554e0e9978d090ccd7733",
+      "sourceSha256": "6d573dc048d2adb4270abd90cc88e2d7bb62b906a6146dcfc407335d61da282e",
+      "manualSha256": "d9a4ff1badc98e8da42c15aaf70a553851b251a99431d0d3776c10c50345b48c",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/goal-contract.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/goal-contract.test.ts.md",
+      "sourceBlob": "ecc1bd7a75117c00215a4b759eba73a2db4739fb",
+      "sourceSha256": "6d2a088bde1a5456ef912feb82a7043ffaaec6b2b9b5b7b69dc7074d4d9a6507",
+      "manualSha256": "476c076c331d9590b11add8138b857f5e1572513f2d908f0b7be18187db802ff",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/goal-contract.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/goal-contract.ts.md",
+      "sourceBlob": "860fe14f382bd40eb1aa388734db4c717d3e4033",
+      "sourceSha256": "711788ad0a6620d2e4fde5c6912497b844777e2ea91fdb4ca83d1150f1297ac2",
+      "manualSha256": "7951a7efac02d72c294729189fa61a78397842258ed3eedad18f7484f64d37e5",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/index.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/index.ts.md",
+      "sourceBlob": "6c326b8bb8829daf129b83d5033cff725a1dfdbe",
+      "sourceSha256": "83bda4ec19c8762f9697eecbcaa0ad93034f4b6f01b7e29c1af66c464bab2be6",
+      "manualSha256": "73ce069f71147cee0233820133871cda4503dde5d8c44888bedad758d7e7bc34",
+      "verdict": "accepted",
+      "findings": [
+        "F01"
+      ],
+      "evidenceBinding": "r1-hunk-verified"
+    },
+    {
+      "path": "packages/shared/src/utils/mindmap-engine.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/mindmap-engine.test.ts.md",
+      "sourceBlob": "15291e99532c6f0fe847712c0b9bc5e8d33e3c2c",
+      "sourceSha256": "30514e2b5955f1caa2e9e6ee4b67733f327e3c15f2ec9caf9baa85789246e193",
+      "manualSha256": "424d7872268973722a9ea03f24450138c9168771a9c6c3cf5d6813a10958c772",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/mindmap-engine.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/mindmap-engine.ts.md",
+      "sourceBlob": "5e83ff821497c89ad280bf0a634f76c37980c048",
+      "sourceSha256": "673d619625f2a1c0f89f03c219727f76c2165d2e5ef7982e4c646a9d31362cee",
+      "manualSha256": "89789ee4deeecbb135f88e16d60f1e8fd0f397b7c3929b3281003186dee9e050",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/normalize-path.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/normalize-path.ts.md",
+      "sourceBlob": "4326212c23b8d286841847f649e3d66dfba33bbb",
+      "sourceSha256": "9c916fa12a608598d410688e2bfba340110a97eab6d8b50668684560879638cd",
+      "manualSha256": "984035c3d638cec30b74b8ca9a7188f6e3022dc2cb0ace8a531597a8463678fb",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/pi-compaction.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/pi-compaction.ts.md",
+      "sourceBlob": "cb675fb05ffbf55847400ea6e5e4c415d1c766cd",
+      "sourceSha256": "9be893c6af42a0fd98bfcf1c349fc035578ea0bad82df887e189c3f009f52941",
+      "manualSha256": "31bd5640ddcc236eca224c89c22d86dffa95080959622367c776be6d97e08c31",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/tab-mru.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/tab-mru.test.ts.md",
+      "sourceBlob": "d65bbf8c5bc6824131a2c578becb007988aaccbe",
+      "sourceSha256": "d0c8e6280da5ed81757205b5b1c1a1099e9f17a2d91012eee0b8e33ee7b42d1e",
+      "manualSha256": "420c0d82b215d376890bcf3a4069f0979091f8b84a92a84e142af88012563535",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/tab-mru.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/tab-mru.ts.md",
+      "sourceBlob": "187f6270f08e2909fc5e1c8581123a7cf691e4be",
+      "sourceSha256": "57b11ed0eb3bbbb5d707053a767c0cd3832570b89839a62d610908615f6d6046",
+      "manualSha256": "81700c2b6c0eb5daa8c930ca80d889a0fbc8f0315e69059618935f39e25a87c2",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/thinking-signature-error.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/thinking-signature-error.ts.md",
+      "sourceBlob": "1a2d345bbefd4074349f7cb17a424a09988b912b",
+      "sourceSha256": "e9860c5236d55379e106781cf16bc35d4b37c7fe6a35af6c6e41dd2efa6732ff",
+      "manualSha256": "36e1f198617d4813f4f23d76ecb5285aa0ce3e425e4673d8707129ac89a34e52",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    },
+    {
+      "path": "packages/shared/src/utils/url-nul-safety.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/url-nul-safety.test.ts.md",
+      "sourceBlob": "2eada7e6034b4804e517ee881d8475928f96a07e",
+      "sourceSha256": "e6013ec8f0116ccc58b78b96a5d9242da181eddefe98d44033aa52dc76250f8c",
+      "manualSha256": "2bf4f528c74292486807a2ad979f3e2aca662224987b5a8ef4f6c50887cd2528",
+      "verdict": "accepted",
+      "findings": [],
+      "evidenceBinding": "unchanged-hash-bind-old-accepted"
+    }
+  ],
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-symmetry.ts.md": "7ebbda0244f66720ae1fe02c52a087e5965e11ecea54949eeb488806ae110595",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-track-changes.ts.md": "09ce2d40fe183c940faba0b6c36527e840bcf000b0443df7644936d3eb7d28ed",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-volume.test.ts.md": "d2a5776a7ed11ef2be26335ada0615c661f8118541344350cd673fc7c9d31e8d",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-volume.ts.md": "7b78bba7d42244b60075a5126360859cdf8d40ebe168d83ce697c7c1cdd48331",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-xyz.ts.md": "a264f645182ca4a526c4d873386cf357fcd2132378a8ae2b64f9ec34466d6f8f",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/cslab-zotero.ts.md": "781b63cf931ce29e72ee4202abf446de719b559a72ad00b47de26a68a44643ad",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/fim-engine.ts.md": "d9a4ff1badc98e8da42c15aaf70a553851b251a99431d0d3776c10c50345b48c",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/goal-contract.test.ts.md": "476c076c331d9590b11add8138b857f5e1572513f2d908f0b7be18187db802ff",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/goal-contract.ts.md": "7951a7efac02d72c294729189fa61a78397842258ed3eedad18f7484f64d37e5",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/index.ts.md": "73ce069f71147cee0233820133871cda4503dde5d8c44888bedad758d7e7bc34",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/mindmap-engine.test.ts.md": "424d7872268973722a9ea03f24450138c9168771a9c6c3cf5d6813a10958c772",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/mindmap-engine.ts.md": "89789ee4deeecbb135f88e16d60f1e8fd0f397b7c3929b3281003186dee9e050",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/normalize-path.ts.md": "984035c3d638cec30b74b8ca9a7188f6e3022dc2cb0ace8a531597a8463678fb",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/pi-compaction.ts.md": "31bd5640ddcc236eca224c89c22d86dffa95080959622367c776be6d97e08c31",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/tab-mru.test.ts.md": "420c0d82b215d376890bcf3a4069f0979091f8b84a92a84e142af88012563535",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/tab-mru.ts.md": "81700c2b6c0eb5daa8c930ca80d889a0fbc8f0315e69059618935f39e25a87c2",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/thinking-signature-error.ts.md": "36e1f198617d4813f4f23d76ecb5285aa0ce3e425e4673d8707129ac89a34e52",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/url-nul-safety.test.ts.md": "2bf4f528c74292486807a2ad979f3e2aca662224987b5a8ef4f6c50887cd2528"
+  },
+  "findings": [],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "real model/network",
+    "bun 测试运行"
+  ],
+  "notes": "旧 reviews/nb-33/ 保留未动；nb-33 链 r0→r1 闭合。新增接手六批全部收口。"
+}

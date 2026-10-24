@@ -1,0 +1,61 @@
+{
+ "schema": "dsh-r07-review-done/1",
+ "batch": "nb-108-r1",
+ "revisionOf": "nb-108",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-extra-04-20261024",
+ "reviewerSession": "docs-r07-qa-extra-04-20261024",
+ "reviewedAtUtc": "2026-10-23T20:32:00Z",
+ "status": "REVIEW_COMPLETE",
+ "batchVerdict": "accepted",
+ "gates": {
+  "g0": "PASS",
+  "g1": "PASS",
+  "g2": "PASS"
+ },
+ "deliverySeal": {
+  "sealId": "seal-636f8eab2f1c2236",
+  "sealedAtUtc": "2026-10-23T20:17:46Z",
+  "readySha256": "6ecf568537f44c0e5e0a077ed5f8c12261f0f37e6dd7d6400ca4136f1130ede1",
+  "doneSha256": "ee7d34c90c6602e51dce7760476787208a299c4522f623e4ab42227f39d1d88d",
+  "manifestSha256": "6eba942722adcfe60c2941fdce524ec45bca6e41a68fc7984bb5bdbc74c77c56",
+  "zipSha256": "ff25621da8b2144a7b136d293d8d45fe6af89d75c47f3a8b822cbb82902e8f7d"
+ },
+ "fileVerdicts": {
+  "apps/electron/src/renderer/components/ai-elements/sticky-user-message.tsx": "accepted",
+  "apps/electron/src/renderer/components/diff/DefaultAppOpenButton.tsx": "accepted",
+  "apps/electron/src/renderer/components/diff/DetachedPreviewApp.tsx": "accepted",
+  "apps/electron/src/renderer/components/diff/DiffChangesList.tsx": "accepted",
+  "apps/electron/src/renderer/components/diff/DiffPanelTabBar.tsx": "accepted",
+  "apps/electron/src/renderer/components/diff/DiffTabContent.tsx": "accepted",
+  "apps/electron/src/renderer/components/diff/DiffView.tsx": "accepted",
+  "apps/electron/src/renderer/components/diff/InteractivePreviewViewport.tsx": "accepted",
+  "apps/electron/src/renderer/components/diff/MarkdownEditorToolbar.tsx": "accepted",
+  "apps/electron/src/renderer/components/diff/MarkdownRichEditor.tsx": "accepted",
+  "apps/electron/src/renderer/components/diff/MarkdownToc.tsx": "accepted",
+  "apps/electron/src/renderer/components/diff/PreviewDirectoryView.test.ts": "accepted",
+  "apps/electron/src/renderer/components/diff/PreviewDirectoryView.tsx": "accepted",
+  "apps/electron/src/renderer/components/diff/PreviewFindBar.tsx": "accepted",
+  "apps/electron/src/renderer/components/diff/QuotedSelectionChip.tsx": "accepted",
+  "apps/electron/src/renderer/components/diff/SidebarFilePreview.tsx": "accepted",
+  "apps/electron/src/renderer/components/diff/TableBubbleMenu.tsx": "accepted",
+  "apps/electron/src/renderer/components/diff/WorktreeSelector.tsx": "accepted"
+ },
+ "resolvedFindings": [
+  "QA-108-F02 resolved (14->13, single line, source count 13 verified)",
+  "QA-108-F03 resolved (9->8, single line, source count 8 verified)",
+  "QA-108-F01 closed via corrected SCOPE.json in r1 seal; lead MERGE note"
+ ],
+ "acceptedCount": 18,
+ "revisionCount": 0,
+ "resultSha256": "b96266f16a9954610ceae7e091bb931912633ba6c47cee7968f684de37a7e75a",
+ "reviewedHashesSha256": "f04c5d19c02af76399a7aefdcbb87c8b6e68468b152f1ebdb827a81f6b569806",
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "Electron/GUI",
+  "real model/network/IPC"
+ ],
+ "note": "nb-108 链闭环（r0 16/2 -> r1 18/18 accepted）；合入以 r1 acceptedHashes 为准；本 DONE 为复核封版，之后改动须开 reviews/nb-108-r2/。"
+}

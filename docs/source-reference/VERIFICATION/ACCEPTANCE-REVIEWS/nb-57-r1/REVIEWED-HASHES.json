@@ -1,0 +1,99 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "nb-57-r1",
+ "revisionOf": "nb-57",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-qa-models-20261023",
+ "reviewedAtUtc": "2026-10-23T17:29:39.155036+00:00",
+ "deliverySeal": {
+  "sealId": "seal-de69c7827fe1a79a",
+  "sealedAtUtc": "2026-10-23T17:24:15Z",
+  "readySha256": "715413a76c416fd8e7641c86aa378d27da026612d85c3c6a69751f4b55f33449",
+  "doneSha256": "af1d8f242958be760336eda6dcfed60e169c35654f81c62fb0c2e566ef22fe6e",
+  "manifestSha256": "c71f90e872bb38ef88b59ab1d0539a1faf46561f91136378f9a8f9927f575a98",
+  "zipSha256": "27182c5b86f911348cc89ed07ac8af98c744cdc50833ab65125ce3df5040e6d9"
+ },
+ "files": [
+  {
+   "path": "apps/electron/src/main/lib/pi-harness/session-telemetry.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/session-telemetry.ts.md",
+   "sourceBlob": "aac11aec0248754270e8184baa85e9196483b968",
+   "sourceSha256": "feaf43771d52c2626dd09f3ffbf59b903ef9465b7d34df8dd57480e124f62d66",
+   "manualSha256": "5e2687027c54494e05465ce2483fd963aec791806c0b064f9370c52ae39377d8",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-harness/snapshot-view.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/snapshot-view.test.ts.md",
+   "sourceBlob": "2c27a7bb035d3d35b00bd10af063b7aaddfd1dbb",
+   "sourceSha256": "e3c9690509fc70667bc172c2132e05f293b8fca2afc0093744892edc0e7759cb",
+   "manualSha256": "51f40b43d995f94af592eb5dec9c7553486efa41f9ff7c0833ddf3702b64d9df",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-harness/snapshot-view.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/snapshot-view.ts.md",
+   "sourceBlob": "7112cdc7f05d10e50d33e95fb793376e3b60a27f",
+   "sourceSha256": "5f159eb406f0208d1c5fac964afcf4da9cb63645cf664f3745e7ff6739a1d6cb",
+   "manualSha256": "a4ed3c3e897578f07153379d0e015ba301dd1df5a071648ea69d657886e87156",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-harness/telemetry.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/telemetry.test.ts.md",
+   "sourceBlob": "6017354b7a91f4050b3c1a49d78d5f82039ad761",
+   "sourceSha256": "abab5e56d0dd6f22797c9f674a9e6f8d3baebdf742aae8ca74568daa4d3e6e7b",
+   "manualSha256": "89f0805de9f4b9f9f42e72680b5249033d82e20e8d2bf652a53d579ee42ff2e5",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-harness/telemetry.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/telemetry.ts.md",
+   "sourceBlob": "5b7464e771ca9fbe36502586e4f42a3028926697",
+   "sourceSha256": "7baa1efbfae22676795290e38e249cb5a68e7d05529fc9a6644b905901388245",
+   "manualSha256": "5b435d179a600d263c92cb06606d103bee0e7518cb7cc6a04e7c31766e964efc",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-harness/tool-facts.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/tool-facts.test.ts.md",
+   "sourceBlob": "50a052c292319be3effa0a2762967b314aae2329",
+   "sourceSha256": "d06c201fbb038bf2c2638a5ee612c2082a067e587d7bfd8c53daaeedb7d43df0",
+   "manualSha256": "cc503dad6cd47aa6d817821268615cfb5b783dd35ea75fc42b10b2da906c51d8",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-harness/tool-facts.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/tool-facts.ts.md",
+   "sourceBlob": "a50cc75df3de2abd9b9a83af4ef5006bfc9f6d9b",
+   "sourceSha256": "e19dcf5677fda86f89751ea960a6ab5c04090a8f9dc948276344fa0c4a39ace3",
+   "manualSha256": "0f5ebd18a8d967af9f1aa57b14755ff6c7ea9db634e2f4a439592b90dad103e7",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-harness/types.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/types.ts.md",
+   "sourceBlob": "271492e93ed7c39d3f7c53d46a0d60fe52087912",
+   "sourceSha256": "0b02cc2111cd2d08546f28d5196663d01fa436ba494205bddfa364c1495329ad",
+   "manualSha256": "ac7fd4f1c44eedbed9f2f41fb4b0cbc0361135eecf5ff434dc561fc6e3165b06",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-harness/verification-evaluator.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/verification-evaluator.test.ts.md",
+   "sourceBlob": "68d2a6b3545c2c17b516b0281a7a5af2e6253bf1",
+   "sourceSha256": "463c578cc5697edef6af4a615581ef33234ca1d9e0c20d085c3bcfbe216c5a9f",
+   "manualSha256": "36561850846fb5d5794221bc9bc5e84894471565c43d40d50bdd746fa6d1d386",
+   "verdict": "accepted"
+  },
+  {
+   "path": "apps/electron/src/main/lib/pi-harness/verification-evaluator.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/pi-harness/verification-evaluator.ts.md",
+   "sourceBlob": "79d772d62625e259484c6567889ffcb88ef08d16",
+   "sourceSha256": "f645d800200fba5ac438aabf5dd8cd0bde7e00fbdd807d139148f45c1b29dcde",
+   "manualSha256": "51b23c279f62e3dba11a300fe406e2ff73c3386b5f3ed19177958f00aeea834d",
+   "verdict": "accepted"
+  }
+ ],
+ "note": "10 篇 r1 新 hash 全量合入"
+}

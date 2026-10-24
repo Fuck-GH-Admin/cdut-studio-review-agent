@@ -1,0 +1,37 @@
+{
+ "schema": "dsh-r07-index-review-done/1",
+ "batch": "index-p02-agent-runtime__apps__electron__default-skills__session-cleaner",
+ "groupId": "p02-agent-runtime__apps__electron__default-skills__session-cleaner",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-02-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T19:15:00Z",
+ "sealedAtUtc": "2026-10-23T19:03:37+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 1,
+  "accepted": 1,
+  "revision_required": 0,
+  "unknown": 0,
+  "findingsBlocking": 0,
+  "findingsNonBlocking": 3
+ },
+ "artifactSha256": "7cdb81fe35eb1fcedf3021d7e86b06eaaed6da281a8149631b8a843a0fcd668c",
+ "artifacts": [
+  "reviews/index-p02-agent-runtime__apps__electron__default-skills__session-cleaner/RESULT.json",
+  "reviews/index-p02-agent-runtime__apps__electron__default-skills__session-cleaner/REVIEWED-HASHES.json",
+  "reviews/index-p02-agent-runtime__apps__electron__default-skills__session-cleaner/SOURCE-CHECKLIST.md",
+  "reviews/index-p02-agent-runtime__apps__electron__default-skills__session-cleaner/DONE.json"
+ ],
+ "notRun": [
+  "产品测试",
+  "typecheck",
+  "构建",
+  "Electron/GUI",
+  "实际 validate.py/comment.py/chartlib/profer CLI 运行（本轮统一 NOT_RUN）"
+ ],
+ "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局账；未 commit/push；结论只覆盖本批。",
+ "findingsSummary": "1/1 accepted。SKILL.md:104 引用链/export.ts/session-core 引证全部精确命中、文档分节描述逐节属实。3 条非阻断 findings（N-01 共通链引证、N-02 封版元数据倒挂、N-03 50MB 出处措辞）。",
+ "next": "lead 按 REVIEWED-HASHES.json 合入（artifactSha256=7cdb81fe35eb1fcedf3021d7e86b06eaaed6da281a8149631b8a843a0fcd668c）；N-01..N-03 随合并 errata；QA 续审后续交付。"
+}

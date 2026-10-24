@@ -1,0 +1,291 @@
+{
+  "schema": "r07-review-result/1",
+  "batch": "nb-41-r1",
+  "revisionOf": "nb-41",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-07-20261023",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "reviewedAtUtc": "2026-10-23T19:05:00Z",
+  "sealId": "seal-ddafb7f16ba43850",
+  "batchVerdict": "revision_required",
+  "counts": {
+    "files": 18,
+    "accepted": 17,
+    "revision_required": 1,
+    "unknown": 0
+  },
+  "g0": {
+    "result": "PASS",
+    "hashChain": "DONE/READY/ZIP 实算一致",
+    "zip": "21 条目无穿越/无 READY-DONE/逐条目==盘上",
+    "sourceBinding": "18/18==SCOPE==MANIFEST",
+    "manualBinding": "18/18 无 drift",
+    "changesDiff": "before/→after/ delta 重放一致（before/=父批字节实算、13 触达==13 变更集、重放 18 文件逐字节==stage）",
+    "humanColumns": "18/18",
+    "metadata": "18/18"
+  },
+  "g1": {
+    "result": "PASS"
+  },
+  "g2": {
+    "result": "PARTIAL",
+    "method": "13 篇变更逐篇复核（8 findings 逐条回源+5 计数校准 grep 实测）；5 篇未变更 byte-identical==父批；FINDINGS-RESPONSE 教训段（工具截断臆想/静默零命中）如实记录",
+    "findingsClosed": "F-NB41-01..11 全部落实（服务器路由/前端数据流/消费者清单/符号名/导出面/计数，校正注保留「QA F-NB41-xx 校正」溯源）",
+    "residual": "F-NB41R1-01（dataset.ts.md:66 残留「4 导出」）",
+    "findingsTotal": 1,
+    "notesTotal": 1
+  },
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/task.ts.md": "e108a5da614fe50165b0a1be882b80664dbd0b46ba5c850fe1ceb9b54b2d9577",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/tsconfig.json.md": "38b1d9c1c8de7738c90314643c9e97a7ee4d642c61d61bbf1c40c80182fab112",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/package.json.md": "d0d64d81cadb05780ff6fd365c8d438972232d932de6eea060694d14cf8bbb43",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/public/index.html.md": "a88372f67be8041a7ae5ea38671ef43c8c749553f1da69b08394176603e4fc85",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/dataset-loader.ts.md": "e87426f62a28b52647edfe736f1a96c97a24a35e8e368f8ad79a69a207197b7b",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/dataset.test.ts.md": "80df00653affb9c278daffdae888f3a16342045371a76954320545af02787957",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/evaluator.ts.md": "c62fd58666b0b63c1324ca045231cc8da7aff440b7bd8d939ea72e437469ec07",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/metrics.test.ts.md": "c9271bbfa942aa8ef5cbd17ea7d89090a26eeccb0eeaf1ce533c44cc98b6c1e5",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/metrics.ts.md": "9b952e90a5b8e5451b4bf398ed34d3d0979e08ef1f20d77bd274e94bc15dac20",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/report.ts.md": "bdb18d4d85c384617ba31ebdcb8f618957161834a8e2298c846474266d960518",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/runner.ts.md": "efd5fd39455c681acb46fdfecdbdad3c6c13b7b1e0b9e3e1da87b74e860eea94",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/server.ts.md": "03673aa55cbcbe73d8f92b360f42fa1adbe62067a184075de1ee714385f6f2f9",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/types.ts.md": "339bfe1740581b982abd7233b39b93eeb00bd4c004c9ed1443278813f70eb41b",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/tsconfig.json.md": "4aee1bbb7664fc728ceb37949257c3375dde0a706d609e96c1fe3165f11dfa9d",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/package.json.md": "8e864652d88437389ecdac3e6286c8b4d992c3e97cdf647abaedb88432a92a62",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/graph-parser.ts.md": "56b2463f917d126818853f8a216fbdab7085cebc71a41aea2ff747fb075e2730",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/graph-query.ts.md": "cbdcd47e23ca395b2af7c9c802190d1413734ec9fc2911fbcb4dc761a0a91b1a"
+  },
+  "files": [
+    {
+      "path": "packages/agent-fabric/src/task.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/src/task.ts.md",
+      "sourceBlob": "3269181747073d91ecac8785f2630558b66ef681",
+      "sourceSha256": "effad25de250417b467876c34e02932d6b6c3425a2e4dca3dc0fdc661118f4e2",
+      "sourceLines": 248,
+      "manualSha256": "e108a5da614fe50165b0a1be882b80664dbd0b46ba5c850fe1ceb9b54b2d9577",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [],
+      "changedFromR0": true
+    },
+    {
+      "path": "packages/agent-fabric/tsconfig.json",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/agent-fabric/tsconfig.json.md",
+      "sourceBlob": "73a65ef2ef6e5658643310ffc67e5391df2cbbc1",
+      "sourceSha256": "1de5fbec4888f903fd7d0695642e6c2cb46ae9f5e944df0d93a4fd1aaa2325d6",
+      "sourceLines": 5,
+      "manualSha256": "38b1d9c1c8de7738c90314643c9e97a7ee4d642c61d61bbf1c40c80182fab112",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [],
+      "changedFromR0": false
+    },
+    {
+      "path": "packages/benchmark-multihop/package.json",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/package.json.md",
+      "sourceBlob": "8e637f118bb3f4e4e4c2d718b537b9513f6b1937",
+      "sourceSha256": "19dc9b37435c2101354a89993f2592b123e18336c750579de121ed3a2ca3db67",
+      "sourceLines": 16,
+      "manualSha256": "d0d64d81cadb05780ff6fd365c8d438972232d932de6eea060694d14cf8bbb43",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [],
+      "changedFromR0": false
+    },
+    {
+      "path": "packages/benchmark-multihop/public/index.html",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/public/index.html.md",
+      "sourceBlob": "9dffbc09d3a95b21cbfb5e9fce4e90f4f6585cea",
+      "sourceSha256": "22a3f96fbafbb5c59a2265384e8b57d30eee04bed5b4240017b33b50f2b80150",
+      "sourceLines": 440,
+      "manualSha256": "a88372f67be8041a7ae5ea38671ef43c8c749553f1da69b08394176603e4fc85",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [],
+      "changedFromR0": true
+    },
+    {
+      "path": "packages/benchmark-multihop/src/dataset-loader.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/dataset-loader.ts.md",
+      "sourceBlob": "93e6469bf9ebc8ebff135768d331887d086885a1",
+      "sourceSha256": "5ee629afc8564fefa39b6df78a14b2d3507b97a099b13f255e0a24aae40a3dba",
+      "sourceLines": 139,
+      "manualSha256": "e87426f62a28b52647edfe736f1a96c97a24a35e8e368f8ad79a69a207197b7b",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [],
+      "changedFromR0": true
+    },
+    {
+      "path": "packages/benchmark-multihop/src/dataset.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/dataset.test.ts.md",
+      "sourceBlob": "9dd2a0b9eaa8e56fc47c4d444c58e75d910446fa",
+      "sourceSha256": "b1bee4fdfd1f0f2ba5c72fcc6ff1151b0c786f2ec6a9d036122663929b86ac90",
+      "sourceLines": 45,
+      "manualSha256": "80df00653affb9c278daffdae888f3a16342045371a76954320545af02787957",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [],
+      "changedFromR0": false
+    },
+    {
+      "path": "packages/benchmark-multihop/src/dataset.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/dataset.ts.md",
+      "sourceBlob": "160b66a6f09f35ae47f94600ee283fe04d4bd6cc",
+      "sourceSha256": "2a2303510250bdb28957f9032b4cac5e9f2ea2e5d28d27b6d3d54afabd954a3b",
+      "sourceLines": 426,
+      "manualSha256": "e0b83411acfb254ba68c41640815c1853f03fc4a3d16b27f04d3dcbcca72b807",
+      "verdict": "revision_required",
+      "findings": [
+        {
+          "id": "F-NB41R1-01",
+          "severity": "minor",
+          "claim": "F-NB41-05 残留未闭合：§10 已证实表 :66 行仍称「4 导出、18/50 组成、自校验规则」，与本文 §2 已改正的「共 3 个导出」自相矛盾（实测 3 导出：EMBEDDED_CORPUS:16/EMBEDDED_SAMPLE:391/validateEmbeddedSample:403；RAW_QUERIES:191 未导出）。正文其余改正（§2/:29 校正注、导出表）均已落实。",
+          "sourceEvidence": "dataset.ts grep export=3；r1 stage dataset.ts.md:29「共 3 个导出」vs :66「4 导出」。",
+          "action": "r2 将 :66 行改为「3 导出、18/50 组成、自校验规则」（单格修订）。"
+        }
+      ],
+      "notes": [
+        {
+          "id": "N-NB41R1-01",
+          "severity": "low",
+          "claim": "FINDINGS-RESPONSE.md 末段「未改动文件」清单笔误：列入「prompt-chain」（非本批文件，属 nb-54）且漏列 evaluator.ts.md；before/stage 比对结论「13 篇已改」与实测一致，仅列举名不准。",
+          "sourceEvidence": "FINDINGS-RESPONSE.md 末段；changed=13/unchanged=5 实测（unchanged：evaluator/dataset.test/2 tsconfig/benchmark package.json）。",
+          "action": "如再出 r2 顺带改正列举名；不影响验收。"
+        }
+      ],
+      "changedFromR0": true
+    },
+    {
+      "path": "packages/benchmark-multihop/src/evaluator.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/evaluator.ts.md",
+      "sourceBlob": "86f62cb5c586c2f9b711ccf9313545877cd2136a",
+      "sourceSha256": "856cdbc01011378affe18cf9968f959c218520cade69d0bb81fcae5108808f96",
+      "sourceLines": 328,
+      "manualSha256": "c62fd58666b0b63c1324ca045231cc8da7aff440b7bd8d939ea72e437469ec07",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [],
+      "changedFromR0": false
+    },
+    {
+      "path": "packages/benchmark-multihop/src/metrics.test.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/metrics.test.ts.md",
+      "sourceBlob": "e7dc2fa4760546c2b3b27982b859d4b56dd1f9f7",
+      "sourceSha256": "3a9598eec16b161463499c45f2f1115bfe5d215ceed338b37b44dcc9490b6ff0",
+      "sourceLines": 201,
+      "manualSha256": "c9271bbfa942aa8ef5cbd17ea7d89090a26eeccb0eeaf1ce533c44cc98b6c1e5",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [],
+      "changedFromR0": true
+    },
+    {
+      "path": "packages/benchmark-multihop/src/metrics.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/metrics.ts.md",
+      "sourceBlob": "a769416abf96931320d4b0c1f5f19bb747cd9b9e",
+      "sourceSha256": "4e7a64575abdbc1ce2427bc6277162c4649022e684ad59aa1f46a172b3e6aed9",
+      "sourceLines": 299,
+      "manualSha256": "9b952e90a5b8e5451b4bf398ed34d3d0979e08ef1f20d77bd274e94bc15dac20",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [],
+      "changedFromR0": true
+    },
+    {
+      "path": "packages/benchmark-multihop/src/report.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/report.ts.md",
+      "sourceBlob": "3bb501bea4a33c5231742ad8aa3f902d06129013",
+      "sourceSha256": "8abc0878fd0be3c5215d486bf39e57d019f25511f1a0616b4b876282eb7522cf",
+      "sourceLines": 269,
+      "manualSha256": "bdb18d4d85c384617ba31ebdcb8f618957161834a8e2298c846474266d960518",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [],
+      "changedFromR0": true
+    },
+    {
+      "path": "packages/benchmark-multihop/src/runner.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/runner.ts.md",
+      "sourceBlob": "f1115957b3ac82a001e715dec5c382b80bfd5712",
+      "sourceSha256": "ae945cc007ad8f5590c0e50e4d4d1e7ea6c54acb37b6884bffcd608e9d66d3a7",
+      "sourceLines": 187,
+      "manualSha256": "efd5fd39455c681acb46fdfecdbdad3c6c13b7b1e0b9e3e1da87b74e860eea94",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [],
+      "changedFromR0": true
+    },
+    {
+      "path": "packages/benchmark-multihop/src/server.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/server.ts.md",
+      "sourceBlob": "7830e578dfb373061c7bdf8f53385cf1a276fa94",
+      "sourceSha256": "a6b2f7a21dfe111e3586fe720b33ad61fc1590bf9f2be1658d252743f8b88c14",
+      "sourceLines": 208,
+      "manualSha256": "03673aa55cbcbe73d8f92b360f42fa1adbe62067a184075de1ee714385f6f2f9",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [],
+      "changedFromR0": true
+    },
+    {
+      "path": "packages/benchmark-multihop/src/types.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/src/types.ts.md",
+      "sourceBlob": "e1404386e2189c10df0f4a8d4e66f0acdf29969a",
+      "sourceSha256": "d4d2c672f4b907da0dd80d029d9b8a54aeb2e7a8c060536f7a407d45d8e85edf",
+      "sourceLines": 156,
+      "manualSha256": "339bfe1740581b982abd7233b39b93eeb00bd4c004c9ed1443278813f70eb41b",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [],
+      "changedFromR0": true
+    },
+    {
+      "path": "packages/benchmark-multihop/tsconfig.json",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/benchmark-multihop/tsconfig.json.md",
+      "sourceBlob": "73a65ef2ef6e5658643310ffc67e5391df2cbbc1",
+      "sourceSha256": "1de5fbec4888f903fd7d0695642e6c2cb46ae9f5e944df0d93a4fd1aaa2325d6",
+      "sourceLines": 5,
+      "manualSha256": "4aee1bbb7664fc728ceb37949257c3375dde0a706d609e96c1fe3165f11dfa9d",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [],
+      "changedFromR0": false
+    },
+    {
+      "path": "packages/project-core/package.json",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/package.json.md",
+      "sourceBlob": "77d954b076e9bcc7d56e61314d6558dff873f0b8",
+      "sourceSha256": "bf64a8d12a0ee955d960923680a3cd5a14ffe27e65145c4cd5a8741a4c27a311",
+      "sourceLines": 22,
+      "manualSha256": "8e864652d88437389ecdac3e6286c8b4d992c3e97cdf647abaedb88432a92a62",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [],
+      "changedFromR0": true
+    },
+    {
+      "path": "packages/project-core/src/graph-parser.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/graph-parser.ts.md",
+      "sourceBlob": "c73e9376931020eaf93818f6f024ff13e6f91305",
+      "sourceSha256": "99b81b9b69f0c48d73442b403d36884a1da48a58db32970beeb55b770e036872",
+      "sourceLines": 120,
+      "manualSha256": "56b2463f917d126818853f8a216fbdab7085cebc71a41aea2ff747fb075e2730",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [],
+      "changedFromR0": true
+    },
+    {
+      "path": "packages/project-core/src/graph-query.ts",
+      "manual": "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/project-core/src/graph-query.ts.md",
+      "sourceBlob": "c951c82b94d9868be6e39daa8801d804ee8a6055",
+      "sourceSha256": "c51aadf6fdec1f6f75b27babfa7a629ed3e6790efbd59ecbb2b14034ea8f7561",
+      "sourceLines": 660,
+      "manualSha256": "cbdcd47e23ca395b2af7c9c802190d1413734ec9fc2911fbcb4dc761a0a91b1a",
+      "verdict": "accepted",
+      "findings": [],
+      "notes": [],
+      "changedFromR0": true
+    }
+  ]
+}

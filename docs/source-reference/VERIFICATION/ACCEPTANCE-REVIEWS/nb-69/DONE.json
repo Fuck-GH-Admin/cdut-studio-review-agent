@@ -1,0 +1,36 @@
+{
+  "schema": "r07-qa-done/1",
+  "batch": "nb-69",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewedAtUtc": "2026-10-23T20:12:57Z",
+  "sealId": "seal-2ae04e8153f86c0e",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 14,
+    "accepted": 14,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "result": "reviews/nb-69/RESULT.json",
+  "resultSha256": "52ea98e7a1ac6c93dd433c3c90fbd929844dbb795170a3ec37925493c2d996ef",
+  "reviewedHashes": "reviews/nb-69/REVIEWED-HASHES.json",
+  "reviewedHashesSha256": "236e38cdfdde59dc1629d4f1fc8de066e1c8927a2bc894c240d10309bae316c8",
+  "testsRun": [],
+  "notRun": [
+    "product tests",
+    "typecheck",
+    "build",
+    "Electron/GUI",
+    "CAS 真实登录",
+    "青果端点网络调用",
+    "CDP 插桩实跑"
+  ],
+  "knownUnknowns": [
+    "青果教务端点实际行为（网络 NOT_RUN）",
+    "CAS 登录全链（GUI NOT_RUN）",
+    "瑞数 Cookie 前缀实网有效性（推断）",
+    "yanhu 被测模块（browser-tools/dom-distillation/stabilization/context-pruning/express-manager/cookie-utils）行为（非本批）",
+    "演示 fixtures 真实业务正确性（合成数据）"
+  ]
+}

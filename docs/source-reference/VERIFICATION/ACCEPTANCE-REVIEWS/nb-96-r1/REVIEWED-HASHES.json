@@ -1,0 +1,37 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-96-r1",
+  "revisionOf": "nb-96",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T21:20:00Z",
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/AboutSettings.tsx.md": "791f98261c82c6ea773582ca6a7b441084ced1edcc2979cb36e5863bcef41bfa",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/AppearanceSettings.tsx.md": "e80381affe312f0dcce07332b87d5b28650847271a791c05495c1ded657f1934",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/BotDefaultSettings.tsx.md": "86e713bc4e03c3bb6171f32fff844b9b2b25da032f1c9ef310b6c45e8f937f62",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/BotHubSettings.tsx.md": "cc65c70261477a81a846fd9c6d92de5156df6872d1883cac06a5e396f0a85f2e",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/ChannelForm.tsx.md": "b37ba0585d4bb5bebf20a2db2b324895f4f573504ba875d7e9039448179693c1",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/ChannelSettings.tsx.md": "272f241db03913ee481a657c164420257f9372144f856c267de1f9fec7af3414",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/DataManagementSettings.tsx.md": "77ea25ed0230f0e10ee475f840bfa420f514fa58eacb45d6807e732246e65e24",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/DeveloperSettings.tsx.md": "5b723a3e54c1a33cd1a8e1a4d607f62db37b16e5eab58903d4b79e597cbfad87",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/DingTalkSettings.tsx.md": "2b42b806ef1bda4ab26a6304560b3376b1e9d6c4e3fbdc484d8d9b10ab4a0b86",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/FeishuSettings.tsx.md": "bf33caf728ecfae41fbbc0015556d641a099ba52c0620a828d16a79cb64148cb",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/GeneralSettings.tsx.md": "8aa0258d67de21c0b492ba5b0b2d1a942e5cbcfad054377c483196f9093d8b7f",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/McpServerForm.tsx.md": "32a7f45762b52a2f98c54d16ad99662da3d2dc98fcba0b27fee761d36a6ad9de",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/MigrationSettings.tsx.md": "16c5a531bb6b46df8bf6f4bfe22a37589ea5e1ca5b237364765ece105f001be9",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/ModelAvailabilityBar.tsx.md": "a1354d263e6d7f44d76f0232d7f23a0d130dc8b931e265b83a7cdd5524f6a064",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/OpenApiSettings.tsx.md": "4bbbd26a0ce3845f9887b6939c72983a94925e3e9addd91a18808e3674275d9f",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/ProxySettings.tsx.md": "9ee1476575f161e78b754f88b0a6380db296b75c258c93478ec84447d6cb28b2",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/ReleaseNotesViewer.tsx.md": "7e98c8c410c0b7f340b4de2004811c25f0925c90686b12d8934c07b6bc26858e",
+    "MODULE-REFERENCE/p08-renderer-ui/FILE-REFERENCE/apps/electron/src/renderer/components/settings/SettingsPanel.tsx.md": "a9043abf468d554cd4e4f7f3624a8f32b597a71b3e5d62e70faa28079236c300"
+  },
+  "revisionRequiredHashes": {},
+  "rejectedHashes": {},
+  "chain": {
+    "sealId": "seal-2a87f04feb20e06d",
+    "manifestSha256": "b79944446b4cb3783ee0d54e2cbf8c7c828aa4aee233a700b5951f2248d3b6ea",
+    "readySha256": "011f6755541fd2c7697d613a106351b47592a3b365dcaca183c9902f9e7d1639",
+    "zipSha256": "d3e4f462e59870df2025d4a4e92700286a80f4b10fcd93622e480cae28296feb"
+  }
+}

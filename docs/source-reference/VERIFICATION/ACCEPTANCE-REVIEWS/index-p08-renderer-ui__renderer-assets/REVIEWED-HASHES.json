@@ -1,0 +1,425 @@
+{
+ "schema": "dsh-r07-reviewed-hashes/1",
+ "batch": "index-p08-renderer-ui__renderer-assets",
+ "groupId": "p08-renderer-ui__renderer-assets",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T21:10:00Z",
+ "sealedAtUtc": "2026-10-23T19:30:45+00:00",
+ "artifactSha256": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+ "note": "QA 实算封版链全对。82/82 accepted，0 findings。",
+ "acceptedManuals": {
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/bots/dingding.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/bots/feishu.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/bots/wechat.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/cdut-logo-dark.svg": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/cdut-logo.svg": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/CDUT_Studio.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/chatglm.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/chatglm_dark.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/claude.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/claude_dark.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/codestral.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/cohere.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/cohere_dark.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/deepgemini.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/deepseek.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/deepseek_dark.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/default.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/doubao.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/doubao_dark.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/embedding.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/gemini.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/gemini_dark.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/gemma.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/gemma_dark.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/gpt-5-chat.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/gpt-5-codex.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/gpt-5-mini.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/gpt-5-nano.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/gpt-5.1-chat.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/gpt-5.1-codex-mini.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/gpt-5.1-codex.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/gpt-5.1.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/gpt-5.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/gpt_3.5.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/gpt_4.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/gpt_dark.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/gpt_image_1.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/gpt_o1.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/grok.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/grok_dark.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/hunyuan.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/hunyuan_dark.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/kimigemini.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/llama.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/llama_dark.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/minimax.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/mixtral.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/mixtral_dark.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/moonshot.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/moonshot.webp": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/openai.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/qwen.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/qwen_dark.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/qwengemini.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/seedgemini.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/sparkdesk.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/sparkdesk_dark.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/step.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/step_dark.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/wenxin.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/wenxin_dark.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/xiaomi.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/yi.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/yi_dark.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/zhipu.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/models/zhipu_dark.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/sound/ding-dong.mp3": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/sound/ding.mp3": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/sound/discord.mp3": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/sound/done.mp3": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/sound/down-power.mp3": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/sound/food.mp3": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/sound/lite.mp3": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/sound/quiet.mp3": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/theme-previews/theme-cloud-dancer.webp": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/theme-previews/theme-forest-morning.webp": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/theme-previews/theme-forest-night.webp": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/theme-previews/theme-mist-paper-dark.svg": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/theme-previews/theme-morandi-night.webp": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/theme-previews/theme-ocean-dark.webp": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/theme-previews/theme-ocean-light.webp": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba",
+  "MODULE-REFERENCE/p08-renderer-ui/INDEX/p08-renderer-ui__renderer-assets.md@apps/electron/src/renderer/assets/theme-previews/theme-terminal-dark.png": "960e5fca477cdaf4cb32eb159198d16b26ee675cf1f193f71c864ce98696cfba"
+ },
+ "sourceBindings": {
+  "apps/electron/src/renderer/assets/bots/dingding.png": {
+   "sourceBlob": "10df8a3a0e6954674d6568f3d1bc984eebd8b2f0",
+   "sourceSha256": "1379fdbfa04c81ace242fa49eac036ee618efeb6f72b74c690746c1a4c66ad45"
+  },
+  "apps/electron/src/renderer/assets/bots/feishu.png": {
+   "sourceBlob": "d0183e001636e6229d8f50187a6737768060c8d5",
+   "sourceSha256": "41a1b460e85aa460e4d75f29d3c36fee2fe0f61389694ce97edef3955bd3d4ca"
+  },
+  "apps/electron/src/renderer/assets/bots/wechat.png": {
+   "sourceBlob": "b85284f2f39c76d884addd42e4443afdd95bd152",
+   "sourceSha256": "d2950dc500dd6b3309d3242aa2edc8b70e05eba889feb1ea8dd279fd587429c5"
+  },
+  "apps/electron/src/renderer/assets/cdut-logo-dark.svg": {
+   "sourceBlob": "65496853f6677cde64b0bbad4b12171e4f5a8f95",
+   "sourceSha256": "1128842480ec4e7ae67e5c7a8a4d98c7e95f194ef0a6ec0c531b4a0790e8cf1e"
+  },
+  "apps/electron/src/renderer/assets/cdut-logo.svg": {
+   "sourceBlob": "ca3fe8f1091a9006f15c234a03a2a33c3fcb160f",
+   "sourceSha256": "ffb559cc4fee56ac312ed664b4f2b520b907b372c9636739aa9c32cc755f37c4"
+  },
+  "apps/electron/src/renderer/assets/models/CDUT_Studio.png": {
+   "sourceBlob": "e54076e5e41fd2248d3ab9010c56943264ef4838",
+   "sourceSha256": "0e458b1e453c99d1df6df33e9dc4d78de0aa27f55210cef24faf18c487be0616"
+  },
+  "apps/electron/src/renderer/assets/models/chatglm.png": {
+   "sourceBlob": "1cbf1682dca0a5d83515da17571bbcf1aca9fc10",
+   "sourceSha256": "9826ee53d8ba793a25ce576c4f6e88a0aa2e47b732ec0c967ac853b20f412618"
+  },
+  "apps/electron/src/renderer/assets/models/chatglm_dark.png": {
+   "sourceBlob": "1cbf1682dca0a5d83515da17571bbcf1aca9fc10",
+   "sourceSha256": "9826ee53d8ba793a25ce576c4f6e88a0aa2e47b732ec0c967ac853b20f412618"
+  },
+  "apps/electron/src/renderer/assets/models/claude.png": {
+   "sourceBlob": "560598ed1ffe3df6f6e4bc37f880f1065c00c614",
+   "sourceSha256": "d56dc11e7d7251b45db5ee26c2a5669f92499d7ab6cb16e5bf3493db076a7a79"
+  },
+  "apps/electron/src/renderer/assets/models/claude_dark.png": {
+   "sourceBlob": "71fbdb6ba17cfa31b64ed97a3b70e4cf3d9f2f27",
+   "sourceSha256": "d16ba02c0ee0c9716d88e0e1036748ae4e6d11be476372380f6f386dbf7b9924"
+  },
+  "apps/electron/src/renderer/assets/models/codestral.png": {
+   "sourceBlob": "26d0e6ebd191c880a23259af4533e9228eea9fe4",
+   "sourceSha256": "7fe3a74434b87297a9ee03c2f3274bbdb7306237ad7b20470aac6f18e97edf7c"
+  },
+  "apps/electron/src/renderer/assets/models/cohere.png": {
+   "sourceBlob": "e26f46d19930ac7c9dce2f98827425d2a1e24431",
+   "sourceSha256": "10d95c53deae945dd84b6d5108521c3ab9c399728a4ba9be0ff9ff50d496a8af"
+  },
+  "apps/electron/src/renderer/assets/models/cohere_dark.png": {
+   "sourceBlob": "7cb99d8a32501597c2c4de609d1a065d82f8f9bd",
+   "sourceSha256": "98a23840e2b99bb4b36c9d4c2dfe9c617354ee80b511d3b7702ad46511b3e325"
+  },
+  "apps/electron/src/renderer/assets/models/deepgemini.png": {
+   "sourceBlob": "c4d74b630c2a3b8df4d4809b47af04b3f94d978d",
+   "sourceSha256": "406ae46ff491ede05a29d10fa608b474b04f03cfc5a29f136986d18d4a1ff852"
+  },
+  "apps/electron/src/renderer/assets/models/deepseek.png": {
+   "sourceBlob": "04b181f2a86a43ee5a6a873a8507e7205ba29dbf",
+   "sourceSha256": "ddf6a24bef50748b3becccbbe753b02095fdf86b709a91c0c6840f1879155a09"
+  },
+  "apps/electron/src/renderer/assets/models/deepseek_dark.png": {
+   "sourceBlob": "2a76e2ac20b3ee29ca01aa3a4124c97a4ae6491c",
+   "sourceSha256": "6a4eadc53477f55d49b0dbf6ca1cb56cea3b40b02809a493ce08182ef43eb905"
+  },
+  "apps/electron/src/renderer/assets/models/default.png": {
+   "sourceBlob": "e54076e5e41fd2248d3ab9010c56943264ef4838",
+   "sourceSha256": "0e458b1e453c99d1df6df33e9dc4d78de0aa27f55210cef24faf18c487be0616"
+  },
+  "apps/electron/src/renderer/assets/models/doubao.png": {
+   "sourceBlob": "d673efd8d8e865e918daf93315e392de78fb2528",
+   "sourceSha256": "84166e167c209552fdc9a9801842b9351ad6d5752d278d6acd4b335d0a9da96c"
+  },
+  "apps/electron/src/renderer/assets/models/doubao_dark.png": {
+   "sourceBlob": "e0df3021d17e98cb78361c42d7e0926f0f5f6e48",
+   "sourceSha256": "0ef73001cb61bfd57ca6e93a93f9d601a347d7d83a1aa20f498569c2aebdfa23"
+  },
+  "apps/electron/src/renderer/assets/models/embedding.png": {
+   "sourceBlob": "00e4903636b641ab3652ad45982e7cf5160a6173",
+   "sourceSha256": "b91ecadc72c350156d93b3bd77e1d6a6471312569b61b3b6f6eff04ece737f5c"
+  },
+  "apps/electron/src/renderer/assets/models/gemini.png": {
+   "sourceBlob": "612677081b1bb21f832643024a2f932462e84b56",
+   "sourceSha256": "37788acef5838dc7bc4d45caa90ee13c70dfb78f8160ab742eaa67f684c37a08"
+  },
+  "apps/electron/src/renderer/assets/models/gemini_dark.png": {
+   "sourceBlob": "f3075796ee0cd5a8767cf5466bc60d6489a3e4ba",
+   "sourceSha256": "3e03bef2b383a5cbe90a525f25e72d7d771dbddb1d5f1beb61e976d40eb3634f"
+  },
+  "apps/electron/src/renderer/assets/models/gemma.png": {
+   "sourceBlob": "26a1d9017de3163cc32934d78e85ec4102b9baa4",
+   "sourceSha256": "0730ed340d89e037d166711486c6664c4e0fcee318adfa10914521df0daa4ebb"
+  },
+  "apps/electron/src/renderer/assets/models/gemma_dark.png": {
+   "sourceBlob": "4a95c3abd00d7e916163de0f9a5da8e5d6d5a586",
+   "sourceSha256": "a1909cb665b1783bd0f9c72972bb8a86cb0a6f57de434a1b8616f43da5727435"
+  },
+  "apps/electron/src/renderer/assets/models/gpt-5-chat.png": {
+   "sourceBlob": "3a6a5c393782dd1fb122e56452a7c0a051e336cd",
+   "sourceSha256": "cfb74f51fc5fca65c60e9ede5aa4a8cb29c04cc948251d31b946deea27d88645"
+  },
+  "apps/electron/src/renderer/assets/models/gpt-5-codex.png": {
+   "sourceBlob": "688d187349d1db41b72008b3da01ec01766253b3",
+   "sourceSha256": "ab8bfee9320eb6aaeee78d86f16502cca55bde3d8358a9481f52612ebfa27d78"
+  },
+  "apps/electron/src/renderer/assets/models/gpt-5-mini.png": {
+   "sourceBlob": "0ac07a3a262155445c5d2c6a078d4db10d63f53c",
+   "sourceSha256": "ed2c3c0827b104bcdd6a05e8d129a90b15ccf1d369e143b232fefda118c83cc5"
+  },
+  "apps/electron/src/renderer/assets/models/gpt-5-nano.png": {
+   "sourceBlob": "e3cc1ae8710562bb9c51e73a5938e821f624947d",
+   "sourceSha256": "29a3819c097eacbbf621d5bf9147208ebfd14970a703cc125dee12d81905c869"
+  },
+  "apps/electron/src/renderer/assets/models/gpt-5.1-chat.png": {
+   "sourceBlob": "52ddd61136d78eff68e26519424228eeee8e2e54",
+   "sourceSha256": "01750b02f89dcc33cf1eb742a71a4071847edafd4dbaad661b74df419103608c"
+  },
+  "apps/electron/src/renderer/assets/models/gpt-5.1-codex-mini.png": {
+   "sourceBlob": "638c3fea9223b3cf7b818aa752a7bec61af12f32",
+   "sourceSha256": "343d2fb3668b18348954857b3d4ef684e66aff654338096c1e64a347169a2ce4"
+  },
+  "apps/electron/src/renderer/assets/models/gpt-5.1-codex.png": {
+   "sourceBlob": "ec12a5e9017d7c0362e681af0ebddf8346f0f647",
+   "sourceSha256": "26d42317c7751332dbf5bfbb61c3a0ae8241c586923117d04275e9ca70eda72d"
+  },
+  "apps/electron/src/renderer/assets/models/gpt-5.1.png": {
+   "sourceBlob": "d7f57f8c58dc561a3d31d501e17bf2ebf777ad09",
+   "sourceSha256": "0b689eb02995e9dcaa5ea0ae058ed993fabd7bc184d1bdb36d4a0ce8cf87503a"
+  },
+  "apps/electron/src/renderer/assets/models/gpt-5.png": {
+   "sourceBlob": "188df6068f28bb0bcaa070d12c873fd9ad9fd346",
+   "sourceSha256": "5a6432262081a08136917b01321f53ce71acf3a17def7f16c6af67b7caa03b8c"
+  },
+  "apps/electron/src/renderer/assets/models/gpt_3.5.png": {
+   "sourceBlob": "153ff3f6d6ad223170233a240e9acffda8995df8",
+   "sourceSha256": "1f7aac13dd287ee2dc6bca5fa4a172eeda6bb363f0462fa27a5de5538ec2e8df"
+  },
+  "apps/electron/src/renderer/assets/models/gpt_4.png": {
+   "sourceBlob": "07d445d9367f415eae2c1a34335f38bcc1b7f806",
+   "sourceSha256": "8905b7464d84aa1ed89371ad6b2329c0ee80e1c474e96c9426501c23b80f80b0"
+  },
+  "apps/electron/src/renderer/assets/models/gpt_dark.png": {
+   "sourceBlob": "394ebc75b6e91fc040b089048f2c92adb2fa619b",
+   "sourceSha256": "9bf729cf67e057e764af4536d21912c686654e9c9f314cdf3145c0d954bac418"
+  },
+  "apps/electron/src/renderer/assets/models/gpt_image_1.png": {
+   "sourceBlob": "30f2f2708f1d4fe2337ab9bca5aea05ea3b679ea",
+   "sourceSha256": "6066bb3146f9a0ba1723bb0bb5b7246364e9d4c4b6533f918ab7a23f1c73bd94"
+  },
+  "apps/electron/src/renderer/assets/models/gpt_o1.png": {
+   "sourceBlob": "ba95f765d91d2e51c4ecf42d86fc221d9440b252",
+   "sourceSha256": "bc3ffb5af6e38fdac7eb1b4dc406f7dd3fe618a218f6bc02157f8b6e567e3a30"
+  },
+  "apps/electron/src/renderer/assets/models/grok.png": {
+   "sourceBlob": "4aca44247cfc5640f8db60fbbf20a3615d1803ce",
+   "sourceSha256": "7ff8af845b5b7ef19381c99b49e75d22c022405f67ef677e943d2208dbd88024"
+  },
+  "apps/electron/src/renderer/assets/models/grok_dark.png": {
+   "sourceBlob": "11a8c8d035d7270f67cd8776e266542a9f55eec7",
+   "sourceSha256": "fb3e5625cc553cb64d3d7937b3ef4917ab2822ea703cdbceaea1e9316b5e7f47"
+  },
+  "apps/electron/src/renderer/assets/models/hunyuan.png": {
+   "sourceBlob": "6d8f259adfc3a7b1f87a8423cafaf45cfb4e6400",
+   "sourceSha256": "5609f7ef2a3219d4ed67a1fec0abd51f433d68073f36747448d507d6323621de"
+  },
+  "apps/electron/src/renderer/assets/models/hunyuan_dark.png": {
+   "sourceBlob": "8f936736a1ac4ec3978fe1b86eac7f32797a2acf",
+   "sourceSha256": "d8ea52794d03c21ad726495a9ff8b86ab8b16f587a9228c07b1bba95d8d8e2f9"
+  },
+  "apps/electron/src/renderer/assets/models/kimigemini.png": {
+   "sourceBlob": "7d782cae0dec1516703004c6b5b4abd2d5d410bc",
+   "sourceSha256": "add65223f0938ab93cce244638bb8affd051b2f30532803660062a501823204c"
+  },
+  "apps/electron/src/renderer/assets/models/llama.png": {
+   "sourceBlob": "708cf36d2d0724a536ab87a8a3736de2fa2a10bc",
+   "sourceSha256": "f0b31e52a1798af3dceeb6abe214c2e197821c1ba921d99ed2f591da968bcc4a"
+  },
+  "apps/electron/src/renderer/assets/models/llama_dark.png": {
+   "sourceBlob": "15554b9356f588c139a944970358b641a7817b92",
+   "sourceSha256": "14c80843a3fe598414872c9fb8ac986a68a7291b53a20bb9af7f206f73f0e177"
+  },
+  "apps/electron/src/renderer/assets/models/minimax.png": {
+   "sourceBlob": "aa45cdc1cb6e7bf96542ac80e72b19df7a8c4aa8",
+   "sourceSha256": "dac3a5032bf0ef5f5a5228c3ffdc26e2ae6a4748dab98e265a8e7699f3cffeb3"
+  },
+  "apps/electron/src/renderer/assets/models/mixtral.png": {
+   "sourceBlob": "0ed97c8194d48bea0a46745549cebf934e1f2708",
+   "sourceSha256": "e3df6dc2fd1922b21e8d062a00cb1741fb0092ed0737b13a67de00dcdde4fdfd"
+  },
+  "apps/electron/src/renderer/assets/models/mixtral_dark.png": {
+   "sourceBlob": "53ffae84b201e8753af8ef3aef73000bc3e13cff",
+   "sourceSha256": "77e625e61114e0f46f485a96dc16354a207d7cea874f159011b84d074c6818b0"
+  },
+  "apps/electron/src/renderer/assets/models/moonshot.png": {
+   "sourceBlob": "c77e05726faf541ec43227252cf202b69634a615",
+   "sourceSha256": "9571df1d1217ac1e64557b7bb66a0e798e0245adddd8ca97a675adf89cd7aef8"
+  },
+  "apps/electron/src/renderer/assets/models/moonshot.webp": {
+   "sourceBlob": "fbc0128187237bfd509a4ec6a4a83c80480cc24a",
+   "sourceSha256": "05e6224597e98a83e80eba369bff153198b04d447b4cf31c3637ca6536f2994e"
+  },
+  "apps/electron/src/renderer/assets/models/openai.png": {
+   "sourceBlob": "394ebc75b6e91fc040b089048f2c92adb2fa619b",
+   "sourceSha256": "9bf729cf67e057e764af4536d21912c686654e9c9f314cdf3145c0d954bac418"
+  },
+  "apps/electron/src/renderer/assets/models/qwen.png": {
+   "sourceBlob": "f1f33c3231524642a7bfca38862f1dbe81da5a71",
+   "sourceSha256": "efd7a0ec7a053e77954575e195446be792d8784b3959a529811c14a5f527f31d"
+  },
+  "apps/electron/src/renderer/assets/models/qwen_dark.png": {
+   "sourceBlob": "ce504e0ac15d23029b8a84859e03955414cbf615",
+   "sourceSha256": "c61afec38aa161539744fbd92185130d981da3214480d00cda5b34a6acab0c21"
+  },
+  "apps/electron/src/renderer/assets/models/qwengemini.png": {
+   "sourceBlob": "0889cee2eee3af34209d4bb06f8aa121b72c8900",
+   "sourceSha256": "147594aa8175257d8aef989ea7c32b28665985d1166b9d533df4518dbffd5407"
+  },
+  "apps/electron/src/renderer/assets/models/seedgemini.png": {
+   "sourceBlob": "ae8a8f2d36ff5ce41231673b86381c1c5cb849c7",
+   "sourceSha256": "d37ccabd8277b8676cc7a2d1de2f27e01ae8a6406e027694c9b018d62e2b5cf6"
+  },
+  "apps/electron/src/renderer/assets/models/sparkdesk.png": {
+   "sourceBlob": "2bc8154a75284e0406a7b4e8578fd7f30ea3ab29",
+   "sourceSha256": "187e67aabec0001a478e2959bff519e7812b1821ef35ab21dc1efce87b0e710b"
+  },
+  "apps/electron/src/renderer/assets/models/sparkdesk_dark.png": {
+   "sourceBlob": "ac8e2d2a0c028c4f20ecb1cf446b5fa745a0c443",
+   "sourceSha256": "94fcbc504a5063d980d811c6da30cad742aa91380972e787d232ab704f96923e"
+  },
+  "apps/electron/src/renderer/assets/models/step.png": {
+   "sourceBlob": "a69d97309d654a2848725de0a2d66e1e6c3682ab",
+   "sourceSha256": "fcf44d575057abfca9e2815fa097bc7a455c988163f8f64bdad6db8e2c404ec2"
+  },
+  "apps/electron/src/renderer/assets/models/step_dark.png": {
+   "sourceBlob": "ca995b667f774464a19c4b312f9273e30e2aedff",
+   "sourceSha256": "363d9530b7c164057081738fc0ffc74f7956aed01d5938afd90d29c8d1cf3482"
+  },
+  "apps/electron/src/renderer/assets/models/wenxin.png": {
+   "sourceBlob": "10ab60a5765351c22845a62e56d736f4223e0c1f",
+   "sourceSha256": "d20323de952cc0f0108cc33f8b1c3215ab94d0516865b08d6b50b278644d03cd"
+  },
+  "apps/electron/src/renderer/assets/models/wenxin_dark.png": {
+   "sourceBlob": "a5dddc3280a3856da2817a8417158efb484cafc3",
+   "sourceSha256": "9aa0190e8003aea475e91f4076790c6aefdd62c514ae10129f70c03f447620eb"
+  },
+  "apps/electron/src/renderer/assets/models/xiaomi.png": {
+   "sourceBlob": "4231594442d235ed92c2b85a5262691a619f8d24",
+   "sourceSha256": "58a54b8d77ced4fed54ece3ae47a2e0f9abef22520d557465e05a117a822656e"
+  },
+  "apps/electron/src/renderer/assets/models/yi.png": {
+   "sourceBlob": "5a476bd06ba2f60db750b9915323ce8d39bd09b7",
+   "sourceSha256": "a1f7117acaa1c80e1ee240b8d511fec7bdb4bfacef01e7610dbc2c0d8f19bece"
+  },
+  "apps/electron/src/renderer/assets/models/yi_dark.png": {
+   "sourceBlob": "74d89c55ed1f22c90ba74814bb39c29b90471fca",
+   "sourceSha256": "8c11fe7b507708fc6ce23cdd629103e41ca0813eaf6b7b4915876b4cf5c6b5e7"
+  },
+  "apps/electron/src/renderer/assets/models/zhipu.png": {
+   "sourceBlob": "1cbf1682dca0a5d83515da17571bbcf1aca9fc10",
+   "sourceSha256": "9826ee53d8ba793a25ce576c4f6e88a0aa2e47b732ec0c967ac853b20f412618"
+  },
+  "apps/electron/src/renderer/assets/models/zhipu_dark.png": {
+   "sourceBlob": "1cbf1682dca0a5d83515da17571bbcf1aca9fc10",
+   "sourceSha256": "9826ee53d8ba793a25ce576c4f6e88a0aa2e47b732ec0c967ac853b20f412618"
+  },
+  "apps/electron/src/renderer/assets/sound/ding-dong.mp3": {
+   "sourceBlob": "d4be6723efd306477a86d7e85f21a7f9cbd7a152",
+   "sourceSha256": "c65cad3b081325f652197ed68cebc24e49facbbd204901cacdfd7ceb46beeb12"
+  },
+  "apps/electron/src/renderer/assets/sound/ding.mp3": {
+   "sourceBlob": "47e382dc2852de0a50f46a45ebcb316fbbd86b44",
+   "sourceSha256": "d38eb2747f7135b7524d96a65e68b232ca8b9d2b689af21cb5b8744fb93ad499"
+  },
+  "apps/electron/src/renderer/assets/sound/discord.mp3": {
+   "sourceBlob": "e48192c72cb6e74965128e340b19d63104593066",
+   "sourceSha256": "335958dfc8423f1feb356f80fa09794e2a853ac84c64d8fd372bdc9d1fe7b04a"
+  },
+  "apps/electron/src/renderer/assets/sound/done.mp3": {
+   "sourceBlob": "a0cca96052f284f62161a6df7a8cf9f0caac34a5",
+   "sourceSha256": "7a1334fa5af3a65c25cfb6351cd3ec202bf42ce78d74a8f600204a32a718b208"
+  },
+  "apps/electron/src/renderer/assets/sound/down-power.mp3": {
+   "sourceBlob": "df7681fb40f0b0fd48a267b1286b6f1d87d6b712",
+   "sourceSha256": "fbd32f66953bc6b9c0ab398595fcc76ba81082d75ed20182daa42e68a9264056"
+  },
+  "apps/electron/src/renderer/assets/sound/food.mp3": {
+   "sourceBlob": "2777a302675317203c1ff744235349a8097ba543",
+   "sourceSha256": "f7687a9f91dec6c79b4dca2963debb60828bb433dc0b469c6e32e0566bfb71e1"
+  },
+  "apps/electron/src/renderer/assets/sound/lite.mp3": {
+   "sourceBlob": "fe4859efcc0f215243f960677b9de894d07ab9d7",
+   "sourceSha256": "44c077ce28a0a48cec29da204beb627fd17140e5bde1f92dbaecf3d478bdda6f"
+  },
+  "apps/electron/src/renderer/assets/sound/quiet.mp3": {
+   "sourceBlob": "94ff90ebe5270bc3708a487898a93c6e89f63021",
+   "sourceSha256": "a854275553b207b613df05894303bfbf3d2cf74b595c298417c172facbf5c7a0"
+  },
+  "apps/electron/src/renderer/assets/theme-previews/theme-cloud-dancer.webp": {
+   "sourceBlob": "a8b00570f77d2e506cd887902178cc95b6f3bcdf",
+   "sourceSha256": "61eb0429828f2ea7d4fa3c1f77a6f7f3d3e436995cb6f47285a0ccfaf0a8c9bd"
+  },
+  "apps/electron/src/renderer/assets/theme-previews/theme-forest-morning.webp": {
+   "sourceBlob": "66b5ca2c9753541d9a50cf53381f771bca0d35e8",
+   "sourceSha256": "7bf206d5cfbcd9df73f4636450abe20503d47d41f9a155c9ce7423602fdd8518"
+  },
+  "apps/electron/src/renderer/assets/theme-previews/theme-forest-night.webp": {
+   "sourceBlob": "5d327dcc1e60c95d6fe4bc83c14e2316d710fd86",
+   "sourceSha256": "285a971de72b9ac8a9c0ae771fb2ae717a35a6007ead4be1c55bb16088263fac"
+  },
+  "apps/electron/src/renderer/assets/theme-previews/theme-mist-paper-dark.svg": {
+   "sourceBlob": "c3cb3cf7c727d5c135fcea363598ac082cbc9bdf",
+   "sourceSha256": "7c1ba304593a3181bb0efb52cdeb23db4a0bad09fc8bddbcd988f798d7dd58aa"
+  },
+  "apps/electron/src/renderer/assets/theme-previews/theme-morandi-night.webp": {
+   "sourceBlob": "32dc5d8c08dc7bcfaf62ad2fe30ffd1de38caa6d",
+   "sourceSha256": "6236610e824277d8c8807838b224f4c8c466aa28915aed61032c5f29059203c7"
+  },
+  "apps/electron/src/renderer/assets/theme-previews/theme-ocean-dark.webp": {
+   "sourceBlob": "6963dff7e5c6b37273f4493b77194eaa95a4af8d",
+   "sourceSha256": "ed7c8b58d2f2395b09f98c58139e1218fdf2cb4da3283cdd3db849f2d30ac1b1"
+  },
+  "apps/electron/src/renderer/assets/theme-previews/theme-ocean-light.webp": {
+   "sourceBlob": "95cd56de53e93500c6e5a92f13870cf30691f500",
+   "sourceSha256": "a58c7834db01792d5d14c9f0d77316ae296b96e3ae718db57ab84d3021a9037f"
+  },
+  "apps/electron/src/renderer/assets/theme-previews/theme-terminal-dark.png": {
+   "sourceBlob": "fdb6397f8e9da3dbf5493ea458d69c9e4842b198",
+   "sourceSha256": "1838361119a8496dc21a3ccbfb9d7f2ee731862571670156b64bcc6662542836"
+  }
+ }
+}

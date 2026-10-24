@@ -1,0 +1,232 @@
+{
+  "schema": "r07-review-result/1",
+  "batch": "nb-07-r1",
+  "revisionOf": "nb-07",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-author-nb-07-20261023",
+  "reviewerSession": "docs-r07-qa-nb-07-20261023",
+  "reviewedAtUtc": "2026-10-23T17:28:00Z",
+  "sealId": "seal-0d36269748879a57",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 13,
+    "accepted": 13,
+    "revision_required": 0,
+    "unknown": 0
+  },
+  "g0": {
+    "result": "PASS",
+    "hashChain": "MANIFEST/READY/DONE/ZIP 实算一致",
+    "zip": "16 条目无穿越/READY/DONE，逐条目==盘上",
+    "changesDiff": "before/→after/ 增量 5 文件逐 hunk 与 before→stage 实算全等",
+    "delta": "5 篇修订（2 F + 3 N）+8 篇逐字节同 r0 accepted",
+    "revisionOf": "nb-07 ✓"
+  },
+  "g1": {
+    "result": "PASS",
+    "note": "修订篇结构/三分法保持；新引用 :80-86/:1109/:1127-1129/:154-161/:163-182/:184-215/:217-263 实测在范围且正确"
+  },
+  "g2": {
+    "result": "PASS",
+    "method": "逐条复核 F-NB07-01..04 与 N-NB07-01..03 的修正文本回源：122 处 ipcMain.handle(/122 互异通道（grep 实测）、cslab-security :80-86、getZoteroSource/listStoredZoteroAnnotations 全树零消费者、zotero 测试行号与 test 手册一致且无越界、topK=0 补注、LRU 插入时间淘汰补注、openLab 同步括注——全部成立",
+    "closedFindingsTotal": 7
+  },
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-ai-class-manager.ts.md": "b37c7b986e131e2ae69c3e7894edec46cd7586afa08b3438896f5159a1aef4ff",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-ai-class-manager.test.ts.md": "e07c3de0bf281c37d6d9da4d87f76d6fb067bf9631764c26099e90b5ee2fadbd",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-router.ts.md": "26b720c5e112763bf73bbc6fa7c2dffd964406a5402989e89aa99f61a5403b6d",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-paths.ts.md": "6458f39339b3a713aa183bdb629941f828c1e5f16a7257e021396713be6750d1",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-manager.ts.md": "878e40231329c541c6a10ca5ba4f77f8f2a4651e881db4119926c533b7acd8e9",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-manager.test.ts.md": "3d19420415713adae5789c217415568b58fca5ab1eabc97e86cff089126ee8ed",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-vault-index.ts.md": "b25aa4432d8a6510c1c5a2d644682c8617f78bf27ea2cbc5a0f612c88b3398fe",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-vault-index.test.ts.md": "4135a791ed6c5f5855405328c812e066e3a3552b658427ae77d4b5c04a67b7eb",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-zotero.ts.md": "92c7e958f741a8bcee948081659166b3978c09cd683614ab332c69da05013d99",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-zotero.test.ts.md": "b22d8b61fabfd6d17791417b89e8eb49fca61f97a052d178c5956a2d24159c97",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-literature-index.ts.md": "882f787fef3f5f74dbf7421e998694f2b9a84c247ae3184a4110b55108cc8970",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-graphrag-router.ts.md": "900b72b8152ba1633f5e90a5fde9b6b64bfaca9342c8359ffb8e3a56b7046f67",
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-graphrag.test.ts.md": "fce0ac8be164dc89623019fb56136f6022eb0d3ede30fe2219d17de7f2022da2"
+  },
+  "files": [
+    {
+      "path": "apps/electron/src/main/lib/cdut/cdut-ai-class-manager.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-ai-class-manager.ts.md",
+      "sourceBlob": "6d279604155dd4866c5fc89ac7b75e2520334ed1",
+      "sourceSha256": "3f0240e9d79f275ff80dfaead6e3454446671da34eca8fc914e28792474211fb",
+      "sourceLines": 1235,
+      "manualSha256": "b37c7b986e131e2ae69c3e7894edec46cd7586afa08b3438896f5159a1aef4ff",
+      "verdict": "accepted",
+      "relationToR0": "byte-identical to r0 accepted",
+      "closedFindings": [],
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cdut/cdut-ai-class-manager.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/cdut-ai-class-manager.test.ts.md",
+      "sourceBlob": "096ec48c7a7339aec3a04ac25eb83d090d771dd1",
+      "sourceSha256": "8db53b3923b037ea357ff54c90a41f2dc601b892801f02657991dd7afea7c26f",
+      "sourceLines": 158,
+      "manualSha256": "e07c3de0bf281c37d6d9da4d87f76d6fb067bf9631764c26099e90b5ee2fadbd",
+      "verdict": "accepted",
+      "relationToR0": "byte-identical to r0 accepted",
+      "closedFindings": [],
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-router.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-router.ts.md",
+      "sourceBlob": "651d2f30e26a3ef2e081530c49fb0c9684a96d7f",
+      "sourceSha256": "c5ea566daf30f176827aedeb6dd12fa2a8e97e6af9fde736f0ba6fbaf396e27c",
+      "sourceLines": 1948,
+      "manualSha256": "26b720c5e112763bf73bbc6fa7c2dffd964406a5402989e89aa99f61a5403b6d",
+      "verdict": "accepted",
+      "relationToR0": "revised in r1",
+      "closedFindings": [
+        "F-NB07-01",
+        "F-NB07-02"
+      ],
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-paths.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-paths.ts.md",
+      "sourceBlob": "6a27002041239844fa3f79391e88caf94ab30079",
+      "sourceSha256": "0a95f2ec4b90eebf555f51c7c2fb76ac4d040d98045c0fe741c6a5d27f0ce9dd",
+      "sourceLines": 346,
+      "manualSha256": "6458f39339b3a713aa183bdb629941f828c1e5f16a7257e021396713be6750d1",
+      "verdict": "accepted",
+      "relationToR0": "byte-identical to r0 accepted",
+      "closedFindings": [],
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-manager.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-manager.ts.md",
+      "sourceBlob": "e33200a0993c86126286a10c6ecf05dfda547c60",
+      "sourceSha256": "df2ceec739881138c3f9239a1675806468412cbdc57bd2c281b3f41e51fc1371",
+      "sourceLines": 227,
+      "manualSha256": "878e40231329c541c6a10ca5ba4f77f8f2a4651e881db4119926c533b7acd8e9",
+      "verdict": "accepted",
+      "relationToR0": "revised in r1",
+      "closedFindings": [
+        "N-NB07-02"
+      ],
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-manager.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-manager.test.ts.md",
+      "sourceBlob": "ebc0c4b230b623cf918404601be26ff3013b8ded",
+      "sourceSha256": "3462620e95723e0d5bfb6422e33492bc16931a1e468f435033474d340ad94f47",
+      "sourceLines": 174,
+      "manualSha256": "3d19420415713adae5789c217415568b58fca5ab1eabc97e86cff089126ee8ed",
+      "verdict": "accepted",
+      "relationToR0": "byte-identical to r0 accepted",
+      "closedFindings": [],
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-vault-index.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-vault-index.ts.md",
+      "sourceBlob": "762fea4f8ac7763462201bb5eeb12600f90283b3",
+      "sourceSha256": "c05126f58e3c9a9f32576cb5c4915ee61815bc4ed8e6d3c9af67dadacf544ccc",
+      "sourceLines": 740,
+      "manualSha256": "b25aa4432d8a6510c1c5a2d644682c8617f78bf27ea2cbc5a0f612c88b3398fe",
+      "verdict": "accepted",
+      "relationToR0": "revised in r1",
+      "closedFindings": [
+        "N-NB07-01"
+      ],
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-vault-index.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-vault-index.test.ts.md",
+      "sourceBlob": "cbffd347384ba7accb2a8ea3b9aa95490c05f769",
+      "sourceSha256": "239ff0b76b8f8bda07b76762397e50a0315259e7733aa8af4cf067c0b0e9e449",
+      "sourceLines": 63,
+      "manualSha256": "4135a791ed6c5f5855405328c812e066e3a3552b658427ae77d4b5c04a67b7eb",
+      "verdict": "accepted",
+      "relationToR0": "byte-identical to r0 accepted",
+      "closedFindings": [],
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-zotero.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-zotero.ts.md",
+      "sourceBlob": "f17f70170f4d6bc2ed97169cab3177ee6459a091",
+      "sourceSha256": "9289459fded8f7c82836fc11cf4b08835e93c2de995fcc3a7fc5d1f8c9305321",
+      "sourceLines": 1173,
+      "manualSha256": "92c7e958f741a8bcee948081659166b3978c09cd683614ab332c69da05013d99",
+      "verdict": "accepted",
+      "relationToR0": "revised in r1",
+      "closedFindings": [
+        "F-NB07-03",
+        "F-NB07-04"
+      ],
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-zotero.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-zotero.test.ts.md",
+      "sourceBlob": "f2e94a0dc1a1af113ae4d34328ebeab40ca5c9e8",
+      "sourceSha256": "f81897fc159b37c68dd1a9189b93b07bfefbd3897c2d9170b4eaf6f35654226b",
+      "sourceLines": 263,
+      "manualSha256": "b22d8b61fabfd6d17791417b89e8eb49fca61f97a052d178c5956a2d24159c97",
+      "verdict": "accepted",
+      "relationToR0": "byte-identical to r0 accepted",
+      "closedFindings": [],
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-literature-index.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-literature-index.ts.md",
+      "sourceBlob": "f9dd6df22cc12573e5ee98a6488cf3e24a670da6",
+      "sourceSha256": "0a001599b773b2b62172f52a26af9c438e9502f131e1eab9876b729272f0bd2e",
+      "sourceLines": 407,
+      "manualSha256": "882f787fef3f5f74dbf7421e998694f2b9a84c247ae3184a4110b55108cc8970",
+      "verdict": "accepted",
+      "relationToR0": "byte-identical to r0 accepted",
+      "closedFindings": [],
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-graphrag-router.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-graphrag-router.ts.md",
+      "sourceBlob": "0d4898305cefb3486ae5ec5811d731150ad7b44c",
+      "sourceSha256": "a463866be7458512dd3ea8d68ba83ea4a139d70c416409083fd092d4f704f344",
+      "sourceLines": 212,
+      "manualSha256": "900b72b8152ba1633f5e90a5fde9b6b64bfaca9342c8359ffb8e3a56b7046f67",
+      "verdict": "accepted",
+      "relationToR0": "revised in r1",
+      "closedFindings": [
+        "N-NB07-03"
+      ],
+      "findings": [],
+      "notes": []
+    },
+    {
+      "path": "apps/electron/src/main/lib/cslab/cslab-graphrag.test.ts",
+      "manual": "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cslab/cslab-graphrag.test.ts.md",
+      "sourceBlob": "6d4c6f78d2500d544e10f448e18f611cddeacc7a",
+      "sourceSha256": "3ebcc425e4f54244aae1a69ff7eb018d322b61b569f570a97b226df38b3dab8f",
+      "sourceLines": 185,
+      "manualSha256": "fce0ac8be164dc89623019fb56136f6022eb0d3ede30fe2219d17de7f2022da2",
+      "verdict": "accepted",
+      "relationToR0": "byte-identical to r0 accepted",
+      "closedFindings": [],
+      "findings": [],
+      "notes": []
+    }
+  ]
+}

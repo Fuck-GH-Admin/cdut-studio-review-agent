@@ -1,0 +1,68 @@
+{
+ "schema": "dsh-r07-qa-done/1",
+ "batch": "nb-38",
+ "id": "NB-38",
+ "revisionOf": null,
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "reviewer": "docs-r07-qa-nb-47-20261023",
+ "author": "docs-r07-author-nb-47-20261023",
+ "reviewRoot": "reviews/nb-38",
+ "reviewedAtUtc": "2026-10-23T20:10:00Z",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "gates": {
+  "G0": "G0_PASS",
+  "G1": "G1_PASS",
+  "G2": "G2_PASS",
+  "G3": "NOT_RUN",
+  "G4": "NOT_RUN"
+ },
+ "verdictCounts": {
+  "accepted": 18,
+  "revision_required": 0,
+  "unknown": 0
+ },
+ "acceptedManuals": 18,
+ "acceptedHashesCount": 18,
+ "revisionRequiredManuals": {},
+ "findingsSummary": {
+  "loading-indicator.tsx.md": [
+   "N-01"
+  ],
+  "button.tsx.md": [
+   "N-02"
+  ]
+ },
+ "batchFindings": [
+  "M-01",
+  "M-02"
+ ],
+ "resultSha256": "860bc8e67f82915d699725d482d5511e307ba2ddbb17d2234525df29ab91c797",
+ "reviewedHashesSha256": "20a2852d50c3551476ab0882f6b983e74c46c18b81a676de8b845ab59e8f067b",
+ "zip": {
+  "path": "deliveries/nb-38/R07-nb-38-05fb2565.zip",
+  "sha256": "3502dcba00c24a44a17e59197a15e85542cb4af8703d4f9d03598914f34a1590",
+  "entries": 21,
+  "note": "18 手册+MANIFEST+2 mechanical TSV；不含 READY/DONE（v2）；无穿越/0 mismatch"
+ },
+ "sealId": "seal-0022ecc86492c439",
+ "artifacts": [
+  "reviews/nb-38/RESULT.json",
+  "reviews/nb-38/RESULT.md",
+  "reviews/nb-38/REVIEWED-HASHES.json",
+  "reviews/nb-38/DONE.json",
+  "handoffs/nb-38-REVIEW-TO-AUTHOR.md",
+  "handoffs/nb-38-REVIEW-TO-LEAD.md"
+ ],
+ "priorReviewsUntouched": true,
+ "parentPreserved": null,
+ "notRun": [
+  "product tests",
+  "typecheck",
+  "build",
+  "GUI/rendering",
+  "real model/network"
+ ],
+ "writtenOnlyIn": "reviews/nb-38 + handoffs；未写 deliveries/inventory/manager/candidate/全局 FILES/MANIFEST",
+ "next": "lead 按 18 个 acceptedHashes 合入；无需返修"
+}

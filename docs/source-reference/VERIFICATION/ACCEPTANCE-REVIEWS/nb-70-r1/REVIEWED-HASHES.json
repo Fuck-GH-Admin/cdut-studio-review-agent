@@ -1,0 +1,118 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-70-r1",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-03-20261023",
+  "reviewedAtUtc": "2026-10-23T20:49:34Z",
+  "batchVerdict": "accepted",
+  "manuals": {
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-browser-tools.ts.md": {
+      "manualSha256": "04d4bb9e05f7c8c129d3bdba7a966b274f15250ff97e119088ae7e90c80c197f",
+      "sourceSha256": "5916cffab4db8fcc7ac58f5f41f0b387d2995840e77b09cc354b9590d217f505",
+      "sourceBlob": "90dd5f81197bcdedf56020e14ae2de0f8abc513f",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-cert-interstitial.test.ts.md": {
+      "manualSha256": "2f7749a2c2634c606c25d5cffb327cd97e109860a1cf93a541ce99d8db7bc383",
+      "sourceSha256": "214788bdd9a2e122d5ff9c42dc429a694a9243909c663a9477bd13a5fd85b726",
+      "sourceBlob": "2cb5d6296cfcd9086ec0e5343781a6d894513f5a",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-cert-interstitial.ts.md": {
+      "manualSha256": "9554c77f54fd75babc41abc3efcaa2e69a01b02816a19bbfdfc638d62c40bbec",
+      "sourceSha256": "4bcac26befa588bb5136f05b450e14f581b6d532fe7fdf0223177b596901bcc4",
+      "sourceBlob": "b622660dca1e98059bfbc5607a07e82b5cbdd61f",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-constants.ts.md": {
+      "manualSha256": "05e180a72285cc70fb8f50c17202b88231bb5b66037c138c71d5ae6166ddae28",
+      "sourceSha256": "9efc76edd97fa695dafa0adbb35d64e8cff16c8ecc2e3be01efec9040a243084",
+      "sourceBlob": "04ea3d8a2095fd2c1ee9ec2272b580a1672ce889",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-context-pruning.test.ts.md": {
+      "manualSha256": "e5c42882f3fd4a20912e7fc5c54477aef8f48e6c57c66aff1d53fcb6a18949b7",
+      "sourceSha256": "445cdc781a9f8a2726b2f5203107234f62b231f10a4318fc2f54fc222bdab9ed",
+      "sourceBlob": "dcc2004fa47d09ccbd74cca4f886a86d7adbda1a",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-context-pruning.ts.md": {
+      "manualSha256": "ec78b3e5ebd47bffd001380b00071b1df336c69d37a278362e458d3b3130cf46",
+      "sourceSha256": "3b43b9aad5c02981a9d79e16bc5691bc8dbd2713ad4bf0eac01e3416d5093341",
+      "sourceBlob": "b5ee3ce9136e9f3cea43f131ce9fbda24b029f43",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-cookie-utils.test.ts.md": {
+      "manualSha256": "61b4c31d237378a84b2c53e5dfbd5c0ebf1884fffbef16c7dd62d8cbdb6a665f",
+      "sourceSha256": "69e8cffb753287e13ff35f5e2b0075a177e64aab9b4fceacb8ab9f4d73f163aa",
+      "sourceBlob": "cecf2938348ce2b1a533e31d574659f1918394d3",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-cookie-utils.ts.md": {
+      "manualSha256": "88c159fea83b24d13b8ad69f80286db3f636dd94fbef2b8335d4ffe60c825394",
+      "sourceSha256": "5d121f0ac5a0103fa18194294c87a37fe1a3312d921f04fe01facf2105b73620",
+      "sourceBlob": "ab5cd05fc7fb16667abd7ce1fee5cd36a1ab8880",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-devtools-hub.test.ts.md": {
+      "manualSha256": "99e343c68931eb91678356f977f38bc3c8cae0dc083fde8645fc652fdcdb3411",
+      "sourceSha256": "401d526182bcfd8d328acdd1cc1e4c8eb3b901bfb0dc2826ec1b6d6d6be43e76",
+      "sourceBlob": "9118230912aeb15cfe2e6c1f6323353388b20426",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-devtools-hub.ts.md": {
+      "manualSha256": "9ed79dfdc6da6944cda82bd366ee2bc3d330c2b2acd06e1b74b02055e73fc38b",
+      "sourceSha256": "7b1396e967ed80fc43ac0641e5d345ce56156ce261a6e2e6ce8ec499b8763a7c",
+      "sourceBlob": "5a60484ffdb3ebdb3e71797f7e9b90b30e770594",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-diagnostic-console.ts.md": {
+      "manualSha256": "1e37748f6c75f471009f56fddba29fba98cadafcadd2e767368574252b33b04f",
+      "sourceSha256": "f69670d419b4fc5ca273dc687e18c2552fd41d37bdb0d1f40b02875bfdae1e80",
+      "sourceBlob": "7a34961a783de521039623c04e26f7627036db79",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-dom-distillation.test.ts.md": {
+      "manualSha256": "7cbb7a90cc6f4bab65af02724a09785b5a49e242a6f84bb24c8124236c5e9294",
+      "sourceSha256": "9dfc28acd10e09ba3707bf53ae62c554929ed15e7949e3f9a1dfcd563a708000",
+      "sourceBlob": "241bdb1eb598021a5c8244018b15c948cdcc2f0c",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-tabs-store.ts.md": {
+      "manualSha256": "8b2a2c9dceac09fd8ceb50ec8cb1dd449a2846759c3fa7b72be4b4a3d602c58c",
+      "sourceSha256": "5f57bfc88b40af0b079a88afbadd1b58b1d3344911af893f5bd1599700f23f3f",
+      "sourceBlob": "11cded8e581825bf17d295569b1cf78df315e501",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-theme-service.test.ts.md": {
+      "manualSha256": "13ab51e18c7fd761a4d9b64f36da5e7bcd64ac50314c1cbf6445fe03f1818e34",
+      "sourceSha256": "08e30d182d7f84de53aa9b02208d31a0b31eed4514d3961fe9aceaaecda87c3f",
+      "sourceBlob": "45e101dfd967796a1213c9b19f3d48686ae6df6f",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-theme-service.ts.md": {
+      "manualSha256": "e28fe1dd86a7e0aa38253df508f486293a9d4e1a310e1ed3a1adbfcae2bbf9eb",
+      "sourceSha256": "ee72d0b72584649ea0587c043ae6900e19747cd8213c63c49d3fe389beb915e2",
+      "sourceBlob": "bedd76c0ce259f7bbd06799b0c4416289b31e285",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-thinking-log.ts.md": {
+      "manualSha256": "d9a2b712c1edde746833d85c5ab96d4bfeef9f739d7b4e258302e304b62f3b91",
+      "sourceSha256": "47e2a78658ce1c9f13de4db19e1478bcea76c4cafdb271c68e298f0b0175b43f",
+      "sourceBlob": "c682b160e5abd29502fb18f92260c5f5867e5f1d",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-visual-anchor.test.ts.md": {
+      "manualSha256": "4ea7d453f912e795dbe997a6378fef3718527f796433d731f6c031093d18adb2",
+      "sourceSha256": "df8beefd64be1edf4195c066a433f4022eff3a240a0fa7c7c4679a34b9e339a7",
+      "sourceBlob": "4ce4951fcaf50647fae85d32f69703b7ea82fcbf",
+      "verdict": "accepted"
+    },
+    "MODULE-REFERENCE/p03-integrations/FILE-REFERENCE/apps/electron/src/main/lib/cdut/yanhu/yanhu-visual-anchor.ts.md": {
+      "manualSha256": "644afdc7cf7cdb824c93c5ff6f143024fd703197c08ba14ddf877399a544ad83",
+      "sourceSha256": "67113257f336479bfd24dfd3fecb25e260ab6b506e43bf9804672e3a1f4eb3db",
+      "sourceBlob": "1e64d354f7da762b79c31bc9164aa12d181845a9",
+      "verdict": "accepted"
+    }
+  }
+}

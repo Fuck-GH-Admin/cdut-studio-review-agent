@@ -1,0 +1,43 @@
+{
+ "schema": "dsh-r07-index-review-done/1",
+ "batch": "index-p02-agent-runtime__vendor-xsd__ecma-r1",
+ "groupId": "p02-agent-runtime__vendor-xsd__ecma",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-index-author-extra-03-20261024",
+ "reviewerSession": "docs-r07-index-qa-extra-03-20261024",
+ "reviewedAtUtc": "2026-10-23T21:31:00Z",
+ "sealedAtUtc": "2026-10-23T19:56:50+00:00",
+ "status": "REVIEW_COMPLETE_ACCEPTED",
+ "batchVerdict": "accepted",
+ "revisionOf": "index-p02-agent-runtime__vendor-xsd__ecma",
+ "counts": {
+  "files": 12,
+  "accepted": 12,
+  "revision_required": 0,
+  "unknown": 0,
+  "findingsBlocking": 0,
+  "findingsNonBlocking": 0
+ },
+ "artifactSha256": "39340c0cb9f33bf7535a918ed344e1c98d8a9b537948ddaaebadfcc500e67404",
+ "artifacts": [
+  "reviews/index-p02-agent-runtime__vendor-xsd__ecma-r1/RESULT.json",
+  "reviews/index-p02-agent-runtime__vendor-xsd__ecma-r1/REVIEWED-HASHES.json",
+  "reviews/index-p02-agent-runtime__vendor-xsd__ecma-r1/SOURCE-CHECKLIST.md",
+  "reviews/index-p02-agent-runtime__vendor-xsd__ecma-r1/DONE.json"
+ ],
+ "notRun": [
+  "产品测试",
+  "typecheck",
+  "构建",
+  "Electron/GUI（本轮统一 NOT_RUN）"
+ ],
+ "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal（父批 r0 字节不动）/inventory/全局账/candidate；未 commit/push；结论只覆盖本 r1。",
+ "findingsSummary": [
+  {
+   "id": "ECMA-F-01",
+   "closure": "resolved",
+   "verify": "r1 第 69 行括注改为「元素（源文件 :7-8）、TargetMode 属性（:19）与 ST_TargetMode 枚举（:27-32，External :29/Internal :30）；全文 33 行」，与 QA 实测逐行一致；FINDINGS-RESPONSE 程序化 diff 核实 r0→r1 仅 1 行，其余 11 文件小节零字节变动（QA diff 复核一致）。"
+  }
+ ],
+ "next": "lead 按 reviews/index-p02-agent-runtime__vendor-xsd__ecma-r1/REVIEWED-HASHES.json 合入 r1 artifact（39340c0cb9f33bf7…）；旧 seal r0 不改、不套新字节。"
+}

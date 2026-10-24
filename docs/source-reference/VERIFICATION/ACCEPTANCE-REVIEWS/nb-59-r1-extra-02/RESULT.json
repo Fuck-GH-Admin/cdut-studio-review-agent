@@ -1,0 +1,466 @@
+{
+ "schema": "dsh-r07-review-result/2",
+ "batch": "nb-59-r1",
+ "revisionOf": "nb-59",
+ "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+ "authorSession": "docs-r07-author-nb-47-20261023",
+ "reviewerSession": "docs-r07-qa-extra-02-20261024",
+ "reviewedAtUtc": "2026-10-23T21:46:09Z",
+ "sealId": "seal-e2106116c58b2c6a",
+ "batchVerdict": "accepted",
+ "counts": {
+  "files": 18,
+  "accepted": 18,
+  "changedReVerified": 3,
+  "boundParentAccepted": 15,
+  "blocking": 0
+ },
+ "gates": {
+  "G0": "PASS",
+  "G1": "PASS",
+  "G2": "PASS",
+  "note": "Independent re-verification by qa-extra-02 (prior nb-59-r1 review was an empty shell: files:0/reviewer null/no seal binding - left untouched as history). G0: seal chain hashes/ZIP/bindings all match (seal seal-e2106116c58b2c6a). G2: 3 changed manuals re-verified claim-by-claim against baseline/source@05fb - all fixes correct, no regressions; 15 unchanged manuals parent-accepted with identical sha256 -> hash-bound reuse of parent same-source evidence."
+ },
+ "files": [
+  {
+   "path": "apps/electron/src/main/lib/goal-update-validation.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-update-validation.test.ts.md",
+   "sourceBlob": "3c567ed34bbc14a1ad1e9d4eba905802ecb0847c",
+   "sourceSha256": "2d3cd23c6e11bdb63184e87fc64afc8c1e4664dbe874593bef759e69fc55991e",
+   "manualSha256": "667afc65a6e1721a681e023c20e822559d19fe7241a637e4af33438fefcfa93c",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-59R1-V-goal-update-validation",
+     "severity": "verified",
+     "claim": "F-01 2+9->16 verified (1 valid + test.each 7 rows :8 + for-loop 8 structural cases :11-12 = 16)",
+     "sourceEvidence": "baseline/source@05fb mechanical re-check (grep/awk/sed anchors) per claim",
+     "action": "closed"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/goal-update-validation.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-update-validation.ts.md",
+   "sourceBlob": "3ea303bee615857e7a14742f9f1bc02149383ff4",
+   "sourceSha256": "2ee968361583fecb56bb4f96072206f31895a3afe2ca87bcd64abba24c3bf91a",
+   "manualSha256": "a67f09b64e6d56cd867a560b4b4f8675e36a0043c3e62254418fab3ae93fd8fb",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-59R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-59/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/memory-archive-search.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/memory-archive-search.ts.md",
+   "sourceBlob": "e257e85ed93a42a248d6b2fea6392b17dd4709ab",
+   "sourceSha256": "e31b7114d81131c2e9c2207f1b096ee634de96b4a4761cd7f117447a2318bbb5",
+   "manualSha256": "ddd983491e1a4921dab48e99451fbc9feb6b4a7c61b54f416beb362f552fdd24",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-59R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-59/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/memory-search-router.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/memory-search-router.test.ts.md",
+   "sourceBlob": "40f051423c7f715cce41495d4d50ec8b45b4be22",
+   "sourceSha256": "704e81358d17017c5373870b0a5aa95b42534a5791c05a0baae37a494377e615",
+   "manualSha256": "1222014812adf10ddc6c994cc0ea99ec53d9aa9fa2a3af56326e86d45685d1c5",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-59R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-59/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/memory-search-router.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/memory-search-router.ts.md",
+   "sourceBlob": "4e2e50cbf4b050fb75d50f6168955f658913b1d7",
+   "sourceSha256": "7fbba90adb913ca26c7cb6fdbac7b2654e10f793a6e8da13cc54967b0478c9af",
+   "manualSha256": "d557426e8f62d12172d479b735e35644e0e25397062457449865ac594d1dc17c",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-59R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-59/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/memory-sleep-consolidator.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/memory-sleep-consolidator.ts.md",
+   "sourceBlob": "f2d19bd490d011d6742140197337c38ee37b6bb3",
+   "sourceSha256": "1cdacefd973e2957d1908fc2683aef89247d28d1e79f6209985854e14ea7285d",
+   "manualSha256": "2aeb01b387b2c4366ac688a208d8d51be4a95bf665cc9ceab1994f4137211b08",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-59R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-59/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/memory-wikilink-service.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/memory-wikilink-service.test.ts.md",
+   "sourceBlob": "e7ace7d5970b1fd37988b57c122adb8e8c8b96be",
+   "sourceSha256": "b7c2a245214d2dccc18c56594dd18fe321084aeb0cc1620de334a0ba5a5e52a1",
+   "manualSha256": "5b848ad50520eb3eabf1a67d72a22c2435c282a8a1c825b335a95e3bc5eec249",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-59R1-V-memory-wikilink-service",
+     "severity": "verified",
+     "claim": "F-02 10->9 verified (test( = 9, self-listed 5+4=9)",
+     "sourceEvidence": "baseline/source@05fb mechanical re-check (grep/awk/sed anchors) per claim",
+     "action": "closed"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/memory-wikilink-service.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/memory-wikilink-service.ts.md",
+   "sourceBlob": "2254491a6c550dafa2d4d6565056b8a9a5216a02",
+   "sourceSha256": "2f45680d055d7a31e39618aedc1790b34c219f85ff77fdfe4a25d0a657d83ddd",
+   "manualSha256": "3ac06c0350fce1b5f3065cb7409a1fded582a2ebb6c9f10038d8e9625300cb12",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-59R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-59/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/planning-agent-operations.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/planning-agent-operations.test.ts.md",
+   "sourceBlob": "fd8eabb0e329671c8fcf0a34f6600f910a1688ae",
+   "sourceSha256": "cef32baa0a76c139246a516b176cf4a5b568ef98356d6bdc0b90d992df8e8808",
+   "manualSha256": "f81417eb5951be53e906cee80871b5ddd094415657a04d5952dc1722740f77a0",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-59R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-59/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/planning-agent-operations.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/planning-agent-operations.ts.md",
+   "sourceBlob": "fb916aee93d8f98e32582ac3e739e264b939e4be",
+   "sourceSha256": "2f22b8aa48c5a76772fea312f5ea1c1815c93ac4ea2adf1fdf4942089126d5a0",
+   "manualSha256": "a13befc42c57d01dda1c34136379f8b6eb748bf474314d8b8aaded00e05c24ff",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-59R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-59/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/planning-events.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/planning-events.ts.md",
+   "sourceBlob": "035335af603669b1ac679425a08350f4783809a3",
+   "sourceSha256": "8fce0d2ec449ba41aa61950392c85825d7dd9366e5ea134cd5cada7a8f99a781",
+   "manualSha256": "e1db2394656af335c3e380df32f02a72da2191034e465e7a0a670145c3d4bcf7",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-59R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-59/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/planning-manager.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/planning-manager.ts.md",
+   "sourceBlob": "24fe9b2a69614af981ef6790ee3127eca4d057c2",
+   "sourceSha256": "cba1be931b72e14b190d4c7c4b538876db141ce3d1cfd199991e1fd1435bcde9",
+   "manualSha256": "77e28edf0a2b163cc61acd43541a3883c469d486e9cc92df7e0eeb1e7f836d0e",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-59R1-V-planning-manager",
+     "severity": "verified",
+     "claim": "F-03 25->26 exports verified (grep ^export = 26; groups 8+6+5+7=26)",
+     "sourceEvidence": "baseline/source@05fb mechanical re-check (grep/awk/sed anchors) per claim",
+     "action": "closed"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/planning-reminder-scheduler.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/planning-reminder-scheduler.ts.md",
+   "sourceBlob": "4c2a78a461755eb662a09a121248775c547e9859",
+   "sourceSha256": "81934d181cb2c4893a3ca52ed57a066e8af9865ccc539d56cef57f6ca612fe2e",
+   "manualSha256": "ef3a790404d9ab77cde081ab0a33745a88716aed3b55f0ad7adf21f611c3906a",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-59R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-59/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/planning-window.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/planning-window.ts.md",
+   "sourceBlob": "0916d7963ad02821c26858274732e20bf78df0f4",
+   "sourceSha256": "4d86ccb24743b32254bf8a816b5faf6de8b08ec6e39130fd117718b22e4b5077",
+   "manualSha256": "69f838c9d129f9b01f782fbfd9b678798079338ec39665c3d8e33f5fcccfb9dd",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-59R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-59/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/skill-master-manager.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-master-manager.test.ts.md",
+   "sourceBlob": "d6de619fe1cc0d7b509969c697adadac9ea63dc8",
+   "sourceSha256": "43531db1d7087bb66c89213a53f908abea8c7f8f4ee27674629f3cdc8acabf3a",
+   "manualSha256": "aeac87f824caaf5be88e18d633be618b834bf2196d282ca04f25afbe8614f511",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-59R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-59/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/skill-master-manager.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-master-manager.ts.md",
+   "sourceBlob": "f1eccb9150734c1dea303b402f1a09065cc89236",
+   "sourceSha256": "f1ddd47ad66b7debe1909d8f4637f6f0d6c61f43ec6fad7555e347a70dafc58c",
+   "manualSha256": "9d6451e7843a6f045411925796a1f032a6540ef13d9d67191387b58c23f27ec7",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-59R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-59/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/skill-path-security.test.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-path-security.test.ts.md",
+   "sourceBlob": "588a6462acb18b5a4d8cec762e6d849ef324f8b2",
+   "sourceSha256": "8e30b5ce0f48baae5c8db5a36d6b6f1efd411fbca088d0416b540dee7460af7b",
+   "manualSha256": "c269a5ab320028c6993332ecfe12497c9cc8d978ff6f45be771073479144d896",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-59R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-59/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  },
+  {
+   "path": "apps/electron/src/main/lib/skill-path-security.ts",
+   "manual": "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-path-security.ts.md",
+   "sourceBlob": "72c854844b64779e10022369ab86aae0c65b2bf4",
+   "sourceSha256": "cc1253ce3cd14f93d324881b0247fd148c1dca2945c46835679bdc7025f6cd61",
+   "manualSha256": "8c5a8fed09ac3e86fd623b631724d0ae52563c06c488cd2b4561b7dc2edf137c",
+   "verdict": "accepted",
+   "findings": [
+    {
+     "id": "NB-59R1-BIND",
+     "severity": "bound",
+     "claim": "parent-accepted (old QA independent review) and hash unchanged in r1 -> same-source evidence reused with explicit hash binding; not re-verified byte-wise per scope rule",
+     "sourceEvidence": "reviews/nb-59/RESULT.json + SOURCE-CHECKLIST.md; sha256 equality base vs r1",
+     "action": "none"
+    }
+   ]
+  }
+ ],
+ "acceptedHashes": {
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-update-validation.test.ts.md": "667afc65a6e1721a681e023c20e822559d19fe7241a637e4af33438fefcfa93c",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-update-validation.ts.md": "a67f09b64e6d56cd867a560b4b4f8675e36a0043c3e62254418fab3ae93fd8fb",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/memory-archive-search.ts.md": "ddd983491e1a4921dab48e99451fbc9feb6b4a7c61b54f416beb362f552fdd24",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/memory-search-router.test.ts.md": "1222014812adf10ddc6c994cc0ea99ec53d9aa9fa2a3af56326e86d45685d1c5",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/memory-search-router.ts.md": "d557426e8f62d12172d479b735e35644e0e25397062457449865ac594d1dc17c",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/memory-sleep-consolidator.ts.md": "2aeb01b387b2c4366ac688a208d8d51be4a95bf665cc9ceab1994f4137211b08",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/memory-wikilink-service.test.ts.md": "5b848ad50520eb3eabf1a67d72a22c2435c282a8a1c825b335a95e3bc5eec249",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/memory-wikilink-service.ts.md": "3ac06c0350fce1b5f3065cb7409a1fded582a2ebb6c9f10038d8e9625300cb12",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/planning-agent-operations.test.ts.md": "f81417eb5951be53e906cee80871b5ddd094415657a04d5952dc1722740f77a0",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/planning-agent-operations.ts.md": "a13befc42c57d01dda1c34136379f8b6eb748bf474314d8b8aaded00e05c24ff",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/planning-events.ts.md": "e1db2394656af335c3e380df32f02a72da2191034e465e7a0a670145c3d4bcf7",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/planning-manager.ts.md": "77e28edf0a2b163cc61acd43541a3883c469d486e9cc92df7e0eeb1e7f836d0e",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/planning-reminder-scheduler.ts.md": "ef3a790404d9ab77cde081ab0a33745a88716aed3b55f0ad7adf21f611c3906a",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/planning-window.ts.md": "69f838c9d129f9b01f782fbfd9b678798079338ec39665c3d8e33f5fcccfb9dd",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-master-manager.test.ts.md": "aeac87f824caaf5be88e18d633be618b834bf2196d282ca04f25afbe8614f511",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-master-manager.ts.md": "9d6451e7843a6f045411925796a1f032a6540ef13d9d67191387b58c23f27ec7",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-path-security.test.ts.md": "c269a5ab320028c6993332ecfe12497c9cc8d978ff6f45be771073479144d896",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-path-security.ts.md": "8c5a8fed09ac3e86fd623b631724d0ae52563c06c488cd2b4561b7dc2edf137c"
+ },
+ "allManualHashes": {
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-update-validation.test.ts.md": "667afc65a6e1721a681e023c20e822559d19fe7241a637e4af33438fefcfa93c",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/goal-update-validation.ts.md": "a67f09b64e6d56cd867a560b4b4f8675e36a0043c3e62254418fab3ae93fd8fb",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/memory-archive-search.ts.md": "ddd983491e1a4921dab48e99451fbc9feb6b4a7c61b54f416beb362f552fdd24",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/memory-search-router.test.ts.md": "1222014812adf10ddc6c994cc0ea99ec53d9aa9fa2a3af56326e86d45685d1c5",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/memory-search-router.ts.md": "d557426e8f62d12172d479b735e35644e0e25397062457449865ac594d1dc17c",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/memory-sleep-consolidator.ts.md": "2aeb01b387b2c4366ac688a208d8d51be4a95bf665cc9ceab1994f4137211b08",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/memory-wikilink-service.test.ts.md": "5b848ad50520eb3eabf1a67d72a22c2435c282a8a1c825b335a95e3bc5eec249",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/memory-wikilink-service.ts.md": "3ac06c0350fce1b5f3065cb7409a1fded582a2ebb6c9f10038d8e9625300cb12",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/planning-agent-operations.test.ts.md": "f81417eb5951be53e906cee80871b5ddd094415657a04d5952dc1722740f77a0",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/planning-agent-operations.ts.md": "a13befc42c57d01dda1c34136379f8b6eb748bf474314d8b8aaded00e05c24ff",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/planning-events.ts.md": "e1db2394656af335c3e380df32f02a72da2191034e465e7a0a670145c3d4bcf7",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/planning-manager.ts.md": "77e28edf0a2b163cc61acd43541a3883c469d486e9cc92df7e0eeb1e7f836d0e",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/planning-reminder-scheduler.ts.md": "ef3a790404d9ab77cde081ab0a33745a88716aed3b55f0ad7adf21f611c3906a",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/planning-window.ts.md": "69f838c9d129f9b01f782fbfd9b678798079338ec39665c3d8e33f5fcccfb9dd",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-master-manager.test.ts.md": "aeac87f824caaf5be88e18d633be618b834bf2196d282ca04f25afbe8614f511",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-master-manager.ts.md": "9d6451e7843a6f045411925796a1f032a6540ef13d9d67191387b58c23f27ec7",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-path-security.test.ts.md": "c269a5ab320028c6993332ecfe12497c9cc8d978ff6f45be771073479144d896",
+  "MODULE-REFERENCE/p02-agent-runtime/FILE-REFERENCE/apps/electron/src/main/lib/skill-path-security.ts.md": "8c5a8fed09ac3e86fd623b631724d0ae52563c06c488cd2b4561b7dc2edf137c"
+ },
+ "parentHashBinding": {
+  "apps/electron/src/main/lib/goal-update-validation.ts": {
+   "manualSha256": "a67f09b64e6d56cd867a560b4b4f8675e36a0043c3e62254418fab3ae93fd8fb",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-59/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/memory-archive-search.ts": {
+   "manualSha256": "ddd983491e1a4921dab48e99451fbc9feb6b4a7c61b54f416beb362f552fdd24",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-59/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/memory-search-router.test.ts": {
+   "manualSha256": "1222014812adf10ddc6c994cc0ea99ec53d9aa9fa2a3af56326e86d45685d1c5",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-59/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/memory-search-router.ts": {
+   "manualSha256": "d557426e8f62d12172d479b735e35644e0e25397062457449865ac594d1dc17c",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-59/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/memory-sleep-consolidator.ts": {
+   "manualSha256": "2aeb01b387b2c4366ac688a208d8d51be4a95bf665cc9ceab1994f4137211b08",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-59/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/memory-wikilink-service.ts": {
+   "manualSha256": "3ac06c0350fce1b5f3065cb7409a1fded582a2ebb6c9f10038d8e9625300cb12",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-59/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/planning-agent-operations.test.ts": {
+   "manualSha256": "f81417eb5951be53e906cee80871b5ddd094415657a04d5952dc1722740f77a0",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-59/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/planning-agent-operations.ts": {
+   "manualSha256": "a13befc42c57d01dda1c34136379f8b6eb748bf474314d8b8aaded00e05c24ff",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-59/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/planning-events.ts": {
+   "manualSha256": "e1db2394656af335c3e380df32f02a72da2191034e465e7a0a670145c3d4bcf7",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-59/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/planning-reminder-scheduler.ts": {
+   "manualSha256": "ef3a790404d9ab77cde081ab0a33745a88716aed3b55f0ad7adf21f611c3906a",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-59/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/planning-window.ts": {
+   "manualSha256": "69f838c9d129f9b01f782fbfd9b678798079338ec39665c3d8e33f5fcccfb9dd",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-59/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/skill-master-manager.test.ts": {
+   "manualSha256": "aeac87f824caaf5be88e18d633be618b834bf2196d282ca04f25afbe8614f511",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-59/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/skill-master-manager.ts": {
+   "manualSha256": "9d6451e7843a6f045411925796a1f032a6540ef13d9d67191387b58c23f27ec7",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-59/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/skill-path-security.test.ts": {
+   "manualSha256": "c269a5ab320028c6993332ecfe12497c9cc8d978ff6f45be771073479144d896",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-59/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  },
+  "apps/electron/src/main/lib/skill-path-security.ts": {
+   "manualSha256": "8c5a8fed09ac3e86fd623b631724d0ae52563c06c488cd2b4561b7dc2edf137c",
+   "parentVerdict": "accepted",
+   "parentReview": "reviews/nb-59/RESULT.json",
+   "binding": "hash-identical to parent-accepted bytes"
+  }
+ },
+ "openNonBlocking": "none",
+ "findings": []
+}

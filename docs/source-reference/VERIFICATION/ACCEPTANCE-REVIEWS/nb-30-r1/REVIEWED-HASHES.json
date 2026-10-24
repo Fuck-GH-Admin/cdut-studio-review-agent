@@ -1,0 +1,37 @@
+{
+  "schema": "dsh-r07-reviewed-hashes/1",
+  "batch": "nb-30-r1",
+  "revisionOf": "nb-30",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "reviewerSession": "docs-r07-qa-nb-05-20261023",
+  "authorSession": "docs-r07-author-nb-05-20261023",
+  "reviewedAtUtc": "2026-10-23T21:48:52Z",
+  "acceptedHashes": {
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/agent/index.ts.md": "8f8509e3cfc4a8d7536c3ab784fc502d314dba28e792f5ce489b7edb521995d9",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/config/index.ts.md": "594845060760a76fbc107f222b55304a55431de3243aace6c964ffb8fd302c7c",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/constants/browser-file-sentinels.test.ts.md": "df39c6c7945ac4827a4beec701f931284dd600511d206c5e0b98440f777eaa34",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/constants/browser-file-sentinels.ts.md": "a8637187b3207bc54f883bb940e148ef0c2b079329dc9aed026797118a7ae642",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/constants/document-anchor.test.ts.md": "68b680bbe49a71beec5e9d46441cb3a26e57ca0cb515a17bb939b2b2840140b9",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/constants/document-anchor.ts.md": "d947a71e604857290462569f5559b01cebc69fdc9b19ba81fb0ebbb7c0e4ea8c",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/constants/ofv-theme-bridge.test.ts.md": "0b226e0c20ea31d82aa81235b02785fdfcd7b8f40b28d14c9751d3ce17db6899",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/constants/ofv-theme-bridge.ts.md": "5893b6448dee8abcb56f2992785b0f281ff87601694cba0e16bdb8b6a40567f4",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/constants/permission-rules.test.ts.md": "f78874a99e21aaac52ad537db9902bd56f72243f396b322c509ed75c1fed7f67",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/constants/permission-rules.ts.md": "4e7ff340ab839923daec161c087f676183ba978140e61b2577af1495226c4fcb",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/constants/session-storage.ts.md": "b31c592ad6305bff7aa54633e919e0359b6b498f0482a4c10ccbc52aed481540",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/index.ts.md": "86a28227bb69445f0032019a1a57b8161d673789a48e7f6c40fd6592026b18d6",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/review/batch-review-triage.test.ts.md": "b83df68dafa47c7d060073611f580934fe23afd1554ffacf5526893ba4908ac1",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/review/batch-review-triage.ts.md": "4e13d1f588cffdee3b9d70e1cd5d7c1c54eeca1c2906c251844a4f0f015d5105",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/review/decision-readiness-v2.ts.md": "ede87c9465ff641175bc1455597b039d7ed93acc60f15da74f8a8a221da87bd2",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/review/t01-typed-criteria.ts.md": "5492a5adb2d2d591c3fa6d887c91b8acadcaa6ba3537e11c653840e1dad9ae21",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/agent-image-attachment.test.ts.md": "9b8402d80c645a5a41c926d2b29eab0119fd9b42fab7ab3f8c4e3780f76ec888",
+    "MODULE-REFERENCE/p07-shared-libs/FILE-REFERENCE/packages/shared/src/utils/agent-image-attachment.ts.md": "a65a9e13eb0def4acc895db660215be50ae8504509caaeb7767d0b802f6d7063"
+  },
+  "revisionRequiredHashes": {},
+  "rejectedHashes": {},
+  "chain": {
+    "sealId": "seal-a6f6707875a67266",
+    "manifestSha256": "ba3df14ae1a195541eab8dd0e2e4c172ff69903822a2b2ba496a7d9317918bec",
+    "readySha256": "f1cb286eb11111eb9adab219101e28c9ed3e57c867deb31f25315fc10eede6de",
+    "zipSha256": "c88a90d57fdb7a85ceb7d590bb5efdfc09b1297615ac2096a2b26bd6507eaa71"
+  }
+}

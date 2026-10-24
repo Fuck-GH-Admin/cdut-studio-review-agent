@@ -1,0 +1,60 @@
+{
+  "schema": "dsh-r07-index-review-result/1",
+  "batch": "index-p01-app-shell__specs__gui",
+  "groupId": "p01-app-shell__specs__gui",
+  "frozenSha": "05fb2565e20eb1760233696be1832f68196b37c2",
+  "authorSession": "docs-r07-index-author-20261023",
+  "reviewerSession": "docs-r07-index-qa-20261023",
+  "reviewedAtUtc": "2026-10-23T21:40:00Z",
+  "sealedAtUtc": "2026-10-23T18:41:42Z",
+  "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__specs__gui.md",
+  "artifactSha256": "49e14980170896bd9da41be0686fea4e264c49caf6041d35a4068ab5adba2337",
+  "batchVerdict": "accepted",
+  "counts": {
+    "files": 2,
+    "accepted": 2,
+    "revision_required": 0,
+    "unknown": 0,
+    "blocking": 0,
+    "nonBlocking": 0
+  },
+  "gates": {
+    "G0_INDEX": "PASS",
+    "G1_INDEPENDENT_SOURCE_REVIEW": "PASS",
+    "G2_SEAL_CONSISTENCY": "PASS",
+    "note": "G0 等价全过、封版三方哈希全对、change 与锁一致；消费链 QA 行级实证。"
+  },
+  "g0Evidence": {
+    "stockScript": "ERRATA-E1 沿登记；等价检查 PASS"
+  },
+  "files": [
+    {
+      "path": "specs/gui/file-path-chip-search/design.md",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__specs__gui.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__specs__gui.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#specs--gui--file-path-chip-search--design.md",
+      "line": 8,
+      "sourceBlob": "886b31b03ae73857f3cf9d95f2fb846470a0804c",
+      "sourceSha256": "c83dfe599b86c7be5f4a3c56691b79a362bd51b712746fc73f46ae44e730a2f8",
+      "manualSha256": "49e14980170896bd9da41be0686fea4e264c49caf6041d35a4068ab5adba2337",
+      "verdict": "accepted",
+      "findings": [],
+      "note": ":20-:21 指路 file-path-chip.tsx/.test.ts QA 命中；零外部引用负向核实"
+    },
+    {
+      "path": "specs/gui/file-path-chip-search/requirements.md",
+      "manual": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__specs__gui.md",
+      "targetMd": "MODULE-REFERENCE/p01-app-shell/INDEX/p01-app-shell__specs__gui.md",
+      "anchor": "MODULE-REFERENCE/p01-app-shell/INDEX.md#specs--gui--file-path-chip-search--requirements.md",
+      "line": 18,
+      "sourceBlob": "96b1b67b037158785cd567100dd1939e161b712b",
+      "sourceSha256": "4e5d7781b7b6ce165babd5a703f68d0cd6fb20a13666eea126b30a4de59067c8",
+      "manualSha256": "49e14980170896bd9da41be0686fea4e264c49caf6041d35a4068ab5adba2337",
+      "verdict": "accepted",
+      "findings": [],
+      "note": "releases.json:204 PR#103「fix(file-path-chip): 完整路径仅精确搜索自身」QA 行级命中（需求 1.3/1.4 落地记录）"
+    }
+  ],
+  "findings": [],
+  "boundaries": "QA 只读复核：未改源码/测试/依赖/作者正文/旧 seal/全局账；未跑产品测试/typecheck/构建/GUI；未 commit/push；结论只覆盖本批。"
+}
