@@ -248,3 +248,64 @@
 - 中间构建曾发现 `nativeRunId` 使用早于声明，导致 D0.5/D1/D2 TypeScript 错误及批次历史阶段测试异常。已将真实 Run 的解析提前至同一 Case 事务中的所有门禁之前，提交 `b8856fb`。
 - `b8856fb` 的 `Review Baseline CI` 和 `Review batch focused tests` 已 success；其余 D0.5、D1、D2、PR CI 在此记录时还未结束。**不能宣称最新全部 CI 已通过。**
 - 下一阶段需要专门增加“原生案卷部分 Run 不可整案批准 / 补件后新 Run 可批准”的事务级回归，并用实际 Electron 桌面流程核实初审缺件与正式办理是独立步骤。持久的初审补件任务、跨重启计时器统一、Group target 覆盖、T08 报告仍是未完成项。
+
+
+## 12. 第八次核验：统一收件与材料门禁恢复全绿（2026-10-24 13:42，UTC+08）
+
+### 12.1 当前快照
+
+- 分支：`fix/v3-unified-intake-routing`
+- 核验源码 HEAD：`7b5a5612c88b544f229ad67edf6c1ee97a95673e`
+- 集成目标：`feat/v3-r02-template-library`
+- PR：[ #246 — feat(review-v3): complete unified intake-to-template routing](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/246)
+- PR 状态：open、未合并；GitHub 报告可合并。
+- PR 改动快照：32 个文件，约 +2,442 / −534 行。
+- **该 HEAD 的六项 workflow 全部 success**：
+  - `Review batch focused tests`
+  - `Review Baseline CI`
+  - `D0.5 Semantic Module Tests`
+  - `D1 Review Authoring Tests`
+  - `D2 Scoped Pi Review Tests`
+  - `PR CI`
+
+上述结论只对应本节记录的 HEAD。六项自动化检查全绿表示配置中的构建/自动回归通过，不等于 Electron 实机业务闭环已经验收；PR 未合并。
+
+### 12.2 当前已提交实现
+
+1. **模板匹配与收件**：加入模板精确匹配、关键词候选、深度匹配协议与通用模型适配；候选匹配是技术路由，不授予审核或决定权限。未匹配/不确定情形保留人工确认和通用兜底路径。
+2. **模板驱动材料分类**：根据已选择模板展示材料槽位；分类动作经 Main 授权，针对明确的源材料版本写入角色/槽位，重新校验模板版本和材料版本，避免 Renderer 伪造归属。
+3. **格式与数量门禁**：根据模板 `acceptedKinds` 检查扩展名对应的材料类别；条件材料按三值逻辑处理（真/假/未知），区分未分类、条件不适用、已确认缺件、格式不兼容和解析失败。正式提交与决定阶段分别执行各自的材料要求；旧 V1 兼容门禁不被原生 V3 的严格规则意外改变。
+4. **统一初审 Run**：单案工作台不再在开始初审时隐式提交案卷；确定性模板检查和 Pi 语义检查被收敛到同一真实 Run，新增测试覆盖只读模板计算与材料分类指纹。
+5. **补件后旧 Run 失效**：当前材料/分类变化会让旧 Run 失效；补传后提示基于当前原件版本更新审核，不把历史结论冒充当前结论。
+6. **真实 Run 决定门禁**：原生 V3 阶段决定要求本案存在模板一致、输入未过期的真实 Pi Run；未解决的检查、待确认、未执行或执行失败项目不能被直接当作整案通过。决定写入真实 Run ID，不再使用伪造的 `run@rev` 充当原生 V3 的运行引用。
+7. **错误可行动化**：最新提交保留材料门禁的具体失败原因，供上层调用方显示和处理，而不是只给出无法定位的笼统错误。
+
+### 12.3 本轮关键提交链接
+
+- [7b5a561 — 保留可操作的材料门禁错误](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/7b5a5612c88b544f229ad67edf6c1ee97a95673e)
+- [3069fb — 记录原生部分 Run 审批保护与 CI 恢复](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/3069fbbae581ac22aa24dabaf328bc9792eb28ac)
+- [b8856fb — 在校验审批前解析真实 Run](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/b8856fb1e95a9a469153bef5a735bdf5d628b4ab)
+- [58ae25c — 阻止未解决检查被整案批准](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/58ae25cac09310dd38f06010a9acba63bb0f4ff6)
+- [e02a5a4 — 正式决定阶段材料门禁](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/e02a5a406421de10e1923668033373a71f144531)
+- [0ed74dc — 限定原生 V3 严格门禁并修复旧版兼容](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/0ed74dc786f12fe5daab039f9cb1317ba083ecc7)
+- [ac90f0f — 原生阶段决定绑定真实 Run](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/ac90f0fd5c7ea2ea1ea437d0ae886ae08e8640b7)
+- [56a009e — 初审先于正式提交并接入补件入口](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/56a009e1ce3d6d81cfe98da0ff3787bb31ac0dd8)
+- [480636c — 按模板槽位校验材料格式](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/480636c3112edfb95cd105f0903add40efbea29e)
+- [cf3e481 — 按已选模板分类材料](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/cf3e48145a19b560e3397f177171ad9bdd4678df)
+- [2e16f68 — 持久化用户确认的模板材料分类](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/commit/2e16f68746727e50040888fc172601da5d6bc01d)
+
+### 12.4 仍不能宣称完成的部分
+
+1. **持久补件业务任务**：Run 中发现的待补件结果与案卷正式 `SupplementRequest` / 学生回复 / 人工核验之间，仍需确认完整的事务投影和状态闭环。当前 UI 补传入口不能代替持久补件流程。
+2. **单一入口的全仓收敛**：普通单案工作台已经走统一 Run，但兼容用的独立模板规则入口仍存在；还需逐个核查实际调用点，确保没有其他按钮或 IPC 旁路产生第二份有效 Run。
+3. **模板规则覆盖**：继续核验多主体、Group scope、条件字段未知、多个同槽材料、超量/重复材料及规则无法编译时的行为，所有未知和未执行情况必须显式保留。
+4. **倒计时与候选一致性**：Renderer 和 Main 仍存在不同候选计时/自动选择代码路径；需要确认重开窗口、并发选择和材料变化时的单一权威状态。
+5. **Electron 实机验收**：尚缺有留存证据的完整流程：拖入材料 → 自动/手动模板匹配 → 分类确认 → 初审 → 少量缺件 → 补传 → 新 Run → 人工决定 → T08 报告/导出，并覆盖刷新和重启后的状态连续性。
+6. **本 PR 范围外优先项**：申诉闭环、ZIP 自动分案、离线导入/导出不应因为 PR #246 通过 CI 而算作已完成。
+
+### 12.5 下一步
+
+- 以最新 HEAD 为基线，继续补持久补件合同和统一入口调用点审计。
+- 为每一个关键状态转换补最小聚焦测试，不增加无必要的 CI 工作流。
+- 随后执行 Electron 桌面人工验收并保存截图/操作证据；未实测的部分继续标为未验收。
+- 本节记录后如有新提交，以新 HEAD 再查 workflow；不要把本节六绿结果自动沿用到后续提交。
