@@ -4,8 +4,15 @@
 import type { B1AuthorDocument } from '../../../main/lib/review/review-template-plan-adapter-v3-b1'
 import type { B29UnmatchedAuthorDraft } from '../../../main/lib/review/review-v3-b3-unmatched-author-bootstrap'
 import type { T01BriefDraft } from './review-v3-t01-brief-authoring'
+import { makeF06Obligations } from '../../../main/lib/review/review-v3-f06-generic-contract'
 
-export function proposedFallbackChecks(proposal:T01BriefDraft,brief:string):string[] {
+export function proposedFallbackReviewMatter(proposal:T01BriefDraft,brief:string):string {
+  const explicit=brief.match(/^\s*(?:申请事项|审核事项|业务名称|审核名称|模板名称)\s*[:：]\s*(\S[^\r\n]*)/m)?.[1]
+  const matter=(explicit??proposal.template.name??'').trim().slice(0,240)
+  return matter==='当前申请事项'?'':matter
+}
+
+export function proposedFallbackChecks(proposal:T01BriefDraft,_brief:string):string[] {
   const model=proposal.supportedBy==='authorized-model-draft'
   const statements=(model||proposal.extracted.some(item=>item.startsWith('草拟要求：'))
     ? (proposal.template.sections ?? []).flatMap(section=>section.criteria.map(item=>item.requirement.trim()))
@@ -13,26 +20,29 @@ export function proposedFallbackChecks(proposal:T01BriefDraft,brief:string):stri
   const mandatory=(model||proposal.extracted.some(item=>item.startsWith('材料：'))
     ? proposal.template.materialSlots:[]).filter(item=>item.minCount>0)
     .map(item=>'核查是否实际提交「'+item.name+'」及内容是否符合申请目的；缺失或不清楚时标记待补件。')
-  // 只有模型或用户明确提出的规则才能作为审核要求；没有规则时停留在
-  // “范围/材料是否足以审核”这一条探索性检查，绝不擅自生成业务政策。
-  const checks=[...statements,...mandatory].filter(Boolean)
-  if(!checks.length) checks.push('依据本案申请目的核对全部已提交材料的内容、完整性和一致性；'+
-    '对不明确事项标记待确认，不推断制度要求。范围：'+brief.trim().slice(0,800))
-  return [...new Set(checks)].slice(0,30)
+  // 通用的事实/缺件/依据检查由固定 F06 合同提供，列表只列用户额外要求。
+  // 未明确提出任何额外要求时也可开展有限初审，不能发明一套“默认校规”。
+  return [...new Set([...statements,...mandatory].filter(Boolean))].slice(0,30)
 }
 
 export function executableFallbackAuthor(
   prepared:B29UnmatchedAuthorDraft,requirements:readonly string[],
   nativeDocuments:readonly {versionId:string;byteHash?:string;active?:boolean}[],
+  reviewMatter:string,
   recordedBy='local-reviewer',
 ):B1AuthorDocument {
   if(!prepared||prepared.schemaVersion!=='review-v3-b29-unmatched-author-draft/1'||
     !prepared.document.sources.length||!prepared.sourceCandidates.length)
     throw new Error('缺少经过真实材料核验的公共兜底初稿')
   const cleaned=[...new Set(requirements.map(text=>text.trim()).filter(Boolean))]
-  if(!cleaned.length||cleaned.length>30||cleaned.some(text=>text.length>2000))
-    throw new Error('请确认至少一条具体审核要求（最多30条，每条不超过2000字）')
+  if(cleaned.length>30||cleaned.some(text=>text.length>2000))
+    throw new Error('额外审核要求最多30条，每条不超过2000字')
+  const matter=reviewMatter.trim()
+  if(!matter||matter.length>240||matter==='当前申请事项')
+    throw new Error('请明确本案真实申请事项（最多240字），不能使用笼统占位项')
   const initial=prepared.document
+  if(initial.targets.length!==1||initial.targets[0]?.objectKey!==matter)
+    throw new Error('公共兜底审核事项与 Main 原件快照不一致，请重新确认')
   const sourceVersions=new Map(prepared.sourceCandidates.map(item=>[
     item.candidateId,{
       matches:nativeDocuments.filter(doc=>doc.active!==false&&doc.byteHash===item.rawSha256),
@@ -59,13 +69,9 @@ export function executableFallbackAuthor(
     })),
     sources,
     modules:[{
-      moduleId:'local-fallback-semantic-review',version:'1',dependsOn:[],
-      checks:cleaned.map((requirement,index)=>({
-        checkKey:'review-item-'+(index+1),requirement,
-        sourceIds:initial.sources.map(source=>source.sourceId),
-        targetKeys:initial.targets.map(target=>target.targetKey),
-        condition:{kind:'always' as const},responsibility:'本机审核者',
-      })),
+      moduleId:'f06-generic-review',version:'1',dependsOn:[],
+      checks:makeF06Obligations(cleaned,initial.sources.map(source=>source.sourceId),
+        initial.targets[0]!.targetKey),
     }],
     stages:[{stageId:'technical-review',role:'local-reviewer',mode:'technical'}],
     outputs:[{outputId:'technical-feedback',kind:'non-authoritative-business-candidate'}],
