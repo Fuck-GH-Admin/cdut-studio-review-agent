@@ -96,11 +96,14 @@ describe('T05 可信阶段边界', () => {
     }
     const template = { materialSlots: [slot] } as never
     expect(t05FinalMaterialBlockers(target, template).join()).toContain('终审证明')
-    target.caseV2.documents = [{
-      versionId: 'proof-v1', documentId: 'proof', materialSlotId: 'decision-proof',
-      role: 'evidence', active: true, fileName: 'proof.txt', mimeType: 'text/plain',
-    }] as typeof target.caseV2.documents
-    expect(t05FinalMaterialBlockers(target, template)).toEqual([])
+    const complete = aggregate({
+      caseV2: { id: 'case-t05', revision: 3, templateId: 'tpl',
+        templateVersion: 1, stage: 'reviewing', documents: [{
+          versionId: 'proof-v1', documentId: 'proof', materialSlotId: 'decision-proof',
+          role: 'evidence', active: true, fileName: 'proof.txt', mimeType: 'text/plain',
+        }] },
+    })
+    expect(t05FinalMaterialBlockers(complete, template)).toEqual([])
   })
 
   test('全部检查通过且无未结束补件时准备度为 ready', () => {
