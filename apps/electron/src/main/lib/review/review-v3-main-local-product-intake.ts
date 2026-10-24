@@ -8,7 +8,8 @@ import {createHash} from 'node:crypto'
 import {readFileSync} from 'node:fs'
 import {resolve} from 'node:path'
 import {ipcMain,type IpcMainInvokeEvent} from 'electron'
-import {REVIEW_IPC_CHANNELS,rankTemplateCandidates,type TemplateRouteCatalogEntry} from '@profer/shared'
+import {REVIEW_IPC_CHANNELS,rankTemplateCandidates,createGenericModelDeepMatcher,
+  type TemplateDeepMatchResponse,type TemplateRouteCatalogEntry} from '@profer/shared'
 import {getConfigDir} from '../config-paths'
 import {getMainWindow} from '../main-window-state'
 import {assertC0ReviewMainSender} from './review-c0-authority'
@@ -25,6 +26,7 @@ import {loadD4UnifiedCatalog,loadD4UnifiedWorkspace} from './review-d4-catalog'
 import {prepareB29UnmatchedAuthorDraft,type B29HumanAuthorIntent,
   type B29UnmatchedAuthorDraft} from './review-v3-b3-unmatched-author-bootstrap'
 import {classifyD4ApplicationDocuments,getD4TemplateKeywords} from './review-v3-d4-content-router'
+import {requestT01ModelDraft} from './review-v3-t01-model-draft-service'
 import type {B20MainReadScope} from './review-v3-b1-b2-main-read-bundle-v3-b'
 import type {B32ProductRead} from '../../../renderer/components/review-v3-dev-b/review-v3-product-workflow'
 
@@ -45,6 +47,8 @@ export interface C11MainLocalProductRead {
   sessionKey:string
   /** All current-catalog matches from exact declarations, business rules and keyword combinations. */
   routeCandidates:C11RouteCandidate[]
+  /** Main ran the generic-model/JEV-compatible matcher against this Case's verified bytes. */
+  deepMatch?:TemplateDeepMatchResponse
 }
 export interface C11MainLocalTechnicalChoiceAck {
   candidateOnly:true;technicalChoiceRecorded:true
@@ -58,6 +62,8 @@ interface Session {
   router:ReviewB3OwnerBoundRouteSession
   interrupted:boolean
   chosen:{templateId:string;templateVersion:string}|null
+  deepMatch?:TemplateDeepMatchResponse
+  deepMatchPending?:Promise<TemplateDeepMatchResponse>
 }
 const sessions=new Map<string,Session>()
 const digest=(value:unknown):string=>
@@ -225,6 +231,23 @@ function catalog():B3ManualCatalogEntry[] {
   return [...published,...historicalD4Catalog.filter(x=>
     !existing.has(x.templateId+'@'+x.templateVersion))]
 }
+/** Only Main-verified model results with high confidence enter B3 auto-selection. */
+export function trustedC11ModelAutoCandidates(
+  result:TemplateDeepMatchResponse|undefined,items:readonly B3ManualCatalogEntry[],
+):C11RouteCandidate[] {
+  if(result?.scope!=='matched')return []
+  return result.matches.flatMap(match=>{
+    const entry=items.find(item=>item.templateId===match.templateId&&
+      item.templateVersion===match.templateVersion&&
+      item.availability==='authorized-for-technical-selection')
+    return entry&&Number.isFinite(match.confidence)&&match.confidence>=0.95&&match.confidence<=1?[{
+      templateId:entry.templateId,templateVersion:entry.templateVersion,
+      name:entry.name,matchedSignals:[],confidence:match.confidence,
+      autoEligible:true,evidence:'Main 已核验来源的模型匹配：'+match.reason,
+      tier:'keyword' as const,
+    }]:[]
+  })
+}
 function evaluate(s:Session,items:B3ManualCatalogEntry[]):B3RouteState {
   const ids=s.staging.listScopedCandidateIds(s.ctx)
   const all=ids.map(id=>s.staging.getCandidate(s.ctx,id))
@@ -258,10 +281,14 @@ function evaluate(s:Session,items:B3ManualCatalogEntry[]):B3RouteState {
   }
   routeCandidates.sort((a,b)=>b.confidence-a.confidence||
     a.templateId.localeCompare(b.templateId)||a.templateVersion.localeCompare(b.templateVersion))
-  const automatic=selectedCandidate?[selectedCandidate]:routeCandidates.filter(item=>
+  const ruleAutomatic=selectedCandidate?[selectedCandidate]:routeCandidates.filter(item=>
     item.autoEligible&&items.some(entry=>entry.templateId===item.templateId&&
       entry.templateVersion===item.templateVersion&&
       entry.availability==='authorized-for-technical-selection'))
+  // AI 结果只能由 Main 对当前原件与已授权目录调用模型后记录。低置信度
+  // 仍可供人工选取，但不会凭模型输出独立触发自动默认绑定。
+  const modelAutomatic=trustedC11ModelAutoCandidates(s.deepMatch,items)
+  const automatic=ruleAutomatic.length?ruleAutomatic:modelAutomatic
   const suggestions:B3RouteSuggestion[]=scoped?automatic.map((candidate,index)=>({
     templateId:candidate.templateId,templateVersion:candidate.templateVersion,
     availability:'authorized-for-technical-selection',
@@ -375,11 +402,48 @@ function read(event:IpcMainInvokeEvent,caseId:string):C11MainLocalProductRead {
     schoolPolicyVerified:false,
   }
   const routeCandidates=buildRouteCandidatesForRead(currentCatalog,data.aggregate.caseV2.documents)
-  return {read:result,catalog:currentCatalog,sessionKey:s.signature,routeCandidates}
+  return {read:result,catalog:currentCatalog,sessionKey:s.signature,routeCandidates,
+    ...(s.deepMatch?{deepMatch:s.deepMatch}:{})}
 }
 export function installC11LocalNativeProductIntake():void {
   ipcMain.handle(REVIEW_IPC_CHANNELS.LOCAL_PRODUCT_CURRENT_V3,
     (event:IpcMainInvokeEvent,caseId:string)=>read(event,caseId))
+  ipcMain.handle(REVIEW_IPC_CHANNELS.LOCAL_PRODUCT_DEEP_MATCH_V3,
+    async (event:IpcMainInvokeEvent,input:{caseId:string;sessionKey:string;retry?:boolean}):Promise<C11MainLocalProductRead>=>{
+      if(!input||typeof input.caseId!=='string'||typeof input.sessionKey!=='string'||!input.sessionKey)
+        throw new Error('C11_NATIVE_DEEP_MATCH_INVALID')
+      const {data,s}=session(event,input.caseId)
+      if(s.signature!==input.sessionKey)throw new Error('C11_NATIVE_ROUTE_SESSION_STALE')
+      // 只有明确点击重试才重新调用模型；刷新/轮询复用已有结论。
+      if(input.retry===true&&!s.deepMatchPending)s.deepMatch=undefined
+      if(!s.deepMatch){
+        if(!s.deepMatchPending){
+          const active=data.aggregate.caseV2.documents.filter(doc=>doc.active!==false)
+          if(active.filter(doc=>doc.role==='application').length!==1)
+            throw new Error('C11_NATIVE_DEEP_MATCH_APPLICATION_AMBIGUOUS')
+          const evidence=active.map(doc=>{
+            const body=doc.blocks.filter(block=>block.kind==='text')
+              .map(block=>block.text).join('\n').slice(0,8000)
+            return '材料名称：'+doc.fileName+'\n材料角色：'+doc.role+'\n'+body
+          }).join('\n\n').slice(0,24000)
+          if(!evidence.trim())throw new Error('C11_NATIVE_DEEP_MATCH_NO_EVIDENCE')
+          const trustedCatalog=catalog()
+          const matcher=createGenericModelDeepMatcher(async prompt=>
+            (await requestT01ModelDraft(prompt)).raw)
+          s.deepMatchPending=matcher.match({caseEvidence:evidence,templates:trustedCatalog})
+        }
+        try{
+          const matched=await s.deepMatchPending
+          const current=session(event,input.caseId)
+          if(current.s!==s||current.s.signature!==input.sessionKey)
+            throw new Error('C11_NATIVE_ROUTE_SESSION_STALE')
+          s.deepMatch=matched
+        }finally{
+          s.deepMatchPending=undefined
+        }
+      }
+      return read(event,input.caseId)
+    })
   ipcMain.handle(REVIEW_IPC_CHANNELS.LOCAL_PRODUCT_INTERRUPT_V3,
     (event:IpcMainInvokeEvent,caseId:string)=>{
       const {s}=session(event,caseId)
@@ -424,16 +488,31 @@ export function installC11LocalNativeProductIntake():void {
     })
   ipcMain.handle(REVIEW_IPC_CHANNELS.LOCAL_PRODUCT_MANUAL_CHOICE_V3,
     async (event:IpcMainInvokeEvent,input:{
-      caseId:string;templateId:string;templateVersion:string
+      caseId:string;templateId:string;templateVersion:string;sessionKey:string;
+      selectionMode:'manual'|'default'
     }):Promise<C11MainLocalTechnicalChoiceAck>=>{
       if(!input||typeof input.caseId!=='string'||
-        typeof input.templateId!=='string'||typeof input.templateVersion!=='string')
+        typeof input.templateId!=='string'||typeof input.templateVersion!=='string'||
+        typeof input.sessionKey!=='string'||!input.sessionKey||
+        !['manual','default'].includes(input.selectionMode))
         throw new Error('C11_NATIVE_MANUAL_CHOICE_INVALID')
       const {s}=session(event,input.caseId)
+      // 异步模型回包或旧倒计时不得在材料换版/重新分类后选择旧候选。
+      if(s.signature!==input.sessionKey)
+        throw new Error('C11_NATIVE_ROUTE_SESSION_STALE')
       if(!catalog().some(x=>x.templateId===input.templateId&&
         x.templateVersion===input.templateVersion&&
         x.availability==='authorized-for-technical-selection'))
         throw new Error('C11_NATIVE_TEMPLATE_NOT_AVAILABLE')
+      // 到点自动选择必须由 Main 当前倒计时状态证明；Renderer 不能把
+      // 用户已中断的过期自动回调伪装成一次新的人工确认。
+      if(input.selectionMode==='default'){
+        const route=evaluate(s,catalog())
+        if(route.status!=='default-selected'||
+          route.chosen?.templateId!==input.templateId||
+          route.chosen?.templateVersion!==input.templateVersion)
+          throw new Error('C11_NATIVE_DEFAULT_CHOICE_NOT_CURRENT')
+      }
       s.chosen={templateId:input.templateId,templateVersion:input.templateVersion}
       const current=evaluate(s,catalog())
       if(current.status!=='manually-selected'||current.chosen?.templateId!==input.templateId)

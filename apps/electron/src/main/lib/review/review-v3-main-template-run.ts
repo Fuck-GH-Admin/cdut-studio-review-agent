@@ -22,6 +22,7 @@ import { computeRunInputHash } from './run-service-v2'
 import { compileTemplatePlanForCase } from './review-v3-main-template-plan-bridge'
 import { evaluateT04Plan } from './review-v3-t04-rules-scoring'
 import { reconcileF07PublishedPlan } from './review-v3-f07-plan-coverage'
+import { isNativeWorkspaceCaseV3 } from './native-workspace-case-v3'
 
 const MAIN_ACTOR: Actor = { actorId: 'local-reviewer', actorSource: 'local', role: 'reviewer' }
 
@@ -138,6 +139,11 @@ export function runTemplateRuleReview(input:{
 }):TemplateRuleRunResult {
   const aggregate=readAggregate(input.caseId)
   if(!aggregate)throw new CommandValidationError('NOT_FOUND','案卷不存在')
+  // 原生 V3 的确定性检查只能作为同一 Pi Run 的输入，不能经旧 IPC
+  // 另存 run-tpl-* 并被历史/结果/决定误认为新一轮完整审核。
+  if(isNativeWorkspaceCaseV3(aggregate))
+    throw new CommandValidationError('INVALID_TRANSITION',
+      '原生 V3 请使用统一初审/重新审核；独立规则运行不能作为当前审核结果')
   const template:TemplateVersion|undefined=getTemplate(aggregate.caseV2.templateId,aggregate.caseV2.templateVersion)
   if(!template)throw new CommandValidationError('DEPENDENCY_UNRESOLVED','模板不存在')
   const evaluation=evaluateTemplateRuleReview({aggregate,template,phase:input.phase})

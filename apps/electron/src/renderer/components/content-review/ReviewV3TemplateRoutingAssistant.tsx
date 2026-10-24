@@ -1,6 +1,6 @@
 /** 统一模板路由：同一原生案卷，50套D4或公共兜底B1 -> 原有 Pi 可执行计划。 */
 import * as React from 'react'
-import { createGenericModelDeepMatcher, filterTemplateCatalog, type TemplateDeepMatchCandidate, type TemplateRouteCatalogEntry } from '@profer/shared'
+import { filterTemplateCatalog, type TemplateDeepMatchCandidate } from '@profer/shared'
 import type { D4ClientSelection } from '@profer/shared'
 import type { C11MainLocalProductRead } from '../../../main/lib/review/review-v3-main-local-product-intake'
 import type { B29UnmatchedAuthorDraft } from '../../../main/lib/review/review-v3-b3-unmatched-author-bootstrap'
@@ -75,14 +75,13 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
   const [modelRouteNote,setModelRouteNote]=React.useState('')
   const [catalogQuery,setCatalogQuery]=React.useState('')
   const [modelCandidates,setModelCandidates]=React.useState<Array<TemplateDeepMatchCandidate & {name:string}>>([])
+  const [modelResultSessionKey,setModelResultSessionKey]=React.useState<string|null>(null)
   const [modelMatchState,setModelMatchState]=React.useState<'idle'|'matching'|'matched'|'out-of-scope'|'uncertain'|'failed'>('idle')
-  const [modelRemainingMs,setModelRemainingMs]=React.useState(20_000)
-  const [modelDeadline,setModelDeadline]=React.useState<number|null>(null)
   const modelAttemptRef=React.useRef('')
-  const modelAutoChoiceRef=React.useRef('')
+  const choiceInFlightRef=React.useRef(false)
   const routeAutoChoiceRef=React.useRef('')
   const routeRefreshInFlight=React.useRef(false)
-  const applyChoiceRef=React.useRef<(templateId:string,templateVersion:string,source:string)=>void>(()=>{})
+  const applyChoiceRef=React.useRef<(templateId:string,templateVersion:string,source:string,selectionMode?:'manual'|'default')=>void>(()=>{})
   const [epoch,setEpoch]=React.useState(0)
   const currentCase=React.useRef(caseId)
   currentCase.current=caseId
@@ -116,11 +115,31 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
     setRead(null);setInstalled(null);setPreferred('');setMode('catalog');setError('');setMessage('')
     setProposal(null);setPrepared(null);setConfirmed(false)
     setModelRouteNote('');setCatalogQuery('');setModelCandidates([]);setModelMatchState('idle')
-    setModelRemainingMs(20_000);setModelDeadline(null);modelAttemptRef.current='';modelAutoChoiceRef.current='';routeAutoChoiceRef.current=''
+    modelAttemptRef.current='';routeAutoChoiceRef.current=''
     if(!caseId)return
     void refresh().catch(reason=>{if(live)setError(String(reason))})
     return ()=>{live=false}
   },[caseId,epoch,refresh])
+  // 案卷不变也可能在后台补件、替换原件或重新分类。模型结果只对
+  // 生成它时的 Main 原件快照有效，不能移植到更新后的 sessionKey。
+  React.useEffect(()=>{
+    setModelCandidates([]);setModelResultSessionKey(null);setModelMatchState('idle')
+    setModelRouteNote('');setProposal(null);setPrepared(null);setConfirmed(false)
+    modelAttemptRef.current=''
+  },[read?.sessionKey])
+  React.useEffect(()=>{
+    if(!read?.deepMatch)return
+    modelAttemptRef.current=read.sessionKey
+    setModelMatchState(read.deepMatch.scope)
+    if(read.deepMatch.scope==='matched'){
+      setModelCandidates(read.deepMatch.matches.flatMap(item=>{
+        const entry=read.catalog.find(option=>option.templateId===item.templateId&&
+          option.templateVersion===item.templateVersion)
+        return entry?[{...item,name:entry.name}]:[]
+      }))
+      setModelResultSessionKey(read.sessionKey)
+    }
+  },[read?.sessionKey,read?.deepMatch?.scope])
   // Main owns the B3 deadline. Poll only its remaining time; the Renderer never decides route success.
   React.useEffect(()=>{
     if(read?.read.route.status!=='countdown')return
@@ -206,48 +225,31 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
     setModelMatchState('matching');setModelRouteNote('');setError('')
     void (async()=>{
       try{
-        const native=await window.reviewAPI.getAggregateV2(caseId)
-        if(!native||native.caseV2.id!==caseId)throw new Error('案卷已切换')
-        const active=native.caseV2.documents.filter(doc=>doc.active!==false)
-        const applications=active.filter(doc=>doc.role==='application')
-        if(applications.length!==1){
-          setModelMatchState('uncertain')
-          setModelRouteNote('AI 深度匹配暂缓：当前案卷必须先明确唯一申请主件；不同事项请先分案，不能将多份申请强行合并。')
-          return
-        }
-        const evidence=active.map(doc=>{
-          const body=doc.blocks.filter(block=>block.kind==='text').map(block=>block.text).join('\n').slice(0,8000)
-          return '材料名称：'+doc.fileName+'\n材料角色：'+doc.role+'\n'+body
-        }).join('\n\n').slice(0,24000)
-        if(!evidence.trim()){
-          setModelMatchState('uncertain')
-          setModelRouteNote('材料尚未解析出可供模型核对的文本。请先完成 OCR/文本解析，或通过下方搜索手动选择模板。')
-          return
-        }
-        const matcher=createGenericModelDeepMatcher(async prompt=>{
-          const response=await window.reviewAPI.requestT01ModelDraft(prompt)
-          return response.raw
-        })
-        const result=await matcher.match({
-          caseEvidence:evidence,
-          templates:sourceRead.catalog as TemplateRouteCatalogEntry[],
+        // 模型调用、当前原件/目录校验与倒计时统一在 Main；不再让
+        // Renderer 构造证据文本并自行计时提交自动选择。
+        const next=await window.reviewAPI.deepMatchLocalNativeProductV3({
+          caseId,sessionKey:scope,...(automatic?{}:{retry:true}),
         })
         if(currentCase.current!==caseId||latestReadRef.current?.sessionKey!==scope||latestModeRef.current!=='catalog')return
+        setRead(next)
+        const result=next.deepMatch
+        if(!result)throw new Error('Main 未返回深度匹配结果')
         if(result.scope==='matched'&&result.matches.length){
           const ranked=result.matches.map(item=>{
-            const entry=sourceRead.catalog.find(candidate=>candidate.templateId===item.templateId&&
+            const entry=next.catalog.find(candidate=>candidate.templateId===item.templateId&&
               candidate.templateVersion===item.templateVersion)
             return entry?{...item,name:entry.name}:null
           }).filter((item):item is TemplateDeepMatchCandidate & {name:string}=>Boolean(item))
           if(ranked.length){
-            setModelCandidates(ranked);setModelMatchState('matched')
-            setModelRemainingMs(20_000);setModelDeadline(Date.now()+20_000)
-            setModelRouteNote('第一、二层规则没有找到可靠的唯一结果；通用模型已给出排序候选。倒计时结束默认进入第一项，模板本身仍须完成必要的对象/场景配置。')
+            setModelCandidates(ranked);setModelResultSessionKey(scope);setModelMatchState('matched')
+            setModelRouteNote(next.read.route.status==='countdown'
+              ?'通用模型已给出排序候选；由 Main 持有同一 20 秒倒计时，结束后默认进入第一项。'
+              :'模型候选可信程度不足以自动确认；请从候选中人工选择适用模板。')
             return
           }
         }
         if(result.scope==='out-of-scope'){
-          setModelMatchState('out-of-scope');setModelCandidates([]);setModelDeadline(null)
+          setModelMatchState('out-of-scope');setModelCandidates([])
           const fallbackBrief='现有模板匹配未覆盖本事项。\n模型分析：'+(result.reason||'模型判断当前事项不属于已提供模板范围。')+
             '\n请依据已导入材料起草通用审核要求；未知制度、资格、阈值和权限必须列为待人工核实，不得推断为通过。'
           setMode('fallback');setBrief(fallbackBrief);setConfirmed(false)
@@ -264,25 +266,30 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
           setMessage('公共兜底草案已生成，请核对对象、材料和每一项检查要求后再确认。')
           return
         }
-        setModelCandidates([]);setModelDeadline(null);setModelMatchState('uncertain')
+        setModelCandidates([]);setModelMatchState('uncertain')
         setModelRouteNote('通用模型仍无法可靠判断适用模板，也没有证据证明该事项超出范围。不会自动套用兜底；请搜索全部模板或人工确认业务类型。')
       }catch(reason){
-        if(currentCase.current===caseId){
-          setModelMatchState('failed');setModelCandidates([]);setModelDeadline(null)
+        if(currentCase.current===caseId&&latestReadRef.current?.sessionKey===scope){
+          setModelMatchState('failed');setModelCandidates([])
           setModelRouteNote('自动深度匹配失败：'+(reason instanceof Error?reason.message:String(reason))+'。可重试，或直接搜索全部模板。')
         }
       }
     })()
   }
-  const applyTemplateChoice=(templateId:string,templateVersion:string,source:string):void=>{void run(async()=>{
+  const applyTemplateChoice=(templateId:string,templateVersion:string,source:string,selectionMode:'manual'|'default'='manual'):void=>{
+    if(choiceInFlightRef.current)return
+    choiceInFlightRef.current=true
+    void run(async()=>{
     if(!read||currentCase.current!==caseId)throw new Error('案卷已切换，请重新读取材料')
     const item=read.catalog.find(candidate=>candidate.templateId===templateId&&
       candidate.templateVersion===templateVersion&&candidate.availability==='authorized-for-technical-selection')
     if(!item)throw new Error('该模板版本不在当前 Main 授权目录中')
-    setModelCandidates([]);setModelDeadline(null);setModelMatchState('idle')
-    const receipt=await window.reviewAPI.chooseLocalNativeProductTemplateV3({caseId,templateId,templateVersion})
+    const receipt=await window.reviewAPI.chooseLocalNativeProductTemplateV3({
+      caseId,templateId,templateVersion,sessionKey:read.sessionKey,selectionMode,
+    })
     if(!receipt.technicalChoiceRecorded)throw new Error('Main 未确认模板选择')
     if(currentCase.current!==caseId)return
+    setModelCandidates([]);setModelMatchState('idle')
     if(receipt.requiresPlanSetup){
       setPreferred(templateId);setSelection(undefined);setMode('catalog')
       setMessage('已选择 '+item.name+'（'+source+'）。请继续核对真实对象、场景和必要条件，再固定审核计划。')
@@ -293,7 +300,8 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
     setMessage('已选择并绑定 '+item.name+'；下一步将使用该模板处理当前案卷。')
     onBound.current?.({caseId,templateId,templateVersion:Number(templateVersion)})
     setEpoch(value=>value+1)
-  })}
+    }).finally(()=>{choiceInFlightRef.current=false})
+  }
   applyChoiceRef.current=applyTemplateChoice
   React.useEffect(()=>{
     if(mode!=='catalog'||!read||installed||read.read.route.status!=='unmatched')return
@@ -302,42 +310,24 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
     identifyWithModel(true,read)
   },[mode,read?.sessionKey,read?.read.route.status,read?.routeCandidates,installed?.caseId,caseId])
   React.useEffect(()=>{
-    if(mode!=='catalog'||modelMatchState!=='matched'||!modelCandidates.length||modelDeadline===null)return
-    const tick=()=>{
-      const remaining=Math.max(0,modelDeadline-Date.now())
-      setModelRemainingMs(remaining)
-      if(remaining===0){
-        const first=mergeUnifiedRouteCandidates(read?.routeCandidates??[],modelCandidates)[0]
-        if(!first)return
-        const key=(read?.sessionKey??'')+'::'+first.templateId+'@'+first.templateVersion
-        if(modelAutoChoiceRef.current!==key){
-          modelAutoChoiceRef.current=key
-          applyChoiceRef.current(first.templateId,first.templateVersion,'20 秒倒计时默认候选')
-        }
-      }
-    }
-    tick()
-    const timer=setInterval(tick,250)
-    return ()=>clearInterval(timer)
-  },[mode,modelMatchState,modelCandidates,modelDeadline,read?.sessionKey,read?.routeCandidates])
-  React.useEffect(()=>{
     const choice=read?.read.route.status==='default-selected'?read.read.route.chosen:undefined
-    if(mode!=='catalog'||!choice||!read||installed)return
-    const candidate=read.routeCandidates.find(item=>item.templateId===choice.templateId&&
-      item.templateVersion===choice.templateVersion&&item.evidence!=='current-native-template-binding')
+    if(mode!=='catalog'||!choice||!read||installed||busy)return
+    const candidate=read.read.route.candidates?.find(item=>item.templateId===choice.templateId&&
+      item.templateVersion===choice.templateVersion)
     if(!candidate)return
     const key=read.sessionKey+'::'+choice.templateId+'@'+choice.templateVersion
     if(routeAutoChoiceRef.current===key)return
     routeAutoChoiceRef.current=key
-    applyChoiceRef.current(choice.templateId,choice.templateVersion,'规则匹配倒计时默认候选')
+    applyChoiceRef.current(choice.templateId,choice.templateVersion,'Main 倒计时默认候选','default')
   },[read?.sessionKey,read?.read.route.status,read?.read.route.chosen?.templateId,
-    read?.read.route.chosen?.templateVersion,installed?.caseId,mode])
+    read?.read.route.chosen?.templateVersion,installed?.caseId,mode,busy])
   const route=read?.read.route
   const eligible=read?.catalog.filter(item=>!item.templateId.startsWith('fallback-'))??[]
   const visibleCatalog=filterTemplateCatalog(eligible,catalogQuery)
+  const currentModelCandidates=modelResultSessionKey===read?.sessionKey?modelCandidates:[]
   const unifiedCandidates=React.useMemo(()=>mergeUnifiedRouteCandidates(
-    read?.routeCandidates??[],modelCandidates
-  ),[read?.routeCandidates,modelCandidates])
+    read?.routeCandidates??[],currentModelCandidates
+  ),[read?.routeCandidates,currentModelCandidates])
 
   return <section className="space-y-3 rounded-xl bg-card p-4 shadow-sm" aria-label="审核模板匹配与公共兜底" data-testid="review-v3-route-assistant">
     <div className="flex flex-wrap items-start justify-between gap-2">
@@ -367,7 +357,7 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
       <div className="flex gap-2">
         <button type="button" className={mode==='catalog'?action:secondary} onClick={()=>setMode('catalog')}>全部模板目录</button>
         <button type="button" className={mode==='fallback'?action:secondary} onClick={()=>{
-          setMode('fallback');setModelCandidates([]);setModelDeadline(null);setModelMatchState('idle');modelAttemptRef.current=''
+          setMode('fallback');setModelCandidates([]);setModelMatchState('idle');modelAttemptRef.current=''
           if(route&&(route.status==='countdown'||route.status==='default-selected'))void window.reviewAPI.interruptLocalNativeProductV3(caseId)
             .then(setRead).catch(reason=>setError(reason instanceof Error?reason.message:String(reason)))
         }}>公共兜底 / 自动起草</button>
@@ -388,13 +378,13 @@ export function ReviewV3TemplateRoutingAssistant({caseId,onPlanInstalled,onTempl
           </div>)}</div>
         </div>}
         {modelMatchState==='matching'&&<p role="status" className="text-xs text-muted-foreground">规则层未找到可靠结果，正在用当前已配置通用模型比较全部可用模板…</p>}
-        {modelMatchState==='matched'&&modelCandidates.length>0&&<div className="space-y-2 rounded-lg border border-primary/30 p-3" role="status">
+        {modelMatchState==='matched'&&currentModelCandidates.length>0&&<div className="space-y-2 rounded-lg border border-primary/30 p-3" role="status">
           <div className="flex items-center justify-between gap-2">
             <p className="font-semibold text-sm">统一候选列表 · {unifiedCandidates.length} 项</p>
-            <span className="text-xs tabular-nums">{Math.ceil(modelRemainingMs/1000)} 秒</span>
+            <span className="text-xs tabular-nums">{route?.status==='countdown'?`Main 倒计时 ${Math.ceil(route.remainingMs/1000)} 秒`:'待人工确认'}</span>
           </div>
-          <progress className="w-full" max={20} value={20-Math.min(20,Math.ceil(modelRemainingMs/1000))}/>
-          <p className="text-xs text-muted-foreground">无操作时默认选择第一项；选择只会进入模板配置/绑定阶段，不会作出审核结论。</p>
+          {route?.status==='countdown'&&<progress className="w-full" max={20} value={20-Math.min(20,Math.ceil(route.remainingMs/1000))}/>}
+          <p className="text-xs text-muted-foreground">仅 Main 认可的高置信度候选会在倒计时后默认选择第一项；其他结果需人工确认。模板选择不等于审核结论。</p>
           {unifiedCandidates.map((candidate,index)=><div key={candidate.templateId+'@'+candidate.templateVersion} className="flex items-start gap-2 rounded border border-border p-2">
             <span className="font-semibold">{index+1}.</span>
             <div className="min-w-0 flex-1">

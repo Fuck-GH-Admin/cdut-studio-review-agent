@@ -516,6 +516,7 @@ export const REVIEW_IPC_CHANNELS = {
   AUTHOR_FREEZE_LOCAL_V3: 'review-v3:author-freeze-local',
   /** Real Main-scoped native Case physical B2/B30 materials + B3 candidate routing. */
   LOCAL_PRODUCT_CURRENT_V3: 'review-v3:local-product-current',
+  LOCAL_PRODUCT_DEEP_MATCH_V3: 'review-v3:local-product-deep-match',
   LOCAL_PRODUCT_INTERRUPT_V3: 'review-v3:local-product-interrupt',
   LOCAL_PRODUCT_MANUAL_CHOICE_V3: 'review-v3:local-product-manual-choice',
   LOCAL_PRODUCT_UNMATCHED_V3: 'review-v3:local-product-unmatched',

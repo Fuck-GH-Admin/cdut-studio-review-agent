@@ -79,6 +79,11 @@ export function ReviewV3T03FactWorkbench({ onRestructure }: { onRestructure?: (p
     setBusy(true); setMessage('')
     try {
       await task()
+      if (aggregate?.receiptLog[0]?.type === 'CreateNativeWorkspaceCaseV3') {
+        await actions.refresh()
+        setMessage(`${success}；原 Run 随输入修订失效。请从统一审核入口执行完整 Pi 重审，不能以单独的模板规则 Run 代替新结论。`)
+        return
+      }
       try {
         // aggregate 可能已被刷新清空，取不到案卷时跳过重查而不是抛错
         const caseIdForRecheck = aggregate?.caseV2.id

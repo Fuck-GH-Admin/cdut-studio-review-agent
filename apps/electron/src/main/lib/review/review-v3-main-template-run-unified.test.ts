@@ -13,8 +13,9 @@ const configDir=mkdtempSync(join(tmpdir(),'v3-unified-run-'))
 process.env.PROFER_CONFIG_DIR=configDir
 afterAll(()=>rmSync(configDir,{recursive:true,force:true}))
 
-const { evaluateTemplateRuleReview } = await import('./review-v3-main-template-run')
+const { evaluateTemplateRuleReview, runTemplateRuleReview } = await import('./review-v3-main-template-run')
 const { listRunsV2 } = await import('./run-store-v2')
+const { createNativeWorkspaceCaseV3 } = await import('./native-workspace-case-v3')
 
 const caseId='v3-unified-run-regression'
 const template:TemplateVersion={
@@ -49,6 +50,14 @@ function aggregateFor(slotId?:string):CaseAggregateV2 {
 }
 
 describe('V3 template checks in one Pi Run',()=>{
+  test('native V3 rejects the old rule-only Run entry before any ledger write',async()=>{
+    const created=await createNativeWorkspaceCaseV3({
+      title:'禁止独立规则运行',type:'自定义审核',applicant:'本机申请人',domainPackId:'custom',
+    })
+    const nativeCaseId=created.aggregate.caseV2.id
+    expect(()=>runTemplateRuleReview({caseId:nativeCaseId})).toThrow('原生 V3 请使用统一初审')
+    expect(listRunsV2(nativeCaseId)).toHaveLength(0)
+  })
   test('read-only evaluation never creates a second run-tpl-* ledger',()=>{
     const before=listRunsV2(caseId)
     const result=evaluateTemplateRuleReview({

@@ -4649,9 +4649,11 @@ const reviewAPI = {
   /** Native Main Case source bytes rehashed and staged into real B2/B30 candidate read. */
   readLocalNativeProductV3: (caseId:string) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LOCAL_PRODUCT_CURRENT_V3,caseId) as Promise<import('../main/lib/review/review-v3-main-local-product-intake').C11MainLocalProductRead>,
+  deepMatchLocalNativeProductV3: (input:{caseId:string;sessionKey:string;retry?:boolean}) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LOCAL_PRODUCT_DEEP_MATCH_V3,input) as Promise<import('../main/lib/review/review-v3-main-local-product-intake').C11MainLocalProductRead>,
   interruptLocalNativeProductV3: (caseId:string) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LOCAL_PRODUCT_INTERRUPT_V3,caseId) as Promise<import('../main/lib/review/review-v3-main-local-product-intake').C11MainLocalProductRead>,
-  chooseLocalNativeProductTemplateV3: (input:{caseId:string;templateId:string;templateVersion:string}) =>
+  chooseLocalNativeProductTemplateV3: (input:{caseId:string;templateId:string;templateVersion:string;sessionKey:string;selectionMode:'manual'|'default'}) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LOCAL_PRODUCT_MANUAL_CHOICE_V3,input) as Promise<import('../main/lib/review/review-v3-main-local-product-intake').C11MainLocalTechnicalChoiceAck>,
   prepareLocalNativeUnmatchedV3: (input:{
     caseId:string;intent:import('../main/lib/review/review-v3-b3-unmatched-author-bootstrap').B29HumanAuthorIntent

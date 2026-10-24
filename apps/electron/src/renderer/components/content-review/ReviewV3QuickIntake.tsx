@@ -14,6 +14,8 @@ export function ReviewV3QuickIntake({ onCreated }: Props): JSX.Element {
   const [title, setTitle] = React.useState('')
   const [applicant, setApplicant] = React.useState('')
   const [pendingPaths, setPendingPaths] = React.useState<PendingPath[]>([])
+  // 导入中途失败也保留已经创建的真实案卷入口；重试不应默默再建空案。
+  const [recoveryCaseId, setRecoveryCaseId] = React.useState('')
   const [error, setError] = React.useState('')
   const [notice, setNotice] = React.useState('')
   const fileInputRef = React.useRef<HTMLInputElement>(null)
@@ -63,7 +65,7 @@ export function ReviewV3QuickIntake({ onCreated }: Props): JSX.Element {
   }
 
   const startWithPaths = React.useCallback(async (): Promise<void> => {
-    if (busy || pendingPaths.length === 0) return
+    if (busy || pendingPaths.length === 0 || recoveryCaseId) return
     const applications = pendingPaths.filter(file => file.role === 'application')
     if (applications.length !== 1) {
       setError('一个快速审核案卷必须明确一份申请主件。若这些文件属于多个独立事项，请先分别建立案卷后再导入，不能把多个事项合并成一个案卷。')
@@ -74,6 +76,7 @@ export function ReviewV3QuickIntake({ onCreated }: Props): JSX.Element {
     try {
       const application = applications[0]!
       caseId = await createCase(application.name.replace(/\.[^.]+$/, '') || '本地材料审核')
+      setRecoveryCaseId(caseId)
       const failures: string[] = []
       let accepted = 0
       for (const file of pendingPaths) {
@@ -88,19 +91,23 @@ export function ReviewV3QuickIntake({ onCreated }: Props): JSX.Element {
         }
       }
       if (!accepted) throw new Error('没有成功导入的材料。' + failures.join('；'))
-      setNotice('已导入 ' + accepted + '/' + pendingPaths.length + ' 份原件，开始根据申请主件和附件内容匹配审核模板。')
+      setNotice('已导入 ' + accepted + '/' + pendingPaths.length + ' 份原件。')
       setPendingPaths([])
       if (failures.length) {
         setError('部分材料未导入，需要补充：' + failures.join('；'))
         toast.error('有 ' + failures.length + ' 份材料未导入', {description:failures.join('；').slice(0,220)})
+        // 先显示失败清单和已经创建的案卷入口，用户决定何时继续；
+        // 跳页会把当前 UI 的失败清单一并卸载，造成不可见的漏件。
+      } else {
+        setRecoveryCaseId('')
+        onCreated(caseId)
       }
-      onCreated(caseId)
     } catch (cause) {
       setError('材料导入未完成' + (caseId ? '（已建立草稿 ' + caseId + '）' : '') + '：' +
         (cause instanceof Error ? cause.message : String(cause)))
       setNotice('')
     } finally { setBusy(false) }
-  }, [busy, createCase, onCreated, pendingPaths])
+  }, [busy, createCase, onCreated, pendingPaths, recoveryCaseId])
 
   const onDrop = (event: React.DragEvent<HTMLDivElement>): void => {
     event.preventDefault(); setDragging(false)
@@ -170,13 +177,17 @@ export function ReviewV3QuickIntake({ onCreated }: Props): JSX.Element {
         {applicationCount===1?'已指定一份申请主件。':'请选择且只选择一份申请主件。'}
       </p>
       {applicationCount>1&&<p className="text-xs text-amber-700 dark:text-amber-300">多份独立申请书不能合并成一份案卷；请先分别建立案卷，再逐份导入。</p>}
-      <Button size="sm" disabled={busy||applicationCount!==1||pendingPaths.length===0}
+      <Button size="sm" disabled={busy||!!recoveryCaseId||applicationCount!==1||pendingPaths.length===0}
         onClick={event=>{event.stopPropagation();void startWithPaths()}}>
         {busy?'正在导入…':'确认材料并匹配模板'}
       </Button>
     </div>}
     {notice && <p role="status" className="text-xs text-muted-foreground">{notice}</p>}
     {error && <p role="alert" className="text-xs text-red-600">{error}</p>}
+    {recoveryCaseId && <div className="rounded-lg bg-amber-500/10 p-3 text-sm" role="status">
+      <p>案卷已在本机保存：<code>{recoveryCaseId}</code>。失败材料尚未成功入库，可进入此案卷后重新补传；不会因再次点击导入创建另一份空案卷。</p>
+      <Button size="sm" className="mt-2" onClick={()=>onCreated(recoveryCaseId)}>打开已保存的案卷继续处理</Button>
+    </div>}
     <Button size="sm" variant="outline" disabled={busy} onClick={pickFiles}>选择材料开始审核</Button>
   </section>
 }

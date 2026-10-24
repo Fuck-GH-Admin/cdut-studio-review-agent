@@ -77,6 +77,12 @@ export function ReviewV3T08SuggestionReview({ aggregate, run, template, opinion,
       })
       if (!response?.ok) throw new Error(response?.message ?? '业务字段保存失败')
       await actions.refresh()
+      if (aggregate.receiptLog[0]?.type === 'CreateNativeWorkspaceCaseV3') {
+        setNotice('字段修改已保存。当前输入已变更，旧 Run 不再是当前结论；请从统一审核入口重新运行完整 Pi 检查。')
+        setConfirmed(false)
+        setDraft('')
+        return
+      }
       // 修改后不能继续展示旧 Run 当作最新结论；直接生成新的正式规则 Run。
       // Main 会按当前案卷和模板重新冻结输入，历史 Run 保留不改写。
       let reviewMessage = ''
