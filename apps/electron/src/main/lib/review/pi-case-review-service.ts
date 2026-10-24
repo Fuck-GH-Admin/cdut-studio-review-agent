@@ -19,6 +19,7 @@ import { actorOfAssignment, bindRunToAssignment, checkAssignment, createAssignme
 import { DocumentCapabilityLibrary } from './document-capability-library'
 import { finalizePiDocumentCoverage } from './pi-document-coverage'
 import { validateD2OperationEvidence, verifyD2InstalledPlan } from './review-d2-runtime'
+import { evaluateTemplateRuleReview, templateRuleSpecializedRuleIds } from './review-v3-main-template-run'
 
 export interface PiReviewBinding {
   assignmentId: string
@@ -191,6 +192,99 @@ function sectionSubjectIds(template: TemplateVersion, aggregate: CaseAggregateV2
   ]))
 }
 
+function materialSlotRule(template:TemplateVersion,slot:TemplateVersion['materialSlots'][number],rank:number):RuleSpec {
+  return {
+    id:'required-material-'+slot.id,
+    policyVersionId:'template:'+template.templateId+'@'+template.version,
+    title:slot.name+'：必交材料',
+    when:slot.requiredWhen??{all:[]},
+    requirement:'至少提交 '+slot.minCount+' 份有效的'+slot.name,
+    targetScope:'case',execution:'deterministic',onFail:'supplement',
+    onUnknown:'needs-confirmation',sourceRefIds:[],priority:1000000+rank,confirmation:'confirmed',
+  }
+}
+
+function blockedSpecializedChecks(
+  aggregate:CaseAggregateV2,template:TemplateVersion,ruleIds:readonly string[],
+  reason:string,status:CheckResult['status'],
+):CheckResult[] {
+  const rules=effectiveRulesFor(aggregate,template)
+  const now=new Date().toISOString()
+  const out:CheckResult[]=[]
+  for(const ruleId of ruleIds){
+    const rule=rules.find(item=>item.id===ruleId)
+    const targets:Array<CheckResult['target']>=[]
+    if(rule?.targetScope==='subject'){
+      const subjects=aggregate.caseV2.subjects.filter(subject=>!rule.sectionId||subject.sectionId===rule.sectionId)
+      for(const subject of subjects)targets.push({scope:'subject',subjectIds:[subject.id]})
+    }else if(rule?.targetScope==='group'){
+      if(!rule.groupBy?.length){
+        const subjects=aggregate.caseV2.subjects.filter(subject=>!rule.sectionId||subject.sectionId===rule.sectionId)
+        targets.push({scope:'group',subjectIds:subjects.map(subject=>subject.id)})
+      }
+    }else{
+      targets.push({scope:'case',subjectIds:[aggregate.caseV2.id]})
+    }
+    // A missing subject/group is already recorded as not-executed by the
+    // coverage ledger. Do not invent a target merely to make the list longer.
+    for(const target of targets){
+      out.push({
+        checkId:'t04-blocked:'+ruleId+':'+target.scope+':'+target.subjectIds.join('-'),
+        ruleId,target,status,reason,sourceRefs:[],executedBy:'deterministic',executedAt:now,
+      })
+    }
+  }
+  return out
+}
+
+interface UnifiedDeterministicCheckSet {
+  checks:CheckResult[]
+  diagnostics:string[]
+  coverageRules:RuleSpec[]
+}
+
+/** One persisted Pi Run carries both deterministic template checks and semantic checks.
+ * T04 only replaces its explicitly typed numeric constraints and material-slot checks;
+ * the generic deterministic engine continues to own all other RuleSpec operations.
+ */
+function unifiedDeterministicChecks(
+  aggregate:CaseAggregateV2,template:TemplateVersion,rules:RuleSpec[],
+  observations:Array<Record<string,unknown>>,evidence:Array<Record<string,unknown>>,
+):UnifiedDeterministicCheckSet {
+  const generic=buildDeterministicRuleChecks(aggregate,rules,observations,evidence)
+  const specializedIds=template.status==='published'&&!aggregate.d2RuntimePlan
+    ?templateRuleSpecializedRuleIds(template):[]
+  if(!specializedIds.length)return {checks:generic,diagnostics:[],coverageRules:rules}
+  const specializedSet=new Set(specializedIds)
+  try{
+    const evaluation=evaluateTemplateRuleReview({aggregate,template,phase:'submission'})
+    const specialized=evaluation.checks.filter(check=>specializedSet.has(check.ruleId))
+    const present=new Set(specialized.map(check=>check.ruleId))
+    const missingIds=specializedIds.filter(id=>!present.has(id))
+    const missing=blockedSpecializedChecks(aggregate,template,missingIds,
+      'T04 冻结计划没有为该检查产生唯一结果；本项未执行，不能视为通过。','not-executed')
+    return {
+      checks:[...generic.filter(check=>!specializedSet.has(check.ruleId)),...specialized,...missing],
+      diagnostics:evaluation.blockers,
+      coverageRules:evaluation.coverageRules,
+    }
+  }catch(error){
+    const reason='模板确定性计划未能编译，本轮对应检查未执行：'+(error instanceof Error?error.message:String(error))
+    const status:CheckResult['status']=/尚未确认|缺少字段键|不存在该字段/.test(reason)
+      ?'awaiting-confirmation':'not-executed'
+    const placeholders=blockedSpecializedChecks(aggregate,template,specializedIds,reason,status)
+    const materialRules=(template.materialSlots??[]).filter(slot=>slot.minCount>0)
+      .map((slot,index)=>materialSlotRule(template,slot,index))
+    const coverageRules=[...rules,...materialRules].filter((rule,index,array)=>
+      array.findIndex(item=>item.id===rule.id&&item.policyVersionId===rule.policyVersionId)===index)
+    return {
+      checks:[...generic.filter(check=>!specializedSet.has(check.ruleId)),...placeholders],
+      diagnostics:[reason],
+      coverageRules,
+    }
+  }
+}
+
 function coverageFor(
   aggregate: CaseAggregateV2,
   rules: RuleSpec[],
@@ -274,7 +368,8 @@ function buildRun(aggregate: CaseAggregateV2, template: TemplateVersion, actor: 
   const effectiveRules = effectiveRulesFor(aggregate, template)
   const { observations, evidence } = snapshots(aggregate)
   const effective = resolveEffectiveRules(aggregate, template)
-  const deterministic = buildDeterministicRuleChecks(aggregate, effectiveRules, observations, aggregate.evidenceLinks)
+  const unified = unifiedDeterministicChecks(aggregate,template,effectiveRules,observations,aggregate.evidenceLinks)
+  const deterministic = unified.checks
   const inputHash = inputHashOf(aggregate)
   const run: ReviewRunV2 = {
     id: `run-pi-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
@@ -293,15 +388,16 @@ function buildRun(aggregate: CaseAggregateV2, template: TemplateVersion, actor: 
       })),
       observationIds: aggregate.observations.map((item) => item.id),
       evidenceLinkIds: aggregate.evidenceLinks.map((item) => item.id),
-      effectiveRuleIds: effectiveRules.map((rule) => rule.id),
-      effectiveRuleSetHash: hashEffectiveRuleSet(effective),
+      effectiveRuleIds: unified.coverageRules.map((rule) => rule.id),
+      effectiveRuleSetHash: hashEffectiveRuleSet(effective) + (unified.coverageRules.length===effectiveRules.length
+        ? '' : ':' + unified.coverageRules.map(rule=>rule.policyVersionId+'::'+rule.id).sort().join('|')),
     },
     status: 'running',
     checkpoints: [],
     checks: deterministic,
     opinions: [],
-    coverage: coverageFor(aggregate, effectiveRules, deterministic, template),
-    diagnostics: ['由项目普通 Pi 会话直接审核；未启动第二个审核模型会话。'],
+    coverage: coverageFor(aggregate, unified.coverageRules, deterministic, template),
+    diagnostics: ['由项目普通 Pi 会话直接审核；未启动第二个审核模型会话。',...unified.diagnostics].slice(-50),
     startedAt: new Date().toISOString(),
     initiatedBy: actor,
   }
@@ -765,10 +861,16 @@ function plannedTargetMatches(rule: RuleSpec, aggregate: CaseAggregateV2, rawSub
   }
 }
 
-function recalculateCoverage(run: ReviewRunV2, aggregate: CaseAggregateV2, rules: RuleSpec[], template: TemplateVersion): void {
-  const active = aggregate.caseV2.documents.filter((document) => document.active !== false)
-  const previousDocs = new Map(run.coverage.documents.map((item) => [item.documentVersionId, item]))
-  const summary = combineCoverage(active, rules, aggregate.caseV2.subjects.map((subject) => subject.id), run.checks, {}, sectionSubjectIds(template, aggregate))
+function recalculateCoverage(
+  run:ReviewRunV2,aggregate:CaseAggregateV2,rules:RuleSpec[],template:TemplateVersion,
+  coverageRulesOverride?:RuleSpec[],
+):void {
+  const active=aggregate.caseV2.documents.filter(document=>document.active!==false)
+  const previousDocs=new Map(run.coverage.documents.map(item=>[item.documentVersionId,item]))
+  const coverageRules=coverageRulesOverride??unifiedDeterministicChecks(
+    aggregate,template,rules,snapshots(aggregate).observations,aggregate.evidenceLinks,
+  ).coverageRules
+  const summary=combineCoverage(active,coverageRules,aggregate.caseV2.subjects.map(subject=>subject.id),run.checks,{},sectionSubjectIds(template,aggregate))
   const documents = summary.documents.map((entry) => previousDocs.get(entry.documentVersionId) ?? entry)
   run.coverage = {
     documents: documents.map((document) => ({ documentVersionId: document.documentVersionId, status: document.status, ...(document.reason ? { reason: document.reason } : {}) })),
@@ -953,13 +1055,14 @@ export function submitPiReviewResultV2(input: {
   }
 
   const observationSnapshot = [...aggregate.observations, ...mergedObservations]
-  const deterministic = buildDeterministicRuleChecks(
-    aggregate,
-    rules,
-    observationSnapshot.map((item) => item as unknown as Record<string, unknown>),
+  const unified = unifiedDeterministicChecks(
+    aggregate,template,rules,
+    observationSnapshot.map((item)=>item as unknown as Record<string,unknown>),
     aggregate.evidenceLinks,
   )
+  const deterministic = unified.checks
   run.checks = [...deterministic, ...semanticResultMap.values()]
+  run.diagnostics=[...run.diagnostics,...unified.diagnostics].slice(-50)
 
   const expected = expectedSemanticChecks(rules, aggregate)
   const received = new Set(run.checks.filter((item) => item.executedBy === 'semantic' && item.status !== 'execution-failed').map((item) => item.checkId))
@@ -976,7 +1079,7 @@ export function submitPiReviewResultV2(input: {
       const history = readArtifact<{ attempts?: PiReviewSubmissionAttempt[] }>(input.binding.caseId, run.id, 'node-pi-submit-attempts')
       saveArtifact(input.binding.caseId, run.id, 'node-pi-submit-attempts', { attempts: [...(history?.attempts ?? []), attempt].slice(-30) })
       run.diagnostics = [...run.diagnostics, `提交尚未结束：${missingChecks.length} 项检查待补齐，${rejected.length} 条结果被拒绝；运行保持进行中，可继续提交。`].slice(-50)
-      recalculateCoverage(run, aggregate, rules, template)
+      recalculateCoverage(run, aggregate, rules, template, unified.coverageRules)
       saveArtifact(input.binding.caseId, run.id, 'node-auto-check-extract', { observations: mergedObservations })
       saveRunV2(run)
       return { accepted: observations.length + acceptedCheckIds.length, rejected, missingChecks, status: 'running' }
@@ -1017,7 +1120,7 @@ export function submitPiReviewResultV2(input: {
     run.diagnostics = [
       '由项目普通 Pi 会话直接审核；未启动第二个审核模型会话。',
     ]
-    recalculateCoverage(run, aggregate, rules, template)
+    recalculateCoverage(run, aggregate, rules, template, unified.coverageRules)
     saveArtifact(input.binding.caseId, run.id, 'node-auto-check-extract', { observations: mergedObservations })
     saveArtifact(input.binding.caseId, run.id, 'node-auto-check-summarize', { summary: opinion.detail, checks: run.checks, agentActivity: run.agentActivity ?? [] })
   } else {
