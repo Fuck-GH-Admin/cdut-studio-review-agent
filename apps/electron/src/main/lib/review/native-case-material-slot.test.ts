@@ -3,6 +3,7 @@ import { afterAll, describe, expect, test } from 'bun:test'
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import { assessMaterialSlotV2, type MaterialSlotSpec } from '@profer/shared'
 
 const configDir = mkdtempSync(join(tmpdir(), 'slot-'))
 process.env.PROFER_CONFIG_DIR = configDir
@@ -16,6 +17,11 @@ const { submitCaseV2 } = await import('./stage-workflow')
 
 const actor = { actorId: 'local-reviewer', actorSource: 'local' as const, role: 'reviewer' as const }
 const templateId = 'slot-template'
+const planSlot: MaterialSlotSpec = {
+  id: 'plan', name: '实验计划', purpose: '核验实验计划材料', acceptedKinds: ['text'],
+  acceptedRoles: ['evidence'], minCount: 1, maxCount: 1,
+  requiredElements: [], allowReuseAcrossSubjects: false, requiredAt: 'submission',
+}
 const template = {
   templateId, version: 1, schemaVersion: 2, name: '材料槽模板',
   objectType: 'document', displayName: { template: '{{x}}' }, status: 'draft', createdAt: '',
@@ -25,10 +31,7 @@ const template = {
     criteria: [{ id: 'integrity', title: '材料可核验', requirement: '核对申报材料与审核要求', execution: 'semantic', targetScope: 'case' }],
   }],
   policyVersionIds: [], policyRefs: [], outputs: [],
-  materialSlots: [{
-    id: 'plan', name: '实验计划', purpose: '核验实验计划材料', acceptedKinds: ['text'],
-    minCount: 1, maxCount: 1, requiredElements: [], allowReuseAcrossSubjects: false, requiredAt: 'submission',
-  }],
+  materialSlots: [planSlot],
   stages: [{ id: 'first', name: '初审', kind: 'manual-review', executorRole: 'reviewer' }],
 } as never
 
@@ -49,6 +52,10 @@ describe('原生案卷材料槽', () => {
     writeFileSync(applicationFile, '申请事项：实验项目', 'utf8')
     writeFileSync(planFile, '实验计划正文', 'utf8')
 
+    const wrongRoleCaseId = await createCase('材料类别不匹配')
+    await expect(registerNativeWorkspaceMaterialV3(wrongRoleCaseId, planFile, 'application', actor, undefined, 'plan'))
+      .rejects.toThrow('材料类别')
+
     const missingCaseId = await createCase('少量缺件案卷')
     await registerNativeWorkspaceMaterialV3(missingCaseId, applicationFile, 'application', actor)
     await registerNativeWorkspaceMaterialV3(missingCaseId, planFile, 'evidence', actor)
@@ -63,6 +70,17 @@ describe('原生案卷材料槽', () => {
     await registerNativeWorkspaceMaterialV3(completeCaseId, planFile, 'evidence', actor, undefined, 'plan')
     expect(readAggregate(completeCaseId)?.caseV2.documents.some((document) =>
       document.active !== false && document.materialSlotId === 'plan')).toBe(true)
+    const completeAggregate = readAggregate(completeCaseId)!
+    const wrongRoleAggregate = {
+      ...completeAggregate,
+      caseV2: {
+        ...completeAggregate.caseV2,
+        documents: completeAggregate.caseV2.documents.map((document) =>
+          document.materialSlotId === 'plan' ? { ...document, role: 'application' as const } : document),
+      },
+    }
+    expect(assessMaterialSlotV2(wrongRoleAggregate, planSlot).status).toBe('awaiting-supplement')
+
     const completeSubmission = await submitCaseV2(completeCaseId)
     expect(completeSubmission.ok).toBe(true)
     if (!completeSubmission.ok) throw new Error(completeSubmission.message)
