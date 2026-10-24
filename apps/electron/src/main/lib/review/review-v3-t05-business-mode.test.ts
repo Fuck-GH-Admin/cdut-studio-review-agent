@@ -219,6 +219,18 @@ describe('D3 按动作适格判定', () => {
     expect(specific.allowed['stage-pass']).toBe(true)
   })
 
+  test('同 Run/inputHash 的人工确认可以解除待确认项，不被原始 pendingChecks 统计误拦截', () => {
+    const persisted = run([
+      { checkId: 'needs-human', ruleId: 'r1', status: 'awaiting-confirmation' },
+    ], { coverage: { plannedChecks: 1, completedChecks: 1, pendingChecks: 1, documents: [] } })
+    const resolved = t05ActionEligibility(aggregate({ dispositions: [{
+      findingKey: 'needs-human', disposition: 'human-confirmed-compliant',
+      actor: 'local-reviewer', reason: '人工核对原件并确认符合', at: '',
+      runId: persisted.id, inputHash: persisted.inputManifest.hash,
+    }] }), persisted)
+    expect(resolved.allowed['stage-pass']).toBe(true)
+  })
+
   test('计划覆盖不足阻断通过', () => {
     const e = t05ActionEligibility(aggregate(), run(
       [{ checkId: 'c1', ruleId: 'r1', status: 'compliant' }],
