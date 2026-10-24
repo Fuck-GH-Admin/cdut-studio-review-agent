@@ -1,10 +1,12 @@
 import { afterEach, expect, test } from 'bun:test'
-import { mkdtempSync, rmSync } from 'node:fs'
+import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs'
+import * as XLSX from 'xlsx'
+import JSZip from 'jszip'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { T08Report, T08ReportProjection } from '@profer/shared'
 import {
-  calculateT08ProjectionHash, encodeT08ReportFormat, getT08ReportArchiveV3,
+  calculateT08ProjectionHash, encodeT08ReportFormat, exportT08ReportProjectionV3, getT08ReportArchiveV3,
   listT08ReportArchivesV3, makeT08ReportSnapshot, persistT08ReportSnapshot,
   renderT08ReportHtml, verifyT08ReportSnapshot,
 } from './review-v3-report-service'
@@ -22,7 +24,9 @@ function fixtureReport(): T08Report {
     audience: 'student', runId: 'run-1', caseId: 'case-1', status: 'completed', stale: false,
     markdown: '# 报告\n安全文本 <script>alert(1)</script>',
     json: JSON.stringify({ schema: 'review-v3-t08-report/2', caseId: 'case-1', audience: 'student', historical: false,
-      run: { id: 'run-1', status: 'completed', inputHash: 'input-1', templateId: 'template-1', templateVersion: 2 } }),
+      run: { id: 'run-1', status: 'completed', inputHash: 'input-1', templateId: 'template-1', templateVersion: 2,
+        coverage: { plannedChecks: 1, completedChecks: 1, effectiveVerdicts: 1, pendingChecks: 0 } },
+      sources: [], decision: null, subjects: [], supplements: [] }),
     rows: [{ kind: 'check', id: 'c1', status: 'compliant', detail: '=HYPERLINK("x")', source: '来源' }],
   }
 }
@@ -67,11 +71,43 @@ test('T08 HTML is text-searchable content with no script execution or remote res
 test('F16 spreadsheet export neutralizes formula-like content; PDF and bundle consume the same projection', async () => {
   const report = fixtureReport()
   const pdfRenderer = async (html: string) => new TextEncoder().encode('%PDF-1.7\n' + html + '\n%%EOF')
-  const workbook = await encodeT08ReportFormat(report, 'xlsx', pdfRenderer)
-  expect(workbook.byteLength).toBeGreaterThan(0)
+  const workbookBytes = await encodeT08ReportFormat(report, 'xlsx', pdfRenderer)
+  expect(workbookBytes.byteLength).toBeGreaterThan(0)
+  const workbook = XLSX.read(workbookBytes, { type: 'array' })
+  const detail = workbook.Sheets['检查与来源']!['D2']!
+  expect(detail.t).toBe('s')
+  expect(detail.f).toBeUndefined()
+  expect(detail.v).toContain('HYPERLINK')
   const pdf = await encodeT08ReportFormat(report, 'pdf', pdfRenderer)
   expect(new TextDecoder().decode(pdf)).toContain('%PDF-1.7')
   const snapshot = makeT08ReportSnapshot(fixtureProjection(), { reportId: 'report-fixed', createdAt: '2026-10-24T00:00:00.000Z' })
-  const zip = await encodeT08ReportFormat(report, 'bundle', pdfRenderer, snapshot)
-  expect(zip.byteLength).toBeGreaterThan(0)
+  const zipBytes = await encodeT08ReportFormat(report, 'bundle', pdfRenderer, snapshot)
+  const zip = await JSZip.loadAsync(zipBytes)
+  expect(Object.keys(zip.files).sort()).toEqual(['README.txt', 'manifest.json', 'report.html', 'report.json', 'report.md', 'report.pdf', 'report.xlsx'])
+  const manifest = JSON.parse(await zip.file('manifest.json')!.async('string')) as { snapshotHash: string; reportId: string }
+  expect(manifest.snapshotHash).toBe(snapshot.snapshotHash)
+  expect(manifest.reportId).toBe(snapshot.reportId)
+})
+
+test('F16 cancellation keeps the immutable archive but does not claim an external save', async () => {
+  const rootDir = root()
+  const receipt = await exportT08ReportProjectionV3(fixtureProjection(), 'md', {
+    rootDir, now: () => '2026-10-24T00:00:00.000Z', chooseDestination: async () => undefined,
+  })
+  expect(receipt.status).toBe('cancelled')
+  expect(receipt.filePath).toBeUndefined()
+  expect(existsSync(join(receipt.archivePath, 'snapshot.json'))).toBe(true)
+  expect(existsSync(receipt.archiveFilePath!)).toBe(true)
+  expect(listT08ReportArchivesV3(receipt.caseId, rootDir)[0]?.valid).toBe(true)
+})
+
+test('F16 successful save returns the actual destination and saved bytes', async () => {
+  const rootDir = root()
+  const destination = join(rootDir, 'saved-report.md')
+  const receipt = await exportT08ReportProjectionV3(fixtureProjection(), 'md', {
+    rootDir, now: () => '2026-10-24T00:00:00.000Z', chooseDestination: async () => destination,
+  })
+  expect(receipt.status).toBe('saved')
+  expect(receipt.filePath).toBe(destination)
+  expect(readFileSync(destination, 'utf-8')).toBe(fixtureReport().markdown)
 })

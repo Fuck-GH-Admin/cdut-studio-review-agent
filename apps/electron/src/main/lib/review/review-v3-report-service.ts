@@ -124,11 +124,12 @@ export function verifyT08ReportSnapshot(snapshot: T08ReportSnapshot): boolean {
     !snapshot.report || snapshot.report.caseId !== snapshot.caseId ||
     snapshot.report.runId !== snapshot.runId || snapshot.report.audience !== snapshot.audience ||
     snapshot.report.stale !== snapshot.historical) return false
-  let reportData: { caseId?: string; audience?: string; historical?: boolean; run?: { id?: string; inputHash?: string; status?: string } }
+  let reportData: { caseId?: string; audience?: string; historical?: boolean; run?: { id?: string; inputHash?: string; status?: string; templateId?: string; templateVersion?: number } }
   try { reportData = JSON.parse(snapshot.report.json) as typeof reportData } catch { return false }
   if (reportData.caseId !== snapshot.caseId || reportData.audience !== snapshot.audience ||
     reportData.historical !== snapshot.historical || reportData.run?.id !== snapshot.runId ||
-    reportData.run?.inputHash !== snapshot.inputHash || reportData.run?.status !== snapshot.report.status) return false
+    reportData.run?.inputHash !== snapshot.inputHash || reportData.run?.status !== snapshot.report.status ||
+    reportData.run?.templateId !== snapshot.templateId || reportData.run?.templateVersion !== snapshot.templateVersion) return false
   if (snapshot.projectionHash !== calculateT08ProjectionHash(snapshot)) return false
   const { snapshotHash, ...snapshotBase } = snapshot
   return snapshotHash === sha256(canonicalJson(snapshotBase))
@@ -139,7 +140,7 @@ function reportRoot(rootDir: string, caseId: string): string {
   return join(rootDir, 'review-cases', caseId, 'reports-v3')
 }
 function reportArchivePath(rootDir: string, caseId: string, reportId: string): string {
-  assertSafeReviewStorageId(reportId, 'reportId' as 'caseId')
+  assertSafeReviewStorageId(reportId, 'reportId')
   return join(reportRoot(rootDir, caseId), reportId)
 }
 
@@ -172,7 +173,7 @@ export function getT08ReportArchiveV3(
   rootDir = getConfigDir(),
 ): T08ReportSnapshot {
   assertSafeReviewStorageId(input?.caseId, 'caseId')
-  assertSafeReviewStorageId(input?.reportId, 'reportId' as 'caseId')
+  assertSafeReviewStorageId(input?.reportId, 'reportId')
   const path = join(reportArchivePath(rootDir, input.caseId, input.reportId), 'snapshot.json')
   if (!existsSync(path)) throw new Error('报告档案不存在：' + input.reportId)
   let snapshot: T08ReportSnapshot
@@ -180,6 +181,12 @@ export function getT08ReportArchiveV3(
   catch { throw new Error('报告档案损坏或无法解析：' + input.reportId) }
   if (snapshot.caseId !== input.caseId || snapshot.reportId !== input.reportId || !verifyT08ReportSnapshot(snapshot)) {
     throw new Error('报告档案完整性校验失败：' + input.reportId)
+  }
+  const directory = reportArchivePath(rootDir, input.caseId, input.reportId)
+  if (!existsSync(join(directory, 'report.md')) || !existsSync(join(directory, 'report.json')) ||
+    readFileSync(join(directory, 'report.md'), 'utf-8') !== snapshot.report.markdown ||
+    readFileSync(join(directory, 'report.json'), 'utf-8') !== snapshot.report.json) {
+    throw new Error('报告档案基线文件与不可变快照不一致：' + input.reportId)
   }
   return snapshot
 }
@@ -300,6 +307,11 @@ export async function encodeT08ReportFormat(
   if (format === 'xlsx') return encodeT08Workbook(report)
   if (format === 'pdf') return renderPdf(renderT08ReportHtml(report))
   if (!snapshot) throw new Error('生成 F16 交接包必须绑定已归档 ReportSnapshot')
+  if (snapshot.report.caseId !== report.caseId || snapshot.report.runId !== report.runId ||
+    snapshot.report.audience !== report.audience || snapshot.report.markdown !== report.markdown ||
+    snapshot.report.json !== report.json || !verifyT08ReportSnapshot(snapshot)) {
+    throw new Error('F16 交接包输入与已归档 ReportSnapshot 不一致')
+  }
   return encodeT08Bundle(snapshot, renderPdf)
 }
 
@@ -358,26 +370,36 @@ export async function exportT08ReportV3(
   if (projection.projectionHash !== input.expectedProjectionHash) {
     throw new Error('报告预览已过期：案卷、输入、模板或决定发生变化，请刷新后重新导出')
   }
+  return exportT08ReportProjectionV3(projection, input.format, dependencies)
+}
+
+export async function exportT08ReportProjectionV3(
+  projection: T08ReportProjection,
+  format: T08ReportExportFormat,
+  dependencies: T08ReportServiceDependencies = {},
+): Promise<T08ReportExportReceipt> {
+  assertFormat(format)
+  if (projection.projectionHash !== calculateT08ProjectionHash(projection)) throw new Error('报告预览指纹无效')
   const snapshotOptions = dependencies.now ? { createdAt: dependencies.now() } : {}
   const snapshot = makeT08ReportSnapshot(projection, snapshotOptions)
   const rootDir = dependencies.rootDir ?? getConfigDir()
   const archivePath = persistT08ReportSnapshot(snapshot, rootDir)
   const renderPdf = dependencies.renderPdf ?? renderPdfWithBrowserWindow
-  const bytes = await encodeT08ReportFormat(snapshot.report, input.format, renderPdf, snapshot)
-  const archiveFilePath = join(archivePath, 'delivery.' + EXTENSION[input.format])
+  const bytes = await encodeT08ReportFormat(snapshot.report, format, renderPdf, snapshot)
+  const archiveFilePath = join(archivePath, 'delivery.' + EXTENSION[format])
   writeAtomicNewFile(archiveFilePath, bytes)
   const destination = await (dependencies.chooseDestination ?? chooseDestination)(
-    safeFilename(snapshot.caseId + '-' + snapshot.runId + '-' + snapshot.audience) + '.' + EXTENSION[input.format], input.format,
+    safeFilename(snapshot.caseId + '-' + snapshot.runId + '-' + snapshot.audience) + '.' + EXTENSION[format], format,
   )
   if (!destination) {
     return { status: 'cancelled', reportId: snapshot.reportId, snapshotHash: snapshot.snapshotHash,
-      caseId: snapshot.caseId, runId: snapshot.runId, audience: snapshot.audience, format: input.format,
+      caseId: snapshot.caseId, runId: snapshot.runId, audience: snapshot.audience, format,
       archivePath, archiveFilePath }
   }
   assertDestinationOutsideArchive(archivePath, destination)
   writeExportedFile(destination, bytes)
   return { status: 'saved', reportId: snapshot.reportId, snapshotHash: snapshot.snapshotHash,
-    caseId: snapshot.caseId, runId: snapshot.runId, audience: snapshot.audience, format: input.format,
+    caseId: snapshot.caseId, runId: snapshot.runId, audience: snapshot.audience, format,
     archivePath, archiveFilePath, filePath: destination, savedAt: (dependencies.now ?? (() => new Date().toISOString()))() }
 }
 
