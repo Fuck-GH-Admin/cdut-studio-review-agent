@@ -132,7 +132,7 @@ describe('R02 T03-A template definitions', () => {
     expect(markdown).toContain('T03-A-005 安全返修')
     expect(t03.fields.map((field) => field.key)).toEqual(Array.from({ length: 44 }, (_, i) => `f${String(i + 1).padStart(3, '0')}`))
     expect(t03.materialSlots.map((slot) => slot.id)).toEqual(Array.from({ length: 20 }, (_, i) => `m${String(i + 1).padStart(3, '0')}`))
-    expect(m03.criteria.map((criterion) => criterion.criterionId)).toEqual(Array.from({ length: 26 }, (_, i) => `R${String(i + 1).padStart(3, '0')}`))
+    expect(m03.criteria.map((criterion) => String(criterion.criterionId))).toEqual(Array.from({ length: 26 }, (_, i) => `R${String(i + 1).padStart(3, '0')}`))
     for (const criterion of m03.criteria) {
       expect(markdown).toContain(criterion.criterionId)
       for (const sourceId of criterion.srcIds) expect(markdown).toContain(sourceId)
