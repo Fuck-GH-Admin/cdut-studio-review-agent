@@ -114,7 +114,7 @@ describe('后台 Main 入口与受理边界', () => {
     await Bun.sleep(0)
     const previous = getRunV2(first.caseId, receipt.runId!)!
     expect(previous.status).toBe('partially-completed')
-    expect(previous.checks.some((check) => check.status === 'execution-failed')).toBeTrue()
+    expect(previous.checks.some((check) => check.status === 'not-executed')).toBeTrue()
 
     // 另一个技术路径最近写入模板规则 Run，不等于 Pi 的最近可续审轮次。
     saveRunV2({ ...previous, id: 'run-t04-after-pi', status: 'completed',

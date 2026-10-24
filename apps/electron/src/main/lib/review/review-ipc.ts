@@ -57,6 +57,7 @@ import { exportReport } from './report-service'
 import { getReviewModelGatewayStatus } from './review-model-gateway'
 import {
   createNativeWorkspaceCaseV3, isNativeWorkspaceCaseV3, updateNativeWorkspaceSettingsV3,
+  reclassifyNativeWorkspaceMaterialV3, reclassifyNativeWorkspaceMaterialsV3,
   registerNativeWorkspaceMaterialV3, removeNativeWorkspaceDocumentsV3, reorderNativeWorkspaceDocumentsV3,
   updateNativeWorkspaceReviewItemV3, createNativeReviewItemV3,
 } from './native-workspace-case-v3'
@@ -639,11 +640,36 @@ export function registerReviewIpc(): void {
     const { updateFieldsC0 } = require('./review-c0-case-service') as typeof import('./review-c0-case-service')
     return updateFieldsC0(command as Parameters<typeof updateFieldsC0>[0])
   })
-  ipcMain.handle(REVIEW_IPC_CHANNELS.EXPORT_REPORT_V2, (_e, caseId: string) => {
-    if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')
-    // 薄委托共享导出服务（08 设计：IPC 与 Agent 工具同服务函数）
-    const { exportCaseReport } = require('./report-export-v2-service') as typeof import('./report-export-v2-service')
-    return exportCaseReport(caseId)
+  // T08/F16: Main owns source selection, audience projection, immutable snapshots and native file delivery.
+  ipcMain.handle(REVIEW_IPC_CHANNELS.GET_T08_REPORT_PREVIEW_V3, (event, input: { caseId: string; runId: string; audience: import('@profer/shared').T08Audience }) => {
+    assertC0ReviewMainSender(event)
+    const { getT08ReportPreviewV3 } = require('./review-v3-report-service') as typeof import('./review-v3-report-service')
+    return getT08ReportPreviewV3(input)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.LIST_T08_REPORT_ARCHIVES_V3, (event, caseId: string) => {
+    assertC0ReviewMainSender(event)
+    const { listT08ReportArchivesV3 } = require('./review-v3-report-service') as typeof import('./review-v3-report-service')
+    return listT08ReportArchivesV3(caseId)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.GET_T08_REPORT_ARCHIVE_V3, (event, input: { caseId: string; reportId: string }) => {
+    assertC0ReviewMainSender(event)
+    const { getT08ReportArchiveV3 } = require('./review-v3-report-service') as typeof import('./review-v3-report-service')
+    return getT08ReportArchiveV3(input)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.EXPORT_T08_REPORT_V3, async (event, input: {
+    caseId: string; runId: string; audience: import('@profer/shared').T08Audience;
+    format: import('@profer/shared').T08ReportExportFormat; expectedProjectionHash: string
+  }) => {
+    assertC0ReviewMainSender(event)
+    const { exportT08ReportV3 } = require('./review-v3-report-service') as typeof import('./review-v3-report-service')
+    return exportT08ReportV3(input)
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.EXPORT_T08_REPORT_ARCHIVE_V3, async (event, input: {
+    caseId: string; reportId: string; format: import('@profer/shared').T08ReportExportFormat
+  }) => {
+    assertC0ReviewMainSender(event)
+    const { exportT08ReportArchiveV3 } = require('./review-v3-report-service') as typeof import('./review-v3-report-service')
+    return exportT08ReportArchiveV3(input)
   })
   // ===== C1：审核操作可信指派（显式指派是 Agent 写权限唯一来源） =====
   ipcMain.handle(REVIEW_IPC_CHANNELS.ASSIGNMENT_CREATE_V2, (_e, input: { sessionId: string; turnId: string; caseId?: string; templateId?: string; templateVersion?: number; actions: string[]; workRole?: 'reviewer' | 'student' }) => {
@@ -1262,6 +1288,68 @@ export function registerReviewIpc(): void {
     }, () => assertC0ReviewMainSender(_e))
     if (!outcome.ok) throw new Error(outcome.message ?? '登记失败')
     return outcome.entity?.versionId ?? outcome.aggregate.caseV2.documents.at(-1)?.versionId
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.CLASSIFY_NATIVE_MATERIAL_V3, async (_e, input: {
+    caseId:string;documentVersionId:string;role:'application'|'evidence'|'rule';materialSlotId:string
+  }) => {
+    assertC0ReviewMainSender(_e)
+    if(!input||typeof input.caseId!=='string'||!input.caseId||
+      typeof input.documentVersionId!=='string'||!input.documentVersionId||
+      typeof input.materialSlotId!=='string'||!input.materialSlotId||
+      !['application','evidence','rule'].includes(input.role))
+      throw new Error('材料分类参数非法')
+    // Compatibility IPC: use the same atomic CaseAggregate/Receipt path as
+    // the new batch classifier; never create a competing material truth.
+    await reclassifyNativeWorkspaceMaterialV3(input.caseId, {
+      documentVersionId: input.documentVersionId,
+      role: input.role,
+      materialSlotId: input.materialSlotId,
+    }, undefined, () => assertC0ReviewMainSender(_e))
+    return {ok:true as const}
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.OPEN_INITIAL_REVIEW_SUPPLEMENT_V3, async (_e,input:{caseId:string;runId:string}) => {
+    assertC0ReviewMainSender(_e)
+    if(!input||typeof input.caseId!=='string'||!input.caseId||
+      typeof input.runId!=='string'||!input.runId)
+      throw new Error('初审补件参数非法')
+    const aggregate=readAggregate(input.caseId)
+    if(!aggregate)throw new Error('案卷不存在：'+input.caseId)
+    const {openInitialReviewSupplementV3}=require('./stage-workflow') as typeof import('./stage-workflow')
+    const command=bindLocalReviewerCommand({
+      requestId:'initial-supplement-'+Date.now()+'-'+Math.random().toString(36).slice(2,8),
+      actor:{actorId:'local-reviewer',actorSource:'local' as const,role:'reviewer' as const},
+      expectedRevision:aggregate.caseV2.revision,
+      payload:{runId:input.runId},
+    })
+    return openInitialReviewSupplementV3(input.caseId,
+      command as unknown as Parameters<typeof openInitialReviewSupplementV3>[1],
+      ()=>assertC0ReviewMainSender(_e))
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RECLASSIFY_NATIVE_MATERIAL_V3, async (event, input: {
+    caseId: string; documentVersionId: string; role: 'rule' | 'application' | 'evidence' | 'attachment'; materialSlotId?: string
+  }) => {
+    assertC0ReviewMainSender(event)
+    if (!input || typeof input.caseId !== 'string' || !input.caseId ||
+      typeof input.documentVersionId !== 'string' || !input.documentVersionId ||
+      !['rule', 'application', 'evidence', 'attachment'].includes(input.role) ||
+      (input.materialSlotId !== undefined && typeof input.materialSlotId !== 'string')) {
+      throw new Error('材料重新分类参数无效')
+    }
+    return reclassifyNativeWorkspaceMaterialV3(input.caseId, {
+      documentVersionId: input.documentVersionId,
+      role: input.role,
+      ...(input.materialSlotId ? { materialSlotId: input.materialSlotId } : {}),
+    }, undefined, () => assertC0ReviewMainSender(event))
+  })
+  ipcMain.handle(REVIEW_IPC_CHANNELS.RECLASSIFY_NATIVE_MATERIALS_V3, async (event, input: {
+    caseId: string; items: Array<{ documentVersionId: string; role: 'rule' | 'application' | 'evidence' | 'attachment'; materialSlotId?: string }>
+  }) => {
+    assertC0ReviewMainSender(event)
+    if (!input || typeof input.caseId !== 'string' || !input.caseId || !Array.isArray(input.items)) {
+      throw new Error('批量材料重新分类参数无效')
+    }
+    return reclassifyNativeWorkspaceMaterialsV3(input.caseId, input.items, undefined,
+      () => assertC0ReviewMainSender(event))
   })
   ipcMain.handle(REVIEW_IPC_CHANNELS.SUBMIT_CASE_V2, (_e, caseId: string) => {
     if (typeof caseId !== 'string' || !caseId) throw new Error('参数 caseId 非法')

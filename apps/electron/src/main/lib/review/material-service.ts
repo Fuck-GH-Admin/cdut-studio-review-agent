@@ -14,6 +14,7 @@ import { tmpdir } from 'node:os'
 import type { Actor, DocumentVersion, ReviewCommandResult, ReviewDocumentBlock, TemplateVersion } from '@profer/shared'
 import { CommandValidationError, readAggregate, submitCommand } from './case-store-v2'
 import { revokeCurrentSourceValidity } from './source-current-validity-v3'
+import { getTemplate } from './template-store'
 import { getConfigDir } from '../config-paths'
 import { extractDocxReviewContent, extractSpreadsheetReviewContent, extractTextFromFile, type DocxReviewContent, type XlsxReviewContent } from '../document-parser'
 import { extractReviewableTextFile } from './document-service'
@@ -147,6 +148,14 @@ export async function registerMaterial(caseId: string, command: { requestId: str
     // inside the serialized command, before any physical asset is copied.
     authorizeAtCommit?.()
     if (aggregate.caseV2.stage === 'archived') throw new CommandValidationError('INVALID_TRANSITION', '已归档案卷不可登记材料')
+    if (payload.materialSlotId) {
+      const slot = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)?.materialSlots
+        .find((candidate) => candidate.id === payload.materialSlotId)
+      if (slot?.acceptedRoles?.length && !slot.acceptedRoles.includes(payload.role)) {
+        throw new CommandValidationError('VALIDATION_FAILED',
+          `材料类别不匹配：材料槽「${slot.name}」只接受 ${slot.acceptedRoles.join('、')} 类材料，当前类别为 ${payload.role}`)
+      }
+    }
     const sourcePath = payload.sourcePath
     if (!sourcePath) throw new CommandValidationError('VALIDATION_FAILED', '缺少源文件路径')
     // 版本链语义（复查 §5.9）：同槽位 + 同文件名 = 同一逻辑材料的新版本；不同槽位各自独立
@@ -155,9 +164,12 @@ export async function registerMaterial(caseId: string, command: { requestId: str
     if ([...requestedReplacements].some((versionId) => !aggregate.caseV2.documents.some((doc) => doc.versionId === versionId && doc.active !== false))) {
       throw new CommandValidationError('VALIDATION_FAILED', '替换目标不存在或不再是当前材料版本')
     }
-    const sameLogic = aggregate.caseV2.documents.filter((doc) => doc.fileName === incomingName && doc.materialSlotId === payload.materialSlotId)
+    const sameLogic = aggregate.caseV2.documents.filter((doc) =>
+      doc.fileName === incomingName && doc.materialSlotId === payload.materialSlotId &&
+      (requestedReplacements.size === 0 || requestedReplacements.has(doc.versionId)))
     const versionSeq = sameLogic.length + 1
-    const previousVersion = sameLogic.at(-1)
+    const previousVersion = sameLogic.at(-1) ??
+      aggregate.caseV2.documents.find((doc) => requestedReplacements.has(doc.versionId) && doc.fileName === incomingName)
     const documentId = `doc-${aggregate.caseV2.documents.length + 1}-${Date.now().toString(36)}`
     const versionId = `${documentId}-v${versionSeq}`
     const { byteHash, assetKey, sizeBytes, assetDirectory } = copyAsset(caseId, versionId, sourcePath)
@@ -231,7 +243,8 @@ export async function registerMaterial(caseId: string, command: { requestId: str
         // 同槽位同名旧版本停止参与新审核（supersedes：同 slotId+name 才替换）
         const replacedVersions = new Set(payload.replacesVersionIds ?? [])
         const docs = draft.caseV2.documents.map((doc) => (
-          (doc.fileName === incomingName && doc.materialSlotId === payload.materialSlotId) || replacedVersions.has(doc.versionId)
+          (requestedReplacements.size === 0 && doc.fileName === incomingName &&
+            doc.materialSlotId === payload.materialSlotId) || replacedVersions.has(doc.versionId)
             ? { ...doc, active: false }
             : doc
         ))
@@ -257,7 +270,8 @@ export async function registerMaterial(caseId: string, command: { requestId: str
         draft.caseV2.documents = [...docs, doc]
         const retiredVersions = new Set(aggregate.caseV2.documents.filter((old) =>
           old.active !== false && (requestedReplacements.has(old.versionId) ||
-            (old.fileName === incomingName && old.materialSlotId === payload.materialSlotId)))
+            (requestedReplacements.size === 0 && old.fileName === incomingName &&
+              old.materialSlotId === payload.materialSlotId)))
           .map((old) => old.versionId))
         revokeCurrentSourceValidity(draft, retiredVersions, 'replace')
         return doc

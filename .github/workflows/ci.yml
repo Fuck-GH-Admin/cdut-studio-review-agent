@@ -58,6 +58,14 @@ jobs:
           bun run build:preload
           bun run build:renderer
 
+      - name: T08 F16 focused report contracts
+        # Keep report contract evidence independently visible even when Bun crashes in an unrelated full-suite test.
+        run: |
+          bun test --isolate --timeout 30000 \
+            apps/electron/src/main/lib/review/review-v3-report-service.test.ts \
+            apps/electron/src/renderer/components/content-review/review-v3-t08-case-report.test.ts \
+            apps/electron/src/main/lib/review/single-case-mvp.e2e.test.ts
+
       - name: Run unit and regression tests
         # --isolate: bun 的 mock.module('electron') 是进程级注册表，默认并行下多文件互相覆盖导致误报；
         # 隔离模式保证每个测试文件独立（与 release.yml 同款参数）

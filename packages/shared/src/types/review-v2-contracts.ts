@@ -308,7 +308,7 @@ export interface RatingEntryV2 {
 /** C1 source-current-validity audit entry. Original values/refs/receipts remain durable. */
 export interface SourceValidityRevocation {
   documentVersionId: string
-  reason: 'archive' | 'replace'
+  reason: 'archive' | 'replace' | 'reclassify'
   at: string
   observationIds: string[]
   previouslyConfirmedObservationIds: string[]

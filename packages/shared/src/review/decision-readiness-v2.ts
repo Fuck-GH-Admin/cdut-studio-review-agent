@@ -1,4 +1,5 @@
 import type { CaseAggregateV2, ReviewRunV2, TemplateVersion } from '../types'
+import { assessMaterialSlotV2 } from './material-slot-readiness-v2'
 
 export type DecisionBlockerKind =
   | 'stale-run'
@@ -134,10 +135,19 @@ export function assessDecisionReadiness(input: {
     }
   }
 
+  // Every required slot remains a final-decision gate, including slots that
+  // were missing at submission but allowed the initial review to proceed.
+  // Applicability, accepted file kinds and min/max counts share the same
+  // assessment used to create the Run's material-slot checks.
   for (const slot of template?.materialSlots ?? []) {
-    if ((slot.requiredAt ?? 'submission') !== 'decision') continue
-    const count = aggregate.caseV2.documents.filter((document) => document.active !== false && document.materialSlotId === slot.id).length
-    if (count < slot.minCount) blockers.push({ kind: 'missing-material-slot', id: slot.id, message: `缺少证明材料：${slot.name}（需要 ${slot.minCount} 份，当前 ${count} 份）` })
+    const assessment = assessMaterialSlotV2(aggregate, slot)
+    if (assessment.status === 'awaiting-supplement' || assessment.status === 'awaiting-confirmation') {
+      blockers.push({
+        kind: 'missing-material-slot',
+        id: slot.id,
+        message: assessment.reason || `材料槽未满足：${slot.name}`,
+      })
+    }
   }
   if (!template) blockers.push({ kind: 'missing-material-slot', id: 'template', message: '审核模板不存在，无法核对最终决定所需材料。' })
 

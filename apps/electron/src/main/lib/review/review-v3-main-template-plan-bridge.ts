@@ -12,8 +12,9 @@
  * - **不建第二套 PlanStore**：产物只是入参，安装与 Run 写入仍走
  *   `case-store-v2` / `run-store-v2` 的既有 writer。
  */
-import type {
-  CaseAggregateV2, TemplateVersion, TemplateCriterionSpec, RuleSpec,
+import {
+  REVIEW_V3_OTHER_MATERIAL_SLOT_ID, reviewV3SlotAcceptsFile,
+  type CaseAggregateV2, type TemplateVersion, type TemplateCriterionSpec, type RuleSpec,
 } from '@profer/shared'
 import {
   compilePublishedTemplateReviewPlan,
@@ -154,10 +155,23 @@ export function buildT04TargetFromCase(
     }
   }
   const materialSlots: T04PublishedTarget['materialSlots'] = {}
+  const validSlotIds=new Set((template.materialSlots??[]).map(slot=>slot.id))
+  // Empty slot counts are authoritative only after every current material has an
+  // explicit slot or the user has explicitly marked it as unrelated to this template.
+  const classificationComplete=active.length>0&&active.every(document=>
+    document.materialSlotId===REVIEW_V3_OTHER_MATERIAL_SLOT_ID||
+    (typeof document.materialSlotId==='string'&&validSlotIds.has(document.materialSlotId)))
   for (const slot of template.materialSlots ?? []) {
-    const ids = active.filter((document) => document.materialSlotId === slot.id).map((document) => document.versionId)
-    // confirmed=false 表示「未核实」，与「已确认缺件」不同，不能混为 0
-    materialSlots[slot.id] = { documentVersionIds: ids, confirmed: true }
+    const matched=active.filter(document=>document.materialSlotId===slot.id)
+    const accepted=matched.filter(document=>reviewV3SlotAcceptsFile(slot,document.fileName))
+    // A malformed, unreadable or incompatible original must not be counted
+    // as either a complete evidence receipt or confirmed absence.
+    const valid=matched.every(document=>
+      reviewV3SlotAcceptsFile(slot,document.fileName)&&document.parseStatus!=='failed')
+    materialSlots[slot.id]={
+      documentVersionIds:accepted.map(document=>document.versionId),
+      confirmed:classificationComplete&&valid,
+    }
   }
   return {
     scope: 'case',
@@ -168,6 +182,43 @@ export function buildT04TargetFromCase(
     sourceVersionIds: active.map((document) => document.versionId),
     materialSlots,
   }
+}
+
+/** Case + subject targets from the current aggregate. Subject rules must not be silently
+ * dropped just because the compiler previously supplied only a case target.
+ */
+export function buildT04TargetsFromCase(
+  aggregate:CaseAggregateV2,template:TemplateVersion,fieldUnits:Readonly<Record<string,string>>={},
+):T04PublishedTarget[] {
+  const caseTarget=buildT04TargetFromCase(aggregate,template,fieldUnits)
+  const activeVersions=new Set((aggregate.caseV2.documents??[])
+    .filter(document=>document.active!==false).map(document=>document.versionId))
+  const subjectTargets:T04PublishedTarget[]=aggregate.caseV2.subjects.map(subject=>{
+    const fields:Record<string,T04Value>={}
+    const confirmed=subject.status==='confirmed'
+    for(const [key,rawValue] of Object.entries(subject.fields??{})){
+      const raw=rawValue as {kind?:string;value?:unknown;documentVersionId?:string}
+      if(!raw||raw.value===undefined||raw.value===null)continue
+      const spec=template.fields.find(field=>field.key===key&&
+        (field.scope??'subject')==='subject'&&(!field.sectionId||field.sectionId===subject.sectionId))
+      if(!spec)continue
+      if(raw.kind==='number'){
+        const value=typeof raw.value==='number'?raw.value:Number(raw.value)
+        if(Number.isFinite(value))fields[key]={value,confirmed,...(spec.unit?{unit:spec.unit}:{})}
+      }else if(raw.kind==='text'||raw.kind==='date'||raw.kind==='enum'){
+        fields[key]={value:String(raw.value),confirmed}
+      }else if(raw.kind==='boolean'&&typeof raw.value==='boolean'){
+        fields[key]={value:raw.value,confirmed}
+      }
+    }
+    const sourceVersionIds=[...new Set((subject.sourceRefs??[])
+      .map(source=>source.documentVersionId).filter(id=>activeVersions.has(id)))]
+    return {
+      scope:'subject',targetKey:'subject:'+subject.id,objectKey:'subject:'+subject.id,
+      subjectId:subject.id,fields,sourceVersionIds,materialSlots:{},
+    }
+  })
+  return [caseTarget,...subjectTargets]
 }
 
 export interface CompileTemplatePlanInput {
@@ -198,12 +249,12 @@ export function compileTemplatePlanForCase(input: CompileTemplatePlanInput): T04
   for (const item of constraints) {
     if (item.constraint.unit) fieldUnits[item.constraint.fieldKey] = item.constraint.unit
   }
-  const target = buildT04TargetFromCase(aggregate, template, fieldUnits)
+  const targets = buildT04TargetsFromCase(aggregate, template, fieldUnits)
   const compiled = compilePublishedTemplateReviewPlan({
     template,
     effectiveRules,
     constraints,
-    targets: [target],
+    targets,
     phase: input.phase ?? 'submission',
   })
   return { compiled, constraints, unresolved, ruleIds }

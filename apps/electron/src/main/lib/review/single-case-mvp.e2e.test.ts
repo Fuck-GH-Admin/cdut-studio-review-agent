@@ -14,7 +14,7 @@ import { runReviewCaseV2 } from './run-service-v2'
 import { readArtifact } from './run-store-v2'
 import { acknowledgeWorkspaceMaterialV2, decideWorkspaceCaseV2, openWorkspaceSupplementV2, recordWorkspaceDispositionV2, recordWorkspaceSubjectAdjudicationV2 } from './workspace-business-service-v2'
 import { buildReviewWorkspaceViewModel } from '../../../renderer/components/content-review/review-workspace-view-model'
-import { exportCaseReport } from './report-export-v2-service'
+import { getT08ReportPreviewV3, makeT08ReportSnapshot, persistT08ReportSnapshot } from './review-v3-report-service'
 
 const CONFIG_DIR = mkdtempSync(join(tmpdir(), 'cdut-single-case-mvp-'))
 process.env.PROFER_CONFIG_DIR = CONFIG_DIR
@@ -199,8 +199,10 @@ describe('单案审核 MVP 全链路（真实存储与执行器，模型调用�
       { subjectId: 'subject-c', value: '0', basisRunId: finalRun.id },
     ])
 
-    const report = exportCaseReport(caseId)
-    const reportText = readFileSync(report.file, 'utf8')
+    const reportProjection = getT08ReportPreviewV3({ caseId, runId: finalRun.id, audience: 'reviewer' })
+    const reportSnapshot = makeT08ReportSnapshot(reportProjection)
+    const reportArchive = persistT08ReportSnapshot(reportSnapshot, CONFIG_DIR)
+    const reportText = readFileSync(join(reportArchive, 'report.md'), 'utf8')
     expect(reportText).toContain('事项最终认定')
     expect(reportText).toContain('最终分值 4')
     expect(reportText).toContain('有效规则集哈希')
