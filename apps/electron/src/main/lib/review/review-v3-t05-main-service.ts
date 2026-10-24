@@ -249,8 +249,8 @@ export function t05ActionEligibility(
   // The ledger reconciles checks with actual RuleSpec×target bindings;
   // array length alone cannot replace its verified completed count.
   const completed = run.coverage?.completedChecks
-  if (Number.isSafeInteger(required) && required > 0 &&
-      (!Number.isSafeInteger(completed) || completed === undefined || completed < required)) {
+  if (typeof required === 'number' && Number.isSafeInteger(required) && required > 0 &&
+      (typeof completed !== 'number' || !Number.isSafeInteger(completed) || completed < required)) {
     blockers.push('本次运行的检查账本尚未完整覆盖计划目标')
   }
   if ((run.coverage?.pendingChecks ?? 0) > 0) {
