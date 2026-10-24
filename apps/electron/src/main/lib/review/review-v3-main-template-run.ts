@@ -22,8 +22,26 @@ import { computeRunInputHash } from './run-service-v2'
 import { compileTemplatePlanForCase } from './review-v3-main-template-plan-bridge'
 import { evaluateT04Plan } from './review-v3-t04-rules-scoring'
 import { reconcileF07PublishedPlan } from './review-v3-f07-plan-coverage'
+import { isNativeWorkspaceCaseV3 } from './native-workspace-case-v3'
 
 const MAIN_ACTOR: Actor = { actorId: 'local-reviewer', actorSource: 'local', role: 'reviewer' }
+
+/** A source is accepted only when backed by an active version in this Case. */
+function sourceRefsOf(aggregate:CaseAggregateV2):SourceRef[] {
+  return (aggregate.caseV2.documents??[])
+    .filter(document=>document.active!==false)
+    .map(document=>({
+      caseId:aggregate.caseV2.id,
+      documentVersionId:document.versionId,
+      parseRevision:document.parseRevision??0,
+      location:{kind:'file' as const},
+    }))
+}
+function fingerprintOf(planFingerprint:string,ruleIds:readonly string[]):string {
+  return createHash('sha256')
+    .update(planFingerprint+'|'+[...ruleIds].sort().join(','))
+    .digest('hex')
+}
 
 export interface TemplateRuleRunResult {
   runId: string
@@ -35,128 +53,141 @@ export interface TemplateRuleRunResult {
   ruleIds: string[]
 }
 
-/** 由当前有效原件构造可核对的来源引用（缺原件就是空，绝不虚构）。 */
-function sourceRefsOf(aggregate: CaseAggregateV2): SourceRef[] {
-  return (aggregate.caseV2.documents ?? [])
-    .filter((document) => document.active !== false)
-    .map((document) => ({
-      caseId: aggregate.caseV2.id,
-      documentVersionId: document.versionId,
-      parseRevision: document.parseRevision ?? 0,
-      location: { kind: 'file' } as SourceRef['location'],
-    }))
+export interface TemplateRuleEvaluation {
+  planFingerprint: string
+  checks: CheckResult[]
+  status: 'completed' | 'partially-completed'
+  ruleIds: string[]
+  coverage: ReviewRunV2['coverage']
+  blockers: string[]
+  /** 需要 T04 专门执行的已确认数值约束与模板材料槽位。 */
+  specializedRuleIds: string[]
+  /** 参与覆盖分母的完整规则集，包含由 materialSlots 派生的检查规则。 */
+  coverageRules: import('@profer/shared').RuleSpec[]
+  recordedAt: string
 }
 
-/** 计划指纹需要涵盖计划本体与规则集，避免同模板不同规则共用指纹。 */
-function fingerprintOf(planFingerprint: string, ruleIds: readonly string[]): string {
-  return createHash('sha256')
-    .update(`${planFingerprint}|${[...ruleIds].sort().join(',')}`)
-    .digest('hex')
+export function templateRuleSpecializedRuleIds(template:TemplateVersion):string[] {
+  const constraintIds=(template.sections??[]).flatMap(section=>section.criteria.flatMap(criterion=>{
+    const raw=(criterion as typeof criterion & {deterministicConstraint?:{kind?:string}}).deterministicConstraint
+    return raw?.kind==='field-number-limit'?[`section-${section.id}-${criterion.id}`]:[]
+  }))
+  const materialIds=(template.materialSlots??[]).filter(slot=>slot.minCount>0)
+    .map(slot=>'required-material-'+slot.id)
+  return [...new Set([...constraintIds,...materialIds])]
 }
 
-/**
- * 安装计划并生成真实 Run。
- *
- * 同一案卷可多次运行（例如补件后），历史 Run 一律保留、不改写。
+/** Compute the authoritative published-template checks without creating a Run.
+ * The unified Pi run consumes these checks so a single user action cannot create
+ * an independent run-tpl-* and run-pi-* pair for the same review round.
  */
-export function runTemplateRuleReview(input: {
-  caseId: string
-  phase?: 'submission' | 'decision'
-  initiatedBy?: Actor
-}): TemplateRuleRunResult {
-  const aggregate = readAggregate(input.caseId)
-  if (!aggregate) throw new CommandValidationError('NOT_FOUND', '案卷不存在')
-  if (aggregate.d2RuntimePlan) {
-    throw new CommandValidationError('AGENT_DECISION_DISABLED', 'D2 技术预审案卷不得使用正式业务规则计划')
-  }
-  const template: TemplateVersion | undefined = getTemplate(
-    aggregate.caseV2.templateId, aggregate.caseV2.templateVersion,
-  )
-  if (!template) throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '模板不存在')
-  if (template.status !== 'published') {
-    throw new CommandValidationError('INVALID_TRANSITION', '只有已发布模板可以生成正式审核运行')
-  }
-
-  const phase = input.phase ?? 'submission'
-  const bridge = compileTemplatePlanForCase({ aggregate, template, phase })
-  if (!bridge.compiled) {
+export function evaluateTemplateRuleReview(input:{
+  aggregate:CaseAggregateV2
+  template:TemplateVersion
+  phase?:'submission'|'decision'
+  recordedAt?:string
+}):TemplateRuleEvaluation {
+  const {aggregate,template}=input
+  if(aggregate.d2RuntimePlan)
+    throw new CommandValidationError('AGENT_DECISION_DISABLED','D2 技术预审案卷不得使用正式业务规则计划')
+  if(template.status!=='published')
+    throw new CommandValidationError('INVALID_TRANSITION','只有已发布模板可以生成正式审核运行')
+  const phase=input.phase??'submission'
+  const bridge=compileTemplatePlanForCase({aggregate,template,phase})
+  if(!bridge.compiled) {
     throw new CommandValidationError('DEPENDENCY_UNRESOLVED',
-      `模板规则尚不能编译为可执行计划：${bridge.unresolved.map((item) => `${item.ruleId}（${item.reason}）`).join('；')}`)
+      `模板规则尚不能编译为可执行计划：${bridge.unresolved.map(item=>`${item.ruleId}（${item.reason}）`).join('；')}`)
   }
-  const { plan, checks, bindings } = bridge.compiled
-  if (bindings.length === 0) {
-    throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '已发布模板尚无可执行检查，不能记录空运行')
-  }
-  const ruleIds = bindings.map((item) => item.rule.id)
-
-  const executedAt = new Date().toISOString()
-  const active = (aggregate.caseV2.documents ?? []).filter((document) => document.active !== false)
-  const proposals = evaluateT04Plan(plan, checks)
-  if (proposals.length !== plan.bindings.length) {
-    throw new CommandValidationError('DEPENDENCY_UNRESOLVED', 'T04 实际检查数量与冻结计划不一致')
-  }
-  // 逐条核对 Check×target×object×subject + Run 原件版本，而非将全案原件复制给每条检查。
-  const reconciled = reconcileF07PublishedPlan({
-    plan, bindings,
-    results: proposals.map((proposal, index) => ({ binding: plan.bindings[index]!, proposal })),
-    documents: active, verifiedSources: sourceRefsOf(aggregate),
-    caseId: aggregate.caseV2.id, recordedAt: executedAt,
+  const {plan,checks,bindings}=bridge.compiled
+  if(bindings.length===0)
+    throw new CommandValidationError('DEPENDENCY_UNRESOLVED','已发布模板尚无可执行检查，不能记录空运行')
+  const ruleIds=bindings.map(item=>item.rule.id)
+  const recordedAt=input.recordedAt??new Date().toISOString()
+  const active=(aggregate.caseV2.documents??[]).filter(document=>document.active!==false)
+  const proposals=evaluateT04Plan(plan,checks)
+  if(proposals.length!==plan.bindings.length)
+    throw new CommandValidationError('DEPENDENCY_UNRESOLVED','T04 实际检查数量与冻结计划不一致')
+  const reconciled=reconcileF07PublishedPlan({
+    plan,bindings,
+    results:proposals.map((proposal,index)=>({binding:plan.bindings[index]!,proposal})),
+    documents:active,verifiedSources:sourceRefsOf(aggregate),
+    caseId:aggregate.caseV2.id,recordedAt,
   })
-  const results: CheckResult[] = reconciled.checks
+  const results:CheckResult[]=reconciled.checks
+  const pending=results.filter(item=>item.status==='awaiting-confirmation'||item.status==='awaiting-supplement').length
+  const failed=results.filter(item=>item.status==='execution-failed'||item.status==='not-executed').length
+  const planFingerprint=fingerprintOf(plan.fingerprint,ruleIds)
+  const coverageRules=[...new Map(bindings.map(item=>[
+    item.rule.policyVersionId+'::'+item.rule.id,item.rule,
+  ])).values()]
+  return {
+    planFingerprint,checks:results,ruleIds,coverage:reconciled.coverage,
+    status:pending>0||failed>0||reconciled.blockers.length>0?'partially-completed':'completed',
+    blockers:reconciled.blockers,
+    specializedRuleIds:templateRuleSpecializedRuleIds(template),
+    coverageRules,recordedAt,
+  }
+}
 
-  const compliant = results.filter((item) => item.status === 'compliant').length
-  const nonCompliant = results.filter((item) => item.status === 'non-compliant').length
-  const pending = results.filter((item) =>
-    item.status === 'awaiting-confirmation' || item.status === 'awaiting-supplement').length
-  const failed = results.filter((item) => item.status === 'execution-failed' || item.status === 'not-executed').length
-
-  const planFingerprint = fingerprintOf(plan.fingerprint, ruleIds)
-  const run: ReviewRunV2 = {
-    id: `run-tpl-${Date.now().toString(36)}-${createHash('sha256').update(planFingerprint + executedAt).digest('hex').slice(0, 8)}`,
-    caseId: aggregate.caseV2.id,
-    templateId: template.templateId,
-    templateVersion: template.version,
-    inputManifest: {
-      // 输入哈希沿用既有权威算法，保证 T05 的 Run 新鲜度判定可直接复用
-      hash: computeRunInputHash(
-        aggregate.caseV2,
-        (aggregate.observations ?? []) as unknown as Array<Record<string, unknown>>,
-        (aggregate.evidenceLinks ?? []) as unknown as Array<Record<string, unknown>>,
-      ),
-      templateVersion: template.version,
-      policyVersions: (template.policyRefs ?? []).map((ref) => ({ policyVersionId: ref.policyId, version: ref.version })),
-      documentVersions: active.map((document) => ({
-        documentId: document.documentId,
-        versionId: document.versionId,
-        contentHash: document.byteHash ?? document.versionId,
+/** 兼容既有独立模板规则入口。新统一工作台直接把 evaluateTemplateRuleReview 的结果
+ * 纳入 run-pi-*，不调用本函数；因此统一流程只创建一份 ReviewRunV2。
+ */
+export function runTemplateRuleReview(input:{
+  caseId:string
+  phase?:'submission'|'decision'
+  initiatedBy?:Actor
+}):TemplateRuleRunResult {
+  const aggregate=readAggregate(input.caseId)
+  if(!aggregate)throw new CommandValidationError('NOT_FOUND','案卷不存在')
+  // 原生 V3 的确定性检查只能作为同一 Pi Run 的输入，不能经旧 IPC
+  // 另存 run-tpl-* 并被历史/结果/决定误认为新一轮完整审核。
+  if(isNativeWorkspaceCaseV3(aggregate))
+    throw new CommandValidationError('INVALID_TRANSITION',
+      '原生 V3 请使用统一初审/重新审核；独立规则运行不能作为当前审核结果')
+  const template:TemplateVersion|undefined=getTemplate(aggregate.caseV2.templateId,aggregate.caseV2.templateVersion)
+  if(!template)throw new CommandValidationError('DEPENDENCY_UNRESOLVED','模板不存在')
+  const evaluation=evaluateTemplateRuleReview({aggregate,template,phase:input.phase})
+  const executedAt=evaluation.recordedAt
+  const inputHash=computeRunInputHash(
+    aggregate.caseV2,
+    (aggregate.observations??[]) as unknown as Array<Record<string,unknown>>,
+    (aggregate.evidenceLinks??[]) as unknown as Array<Record<string,unknown>>,
+  )
+  const run:ReviewRunV2={
+    id:`run-tpl-${Date.now().toString(36)}-${createHash('sha256').update(evaluation.planFingerprint+executedAt).digest('hex').slice(0,8)}`,
+    caseId:aggregate.caseV2.id,
+    templateId:template.templateId,
+    templateVersion:template.version,
+    inputManifest:{
+      hash:inputHash,
+      templateVersion:template.version,
+      policyVersions:(template.policyRefs??[]).map(ref=>({policyVersionId:ref.policyId,version:ref.version})),
+      documentVersions:(aggregate.caseV2.documents??[]).filter(document=>document.active!==false).map(document=>({
+        documentId:document.documentId,versionId:document.versionId,contentHash:document.byteHash??document.versionId,
       })),
-      observationIds: (aggregate.observations ?? []).map((item) => item.id),
-      evidenceLinkIds: (aggregate.evidenceLinks ?? []).map((item) => item.id),
-      effectiveRuleIds: ruleIds,
-      effectiveRuleSetHash: createHash('sha256').update([...ruleIds].sort().join(',')).digest('hex'),
-      planFingerprint,
+      observationIds:(aggregate.observations??[]).map(item=>item.id),
+      evidenceLinkIds:(aggregate.evidenceLinks??[]).map(item=>item.id),
+      effectiveRuleIds:evaluation.ruleIds,
+      effectiveRuleSetHash:createHash('sha256').update([...evaluation.ruleIds].sort().join(',')).digest('hex'),
+      planFingerprint:evaluation.planFingerprint,
     },
-    status: pending > 0 || failed > 0 || reconciled.blockers.length > 0 ? 'partially-completed' : 'completed',
-    checkpoints: [{
-      nodeId: 'template-rule-plan', inputHash: planFingerprint,
-      status: 'done', attempts: 1,
-    }],
-    checks: results,
-    opinions: [],
-    coverage: reconciled.coverage,
-    diagnostics: [
-      `模板规则计划：${ruleIds.length} 条规则，${results.length} 项检查`,
-      `计划指纹：${planFingerprint}`,
-      ...reconciled.blockers.map((reason) => `覆盖阻断：${reason}`),
+    status:evaluation.status,
+    checkpoints:[{nodeId:'template-rule-plan',inputHash:evaluation.planFingerprint,status:'done',attempts:1}],
+    checks:evaluation.checks,
+    opinions:[],
+    coverage:evaluation.coverage,
+    diagnostics:[
+      `模板规则计划：${evaluation.ruleIds.length} 条规则，${evaluation.checks.length} 项检查`,
+      `计划指纹：${evaluation.planFingerprint}`,
+      ...evaluation.blockers.map(reason=>`覆盖阻断：${reason}`),
     ],
-    startedAt: executedAt,
-    completedAt: executedAt,
-    initiatedBy: input.initiatedBy ?? MAIN_ACTOR,
+    startedAt:executedAt,completedAt:executedAt,
+    initiatedBy:input.initiatedBy??MAIN_ACTOR,
   }
   saveRunV2(run)
   return {
-    runId: run.id, planFingerprint, inputHash: run.inputManifest.hash,
-    checks: results, status: run.status as 'completed' | 'partially-completed', ruleIds,
+    runId:run.id,planFingerprint:evaluation.planFingerprint,inputHash,
+    checks:evaluation.checks,status:evaluation.status,ruleIds:evaluation.ruleIds,
   }
 }
 

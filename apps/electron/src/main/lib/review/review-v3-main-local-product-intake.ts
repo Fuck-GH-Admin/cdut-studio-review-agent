@@ -8,7 +8,8 @@ import {createHash} from 'node:crypto'
 import {readFileSync} from 'node:fs'
 import {resolve} from 'node:path'
 import {ipcMain,type IpcMainInvokeEvent} from 'electron'
-import {REVIEW_IPC_CHANNELS} from '@profer/shared'
+import {REVIEW_IPC_CHANNELS,rankTemplateCandidates,createGenericModelDeepMatcher,
+  type TemplateDeepMatchResponse,type TemplateRouteCatalogEntry} from '@profer/shared'
 import {getConfigDir} from '../config-paths'
 import {getMainWindow} from '../main-window-state'
 import {assertC0ReviewMainSender} from './review-c0-authority'
@@ -20,21 +21,34 @@ import {ReviewB2StagingService,type B2MainContext,type B2MaterialCandidate} from
 import {decodeReviewB2Zip} from './review-zip-intake-v3-b2'
 import {readB30AllCurrentMaterials} from './review-v3-b30-current-materials-read'
 import {ReviewB3OwnerBoundRouteSession,type B3ManualCatalogEntry,type B3RouteState,type B3RouteSuggestion} from './review-intake-routing-adapter-v3-b3'
-import {listTemplateVersions} from './template-store'
+import {isTemplateCandidateHeld,listTemplateVersions} from './template-store'
 import {loadD4UnifiedCatalog,loadD4UnifiedWorkspace} from './review-d4-catalog'
 import {prepareB29UnmatchedAuthorDraft,type B29HumanAuthorIntent,
   type B29UnmatchedAuthorDraft} from './review-v3-b3-unmatched-author-bootstrap'
-import {classifyD4ApplicationDocuments,type D4ContentRouteSuggestion} from './review-v3-d4-content-router'
+import {classifyD4ApplicationDocuments,getD4TemplateKeywords} from './review-v3-d4-content-router'
+import {requestT01ModelDraft} from './review-v3-t01-model-draft-service'
 import type {B20MainReadScope} from './review-v3-b1-b2-main-read-bundle-v3-b'
 import type {B32ProductRead} from '../../../renderer/components/review-v3-dev-b/review-v3-product-workflow'
 
 type Snapshot = NonNullable<ReturnType<typeof readAggregate>>
+export interface C11RouteCandidate {
+  templateId:string
+  templateVersion:string
+  name:string
+  matchedSignals:string[]
+  confidence:number
+  autoEligible:boolean
+  evidence:string
+  tier:'exact'|'keyword'|'business-content-l1'
+}
 export interface C11MainLocalProductRead {
   read:B32ProductRead
   catalog:B3ManualCatalogEntry[]
   sessionKey:string
-  /** 当前案卷物理验真的申请原件内明确意图；歧义候选只展示不给B3默认绑定。 */
-  routeCandidates:D4ContentRouteSuggestion[]
+  /** All current-catalog matches from exact declarations, business rules and keyword combinations. */
+  routeCandidates:C11RouteCandidate[]
+  /** Main ran the generic-model/JEV-compatible matcher against this Case's verified bytes. */
+  deepMatch?:TemplateDeepMatchResponse
 }
 export interface C11MainLocalTechnicalChoiceAck {
   candidateOnly:true;technicalChoiceRecorded:true
@@ -48,6 +62,8 @@ interface Session {
   router:ReviewB3OwnerBoundRouteSession
   interrupted:boolean
   chosen:{templateId:string;templateVersion:string}|null
+  deepMatch?:TemplateDeepMatchResponse
+  deepMatchPending?:Promise<TemplateDeepMatchResponse>
 }
 const sessions=new Map<string,Session>()
 const digest=(value:unknown):string=>
@@ -149,66 +165,224 @@ function session(event:IpcMainInvokeEvent,caseId:string):{data:ReturnType<typeof
   return {data,s}
 }
 let historicalD4Catalog:B3ManualCatalogEntry[]|undefined
+function safeTextList(value:unknown):string[] {
+  if(typeof value==='string')return value.trim()?[value.trim()]:[]
+  if(!Array.isArray(value))return []
+  return value.filter((item):item is string=>typeof item==='string'&&item.trim().length>0)
+    .map(item=>item.trim()).slice(0,100)
+}
+function templateSearchMetadata(value:unknown):{keywords:string[];aliases:string[];description:string} {
+  if(!value||typeof value!=='object')return {keywords:[],aliases:[],description:''}
+  const item=value as Record<string,unknown>
+  const keywords=[
+    ...safeTextList(item.keywords),...safeTextList(item.searchKeywords),
+    ...safeTextList(item.businessKeywords),...safeTextList(item.subjectKeywords),
+  ]
+  const aliases=[...safeTextList(item.aliases),...safeTextList(item.synonyms),...safeTextList(item.businessAliases)]
+  const descriptions=[item.description,item.purpose,item.summary,item.businessScope]
+    .filter((entry):entry is string=>typeof entry==='string'&&entry.trim().length>0)
+  for(const key of ['materialSlots','fields','sections']){
+    const list=item[key]
+    if(!Array.isArray(list))continue
+    for(const entry of list.slice(0,100)){
+      if(!entry||typeof entry!=='object')continue
+      const record=entry as Record<string,unknown>
+      for(const label of ['name','label','title','key','description']){
+        if(typeof record[label]==='string'&&(record[label] as string).trim()){
+          keywords.push((record[label] as string).trim())
+        }
+      }
+      if(Array.isArray(record.criteria))for(const criterion of record.criteria.slice(0,30)){
+        if(!criterion||typeof criterion!=='object')continue
+        const criterionRecord=criterion as Record<string,unknown>
+        for(const label of ['name','label','title','description'])
+          if(typeof criterionRecord[label]==='string'&&(criterionRecord[label] as string).trim())
+            keywords.push((criterionRecord[label] as string).trim())
+      }
+    }
+  }
+  const dedupe=(values:string[])=>[...new Map(values.map(text=>[text.normalize('NFKC').toLocaleLowerCase(),text])).values()]
+  return {keywords:dedupe(keywords).slice(0,120),aliases:dedupe(aliases).slice(0,80),
+    description:descriptions.join('；').slice(0,2000)}
+}
 function catalog():B3ManualCatalogEntry[] {
-  const published=listTemplateVersions().filter(x=>x.status==='published').map(x=>({
-    templateId:x.templateId,templateVersion:String(x.version),name:x.name,
-    availability:'authorized-for-technical-selection' as const,
-  }))
-  // Display the complete original 50 D4 authoring workspaces alongside
-  // locally published templates. Keep their candidate-held identity until
-  // their per-case D2 technical plan has actually been compiled and attached.
-  // Never silently swap a historical template into an unrelated published one.
+  const published=listTemplateVersions().filter(x=>x.status==='published').map(x=>{
+    const metadata=templateSearchMetadata(x)
+    const d4Keywords=getD4TemplateKeywords(x.templateId)
+    return {
+      templateId:x.templateId,templateVersion:String(x.version),name:x.name,
+      availability:isTemplateCandidateHeld(x.templateId,x.version)
+        ?'candidate-held' as const:'authorized-for-technical-selection' as const,
+      keywords:[...metadata.keywords,...d4Keywords],
+      aliases:metadata.aliases,description:metadata.description,
+    }
+  })
   if(!historicalD4Catalog){
     historicalD4Catalog=loadD4UnifiedCatalog().templates.map(entry=>({
       templateId:entry.templateId,
       templateVersion:String(entry.templateVersion),
       name:loadD4UnifiedWorkspace(entry).definitions.templates[0]!.name,
       availability:'authorized-for-technical-selection' as const,
+      keywords:getD4TemplateKeywords(entry.templateId),
+      aliases:[] as string[],description:'',
     }))
   }
   const existing=new Set(published.map(x=>x.templateId+'@'+x.templateVersion))
   return [...published,...historicalD4Catalog.filter(x=>
     !existing.has(x.templateId+'@'+x.templateVersion))]
 }
+/** Only Main-verified model results with high confidence enter B3 auto-selection. */
+export function trustedC11ModelAutoCandidates(
+  result:TemplateDeepMatchResponse|undefined,items:readonly B3ManualCatalogEntry[],
+):C11RouteCandidate[] {
+  if(result?.scope!=='matched')return []
+  return result.matches.flatMap(match=>{
+    const entry=items.find(item=>item.templateId===match.templateId&&
+      item.templateVersion===match.templateVersion&&
+      item.availability==='authorized-for-technical-selection')
+    return entry&&Number.isFinite(match.confidence)&&match.confidence>=0.95&&match.confidence<=1?[{
+      templateId:entry.templateId,templateVersion:entry.templateVersion,
+      name:entry.name,matchedSignals:[],confidence:match.confidence,
+      autoEligible:true,evidence:'Main 已核验来源的模型匹配：'+match.reason,
+      tier:'keyword' as const,
+    }]:[]
+  })
+}
 function evaluate(s:Session,items:B3ManualCatalogEntry[]):B3RouteState {
   const ids=s.staging.listScopedCandidateIds(s.ctx)
   const all=ids.map(id=>s.staging.getCandidate(s.ctx,id))
-  // 当前正式绑定、精确业务标题或已解析原件中声明的唯一模板，才允许倒计时
-  // 自动建议。模糊文件名、OCR推测和受控合成示例均不能变成自动路由依据。
   const installed=readAggregate(s.ctx.caseCandidateId)?.caseV2
   const selected=items.find(x=>x.templateId===installed?.templateId&&
     x.templateVersion===String(installed?.templateVersion)&&
     x.availability==='authorized-for-technical-selection')
-  const scoped=all.length>0&&all.filter(x=>x.role==='application').length===1&&
+  const activeDocs=installed?.documents.filter(doc=>doc.active!==false)??[]
+  const applications=activeDocs.filter(doc=>doc.role==='application')
+  const scoped=all.length>0&&applications.length===1&&
     all.every(x=>x.role!=='unassigned'&&Boolean(x.subjectId))&&
     new Set(all.map(x=>x.subjectId)).size===1
-  // Exact explicitly named local business type can safely use the 20-second
-  // automatic technical route. No fuzzy filename-only or unknown-policy route.
-  const exactTitle=installed?.title.trim().toLocaleLowerCase()??''
-  const matches=!selected&&scoped?items.filter(item=>
-    item.availability==='authorized-for-technical-selection'&&
-    (item.name.trim().toLocaleLowerCase()===exactTitle||
-     item.templateId.toLocaleLowerCase()===exactTitle)):[]
-  const content=installed?classifyD4ApplicationDocuments(items,installed.documents):[]
-  const solo=content.length===1&&content[0]!.autoEligible?content[0]:undefined
-  const titleMatch=matches.length===1&&(!solo||solo.templateId===matches[0]!.templateId)?matches[0]:undefined
-  const fromSource=!selected&&scoped&&solo?items.find(item=>item.templateId===solo.templateId):undefined
-  const auto=selected??titleMatch??fromSource
-  const suggestions:B3RouteSuggestion[]=auto&&scoped?[{
-    templateId:auto.templateId,templateVersion:auto.templateVersion,
+  if(selected&&scoped&&!s.chosen){
+    return {status:'manually-selected',remainingMs:0,
+      chosen:{templateId:selected.templateId,templateVersion:selected.templateVersion},
+      candidates:[{templateId:selected.templateId,templateVersion:selected.templateVersion,
+        confidence:1,reason:'当前原生案卷已持久绑定该模板版本'}],
+      reason:'当前案卷已持久绑定模板；不重新启动20秒默认选择'}
+  }
+  let routeCandidates:C11RouteCandidate[]=scoped
+    ?buildRouteCandidatesForRead(items,activeDocs):[]
+  // A current, already-authorized template binding is stronger than text classification.
+  const selectedCandidate=selected&&scoped?{
+    templateId:selected.templateId,templateVersion:selected.templateVersion,
+    name:selected.name,matchedSignals:['当前案卷已绑定模板'],
+    confidence:1,autoEligible:true,evidence:'current-native-template-binding',tier:'exact' as const,
+  }:undefined
+  if(selectedCandidate&&!routeCandidates.some(item=>item.templateId===selectedCandidate.templateId&&
+    item.templateVersion===selectedCandidate.templateVersion)){
+    routeCandidates=[selectedCandidate,...routeCandidates]
+  }
+  routeCandidates.sort((a,b)=>b.confidence-a.confidence||
+    a.templateId.localeCompare(b.templateId)||a.templateVersion.localeCompare(b.templateVersion))
+  const ruleAutomatic=selectedCandidate?[selectedCandidate]:routeCandidates.filter(item=>
+    item.autoEligible&&items.some(entry=>entry.templateId===item.templateId&&
+      entry.templateVersion===item.templateVersion&&
+      entry.availability==='authorized-for-technical-selection'))
+  // AI 结果只能由 Main 对当前原件与已授权目录调用模型后记录。低置信度
+  // 仍可供人工选取，但不会凭模型输出独立触发自动默认绑定。
+  const modelAutomatic=trustedC11ModelAutoCandidates(s.deepMatch,items)
+  const automatic=ruleAutomatic.length?ruleAutomatic:modelAutomatic
+  const suggestions:B3RouteSuggestion[]=scoped?automatic.map((candidate,index)=>({
+    templateId:candidate.templateId,templateVersion:candidate.templateVersion,
     availability:'authorized-for-technical-selection',
-    confidence:1,caseCandidateId:s.ctx.caseCandidateId,
+    confidence:candidate.confidence,rank:-index,caseCandidateId:s.ctx.caseCandidateId,
     evidence:all.map(x=>({materialCandidateId:x.candidateId,rawSha256:x.rawSha256,
-      reason:selected?'已绑定当前案卷本地模板':titleMatch?
-        '案卷标题精确匹配唯一完整模板名称或编号':
-        '已核验申请原件的唯一业务意图：'+(solo?.matchedSignals.join('、')??'未知')})),
-  }]:[]
+      reason:candidate.evidence||('规则匹配：'+candidate.matchedSignals.join('、'))})),
+  })):[]
   return s.router.evaluate(s.ctx,{
     automaticSelectionEnabled:true,materialCandidates:all,suggestions,
     manualCatalog:items,userInterrupted:s.interrupted,
     ...(s.chosen?{userChoseTemplateId:s.chosen.templateId,
       userChoseTemplateVersion:s.chosen.templateVersion}:{}),
   })
+}
+function buildRouteCandidatesForRead(items:B3ManualCatalogEntry[],documents:Snapshot['caseV2']['documents']):C11RouteCandidate[] {
+  const active=documents.filter(doc=>doc.active!==false)
+  const applications=active.filter(doc=>doc.role==='application')
+  if(applications.length!==1)return []
+  const app=applications[0]!
+  const d4Matches=classifyD4ApplicationDocuments(items,active)
+  const strongBlocks=app.blocks.filter(block=>block.kind==='text'&&
+    block.format!=='ocr-text'&&block.format!=='vision-text')
+  const allTextBlocks=app.blocks.filter(block=>block.kind==='text')
+  const reliable=strongBlocks.length>0&&app.parseStatus==='parsed'
+  const evidenceText=(reliable?strongBlocks:allTextBlocks)
+    .map(block=>block.text.slice(0,6000)).join('\n').slice(0,30000)
+  const genericMatches=rankTemplateCandidates(evidenceText,items as TemplateRouteCatalogEntry[])
+  // An explicit declaration is the strongest signal. Otherwise, exact names/IDs
+  // beat keyword candidates, while D4's object+action rules join the keyword tier.
+  const explicitD4=d4Matches.filter(match=>match.evidence==='application-declaration')
+  if(explicitD4.length){
+    return explicitD4.flatMap(match=>{
+      const entry=items.find(item=>item.templateId===match.templateId&&
+        item.availability==='authorized-for-technical-selection')
+      if(!entry)return []
+      return [{
+        templateId:entry.templateId,templateVersion:entry.templateVersion,name:entry.name,
+        matchedSignals:match.matchedSignals,confidence:match.confidence,
+        autoEligible:match.confidence>=0.95&&reliable,
+        evidence:match.evidence,tier:'exact' as const,
+      }]
+    })
+  }
+  const genericExact=genericMatches.filter(match=>match.tier==='exact')
+  const genericKeyword=genericMatches.filter(match=>match.tier==='keyword')
+  const exactMatches=genericExact.flatMap(match=>{
+    const entry=items.find(item=>item.templateId===match.templateId&&
+      item.templateVersion===match.templateVersion&&
+      item.availability==='authorized-for-technical-selection')
+    if(!entry)return []
+    const confidence=reliable?match.confidence:Math.min(0.89,match.confidence)
+    return [{
+      templateId:entry.templateId,templateVersion:entry.templateVersion,name:entry.name,
+      matchedSignals:match.matchedSignals,confidence,autoEligible:confidence>=0.95,
+      evidence:match.reason,tier:'exact' as const,
+    }]
+  })
+  if(exactMatches.length)return exactMatches
+  const combined=new Map<string,C11RouteCandidate>()
+  for(const match of d4Matches){
+    const entry=items.find(item=>item.templateId===match.templateId&&
+      item.availability==='authorized-for-technical-selection')
+    if(!entry)continue
+    const confidence=reliable?match.confidence:Math.min(0.89,match.confidence)
+    const key=entry.templateId+'@'+entry.templateVersion
+    combined.set(key,{
+      templateId:entry.templateId,templateVersion:entry.templateVersion,name:entry.name,
+      matchedSignals:match.matchedSignals,confidence,autoEligible:confidence>=0.95,
+      evidence:match.evidence,tier:'business-content-l1',
+    })
+  }
+  for(const match of genericKeyword){
+    const entry=items.find(item=>item.templateId===match.templateId&&
+      item.templateVersion===match.templateVersion&&
+      item.availability==='authorized-for-technical-selection')
+    if(!entry)continue
+    const confidence=reliable?match.confidence:Math.min(0.89,match.confidence)
+    const key=entry.templateId+'@'+entry.templateVersion
+    const prior=combined.get(key)
+    if(prior){
+      const signals=[...new Set([...prior.matchedSignals,...match.matchedSignals])]
+      combined.set(key,{...prior,matchedSignals:signals,
+        confidence:Math.max(prior.confidence,confidence),
+        autoEligible:Math.max(prior.confidence,confidence)>=0.95,
+        evidence:prior.evidence+'；'+match.reason})
+    }else combined.set(key,{
+      templateId:entry.templateId,templateVersion:entry.templateVersion,name:entry.name,
+      matchedSignals:match.matchedSignals,confidence,autoEligible:confidence>=0.95,
+      evidence:match.reason,tier:'keyword',
+    })
+  }
+  return [...combined.values()].sort((a,b)=>b.confidence-a.confidence||
+    b.matchedSignals.length-a.matchedSignals.length||
+    a.templateId.localeCompare(b.templateId)||a.templateVersion.localeCompare(b.templateVersion))
 }
 function read(event:IpcMainInvokeEvent,caseId:string):C11MainLocalProductRead {
   const {data,s}=session(event,caseId)
@@ -227,12 +401,49 @@ function read(event:IpcMainInvokeEvent,caseId:string):C11MainLocalProductRead {
     candidateOnly:true,publicationAllowed:false,businessWriteAllowed:false,
     schoolPolicyVerified:false,
   }
-  const routeCandidates=classifyD4ApplicationDocuments(currentCatalog,data.aggregate.caseV2.documents)
-  return {read:result,catalog:currentCatalog,sessionKey:s.signature,routeCandidates}
+  const routeCandidates=buildRouteCandidatesForRead(currentCatalog,data.aggregate.caseV2.documents)
+  return {read:result,catalog:currentCatalog,sessionKey:s.signature,routeCandidates,
+    ...(s.deepMatch?{deepMatch:s.deepMatch}:{})}
 }
 export function installC11LocalNativeProductIntake():void {
   ipcMain.handle(REVIEW_IPC_CHANNELS.LOCAL_PRODUCT_CURRENT_V3,
     (event:IpcMainInvokeEvent,caseId:string)=>read(event,caseId))
+  ipcMain.handle(REVIEW_IPC_CHANNELS.LOCAL_PRODUCT_DEEP_MATCH_V3,
+    async (event:IpcMainInvokeEvent,input:{caseId:string;sessionKey:string;retry?:boolean}):Promise<C11MainLocalProductRead>=>{
+      if(!input||typeof input.caseId!=='string'||typeof input.sessionKey!=='string'||!input.sessionKey)
+        throw new Error('C11_NATIVE_DEEP_MATCH_INVALID')
+      const {data,s}=session(event,input.caseId)
+      if(s.signature!==input.sessionKey)throw new Error('C11_NATIVE_ROUTE_SESSION_STALE')
+      // 只有明确点击重试才重新调用模型；刷新/轮询复用已有结论。
+      if(input.retry===true&&!s.deepMatchPending)s.deepMatch=undefined
+      if(!s.deepMatch){
+        if(!s.deepMatchPending){
+          const active=data.aggregate.caseV2.documents.filter(doc=>doc.active!==false)
+          if(active.filter(doc=>doc.role==='application').length!==1)
+            throw new Error('C11_NATIVE_DEEP_MATCH_APPLICATION_AMBIGUOUS')
+          const evidence=active.map(doc=>{
+            const body=doc.blocks.filter(block=>block.kind==='text')
+              .map(block=>block.text).join('\n').slice(0,8000)
+            return '材料名称：'+doc.fileName+'\n材料角色：'+doc.role+'\n'+body
+          }).join('\n\n').slice(0,24000)
+          if(!evidence.trim())throw new Error('C11_NATIVE_DEEP_MATCH_NO_EVIDENCE')
+          const trustedCatalog=catalog()
+          const matcher=createGenericModelDeepMatcher(async prompt=>
+            (await requestT01ModelDraft(prompt)).raw)
+          s.deepMatchPending=matcher.match({caseEvidence:evidence,templates:trustedCatalog})
+        }
+        try{
+          const matched=await s.deepMatchPending
+          const current=session(event,input.caseId)
+          if(current.s!==s||current.s.signature!==input.sessionKey)
+            throw new Error('C11_NATIVE_ROUTE_SESSION_STALE')
+          s.deepMatch=matched
+        }finally{
+          s.deepMatchPending=undefined
+        }
+      }
+      return read(event,input.caseId)
+    })
   ipcMain.handle(REVIEW_IPC_CHANNELS.LOCAL_PRODUCT_INTERRUPT_V3,
     (event:IpcMainInvokeEvent,caseId:string)=>{
       const {s}=session(event,caseId)
@@ -277,16 +488,31 @@ export function installC11LocalNativeProductIntake():void {
     })
   ipcMain.handle(REVIEW_IPC_CHANNELS.LOCAL_PRODUCT_MANUAL_CHOICE_V3,
     async (event:IpcMainInvokeEvent,input:{
-      caseId:string;templateId:string;templateVersion:string
+      caseId:string;templateId:string;templateVersion:string;sessionKey:string;
+      selectionMode:'manual'|'default'
     }):Promise<C11MainLocalTechnicalChoiceAck>=>{
       if(!input||typeof input.caseId!=='string'||
-        typeof input.templateId!=='string'||typeof input.templateVersion!=='string')
+        typeof input.templateId!=='string'||typeof input.templateVersion!=='string'||
+        typeof input.sessionKey!=='string'||!input.sessionKey||
+        !['manual','default'].includes(input.selectionMode))
         throw new Error('C11_NATIVE_MANUAL_CHOICE_INVALID')
       const {s}=session(event,input.caseId)
+      // 异步模型回包或旧倒计时不得在材料换版/重新分类后选择旧候选。
+      if(s.signature!==input.sessionKey)
+        throw new Error('C11_NATIVE_ROUTE_SESSION_STALE')
       if(!catalog().some(x=>x.templateId===input.templateId&&
         x.templateVersion===input.templateVersion&&
         x.availability==='authorized-for-technical-selection'))
         throw new Error('C11_NATIVE_TEMPLATE_NOT_AVAILABLE')
+      // 到点自动选择必须由 Main 当前倒计时状态证明；Renderer 不能把
+      // 用户已中断的过期自动回调伪装成一次新的人工确认。
+      if(input.selectionMode==='default'){
+        const route=evaluate(s,catalog())
+        if(route.status!=='default-selected'||
+          route.chosen?.templateId!==input.templateId||
+          route.chosen?.templateVersion!==input.templateVersion)
+          throw new Error('C11_NATIVE_DEFAULT_CHOICE_NOT_CURRENT')
+      }
       s.chosen={templateId:input.templateId,templateVersion:input.templateVersion}
       const current=evaluate(s,catalog())
       if(current.status!=='manually-selected'||current.chosen?.templateId!==input.templateId)

@@ -4649,9 +4649,11 @@ const reviewAPI = {
   /** Native Main Case source bytes rehashed and staged into real B2/B30 candidate read. */
   readLocalNativeProductV3: (caseId:string) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LOCAL_PRODUCT_CURRENT_V3,caseId) as Promise<import('../main/lib/review/review-v3-main-local-product-intake').C11MainLocalProductRead>,
+  deepMatchLocalNativeProductV3: (input:{caseId:string;sessionKey:string;retry?:boolean}) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LOCAL_PRODUCT_DEEP_MATCH_V3,input) as Promise<import('../main/lib/review/review-v3-main-local-product-intake').C11MainLocalProductRead>,
   interruptLocalNativeProductV3: (caseId:string) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LOCAL_PRODUCT_INTERRUPT_V3,caseId) as Promise<import('../main/lib/review/review-v3-main-local-product-intake').C11MainLocalProductRead>,
-  chooseLocalNativeProductTemplateV3: (input:{caseId:string;templateId:string;templateVersion:string}) =>
+  chooseLocalNativeProductTemplateV3: (input:{caseId:string;templateId:string;templateVersion:string;sessionKey:string;selectionMode:'manual'|'default'}) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.LOCAL_PRODUCT_MANUAL_CHOICE_V3,input) as Promise<import('../main/lib/review/review-v3-main-local-product-intake').C11MainLocalTechnicalChoiceAck>,
   prepareLocalNativeUnmatchedV3: (input:{
     caseId:string;intent:import('../main/lib/review/review-v3-b3-unmatched-author-bootstrap').B29HumanAuthorIntent
@@ -4875,6 +4877,10 @@ const reviewAPI = {
   submitCaseV2: (caseId: string) => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.SUBMIT_CASE_V2, caseId) as Promise<import('@profer/shared').ReviewCommandResult | undefined>,
   registerMaterialPathV2: (input: { caseId: string; sourcePath: string; role: 'application' | 'evidence' | 'rule' | 'attachment'; materialSlotId?: string; fileName?: string; replacesVersionIds?: string[] }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.REGISTER_MATERIAL_PATH_V2, input) as Promise<string | undefined>,
+  classifyNativeMaterialV3: (input: { caseId:string; documentVersionId:string; role:'application'|'evidence'|'rule'; materialSlotId:string }) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.CLASSIFY_NATIVE_MATERIAL_V3,input) as Promise<{ok:true}>,
+  openInitialReviewSupplementV3: (input:{caseId:string;runId:string}) =>
+    ipcRenderer.invoke(REVIEW_IPC_CHANNELS.OPEN_INITIAL_REVIEW_SUPPLEMENT_V3,input) as Promise<import('@profer/shared').ReviewCommandResult<import('@profer/shared').SupplementRequest[]>>,
   pickRegisterMaterialV2: (input: { caseId: string; role: 'application' | 'evidence' | 'rule' | 'attachment'; materialSlotId?: string }) =>
     ipcRenderer.invoke(REVIEW_IPC_CHANNELS.PICK_REGISTER_MATERIAL_V2, input) as Promise<string[]>,
   bootCheckV2: () => ipcRenderer.invoke(REVIEW_IPC_CHANNELS.BOOT_CHECK_V2) as Promise<{ templatesSeeded: number; templatesPublished: number; migratableCases: string[]; notes: string[] }>,

@@ -4,9 +4,9 @@
 import { afterAll, describe, expect, test } from 'bun:test'
 import { rmSync } from 'node:fs'
 import { join } from 'node:path'
-import type { ReviewCaseV2, TemplateVersion } from '@profer/shared'
+import type { ReviewCaseV2, ReviewRunV2, TemplateVersion } from '@profer/shared'
 import { createAggregate, readAggregate } from './case-store-v2'
-import { ensureInitialTask, recordStageDecision, resolveAppealV2, resolveFinalDecisionProjection, resolveSupplementV2, respondSupplementV2, type StageDecisionPayload } from './stage-workflow'
+import { buildInitialReviewSupplementSpecs, ensureInitialTask, recordStageDecision, resolveAppealV2, resolveFinalDecisionProjection, resolveSupplementV2, respondSupplementV2, type StageDecisionPayload } from './stage-workflow'
 import { submitAppeal } from './business-workflow'
 
 const CONFIG_DIR = join(import.meta.dir, '../../../../../../work/tmp', `profer-test-stage-${Date.now()}`)
@@ -386,6 +386,76 @@ describe('申诉闭环（复查 §5.3-5）', () => {
       const amend = outcome.aggregate.decisions.find((decision) => decision.amendsDecisionId)
       expect(amend!.actor.actorId).toBe('teacher-1') // 不继承原决定 actor
       expect(amend!.finality).toBe('final')
+    }
+  })
+})
+
+describe('初审补件任务（V3）', () => {
+  test('按模板槽位合并同一 Run 的待补件检查，并保留全部来源 checkId', () => {
+    const slotTemplate = {
+      ...template,
+      materialSlots: [{ id: 'proof', name: '有效证明材料', minCount: 2, maxCount: 3 }],
+    } as unknown as TemplateVersion
+    const run = {
+      id: 'run-pi-initial-spec',
+      checks: [
+        { checkId: 'check-proof-a', ruleId: 'required-material-proof', status: 'awaiting-supplement', reason: '缺少第一份材料' },
+        { checkId: 'check-proof-b', ruleId: 'required-material-proof', status: 'awaiting-supplement', reason: '缺少第二份材料' },
+        { checkId: 'check-other', ruleId: 'unrelated-rule', status: 'awaiting-supplement', reason: '其他待处理项' },
+      ],
+    } as unknown as ReviewRunV2
+    const specs = buildInitialReviewSupplementSpecs(run, slotTemplate)
+    expect(specs).toHaveLength(1)
+    expect(specs[0]!.slotId).toBe('proof')
+    expect(specs[0]!.checkIds).toEqual(['check-proof-a', 'check-proof-b'])
+    expect(specs[0]!.requiredElements).toEqual(['有效证明材料：至少补齐 2 份有效材料'])
+    expect(specs[0]!.reason).toContain('run-pi-initial-spec')
+    expect(specs[0]!.reason).toContain('缺少第一份材料')
+    expect(specs[0]!.reason).toContain('缺少第二份材料')
+  })
+
+  test('初审来源补件核结只关闭补件请求，不改变正式阶段或重建阶段任务', async () => {
+    const { caseId } = await seed()
+    let aggregate = readAggregate(caseId)!
+    const { submitCommand } = await import('./case-store-v2')
+    const seeded = await submitCommand(caseId, {
+      requestId: nextReq(), actor, expectedRevision: aggregate.caseV2.revision,
+      type: 'SeedInitialReviewSupplement', payload: {},
+    }, () => ({
+      summary: '创建初审补件测试请求',
+      mutate: (draft) => {
+        draft.supplements = [...draft.supplements, {
+          id: 'sup-initial-review-test', caseId,
+          originFindingKeys: ['check-proof-a'],
+          requiredElements: ['有效证明材料'], reason: '初审 Run 发现缺件',
+          responsibleRole: 'student', status: 'open', responses: [],
+          createdAt: new Date().toISOString(), documentVersionIdsAtRequest: [],
+          originRunId: 'run-pi-initial-review-test',
+        }]
+      },
+    }))
+    expect(seeded.ok).toBeTrue()
+    if (!seeded.ok) return
+    aggregate = seeded.aggregate
+    const stageBefore = aggregate.caseV2.stage
+    const tasksBefore = aggregate.tasks.length
+    const replied = await respondSupplementV2(caseId, {
+      requestId: nextReq(),
+      actor: { actorId: 'stu-initial', actorSource: 'local', role: 'student' },
+      expectedRevision: aggregate.caseV2.revision,
+      payload: { supplementId: 'sup-initial-review-test', note: '已按要求补充说明' },
+    })
+    expect(replied.ok).toBeTrue()
+    if (!replied.ok) return
+    const resolved = await resolveSupplementV2(caseId, {
+      requestId: nextReq(), actor, expectedRevision: replied.aggregate.caseV2.revision,
+      payload: { supplementId: 'sup-initial-review-test', outcome: 'satisfied', reason: '回复已核验' },
+    })
+    expect(resolved.ok).toBeTrue()
+    if (resolved.ok) {
+      expect(resolved.aggregate.supplements.find(item => item.id === 'sup-initial-review-test')?.status).toBe('satisfied')
+      expect(resolved.aggregate.caseV2.stage).toBe(stageBefore)
+      expect(resolved.aggregate.tasks).toHaveLength(tasksBefore)
     }
   })
 })

@@ -516,6 +516,7 @@ export const REVIEW_IPC_CHANNELS = {
   AUTHOR_FREEZE_LOCAL_V3: 'review-v3:author-freeze-local',
   /** Real Main-scoped native Case physical B2/B30 materials + B3 candidate routing. */
   LOCAL_PRODUCT_CURRENT_V3: 'review-v3:local-product-current',
+  LOCAL_PRODUCT_DEEP_MATCH_V3: 'review-v3:local-product-deep-match',
   LOCAL_PRODUCT_INTERRUPT_V3: 'review-v3:local-product-interrupt',
   LOCAL_PRODUCT_MANUAL_CHOICE_V3: 'review-v3:local-product-manual-choice',
   LOCAL_PRODUCT_UNMATCHED_V3: 'review-v3:local-product-unmatched',
@@ -654,6 +655,10 @@ export const REVIEW_IPC_CHANNELS = {
   SUBMIT_CASE_V2: 'review-v2:submit-case',
   PICK_REGISTER_MATERIAL_V2: 'review-v2:pick-register-material',
   REGISTER_MATERIAL_PATH_V2: 'review-v2:register-material-path',
+  /** 用户确认模板材料槽位分类；Main 以原件新版本记录变更。 */
+  CLASSIFY_NATIVE_MATERIAL_V3: 'review-v3:classify-native-material',
+  /** 初审材料缺件转为持久补件请求，不改变正式业务阶段。 */
+  OPEN_INITIAL_REVIEW_SUPPLEMENT_V3: 'review-v3:open-initial-review-supplement',
   /** 助手对话 */
   ASSISTANT_CHAT: 'review:assistant-chat',
   /** 导出预审报告 */

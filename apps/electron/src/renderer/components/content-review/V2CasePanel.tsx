@@ -472,6 +472,8 @@ export function V2CasePanel({ onCaseOpened }: { onCaseOpened?: (caseId: string) 
               stage={current.caseV2.stage}
               documentCount={current.caseV2.documents.filter((document) => document.active !== false).length}
               technicalPlan={!!current.d2RuntimePlan}
+              nativeV3={current.receiptLog[0]?.type === 'CreateNativeWorkspaceCaseV3'}
+              materialSlots={currentTemplate?.materialSlots ?? []}
               onUpdated={refreshCurrentRun}
             />
             {latestRun && <details className="rounded-md border border-border/60 px-3 py-2">
@@ -490,10 +492,10 @@ export function V2CasePanel({ onCaseOpened }: { onCaseOpened?: (caseId: string) 
             <ReviewV3T05RunDecision aggregate={current} onResult={applyResult} />
             <RunResultPanel caseId={current.caseV2.id} refreshNonce={runNonce} />
             <ObservationConfirmPanel caseId={current.caseV2.id} aggregate={current} onResult={applyResult} refreshNonce={runNonce} />
-            <details className="rounded-md border border-border/60 px-3 py-2 text-xs">
+            {current.receiptLog[0]?.type !== 'CreateNativeWorkspaceCaseV3' && <details className="rounded-md border border-border/60 px-3 py-2 text-xs">
               <summary className="cursor-pointer font-medium">高级：仅执行模板规则（不启动 AI）</summary>
               <ReviewV3TemplateRuleRun caseId={current.caseV2.id} />
-            </details>
+            </details>}
             {/* T09 离线任务包：签发 / 预览 / 幂等导入 */}
             <ReviewV3T09OfflineSection />
             {/* T02 材料来源覆盖（只读暂存预览，不产生原件） */}

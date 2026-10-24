@@ -276,6 +276,10 @@ export interface TemplateVersion {
   name: string
   /** 模板库展示说明；用于说明适用场景与初始化边界。 */
   description?: string
+  /** 供统一路由与目录搜索使用的业务关键词；不得被当作政策或审批规则。 */
+  keywords?: string[]
+  /** 业务别名/常见简称，参与精确匹配与搜索排序。 */
+  aliases?: string[]
   /** 模板来源类别：项目内置、开源项目启发或用户自建。 */
   catalogKind?: 'builtin' | 'reference' | 'custom'
   /** 开源参考来源与使用边界，不代表采纳了其学校规则或分值。 */
@@ -563,6 +567,8 @@ export interface SupplementRequest {
   createdAt: string
   /** 本地审核员模拟补件时，用于只接收请求创建后新增的材料版本。 */
   documentVersionIdsAtRequest?: string[]
+  /** 初审缺件请求的来源 Run；与正式阶段退回补件（originStageId）区分。 */
+  originRunId?: string
   /** G04：退回来源（核验通过后按原阶段回流任务） */
   originTaskId?: string
   originStageId?: string

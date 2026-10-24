@@ -68,6 +68,9 @@ export interface ReviewAuthoringTemplateV1 {
   name: string
   purpose: string
   limits: string
+  /** 搜索与路由元数据；仅用于候选检索，不构成审核规则。 */
+  keywords?: string[]
+  aliases?: string[]
   source: ReviewAuthoringModuleV1['source']
   scenarios?: string[]
   /** COMMON-02: primary choices are mutually exclusive per object; conditions are additive axes.

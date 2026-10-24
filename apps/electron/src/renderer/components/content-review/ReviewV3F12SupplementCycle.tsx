@@ -79,6 +79,7 @@ function SupplementReplyCard({ aggregate, request, onResult }: Props & { request
         <code className="text-muted-foreground">{request.id}</code>
       </div>
       <p>补件原因：{request.reason}</p>
+      {request.originRunId && <p className="text-muted-foreground">来源初审 Run：<code>{request.originRunId}</code></p>}
       <ul className="list-disc pl-5">
         {request.requiredElements.map((item, index) => <li key={`${request.id}-${index}`}>{item}</li>)}
       </ul>
@@ -172,7 +173,7 @@ export function ReviewV3F12SupplementCycle({ aggregate, onResult }: Props): JSX.
             ))}
           </ul>
           {cycle.readyForReview && <p className="mt-2 font-medium text-emerald-700 dark:text-emerald-300">
-            全部补件请求已核结。请使用下方“开始审核”或“按模板规则检查”基于当前材料重新执行，确认新 Run 后再办理人工阶段；补件核结本身不是审核通过。
+            全部补件请求已核结。请使用统一初审入口按当前材料重新审核，确认新 Run 后再办理人工阶段；补件核结本身不是审核通过。
           </p>}
           {cycle.stageStillAwaitingSupplement && <p className="mt-2 text-amber-700 dark:text-amber-300">
             所有补件请求已结束，但案卷业务阶段仍是“等待补件”。请刷新案卷并核查 Main 的阶段回流；这里不会擅自解锁审批或声称可以继续审核。
