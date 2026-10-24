@@ -1,7 +1,7 @@
 /** Main-owned T08/F16 report snapshot, immutable archive, and native export service. */
 import { createHash, randomUUID } from 'node:crypto'
-import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, unlinkSync, writeFileSync } from 'node:fs'
-import { join, relative, resolve, sep, isAbsolute } from 'node:path'
+import { existsSync, linkSync, mkdirSync, readdirSync, readFileSync, realpathSync, renameSync, unlinkSync, writeFileSync } from 'node:fs'
+import { basename, dirname, join, relative, resolve, sep, isAbsolute } from 'node:path'
 import type {
   T08Audience, T08Report, T08ReportArchiveSummary,
   T08ReportExportFormat, T08ReportExportReceipt, T08ReportProjection, T08ReportSnapshot,
@@ -150,8 +150,9 @@ function writeAtomicNewFile(path: string, content: string | Uint8Array): void {
   const temporary = path + '.' + randomUUID() + '.tmp'
   try {
     writeFileSync(temporary, content, { flag: 'wx', mode: 0o600 })
-    if (existsSync(path)) throw new Error('不可变报告文件已存在，拒绝覆盖：' + path)
-    renameSync(temporary, path)
+    // Create-if-absent atomically; rename() could overwrite an existing snapshot.
+    linkSync(temporary, path)
+    unlinkSync(temporary)
   } catch (error) {
     if (existsSync(temporary)) unlinkSync(temporary)
     throw error
@@ -351,16 +352,35 @@ function safeFilename(value: string): string {
   return cleaned || 'review-report'
 }
 
-function assertDestinationOutsideArchive(archivePath: string, destinationPath: string): void {
-  const base = resolve(archivePath)
-  const target = resolve(destinationPath)
+function isWithinDir(base: string, target: string): boolean {
   const rel = relative(base, target)
-  const inside = rel === '' || (!rel.startsWith('..' + sep) && rel !== '..' && !isAbsolute(rel))
-  if (inside) throw new Error('导出目标不能覆盖内部不可变报告档案')
+  return rel === '' || (rel !== '..' && !rel.startsWith('..' + sep) && !isAbsolute(rel))
+}
+
+/** Save-as may replace a user export, never any case data or a different report snapshot. */
+export function assertT08ExportDestination(rootDir: string, destinationPath: string): void {
+  if (typeof destinationPath !== 'string' || !destinationPath.trim()) throw new Error('导出目标路径不能为空')
+  const protectedRoot = resolve(rootDir, 'review-cases')
+  const target = resolve(destinationPath)
+  const canonicalProtected = existsSync(protectedRoot) ? realpathSync(protectedRoot) : protectedRoot
+  const canonicalTarget = existsSync(target)
+    ? realpathSync(target)
+    : join(realpathSync(dirname(target)), basename(target))
+  if (isWithinDir(protectedRoot, target) || isWithinDir(canonicalProtected, canonicalTarget)) {
+    throw new Error('导出目标不能覆盖案卷数据或不可变报告档案')
+  }
 }
 
 function writeExportedFile(path: string, bytes: Uint8Array): void {
-  writeFileSync(path, bytes, { flag: 'w', mode: 0o600 })
+  const temporary = path + '.' + randomUUID() + '.tmp'
+  try {
+    writeFileSync(temporary, bytes, { flag: 'wx', mode: 0o600 })
+    // A failed external copy must not truncate a previous successfully saved report.
+    renameSync(temporary, path)
+  } catch (error) {
+    if (existsSync(temporary)) unlinkSync(temporary)
+    throw error
+  }
 }
 
 export async function exportT08ReportV3(
@@ -401,7 +421,7 @@ export async function exportT08ReportProjectionV3(
       caseId: snapshot.caseId, runId: snapshot.runId, audience: snapshot.audience, format,
       archivePath, archiveFilePath }
   }
-  assertDestinationOutsideArchive(archivePath, destination)
+  assertT08ExportDestination(rootDir, destination)
   writeExportedFile(destination, bytes)
   return { status: 'saved', reportId: snapshot.reportId, snapshotHash: snapshot.snapshotHash,
     caseId: snapshot.caseId, runId: snapshot.runId, audience: snapshot.audience, format,
@@ -445,7 +465,7 @@ export async function exportT08ReportArchiveV3(
     return { status: 'cancelled', reportId: snapshot.reportId, snapshotHash: snapshot.snapshotHash,
       caseId: snapshot.caseId, runId: snapshot.runId, audience: snapshot.audience, format: input.format, archivePath }
   }
-  assertDestinationOutsideArchive(archivePath, destination)
+  assertT08ExportDestination(rootDir, destination)
   writeExportedFile(destination, bytes)
   return { status: 'saved', reportId: snapshot.reportId, snapshotHash: snapshot.snapshotHash,
     caseId: snapshot.caseId, runId: snapshot.runId, audience: snapshot.audience, format: input.format,

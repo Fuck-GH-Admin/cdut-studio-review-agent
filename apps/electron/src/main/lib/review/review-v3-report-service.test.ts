@@ -1,12 +1,12 @@
 import { afterEach, expect, test } from 'bun:test'
-import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs'
+import { existsSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'
 import * as XLSX from 'xlsx'
 import JSZip from 'jszip'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { T08Report, T08ReportProjection } from '@profer/shared'
 import {
-  calculateT08ProjectionHash, encodeT08ReportFormat, exportT08ReportProjectionV3, getT08ReportArchiveV3,
+  assertT08ExportDestination, calculateT08ProjectionHash, encodeT08ReportFormat, exportT08ReportProjectionV3, getT08ReportArchiveV3,
   listT08ReportArchivesV3, makeT08ReportSnapshot, persistT08ReportSnapshot,
   renderT08ReportHtml, verifyT08ReportSnapshot,
 } from './review-v3-report-service'
@@ -110,4 +110,42 @@ test('F16 successful save returns the actual destination and saved bytes', async
   expect(receipt.status).toBe('saved')
   expect(receipt.filePath).toBe(destination)
   expect(readFileSync(destination, 'utf-8')).toBe(fixtureReport().markdown)
+})
+
+test('T08 archive cannot be overwritten; a changed baseline invalidates its index and cold-open', () => {
+  const rootDir = root()
+  const snapshot = makeT08ReportSnapshot(fixtureProjection(), { reportId: 'report-same' })
+  const directory = persistT08ReportSnapshot(snapshot, rootDir)
+  expect(() => persistT08ReportSnapshot(snapshot, rootDir)).toThrow()
+  writeFileSync(join(directory, 'report.md'), '# altered baseline')
+  expect(listT08ReportArchivesV3(snapshot.caseId, rootDir)[0]?.valid).toBe(false)
+  expect(() => getT08ReportArchiveV3({ caseId: snapshot.caseId, reportId: snapshot.reportId }, rootDir))
+    .toThrow('基线文件与不可变快照不一致')
+})
+
+test('F16 Save As cannot overwrite another case report or follow symlinks into protected data', async () => {
+  const rootDir = root()
+  const snapshot = makeT08ReportSnapshot(fixtureProjection(), { reportId: 'another-report' })
+  const directory = persistT08ReportSnapshot(snapshot, rootDir)
+  const protectedFile = join(directory, 'report.md')
+  const original = readFileSync(protectedFile, 'utf8')
+  expect(() => assertT08ExportDestination(rootDir, protectedFile)).toThrow('不能覆盖案卷数据')
+  const alias = join(rootDir, 'alias-to-report.md')
+  symlinkSync(protectedFile, alias)
+  expect(() => assertT08ExportDestination(rootDir, alias)).toThrow('不能覆盖案卷数据')
+  await expect(exportT08ReportProjectionV3(fixtureProjection(), 'md', {
+    rootDir, chooseDestination: async () => protectedFile,
+  })).rejects.toThrow('不能覆盖案卷数据')
+  expect(readFileSync(protectedFile, 'utf8')).toBe(original)
+})
+
+test('F16 failed external Save As leaves the archived report intact and returns no saved receipt', async () => {
+  const rootDir = root()
+  const invalidDestination = join(rootDir, 'no-such-folder', 'saved.md')
+  await expect(exportT08ReportProjectionV3(fixtureProjection(), 'md', {
+    rootDir, chooseDestination: async () => invalidDestination,
+  })).rejects.toThrow()
+  const archived = listT08ReportArchivesV3('case-1', rootDir)
+  expect(archived).toHaveLength(1)
+  expect(archived[0]?.valid).toBe(true)
 })

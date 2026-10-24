@@ -230,7 +230,7 @@ export function makeT08CaseReport(input: {
     lines.push('- 历史 Run 没有冻结的业务决定、补件、人工认定和当前事项字段快照；为避免把后续状态冒充历史结论，本报告不混入这些数据。')
   } else {
     for (const request of aggregate.supplements) {
-      lines.push('- 补件：' + request.reason + '；状态：' + request.status + '；要求：' + request.requiredElements.join('、'))
+      lines.push('- 补件：' + (internal ? request.reason : '具体内部核验原因不在申请人版公开') + '；状态：' + request.status + '；要求：' + request.requiredElements.join('、'))
     }
     for (const subject of aggregate.caseV2.subjects) {
       lines.push('- 事项：' + subject.title + '；字段：' + (Object.entries(publicFields(subject.fields))
@@ -264,10 +264,10 @@ export function makeT08CaseReport(input: {
     for (const item of decisions) {
       const superseded = supersededDecisionIds.has(item.id)
       lines.push('- 决定 ' + item.id + '：' + (item.finality === 'final' ? '最终决定' : item.finality === 'stage' ? '阶段决定' : '业务决定')
-        + '；' + item.result + '；' + item.reason + '（' + item.at + '）'
+        + '；' + item.result + '；' + (internal ? item.reason : '决定理由须经审核人员确认公开') + '（' + item.at + '）'
         + (superseded ? '；已被后续决定更正' : ''))
       rows.push({ kind: 'decision', id: item.id, status: item.finality ?? 'recorded',
-        detail: item.result + '；' + item.reason, source: 'Run ' + item.basedOnRunId })
+        detail: item.result + '；' + (internal ? item.reason : '决定理由须经审核人员确认公开'), source: 'Run ' + item.basedOnRunId })
       if (internal) lines.push('  - 阶段：' + item.stageId + '；依据修订：' + item.basedOnRevision
         + '；决定主体：' + item.actor.actorSource + ' / ' + item.actor.role + '（不等于校方认证授权）')
     }
@@ -285,7 +285,7 @@ export function makeT08CaseReport(input: {
         + (original?.result ?? '原决定不可用')
         + (amendment ? '；更正为：' + amendment.result : ''))
       rows.push({ kind: 'appeal', id: appeal.id, status: appeal.status,
-        detail: amendment ? `已更正为 ${amendment.result}` : (appeal.resolution ?? '尚无复核结果'), source: '' })
+        detail: amendment ? `已更正为 ${amendment.result}` : (internal ? (appeal.resolution ?? '尚无复核结果') : '复核详情待确认公开'), source: '' })
       if (internal) {
         lines.push('  - 申诉理由：' + appeal.statement)
         if (receipt) lines.push('  - 复核：' + receipt.summary + '；' + receipt.at)
@@ -335,18 +335,22 @@ export function makeT08CaseReport(input: {
         calculation: c.calculation, executedBy: c.executedBy,
       } : {}),
     })),
-    decision: decision ? { id: decision.id, result: decision.result, reason: decision.reason, at: decision.at,
-      finality: decision.finality ?? null, stageId: decision.stageId, basedOnRevision: decision.basedOnRevision,
-      superseded: supersededDecisionIds.has(decision.id), finalScores: decision.finalScores ?? [],
+    decision: decision ? { id: decision.id, result: decision.result,
+      reason: internal ? decision.reason : '决定理由须经审核人员确认公开', at: decision.at,
+      finality: decision.finality ?? null, superseded: supersededDecisionIds.has(decision.id),
+      ...(internal ? { stageId: decision.stageId, basedOnRevision: decision.basedOnRevision, finalScores: decision.finalScores ?? [] } : {}),
       ...(internal ? { actorSource: decision.actor.actorSource, actorRole: decision.actor.role } : {}) } : null,
     decisions: decisions.map((item) => ({
-      id: item.id, result: item.result, reason: item.reason, at: item.at,
-      finality: item.finality ?? null, stageId: item.stageId, basedOnRevision: item.basedOnRevision,
-      superseded: supersededDecisionIds.has(item.id), finalScores: item.finalScores ?? [],
+      id: item.id, result: item.result, reason: internal ? item.reason : '决定理由须经审核人员确认公开', at: item.at,
+      finality: item.finality ?? null, superseded: supersededDecisionIds.has(item.id),
+      ...(internal ? { stageId: item.stageId, basedOnRevision: item.basedOnRevision, finalScores: item.finalScores ?? [] } : {}),
       ...(internal ? { actorSource: item.actor.actorSource, actorRole: item.actor.role } : {}),
     })),
     ...(historical ? {} : {
-      supplements: aggregate.supplements.map((s) => ({ reason: s.reason, requiredElements: s.requiredElements, status: s.status })),
+      supplements: aggregate.supplements.map((s) => ({
+        reason: internal ? s.reason : '具体内部核验原因不在申请人版公开',
+        requiredElements: s.requiredElements, status: s.status,
+      })),
       subjects: aggregate.caseV2.subjects.map((s) => ({ title: s.title, fields: publicFields(s.fields) })),
       adjudications: currentAdjudications.map((item) => {
         const subject = aggregate.caseV2.subjects.find((candidate) => candidate.id === item.subjectId)
@@ -360,7 +364,8 @@ export function makeT08CaseReport(input: {
       appeals: (aggregate.appeals ?? []).map((appeal) => {
         const amended = aggregate.decisions.find((item) => item.id === appeal.reviewDecisionId
           && item.amendsDecisionId === appeal.againstDecisionId)
-        return { id: appeal.id, status: appeal.status, resolution: appeal.resolution ?? null,
+        return { id: appeal.id, status: appeal.status,
+          resolution: internal ? (appeal.resolution ?? null) : null,
           originalDecisionId: appeal.againstDecisionId,
           ...(amended ? { amendmentDecisionId: amended.id, amendedResult: amended.result } : {}),
           ...(internal ? { statement: appeal.statement, evidenceVersionIds: appeal.newEvidenceDocumentVersionIds } : {}),

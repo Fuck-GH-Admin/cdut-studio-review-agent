@@ -120,3 +120,41 @@ test('F16 historical report never mixes later decisions, dispositions or adjudic
   expect(report.markdown).toContain('不混入这些数据')
   expect(report.json).not.toContain('later-decision')
 })
+
+test('T08 student decision and supplement projection defaults to private; internal reviewer retains full decision evidence', () => {
+  const aggregate = {
+    caseV2: { id: 'case-secret-decision', documents: [], subjects: [{ id: 's-1', title: '事项', fields: {} }] },
+    decisions: [{
+      id: 'decision-secret', basedOnRunId: 'run-secret', result: 'partial-pass',
+      reason: '内部评议记录-PRIVATE-KEY', at: '2026-10-24T00:00:00Z',
+      stageId: 'internal-review', basedOnRevision: 2, finality: 'final',
+      finalScores: [{ subjectId: 's-1', value: 'SECRET-SCORE-180' }],
+      actor: { actorId: 'a-1', actorSource: 'local', role: 'reviewer' },
+    }],
+    dispositions: [], adjudications: [], supplements: [{
+      reason: 'PRIVATE-SUPPLEMENT-REASON', status: 'open', requiredElements: ['需补充申请依据'],
+    }],
+    appeals: [{
+      id: 'appeal-secret', againstDecisionId: 'decision-secret', status: 'resolved',
+      resolution: 'PRIVATE-APPEAL-RESOLUTION', statement: 'PRIVATE-APPEAL-STATEMENT',
+    }],
+  } as unknown as CaseAggregateV2
+  const run = {
+    id: 'run-secret', caseId: 'case-secret-decision', templateId: 'template', templateVersion: 1,
+    inputManifest: { hash: 'input-secret', documentVersions: [] }, status: 'completed',
+    coverage: { effectiveVerdicts: 0, plannedChecks: 0, pendingChecks: 0 },
+    checks: [], opinions: [],
+  } as unknown as ReviewRunV2
+  const student = makeT08CaseReport({ aggregate, run, audience: 'student', stale: false })
+  const studentPayload = student.markdown + student.json + JSON.stringify(t08ReportWorkbookSheets(student))
+  for (const secret of ['内部评议记录-PRIVATE-KEY', 'SECRET-SCORE-180', 'PRIVATE-SUPPLEMENT-REASON',
+    'PRIVATE-APPEAL-RESOLUTION', 'PRIVATE-APPEAL-STATEMENT', 'internal-review']) {
+    expect(studentPayload).not.toContain(secret)
+  }
+  expect(studentPayload).toContain('partial-pass')
+  expect(studentPayload).toContain('需补充申请依据')
+  const reviewer = makeT08CaseReport({ aggregate, run, audience: 'reviewer', stale: false })
+  expect(reviewer.markdown + reviewer.json).toContain('内部评议记录-PRIVATE-KEY')
+  expect(reviewer.json).toContain('SECRET-SCORE-180')
+  expect(reviewer.json).toContain('PRIVATE-APPEAL-RESOLUTION')
+})
