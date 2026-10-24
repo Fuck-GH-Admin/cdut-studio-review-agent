@@ -269,3 +269,11 @@
 1. 固定最新 HEAD 跟踪 6 项 CI；若出现失败，优先查看日志并修复真实生产逻辑。
 2. 复查 UI → IPC → T05 阶段事务对最新单一 Pi Run 的选择，特别是补件后旧 Run 过期、人工处置 `runId/inputHash`、取消补件不等于材料已满足。
 3. 记录实际完成的专项/全量结果；验收前继续保持 Draft，不合并。
+
+## 14. 2026-10-24 人工复核兼容修正（继第 13 节）
+
+- `14dc876b4a0a50685f94f4d92874fddda8e4ef17`：对第 13 节新增门控做了语义纠正。`coverage.pendingChecks` 是原始检查账本统计，并不会因当前人工处置而改写，不能把它用作**无条件阶段通过阻断**，否则有效的 `human-confirmed-compliant` 也无法放行。
+- `dcbb265316c89ab7cfd592a07154d919bc854fdb`：增加反例，验证当前 `runId + inputManifest.hash` 对应、具名并人工确认的待确认项，在原始 `pendingChecks=1` 时仍可 `stage-pass`。如果无该处置，仍由 `t05ActionEligibility` 的逐 Check 待确认检查拒绝通过。
+- **最终约束**：重复/缺失 Check ID、错误冻结规则、非已完成 Run、检查覆盖不足、全部不适用继续阻断积极通过；可以被当前可信人工处置解决的是待确认/特定问题检查，不是未执行/执行失败。
+- 本次修正没有修改业务数据或正式 Decision 的存储方式；检查基于原有同一 Run 的 `coverage` 和 `dispositions`。
+- 本节写入时，最新代码 HEAD 为 `dcbb265316c89ab7cfd592a07154d919bc854fdb`，该 SHA 的全量 PR CI 与专项工作流仍在运行，**尚不得宣称新提交六项 CI 全绿**。之前 `a07adda` 的六项成功证据不迁移到新 SHA。
