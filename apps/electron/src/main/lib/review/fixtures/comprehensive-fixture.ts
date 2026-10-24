@@ -86,8 +86,8 @@ export function buildComprehensiveFixture(): { policy: PolicyRecord; template: T
       { key: 'confirmedLevelScore', label: '确认分值', kind: 'number', required: false, visibility: 'internal' },
     ],
     materialSlots: [
-      { id: 'application-form', name: '综合测评申报表', purpose: '申报事项与等级', acceptedKinds: ['pdf', 'office', 'text'], minCount: 1, maxCount: 1, requiredElements: ['姓名', '学号', '事项', '等级', '日期'], allowReuseAcrossSubjects: false },
-      { id: 'certificates', name: '证明材料', purpose: '等级/日期/颁发单位核验（P4 四要素）', acceptedKinds: ['pdf', 'image', 'office', 'text'], minCount: 1, maxCount: 20, requiredElements: ['姓名', '等级', '日期', '颁发单位'], allowReuseAcrossSubjects: false },
+      { id: 'application-form', name: '综合测评申报表', purpose: '申报事项与等级', acceptedKinds: ['pdf', 'office', 'text'], acceptedRoles: ['application'], minCount: 1, maxCount: 1, requiredElements: ['姓名', '学号', '事项', '等级', '日期'], allowReuseAcrossSubjects: false },
+      { id: 'certificates', name: '证明材料', purpose: '等级/日期/颁发单位核验（P4 四要素）', acceptedKinds: ['pdf', 'image', 'office', 'text'], acceptedRoles: ['evidence'], minCount: 1, maxCount: 20, requiredElements: ['姓名', '等级', '日期', '颁发单位'], allowReuseAcrossSubjects: false },
     ],
     policyVersionIds: [FIXTURE_POLICY_ID],
     policyRefs: [{ policyId: FIXTURE_POLICY_ID, version: 1, contentHash }],
