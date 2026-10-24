@@ -155,9 +155,12 @@ export async function registerMaterial(caseId: string, command: { requestId: str
     if ([...requestedReplacements].some((versionId) => !aggregate.caseV2.documents.some((doc) => doc.versionId === versionId && doc.active !== false))) {
       throw new CommandValidationError('VALIDATION_FAILED', '替换目标不存在或不再是当前材料版本')
     }
-    const sameLogic = aggregate.caseV2.documents.filter((doc) => doc.fileName === incomingName && doc.materialSlotId === payload.materialSlotId)
+    const sameLogic = aggregate.caseV2.documents.filter((doc) =>
+      doc.fileName === incomingName && doc.materialSlotId === payload.materialSlotId &&
+      (requestedReplacements.size === 0 || requestedReplacements.has(doc.versionId)))
     const versionSeq = sameLogic.length + 1
-    const previousVersion = sameLogic.at(-1)
+    const previousVersion = sameLogic.at(-1) ??
+      aggregate.caseV2.documents.find((doc) => requestedReplacements.has(doc.versionId) && doc.fileName === incomingName)
     const documentId = `doc-${aggregate.caseV2.documents.length + 1}-${Date.now().toString(36)}`
     const versionId = `${documentId}-v${versionSeq}`
     const { byteHash, assetKey, sizeBytes, assetDirectory } = copyAsset(caseId, versionId, sourcePath)
@@ -231,7 +234,8 @@ export async function registerMaterial(caseId: string, command: { requestId: str
         // 同槽位同名旧版本停止参与新审核（supersedes：同 slotId+name 才替换）
         const replacedVersions = new Set(payload.replacesVersionIds ?? [])
         const docs = draft.caseV2.documents.map((doc) => (
-          (doc.fileName === incomingName && doc.materialSlotId === payload.materialSlotId) || replacedVersions.has(doc.versionId)
+          (requestedReplacements.size === 0 && doc.fileName === incomingName &&
+            doc.materialSlotId === payload.materialSlotId) || replacedVersions.has(doc.versionId)
             ? { ...doc, active: false }
             : doc
         ))
@@ -257,7 +261,8 @@ export async function registerMaterial(caseId: string, command: { requestId: str
         draft.caseV2.documents = [...docs, doc]
         const retiredVersions = new Set(aggregate.caseV2.documents.filter((old) =>
           old.active !== false && (requestedReplacements.has(old.versionId) ||
-            (old.fileName === incomingName && old.materialSlotId === payload.materialSlotId)))
+            (requestedReplacements.size === 0 && old.fileName === incomingName &&
+              old.materialSlotId === payload.materialSlotId)))
           .map((old) => old.versionId))
         revokeCurrentSourceValidity(draft, retiredVersions, 'replace')
         return doc
