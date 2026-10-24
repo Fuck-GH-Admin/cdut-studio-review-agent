@@ -185,3 +185,23 @@
 - 过程中修复了一次专门测试夹具缺少 `appeals` 的类型错误，并修正 `reviewV3MaterialFileKind` 扩展名匹配表达式，防止常见 PDF/图片/表格被误判为未知类型。
 
 **此提交后的 CI 尚待重新核对；请只引用最新 HEAD 对应的 workflow 结果。** Electron GUI 人工验收、完整的模板条件缺件分级以及同案补件请求持久事务仍需要落实。
+
+
+## 9. 第五次核验：最新 PR 全绿、真实运行决定、继续验证边界（2026-10-24 11:15，UTC+08）
+
+> 本节覆盖先前各节记载的阶段状态；仅对指定 SHA 的 CI 结果做结论。旧节保留为修复审计记录。
+
+- 核验 HEAD：`dcb3b49d43f68dea6c10c167259ff9a38b748b23`；工作分支 `fix/v3-unified-intake-routing`；集成目标 `feat/v3-r02-template-library`；[PR #246](https://github.com/Fuck-GH-Admin/cdut-studio-review-agent/pull/246) 仍开放、未合并。
+- 本 HEAD 的 GitHub Actions **六项全部 success**：`Review batch focused tests`、`Review Baseline CI`、`D2 Scoped Pi Review Tests`、`D0.5 Semantic Module Tests`、`D1 Review Authoring Tests`、`PR CI`。这说明本 SHA 的 CI 构建和配置的自动回归成功，**不等于 Electron 真实用户验收通过**。
+- 自上一节新增代码：
+  - `stage-workflow.ts` 原生 V3 阶段决定不再以 `run@rev` 代替 Run，而是在 Main 决定事务中读取本案真实已完成、模板相同、输入未过期的 Pi Run；兼容旧案卷路径另记。
+  - `review-v3-main-template-run-unified.test.ts` 及模板扩展名/材料槽位测试加入；修复测试夹具与格式匹配错误。
+  - `ReviewV3UnifiedRun.tsx` 不在开始初审时隐式正式提交案卷，待补材料显示及补件后重新运行的入口已经接入。
+- 已确认的**尚未完成事项**：
+  1. 缺件检查结果可显示于 Run，但尚不能把它等同于案卷 `SupplementRequest` 持久业务任务；需要决定「初审待补件」与「正式退回补件」两层的状态与入口边界。
+  2. 模板当前有 `requiredAt`、`requiredWhen`、`acceptedKinds` 和材料计数；需要复核不同阶段与条件下的材料槽位计算，不得将尚未满足条件/尚未归类解释成缺件。
+  3. 仍有 Renderer 侧模型候选 20 秒计时与 Main 侧规则候选倒计时两条代码路径，尚未证明跨重新打开、材料变化、冲突选择时的完全一致性。
+  4. 没有真实 Electron 实机拖入→匹配→分类→初审→补件→新 Run→决定→T08 导出证据；禁止宣称产品闭环已验收。
+  5. 还需要检验源码对“旧 Run 检查待补件与过期历史”是否有混淆以及 Main 对补件操作的实际材料版本/槽位授权。
+
+**本轮之后的执行顺序**：先以真实代码修复明显的安全与状态缺口，再增补聚焦测试并检查新的 HEAD/CI；最后再出一次增量回执，不覆盖上述历史。
