@@ -557,10 +557,18 @@ export function preparePiReviewRunV2(input: { caseId: string; sessionId: string;
   const d2Problems = verifyD2InstalledPlan(aggregate)
   if (d2Problems.length) throw new Error('D2_FIXED_PLAN_MISMATCH: ' + d2Problems.join('；'))
   const effectiveRules = effectiveRulesFor(aggregate, template)
-  if (effectiveRules.length === 0) {
+  // A published template can legitimately specify only material-slot checks.
+  // Denying it here used to prevent the same unified Pi Run from examining the
+  // template's actual submission requirements.
+  const specializedIds = template.status==='published'&&!aggregate.d2RuntimePlan
+    ? templateRuleSpecializedRuleIds(template):[]
+  if (effectiveRules.length === 0 && specializedIds.length === 0) {
     throw new Error(`模板「${template.name}」和本案审核依据都没有可执行检查项；审核尚未启动。请先选择包含检查要求的模板或补充审核依据。`)
   }
-  const planned = coverageFor(aggregate, effectiveRules, [], template).plannedChecks
+  const snapshotsForPlan=snapshots(aggregate)
+  const unifiedPlan=unifiedDeterministicChecks(
+    aggregate,template,effectiveRules,snapshotsForPlan.observations,aggregate.evidenceLinks)
+  const planned=coverageFor(aggregate,unifiedPlan.coverageRules,unifiedPlan.checks,template).plannedChecks
   if (planned === 0) {
     throw new Error(`模板「${template.name}」没有可应用到当前案卷的检查目标；审核尚未启动。请先登记申报事项或调整模板分项。`)
   }
