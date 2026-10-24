@@ -259,6 +259,14 @@ export async function resolveSupplementV2(caseId: string, command: { requestId: 
         `补件判定结果无效：${String(payload.outcome)}（只允许 satisfied / insufficient / cancelled）`)
     }
     if (target.status !== 'open' && target.status !== 'responded') throw new CommandValidationError('INVALID_TRANSITION', `补件已关闭（${target.status}）`)
+    // T05/Main-snapshotted supplement requests must be explicitly replied to
+    // before a reviewer can record satisfied or insufficient. A request existing
+    // on disk is never evidence that a user actually supplied a response.
+    if (target.originStageId && target.documentVersionIdsAtRequest &&
+      (payload.outcome === 'satisfied' || payload.outcome === 'insufficient') &&
+      target.status !== 'responded') {
+      throw new CommandValidationError('INVALID_TRANSITION', '可信阶段补件必须先由提交方回复，再由审核员判定满足或不足')
+    }
     if (payload.outcome === 'cancelled' && !payload.reason.trim()) throw new CommandValidationError('VALIDATION_FAILED', '取消补件必须说明理由')
     return {
       summary: `补件判定：${payload.outcome}`,

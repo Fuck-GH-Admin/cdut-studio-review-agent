@@ -17,6 +17,7 @@
  * - 不冒充学校审批：D2/B1 技术预审永远不能形成正式业务决定。
  */
 import type { Actor, CaseAggregateV2, ReviewRunV2, TemplateVersion } from '@profer/shared'
+import { assessMaterialSlotV2 } from '@profer/shared'
 import { CommandValidationError, readAggregate, submitCommand } from './case-store-v2'
 import { getTemplate } from './template-store'
 import { listRunsV2 } from './run-store-v2'
@@ -309,6 +310,20 @@ export function t05ActionEligibility(
   }
 }
 
+/** Before the final approval, re-check all applicable template material slots.
+ * A slot may have been deliberately allowed to remain incomplete at submission
+ * or initial review. Neither a cancelled supplement nor an older Run can waive
+ * the material requirements of the currently published template.
+ */
+export function t05FinalMaterialBlockers(aggregate: CaseAggregateV2, template: TemplateVersion): string[] {
+  return (template.materialSlots ?? []).flatMap((slot) => {
+    const assessment = assessMaterialSlotV2(aggregate, slot)
+    return assessment.status === 'awaiting-supplement' || assessment.status === 'awaiting-confirmation'
+      ? [assessment.reason]
+      : []
+  })
+}
+
 /** 兼容旧名字：只回答「能否阶段通过」。 */
 export function t05DecisionReadiness(
   aggregate: CaseAggregateV2, run: ReviewRunV2 | undefined,
@@ -342,8 +357,15 @@ export function readT05StageCapability(caseId: string, claim?: T05RoleClaim): T0
     .map((task) => task.id)
   const run = currentT05Run(aggregate)
   const eligibility = t05ActionEligibility(aggregate, run)
+  const template = getTemplate(aggregate.caseV2.templateId, aggregate.caseV2.templateVersion)
+  const hasEligibleFinalStage = (aggregate.tasks ?? []).some((task) =>
+    eligible.includes(task.id) && !!template?.stages.find((stage) =>
+      stage.id === task.stageId && !stage.nextStageId))
+  const finalMaterialBlockers = hasEligibleFinalStage && template
+    ? t05FinalMaterialBlockers(aggregate, template) : []
   const allowedActions = mode === 'local-business'
-    ? (Object.keys(eligibility.allowed) as T05StageAction[]).filter((action) => eligibility.allowed[action])
+    ? (Object.keys(eligibility.allowed) as T05StageAction[]).filter((action) =>
+      eligibility.allowed[action] && (action !== 'stage-pass' || finalMaterialBlockers.length === 0))
     : []
   return {
     mode,
@@ -352,7 +374,9 @@ export function readT05StageCapability(caseId: string, claim?: T05RoleClaim): T0
     eligibleTaskIds: eligible,
     hasCurrentRun: Boolean(run),
     allowedActions,
-    blockers: mode === 'local-business' ? eligibility.blockers : ['技术预审案卷不具备正式业务决定权'],
+    blockers: mode === 'local-business'
+      ? [...eligibility.blockers, ...finalMaterialBlockers]
+      : ['技术预审案卷不具备正式业务决定权'],
   }
 }
 
@@ -395,6 +419,15 @@ Promise<{ ok: true; revision: number; proposal: T05StageProposal; decisionId?: s
     const template: TemplateVersion | undefined = getTemplate(payload.templateId, payload.version)
     if (!template || template.status !== 'published') {
       throw new CommandValidationError('DEPENDENCY_UNRESOLVED', '模板不存在或未发布')
+    }
+    const stageTask = aggregate.tasks.find((task) => task.id === payload.taskId && task.status === 'open')
+    const currentStage = template.stages.find((stage) => stage.id === stageTask?.stageId)
+    if (payload.action === 'stage-pass' && currentStage && !currentStage.nextStageId) {
+      const materialBlockers = t05FinalMaterialBlockers(aggregate, template)
+      if (materialBlockers.length > 0) {
+        throw new CommandValidationError('DEPENDENCY_UNRESOLVED',
+          `终审材料尚未满足模板要求：${materialBlockers.join('；')}`)
+      }
     }
     const run = currentT05Run(aggregate)
     const eligibility = t05ActionEligibility(aggregate, run)

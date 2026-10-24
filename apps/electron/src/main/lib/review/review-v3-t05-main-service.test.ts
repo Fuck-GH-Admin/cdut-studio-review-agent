@@ -8,7 +8,7 @@ const configDir = mkdtempSync(join(tmpdir(), 't05m-'))
 process.env.PROFER_CONFIG_DIR = configDir
 afterAll(() => rmSync(configDir, { recursive: true, force: true }))
 
-const { deriveT05LocalActor, t05DecisionReadiness, isLocalBusinessCase } =
+const { deriveT05LocalActor, t05DecisionReadiness, isLocalBusinessCase, t05FinalMaterialBlockers } =
   await import('./review-v3-t05-main-service')
 
 function aggregate(overrides: Record<string, unknown> = {}) {
@@ -81,6 +81,26 @@ describe('T05 可信阶段边界', () => {
       { findingKey: 'c1', disposition: 'human-confirmed-compliant', actor: 'local-reviewer', reason: '旧', at: '', runId: 'run-old' },
     ] })
     expect(t05DecisionReadiness(stale, run as never).readiness).toBe('blocked')
+  })
+
+  test('终审再次核对 decision 阶段材料槽，初审放过的缺件不能默认放行', () => {
+    const target = aggregate({
+      caseV2: { id: 'case-t05', revision: 3, templateId: 'tpl',
+        templateVersion: 1, stage: 'reviewing', documents: [] },
+    })
+    const slot = {
+      id: 'decision-proof', name: '终审证明', purpose: '证据核对',
+      requiredAt: 'decision' as const, acceptedKinds: ['text' as const],
+      minCount: 1, maxCount: 2, requiredElements: ['日期'],
+      allowReuseAcrossSubjects: false,
+    }
+    const template = { materialSlots: [slot] } as never
+    expect(t05FinalMaterialBlockers(target, template).join()).toContain('终审证明')
+    target.caseV2.documents = [{
+      versionId: 'proof-v1', documentId: 'proof', materialSlotId: 'decision-proof',
+      role: 'evidence', active: true, fileName: 'proof.txt', mimeType: 'text/plain',
+    }] as typeof target.caseV2.documents
+    expect(t05FinalMaterialBlockers(target, template)).toEqual([])
   })
 
   test('全部检查通过且无未结束补件时准备度为 ready', () => {
