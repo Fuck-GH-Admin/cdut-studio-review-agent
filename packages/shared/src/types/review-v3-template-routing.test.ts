@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test'
 import {
   createGenericModelDeepMatcher, filterTemplateCatalog, parseTemplateDeepMatchResponse,
-  rankTemplateCandidates, type TemplateRouteCatalogEntry,
+  rankTemplateCandidates, reviewV3MaterialFileKind, reviewV3SlotAcceptsFile, type TemplateRouteCatalogEntry,
 } from './review-v3-template-routing'
 
 const catalog: TemplateRouteCatalogEntry[] = [
@@ -64,5 +64,21 @@ describe('Review V3 template matching and deep-match contract', () => {
     expect(port.provider).toBe('generic-model')
     const result = await port.match({ caseEvidence: '部门邮箱开通', templates: catalog })
     expect(result.matches[0]?.templateId).toBe('campus-mail')
+  })
+})
+
+describe('Review V3 template material kinds',()=>{
+  test('identifies common uploaded file extensions (not backslash paths only)',()=>{
+    expect(reviewV3MaterialFileKind('证明.pdf')).toBe('pdf')
+    expect(reviewV3MaterialFileKind('附件.JPG')).toBe('image')
+    expect(reviewV3MaterialFileKind('综测成绩.xlsx')).toBe('sheet')
+    expect(reviewV3MaterialFileKind('申请.docx')).toBe('office')
+    expect(reviewV3MaterialFileKind('说明.md')).toBe('text')
+    expect(reviewV3MaterialFileKind('无扩展名')).toBeUndefined()
+  })
+  test('rejects incompatible material from a restricted template slot',()=>{
+    const slot={acceptedKinds:['sheet'] as Array<'sheet'>}
+    expect(reviewV3SlotAcceptsFile(slot,'申请.docx')).toBe(false)
+    expect(reviewV3SlotAcceptsFile(slot,'明细.xlsx')).toBe(true)
   })
 })
